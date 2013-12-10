@@ -26,7 +26,7 @@ import eva2.tools.math.RNG;
 /**
  * For a double valued problem, there are two main methods to implement:
  * {@link #getProblemDimension()} must return the problem dimension, while
- * {@link #eval(double[])} is to evaluate a single double vector into the result
+ * {@link #evaluate(double[])} is to evaluate a single double vector into the result
  * fitness vector.
  * <p/>
  * To define the problem range, you may use the default range parameter
@@ -77,10 +77,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         }
         if (getProblemDimension() > 0) { // avoid evil case setting dim to 0
             // during object init
-            ((InterfaceDataTypeDouble) this.template)
-                    .setDoubleDataLength(getProblemDimension());
-            ((InterfaceDataTypeDouble) this.template)
-                    .setDoubleRange(makeRange());
+            ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(getProblemDimension());
+            ((InterfaceDataTypeDouble) this.template).setDoubleRange(makeRange());
         }
     }
 
@@ -126,9 +124,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     /**
      * When implementing a double problem, inheriting classes should not
      * override this method (or only extend it) and do the fitness calculations
-     * in the method eval(double[]).
+     * in the method evaluate(double[]).
      *
-     * @see eval(double[] x)
      */
     @Override
     public void evaluate(AbstractEAIndividual individual) {
@@ -138,7 +135,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         x = getEvalArray(individual);
         ((InterfaceDataTypeDouble) individual).setDoublePhenotype(x);
         // evaluate the vector
-        fitness = this.eval(x);
+        fitness = this.evaluate(x);
         // if indicated, add Gaussian noise
         if (noise != 0) {
             RNG.addNoise(fitness, noise);
@@ -206,7 +203,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      * @return the target function value
      */
     @Override
-    public abstract double[] eval(double[] x);
+    public abstract double[] evaluate(double[] x);
 
     /**
      * Get the problem dimension.
@@ -410,7 +407,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     @Override
     public double functionValue(double[] point) {
         double[] x = project2DPoint(point);
-        double v = eval(x)[0];
+        double v = evaluate(x)[0];
         return v;
     }
 
@@ -433,7 +430,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
             // required
             tmpIndy.setDoubleGenotype(pos);
         }
-        ((AbstractEAIndividual) tmpIndy).setFitness(prob.eval(pos));
+        ((AbstractEAIndividual) tmpIndy).setFitness(prob.evaluate(pos));
         if (!Mathematics.isInRange(pos, prob.makeRange())) {
             System.err.println("Warning, add optimum which is out of range!");
         }
@@ -454,7 +451,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         tmpIndy = (InterfaceDataTypeDouble) prob.getIndividualTemplate()
                 .clone();
         tmpIndy.setDoubleGenotype(pos);
-        ((AbstractEAIndividual) tmpIndy).setFitness(prob.eval(pos));
+        ((AbstractEAIndividual) tmpIndy).setFitness(prob.evaluate(pos));
         pop.add(tmpIndy);
         FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(
                 1e-25, 10, StagnationTypeEnum.generationBased,

@@ -1,19 +1,5 @@
 package eva2.optimization.stat;
 
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 306 $
- *            $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
- *            $Author: mkron $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 
@@ -34,8 +20,6 @@ import java.util.List;
 public class StatisticsStandalone extends AbstractStatistics implements InterfaceStatistics, Serializable {
     private static final long serialVersionUID = -8451652609212653368L;
 
-    private static String m_MyHostName = "unknown";
-
     //	private String m_InfoString;
     private ArrayList<ArrayList<Object[]>> m_ResultData = null;
     private ArrayList<String> m_ResultHeaderStrings = null;
@@ -45,11 +29,6 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
     public StatisticsStandalone(InterfaceStatisticsParameter statParams) {
         super();
         statisticsParameter = statParams;
-        try {
-            m_MyHostName = InetAddress.getLocalHost().getHostName();
-        } catch (Exception e) {
-            System.err.println("ERROR getting HostName " + e.getMessage());
-        }
     }
 
     public StatisticsStandalone(String resultFileName) {

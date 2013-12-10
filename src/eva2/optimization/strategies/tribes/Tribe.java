@@ -94,7 +94,7 @@ public class Tribe implements java.io.Serializable {
         for (n = 0; n < explorerNb; n++) {
 
             boolean eval = explorer[n].moveExplorer(tribeRank, n, swarm, informOption, prob);
-//			if (eval) evals++;
+//			if (evaluate) evals++;
 
             if (pb.constraint) {
                 explorer[n].constraint(pb.gNb, pb.hNb, pb.ups);

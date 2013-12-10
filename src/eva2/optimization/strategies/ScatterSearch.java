@@ -185,7 +185,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         }
     }
 
-    //	public double eval(double[] x) {
+    //	public double evaluate(double[] x) {
 //		AbstractEAIndividual indy = (AbstractEAIndividual)template.clone();
 //		((InterfaceDataTypeDouble)indy).setDoubleGenotype(x);
 //		problem.evaluate(indy);

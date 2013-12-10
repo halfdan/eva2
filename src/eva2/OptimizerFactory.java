@@ -788,7 +788,6 @@ public class OptimizerFactory {
             return null;
         }
         runnable.run();
-        new Thread(runnable).start();
         lastRunnable = runnable;
         return runnable;
     }
@@ -872,8 +871,7 @@ public class OptimizerFactory {
     }
 
     public static double[] optimizeToDouble(OptimizationParameters params) {
-        OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
-                false));
+        OptimizerRunnable runnable = optimize(new OptimizerRunnable(params, false));
         return runnable.getDoubleSolution();
     }
 
@@ -883,15 +881,13 @@ public class OptimizerFactory {
         return runnable.getDoubleSolution();
     }
 
-    public static double[] optimizeToDouble(final int optType,
-                                            AbstractOptimizationProblem problem) {
+    public static double[] optimizeToDouble(final int optType, AbstractOptimizationProblem problem) {
         return optimizeToDouble(optType, problem, null);
     }
 
     public static double[] optimizeToDouble(final int optType,
                                             AbstractOptimizationProblem problem, String outputFilePrefix) {
-        OptimizerRunnable runnable = optimize(optType, problem,
-                outputFilePrefix);
+        OptimizerRunnable runnable = optimize(optType, problem, outputFilePrefix);
         return (runnable != null) ? runnable.getDoubleSolution() : null;
     }
 
@@ -901,13 +897,11 @@ public class OptimizerFactory {
     }
 
     public static IndividualInterface optimizeToInd(OptimizationParameters params) {
-        OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
-                false));
+        OptimizerRunnable runnable = optimize(new OptimizerRunnable(params, false));
         return runnable.getResult();
     }
 
-    public static IndividualInterface optimizeToInd(OptimizationParameters params,
-                                                    String outputFilePrefix) {
+    public static IndividualInterface optimizeToInd(OptimizationParameters params, String outputFilePrefix) {
         OptimizerRunnable runnable = optimize(new OptimizerRunnable(params,
                 outputFilePrefix));
         return runnable.getResult();

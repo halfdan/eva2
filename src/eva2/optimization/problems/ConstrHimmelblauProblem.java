@@ -50,7 +50,7 @@ public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Se
     }
 
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         x = rotateMaybe(x);
         double v = 5.3578547 * x[2] * x[2] + 0.8356891 * x[0] * x[4] + 37.293239 * x[0] - 40792.141;
         if (useYOffset) {

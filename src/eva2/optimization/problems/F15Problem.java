@@ -30,7 +30,7 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
     }
 
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         x = rotateMaybe(x);
         double t = 0, s = 0, sum = 0;
 

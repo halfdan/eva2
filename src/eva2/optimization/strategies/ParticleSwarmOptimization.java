@@ -77,8 +77,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * InertnessOrChi may contain the inertness or chi parameter depending on
      * algoType
      */
-    protected double m_InertnessOrChi = 0.73;
-    protected double m_ReduceSpeed = 0.8;
+    protected double inertnessOrChi = 0.73;
+    protected double reduceSpeed = 0.8;
     private double reduceSpeedOnConstViolation = 0.5;
     public static final int defaultType = 0;
     public static final int resetType = 99;
@@ -133,7 +133,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         this.m_SpeedLimit = a.m_SpeedLimit;
         this.m_Phi1 = a.m_Phi1;
         this.m_Phi2 = a.m_Phi2;
-        this.m_InertnessOrChi = a.m_InertnessOrChi;
+        this.inertnessOrChi = a.inertnessOrChi;
         this.m_TopologyRange = a.m_TopologyRange;
         this.paramControl = (ParameterControlManager) a.paramControl.clone();
         //this.setCheckSpeedLimit(a.isCheckSpeedLimit());
@@ -787,7 +787,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		System.out.println("-- len aft " + vecLen(socCogn));
 //		rotateAllAxes(neiDiff, .5, false);
 //		// TODO!!!
-//		if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
+//		if (algType.getSelectedTag().getID()==1) chi=inertnessOrChi;
 //		else chi = 1.;
 //		
 //		double scaleCog = this.m_Phi1*chi*RNG.randomDouble(0,1);
@@ -795,15 +795,15 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		
 //		
 //		for (int i=0; i<lastVelocity.length; i++) {
-//			curVelocity[i]  = this.m_InertnessOrChi * lastVelocity[i];
+//			curVelocity[i]  = this.inertnessOrChi * lastVelocity[i];
 //			curVelocity[i]  += scaleCog*socCogn[i];
 //			curVelocity[i]  += scaleNei*neiDiff[i];
 //		}
 
 //		for (int i = 0; i < lastVelocity.length; i++) {
 //			// the component from the old velocity
-//			curVelocity[i]  = this.m_InertnessOrChi * lastVelocity[i];
-//			if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
+//			curVelocity[i]  = this.inertnessOrChi * lastVelocity[i];
+//			if (algType.getSelectedTag().getID()==1) chi=inertnessOrChi;
 //			else chi = 1.;
 //			// the component from the cognition model
 //			//curVelocity[i]  += this.m_Phi1*chi*RNG.randomDouble(0,1)*(personalBestPos[i]-curPosition[i]);
@@ -828,7 +828,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         //System.out.println("accel is " + getVecNorm(accel));
 
         for (int i = 0; i < lastVelocity.length; i++) {
-            curVelocity[i] = this.m_InertnessOrChi * lastVelocity[i];
+            curVelocity[i] = this.inertnessOrChi * lastVelocity[i];
             curVelocity[i] += accel[i];
         }
         return curVelocity;
@@ -844,7 +844,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             // the component from the old velocity
             accel[i] = 0;
             if (algType.getSelectedTag().getID() == 1) {
-                chi = m_InertnessOrChi;
+                chi = inertnessOrChi;
             } else {
                 chi = 1.;
             }
@@ -891,7 +891,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		double[] accel    = new double[curPosition.length];
 //		double chi;
 //
-//		if (algType.getSelectedTag().getID()==1) chi=m_InertnessOrChi;
+//		if (algType.getSelectedTag().getID()==1) chi=inertnessOrChi;
 //		else chi = 1.;
 //
 //		boolean rotatedVect=false;
@@ -1292,7 +1292,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     protected void enforceSpeedLimit(double[] curVelocity, double[][] range, double speedLim) {
         while (Mathematics.getRelativeLength(curVelocity, range) > speedLim) {
             for (int i = 0; i < curVelocity.length; i++) {
-                curVelocity[i] *= this.m_ReduceSpeed;
+                curVelocity[i] *= this.reduceSpeed;
             }
         }
     }
@@ -1876,11 +1876,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param k
      */
     public void setInertnessOrChi(double k) {
-        this.m_InertnessOrChi = k;
+        this.inertnessOrChi = k;
     }
 
     public double getInertnessOrChi() {
-        return this.m_InertnessOrChi;
+        return this.inertnessOrChi;
     }
 
     public String inertnessOrChiTipText() {
@@ -2212,17 +2212,17 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
             double relDiff;
             if (personalBestfit[0] != 0) {
-                relDiff = (personalBestfit[0] - ((InterfaceProblemDouble) m_Problem).eval(personalBestPos)[0]) / personalBestfit[0];
+                relDiff = (personalBestfit[0] - ((InterfaceProblemDouble) m_Problem).evaluate(personalBestPos)[0]) / personalBestfit[0];
             } else {
-                relDiff = (personalBestfit[0] - ((InterfaceProblemDouble) m_Problem).eval(personalBestPos)[0]); // absolute diff in this case
-            }//			if (personalBestfit[0]!=((InterfaceProblemDouble)problem).eval(personalBestPos)[0]) {
+                relDiff = (personalBestfit[0] - ((InterfaceProblemDouble) m_Problem).evaluate(personalBestPos)[0]); // absolute diff in this case
+            }//			if (personalBestfit[0]!=((InterfaceProblemDouble)problem).evaluate(personalBestPos)[0]) {
             if (Math.abs(relDiff) > 1e-20) {
                 System.err.println("Warning: mismatching best fitness by " + relDiff);
                 System.err.println("partInfo: " + i + " - " + getParticleInfo(population.getEAIndividual(i)));
             }
             if (Math.abs(relDiff) > 1e-10) {
                 System.err.println("partInfo: " + i + " - " + getParticleInfo(population.getEAIndividual(i)));
-                throw new RuntimeException("Mismatching best fitness!! " + personalBestfit[0] + " vs. " + ((InterfaceProblemDouble) m_Problem).eval(personalBestPos)[0]);
+                throw new RuntimeException("Mismatching best fitness!! " + personalBestfit[0] + " vs. " + ((InterfaceProblemDouble) m_Problem).evaluate(personalBestPos)[0]);
             }
             ((InterfaceDataTypeDouble) indy).setDoubleGenotype(personalBestPos);
             indy.setFitness(personalBestfit);

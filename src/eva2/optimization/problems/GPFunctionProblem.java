@@ -82,7 +82,7 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
     }
 
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         if (x.length != dim) {
             EVAERROR.errorMsgOnce("mismatching dimension of GPFunctionProblem! Setting to " + x.length);
             setProblemDimension(x.length);

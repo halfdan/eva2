@@ -117,9 +117,9 @@ public class TribesPosition implements java.io.Serializable {
 //
 ////  =================================================================== FITNESS EVALUATION
 //    public int fitnessEval(int[] codeFunction, double objective,
-//    		int fitnessSize,int eval) {
+//    		int fitnessSize,int evaluate) {
 //
-//    	//Tribes.eval++; // IncrÃ©mente le nombre total d'Ã©valuations
+//    	//Tribes.evaluate++; // IncrÃ©mente le nombre total d'Ã©valuations
 //    	int n;
 //    	double r;
 //
@@ -301,7 +301,7 @@ public class TribesPosition implements java.io.Serializable {
 //    	 */
 //    	totalError = totalError(fitness, fitnessSize);
 //
-//    	return eval+1;
+//    	return evaluate+1;
 //    }
 //
 //    public double totalError(double[] fitness, int fitnessSize) {

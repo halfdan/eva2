@@ -89,7 +89,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
      * @return The m-dimensional output vector.
      */
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         x = rotateMaybe(x);
         double[] result = new double[1];
         result[0] = this.globalOptimum - evalUnnormalized(x)[0];

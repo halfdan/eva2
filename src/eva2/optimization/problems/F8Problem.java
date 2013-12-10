@@ -64,7 +64,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
      * @return The m-dimensional output vector.
      */
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         x = rotateMaybe(x);
         double[] result = new double[1];
         double sum1 = 0, sum2 = 0, exp1, exp2;
@@ -252,14 +252,14 @@ public class F8Problem extends AbstractProblemDoubleOffset
         double[] tmpP = pos.clone();
         double[] normedVect = Mathematics.normVect(vect);
         double dx = initStep;
-        double tmpFit, oldFit = prob.eval(pos)[fitCrit];
+        double tmpFit, oldFit = prob.evaluate(pos)[fitCrit];
 
         int dir = 1;
         while (dx > thresh) {
             // add a step to tmpP
             Mathematics.svvAddScaled(dx * dir, normedVect, pos, tmpP);
             // evaluate tmpP
-            tmpFit = prob.eval(tmpP)[fitCrit];
+            tmpFit = prob.evaluate(tmpP)[fitCrit];
             if (tmpFit < oldFit) {
                 // if tmpP is better than pos continue at new pos
                 double[] tmp = pos;
@@ -283,7 +283,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
             return true;
         } else { // the number of optima is corret - now check different offset or rotation by comparing one fitness value
             AbstractEAIndividual indy = m_ListOfOptima.getEAIndividual(1);
-            double[] curFit = eval(indy.getDoublePosition());
+            double[] curFit = evaluate(indy.getDoublePosition());
             if (Math.abs(Mathematics.dist(curFit, indy.getFitness(), 2)) > 1e-10) {
                 return true;
             } else {
@@ -316,7 +316,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 //		InterfaceDataTypeDouble tmpIndy;
 //		tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.template).clone();
 //		tmpIndy.setDoubleGenotype(pos);
-//		((AbstractEAIndividual)tmpIndy).SetFitness(eval(pos));
+//		((AbstractEAIndividual)tmpIndy).SetFitness(evaluate(pos));
 //		population.add(tmpIndy);
 //		FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(1e-15, 10, false, true);
 //		int calls = PostProcess.processWithGDA(population, this, convTerm, 0, 0.0000000000000001, 0.01);

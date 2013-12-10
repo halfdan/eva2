@@ -41,7 +41,7 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
      * @return The m-dimensional output vector.
      */
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         x = rotateMaybe(x);
         double[] result = new double[1];
         double tmpProd = 1;

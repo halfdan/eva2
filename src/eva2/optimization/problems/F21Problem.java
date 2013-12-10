@@ -61,7 +61,7 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
     }
 
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         double res[] = new double[1];
         double tmp, innerSum, sum = 0;
         x = rotateMaybe(x);

@@ -139,7 +139,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //    public int generateExplorer(TribesParam pb,
 //    		TribesSwarm swarm, TribesPosition center, double radius,
 //    		int option, int fromTribe,
-//    		int initType, int eval, int label) {
+//    		int initType, int evaluate, int label) {
 //    	/*
 //         Generation of a new explorer ("scout")
 //         If fromTribe=-1, this is the very first generation
@@ -148,7 +148,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //    	TribesExplorer expl = this;
 //    	
 //    	int d, dmax, dmod;
-//    	int evalF = eval;
+//    	int evalF = evaluate;
 //    	int m;
 //    	//  int rank;
 //    	// int shaman;
@@ -433,7 +433,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
         if (Tribes.blind > 0 && strategy == 6) {
             if (RNG.randomDouble() < Tribes.blind) {
                 fitnessEval = false;
-                //System.out.print("\n no fitness eval");
+                //System.out.print("\n no fitness evaluate");
             }
         }
 
@@ -444,7 +444,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
                 prob.evaluate(this);
                 swarm.masterTribe.incEvalCnt();
 //                evalF = position.fitnessEval(pb.function, pb.objective,
-//                                             pb.fitnessSize, eval);
+//                                             pb.fitnessSize, evaluate);
             } else { // Artificial fitness by using penalties
                 for (n = 0; n < position.fitness.length; n++) {
                     SetFitness(n, swarm.tribes[fromTribe].memory[

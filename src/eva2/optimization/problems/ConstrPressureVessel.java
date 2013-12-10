@@ -62,7 +62,7 @@ public class ConstrPressureVessel extends AbstractProblemDouble {
     }
 
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         double v, thickS = x[0], thickH = x[1], R = x[2], L = x[3];
 
         v = 0.6224 * thickS * R * L + 1.7781 * thickH * R * R + 3.1661 * thickS * thickS * L + 19.84 * thickS * thickS * R;

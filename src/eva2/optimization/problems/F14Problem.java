@@ -34,7 +34,7 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
     }
 
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         double[] result = new double[1];
         double x0 = x[0] - rotationDX - xOffset;
         double x1 = x[1] - rotationDX - xOffset;

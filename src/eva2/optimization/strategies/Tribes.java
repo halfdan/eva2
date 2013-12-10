@@ -515,7 +515,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
      * }
      * // -----------OPTIMIZE END }
      *
-     * // Result of the run print("\nBest: eval.= " + evalF + "\n", displayPb);
+     * // Result of the run print("\nBest: evaluate.= " + evalF + "\n", displayPb);
      * swarm.Best.displayMemory(displayPb);
      *
      * save(" " + iter + " " + evalF+ " ", synthSave);

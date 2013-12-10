@@ -254,7 +254,6 @@ public class OptimizerRunnable implements Runnable {
      * Set the verbosity level in the statistics module to the given value.
      *
      * @param vLev
-     * @see StatsParameter
      */
     public void setVerbosityLevel(int vLev) {
         if (vLev >= 0 && vLev < proc.getStatistics().getStatisticsParameter().getOutputVerbosity().getTags().length) {
@@ -268,7 +267,6 @@ public class OptimizerRunnable implements Runnable {
      * Set the output direction in the statistics module.
      *
      * @param outp
-     * @see StatsParameter
      */
     public void setOutputTo(int outp) {
         ((StatisticsParameter) proc.getStatistics().getStatisticsParameter()).setOutputTo(outp);
@@ -287,7 +285,6 @@ public class OptimizerRunnable implements Runnable {
      * Indicate whether full stats should be printed as text (or only selected entries).
      *
      * @param addInfo
-     * @see StatsParameter
      */
     public void setOutputFullStatsToText(boolean addInfo) {
         ((AbstractStatistics) proc.getStatistics()).getStatisticsParameter().setOutputAllFieldsAsText(addInfo);

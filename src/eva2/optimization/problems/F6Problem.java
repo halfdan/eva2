@@ -47,7 +47,7 @@ public class F6Problem extends AbstractProblemDoubleOffset
      * @return The m-dimensional output vector.
      */
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         x = rotateMaybe(x);
         double[] result = new double[1];
         result[0] = x.length * this.m_A + yOffset;

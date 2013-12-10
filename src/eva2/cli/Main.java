@@ -10,6 +10,8 @@ import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractOptimizationProblem;
+import eva2.optimization.problems.AbstractProblemDouble;
+import eva2.optimization.problems.AbstractProblemDoubleOffset;
 import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import com.google.gson.*;
@@ -181,6 +183,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
         this.jsonObject = new JsonObject();
         this.optimizationRuns = new JsonArray();
+        this.generationsArray = new JsonArray();
 
         /**
          * Default command line options only require help or optimizer.
@@ -253,7 +256,6 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         problemObject.addProperty("name", this.problem.getName());
         problemObject.addProperty("dimension", 30);
         this.jsonObject.add("problem", problemObject);
-
     }
 
     /**
@@ -312,6 +314,14 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 System.out.println("Genetic Algorithm");
                 break;
             case "ParticleSwarmOptimization":
+                opt.addOption("initialVelocity", true, "Initial Velocity");
+                opt.addOption("speedLimit", true, "Speed Limit");
+                opt.addOption("topology", true, "Particle Swarm Topology (0-7)");
+                opt.addOption("swarmRadius", true, "Radius of the Swarm");
+                opt.addOption("phi1", true, "Phi 1");
+                opt.addOption("phi2", true, "Phi 2");
+                opt.addOption("inertnessOrChi", true, "Inertness or Chi");
+                opt.addOption("algType", true, "Type of PSO");
 
                 break;
             default:
@@ -322,7 +332,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     private void setProblemFromName(String problemName) {
         Map<String, Class<? extends AbstractOptimizationProblem>> problemList = createProblemList();
 
-        Class<? extends AbstractOptimizationProblem> problem = problemList.get(problemName);
+        Class<? extends AbstractProblemDoubleOffset> problem = problemList.get(problemName);
         try {
             this.problem = problem.newInstance();
         } catch (InstantiationException e) {
@@ -334,21 +344,14 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
     private void runOptimization() {
         for(int i = 0; i < this.numberOfRuns; i++) {
-
-            this.generationsArray = new JsonArray();
             // Terminate after 10000 function evaluations OR after reaching a fitness < 0.1
             OptimizerFactory.setEvaluationTerminator(50000);
-            OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.01}), CombinedTerminator.OR);
+            OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.00001}), CombinedTerminator.OR);
 
             LOGGER.log(Level.INFO, "Running {0}", "Differential Evolution");
 
             OptimizationParameters params = OptimizerFactory.makeParams(optimizer, this.populationSize, this.problem);
             double[] result = OptimizerFactory.optimizeToDouble(params);
-
-            // This is stupid - why isn't there a way to wait for the optimization to finish?
-            while(OptimizerFactory.terminatedBecause().equals("Not yet terminated")) {
-                // wait
-            }
 
             JsonObject optimizationDetails = new JsonObject();
             optimizationDetails.addProperty("total_time", 1.0);
@@ -356,10 +359,16 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             optimizationDetails.addProperty("termination_criteria", OptimizerFactory.terminatedBecause());
             optimizationDetails.add("generations", this.generationsArray);
 
+            JsonArray solutionArray = new JsonArray();
+            for(double val : result) {
+                solutionArray.add(new JsonPrimitive(val));
+            }
+            optimizationDetails.add("solution", solutionArray);
+
             this.optimizationRuns.add(optimizationDetails);
 
-            System.out.println(OptimizerFactory.terminatedBecause());
-            System.out.println(optimizer.getPopulation().getFunctionCalls());
+            // Needs to be re-created here.
+            this.generationsArray = new JsonArray();
         }
 
         this.jsonObject.add("runs", this.optimizationRuns);
@@ -407,8 +416,8 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 meanFitness.add(new JsonPrimitive(val));
             }
             newGeneration.add("mean_fitness", meanFitness);
-            System.out.println(newGeneration.toString());
-            //this.generationsArray.add(newGeneration);
+            //System.out.println(newGeneration.toString());
+            this.generationsArray.add(newGeneration);
         }
 
     }

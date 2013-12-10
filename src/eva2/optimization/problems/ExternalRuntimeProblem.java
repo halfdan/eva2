@@ -209,7 +209,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
 
         x = getXVector(individual);
 
-        double[] fit = eval(x);
+        double[] fit = evaluate(x);
         individual.setFitness(fit);
 
 //        if (this.m_UseTestConstraint) {
@@ -283,9 +283,9 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     }
 
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         if (x == null) {
-            throw new RuntimeException("Error, x=null value received in ExternalRuntimeProblem.eval");
+            throw new RuntimeException("Error, x=null value received in ExternalRuntimeProblem.evaluate");
         }
         ArrayList<Double> fitList = new ArrayList<Double>();
 
@@ -467,7 +467,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
 
     @Override
     public double functionValue(double[] point) {
-        return eval(project2DPoint(point))[0];
+        return evaluate(project2DPoint(point))[0];
     }
 
     @Override
