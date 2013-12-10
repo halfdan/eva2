@@ -6,11 +6,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.03.2003
- * Time: 11:24:42
- * To change this template use Options | File Templates.
+ *
  */
 public interface InterfaceMutation {
 
