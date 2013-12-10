@@ -8,9 +8,11 @@ import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.terminators.CombinedTerminator;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.FitnessValueTerminator;
+import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import com.google.gson.*;
 import org.apache.commons.cli.*;
 import org.reflections.Reflections;
 import java.lang.reflect.Modifier;
@@ -48,6 +50,9 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     private long seed = System.currentTimeMillis();
     private AbstractOptimizationProblem problem;
     private InterfaceOptimizer optimizer;
+    private JsonObject jsonObject;
+    private JsonArray optimizationRuns;
+    private JsonArray generationsArray;
 
     /**
      * Creates a set of default options used in all optimizations.
@@ -84,6 +89,8 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         return opt;
     }
 
+
+
     @Override
     public void performedStop() {
         //To change body of implemented methods use File | Settings | File Templates.
@@ -101,7 +108,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
     @Override
     public void updateProgress(int percent, String msg) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        printProgressBar(percent);
     }
 
     public static void printProgressBar(int percent) {
@@ -172,6 +179,9 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             optimizerParams = new String[]{};
         }
 
+        this.jsonObject = new JsonObject();
+        this.optimizationRuns = new JsonArray();
+
         /**
          * Default command line options only require help or optimizer.
          * Later we build extended command line options depending on
@@ -234,6 +244,16 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 System.exit(-1);
             }
         }
+
+        this.jsonObject.addProperty("population_size", this.populationSize);
+        this.jsonObject.addProperty("number_of_runs", this.numberOfRuns);
+        this.jsonObject.addProperty("seed", this.seed);
+
+        JsonObject problemObject = new JsonObject();
+        problemObject.addProperty("name", this.problem.getName());
+        problemObject.addProperty("dimension", 30);
+        this.jsonObject.add("problem", problemObject);
+
     }
 
     /**
@@ -291,6 +311,9 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             case "GeneticAlgorithm":
                 System.out.println("Genetic Algorithm");
                 break;
+            case "ParticleSwarmOptimization":
+
+                break;
             default:
                 throw new Exception("Unsupported Optimizer");
         }
@@ -310,23 +333,39 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     private void runOptimization() {
+        for(int i = 0; i < this.numberOfRuns; i++) {
 
-        // Terminate after 10000 function evaluations OR after reaching a fitness < 0.1
-        OptimizerFactory.setEvaluationTerminator(50000);
-        OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.01}), CombinedTerminator.OR);
+            this.generationsArray = new JsonArray();
+            // Terminate after 10000 function evaluations OR after reaching a fitness < 0.1
+            OptimizerFactory.setEvaluationTerminator(50000);
+            OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.01}), CombinedTerminator.OR);
 
-        LOGGER.log(Level.INFO, "Running {0}", "Differential Evolution");
+            LOGGER.log(Level.INFO, "Running {0}", "Differential Evolution");
 
-        OptimizationParameters params = OptimizerFactory.makeParams(optimizer, this.populationSize, this.problem);
-        double[] result = OptimizerFactory.optimizeToDouble(params);
+            OptimizationParameters params = OptimizerFactory.makeParams(optimizer, this.populationSize, this.problem);
+            double[] result = OptimizerFactory.optimizeToDouble(params);
 
-        // This is stupid - why isn't there a way to wait for the optimization to finish?
-        while(OptimizerFactory.terminatedBecause().equals("Not yet terminated")) {
-            // wait
+            // This is stupid - why isn't there a way to wait for the optimization to finish?
+            while(OptimizerFactory.terminatedBecause().equals("Not yet terminated")) {
+                // wait
+            }
+
+            JsonObject optimizationDetails = new JsonObject();
+            optimizationDetails.addProperty("total_time", 1.0);
+            optimizationDetails.addProperty("total_function_calls", optimizer.getPopulation().getFunctionCalls());
+            optimizationDetails.addProperty("termination_criteria", OptimizerFactory.terminatedBecause());
+            optimizationDetails.add("generations", this.generationsArray);
+
+            this.optimizationRuns.add(optimizationDetails);
+
+            System.out.println(OptimizerFactory.terminatedBecause());
+            System.out.println(optimizer.getPopulation().getFunctionCalls());
         }
 
-        System.out.println(OptimizerFactory.terminatedBecause());
-        System.out.println(optimizer.getPopulation().getFunctionCalls());
+        this.jsonObject.add("runs", this.optimizationRuns);
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println(gson.toJson(this.jsonObject));
     }
 
     private static void showOptimizerHelp() {
@@ -349,6 +388,28 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
-        //System.out.println(name);
+        if (name.equals("NextGenerationPerformed")) {
+            InterfaceOptimizer optimizer = (InterfaceOptimizer)source;
+            Population population = optimizer.getPopulation();
+
+            JsonObject newGeneration = new JsonObject();
+            newGeneration.addProperty("generation", population.getGeneration());
+            newGeneration.addProperty("function_calls", population.getFunctionCalls());
+
+            JsonArray bestFitness = new JsonArray();
+            for(double val : population.getBestFitness()) {
+                bestFitness.add(new JsonPrimitive(val));
+            }
+            newGeneration.add("best_fitness", bestFitness);
+
+            JsonArray meanFitness = new JsonArray();
+            for(double val : population.getMeanFitness()) {
+                meanFitness.add(new JsonPrimitive(val));
+            }
+            newGeneration.add("mean_fitness", meanFitness);
+            System.out.println(newGeneration.toString());
+            //this.generationsArray.add(newGeneration);
+        }
+
     }
 }
