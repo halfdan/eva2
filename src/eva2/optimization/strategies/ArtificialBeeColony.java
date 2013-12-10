@@ -11,7 +11,7 @@ import eva2.util.annotation.Description;
 /**
  *
  */
-@Description(text = "Artificial Bee Colony Optimizer")
+@Description(value = "Artificial Bee Colony Optimizer")
 public class ArtificialBeeColony implements InterfaceOptimizer {
 
     protected AbstractOptimizationProblem optimizationProblem = new F1Problem();

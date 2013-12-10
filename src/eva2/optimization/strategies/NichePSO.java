@@ -75,7 +75,7 @@ import java.util.Vector;
  * Yilmaz. Particle Swarms for Multimodal Optimization. In: ICANNGA (1), Seiten
  * 366�375, 2007
  */
-@Description(text = "A Niching Particle Swarm Optimizer")
+@Description(value = "A Niching Particle Swarm Optimizer")
 public class NichePSO implements InterfaceAdditionalPopulationInformer, InterfaceOptimizer, java.io.Serializable {
 
     /**

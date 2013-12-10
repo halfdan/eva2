@@ -1,6 +1,7 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.operator.postprocess.SolutionHistogram;
+import eva2.util.annotation.Description;
 
 import java.util.Random;
 
@@ -9,8 +10,8 @@ import java.util.Random;
  * The number of optima is equal to the number of dimensions.
  * The positions and height values of the peaks are initialized randomly with a fixed seed for reproducibility.
  *
- * @author mkron
  */
+@Description("Langerman function")
 public class F21Problem extends AbstractProblemDouble implements InterfaceMultimodalProblem, InterfaceInterestingHistogram {
     private double[] heights = null; // will receive random positions within the range
     private double[][] peaks = null; // will receive values in [0,1] as peak height values
@@ -27,10 +28,6 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
     @Override
     public String getName() {
         return "Langerman-Function";
-    }
-
-    public static String globalInfo() {
-        return "The Langerman function, with n peaks each of which surrounded by circular ridges.";
     }
 
     @Override
@@ -56,8 +53,6 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
                 peaks[i][j] = getRangeLowerBound(i) + rnd.nextDouble() * (getRangeUpperBound(i) - getRangeLowerBound(i));
             }
         }
-//		System.out.println("peaks is " + BeanInspector.toString(peaks));
-//		System.out.println("heights is " + BeanInspector.toString(heights));
     }
 
     @Override

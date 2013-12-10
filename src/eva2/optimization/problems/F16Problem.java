@@ -1,13 +1,13 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.operator.postprocess.SolutionHistogram;
+import eva2.util.annotation.Description;
 
 /**
  * The Vincent function: Multiple optima with increasing density near the lower bounds,
  * therefore decreasing attractor size. All have an equal best fitness of zero.
- *
- * @author mkron
  */
+@Description("Vincent function: Multiple optima with increasing densitiy near the lower bounds, therefore decreasing attractor size. All have an equal best fitness of zero")
 public class F16Problem extends AbstractProblemDouble implements InterfaceMultimodalProblem, Interface2DBorderProblem, InterfaceInterestingHistogram {
     int dim = 10;
 
@@ -64,10 +64,6 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
     @Override
     public String getName() {
         return "Vincent";
-    }
-
-    public static String globalInfo() {
-        return "The Vincent function: Multiple optima with increasing densitiy near the lower bounds, therefore decreasing attractor size. All have an equal best fitness of zero.";
     }
 
     @Override

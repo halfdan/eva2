@@ -1,15 +1,22 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.operator.postprocess.SolutionHistogram;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
  * The multi-modal, multi-funnel Rana function, f_rana = sum_{i=0}^{n-2} (g(x_i, x_{i+1})
  * with g(x,y) = x sin(a)cos(b)+(y+1)cos(a)sin(b), a=sqrt(|-x+y+1|), b=sqrt(|x+y+1|).
+ *
+ * The Rana function is non-separable, highly multi-modal and multi-funnel.
+ * There are diagonal ridges across the search space and the optima are close to the bounds.
+ * The minimum fitness f(x*) is close to (n-1)*r for dimension n and default range r, by which
+ * this implementation may be shifted to the positive domain.
  * <p/>
  * For gnuplot: x *sin(sqrt(abs(-x+y+1)))*cos(sqrt(abs(x+y+1)))+(y+1)*cos(sqrt(abs(-x+y+1)))*sin(sqrt(abs(x+y+1)))
  */
+@Description("Rana function")
 public class F20Problem extends AbstractProblemDouble implements Serializable, InterfaceInterestingHistogram {
     private int dim = 10;
     private boolean shiftFit = false;

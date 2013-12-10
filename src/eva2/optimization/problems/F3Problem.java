@@ -1,14 +1,12 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.individuals.ESIndividualDoubleData;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.09.2004
- * Time: 19:15:03
- * To change this template use File | Settings | File Templates.
+ *
  */
+@Description("Step function.")
 public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Serializable {
 
     public F3Problem() {
@@ -76,14 +74,5 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
     @Override
     public String getName() {
         return "F3 Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Step function.";
     }
 }

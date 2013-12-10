@@ -3,14 +3,10 @@ package eva2.optimization.problems;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.GradientDescentAlgorithm;
+import eva2.util.annotation.Description;
 
-/**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.09.2004
- * Time: 19:03:09
- * To change this template use File | Settings | File Templates.
- */
+@Description(value ="Generalized Rosenbrock's function.")
+@SuppressWarnings("unused")
 public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceLocalSearchable, InterfaceMultimodalProblem, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
 
     private transient GradientDescentAlgorithm localSearchOptimizer = null;
@@ -96,9 +92,6 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -108,15 +101,6 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
     @Override
     public String getName() {
         return "F2-Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Generalized Rosenbrock's function.";
     }
 
     @Override

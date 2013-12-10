@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  *
  */
-@Description(text = "Terminate after the given number of generations")
+@Description(value = "Terminate after the given number of generations")
 public class GenerationTerminator implements InterfaceTerminator, Serializable {
 
     /**

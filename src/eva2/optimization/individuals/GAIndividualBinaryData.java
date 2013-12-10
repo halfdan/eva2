@@ -14,7 +14,7 @@ import java.util.BitSet;
 /**
  * This individual uses a binary genotype to code for binary values.
  */
-@Description(text = "This is a GA individual suited to optimize binary values.")
+@Description(value = "This is a GA individual suited to optimize binary values.")
 public class GAIndividualBinaryData extends AbstractEAIndividual implements InterfaceDataTypeBinary, InterfaceGAIndividual, java.io.Serializable {
 
     protected BitSet m_Genotype = new BitSet();

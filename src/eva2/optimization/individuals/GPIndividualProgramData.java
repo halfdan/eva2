@@ -15,7 +15,7 @@ import eva2.util.annotation.Description;
 /**
  * This individual uses a tree-based genotype to code for program trees.
  */
-@Description(text = "This is a GP individual suited to optimize Koza style program trees.")
+@Description(value = "This is a GP individual suited to optimize Koza style program trees.")
 public class GPIndividualProgramData extends AbstractEAIndividual implements InterfaceGPIndividual, InterfaceDataTypeProgram, java.io.Serializable {
 
     protected AbstractGPNode[] genotype;

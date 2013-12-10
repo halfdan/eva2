@@ -356,7 +356,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
             if (tip == null || tip.isEmpty()) {
                 Description description = instances.get(i).getAnnotation(Description.class);
                 if (description != null) {
-                    tip = description.text();
+                    tip = description.value();
                 }
             }
 

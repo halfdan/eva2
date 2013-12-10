@@ -19,7 +19,7 @@ import eva2.util.annotation.Description;
  * global to a more local search. But you have to be careful with that else the
  * GA might not converge. This is a implementation of Genetic Algorithms.
  */
-@Description(text = "This is a basic generational Genetic Algorithm.")
+@Description(value = "This is a basic generational Genetic Algorithm.")
 public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializable {
 
     private Population population = new Population();

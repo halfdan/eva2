@@ -5,16 +5,14 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.population.Population;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.06.2005
- * Time: 13:23:43
- * To change this template use File | Settings | File Templates.
+ *
  */
+@Description("Sphere Model, changing Environment.")
 public class F7Problem extends AbstractProblemDoubleOffset implements Serializable {
 
     private double m_t = 250;
@@ -112,9 +110,6 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -124,15 +119,6 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
     @Override
     public String getName() {
         return "F7 Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Sphere Model, changing Environment.";
     }
 
     /**

@@ -1,7 +1,12 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.individuals.ESIndividualDoubleData;
+import eva2.util.annotation.Description;
 
+/**
+ * Weighted Sphere Model
+ */
+@Description("Weighted Sphere Model")
 public class F9Problem extends AbstractProblemDoubleOffset implements java.io.Serializable {
 
     public F9Problem() {
@@ -56,9 +61,6 @@ public class F9Problem extends AbstractProblemDoubleOffset implements java.io.Se
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -68,14 +70,5 @@ public class F9Problem extends AbstractProblemDoubleOffset implements java.io.Se
     @Override
     public String getName() {
         return "F9 Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Weighted Sphere Model";
     }
 }

@@ -6,7 +6,7 @@ import eva2.optimization.population.Population;
 /**
  * The non dominated sorting GA archiving method, based on dominace sorting.
  */
-@eva2.util.annotation.Description(text="Non-dominating sorting GA revision 1.0.")
+@eva2.util.annotation.Description(value ="Non-dominating sorting GA revision 1.0.")
 public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializable {
 
     public InterfaceRemoveSurplusIndividuals m_Cleaner = new RemoveSurplusIndividualsDynamicHyperCube();

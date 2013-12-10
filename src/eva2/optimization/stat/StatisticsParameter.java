@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  *
  * @see AbstractStatistics
  */
-@Description(text = "Configure statistics and output of the optimization run. Changes to the data selection state will not take effect during a run.")
+@Description(value = "Configure statistics and output of the optimization run. Changes to the data selection state will not take effect during a run.")
 public class StatisticsParameter implements InterfaceStatisticsParameter, InterfaceNotifyOnInformers, Serializable {
     private static final long serialVersionUID = -8681061379203108390L;
     private static final Logger LOGGER = Logger.getLogger(StatisticsParameter.class.getName());
@@ -272,7 +272,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     }
 
     public String outputAllFieldsAsTextTipText() {
-        return "Output all available data fields or only the selected entries as text.";
+        return "Output all available data fields or only the selected entries as value.";
     }
 
     public void hideHideable() {

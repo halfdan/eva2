@@ -7,7 +7,7 @@ import eva2.util.annotation.Description;
 /**
  * F1 Sphere Problem
  */
-@Description(text="Sphere Problem")
+@Description(value ="Sphere Problem")
 public class F1Problem extends AbstractProblemDoubleOffset implements Interface2DBorderProblem, InterfaceHasInitRange, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
     private double initialRangeRatio = 1.; // reduce to initialize in a smaller subrange of the original range (in the corner box)
 
@@ -89,15 +89,6 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
     @Override
     public String getName() {
         return "F1-Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "F1: multidimensional parabola problem";
     }
 
     @Override

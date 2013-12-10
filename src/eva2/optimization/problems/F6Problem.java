@@ -4,12 +4,14 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.operator.postprocess.SolutionHistogram;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.GradientDescentAlgorithm;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
  * Generalized Rastrigin's function.
  */
+@Description("Generalized Rastrigins's function.")
 public class F6Problem extends AbstractProblemDoubleOffset
         implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, InterfaceLocalSearchable, Serializable, InterfaceInterestingHistogram {
     private double m_A = 10;
@@ -87,9 +89,6 @@ public class F6Problem extends AbstractProblemDoubleOffset
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -99,15 +98,6 @@ public class F6Problem extends AbstractProblemDoubleOffset
     @Override
     public String getName() {
         return "F6-Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Generalized Rastrigins's function.";
     }
 
     /**

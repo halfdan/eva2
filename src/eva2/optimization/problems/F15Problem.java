@@ -1,6 +1,7 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.operator.postprocess.SolutionHistogram;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -8,7 +9,7 @@ import java.io.Serializable;
  * The Levy-function, from Levy, A., and Montalvo, A. (1985). Also described in
  * "A Trust-Region Algorithm for Global Optimization", Bernardetta Addisy and Sven Leyfferz, 2004/2006.
  */
-
+@Description("The Levy-function, from Levy, A., and Montalvo, A. (1985)")
 public class F15Problem extends AbstractProblemDouble implements Serializable, InterfaceInterestingHistogram {
     private int problemDimension = 10;
 
@@ -75,9 +76,4 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
     public String getName() {
         return "F15-Problem";
     }
-
-    public static String globalInfo() {
-        return "The Levy-function, from Levy, A., and Montalvo, A. (1985)";
-    }
-
 }

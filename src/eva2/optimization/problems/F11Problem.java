@@ -1,14 +1,12 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.individuals.ESIndividualDoubleData;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.06.2005
- * Time: 14:59:23
- * To change this template use File | Settings | File Templates.
+ * Griewank Function
  */
+@Description("Griewank Function")
 public class F11Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
 
     private double m_D = 4000;
@@ -71,9 +69,6 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -83,15 +78,6 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
     @Override
     public String getName() {
         return "F11-Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Griewank Function";
     }
 
     /**

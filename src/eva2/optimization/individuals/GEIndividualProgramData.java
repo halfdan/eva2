@@ -18,7 +18,7 @@ import java.util.BitSet;
  * This individual uses a binary genotype to code for a tree-based representation
  * using a BNF grammar, see also Grammatical Evolution.
  */
-@Description(text = "This is a GE individual suited to optimize programs.")
+@Description(value = "This is a GE individual suited to optimize programs.")
 public class GEIndividualProgramData extends AbstractEAIndividual implements InterfaceGAIndividual, InterfaceDataTypeProgram, java.io.Serializable {
 
     protected GPArea[] m_Area;

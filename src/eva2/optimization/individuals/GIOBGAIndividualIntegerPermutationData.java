@@ -9,7 +9,7 @@ import eva2.util.annotation.Description;
 /**
  * This individual combines a binary and a real-valued phenotype.
  */
-@Description(text = "This is a mixed data type combining an integer vector with a permutation vector.")
+@Description(value = "This is a mixed data type combining an integer vector with a permutation vector.")
 public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual implements InterfaceDataTypeInteger, InterfaceDataTypePermutation, java.io.Serializable {
 
     private InterfaceDataTypeInteger m_Integer = new GIIndividualIntegerData();
