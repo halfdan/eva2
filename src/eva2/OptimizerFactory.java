@@ -341,7 +341,8 @@ public class OptimizerFactory {
     /**
      * This method creates a Hill Climber algorithm.
      *
-     * @param pop      The size of the population
+     * @param popSize  The size of the population
+     * @param mutator  A mutator for the Hill-Climber
      * @param problem  The problem to be optimized
      * @param listener
      * @return An optimization procedure that performs hill climbing.
