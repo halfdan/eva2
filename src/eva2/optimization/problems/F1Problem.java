@@ -2,10 +2,12 @@ package eva2.optimization.problems;
 
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.Mathematics;
+import eva2.util.annotation.Description;
 
 /**
  * F1 Sphere Problem
  */
+@Description(text="Sphere Problem")
 public class F1Problem extends AbstractProblemDoubleOffset implements Interface2DBorderProblem, InterfaceHasInitRange, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
     private double initialRangeRatio = 1.; // reduce to initialize in a smaller subrange of the original range (in the corner box)
 
@@ -45,7 +47,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      * @return The m-dimensional output vector.
      */
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         x = rotateMaybe(x);
         double[] result = new double[1];
         result[0] = yOffset;

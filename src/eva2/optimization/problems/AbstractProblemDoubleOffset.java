@@ -10,7 +10,7 @@ package eva2.optimization.problems;
 public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble implements Interface2DBorderProblem {
 
     protected int problemDimension = 10;
-    protected double xOffset = 0.0; // TODO make them private, implement eval() and create abstract evalWithoutOffsets
+    protected double xOffset = 0.0; // TODO make them private, implement evaluate() and create abstract evalWithoutOffsets
     protected double yOffset = 0.0;
 
     public AbstractProblemDoubleOffset() {
@@ -36,9 +36,7 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
         setDefaultRange(defRange);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
+
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.

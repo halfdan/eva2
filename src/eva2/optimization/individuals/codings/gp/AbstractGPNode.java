@@ -374,7 +374,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     public static void test(String constr, double[] pos) {
         AbstractGPNode node = AbstractGPNode.parseFromString(constr);
         GPFunctionProblem func = new GPFunctionProblem(node, null, pos.length, 0., 0.);
-        double[] ret = func.eval(pos);
+        double[] ret = func.evaluate(pos);
         System.out.println("testing " + constr + " evaluated to " + BeanInspector.toString(ret));
     }
 

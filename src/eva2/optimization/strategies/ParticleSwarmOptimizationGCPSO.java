@@ -112,7 +112,7 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
             }
         }
         for (int i = 0; i < lastVelocity.length; i++) {
-            curVelocity[i] = this.m_InertnessOrChi * lastVelocity[i];
+            curVelocity[i] = this.inertnessOrChi * lastVelocity[i];
             curVelocity[i] += accel[i];
         }
         return curVelocity;

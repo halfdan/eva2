@@ -96,7 +96,7 @@ public class MatlabEvalMediator {
                 logMP(msg);
             }
             requesting = true;
-//			logMPAndSysOut("-- Requesting eval for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n"); 
+//			logMPAndSysOut("-- Requesting evaluate for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n");
         }
 
 

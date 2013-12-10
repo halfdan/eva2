@@ -14,7 +14,7 @@ public interface InterfaceProblemDouble {
      * @param x the vector to evaluate
      * @return the target function value
      */
-    public double[] eval(double[] x);
+    public double[] evaluate(double[] x);
 
     /**
      * Get the problem dimension.

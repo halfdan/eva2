@@ -110,7 +110,7 @@ public abstract class AbstractSynchronousOptimizationProblem extends
             // bogus. this must be reset right before population evaluation
             setConstantProblemEvals(9999999);
         } else {
-            // in absolute evals, so 1 means once per individual eval, .5 every second
+            // in absolute evals, so 1 means once per individual evaluate, .5 every second
             setConstantProblemEvals(1 / frequency);
         }
     }

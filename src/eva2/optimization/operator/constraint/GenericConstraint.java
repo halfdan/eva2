@@ -93,7 +93,7 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
                     if (func == null) {
                         func = new GPFunctionProblem(constraintProgram, null, indyX.length, 0., 0.);
                     }
-                    return func.eval(indyX)[0];
+                    return func.evaluate(indyX)[0];
                 } else {
                     return 0.;
                 }

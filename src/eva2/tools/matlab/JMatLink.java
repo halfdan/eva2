@@ -675,7 +675,7 @@ public class JMatLink extends Thread {
         // evaluate expression "evalS" in specified engine Ep
 
         if (debugB) {
-            System.out.println("eval(ep,String) in  " + epI + " " + evalS);
+            System.out.println("evaluate(ep,String) in  " + epI + " " + evalS);
         }
 
         lockEngineLock();
@@ -693,7 +693,7 @@ public class JMatLink extends Thread {
         releaseEngineLock();
 
         if (debugB) {
-            System.out.println("eval(ep,String) out " + epI + " " + evalS);
+            System.out.println("evaluate(ep,String) out " + epI + " " + evalS);
         }
 
         // return retValI; Return value indicates success
