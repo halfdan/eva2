@@ -3,10 +3,15 @@ package eva2.optimization.problems;
 import eva2.optimization.operator.constraint.AbstractConstraint;
 import eva2.optimization.operator.constraint.ConstraintCollection;
 import eva2.optimization.operator.constraint.IntervalConstraint;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.Vector;
 
+/**
+ * Himmelblau's nonlinear optimization problem with 5 simple boundary constraints and 3 nonlinear boundary constraints.
+ */
+@Description("Himmelblau's nonlinear optimization problem")
 public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Serializable {
     private static double yOffset = 31025.5602425; // moving the optimum close to zero
     private boolean useYOffset = true;
@@ -17,8 +22,7 @@ public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Se
         setConstraints(new AbstractConstraint[]{new ConstraintCollection(makeDefaultConstraints())});
     }
 
-    public ConstrHimmelblauProblem(
-            ConstrHimmelblauProblem o) {
+    public ConstrHimmelblauProblem(ConstrHimmelblauProblem o) {
         super();
         super.cloneObjects(o);
         useYOffset = o.useYOffset;
@@ -28,12 +32,6 @@ public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Se
     public Object clone() {
         return new ConstrHimmelblauProblem(this);
     }
-
-//	@Override
-//	public void initializeProblem() {
-//		super.initializeProblem();
-//		setConstraints(new AbstractConstraint[]{new ConstraintCollection(makeDefaultConstraints())});
-//	}
 
     public static AbstractConstraint[] makeDefaultConstraints() {
         Vector<AbstractConstraint> constraints = new Vector<AbstractConstraint>();
@@ -67,10 +65,6 @@ public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Se
     @Override
     public String getName() {
         return "Constrained Himmelblau Problem";
-    }
-
-    public static String globalInfo() {
-        return "Himmelblau's nonlinear optimization problem with 5 simple boundary constraints and 3 nonlinear boundary constraints.";
     }
 
     public boolean isUseYOffset() {

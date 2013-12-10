@@ -31,12 +31,10 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      */
     public boolean isMultiObjective();
 
-/******************** The most important methods ****************************************/
-
     /**
-     * This method inits a given population
+     * This method initialized a given population
      *
-     * @param population The populations that is to be inited
+     * @param population The populations that is to be initialized.
      */
     public void initializePopulation(Population population);
 
@@ -58,7 +56,7 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
     /******************** Some output methods *******************************************/
 
     /**
-     * This method allows the CommonJavaObjectEditorPanel to read the
+     * This method allows the GenericObjectEditorPanel to read the
      * name to the current object.
      *
      * @return The name.
@@ -97,5 +95,4 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      * @return Double value
      */
     public Double getDoublePlotValue(Population pop);
-
 }

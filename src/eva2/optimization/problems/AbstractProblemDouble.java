@@ -54,9 +54,6 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     private boolean doRotation = false; // should really be false by default
     private Matrix rotation;
 
-    // PropertySelectableList<AbstractConstraint> constraintList = new
-    // PropertySelectableList<AbstractConstraint>(new AbstractConstraint[]{new
-    // GenericConstraint()});
     private AbstractConstraint[] constraintArray = new AbstractConstraint[]{new GenericConstraint()};
     private boolean withConstraints = false;
     private transient boolean isShowing = false;

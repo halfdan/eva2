@@ -41,19 +41,13 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
     transient PrintStream dos = null;
     private double range[][] = null;
     private static String defTestOut = "matlabproblem-debug.log";
-    //	private static String				resOutFile = "matlabproblem-output.txt";
-//	transient PrintStream				resOutStream = null;
     int verbosityLevel = 0;
     boolean outputAllStatsField = true;
     private MatlabEvalMediator handler = null;
-    //	private boolean isDouble = true;
     private MatlabProblemDataTypeEnum dataType = MatlabProblemDataTypeEnum.typeDouble;
     private double[][] initialRange = null; // the initial range for double-valued problems
 
     public static boolean hideFromGOE = true;
-
-//	transient private double[] currArray = null;
-//	private String mtCmd = null;
 
     public MatlabProblem(MatlabProblem o) {
         this.template = null;

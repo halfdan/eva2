@@ -10,21 +10,23 @@ import eva2.optimization.operator.moso.MOSONoConvert;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.Mathematics;
+import eva2.util.annotation.Description;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Use an external command as target function.
+ */
+@Description("Use an external command as target function.")
 public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRange {
 
     protected AbstractEAIndividual m_OverallBest = null;
     protected int m_ProblemDimension = 10;
-    //    protected boolean                   m_UseTestConstraint = false;
     protected String m_Command = "";
     protected String m_WorkingDir = "";
-    //    protected double					m_upperBound		= 10;
-//    protected double					m_lowerBound		= 0;
     PropertyDoubleArray m_Range = new PropertyDoubleArray(m_ProblemDimension, 2, -10, 10);
     PropertyDoubleArray m_initRange = new PropertyDoubleArray(m_ProblemDimension, 2, -10, 10);
     private String additionalArg = "";
@@ -344,9 +346,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         return sb.toString();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -356,15 +355,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     @Override
     public String getName() {
         return "External Runtime Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Use an external command as target function.";
     }
 
     public String[] getGOEPropertyUpdateLinks() {
@@ -426,19 +416,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         return "The working directory";
     }
 
-//    /** This method allows you to toggle the application of a simple test constraint.
-//     * @param b     The mode for the test constraint
-//     */
-//    public void setUseTestConstraint(boolean b) {
-//        this.m_UseTestConstraint = b;
-//    }
-//    public boolean getUseTestConstraint() {
-//        return this.m_UseTestConstraint;
-//    }
-//    public String useTestConstraintTipText() {
-//        return "Just a simple test constraint of x[0] >= 1.";
-//    }
-
     public InterfaceMOSOConverter getMosoConverter() {
         return m_MosoConverter;
     }
@@ -479,39 +456,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     public double[][] get2DBorder() {
         return getRange().getDoubleArrayShallow();
     }
-
-//	/**
-//	 * @return the m_upperBound
-//	 */
-//	public double getRangeUpperBound() {
-//		return m_upperBound;
-//	}
-//	/**
-//	 * @param bound the m_upperBound to set
-//	 */
-//	public void setRangeUpperBound(double bound) {
-//		m_upperBound = bound;
-//	}
-//	
-//	public String rangeUpperBoundTipText() {
-//		return "Upper bound of the search space in any dimension.";
-//	}
-//	/**
-//	 * @return the m_lowerBound
-//	 */
-//	public double getRangeLowerBound() {
-//		return m_lowerBound;
-//	}
-//	/**
-//	 * @param bound the m_lowerBound to set
-//	 */
-//	public void setRangeLowerBound(double bound) {
-//		m_lowerBound = bound;
-//	}	
-//	
-//	public String rangeLowerBoundTipText() {
-//		return "Lower bound of the search space in any dimension.";
-//	}
 
     public String additionalArgumentTipText() {
         return "Optionally define an additional (first) argument for the command line command.";
