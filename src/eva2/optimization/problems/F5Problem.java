@@ -1,14 +1,13 @@
 package eva2.optimization.problems;
 
+import eva2.util.annotation.Description;
+
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.09.2004
- * Time: 19:30:52
- * To change this template use File | Settings | File Templates.
+ *
  */
+@Description("Schwefel's Function.")
 public class F5Problem extends AbstractProblemDoubleOffset implements Serializable {
     final static double f5range = 65.536;
 
@@ -70,9 +69,6 @@ public class F5Problem extends AbstractProblemDoubleOffset implements Serializab
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -82,14 +78,5 @@ public class F5Problem extends AbstractProblemDoubleOffset implements Serializab
     @Override
     public String getName() {
         return "F5 Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Schwefel's Function.";
     }
 }

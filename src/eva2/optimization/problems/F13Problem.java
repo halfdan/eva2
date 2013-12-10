@@ -3,11 +3,13 @@ package eva2.optimization.problems;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.operator.postprocess.SolutionHistogram;
+import eva2.util.annotation.Description;
 
 /**
  * Schwefels sine root function (1981) with a minimum at 420.9687^n of value 0.
  * Function f(x) = (418.9829 * n) - sum_n(x_i * sin(sqrt(abs(x_i)))) + (418.9829 * n);
  */
+@Description("Schwefel's sine-root Function (multimodal, 1981). Remember to use range check! Note that rotating the function may make it easier because new, and better, minima may enter the search space.")
 public class F13Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, InterfaceInterestingHistogram {
 
     public F13Problem() {
@@ -101,9 +103,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
             return new SolutionHistogram(0, 3200, 12);
         }
     }
-/**********************************************************************************************************************
- * These are for GUI
- */
+
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -113,15 +113,6 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
     @Override
     public String getName() {
         return "F13-Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Schwefels sine-root Function (multimodal, 1981). Remember to use range check! Note that rotating the function may make it easier because new, and better, minima may enter the search space.";
     }
 
     @Override

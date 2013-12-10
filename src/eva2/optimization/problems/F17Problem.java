@@ -1,6 +1,7 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.operator.postprocess.SolutionHistogram;
+import eva2.util.annotation.Description;
 
 /**
  * Bohachevsky function, numerous optima on an oval hyperparabola with similar attractor sizes
@@ -8,6 +9,7 @@ import eva2.optimization.operator.postprocess.SolutionHistogram;
  * "Niche radius adaption in the CMA-ES Niching Algorithm".
  * f_B(\vec{x})=\sum_{i=1}^{n-1} x_i^2+2(x_{i+1}^2)+0.7-0.3 cos (3 \pi x_i)-0.4 cos (4 \pi x_{i+1})
  */
+@Description("Bohachevsky function, numerous optima on an oval hyperparabola with similar attractor sizes but decreasing fitness towards the bounds")
 public class F17Problem extends AbstractProblemDouble implements
         InterfaceMultimodalProblem, InterfaceInterestingHistogram {
     int dim = 10;
@@ -57,10 +59,6 @@ public class F17Problem extends AbstractProblemDouble implements
     @Override
     public String getName() {
         return "F17-Problem";
-    }
-
-    public static String globalInfo() {
-        return "Bohachevsky function, numerous optima on an oval hyperparabola with similar attractor sizes but decreasing fitness towards the bounds.";
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.io.Serializable;
  * the exact number of fitness calls, since terminators are only once per
  * generation.
  */
-@Description(text = "Terminates after the given number of fitness calls.")
+@Description(value = "Terminates after the given number of fitness calls.")
 public class EvaluationTerminator implements InterfaceTerminator,
         Serializable {
     private String msg = "Not terminated.";

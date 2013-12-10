@@ -7,17 +7,15 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.tools.ToolBox;
 import eva2.tools.math.Mathematics;
+import eva2.util.annotation.Description;
 
 import java.util.Arrays;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.09.2004
- * Time: 19:40:28
- * To change this template use File | Settings | File Templates.
+ * Ackley's function.
  */
+@Description("Ackley's function.")
 public class F8Problem extends AbstractProblemDoubleOffset
         implements InterfaceInterestingHistogram, InterfaceMultimodalProblem, //InterfaceFirstOrderDerivableProblem,
         InterfaceMultimodalProblemKnown, java.io.Serializable {
@@ -106,9 +104,6 @@ public class F8Problem extends AbstractProblemDoubleOffset
         initListOfOptima();
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -118,15 +113,6 @@ public class F8Problem extends AbstractProblemDoubleOffset
     @Override
     public String getName() {
         return "F8-Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Ackley's function.";
     }
 
     @Override
@@ -139,27 +125,6 @@ public class F8Problem extends AbstractProblemDoubleOffset
             return new SolutionHistogram(0, 16, 16);
         }
     }
-
-//	public double[] getFirstOrderGradients(double[] x) {
-//		double sum1=0, sum2=0;
-//		double[] derivs = new double[x.length];
-//    	x = rotateMaybe(x);
-//        double dim = (double)this.problemDimension;
-//
-//        for (int i = 0; i < x.length; i++) {
-//        	double xi = x[i]-xOffset;
-//        	sum1 += (xi)*(xi);
-//        	sum2 += Math.cos(c * (xi));
-//        }
-//        
-//        for (int i=0; i<x.length; i++) {
-//        	if (sum1==0) derivs[i]=0;
-//        	else derivs[i]=((this.b*2*x[i]*this.a)/(Math.sqrt(sum1/dim)))*Math.exp(-this.b*Math.sqrt(sum1/dim));
-//        	derivs[i]+= ((this.c/dim)*(Math.sin(this.c*x[i])))*Math.exp(sum2/dim);
-//        }
-//        System.out.println("at " + BeanInspector.toString(x) + " sum1 " + sum1 + " sum2 " + sum2 + " deriv " + BeanInspector.toString(derivs));
-//        return derivs;
-//	}
 
     @Override
     public boolean fullListAvailable() {
@@ -239,15 +204,11 @@ public class F8Problem extends AbstractProblemDoubleOffset
                     }
                 }
             }
-//			System.out.println("Inited " + listOfOptima.size() + " optima, measures: " + BeanInspector.toString(listOfOptima.getPopulationMeasures(new PhenotypeMetric())));
-//			System.out.println("Inited " + listOfOptima.size() + " optima, measures: " + BeanInspector.toString(listOfOptima.getPopulationMeasures(new EuclideanMetric())));
-//			System.out.println(listOfOptima.getStringRepresentation());
             state_initializing_optima = false;
         }
     }
 
     private double[] refineSolution(AbstractProblemDouble prob, double[] pos, double[] vect, double initStep, double thresh, int fitCrit) {
-//		return AbstractProblemDouble.refineSolutionNMS(prob, pos);
         // a line search along a vector
         double[] tmpP = pos.clone();
         double[] normedVect = Mathematics.normVect(vect);
@@ -290,36 +251,9 @@ public class F8Problem extends AbstractProblemDoubleOffset
                 return false;
             }
         }
-//		else {
-//			if (listOfOptima.isEmpty()) return true;
-//			else {
-//				// test for correctness of the second optimum - if its gradient is nonzero, reinit optima
-//				AbstractEAIndividual testIndy = listOfOptima.getEAIndividual(1);
-//				double grad[] = this.getFirstOrderGradients(testIndy.getDoublePosition());
-//				for (int i=0; i<grad.length; i++) {
-//					if (Math.abs(grad[i])>1e-20) {
-//						listOfOptima.clear();
-//						return true;
-//					}
-//				}
-//				return false;
-//			}
-//		}
     }
 
     private void addOptimum(double[] pos) {
         AbstractProblemDouble.addUnrotatedOptimum(m_ListOfOptima, this, pos);
     }
-
-//	private double[] refineSolution(double[] pos) {
-//		Population population = new Population();
-//		InterfaceDataTypeDouble tmpIndy;
-//		tmpIndy = (InterfaceDataTypeDouble)((AbstractEAIndividual)this.template).clone();
-//		tmpIndy.setDoubleGenotype(pos);
-//		((AbstractEAIndividual)tmpIndy).SetFitness(evaluate(pos));
-//		population.add(tmpIndy);
-//		FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(1e-15, 10, false, true);
-//		int calls = PostProcess.processWithGDA(population, this, convTerm, 0, 0.0000000000000001, 0.01);
-//		return ((InterfaceDataTypeDouble)population.getBestEAIndividual()).getDoubleData();
-//	}
 }

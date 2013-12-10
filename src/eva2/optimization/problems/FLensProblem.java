@@ -195,7 +195,7 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 /**
  *
  */
-@eva2.util.annotation.Description(text="Focussing of a lens is to be optimized.")
+@eva2.util.annotation.Description("Focusing of a lens is to be optimized.")
 public class FLensProblem extends AbstractOptimizationProblem
         implements InterfaceOptimizationProblem, InterfaceHasSolutionViewer, java.io.Serializable {
 

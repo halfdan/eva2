@@ -1,5 +1,11 @@
 package eva2.optimization.problems;
 
+import eva2.util.annotation.Description;
+
+/**
+ * N-Function from Shir&Baeck, PPSN 2006.
+ */
+@Description("N-Function from Shir&Baeck, PPSN 2006")
 public class F18Problem extends AbstractProblemDouble implements
         InterfaceMultimodalProblem {
     int dim = 10;
@@ -52,10 +58,6 @@ public class F18Problem extends AbstractProblemDouble implements
     @Override
     public String getName() {
         return "F18-Problem";
-    }
-
-    public static String globalInfo() {
-        return "N-Function from Shir&Baeck, PPSN 2006.";
     }
 
     /**

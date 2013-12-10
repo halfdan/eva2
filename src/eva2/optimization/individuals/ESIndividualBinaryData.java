@@ -14,7 +14,7 @@ import java.util.BitSet;
  * This individual uses a real-valued genotype to code for binary values, either
  * by using a threshold value of by interpreting the double value as probability.
  */
-@eva2.util.annotation.Description(text = "This is an ES individual adopted to optimize binary values.")
+@eva2.util.annotation.Description(value = "This is an ES individual adopted to optimize binary values.")
 public class ESIndividualBinaryData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeBinary, java.io.Serializable {
 
     private BitSet m_Phenotype = new BitSet();

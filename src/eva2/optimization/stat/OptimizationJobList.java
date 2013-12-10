@@ -26,7 +26,7 @@ import java.util.List;
  * A selectable list of EvAJobs. Each job contains a OptimizationParameters instance and potentially
  * statistical data.
  */
-@eva2.util.annotation.Description(text = "Display a set of jobs consisting of a multi-run experiment.")
+@eva2.util.annotation.Description(value = "Display a set of jobs consisting of a multi-run experiment.")
 public class OptimizationJobList extends PropertySelectableList<OptimizationJob> implements Serializable, InterfaceTextListener {
 
     List<InterfaceTextListener> listeners = null;

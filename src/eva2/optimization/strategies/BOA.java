@@ -37,7 +37,7 @@ import java.util.logging.Logger;
  *
  * @author seitz
  */
-@Description(text = "Basic implementation of the Bayesian Optimization Algorithm based on the works by Martin Pelikan and David E. Goldberg.")
+@Description(value = "Basic implementation of the Bayesian Optimization Algorithm based on the works by Martin Pelikan and David E. Goldberg.")
 public class BOA implements InterfaceOptimizer, java.io.Serializable {
     private static final Logger LOGGER = Logger.getLogger(BOA.class.getName());
     transient private InterfacePopulationChangedEventListener m_Listener = null;

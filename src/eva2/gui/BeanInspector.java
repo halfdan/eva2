@@ -638,7 +638,7 @@ public class BeanInspector {
                 Description description = obj.getClass().getAnnotation(Description.class);
                 if (description != null) {
                     infoBf.append("\t");
-                    infoBf.append(description.text());
+                    infoBf.append(description.value());
                 }
             }
 

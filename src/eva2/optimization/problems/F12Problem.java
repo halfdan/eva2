@@ -1,14 +1,13 @@
 package eva2.optimization.problems;
 
+import eva2.util.annotation.Description;
+
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.06.2005
- * Time: 14:59:33
- * To change this template use File | Settings | File Templates.
+ * Galar Function
  */
+@Description("Galar Function")
 public class F12Problem extends AbstractProblemDoubleOffset implements Serializable {
     private final static double f12range = 5.;
 
@@ -66,9 +65,6 @@ public class F12Problem extends AbstractProblemDoubleOffset implements Serializa
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -79,14 +75,4 @@ public class F12Problem extends AbstractProblemDoubleOffset implements Serializa
     public String getName() {
         return "F12 Problem";
     }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Galar Function";
-    }
-
 }

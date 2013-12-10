@@ -31,7 +31,7 @@ import java.util.Vector;
  * dynamically changing problems. If an individual reaches the age limit, it is
  * doomed and replaced by the next challenge vector, even if its worse.
  */
-@Description(text = "Differential Evolution using a steady-state population scheme.")
+@Description(value = "Differential Evolution using a steady-state population scheme.")
 public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
 
     @Parameter(name = "Population", description = "Edit the properties of the population used.")

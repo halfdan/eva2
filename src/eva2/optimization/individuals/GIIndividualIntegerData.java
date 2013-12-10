@@ -11,7 +11,7 @@ import eva2.util.annotation.Description;
 /**
  * This individual uses a integer genotype to code for integer values.
  */
-@Description(text = "This is a GI individual suited to optimize int values.")
+@Description(value = "This is a GI individual suited to optimize int values.")
 public class GIIndividualIntegerData extends AbstractEAIndividual implements InterfaceGIIndividual, InterfaceDataTypeInteger, java.io.Serializable {
 
     private int[] m_Phenotype;

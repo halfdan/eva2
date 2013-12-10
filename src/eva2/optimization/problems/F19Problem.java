@@ -2,6 +2,7 @@ package eva2.optimization.problems;
 
 import eva2.optimization.operator.postprocess.SolutionHistogram;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -10,8 +11,8 @@ import java.util.Random;
  * Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006,
  * after Bäck 1996. Alphas and Matrices A and B are randomly created with a fixed seed.
  *
- * @author mkron
  */
+@Description("Fletcher-Powell function")
 public class F19Problem extends AbstractProblemDouble implements
         InterfaceMultimodalProblem, InterfaceInterestingHistogram, InterfaceFirstOrderDerivableProblem {
     int dim = 10;
@@ -119,10 +120,6 @@ public class F19Problem extends AbstractProblemDouble implements
     @Override
     public String getName() {
         return "F19-Problem";
-    }
-
-    public static String globalInfo() {
-        return "Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006, after Bäck 1996. Alphas and Matrices A and B are randomly created with a fixed seed.";
     }
 
     @Override

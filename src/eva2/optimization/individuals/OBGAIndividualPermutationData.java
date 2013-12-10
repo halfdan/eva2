@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * This individual uses a permutation based genotype to code for
  * permutations.
  */
-@Description(text = "This is a GA individual coding permutations.")
+@Description(value = "This is a GA individual coding permutations.")
 public class OBGAIndividualPermutationData extends AbstractEAIndividual implements InterfaceDataTypePermutation, InterfaceOBGAIndividual, java.io.Serializable {
 
     int[][] phenotype;

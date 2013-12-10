@@ -1,14 +1,12 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.individuals.ESIndividualDoubleData;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: mkron
- * Date: 01.09.2007
- * Time: 19:15:03
- * To change this template use File | Settings | File Templates.
+ * F14 function: numerous optima in linear order which may be rotated.
  */
+@Description("F14 function: numerous optima in linear order which may be rotated")
 public class F14Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
     double rotation = 0.;
     double rotationDX = 2;
@@ -79,9 +77,6 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -91,14 +86,5 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
     @Override
     public String getName() {
         return "F14-Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "F14 function: numerous optima in linear order which may be rotated.";
     }
 }

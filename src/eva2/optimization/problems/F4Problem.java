@@ -1,14 +1,14 @@
 package eva2.optimization.problems;
 
+import eva2.util.annotation.Description;
+
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.09.2004
- * Time: 19:28:33
- * To change this template use File | Settings | File Templates.
+ *
  */
+@SuppressWarnings("unused")
+@Description("Quadratic Function with noise.")
 public class F4Problem extends AbstractProblemDoubleOffset implements Serializable {
     final static double f4range = 1.28;
 
@@ -65,9 +65,6 @@ public class F4Problem extends AbstractProblemDoubleOffset implements Serializab
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -77,14 +74,5 @@ public class F4Problem extends AbstractProblemDoubleOffset implements Serializab
     @Override
     public String getName() {
         return "F4 Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Quadratic Function with noise.";
     }
 }

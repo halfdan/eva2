@@ -33,7 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-@eva2.util.annotation.Description(text = "This is a simple example framework for Evolutionary Algorithms.")
+@eva2.util.annotation.Description(value = "This is a simple example framework for Evolutionary Algorithms.")
 public class StandaloneOptimization implements InterfaceStandaloneOptimization, InterfacePopulationChangedEventListener, java.io.Serializable {
 
     // Interface GUI Stuff

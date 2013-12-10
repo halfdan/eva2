@@ -1,14 +1,12 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.individuals.ESIndividualDoubleData;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.06.2005
- * Time: 14:33:07
- * To change this template use File | Settings | File Templates.
+ * Weierstrass-Mandelbrot Fractal Function
  */
+@Description("Weierstrass-Mandelbrot Fractal Function")
 public class F10Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
 
     private double m_D = 1.5;
@@ -82,9 +80,6 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -94,15 +89,6 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
     @Override
     public String getName() {
         return "F10 Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Weierstrass-Mandelbrot Fractal Function";
     }
 
     /**
