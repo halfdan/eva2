@@ -145,11 +145,11 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         return optimizerList;
     }
 
-    public static Map<String, Class<? extends AbstractOptimizationProblem>> createProblemList() {
-        Map<String, Class<? extends AbstractOptimizationProblem>> problemList = new TreeMap<String, Class<? extends AbstractOptimizationProblem>>();
+    public static Map<String, Class<? extends AbstractProblemDouble>> createProblemList() {
+        Map<String, Class<? extends AbstractProblemDouble>> problemList = new TreeMap<String, Class<? extends AbstractProblemDouble>>();
         Reflections reflections = new Reflections("eva2.optimization.problems");
-        Set<Class<? extends AbstractOptimizationProblem>> problems = reflections.getSubTypesOf(AbstractOptimizationProblem.class);
-        for (Class<? extends AbstractOptimizationProblem> problem : problems) {
+        Set<Class<? extends AbstractProblemDouble>> problems = reflections.getSubTypesOf(AbstractProblemDouble.class);
+        for (Class<? extends AbstractProblemDouble> problem : problems) {
             // We only want instantiable classes
             if (problem.isInterface() || Modifier.isAbstract(problem.getModifiers())) {
                 continue;
@@ -330,9 +330,9 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     private void setProblemFromName(String problemName) {
-        Map<String, Class<? extends AbstractOptimizationProblem>> problemList = createProblemList();
+        Map<String, Class<? extends AbstractProblemDouble>> problemList = createProblemList();
 
-        Class<? extends AbstractProblemDoubleOffset> problem = problemList.get(problemName);
+        Class<? extends AbstractProblemDouble> problem = problemList.get(problemName);
         try {
             this.problem = problem.newInstance();
         } catch (InstantiationException e) {
@@ -387,7 +387,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     private static void listProblems() {
-        Map<String, Class<? extends AbstractOptimizationProblem>> problemList = createProblemList();
+        Map<String, Class<? extends AbstractProblemDouble>> problemList = createProblemList();
 
         System.out.println("Available Problems:");
         for (String name : problemList.keySet()) {
