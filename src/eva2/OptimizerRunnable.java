@@ -2,7 +2,6 @@ package eva2;
 
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -11,6 +10,7 @@ import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.modules.Processor;
 import eva2.optimization.operator.postprocess.InterfacePostProcessParams;
 import eva2.optimization.operator.postprocess.PostProcessParams;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.stat.*;

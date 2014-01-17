@@ -1,9 +1,9 @@
 package eva2.optimization.mocco;
 
-import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;

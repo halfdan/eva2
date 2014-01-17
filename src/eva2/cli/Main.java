@@ -1,22 +1,21 @@
 package eva2.cli;
 
+import com.google.gson.*;
 import eva2.OptimizerFactory;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.enums.DETypeEnum;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.terminators.CombinedTerminator;
-import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.AbstractProblemDouble;
-import eva2.optimization.problems.AbstractProblemDoubleOffset;
 import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.optimization.strategies.InterfaceOptimizer;
-import com.google.gson.*;
 import org.apache.commons.cli.*;
 import org.reflections.Reflections;
+
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Map;
@@ -323,6 +322,8 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 opt.addOption("inertnessOrChi", true, "Inertness or Chi");
                 opt.addOption("algType", true, "Type of PSO");
 
+                break;
+            case "EvolutionStrategies":
                 break;
             default:
                 throw new Exception("Unsupported Optimizer");

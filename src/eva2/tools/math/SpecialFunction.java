@@ -45,7 +45,7 @@ package eva2.tools.math;
  */
 
 
-public final class SpecialFunction extends Object {
+public final class SpecialFunction {
 
     /*
     ** machine constants

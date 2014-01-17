@@ -1,7 +1,6 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.enums.PostProcessMethod;
-import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;
@@ -16,6 +15,7 @@ import eva2.optimization.operator.postprocess.PostProcess;
 import eva2.optimization.operator.postprocess.SolutionHistogram;
 import eva2.optimization.operator.terminators.CombinedTerminator;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.operator.terminators.PhenotypeConvergenceTerminator;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.ChangeTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.DirectionTypeEnum;

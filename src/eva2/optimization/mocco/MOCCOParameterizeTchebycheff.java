@@ -3,10 +3,10 @@ package eva2.optimization.mocco;
 
 import eva2.gui.PropertyEditorProvider;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.operator.migration.SOBestMigration;
 import eva2.optimization.operator.moso.MOSOWeightedLPTchebycheff;
+import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.strategies.IslandModelEA;
 import eva2.optimization.tools.AbstractObjectEditor;
