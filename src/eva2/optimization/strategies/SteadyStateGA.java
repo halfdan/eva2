@@ -22,26 +22,26 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  */
 public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
 
-    private Population m_Population = new Population();
-    private InterfaceOptimizationProblem m_Problem = new B1Problem();
-    private InterfaceSelection m_ParentSelection = new SelectTournament();
-    private InterfaceSelection m_PartnerSelection = new SelectTournament();
-    private InterfaceReplacement m_ReplacementSelection = new ReplaceWorst();
-    private int m_NumberOfPartners = 1;
-    private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    private Population population = new Population();
+    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
+    private InterfaceSelection parentSelection = new SelectTournament();
+    private InterfaceSelection partnerSelection = new SelectTournament();
+    private InterfaceReplacement replacementSelection = new ReplaceWorst();
+    private int numberOfPartners = 1;
+    private String identifier = "";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
     public SteadyStateGA() {
     }
 
     public SteadyStateGA(SteadyStateGA a) {
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
-        this.m_Identifier = a.m_Identifier;
-        this.m_NumberOfPartners = a.m_NumberOfPartners;
-        this.m_ParentSelection = (InterfaceSelection) a.m_ParentSelection.clone();
-        this.m_PartnerSelection = (InterfaceSelection) a.m_PartnerSelection.clone();
-        this.m_ReplacementSelection = (InterfaceReplacement) a.m_ReplacementSelection.clone();
+        this.population = (Population) a.population.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
+        this.identifier = a.identifier;
+        this.numberOfPartners = a.numberOfPartners;
+        this.parentSelection = (InterfaceSelection) a.parentSelection.clone();
+        this.partnerSelection = (InterfaceSelection) a.partnerSelection.clone();
+        this.replacementSelection = (InterfaceReplacement) a.replacementSelection.clone();
     }
 
     @Override
@@ -51,8 +51,8 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public void init() {
-        this.m_Problem.initializePopulation(this.m_Population);
-        this.evaluatePopulation(this.m_Population);
+        this.optimizationProblem.initializePopulation(this.population);
+        this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -63,10 +63,10 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Population = (Population) pop.clone();
+        this.population = (Population) pop.clone();
         if (reset) {
-            this.m_Population.init();
-            this.evaluatePopulation(this.m_Population);
+            this.population.init();
+            this.evaluatePopulation(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
@@ -77,7 +77,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      * @param population The population that is to be evaluated
      */
     private void evaluatePopulation(Population population) {
-        this.m_Problem.evaluate(population);
+        this.optimizationProblem.evaluate(population);
         population.incrGeneration();
     }
 
@@ -102,37 +102,37 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      * population of evaluated individuals.
      */
     private void generateChildren() {
-        this.m_ParentSelection.prepareSelection(this.m_Population);
-        this.m_PartnerSelection.prepareSelection(this.m_Population);
-        Population parents = this.m_ParentSelection.selectFrom(this.m_Population, 1);
+        this.parentSelection.prepareSelection(this.population);
+        this.partnerSelection.prepareSelection(this.population);
+        Population parents = this.parentSelection.selectFrom(this.population, 1);
         AbstractEAIndividual mother = (AbstractEAIndividual) parents.get(0);
-        parents = this.m_PartnerSelection.findPartnerFor(mother, this.m_Population, this.m_NumberOfPartners);
+        parents = this.partnerSelection.findPartnerFor(mother, this.population, this.numberOfPartners);
         AbstractEAIndividual[] offSprings = mother.mateWith(parents);
         offSprings[0].mutate();
-        this.m_Problem.evaluate(offSprings[0]);
-        this.m_ReplacementSelection.insertIndividual(offSprings[0], this.m_Population, parents);
+        this.optimizationProblem.evaluate(offSprings[0]);
+        this.replacementSelection.insertIndividual(offSprings[0], this.population, parents);
     }
 
     @Override
     public void optimize() {
-        for (int i = 0; i < this.m_Population.size(); i++) {
+        for (int i = 0; i < this.population.size(); i++) {
             this.generateChildren();
         }
-        this.m_Population.incrFunctionCallsBy(this.m_Population.size());
-        this.m_Population.incrGeneration();
+        this.population.incrFunctionCallsBy(this.population.size());
+        this.population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -140,8 +140,8 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
     }
 
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -152,12 +152,12 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -171,8 +171,8 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         String result = "";
         result += "Genetic Algorithm:\n";
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -183,12 +183,12 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -215,20 +215,20 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
     }
 
     /**
-     * Assuming that all optimizer will store thier data in a population we will
-     * allow acess to this population to query to current state of the
+     * Assuming that all optimizers will store their data in a population we will
+     * allow access to this population to query to current state of the
      * optimizer.
      *
      * @return The population of current solutions to a given problem.
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {
@@ -246,11 +246,11 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      * @param selection
      */
     public void setParentSelection(InterfaceSelection selection) {
-        this.m_ParentSelection = selection;
+        this.parentSelection = selection;
     }
 
     public InterfaceSelection getParentSelection() {
-        return this.m_ParentSelection;
+        return this.parentSelection;
     }
 
     public String parentSelectionTipText() {
@@ -267,11 +267,11 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         if (partners < 0) {
             partners = 0;
         }
-        this.m_NumberOfPartners = partners;
+        this.numberOfPartners = partners;
     }
 
     public int getNumberOfPartners() {
-        return this.m_NumberOfPartners;
+        return this.numberOfPartners;
     }
 
     public String numberOfPartnersTipText() {
@@ -285,11 +285,11 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      * @param selection
      */
     public void setPartnerSelection(InterfaceSelection selection) {
-        this.m_PartnerSelection = selection;
+        this.partnerSelection = selection;
     }
 
     public InterfaceSelection getPartnerSelection() {
-        return this.m_PartnerSelection;
+        return this.partnerSelection;
     }
 
     public String partnerSelectionTipText() {
@@ -302,11 +302,11 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
      * @param selection
      */
     public void setReplacementSelection(InterfaceReplacement selection) {
-        this.m_ReplacementSelection = selection;
+        this.replacementSelection = selection;
     }
 
     public InterfaceReplacement getReplacementSelection() {
-        return this.m_ReplacementSelection;
+        return this.replacementSelection;
     }
 
     public String replacementSelectionTipText() {

@@ -11,6 +11,7 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * Evolution strategies by Rechenberg and Schwefel, but please remember that
@@ -20,13 +21,9 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * population size in constrast to the parameters mu and lambda used by
  * Rechenberg and Schwefel. Therefore, i'm afraid that the interpretation of the
  * population size may be subject to future changes. This is a implementation of
- * Evolution Strategies. Copyright: Copyright (c) 2003 Company: University of
- * Tuebingen, Computer Architecture
- *
- * @author Felix Streichert
- * @version: $Revision: 307 $ $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec
- * 2007) $ $Author: mkron $
+ * Evolution Strategies.
  */
+@Description(value = "This is an Evolution Strategy. Note that the population size depends on mu (number of parents) and lambda (number of offspring)")
 public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializable {
 
     protected int mu = 5;
@@ -342,14 +339,6 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     /**
      * These are for GUI
      */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an Evolution Strategy. Note that the population size depends on mu (number of parents) and lambda (number of offspring).";
-    }
 
     public String[] customPropertyOrder() {
         return new String[]{"mu", "lambda"};
