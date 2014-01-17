@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public class ParetoFrontLocalTester {
 
+    // ToDo: Have this on another frame (won't show as JInternalFrame)
     private Plot m_Plot;
     private int index = 0;
     private BufferedWriter m_OutputFile = null;

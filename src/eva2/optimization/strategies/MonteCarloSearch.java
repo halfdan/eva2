@@ -8,20 +8,15 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * The simple random or Monte-Carlo search, simple but useful to evaluate the
  * complexity of the search space. This implements a Random Walk Search using
  * the initialization method of the problem instance, meaning that the random
  * characteristics may be problem dependent.
- * <p/>
- * Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture
- *
- * @author Felix Streichert
- * @version: $Revision: 307 $ $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec
- * 2007) $ $Author: mkron $
  */
+@Description("The Monte Carlo Search repeatively creates random individuals and stores the best individuals found.")
 public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializable {
 
     /**
@@ -29,24 +24,24 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     private static final long serialVersionUID = -751760624411490405L;
     // These variables are necessary for the simple testcase
-    private InterfaceOptimizationProblem m_Problem = new B1Problem();
-    private int m_MultiRuns = 100;
-    private int m_FitnessCalls = 100;
-    private int m_FitnessCallsNeeded = 0;
-    private Population m_Population;
-    private GAIndividualBinaryData m_Best, m_Test;
+    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
+    private int multiRuns = 100;
+    private int fitnessCalls = 100;
+    private int fitnessCallsNeeded = 0;
+    private Population population;
+    private GAIndividualBinaryData bestIndividual;
     // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    transient private String identifier = "";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
     public MonteCarloSearch() {
-        this.m_Population = new Population();
-        this.m_Population.setTargetSize(50);
+        this.population = new Population();
+        this.population.setTargetSize(50);
     }
 
     public MonteCarloSearch(MonteCarloSearch a) {
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
+        this.population = (Population) a.population.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
     }
 
     @Override
@@ -59,8 +54,8 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void init() {
-        this.m_Problem.initializePopulation(this.m_Population);
-        this.m_Problem.evaluate(this.m_Population);
+        this.optimizationProblem.initializePopulation(this.population);
+        this.optimizationProblem.evaluate(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -72,10 +67,10 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Population = (Population) pop.clone();
+        this.population = (Population) pop.clone();
         if (reset) {
-            this.m_Population.init();
-            this.m_Problem.evaluate(this.m_Population);
+            this.population.init();
+            this.optimizationProblem.evaluate(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
@@ -86,22 +81,22 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void optimize() {
-        Population original = (Population) this.m_Population.clone();
+        Population original = (Population) this.population.clone();
 
 //        this.problem.initializePopulation(this.population);
-        for (int i = 0; i < m_Population.size(); i++) {
-            m_Population.getEAIndividual(i).defaultInit(null);
+        for (int i = 0; i < population.size(); i++) {
+            population.getEAIndividual(i).defaultInit(null);
         }
 
-        this.m_Population.setFunctionCalls(original.getFunctionCalls());
-        this.m_Problem.evaluate(this.m_Population);
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.m_Population.get(i)))) {
-                this.m_Population.remove(i);
-                this.m_Population.add(i, original.get(i));
+        this.population.setFunctionCalls(original.getFunctionCalls());
+        this.optimizationProblem.evaluate(this.population);
+        for (int i = 0; i < this.population.size(); i++) {
+            if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.population.get(i)))) {
+                this.population.remove(i);
+                this.population.add(i, original.get(i));
             }
         }
-        this.m_Population.incrGeneration();
+        this.population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -112,36 +107,37 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
      * This method will init the HillClimber
      */
     public void defaultInit() {
-        this.m_FitnessCallsNeeded = 0;
-        this.m_Best = new GAIndividualBinaryData();
-        this.m_Best.defaultInit(m_Problem);
+        this.fitnessCallsNeeded = 0;
+        this.bestIndividual = new GAIndividualBinaryData();
+        this.bestIndividual.defaultInit(optimizationProblem);
     }
 
     /**
      * This method will optimize
      */
     public void defaultOptimize() {
-        for (int i = 0; i < m_FitnessCalls; i++) {
-            this.m_Test = new GAIndividualBinaryData();
-            this.m_Test.defaultInit(m_Problem);
-            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) {
-                this.m_Best = this.m_Test;
+        GAIndividualBinaryData testIndividial;
+        for (int i = 0; i < fitnessCalls; i++) {
+            testIndividial = new GAIndividualBinaryData();
+            testIndividial.defaultInit(optimizationProblem);
+            if (testIndividial.defaultEvaulateAsMiniBits() < this.bestIndividual.defaultEvaulateAsMiniBits()) {
+                this.bestIndividual = testIndividial;
             }
-            this.m_FitnessCallsNeeded = i;
-            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) {
-                i = this.m_FitnessCalls + 1;
+            this.fitnessCallsNeeded = i;
+            if (this.bestIndividual.defaultEvaulateAsMiniBits() == 0) {
+                i = this.fitnessCalls + 1;
             }
         }
     }
@@ -154,15 +150,15 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     public static void main(String[] args) {
         MonteCarloSearch program = new MonteCarloSearch();
         int TmpMeanCalls = 0, TmpMeanFitness = 0;
-        for (int i = 0; i < program.m_MultiRuns; i++) {
+        for (int i = 0; i < program.multiRuns; i++) {
             program.defaultInit();
             program.defaultOptimize();
-            TmpMeanCalls += program.m_FitnessCallsNeeded;
-            TmpMeanFitness += program.m_Best.defaultEvaulateAsMiniBits();
+            TmpMeanCalls += program.fitnessCallsNeeded;
+            TmpMeanFitness += program.bestIndividual.defaultEvaulateAsMiniBits();
         }
-        TmpMeanCalls /= program.m_MultiRuns;
-        TmpMeanFitness /= program.m_MultiRuns;
-        System.out.println("(" + program.m_MultiRuns + "/" + program.m_FitnessCalls + ") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
+        TmpMeanCalls /= program.multiRuns;
+        TmpMeanFitness /= program.multiRuns;
+        System.out.println("(" + program.multiRuns + "/" + program.fitnessCalls + ") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
 
     /**
@@ -172,14 +168,14 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -190,8 +186,8 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -206,8 +202,8 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
         String result = "";
         result += "Monte-Carlo Search:\n";
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -218,26 +214,14 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The Monte Carlo Search repeatively creates random individuals and stores the best individuals found.";
-    }
 
     /**
      * This method will return a naming String
@@ -258,12 +242,12 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {

@@ -1,14 +1,4 @@
 package eva2.gui;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 319 $
- *            $Date: 2007-12-05 11:29:32 +0100 (Wed, 05 Dec 2007) $
- *            $Author: mkron $
- */
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAHELP;

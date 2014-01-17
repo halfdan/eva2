@@ -4,7 +4,6 @@ import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 
 import java.io.Serializable;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
