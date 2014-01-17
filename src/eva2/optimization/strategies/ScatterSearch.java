@@ -22,6 +22,7 @@ import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
@@ -35,12 +36,12 @@ import java.util.ArrayList;
  * values in the reference set or as an absolute value (in both cases only the
  * first fitness criterion is regarded).
  *
- * @author mkron
  *         <p/>
  *         [1] M.Rodiguez-Fernandez, J.Egea, J.Banga: Novel metaheuristic for parameter
  *         estimation in nonlinear dynamic biological systems. BMC Bioinformatics 2006,
  *         7:483. BioMed Central 2006.
  */
+@Description("A scatter search variant after Rodiguez-Fernandez, J.Egea and J.Banga: Novel metaheuristic for parameter estimation in nonlinear dynamic biological systems, BMC Bioinf. 2006")
 public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 
     transient private InterfacePopulationChangedEventListener m_Listener = null;
@@ -64,11 +65,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     private int generationCycle = 50;
     private int fitCrit = -1;
     protected boolean checkRange = true;
-    //	private int lastLocalSearch = -1;
-//	// nr of generations between local searches
-//	protected int localSearchInterval = 10;
-    // below this threshold a local search will be performed
-//	protected double fitThreshLocalSearch = 1000.;
     protected boolean doLocalSearch = false;
     private boolean relativeFitCriterion = false;
     private double nelderMeadInitPerturbation = 0.01;
@@ -430,9 +426,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         Population hcPop = new Population(1);
         hcPop.add(cand);
         int stepsDone = PostProcess.processWithHC(hcPop, problem, hcSteps);
-//		if (TRACE) {
-//			System.out.println("local search result: from " + BeanInspector.toString(fitBefore) + " to " + BeanInspector.toString(hcPop.getEAIndividual(0).getFitness()));
-//		}
         return new Pair<AbstractEAIndividual, Integer>(hcPop.getEAIndividual(0), stepsDone);
     }
 
@@ -455,7 +448,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
      *
      * @param cand
      * @param popCompGeno
-     * @param popCompPheno
+     * @param popComPheno
      * @return
      */
     private boolean diversityCriterionFulfilled(AbstractEAIndividual cand, Population popCompGeno, Population popComPheno) {
@@ -780,10 +773,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     @Override
     public String getName() {
         return "ScatterSearch";
-    }
-
-    public static String globalInfo() {
-        return "A scatter search variant after Rodiguez-Fernandez, J.Egea and J.Banga: Novel metaheuristic for parameter estimation in nonlinear dynamic biological systems, BMC Bioinf. 2006";
     }
 
     private boolean useLSHC() {

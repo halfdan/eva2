@@ -8,39 +8,32 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * This is a Multi-Start Hill-Climber, here the population size gives the number
  * of multi-starts. Similar to the evolutionary programming strategy this
- * strategy sets the mutation rate temporarily to 1.0. Copyright: Copyright (c)
- * 2003 Company: University of Tuebingen, Computer Architecture
- *
- * @author Felix Streichert
- * @version: $Revision: 307 $ $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec
- * 2007) $ $Author: mkron $
+ * strategy sets the mutation rate temporarily to 1.0.
  */
+@Description("The Hill Climber uses the default EA mutation and initializing operators. If the population size is bigger than one a multi-start Hill Climber is performed.")
 public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     // These variables are necessary for the simple testcase
 
-    private InterfaceOptimizationProblem m_Problem = new B1Problem();
+    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private InterfaceMutation mutator = null;
-    //    private int             m_MultiRuns             = 100;
-//    private int             maxFitnessCalls          = 100;
-//    private int             m_FitnessCallsNeeded    = 0;
-//    GAIndividualBinaryData  m_Best, m_Test;
     // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
-    private Population m_Population;
+    transient private String identifier = "";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
+    private Population population;
 
     public HillClimbing() {
-        this.m_Population = new Population();
-        this.m_Population.setTargetSize(10);
+        this.population = new Population();
+        this.population.setTargetSize(10);
     }
 
     public HillClimbing(HillClimbing a) {
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
+        this.population = (Population) a.population.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
     }
 
     @Override
@@ -49,21 +42,21 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     }
 
     /**
-     * This method will init the HillClimber
+     * This method will initialize the HillClimber
      */
     @Override
     public void init() {
-        this.m_Problem.initializePopulation(this.m_Population);
-        this.m_Problem.evaluate(this.m_Population);
+        this.optimizationProblem.initializePopulation(this.population);
+        this.optimizationProblem.evaluate(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Population = (Population) pop.clone();
+        this.population = (Population) pop.clone();
         if (reset) {
-            this.m_Population.init();
-            this.m_Problem.evaluate(this.m_Population);
+            this.population.init();
+            this.optimizationProblem.evaluate(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
@@ -74,12 +67,12 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public void optimize() {
         AbstractEAIndividual indy;
-        Population original = (Population) this.m_Population.clone();
+        Population original = (Population) this.population.clone();
         double tmpD;
         InterfaceMutation tmpMut;
 
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            indy = ((AbstractEAIndividual) this.m_Population.get(i));
+        for (int i = 0; i < this.population.size(); i++) {
+            indy = ((AbstractEAIndividual) this.population.get(i));
             tmpD = indy.getMutationProbability();
             indy.setMutationProbability(1.0);
             if (mutator == null) {
@@ -89,17 +82,17 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
             }
             indy.setMutationProbability(tmpD);
         }
-        this.m_Problem.evaluate(this.m_Population);
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.m_Population.get(i)))) {
+        this.optimizationProblem.evaluate(this.population);
+        for (int i = 0; i < this.population.size(); i++) {
+            if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.population.get(i)))) {
 //                this.population.remove(i);
                 // throw away mutated one and replace by old one 
-                this.m_Population.set(i, original.get(i));
+                this.population.set(i, original.get(i));
             } else {
                 // else: mutation improved the individual, so leave the new one
             }
         }
-        this.m_Population.incrGeneration();
+        this.population.incrGeneration();
 //        for (int i = 0; i < this.population.size(); i++) {
 //            indy1 = (AbstractEAIndividual) this.population.get(i);
 //            indy2 = (AbstractEAIndividual)(indy1).clone();
@@ -139,12 +132,12 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
 //    /** This method will init the HillClimber
@@ -191,14 +184,14 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
      */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -209,8 +202,8 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -223,14 +216,14 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public String getStringRepresentation() {
         String result = "";
-        if (this.m_Population.size() > 1) {
-            result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
+        if (this.population.size() > 1) {
+            result += "Multi(" + this.population.size() + ")-Start Hill Climbing:\n";
         } else {
             result += "Hill Climbing:\n";
         }
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -241,26 +234,18 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
      * ********************************************************************************************************************
      * These are for GUI
      */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The Hill Climber uses the default EA mutation and initializing operators. If the population size is bigger than one a multi-start Hill Climber is performed.";
-    }
 
     /**
      * This method will return a naming String
@@ -274,12 +259,12 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     @Override

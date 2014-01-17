@@ -9,8 +9,6 @@ import eva2.optimization.operator.paramcontrol.ParamAdaption;
  * A thunk class preconfiguring CBN-EA to function as a sequential niching method. This
  * is to be comparable to parallel and semi-sequential niching (esp. using the same convergence
  * criterion).
- *
- * @author mkron
  */
 public class SqPSO extends ClusterBasedNichingEA {
     public SqPSO() {
@@ -32,11 +30,8 @@ public class SqPSO extends ClusterBasedNichingEA {
         setOptimizer(new ParticleSwarmOptimization(popSize, 2.05, 2.05, PSOTopologyEnum.grid, 2));
         ParamAdaption[] defAdpt = new ParamAdaption[]{};
         setParameterControl(defAdpt);
-//		if (threshAdaption) addParameterControl(getDefaultThreshAdaption());
         setPopulationSize(popSize);
     }
-
-//	public void hideHideable() 
 
     @Override
     public String getName() {
