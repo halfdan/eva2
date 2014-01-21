@@ -8,6 +8,7 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+import eva2.util.annotation.Description;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,16 +17,24 @@ import java.util.logging.Level;
 
 
 /**
- * OptimizationParamers for configuration of an
+ * OptimizationParameters for configuration of an
  * optimization run.
  * <p/>
  * This class is used to generate the default GUI
  * configuration panel for optimizations.
  */
+@Description("Select the optimization parameters.")
 public class OptimizationParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
+    /**
+     * Should be removed and replaced by a more solid
+     * serialization. (EvAScript?)
+     *
+     * @deprecated
+     * @return
+     */
     public static OptimizationParameters getInstance() {
-        return getInstance("OptimizationParameters.ser", true);
+        return getInstance("OptimizationParameters.set", true);
     }
 
     /**
@@ -79,14 +88,5 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
     @Override
     public Object clone() {
         return new OptimizationParameters(this);
-    }
-
-    /**
-     * This method returns a global info string.
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Select the optimization parameters.";
     }
 }

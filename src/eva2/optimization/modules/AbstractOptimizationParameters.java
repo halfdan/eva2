@@ -11,6 +11,7 @@ import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;
+import eva2.util.annotation.Parameter;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -23,13 +24,39 @@ import java.util.logging.Logger;
 
 public abstract class AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
     protected static final Logger LOGGER = Logger.getLogger(AbstractOptimizationParameters.class.getName());
+
+    @Parameter(name = "Random Seed", description = "Random number seed, set to zero to use current system time.")
     protected long randomSeed = (long) 0.0;
 
-    // Opt. Algorithms and Parameters
+    /**
+     * The optimizer to be executed.
+     */
+    @Parameter(name = "Optimizer", description = "Choose an optimization strategy.")
     protected InterfaceOptimizer optimizer;
+
+    /**
+     * The optimization problem to be optimized.
+     * When changed it is automatically applied to the
+     * selected optimizer.
+     */
+    @Parameter(name = "Problem", description = "Choose the problem that is to optimize and the EA individual parameters.")
     protected InterfaceOptimizationProblem problem;
+
+    /**
+     * The termination criteria that terminated an
+     * optimization run.
+     */
+    @Parameter(name = "Terminator", description = "Choose a termination criterion.")
     protected InterfaceTerminator terminator;
+
+    /**
+     * Post processing parameters.
+     * This can be enabled in the UI and will perform additional
+     * optimization e.g. with Hill Climbing.
+     */
+    @Parameter(name = "Post Processing", description = "Parameters for the post processing step.")
     protected InterfacePostProcessParams postProcessing = new PostProcessParams(false);
+
     transient protected InterfacePopulationChangedEventListener populationChangedEventListener;
     transient private List<InterfaceNotifyOnInformers> toInformAboutInformers = null;
 
@@ -181,10 +208,6 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
         return this.optimizer;
     }
 
-    public String optimizerTipText() {
-        return "Choose an optimization strategy.";
-    }
-
     @Override
     public String getName() {
         return "Optimization parameters";
@@ -207,11 +230,6 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
         return this.problem;
     }
 
-    @Override
-    public String problemTipText() {
-        return "Choose the problem that is to optimize and the EA individual parameters.";
-    }
-
     /**
      * This methods allow you to set and get the Seed for the Random Number Generator.
      *
@@ -232,11 +250,6 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
         return randomSeed;
     }
 
-    @Override
-    public String seedTipText() {
-        return "Random number seed, set to zero to use current system time.";
-    }
-
     /**
      * This method allows you to choose a termination criteria for the
      * evolutionary algorithm.
@@ -254,11 +267,6 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
     }
 
     @Override
-    public String terminatorTipText() {
-        return "Choose a termination criterion.";
-    }
-
-    @Override
     public InterfacePostProcessParams getPostProcessParams() {
         return postProcessing;
     }
@@ -266,11 +274,6 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
     @Override
     public void setPostProcessParams(InterfacePostProcessParams ppp) {
         postProcessing = ppp;
-    }
-
-    @Override
-    public String postProcessParamsTipText() {
-        return "Parameters for the post processing step";
     }
 
     @Override

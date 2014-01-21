@@ -86,7 +86,8 @@ public class TestESCrossover implements java.io.Serializable {
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;
-        this.m_Plot = new Plot("ES Crossover Testert", "x", "y", tmpD, tmpD);
+        // ToDo: Fix plot (it's internal and not showing)
+        this.m_Plot = new Plot("ES Crossover Tester", "x", "y", tmpD, tmpD);
         // validate and show
         this.m_Frame.validate();
         this.m_Frame.setVisible(true);
