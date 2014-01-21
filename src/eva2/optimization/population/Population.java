@@ -15,6 +15,7 @@ import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.tools.math.StatisticUtils;
+import eva2.util.annotation.Description;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -29,6 +30,7 @@ import java.util.logging.Logger;
  * For initialization, the default individual initialization method may be used, as well as a
  * random latin hypercube implementation for InterfaceDataTypeDouble individuals.
  */
+@Description("A population stores the individuals of a generation.")
 public class Population extends ArrayList implements PopulationInterface, Cloneable, java.io.Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(Population.class.getName());
@@ -1629,15 +1631,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             sb.append("\n");
         }
         return sb.toString();
-    }
-
-    /**
-     * This method returns a global info string.
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "A population stores the individuals of a generation.";
     }
 
     /**

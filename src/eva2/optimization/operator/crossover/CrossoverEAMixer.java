@@ -5,6 +5,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
@@ -12,13 +13,14 @@ import java.util.ArrayList;
 /**
  *
  */
+@Description("This meta-mutation operator allows you to combine multiple alternative mutation operators.")
 public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluatingCrossoverOperator, java.io.Serializable {
     public static final String CROSSOVER_EA_MIXER_OPERATOR_KEY = "CrossoverEAMixerOperatorKey";
 
     protected PropertyCrossoverMixer m_Crossers;
-    protected boolean m_UseSelfAdaption = false;
-    protected double m_Tau1 = 0.15;
-    protected double m_LowerLimitChance = 0.05;
+    protected boolean useSelfAdaption = false;
+    protected double tau1 = 0.15;
+    protected double lowerLimitChance = 0.05;
     protected int lastOperatorIndex = -1;
 
     public CrossoverEAMixer() {
@@ -61,9 +63,9 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
 
     public CrossoverEAMixer(CrossoverEAMixer mutator) {
         this.m_Crossers = (PropertyCrossoverMixer) mutator.m_Crossers.clone();
-        this.m_UseSelfAdaption = mutator.m_UseSelfAdaption;
-        this.m_Tau1 = mutator.m_Tau1;
-        this.m_LowerLimitChance = mutator.m_LowerLimitChance;
+        this.useSelfAdaption = mutator.useSelfAdaption;
+        this.tau1 = mutator.tau1;
+        this.lowerLimitChance = mutator.lowerLimitChance;
     }
 
     /**
@@ -118,11 +120,11 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
         this.m_Crossers.normalizeWeights();
         double[] probs = this.m_Crossers.getWeights();
-        if (this.m_UseSelfAdaption) {
+        if (this.useSelfAdaption) {
             for (int i = 0; i < probs.length; i++) {
-                probs[i] *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
-                if (probs[i] <= this.m_LowerLimitChance) {
-                    probs[i] = this.m_LowerLimitChance;
+                probs[i] *= Math.exp(this.tau1 * RNG.gaussianDouble(1));
+                if (probs[i] <= this.lowerLimitChance) {
+                    probs[i] = this.lowerLimitChance;
                 }
                 if (probs[i] >= 1) {
                     probs[i] = 1;
@@ -190,15 +192,6 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
     }
 
     /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This meta-mutation operator allows you to combine multiple alternative mutation operators.";
-    }
-
-    /**
      * Choose the set of crossers.
      *
      * @param d The crossover operators.
@@ -221,11 +214,11 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      * @param d The mutation operator.
      */
     public void setUseSelfAdaption(boolean d) {
-        this.m_UseSelfAdaption = d;
+        this.useSelfAdaption = d;
     }
 
     public boolean getUseSelfAdaption() {
-        return this.m_UseSelfAdaption;
+        return this.useSelfAdaption;
     }
 
     public String useSelfAdaptionTipText() {
@@ -241,11 +234,11 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
         if (d < 0) {
             d = 0;
         }
-        this.m_LowerLimitChance = d;
+        this.lowerLimitChance = d;
     }
 
     public double getLowerLimitChance() {
-        return this.m_LowerLimitChance;
+        return this.lowerLimitChance;
     }
 
     public String lowerLimitChanceTipText() {
@@ -261,11 +254,11 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
         if (d < 0) {
             d = 0;
         }
-        this.m_Tau1 = d;
+        this.tau1 = d;
     }
 
     public double getTau1() {
-        return this.m_Tau1;
+        return this.tau1;
     }
 
     public String tau1TipText() {

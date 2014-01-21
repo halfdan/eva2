@@ -11,16 +11,13 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.EVAERROR;
 import eva2.tools.ToolBox;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 16:44:25
- * To change this template use Options | File Templates.
  */
+@Description("The task is to infer the equation of a system that can only be observed at a number of checkpoints.")
 public class PSymbolicRegression extends AbstractOptimizationProblem implements InterfaceProgramProblem, InterfaceAdditionalPopulationInformer, Serializable {
 
     private double[] m_X = new double[1];
@@ -381,15 +378,6 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     @Override
     public String getName() {
         return "Symbolic Regression problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The task is to infer the equation of a system that can only be observed at a number of checkpoints.";
     }
 
     /**

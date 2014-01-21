@@ -2,6 +2,7 @@ package eva2.optimization.problems;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.util.annotation.Description;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,11 +11,8 @@ import java.io.Writer;
 /**
  * A dynamically "jumping" problem. The severity gives the length of one jump in problem space, occurring
  * with the given frequency.
- *
- * @author Geraldine Hopf
- * @date 25.06.2007
  */
-
+@Description("A real valued problem jumping dynamically.")
 public class DynJumpProblem extends AbstractDynTransProblem {
 
     private static final long serialVersionUID = 2693154860448970283L;
@@ -179,10 +177,6 @@ public class DynJumpProblem extends AbstractDynTransProblem {
     @Override
     public String getName() {
         return "DynJumpProblem";
-    }
-
-    public static String globalInfo() {
-        return "A real valued problem jumping dynamically.";
     }
 
     public String severityTipText() {

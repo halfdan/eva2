@@ -7,17 +7,14 @@ import eva2.optimization.operator.mutation.MutateEAMixer;
 import eva2.optimization.operator.mutation.MutateGAGISwapBits;
 import eva2.optimization.operator.mutation.MutateGAUniform;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  * The minimize bits problem for binary optimization.
- * <p/>
- * User: streiche
- * Date: 21.03.2003
- * Time: 13:05:33
- * To change this template use Options | File Templates.
  */
+@Description("The task in this problem is to maximize the number of false bits in a BitSet.")
 public class B1Problem extends AbstractProblemBinary implements java.io.Serializable {
     public int m_ProblemDimension = 30;
 
@@ -111,15 +108,6 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
     @Override
     public String getName() {
         return "Maximize number of bits";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The task in this problem is to maximize the number of false bits in a BitSet.";
     }
 
     /**

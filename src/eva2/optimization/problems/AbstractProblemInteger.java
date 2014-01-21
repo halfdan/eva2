@@ -93,6 +93,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
      * @return description
      */
     public static String globalInfo() {
+        // ToDo: WTF?
         return "The programmer did not give further details.";
     }
 
