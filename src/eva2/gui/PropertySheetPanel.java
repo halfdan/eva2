@@ -2,6 +2,7 @@ package eva2.gui;
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAHELP;
+import eva2.util.annotation.Description;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -187,29 +188,30 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             return;
         }
 
-        int rowHeight = 12;
-
         GridBagConstraints gbConstraints = new GridBagConstraints();
         gbConstraints.fill = GridBagConstraints.BOTH;
+
+        Description description = targ.getClass().getAnnotation(Description.class);
+        if (description != null) {
+            int rowHeight = 12;
+            JPanel infoPanel = makeInfoPanel(description.value(), targ, rowHeight);
+            if (infoPanel != null) {
+                gbConstraints.gridx = 0;
+                gbConstraints.gridy = 0;
+                gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+                gbConstraints.anchor = GridBagConstraints.PAGE_START;
+                add(infoPanel, gbConstraints);
+            }
+        }
 
         // Look for a globalInfo method that returns a string
         // describing the target
         int methsFound = 0; // dont loop too long, so count until all found
+        // @ToDo: Replace hideHideable method with annotation
         for (MethodDescriptor methodDescriptor : methodDescriptors) {
             String name = methodDescriptor.getDisplayName();
             Method meth = methodDescriptor.getMethod();
-            if (name.equals("globalInfo")) {
-                JPanel infoPanel = makeInfoPanel(meth, targ, rowHeight);
-                if (infoPanel != null) {
-                    gbConstraints.gridx = 0;
-                    gbConstraints.gridy = 0;
-                    gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-                    gbConstraints.anchor = GridBagConstraints.PAGE_START;
-                    add(infoPanel, gbConstraints);
-                }
-                methsFound++;
-            } // end if (name.equals("globalInfo")) {
-            else if (name.equals("hideHideable")) {
+            if (name.equals("hideHideable")) {
                 Object args[] = {};
                 try {
                     meth.invoke(targetObject, args);
@@ -220,7 +222,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 methsFound++;
                 reorderProperties(meth);
             }
-            if (methsFound == 3) {
+            if (methsFound == 2) {
                 break; // small speed-up
             }
         } // end for (int i = 0; i < m_Methods.length; i++) {
@@ -465,7 +467,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     /**
      * Be sure to give a clone
      *
-     * @param oldProps
      * @param meth
      * @return
      */
@@ -547,49 +548,41 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         return -1;
     }
 
-    private JPanel makeInfoPanel(Method meth, Object targ, int rowHeight) {
-        if (meth.getReturnType().equals(String.class)) {
-            try {
-                Object args[] = {};
-                String globalInfo = (String) (meth.invoke(targetObject, args));
+    private JPanel makeInfoPanel(String infoText, Object targ, int rowHeight) {
+        Object args[] = {};
 
-                className = targ.getClass().getName();
-                helpButton = new JButton("Help");
-                helpButton.setToolTipText("More information about " + className);
-                helpButton.addActionListener(new ActionListener() {
+        className = targ.getClass().getName();
+        helpButton = new JButton("Help");
+        helpButton.setToolTipText("More information about " + className);
+        helpButton.addActionListener(new ActionListener() {
 
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        openHelpFrame();
-                    }
-                });
-
-                JTextArea infoTextArea = new JTextArea();
-                infoTextArea.setText(globalInfo);
-                infoTextArea.setFont(new Font("SansSerif", Font.PLAIN, rowHeight));
-                infoTextArea.setEditable(false);
-                infoTextArea.setLineWrap(true);
-                infoTextArea.setWrapStyleWord(true);
-                infoTextArea.setBackground(getBackground());
-                //infoTextArea.setSize(infoTextArea.getPreferredSize());
-
-                JPanel infoPanel = new JPanel();
-                infoPanel.setBorder(BorderFactory.createTitledBorder("Info"));
-                infoPanel.setLayout(new BorderLayout());
-                infoPanel.add(infoTextArea, BorderLayout.CENTER);
-
-                if (HtmlDemo.resourceExists(getHelpFileName())) {
-                    // this means that the expected URL really exists
-                    infoPanel.add(helpButton, BorderLayout.LINE_END);
-                } else {
-                    LOGGER.log(Level.FINE, "Not adding help button because of missing {0}", getHelpFileName());
-                }
-                return infoPanel;
-            } catch (Exception ex) {
-                LOGGER.severe(ex.getMessage());
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                openHelpFrame();
             }
+        });
+
+        JTextArea infoTextArea = new JTextArea();
+        infoTextArea.setText(infoText);
+        infoTextArea.setFont(new Font("SansSerif", Font.PLAIN, rowHeight));
+        infoTextArea.setEditable(false);
+        infoTextArea.setLineWrap(true);
+        infoTextArea.setWrapStyleWord(true);
+        infoTextArea.setBackground(getBackground());
+        //infoTextArea.setSize(infoTextArea.getPreferredSize());
+
+        JPanel infoPanel = new JPanel();
+        infoPanel.setBorder(BorderFactory.createTitledBorder("Info"));
+        infoPanel.setLayout(new BorderLayout());
+        infoPanel.add(infoTextArea, BorderLayout.CENTER);
+
+        if (HtmlDemo.resourceExists(getHelpFileName())) {
+            // this means that the expected URL really exists
+            infoPanel.add(helpButton, BorderLayout.LINE_END);
+        } else {
+            LOGGER.log(Level.FINE, "Not adding help button because of missing {0}", getHelpFileName());
         }
-        return null;
+        return infoPanel;
     }
 
     private String translateGreek(String name) {
