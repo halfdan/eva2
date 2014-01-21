@@ -6,7 +6,7 @@ import eva2.optimization.population.Population;
 /**
  * Simple method to selecet all.
  * In case of multiple fitness values the selection
- * critria is selected randomly for each selection event. pff
+ * criteria is selected randomly for each selection event. pff
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 31.03.2004

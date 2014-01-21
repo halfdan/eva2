@@ -12,6 +12,7 @@ import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 /**
  * Evolution strategies by Rechenberg and Schwefel, but please remember that
@@ -26,8 +27,13 @@ import eva2.util.annotation.Description;
 @Description(value = "This is an Evolution Strategy. Note that the population size depends on mu (number of parents) and lambda (number of offspring)")
 public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializable {
 
+    @Parameter(description = "Mu", name = "mu")
     protected int mu = 5;
+
+    @Parameter(description = "Lambda", name = "lambda")
     protected int lambda = 20;
+
+    @Parameter(description = "Determines whether the +-Strategy should be used.", name = "usePlus")
     protected boolean usePlusStrategy = false;
     protected Population population = new Population();
     protected InterfaceOptimizationProblem optimizationProblem = new B1Problem();

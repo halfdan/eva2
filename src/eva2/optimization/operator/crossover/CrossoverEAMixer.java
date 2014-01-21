@@ -10,11 +10,7 @@ import java.util.ArrayList;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: Dante Alighieri
- * Date: 21.05.2005
- * Time: 11:36:38
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluatingCrossoverOperator, java.io.Serializable {
     public static final String CROSSOVER_EA_MIXER_OPERATOR_KEY = "CrossoverEAMixerOperatorKey";
@@ -60,7 +56,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
         this.m_Crossers.setSelectedCrossers(tmpList);
         this.m_Crossers.normalizeWeights();
         this.m_Crossers.setDescriptiveString("Combining alternative mutation operators, please norm the weights!");
-        this.m_Crossers.setWeightsLabel("Weigths");
+        this.m_Crossers.setWeightsLabel("Weights");
     }
 
     public CrossoverEAMixer(CrossoverEAMixer mutator) {

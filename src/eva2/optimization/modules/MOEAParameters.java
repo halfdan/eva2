@@ -102,7 +102,6 @@ public class MOEAParameters extends AbstractOptimizationParameters implements In
         ((MultiObjectiveEA) this.optimizer).setOptimizer(b);
     }
 
-    @Override
     public String optimizerTipText() {
         return "Choose a population based optimizing technique to use.";
     }

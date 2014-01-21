@@ -324,6 +324,10 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
                 break;
             case "EvolutionStrategies":
+                //double cm, cr;
+                //int mu, lambda;
+                boolean plusStrategy;
+                //this.optimizer = OptimizerFactory.createEvolutionStrategy()
                 break;
             default:
                 throw new Exception("Unsupported Optimizer");
@@ -349,7 +353,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             OptimizerFactory.setEvaluationTerminator(50000);
             OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.00001}), CombinedTerminator.OR);
 
-            LOGGER.log(Level.INFO, "Running {0}", "Differential Evolution");
+            LOGGER.log(Level.INFO, "Running {0}", optimizer.getName());
 
             OptimizationParameters params = OptimizerFactory.makeParams(optimizer, this.populationSize, this.problem);
             double[] result = OptimizerFactory.optimizeToDouble(params);

@@ -17,8 +17,8 @@ import eva2.tools.math.RNG;
  */
 public class SelectTournament implements InterfaceSelection, java.io.Serializable {
 
-    private int m_TournamentSize = 4;
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private int tournamentSize = 4;
+    private boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectTournament() {
     }
@@ -29,8 +29,8 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
     }
 
     public SelectTournament(SelectTournament a) {
-        this.m_TournamentSize = a.m_TournamentSize;
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.tournamentSize = a.tournamentSize;
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -82,9 +82,9 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
         try {
             critSize = ((AbstractEAIndividual) population.get(0)).getFitness().length;
             currentCriteria = RNG.randomInt(0, critSize - 1);
-            if (this.m_ObeyDebsConstViolationPrinciple) {
+            if (this.obeyDebsConstViolationPrinciple) {
                 Population tournamentGroup = new Population();
-                for (int i = 0; i < this.m_TournamentSize; i++) {
+                for (int i = 0; i < this.tournamentSize; i++) {
                     tournamentGroup.add(population.get(RNG.randomInt(0, population.size() - 1)));
                 }
                 SelectBestIndividuals best = new SelectBestIndividuals();
@@ -92,7 +92,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
                 result = (AbstractEAIndividual) best.selectFrom(tournamentGroup, 1).get(0);
             } else {
                 result = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size() - 1));
-                for (int i = 1; i < this.m_TournamentSize; i++) {
+                for (int i = 1; i < this.tournamentSize; i++) {
                     tmpIndy = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size() - 1));
                     if (tmpIndy.getFitness(currentCriteria) < result.getFitness(currentCriteria)) {
                         result = tmpIndy;
@@ -152,11 +152,11 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
     }
 
     public int getTournamentSize() {
-        return m_TournamentSize;
+        return tournamentSize;
     }
 
     public void setTournamentSize(int g) {
-        m_TournamentSize = g;
+        tournamentSize = g;
     }
 
     /**
@@ -167,11 +167,11 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

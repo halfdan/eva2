@@ -211,6 +211,6 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {
-        return "Toggle the use of Deb's coonstraint violation principle.";
+        return "Toggle the use of Deb's constraint violation principle.";
     }
 }

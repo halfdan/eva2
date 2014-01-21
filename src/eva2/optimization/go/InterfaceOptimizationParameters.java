@@ -7,35 +7,29 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.05.2003
- * Time: 13:14:06
- * To change this template use Options | File Templates.
+ *
  */
 public interface InterfaceOptimizationParameters {
     /**
      * This method allows you to serialize the current parameters into a *.ser file
      */
-    public void saveInstance();
+    void saveInstance();
 
     /**
      * This method returns the name
      *
      * @return string
      */
-    public String getName();
+    String getName();
 
     /**
      * This methods allow you to set and get the Seed for the Random Number Generator.
      *
      * @param x Long seed.
      */
-    public void setSeed(long x);
+    void setSeed(long x);
 
-    public long getSeed();
-
-    public String seedTipText();
+    long getSeed();
 
     /**
      * This method allows you to choose a termination criteria for the
@@ -43,48 +37,33 @@ public interface InterfaceOptimizationParameters {
      *
      * @param term The new terminator
      */
-    public void setTerminator(InterfaceTerminator term);
+    void setTerminator(InterfaceTerminator term);
 
-    public InterfaceTerminator getTerminator();
-
-    public String terminatorTipText();
+    InterfaceTerminator getTerminator();
 
     /**
      * This method allows you to set the current optimizing algorithm
      *
      * @param optimizer The new optimizing algorithm
      */
-    public void setOptimizer(InterfaceOptimizer optimizer);
+    void setOptimizer(InterfaceOptimizer optimizer);
 
-    public InterfaceOptimizer getOptimizer();
-//    public String optimizerTipText();
+    InterfaceOptimizer getOptimizer();
 
     /**
      * This method will set the problem that is to be optimized
      *
      * @param problem
      */
-    public void setProblem(InterfaceOptimizationProblem problem);
+    void setProblem(InterfaceOptimizationProblem problem);
 
-    public InterfaceOptimizationProblem getProblem();
+    InterfaceOptimizationProblem getProblem();
 
-    public String problemTipText();
+    InterfacePostProcessParams getPostProcessParams();
 
-    /**
-     * This method will set the output filename
-     *
-     * @param name TODO invalidate these!
-     */
-//    public void setOutputFileName (String name);
-//    public String getOutputFileName ();
-//    public String outputFileNameTipText();
-    public InterfacePostProcessParams getPostProcessParams();
+    void setPostProcessParams(InterfacePostProcessParams ppp);
 
-    public void setPostProcessParams(InterfacePostProcessParams ppp);
-
-    public String postProcessParamsTipText();
-
-    public void setDoPostProcessing(boolean doPP);
+    void setDoPostProcessing(boolean doPP);
 
     /**
      * Give an instance which should be informed about elements which are additional informers.
@@ -92,7 +71,7 @@ public interface InterfaceOptimizationParameters {
      * @param o
      * @see InterfaceAdditionalPopulationInformer
      */
-    public void addInformableInstance(InterfaceNotifyOnInformers o);
+    void addInformableInstance(InterfaceNotifyOnInformers o);
 
-    public boolean removeInformableInstance(InterfaceNotifyOnInformers o);
+    boolean removeInformableInstance(InterfaceNotifyOnInformers o);
 }
