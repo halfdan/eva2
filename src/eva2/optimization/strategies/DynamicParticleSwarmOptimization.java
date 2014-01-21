@@ -10,14 +10,12 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This extends our particle swarm implementation to dynamic optimization problems.
- * <p/>
- * User: marcekro
- * Date: 2007
- * Time: 11:23:21
  */
+@Description("Particle Swarm Optimization tuned for tracking a dynamic target")
 public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization {
 
     private boolean envHasChanged = false;
@@ -505,19 +503,6 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         strB.append("\n");
         strB.append(this.m_Population.getStringRepresentation());
         return strB.toString();
-    }
-
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Particle Swarm Optimization tuned for tracking a dynamic target";
     }
 
     /**

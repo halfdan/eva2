@@ -16,9 +16,11 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.problems.InterfaceProblemDouble;
 import eva2.tools.EVAERROR;
 import eva2.tools.ToolBox;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
+@Description("A CBN-EA variant employing PSO and dynamic variation of the clustering parameter by default.")
 public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
     private boolean forceUpperClustDist = true;
 
@@ -156,10 +158,6 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
         } else {
             return "CBN-PSO";
         }
-    }
-
-    public static String globalInfo() {
-        return "A CBN-EA variant employing PSO and dynamic variation of the clustering parameter by default.";
     }
 
     public void setForceUpperClustDist(boolean forceUpperClustDist) {

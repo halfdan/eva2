@@ -2,6 +2,7 @@ package eva2.optimization.strategies;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This extends the particle swarm optimization implementation
@@ -9,6 +10,7 @@ import eva2.tools.math.RNG;
  * Franz van den Bergh in "An Analysis of Particle Swarm Optimizers".
  * In this modification the velocity of the global best particle is updated differently.
  */
+@Description("Guaranteed Convergence Particle Swarm Optimiser (GCPSO) as proposed by F. van den Bergh.")
 public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
     // choosable parameters:
     protected boolean gcpso;
@@ -69,16 +71,6 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
         this.SetFc(a.getFc());
         this.SetRhoIncreaseFactor(a.getRhoIncreaseFactor());
         this.SetRhoDecreaseFactor(a.getRhoDecreaseFactor());
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Guaranteed Convergence Particle Swarm Optimiser (GCPSO) " +
-                "as proposed by F. van den Bergh.";
     }
 
 /**********************************************************************************************************************

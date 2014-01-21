@@ -10,6 +10,7 @@ import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.problems.FM0Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * The winged MOEA was a nice idea, which didn't really work out. Here a
@@ -17,9 +18,8 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * just one objective. The idea was that these local optimizers would span the
  * search space and would allow the MOEA to converge faster. But in the end the
  * performance of this algorithm strongly depends on the optimization problem.
- * Created by IntelliJ IDEA. User: streiche Date: 16.02.2005 Time: 16:34:22 To
- * change this template use File | Settings | File Templates.
  */
+@Description("This is Evolutionary Multi-Criteria Optimization Algorithm hybridized with Local Searchers to span the Pareto-Front.")
 public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Serializable {
 
     private InterfaceOptimizer m_MOOptimizer = new MultiObjectiveEA();
@@ -28,7 +28,6 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     private Population m_Population = new Population();
     private int m_MigrationRate = 5;
     private int m_OutputDimension = 2;
-    private int m_NumberOfLocalOptimizers = 2;
     private InterfaceOptimizationProblem m_Problem = new FM0Problem();
     private String m_Identifier = "";
     transient private InterfacePopulationChangedEventListener m_Listener;
@@ -283,19 +282,6 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     @Override
     public String getIdentifier() {
         return this.m_Identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is Evolutionary Multi-Criteria Optimization Algorithm hybridized with Local Searchers to span the Pareto-Front.";
     }
 
     /**

@@ -13,6 +13,7 @@ import eva2.optimization.problems.BKnapsackProblem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.SpecialFunction;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 import java.util.HashSet;
@@ -21,10 +22,11 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Description("Basic implementation of the Linkage Tree Genetic Algorithm based on the works by Dirk Thierens.")
 public class LTGA implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 
     private static final Logger LOGGER = Logger.getLogger(LTGA.class.getName());
-    transient private InterfacePopulationChangedEventListener m_Listener = null;
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener = null;
     private String m_Identifier = "LTGA";
     private int probDim = 8;
     private int fitCrit = -1;
@@ -39,7 +41,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     }
 
     public LTGA(LTGA l) {
-        this.m_Listener = l.m_Listener;
+        this.populationChangedEventListener = l.populationChangedEventListener;
         this.m_Identifier = l.m_Identifier;
         this.probDim = l.probDim;
         this.popSize = l.popSize;
@@ -58,22 +60,18 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
         return "Linkage Tree Genetic Algorithm";
     }
 
-    public static String globalInfo() {
-        return "Basic implementation of the Linkage Tree Genetic Algorithm based on the works by Dirk Thierens.";
-    }
-
     @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
 
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -308,8 +306,8 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 

@@ -15,6 +15,7 @@ import eva2.optimization.strategies.tribes.TribesExplorer;
 import eva2.optimization.strategies.tribes.TribesParam;
 import eva2.optimization.strategies.tribes.TribesPosition;
 import eva2.optimization.strategies.tribes.TribesSwarm;
+import eva2.util.annotation.Description;
 
 import java.util.Iterator;
 import java.util.List;
@@ -130,6 +131,7 @@ import java.util.List;
  2005-11-21. Check if it is possible to easily find just the _value_ of the
  global minimum (not the position). "Chinese shadow" method?
  */
+@Description("TRIBES: a parameter free PSO implementation by Maurice Clerc.")
 public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
     public static final boolean TRACE = false;
@@ -667,12 +669,10 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public String getStringRepresentation() {
-        return globalInfo();
+        // ToDo: Implement properly (was globalInfo)
+        return "Not implemented";
     }
 
-    public static String globalInfo() {
-        return "TRIBES: a parameter free PSO implementation by Maurice Clerc.";
-    }
 
     public void incEvalCnt() {
         population.incrFunctionCalls();

@@ -13,6 +13,7 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
+import eva2.util.annotation.Description;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -32,9 +33,8 @@ import java.util.LinkedList;
  * Refer to Auger&Hansen 05 for more details.
  * <p/>
  * A.Auger & N.Hansen. A Restart CMA Evolution Strategy With Increasing Population Size. CEC 2005.
- *
- * @author mkron
  */
+@Description("An ES with increasing population size.")
 public class EvolutionStrategyIPOP extends EvolutionStrategies implements InterfacePopulationChangedEventListener, InterfaceAdditionalPopulationInformer {
     private static final long serialVersionUID = 4102736881931867818L;
     int dim = -1;
@@ -270,11 +270,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     public String getName() {
         return getIncPopSizeFact() + "-IPOP-ES";
     }
-
-    public static String globalInfo() {
-        return "An ES with increasing population size.";
-    }
-//	
+//
 //	protected void checkPopulationConstraints() {
 //		if (getLambda()!=initialLambda) setLambda(initialLambda);
 //		if (getMu()>getLambda()) System.err.println("Invalid mu/lambda ratio!");

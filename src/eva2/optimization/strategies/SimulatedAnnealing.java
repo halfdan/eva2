@@ -9,15 +9,15 @@ import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * Simulated Annealing by Nelder and Mead, a simple yet efficient local search
  * method. But to become less prone to premature convergence the cooling rate
  * has to be tuned to the optimization problem at hand. Again the population
- * size gives the number of multi-starts. Created by IntelliJ IDEA. User:
- * streiche Date: 13.05.2004 Time: 10:30:26 To change this template use File |
- * Settings | File Templates.
+ * size gives the number of multi-starts.
  */
+@Description("The simulated annealing uses an additional cooling rate instead of a simple dominate criteria to accept worse solutions by chance.")
 public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializable {
     // These variables are necessary for the simple testcase
 
@@ -248,18 +248,6 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
         return this.m_Identifier;
     }
 
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The simulated annealing uses an additional cooling rate instead of a simple dominate criteria to accpect worse solutions by chance.";
-    }
 
     /**
      * This method will return a naming String

@@ -1,7 +1,10 @@
 package eva2.optimization.strategies;
 
 import eva2.optimization.operator.selection.SelectBestSingle;
+import eva2.util.annotation.Description;
 
+@Description("A variant of the DPI Niching ES to be usable with CMA-Mutation (Shir&Bäck, CEC'05). " +
+        "Remember to turn off crossover for lambda=1, and to set CMA as mutation in the individual template.")
 public class EsDpiNichingCma extends EsDpiNiching {
 
     /**
@@ -38,10 +41,5 @@ public class EsDpiNichingCma extends EsDpiNiching {
     @Override
     public String getName() {
         return "CMA-" + super.getName();
-    }
-
-    public static String globalInfo() {
-        return "A variant of the DPI Niching ES to be usable with CMA-Mutation (Shir&Bäck, CEC'05). " +
-                "Remember to turn off crossover for lambda=1, and to set CMA as mutation in the individual template.";
     }
 }

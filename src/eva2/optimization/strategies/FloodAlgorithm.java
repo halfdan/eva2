@@ -8,6 +8,7 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * The flood algorithm, and alternative to the threshold algorithms. No really
@@ -16,10 +17,9 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * current optimization problem. But again this is a greedy local search
  * strategy. Similar to the evolutionary programming strategy this strategy sets
  * the mutation rate temporarily to 1.0. The algorithm regards only
- * one-dimensional fitness. Created by IntelliJ IDEA. User: streiche Date:
- * 01.10.2004 Time: 13:46:02 To change this template use File | Settings | File
- * Templates.
+ * one-dimensional fitness.
  */
+@Description("The flood algorithm uses an declining flood peak to accpect new solutions (*shudder* check inital flood peak and drain very carefully!).")
 public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable {
     // These variables are necessary for the simple testcase
 
@@ -248,19 +248,6 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     @Override
     public String getIdentifier() {
         return this.m_Identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The flood algorithm uses an declining flood peak to accpect new solutions (*shudder* check inital flood peak and drain very carefully!).";
     }
 
     /**
