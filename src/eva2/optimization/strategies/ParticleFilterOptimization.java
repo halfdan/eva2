@@ -17,20 +17,15 @@ import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * This is a Particle Filter implemented by Frank Senke, only some documentation
  * here and not completely checked whether this works on arbitrary problem
  * instances. MK did some adaptations, this should work on real valued problems
  * now.
- * <p/>
- * This is a implementation of Genetic Algorithms. Copyright: Copyright (c) 2003
- * Company: University of Tuebingen, Computer Architecture
- *
- * @author Felix Streichert
- * @version: $Revision: 307 $ $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec
- * 2007) $ $Author: mkron $
  */
+@Description("This is a Particle Filter Algorithm.")
 public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.Serializable {
 
     /**
@@ -41,7 +36,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     private Population m_Population = new Population();
     private InterfaceOptimizationProblem m_Problem = new F1Problem();
     private InterfaceSelection m_ParentSelection = new SelectParticleWheel(0.5);
-    //private boolean							m_UseElitism		= true;
     private String m_Identifier = "";
     private boolean withShow = false;
     private double mutationSigma = 0.01;
@@ -339,19 +333,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     @Override
     public String getIdentifier() {
         return this.m_Identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a Particle Filter Algorithm.";
     }
 
     /**

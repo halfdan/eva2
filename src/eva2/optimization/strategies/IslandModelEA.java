@@ -12,6 +12,7 @@ import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.F8Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.optimization.problems.TF1Problem;
+import eva2.util.annotation.Description;
 
 /**
  * The one and only island model for parallelization. Since parallelization
@@ -29,10 +30,8 @@ import eva2.optimization.problems.TF1Problem;
  * after which a communication step is performed according to the migration
  * model. Only after migration is a main cycle complete, the statistics updated
  * etc.
- * <p/>
- * Created by IntelliJ IDEA. User: streiche Date: 12.09.2004 Time: 14:48:20 To
- * change this template use File | Settings | File Templates.
  */
+@Description("This is an island model EA distributing the individuals across several (remote) CPUs for optimization.")
 public class IslandModelEA implements InterfacePopulationChangedEventListener, InterfaceOptimizer, java.io.Serializable {
 
     private Population m_Population = new Population();
@@ -475,18 +474,6 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         //System.out.println(sourceID + " is at generation "+ opt.getPopulation().getGeneration() +" i'm at " +this.m_Generation);
     }
 
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an island model EA distributing the individuals across several (remote) CPUs for optimization.";
-    }
 
     /**
      * This method will return a naming String

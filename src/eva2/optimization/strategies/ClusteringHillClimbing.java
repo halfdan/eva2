@@ -14,6 +14,7 @@ import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -32,8 +33,9 @@ import java.io.Serializable;
  * number of optima that may be found and returned by getAllSolutions is higher
  * than the population size.
  *
- * @author mkron
  */
+@Description("Similar to multi-start HC, but clusters the population during optimization to remove redundant individuals for efficiency."
+        + "If the local search step does not achieve a minimum improvement, the population may be reinitialized.")
 public class ClusteringHillClimbing implements InterfacePopulationChangedEventListener,
         InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 
@@ -329,11 +331,6 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
     @Override
     public String getName() {
         return "ClustHC-" + initialPopSize + "-" + localSearchMethod;
-    }
-
-    public static String globalInfo() {
-        return "Similar to multi-start HC, but clusters the population during optimization to remove redundant individuals for efficiency."
-                + "If the local search step does not achieve a minimum improvement, the population may be reinitialized.";
     }
 
     /**

@@ -12,14 +12,14 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * A simple implementation of the steady-state GA with variable replacement
  * schemes. To reduce the logging effort population.size() optimization steps
- * are performed each time optimize() is called. Created by IntelliJ IDEA. User:
- * streiche Date: 19.07.2005 Time: 14:30:20 To change this template use File |
- * Settings | File Templates.
+ * are performed each time optimize() is called.
  */
+@Description("This is a Steady-State Genetic Algorithm.")
 public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
 
     private Population population = new Population();
@@ -189,19 +189,6 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public String getIdentifier() {
         return this.identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a Steady-State Genetic Algorithm.";
     }
 
     /**

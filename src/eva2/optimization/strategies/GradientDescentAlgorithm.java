@@ -12,6 +12,7 @@ import eva2.optimization.problems.InterfaceFirstOrderDerivableProblem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;
+import eva2.util.annotation.Description;
 
 /**
  * A gradient descent algorithm by hannes planatscher don't expect any
@@ -19,9 +20,8 @@ import eva2.tools.ReflectPackage;
  * <p/>
  * mkron added some!
  *
- * @author not attributable
- * @version 1.0
  */
+@Description("Gradient Descent can be applied to derivable functions (InterfaceFirstOrderDerivableProblem).")
 public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Serializable {
 
     private InterfaceOptimizationProblem m_Problem;
@@ -399,9 +399,6 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         }
     }
 
-    public static String globalInfo() {
-        return "Gradient Descent can be applied to derivable functions (" + InterfaceFirstOrderDerivableProblem.class.getSimpleName() + ").";
-    }
 //////////////// for global adaption
 
     public boolean isAdaptStepSizeGlobally() {

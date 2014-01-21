@@ -9,20 +9,15 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * Evolutionary programming by Fogel. Works fine but is actually a quite greedy
  * local search strategy solely based on mutation. To prevent any confusion, the
  * mutation rate is temporaily set to 1.0. Potential citation: the PhD thesis of
  * David B. Fogel (1992).
- * <p/>
- * Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture
- *
- * @author Felix Streichert
- * @version: $Revision: 307 $ $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec
- * 2007) $ $Author: mkron $
  */
+@Description("This is a basic Evolutionary Programming scheme.")
 public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Serializable {
 
     private int m_PopulationSize = 0;
@@ -190,19 +185,6 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
     @Override
     public String getIdentifier() {
         return this.m_Identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a basic Evolutionary Programming scheme.";
     }
 
     /**

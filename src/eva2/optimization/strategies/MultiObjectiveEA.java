@@ -14,6 +14,7 @@ import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.FM0Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * A generic framework for multi-objecitve optimization, you need to specify an
@@ -24,10 +25,9 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * optimizer instead of this MOEA, such an optimizer would randomly toggle
  * between the objective for each selection and thus explore at least the
  * extreme points of the objective space, but simpler methods like random search
- * or hill-climbing might even fail on that. Created by IntelliJ IDEA. User:
- * streiche Date: 05.06.2003 Time: 11:03:50 To change this template use Options
- * | File Templates.
+ * or hill-climbing might even fail on that.
  */
+@Description("This is a general Multi-objective Evolutionary Optimization Framework.")
 public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializable {
 
     private InterfaceOptimizer m_Optimizer = new GeneticAlgorithm();
@@ -228,19 +228,6 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     @Override
     public String getIdentifier() {
         return this.m_Identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a general Multi-objective Evolutionary Optimization Framework.";
     }
 
     /**

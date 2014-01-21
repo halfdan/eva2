@@ -22,15 +22,10 @@ import java.util.BitSet;
  * able to make it competitive to a standard GA.. *sigh* This is a
  * implementation of the CHC Adaptive Search Algorithm (Cross generational
  * elitist selection, Heterogeneous recombination and Cataclysmic mutation).
- * Citation:
- * <p/>
- * Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture
  *
- * @author Felix Streichert
- * @version: $Revision: 307 $ $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec
- * 2007) $ $Author: mkron $
+ * ToDo: Check implementation for correctness.
  */
+@eva2.util.annotation.Description("This is an implementation of the CHC Adaptive Search Algorithm by Eselman.")
 public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.Serializable {
 
     private double initialDifferenceThreshold = 0.25;
@@ -308,19 +303,6 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     @Override
     public String getIdentifier() {
         return this.identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an implementation of the CHC Adaptive Search Algorithm by Eselman.";
     }
 
     /**

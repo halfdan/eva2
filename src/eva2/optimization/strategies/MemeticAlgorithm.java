@@ -10,18 +10,20 @@ import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceLocalSearchable;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 import java.util.Hashtable;
 
 /**
  * A memetic algorithm by hannes planatscher. The local search strategy can only
  * be applied to problems which implement the InterfaceLocalSearchable else the
- * local search will not be activated at all. <p> Title: EvA2 </p> <p>
- * Description: </p> <p> Copyright: Copyright (c) 2003 </p> <p> Company: </p>
+ * local search will not be activated at all.
  *
- * @author not attributable
  * @version 1.0
  */
+@Description("This is a basic generational Memetic Algorithm. Local search steps are performed on a selected subset "
+        + "of individuals after certain numbers of global search iterations. Note "
+        + "that the problem class must implement InterfaceLocalSearchable.")
 public class MemeticAlgorithm implements InterfaceOptimizer,
         java.io.Serializable {
 
@@ -258,22 +260,6 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
         return this.m_Identifier;
     }
 
-
-    /*
-     * ========================================================================================
-     * These are for GUI
-     */
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a basic generational Memetic Algorithm. Local search steps are performed on a selected subset "
-                + "of individuals after certain numbers of global search iterations. Note "
-                + "that the problem class must implement InterfaceLocalSearchable.";
-    }
 
     /**
      * This method will return a naming String

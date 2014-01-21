@@ -24,6 +24,7 @@ import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -84,9 +85,10 @@ import java.util.Formatter;
  * <p/>
  * TODO Add adaptive niche radius. Add parameter to every indy which is adapted
  * after all new peaks have been found.
- *
- * @author mkron
  */
+@Description("A niching ES with dynamic peak identification, after Shir and Bäck: Niching in Evolution Strategies, "
+        + "GECCO 2005. Basically, there are several variants of a (mu,lambda)-ES performed "
+        + "in parallel, which are reclustered in each iteration based on the dynamic peak set.")
 public class EsDpiNiching implements InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer, InterfacePopulationChangedEventListener {
 
     private static final boolean TRACE = false, TRACE_DEMES = false;
@@ -1017,12 +1019,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     @Override
     public String getName() {
         return identifier + "_" + getExpectedPeaks() + "_" + getNicheRadius();
-    }
-
-    public static String globalInfo() {
-        return "A niching ES with dynamic peak identification, after Shir and Bäck: Niching in Evolution Strategies, "
-                + "GECCO 2005. Basically, there are several variants of a (mu,lambda)-ES performed "
-                + "in parallel, which are reclustered in each iteration based on the dynamic peak set.";
     }
 
     @Override

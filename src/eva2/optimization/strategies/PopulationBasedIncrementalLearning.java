@@ -12,6 +12,7 @@ import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * Population based incremental learning in the PSM by Monmarche version with
@@ -22,14 +23,8 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * Nicolas Monmarché , Eric Ramat , Guillaume Dromel , Mohamed Slimane , Gilles
  * Venturini: On the similarities between AS, BSC and PBIL: toward the birth of
  * a new meta-heuristic. TecReport 215. Univ. de Tours, 1999.
- * <p/>
- * Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture
- *
- * @author Felix Streichert
- * @version: $Revision: 307 $ $Date: 2007-12-04 14:31:47 +0100 (Tue, 04 Dec
- * 2007) $ $Author: mkron $
  */
+@Description("The Population based incremental learning is based on a statistical distribution of bit positions. Please note: This optimizer requires a binary genotype!")
 public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, java.io.Serializable {
 
     // These variables are necessary for the simple testcase
@@ -219,19 +214,6 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     @Override
     public String getIdentifier() {
         return this.m_Identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The Population based incremental learning is based on a statistical distribution of bit positions. Please note: This optimizer requires a binary genotype!";
     }
 
     /**

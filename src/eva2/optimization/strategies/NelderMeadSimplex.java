@@ -11,6 +11,7 @@ import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.AbstractProblemDouble;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.Vector;
@@ -19,9 +20,8 @@ import java.util.Vector;
  * Nelder-Mead-Simplex does not guarantee an equal number of evaluations within
  * each optimize call because of the different step types. Range check is now
  * available by projection at the bounds.
- *
- * @author mkron
  */
+@Description("The Nelder-Mead simplex search algorithm for local search. Reflection on bounds may be used for constraint handling.")
 public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, InterfacePopulationChangedEventListener {
 
     private int populationSize = 100;
@@ -229,10 +229,6 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     @Override
     public String getName() {
         return m_Identifier;
-    }
-
-    public static String globalInfo() {
-        return "The Nelder-Mead simplex search algorithm for local search. Reflection on bounds may be used for constraint handling.";
     }
 
     @Override

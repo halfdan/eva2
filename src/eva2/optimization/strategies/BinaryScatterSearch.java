@@ -15,6 +15,7 @@ import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -22,12 +23,12 @@ import java.util.BitSet;
 /**
  * A BinaryScatterSearch implementation taken mainly from [i].
  *
- * @author Alex
  *         <p/>
  *         F. Gortazar, A. Duarte, M. Laguna and R. Marti: Black Box Scatter Search for
  *         General Classes of Binary Optimization Problems Computers and Operations
  *         research, vol. 37, no. 11, pp. 1977-1986 (2010)
  */
+@Description("A basic implementation of a Binary ScatterSearch")
 public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 
     private static boolean TRACE = false;
@@ -909,9 +910,5 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 
     public String perCentSecondGenMethodTipText() {
         return "The number of individuals generated with the second Generation Method. The percentage, that is not covered with the first and the second method will be covered with a third method";
-    }
-
-    public static String globalInfo() {
-        return "A basic implementation of a Binary ScatterSearch";
     }
 }

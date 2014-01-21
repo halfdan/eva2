@@ -11,13 +11,15 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * @author mkron
+ * ToDo: Document
  */
+@Description("A multi-objective CMA-ES variant after Igel, Hansen and Roth 2007 (EC 15(1),1-28).")
 public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
 
     /**
@@ -129,10 +131,6 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     @Override
     public String getName() {
         return "(1+" + m_lambda + ") MO-CMA-ES";
-    }
-
-    public static String globalInfo() {
-        return "A multi-objective CMA-ES variant after Igel, Hansen and Roth 2007 (EC 15(1),1-28).";
     }
 
     /*

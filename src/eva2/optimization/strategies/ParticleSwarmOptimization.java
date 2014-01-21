@@ -23,6 +23,7 @@ import eva2.tools.chart2d.DPointSet;
 import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import java.util.Vector;
  * Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree",
  * "HPSO", "Random" in that order starting by 0.
  */
+@Description("Particle Swarm Optimization by Kennedy and Eberhart.")
 public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Serializable, InterfaceAdditionalPopulationInformer {
 
     /**
@@ -1723,19 +1725,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     @Override
     public String getIdentifier() {
         return this.m_Identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Particle Swarm Optimization by Kennedy and Eberhart.";
     }
 
     /**

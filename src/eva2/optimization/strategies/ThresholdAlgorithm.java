@@ -8,12 +8,13 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.optimization.problems.B1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * Threshold accepting algorithm simliar strategy as the flood algorithm,
- * similar problems. Created by IntelliJ IDEA. User: streiche Date: 01.10.2004
- * Time: 13:35:49 To change this template use File | Settings | File Templates.
+ * similar problems.
  */
+@Description("The threshold algorithm uses an declining threshold to accpect new solutions.")
 public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializable {
     // These variables are necessary for the simple testcase
 
@@ -236,19 +237,6 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     @Override
     public String getIdentifier() {
         return this.m_Identifier;
-    }
-
-    /**
-     * ********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The threshold algorithm uses an declining threshold to accpect new solutions.";
     }
 
     /**
