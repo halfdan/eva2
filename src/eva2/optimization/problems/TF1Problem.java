@@ -10,18 +10,15 @@ import eva2.optimization.operator.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 10.05.2004
- * Time: 17:22:37
- * To change this template use File | Settings | File Templates.
  */
+@Description("T1 is to be minimized.")
 public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implements java.io.Serializable {
     protected int m_ProblemDimension = 30;
     protected int m_OutputDimension = 2;
@@ -272,15 +269,6 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     @Override
     public String getName() {
         return "T1 Problem";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "T1 is to be minimized.";
     }
 
     /**

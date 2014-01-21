@@ -2,12 +2,12 @@ package eva2.optimization.problems;
 
 
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.util.annotation.Description;
 
 /**
  * The integer hyper-sphere problem.
- * <p/>
- * User: streiche, mkron
  */
+@Description("A hyper parabola on integer values x with I1(x) = x^2 is to be minimized.")
 public class I1Problem extends AbstractProblemInteger implements java.io.Serializable {
 
     public I1Problem() {
@@ -70,9 +70,5 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
     @Override
     public String getName() {
         return "I1 Problem";
-    }
-
-    public static String globalInfo() {
-        return "A hyper parabola on integer values x with I1(x) = x^2 is to be minimized.";
     }
 }

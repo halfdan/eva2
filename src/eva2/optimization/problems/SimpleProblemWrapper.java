@@ -7,6 +7,7 @@ import eva2.optimization.individuals.*;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 import simpleprobs.InterfaceSimpleProblem;
 import simpleprobs.SimpleF1;
 import simpleprobs.SimpleProblemBinary;
@@ -14,6 +15,7 @@ import simpleprobs.SimpleProblemDouble;
 
 import java.util.BitSet;
 
+@Description("Wrapping simple problem implementations.")
 public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     InterfaceSimpleProblem<?> simProb = new SimpleF1();
     protected double defaultRange = 10;
@@ -281,16 +283,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
         return "SimpleProblemWrapper";
     }
 
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Wrapping simple problem implementations.";
-    }
-
     public String[] getGOEPropertyUpdateLinks() {
-        return new String[]{"globalInfo", "simpleProblem"};
+        return new String[]{"simpleProblem"};
     }
 }

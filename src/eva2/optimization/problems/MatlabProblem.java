@@ -15,6 +15,7 @@ import eva2.optimization.operator.terminators.PopulationMeasureTerminator.Stagna
 import eva2.optimization.population.Population;
 import eva2.optimization.stat.InterfaceTextListener;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.util.annotation.Description;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,9 +29,8 @@ import java.util.BitSet;
  * problem implementation. However internally, every evaluation "asks" a mediator instance for
  * the result which waits for Matlab to evaluate the x value. When Matlab is finished, the mediator
  * returns to the evaluate method and the optimization can continue.
- *
- * @author mkron
  */
+@Description("Interface problem class for optimization in Matlab, only usable from within Matlab")
 public class MatlabProblem extends AbstractOptimizationProblem implements InterfaceHasInitRange, InterfaceTextListener, Serializable {
     private static final long serialVersionUID = 4913310869887420815L;
     public static boolean TRACE = false;
@@ -576,10 +576,6 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         } else {
             return runnable.getProgress();
         }
-    }
-
-    public static String globalInfo() {
-        return "Interface problem class for optimization in Matlab, only usable from within Matlab";
     }
 
     @Override

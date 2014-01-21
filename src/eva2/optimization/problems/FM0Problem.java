@@ -1,29 +1,19 @@
 package eva2.optimization.problems;
 
 import eva2.optimization.individuals.ESIndividualDoubleData;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 23.04.2003
- * Time: 11:10:43
- * To change this template use Options | File Templates.
+ * ToDo: Document
  */
+@Description("M0(x) = sin(2*x - 0.5*PI) + 1 + 2*cos(y) + 0.5*x is to be maximized, two optima.")
 public class FM0Problem extends AbstractMultiModalProblemKnown implements InterfaceOptimizationProblem, Interface2DBorderProblem, InterfaceMultimodalProblemKnown, Serializable {
 
     public FM0Problem() {
         this.problemDimension = 2;
         this.template = new ESIndividualDoubleData();
-//        this.m_Extrema          = new double[2];
-//        this.range            = new double [this.problemDimension][2];
-//        this.range[0][0]      = -2.0;
-//        this.range[0][1]      =  2.0;
-//        this.range[1][0]      = -2.8;
-//        this.range[1][1]      =  2.8;
-//        this.m_Extrema[0]       = -2;
-//        this.m_Extrema[1]       = 6;
     }
 
     @Override
@@ -82,10 +72,6 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
         this.add2DOptimum(-1.44445618316078, 0.00000000700284);
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -97,12 +83,4 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
         return "M0 Problem";
     }
 
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "M0(x) = sin(2*x - 0.5*PI) + 1 + 2*cos(y) + 0.5*x is to be maximized, two optima.";
-    }
 }

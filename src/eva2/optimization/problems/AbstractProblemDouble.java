@@ -501,6 +501,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      * @return description
      */
     public static String globalInfo() {
+        // ToDo: WTF?
         return "The programmer did not give further details.";
     }
 

@@ -3,21 +3,15 @@ package eva2.optimization.population;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  * This implementation of Population Based Incremental Learning is only
  * suited for a BitString based genotype representation.
- * Copyright:       Copyright (c) 2003
- * Company:         University of Tuebingen, Computer Architecture
- *
- * @author Felix Streichert
- * @version: $Revision: 306 $
- * $Date: 2007-12-04 14:22:52 +0100 (Tue, 04 Dec 2007) $
- * $Author: mkron $
  */
-
+@Description("This is a PBIL-population, using a probability vector for Bit-String based individuals.")
 public class PBILPopulation extends Population implements Cloneable, java.io.Serializable {
 
     private double[] probabilityVector = new double[1];
@@ -186,16 +180,5 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         //result += ((AbstractEAIndividual)this.get(i)).getSolutionRepresentationFor()+"\n";
         //}
         return result;
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a PBIL-population, using a probability vector for Bit-String based individuals.";
     }
 }
