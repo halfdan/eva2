@@ -11,6 +11,7 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.ParticleSwarmOptimization;
 import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
+import eva2.util.annotation.Description;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,14 +19,8 @@ import java.io.Serializable;
 import java.util.logging.Level;
 
 /**
- * The class gives access to all PSO parameters for the EvA
- * top level GUI.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 16.11.2004
- * Time: 17:58:37
- * To change this template use File | Settings | File Templates.
  */
+@Description("Particle Swarm Optimization by Kennedy and Eberhart.")
 public class PSOParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
     /**
@@ -62,15 +57,6 @@ public class PSOParameters extends AbstractOptimizationParameters implements Int
     @Override
     public Object clone() {
         return new PSOParameters(this);
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return ParticleSwarmOptimization.globalInfo();
     }
 
     /**
