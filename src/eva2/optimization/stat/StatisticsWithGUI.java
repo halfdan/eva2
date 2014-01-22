@@ -55,8 +55,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
      *
      */
     @Override
-    public synchronized void startOptPerformed(String infoString, int runNumber, Object goParams, List<InterfaceAdditionalPopulationInformer> informerList) {
-        super.startOptPerformed(infoString, runNumber, goParams, informerList);
+    public synchronized void startOptimizationPerformed(String infoString, int runNumber, Object goParams, List<InterfaceAdditionalPopulationInformer> informerList) {
+        super.startOptimizationPerformed(infoString, runNumber, goParams, informerList);
         graphInfoString = infoString;
 
         if ((fitnessFrame != null) && (fitnessFrame[0] != null)) {
@@ -68,8 +68,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     }
 
     @Override
-    public void stopOptPerformed(boolean normal, String stopMessage) {
-        super.stopOptPerformed(normal, stopMessage);
+    public void stopOptimizationPerformed(boolean normal, String stopMessage) {
+        super.stopOptimizationPerformed(normal, stopMessage);
 
         if (optRunsPerformed > statisticsParameter.getMultiRuns()) {
             // this may happen if the user reduces the multirun parameter during late multiruns

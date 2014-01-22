@@ -93,8 +93,8 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     }
 
     @Override
-    public void startOptPerformed(String InfoString, int runnumber,
-                                  Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
+    public void startOptimizationPerformed(String InfoString, int runnumber,
+                                           Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
         if (runnumber == 0) {
             bestIndividualAllover = null;
         }
@@ -102,7 +102,7 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     }
 
     @Override
-    public void stopOptPerformed(boolean normal, String stopMessage) {
+    public void stopOptimizationPerformed(boolean normal, String stopMessage) {
     }
 
     @Override

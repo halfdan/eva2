@@ -15,12 +15,12 @@ public interface InterfaceStatistics {
     /**
      * Initialize statistics computations.
      */
-    void startOptPerformed(String InfoString, int runnumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList); // called from processor
+    void startOptimizationPerformed(String InfoString, int runnumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList); // called from processor
 
     /**
      * Finalize statistics computations.
      */
-    void stopOptPerformed(boolean normal, String stopMessage); // called from processor
+    void stopOptimizationPerformed(boolean normal, String stopMessage); // called from processor
 
     void addDataListener(InterfaceStatisticsListener listener);
 
