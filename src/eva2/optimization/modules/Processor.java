@@ -196,7 +196,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             } catch (Exception ex) {
             } catch (Error error) {
             }
-            //statistics.stopOptPerformed(false);
+            //statistics.stopOptimizationPerformed(false);
             setOptimizationRunning(false); // normal finish
             if (optimizationStateListener != null) {
                 optimizationStateListener.performedStop(); // is only needed in client server mode
@@ -235,7 +235,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
         while (isOptimizationRunning() && (runCounter < statistics.getStatisticsParameter().getMultiRuns())) {
             LOGGER.info(String.format("Starting Optimization %d/%d", runCounter + 1, statistics.getStatisticsParameter().getMultiRuns()));
-            statistics.startOptPerformed(getInfoString(), runCounter, optimizationParameters, getInformerList());
+            statistics.startOptimizationPerformed(getInfoString(), runCounter, optimizationParameters, getInformerList());
 
             this.optimizationParameters.getProblem().initializeProblem();
             this.optimizationParameters.getOptimizer().setProblem(this.optimizationParameters.getProblem());
@@ -268,7 +268,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             maybeFinishParamCtrl(optimizationParameters);
             userAborted = !isOptimizationRunning(); // stop is "normal" if opt wasnt set false by the user (and thus still true)
             //////////////// Default stats
-            statistics.stopOptPerformed(!userAborted, optimizationParameters.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
+            statistics.stopOptimizationPerformed(!userAborted, optimizationParameters.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
 
             //////////////// PP or set results without further PP
             if (!userAborted) {

@@ -21,9 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * An abstract class handling statistics. Most important stuff happens in startOptPerformed, stopOptPerformed
- * and createNextGenerationPerformed. Any measures (run based or multi-run based) are reset in startOptPerformed,
- * updated per iteration in createNextGenerationPerformed and reported to listeners in stopOptPerformed.
+ * An abstract class handling statistics. Most important stuff happens in startOptimizationPerformed, stopOptimizationPerformed
+ * and createNextGenerationPerformed. Any measures (run based or multi-run based) are reset in startOptimizationPerformed,
+ * updated per iteration in createNextGenerationPerformed and reported to listeners in stopOptimizationPerformed.
  * Several different verbosity levels are regarded.
  * The method plotCurrentResults should be implemented to plot further results per iteration.
  * <p/>
@@ -39,9 +39,6 @@ import java.util.*;
  * <p/>
  * Listeners implementing InterfaceTextListener receive String output (human readable).
  * Listeners implementing InterfaceStatisticsListener receive the raw data per iteration.
- *
- * @author mkron
- * @see StatsParameter
  */
 public abstract class AbstractStatistics implements InterfaceTextListener, InterfaceStatistics {
     private transient PrintWriter resultOut;
@@ -254,7 +251,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     @Override
-    public void startOptPerformed(String infoString, int runNumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
+    public void startOptimizationPerformed(String infoString, int runNumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
 
         if (runNumber == 0) {
             // store the intial graph selection state, so that modifications during runtime cannot cause inconsistencies
@@ -328,9 +325,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     @Override
-    public void stopOptPerformed(boolean normal, String stopMessage) {
+    public void stopOptimizationPerformed(boolean normal, String stopMessage) {
         if (lastSols == null) {
-            System.err.println("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptPerformed (AnstractStatistics).");
+            System.err.println("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptimizationPerformed (AnstractStatistics).");
         }
 
         if (iterationCounter < sumDataCollection.size()) {
@@ -1170,7 +1167,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         }
         if (firstPlot) {
             initPlots(pop, informerList);
-//			if (doTextOutput()) printToTextListener(getOutputHeader(informer, pop)+'\n');
             firstPlot = false;
             currentBestFeasibleFit = null;
         }
@@ -1190,13 +1186,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         }
 
         lastSols = (opt != null) ? new Population(opt.getAllSolutions().getSolutions()) : pop;
-//		Pair<String,Double[]> addData = getOutputData(informerList, lastSols);
-//		System.out.println("lastSols size: " + 500*PSymbolicRegression.getAvgIndySize(lastSols));
-//		System.out.println("Mem use:  " + getMemoryUse());
         Pair<String, Object[]> addData = getOutputData(informerList, lastSols);
         if (doTextOutput()) { // this is where the text output is actually written
             if (printLineByVerbosity(iterationCounter)) {
-//				printToTextListener(functionCalls + textFieldDelimiter);
                 printToTextListener(addData.head() + '\n');
             }
         }

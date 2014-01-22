@@ -273,7 +273,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         CommandLine commandLine = null;
 
         switch(optimizerName) {
-            case "DifferentialEvolution":
+            case "DifferentialEvolution": {
                 System.out.println("DE");
                 opt.addOption("F", true, "Differential Weight");
                 opt.addOption("CR", true, "Crossover Rate");
@@ -309,10 +309,11 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 }
 
                 break;
+            }
             case "GeneticAlgorithm":
                 System.out.println("Genetic Algorithm");
                 break;
-            case "ParticleSwarmOptimization":
+            case "ParticleSwarmOptimization": {
                 opt.addOption("initialVelocity", true, "Initial Velocity");
                 opt.addOption("speedLimit", true, "Speed Limit");
                 opt.addOption("topology", true, "Particle Swarm Topology (0-7)");
@@ -323,12 +324,14 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 opt.addOption("algType", true, "Type of PSO");
 
                 break;
-            case "EvolutionStrategies":
-                //double cm, cr;
-                //int mu, lambda;
+            }
+            case "EvolutionStrategies": {
+                double cm, cr;
+                int mu, lambda;
                 boolean plusStrategy;
                 //this.optimizer = OptimizerFactory.createEvolutionStrategy()
                 break;
+            }
             default:
                 throw new Exception("Unsupported Optimizer");
         }
