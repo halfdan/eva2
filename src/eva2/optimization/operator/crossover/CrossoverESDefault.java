@@ -5,24 +5,21 @@ import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * Default 1-point-Crossover on InterfaceESIndividual instances.
- * <p/>
- * User: streiche
- * Date: 25.03.2003
- * Time: 11:16:39
- * To change this template use Options | File Templates.
  */
+@Description("This is a discrete one-point crossover between m ES individuals.")
 public class CrossoverESDefault implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverESDefault() {
 
     }
 
     public CrossoverESDefault(CrossoverESDefault c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -121,7 +118,7 @@ public class CrossoverESDefault implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override
@@ -129,9 +126,6 @@ public class CrossoverESDefault implements InterfaceCrossover, java.io.Serializa
         return this.getName();
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -140,14 +134,5 @@ public class CrossoverESDefault implements InterfaceCrossover, java.io.Serializa
      */
     public String getName() {
         return "ES discrete one-point crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a discrete one-point crossover between m ES individuals.";
     }
 }

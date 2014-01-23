@@ -5,12 +5,15 @@ import eva2.optimization.operator.selection.probability.InterfaceSelectionProbab
 import eva2.optimization.operator.selection.probability.SelProbStandard;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * The RouletteWheel selection requires a selection probability calculator.
  * In case of multiple fitness values the selection
  * criteria is selected randomly for each selection event.
  */
+@Description("This method chooses individuals similar to the roulette wheel. The chance for each individual to be selected depends on the selection probability." +
+        "This is a single objective selecting method, it select with respect to a random criterion.")
 public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Serializable {
 
     private transient TreeElement[] treeRoot = null;
@@ -152,9 +155,6 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         return this.selectFrom(avaiablePartners, size);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -163,16 +163,6 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
      */
     public String getName() {
         return "Roulette Wheel Selection";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method chooses individuals similar to the roulette wheel. The chance for each individual to be selected depends on the selection probability." +
-                "This is a single objective selecting method, it select with respect to a random criterion.";
     }
 
     /**
