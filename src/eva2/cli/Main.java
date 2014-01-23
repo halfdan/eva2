@@ -6,6 +6,8 @@ import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.enums.DETypeEnum;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.operator.crossover.InterfaceCrossover;
+import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.terminators.CombinedTerminator;
 import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.population.Population;
@@ -49,8 +51,12 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     private int populationSize = 20;
     private int numberOfRuns = 1;
     private long seed = System.currentTimeMillis();
+
     private AbstractOptimizationProblem problem;
     private InterfaceOptimizer optimizer;
+    private InterfaceMutation mutator;
+    private InterfaceCrossover crossover;
+
     private JsonObject jsonObject;
     private JsonArray optimizationRuns;
     private JsonArray generationsArray;
@@ -73,6 +79,13 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         opt.addOption("ps", "popsize", true, "Population size");
         opt.addOption("n", "runs", true, "Number of runs to perform");
         opt.addOption("s", "seed", true, "Random seed");
+
+        // Those two only make sense when used in an algorithm with mutation/crossover
+        opt.addOption("pc", true, "Crossover Probability");
+        opt.addOption("pm", true, "Mutation Probability");
+
+        opt.addOption("mutator", true, "Mutator Operator");
+        opt.addOption("crossover", true, "Crossover Operator");
 
         opt.addOption(OptionBuilder
                 .withLongOpt("help")
@@ -208,12 +221,16 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
          */
         if (commandLine.hasOption("help")) {
             String helpOption = commandLine.getOptionValue("help");
-            if ("optimizer".equals(helpOption)) {
-                showOptimizerHelp();
-            } else if ("problem".equals(helpOption)) {
-                listProblems();
-            } else {
-                showHelp(defaultOptions);
+            switch (helpOption) {
+                case "optimizer":
+                    showOptimizerHelp();
+                    break;
+                case "problem":
+                    listProblems();
+                    break;
+                default:
+                    showHelp(defaultOptions);
+                    break;
             }
 
             System.exit(0);
@@ -277,7 +294,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 System.out.println("DE");
                 opt.addOption("F", true, "Differential Weight");
                 opt.addOption("CR", true, "Crossover Rate");
-                opt.addOption("DEType", true, "DE Type (");
+                opt.addOption("DEType", true, "DE Type ()");
                 /**
                  * Parse default options.
                  */
