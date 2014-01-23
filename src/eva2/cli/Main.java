@@ -6,14 +6,18 @@ import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.enums.DETypeEnum;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.operator.crossover.CrossoverESDefault;
 import eva2.optimization.operator.crossover.InterfaceCrossover;
 import eva2.optimization.operator.mutation.InterfaceMutation;
+import eva2.optimization.operator.mutation.MutateDefault;
 import eva2.optimization.operator.selection.InterfaceSelection;
+import eva2.optimization.operator.selection.SelectXProbRouletteWheel;
 import eva2.optimization.operator.terminators.CombinedTerminator;
 import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.problems.AbstractOptimizationProblem;
 import eva2.optimization.problems.AbstractProblemDouble;
+import eva2.optimization.problems.AbstractProblemDoubleOffset;
 import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import org.apache.commons.cli.*;
@@ -51,9 +55,10 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     private static Logger LOGGER = Logger.getLogger(Main.class.getName());
     private int populationSize = 20;
     private int numberOfRuns = 1;
+    private int dimension = 30;
     private long seed = System.currentTimeMillis();
 
-    private AbstractOptimizationProblem problem;
+    private AbstractProblemDoubleOffset problem;
     private InterfaceOptimizer optimizer;
     private InterfaceMutation mutator;
     private InterfaceCrossover crossover;
@@ -102,6 +107,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 .hasArg()
                 .create('p')
         );
+        opt.addOption("dim", true, "Problem Dimension");
         return opt;
     }
 
@@ -159,11 +165,11 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         return optimizerList;
     }
 
-    public static Map<String, Class<? extends AbstractProblemDouble>> createProblemList() {
-        Map<String, Class<? extends AbstractProblemDouble>> problemList = new TreeMap<String, Class<? extends AbstractProblemDouble>>();
+    public static Map<String, Class<? extends AbstractProblemDoubleOffset>> createProblemList() {
+        Map<String, Class<? extends AbstractProblemDoubleOffset>> problemList = new TreeMap<String, Class<? extends AbstractProblemDoubleOffset>>();
         Reflections reflections = new Reflections("eva2.optimization.problems");
-        Set<Class<? extends AbstractProblemDouble>> problems = reflections.getSubTypesOf(AbstractProblemDouble.class);
-        for (Class<? extends AbstractProblemDouble> problem : problems) {
+        Set<Class<? extends AbstractProblemDoubleOffset>> problems = reflections.getSubTypesOf(AbstractProblemDoubleOffset.class);
+        for (Class<? extends AbstractProblemDoubleOffset> problem : problems) {
             // We only want instantiable classes
             if (problem.isInterface() || Modifier.isAbstract(problem.getModifiers())) {
                 continue;
@@ -304,6 +310,11 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             setProblemFromName(problemName);
         }
 
+        if (commandLine.hasOption("dim")) {
+            this.dimension = Integer.parseInt(commandLine.getOptionValue("dim"));
+        }
+        this.problem.setProblemDimension(this.dimension);
+
         if (commandLine.hasOption("mutator")) {
             String mutatorName = commandLine.getOptionValue("mutator");
             try {
@@ -312,6 +323,8 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 System.out.println(ex.getMessage());
                 System.exit(-1);
             }
+        } else {
+            this.mutator = new MutateDefault();
         }
 
         if (commandLine.hasOption("crossover")) {
@@ -322,6 +335,8 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 System.out.println(ex.getMessage());
                 System.exit(-1);
             }
+        } else {
+            this.crossover = new CrossoverESDefault();
         }
 
         if (commandLine.hasOption("selection")) {
@@ -332,6 +347,8 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 System.out.println(ex.getMessage());
                 System.exit(-1);
             }
+        } else {
+            this.selection = new SelectXProbRouletteWheel();
         }
 
         // Depends on mutator/crossover/selection being set
@@ -347,6 +364,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
         this.jsonObject.addProperty("population_size", this.populationSize);
         this.jsonObject.addProperty("number_of_runs", this.numberOfRuns);
+        this.jsonObject.addProperty("dimension", this.dimension);
         this.jsonObject.addProperty("seed", this.seed);
 
         JsonObject problemObject = new JsonObject();
@@ -499,9 +517,9 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     private void setProblemFromName(String problemName) {
-        Map<String, Class<? extends AbstractProblemDouble>> problemList = createProblemList();
+        Map<String, Class<? extends AbstractProblemDoubleOffset>> problemList = createProblemList();
 
-        Class<? extends AbstractProblemDouble> problem = problemList.get(problemName);
+        Class<? extends AbstractProblemDoubleOffset> problem = problemList.get(problemName);
         try {
             this.problem = problem.newInstance();
         } catch (InstantiationException e) {
@@ -560,7 +578,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     private static void listProblems() {
-        Map<String, Class<? extends AbstractProblemDouble>> problemList = createProblemList();
+        Map<String, Class<? extends AbstractProblemDoubleOffset>> problemList = createProblemList();
 
         System.out.println("Available Problems:");
         for (String name : problemList.keySet()) {
