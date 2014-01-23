@@ -8,6 +8,7 @@ import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.crossover.InterfaceCrossover;
 import eva2.optimization.operator.mutation.InterfaceMutation;
+import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.terminators.CombinedTerminator;
 import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.population.Population;
@@ -56,6 +57,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     private InterfaceOptimizer optimizer;
     private InterfaceMutation mutator;
     private InterfaceCrossover crossover;
+    private InterfaceSelection selection;
 
     private JsonObject jsonObject;
     private JsonArray optimizationRuns;
@@ -107,17 +109,17 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
     @Override
     public void performedStop() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        LOGGER.info("Optimization stopped.");
     }
 
     @Override
     public void performedStart(String infoString) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        LOGGER.info("Optimization started.");
     }
 
     @Override
     public void performedRestart(String infoString) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        LOGGER.info("Optimization restarted.");
     }
 
     @Override
@@ -171,9 +173,53 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         return problemList;
     }
 
+    public static Map<String, Class<? extends InterfaceMutation>> createMutatorList() {
+        Map<String, Class<? extends InterfaceMutation>> mutationList = new TreeMap<String, Class<? extends InterfaceMutation>>();
+        Reflections reflections = new Reflections("eva2.optimization.operator.mutation");
+        Set<Class<? extends InterfaceMutation>> mutators = reflections.getSubTypesOf(InterfaceMutation.class);
+        for (Class<? extends InterfaceMutation> mutator : mutators) {
+            // We only want instantiable classes
+            if (mutator.isInterface() || Modifier.isAbstract(mutator.getModifiers())) {
+                continue;
+            }
+            mutationList.put(mutator.getSimpleName(), mutator);
+        }
+        return mutationList;
+    }
+
+    public static Map<String, Class<? extends InterfaceCrossover>> createCrossoverList() {
+        Map<String, Class<? extends InterfaceCrossover>> crossoverList = new TreeMap<String, Class<? extends InterfaceCrossover>>();
+        Reflections reflections = new Reflections("eva2.optimization.operator.crossover");
+        Set<Class<? extends InterfaceCrossover>> crossovers = reflections.getSubTypesOf(InterfaceCrossover.class);
+        for (Class<? extends InterfaceCrossover> crossover : crossovers) {
+            // We only want instantiable classes
+            if (crossover.isInterface() || Modifier.isAbstract(crossover.getModifiers())) {
+                continue;
+            }
+            crossoverList.put(crossover.getSimpleName(), crossover);
+        }
+        return crossoverList;
+    }
+
+    public static Map<String, Class<? extends InterfaceSelection>> createSelectionList() {
+        Map<String, Class<? extends InterfaceSelection>> selectionList = new TreeMap<String, Class<? extends InterfaceSelection>>();
+        Reflections reflections = new Reflections("eva2.optimization.operator.selection");
+        Set<Class<? extends InterfaceSelection>> selections = reflections.getSubTypesOf(InterfaceSelection.class);
+        for (Class<? extends InterfaceSelection> selection : selections) {
+            // We only want instantiable classes
+            if (selection.isInterface() || Modifier.isAbstract(selection.getModifiers())) {
+                continue;
+            }
+            selectionList.put(selection.getSimpleName(), selection);
+        }
+        return selectionList;
+    }
+
+
+
     public static void showHelp(Options options) {
         HelpFormatter helpFormatter = new HelpFormatter();
-        helpFormatter.printHelp("eva2", "", options, "", true);
+        helpFormatter.printHelp("java -jar EvA2.jar", "Global Parameters", options, "", true);
     }
 
     public static void main(String[] args) {
@@ -221,16 +267,20 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
          */
         if (commandLine.hasOption("help")) {
             String helpOption = commandLine.getOptionValue("help");
-            switch (helpOption) {
-                case "optimizer":
-                    showOptimizerHelp();
-                    break;
-                case "problem":
-                    listProblems();
-                    break;
-                default:
-                    showHelp(defaultOptions);
-                    break;
+            if (helpOption == null) {
+                showHelp(defaultOptions);
+            } else {
+                switch (helpOption) {
+                    case "optimizer":
+                        showOptimizerHelp();
+                        break;
+                    case "problem":
+                        listProblems();
+                        break;
+                    default:
+                        showHelp(defaultOptions);
+                        break;
+                }
             }
 
             System.exit(0);
@@ -254,6 +304,37 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             setProblemFromName(problemName);
         }
 
+        if (commandLine.hasOption("mutator")) {
+            String mutatorName = commandLine.getOptionValue("mutator");
+            try {
+                setMutatorFromName(mutatorName);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                System.exit(-1);
+            }
+        }
+
+        if (commandLine.hasOption("crossover")) {
+            String crossoverName = commandLine.getOptionValue("crossover");
+            try {
+                setCrossoverFromName(crossoverName);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                System.exit(-1);
+            }
+        }
+
+        if (commandLine.hasOption("selection")) {
+            String selectionName = commandLine.getOptionValue("selection");
+            try {
+                setSelectionFromName(selectionName);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                System.exit(-1);
+            }
+        }
+
+        // Depends on mutator/crossover/selection being set
         if (commandLine.hasOption("optimizer")) {
             String optimizerName = commandLine.getOptionValue("optimizer");
             try {
@@ -272,6 +353,45 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         problemObject.addProperty("name", this.problem.getName());
         problemObject.addProperty("dimension", 30);
         this.jsonObject.add("problem", problemObject);
+    }
+
+    private void setMutatorFromName(String mutatorName) {
+        Map<String, Class<? extends InterfaceMutation>> mutatorList = createMutatorList();
+
+        Class<? extends InterfaceMutation> mutator = mutatorList.get(mutatorName);
+        try {
+            this.mutator = mutator.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setCrossoverFromName(String crossoverName) {
+        Map<String, Class<? extends InterfaceCrossover>> crossoverList = createCrossoverList();
+
+        Class<? extends InterfaceCrossover> crossover = crossoverList.get(crossoverName);
+        try {
+            this.crossover = crossover.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setSelectionFromName(String selectionName) {
+        Map<String, Class<? extends InterfaceSelection>> selectionList = createSelectionList();
+
+        Class<? extends InterfaceSelection> selection = selectionList.get(selectionName);
+        try {
+            this.selection = selection.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -327,9 +447,33 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
                 break;
             }
-            case "GeneticAlgorithm":
+            case "GeneticAlgorithm": {
                 System.out.println("Genetic Algorithm");
+                double pm = 0.01, pc = 0.5;
+                opt.addOption("pm", true, "Mutation Probability");
+                opt.addOption("pc", true, "Crossover Probability");
+
+                /**
+                 * Parse default options.
+                 */
+                try {
+                    commandLine = cliParser.parse(opt, optimizerParams);
+                } catch (ParseException e) {
+                    showHelp(opt);
+                    System.exit(-1);
+                }
+
+                if (commandLine.hasOption("pm")) {
+                    pm = Double.parseDouble(commandLine.getOptionValue("pm"));
+                }
+
+                if (commandLine.hasOption("pc")) {
+                    pc = Double.parseDouble(commandLine.getOptionValue("pc"));
+                }
+
+                this.optimizer = OptimizerFactory.createGeneticAlgorithm(mutator, pm, crossover, pc, selection, this.populationSize, this.problem, this);
                 break;
+            }
             case "ParticleSwarmOptimization": {
                 opt.addOption("initialVelocity", true, "Initial Velocity");
                 opt.addOption("speedLimit", true, "Speed Limit");
@@ -367,6 +511,10 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         }
     }
 
+    /**
+     * Executes the optimization and outputs a JSON document to the command line
+     * with the statistics of the optimization run(s).
+     */
     private void runOptimization() {
         for(int i = 0; i < this.numberOfRuns; i++) {
             // Terminate after 10000 function evaluations OR after reaching a fitness < 0.1
@@ -375,7 +523,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
             LOGGER.log(Level.INFO, "Running {0}", optimizer.getName());
 
-            OptimizationParameters params = OptimizerFactory.makeParams(optimizer, this.populationSize, this.problem);
+            OptimizationParameters params = OptimizerFactory.makeParams(optimizer, this.populationSize, this.problem, this.seed, OptimizerFactory.getTerminator());
             double[] result = OptimizerFactory.optimizeToDouble(params);
 
             JsonObject optimizationDetails = new JsonObject();
