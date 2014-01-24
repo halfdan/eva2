@@ -151,7 +151,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         //double[] rand = getUniformRandVect(position.length, range);
 
         Mathematics.vvAdd(newPos, rand, newPos);
-        if (m_CheckRange) {
+        if (checkRange) {
             Mathematics.projectToRange(newPos, range);
         }
 
@@ -256,9 +256,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
             /* old ways
                 curVelocity[i]  = this.m_Inertness * velocity[i];
 
-                curVelocity[i]  += (this.m_Phi1 * getSpeedLimit(index) * (range[i][1] - range[i][0]) * RNG.randomDouble(-1., 1.));
+                curVelocity[i]  += (this.phi1 * getSpeedLimit(index) * (range[i][1] - range[i][0]) * RNG.randomDouble(-1., 1.));
                 // the component from the social model
-                curVelocity[i]  += this.m_Phi2*RNG.randomDouble(0,1)*(localBestPos[i]-curPosition[i]);
+                curVelocity[i]  += this.phi2*RNG.randomDouble(0,1)*(localBestPos[i]-curPosition[i]);
  
 			*/
             for (int i = 0; i < lastVelocity.length; i++) {
@@ -301,9 +301,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      * @return a double value
      */
     protected double getIndySocialModifier(int index, double chiVal) {
-        return (this.m_Phi2 * chiVal * RNG.randomDouble(0, 1));
-//		if (index < 50) return (this.m_Phi2 * chi * RNG.randomDouble(0,1));
-//		else return (this.m_Phi2 * chi * (-1.) * RNG.randomDouble(0,1));
+        return (this.phi2 * chiVal * RNG.randomDouble(0, 1));
+//		if (index < 50) return (this.phi2 * chi * RNG.randomDouble(0,1));
+//		else return (this.phi2 * chi * (-1.) * RNG.randomDouble(0,1));
     }
 
     /**
@@ -315,12 +315,12 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     @Override
     protected double getSpeedLimit(int index) {
         if (index >= ((double) (m_Population.size() * highEnergyRatio))) {
-            return m_SpeedLimit;
+            return speedLimit;
         } else {
             if (highEnergyRaise == 0.) {
                 return maxSpeedLimit;
             } else {
-                return m_SpeedLimit * highEnergyRaise;
+                return speedLimit * highEnergyRaise;
             }
         }
     }

@@ -50,7 +50,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     Object[] sortedPop = null;
     protected AbstractEAIndividual m_BestIndividual = null;
     protected InterfaceOptimizationProblem m_Problem = new F1Problem();
-    protected boolean m_CheckRange = true;
+    protected boolean checkRange = true;
     protected boolean checkSpeedLimit = false;
     protected boolean useAlternative = false;
     protected PSOTopologyEnum topology = PSOTopologyEnum.grid;
@@ -59,13 +59,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * constriction (using chi)
      */
     protected SelectedTag algType;
-    protected int m_TopologyRange = 2;
-    protected double m_InitialVelocity = 0.2;
-    protected double m_SpeedLimit = 0.1;
-    protected double m_Phi1 = 2.05;
-    protected double m_Phi2 = 2.05;
+    protected int topologyRange = 2;
+    protected double initialVelocity = 0.2;
+    protected double speedLimit = 0.1;
+    protected double phi1 = 2.05;
+    protected double phi2 = 2.05;
     // for multi-swarm topology: radius of the swarm relative to the range
-    protected double m_swarmRadius = 0.2;
+    protected double swarmRadius = 0.2;
     // for multi-swarm: maximum sub swarm size. zero means unlimited
     protected int maxSubSwarmSize = 0;
     protected int minSubSwarmSize = 2;
@@ -131,12 +131,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         this.m_Population = (Population) a.m_Population.clone();
         this.m_Problem = a.m_Problem;
         this.m_Identifier = a.m_Identifier;
-        this.m_InitialVelocity = a.m_InitialVelocity;
-        this.m_SpeedLimit = a.m_SpeedLimit;
-        this.m_Phi1 = a.m_Phi1;
-        this.m_Phi2 = a.m_Phi2;
+        this.initialVelocity = a.initialVelocity;
+        this.speedLimit = a.speedLimit;
+        this.phi1 = a.phi1;
+        this.phi2 = a.phi2;
         this.inertnessOrChi = a.inertnessOrChi;
-        this.m_TopologyRange = a.m_TopologyRange;
+        this.topologyRange = a.topologyRange;
         this.paramControl = (ParameterControlManager) a.paramControl.clone();
         //this.setCheckSpeedLimit(a.isCheckSpeedLimit());
     }
@@ -155,7 +155,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         algType.setSelectedTag(1); // set to constriction
         m_Population = new Population(popSize);
         setPhiValues(p1, p2);
-        m_TopologyRange = topoRange;
+        topologyRange = topoRange;
         topology = topo;
     }
 
@@ -481,14 +481,14 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         treeLevels = 0;
         // the HPSO tree will contain layers 0...HPSOLevels, the last one is "incomplete" with only HPSOOrphans number of nodes
         if (getTopology() == PSOTopologyEnum.hpso || getTopology() == PSOTopologyEnum.tree) {
-            if (m_TopologyRange < 2) {
+            if (topologyRange < 2) {
                 System.err.println("Error, tree/hpso requires topology range of at least 2!");
             } else {
-                while (getMaxNodes(m_TopologyRange, treeLevels) < m_Population.size()) {
+                while (getMaxNodes(topologyRange, treeLevels) < m_Population.size()) {
                     treeLevels++;
                 }
-                treeOrphans = m_Population.size() - getMaxNodes(m_TopologyRange, treeLevels - 1);
-                treeLastFullLevelNodeCnt = (int) Math.pow(m_TopologyRange, treeLevels - 1);
+                treeOrphans = m_Population.size() - getMaxNodes(topologyRange, treeLevels - 1);
+                treeLastFullLevelNodeCnt = (int) Math.pow(topologyRange, treeLevels - 1);
             }
         }
         if (getTopology() == PSOTopologyEnum.dms) {
@@ -511,7 +511,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             indy = (AbstractEAIndividual) pop.get(i);
             if (indy instanceof InterfaceDataTypeDouble) {
                 if (!externalInitialPop || (!defaultsDone(indy))) {
-                    initIndividualDefaults(indy, m_InitialVelocity);
+                    initIndividualDefaults(indy, initialVelocity);
                 }
             }
             indy.putData(indexKey, i);
@@ -602,7 +602,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     protected void resetIndividual(AbstractEAIndividual indy) {
-        resetIndividual(indy, m_InitialVelocity);
+        resetIndividual(indy, initialVelocity);
         plotIndy(((InterfaceDataTypeDouble) indy).getDoubleData(), null, (Integer) indy.getData(indexKey));
     }
 
@@ -666,7 +666,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         }
 
         // enforce range constraints if necessary
-        if (m_CheckRange) {
+        if (checkRange) {
             ensureConstraints(curPosition, curVelocity, range);
         }
 
@@ -792,8 +792,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //		if (algType.getSelectedTag().getID()==1) chi=inertnessOrChi;
 //		else chi = 1.;
 //		
-//		double scaleCog = this.m_Phi1*chi*RNG.randomDouble(0,1);
-//		double scaleNei = this.m_Phi2*chi*RNG.randomDouble(0,1);
+//		double scaleCog = this.phi1*chi*RNG.randomDouble(0,1);
+//		double scaleNei = this.phi2*chi*RNG.randomDouble(0,1);
 //		
 //		
 //		for (int i=0; i<lastVelocity.length; i++) {
@@ -808,16 +808,16 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //			if (algType.getSelectedTag().getID()==1) chi=inertnessOrChi;
 //			else chi = 1.;
 //			// the component from the cognition model
-//			//curVelocity[i]  += this.m_Phi1*chi*RNG.randomDouble(0,1)*(personalBestPos[i]-curPosition[i]);
+//			//curVelocity[i]  += this.phi1*chi*RNG.randomDouble(0,1)*(personalBestPos[i]-curPosition[i]);
 //			double dir,diff;
 //			dir = (personalBestPos[i] < curPosition[i]) ? -1 : 1;
 //			diff = Math.abs((personalBestPos[i]-curPosition[i]));
-//			curVelocity[i]  += this.m_Phi1*chi*.5*dir*Math.max(diff, .1);
+//			curVelocity[i]  += this.phi1*chi*.5*dir*Math.max(diff, .1);
 //			// the component from the social model
-//			//curVelocity[i]  += this.m_Phi2*chi*RNG.randomDouble(0,1)*(neighbourBestPos[i]-curPosition[i]);
+//			//curVelocity[i]  += this.phi2*chi*RNG.randomDouble(0,1)*(neighbourBestPos[i]-curPosition[i]);
 //			dir = (neighbourBestPos[i]< curPosition[i]) ? -1 : 1;
 //			diff = Math.abs((neighbourBestPos[i]-curPosition[i]));
-//			curVelocity[i]  += this.m_Phi2*chi*.5*dir*Math.max(diff, .1);
+//			curVelocity[i]  += this.phi2*chi*.5*dir*Math.max(diff, .1);
 //		}
         double[] accel, curVelocity = new double[lastVelocity.length];
 
@@ -851,9 +851,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 chi = 1.;
             }
             // the component from the cognition model
-            accel[i] = this.m_Phi1 * chi * RNG.randomDouble(0, 1) * (personalBestPos[i] - curPosition[i]);
+            accel[i] = this.phi1 * chi * RNG.randomDouble(0, 1) * (personalBestPos[i] - curPosition[i]);
             // the component from the social model
-            accel[i] += this.m_Phi2 * chi * RNG.randomDouble(0, 1) * (neighbourBestPos[i] - curPosition[i]);
+            accel[i] += this.phi2 * chi * RNG.randomDouble(0, 1) * (neighbourBestPos[i] - curPosition[i]);
         }
         return accel;
     }
@@ -909,11 +909,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //
 //			for (int i = 0; i < curPosition.length; i++) {
 //				// the component from the cognition model
-//				//			accel[i]  = this.m_Phi1*chi*/*RNG.randomDouble(0,1)**/cogRand.getElement(i);
-//				accel[i]  = this.m_Phi1*chi*/*RNG.randomDouble(0,1)**/cogRandB.get(i,0);
+//				//			accel[i]  = this.phi1*chi*/*RNG.randomDouble(0,1)**/cogRand.getElement(i);
+//				accel[i]  = this.phi1*chi*/*RNG.randomDouble(0,1)**/cogRandB.get(i,0);
 //				// the component from the social model
-//				//			accel[i]  += this.m_Phi2*chi*/*RNG.randomDouble(0,1)**/socRand.getElement(i);
-//				accel[i]  += this.m_Phi2*chi*/*RNG.randomDouble(0,1)**/socRandB.get(i,0);
+//				//			accel[i]  += this.phi2*chi*/*RNG.randomDouble(0,1)**/socRand.getElement(i);
+//				accel[i]  += this.phi2*chi*/*RNG.randomDouble(0,1)**/socRandB.get(i,0);
 //			}
 //			return accel;
 //		} else {
@@ -1045,7 +1045,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         switch (topology) {
             case linear:
                 // linear
-                for (int x = -this.m_TopologyRange; x <= this.m_TopologyRange; x++) {
+                for (int x = -this.topologyRange; x <= this.topologyRange; x++) {
                     if (wrapTopology) {
                         tmpIndex = (index + x + pop.size()) % pop.size();
                     } else {
@@ -1060,8 +1060,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             case grid:
                 // grid
                 int corner = 1 + (int) Math.sqrt(pop.size());
-                for (int x = -this.m_TopologyRange; x <= this.m_TopologyRange; x++) {
-                    for (int y = -this.m_TopologyRange; y <= this.m_TopologyRange; y++) {
+                for (int x = -this.topologyRange; x <= this.topologyRange; x++) {
+                    for (int y = -this.topologyRange; y <= this.topologyRange; y++) {
                         tmpIndex = index + x + (y * corner);
                         if (wrapTopology) {
                             tmpIndex = (tmpIndex + pop.size()) % pop.size(); // wrap the grid toroidal
@@ -1099,13 +1099,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 sortedIndex = (Integer) ((AbstractEAIndividual) sortedPop[index]).getData(sortedIndexKey);
 
                 if (sortedIndex > 0) {    // its found and its not the root. root has no parent to check for
-                    k = getParentIndex(m_TopologyRange, sortedIndex, pop.size());
+                    k = getParentIndex(topologyRange, sortedIndex, pop.size());
                     compareAndSetAttractor(localBestFitness, localBestPosition, (AbstractEAIndividual) sortedPop[k], useHistoric);
                 }
                 if (treeStruct == 1) { // loop all children
                     if (isComplete(sortedIndex, pop.size())) { // the node has full degree
-                        k = m_TopologyRange * sortedIndex + 1; // this is the offset of the nodes children 
-                        for (int i = 0; i < m_TopologyRange; i++) {
+                        k = topologyRange * sortedIndex + 1; // this is the offset of the nodes children
+                        for (int i = 0; i < topologyRange; i++) {
                             compareAndSetAttractor(localBestFitness, localBestPosition, (AbstractEAIndividual) sortedPop[k + i], useHistoric);
                         }
                     } else if (isIncomplete(sortedIndex, pop.size())) { // the node does not have full degree but might have orphans
@@ -1129,7 +1129,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 break;
             case hpso: // Hierarchical PSO
                 if (index >= 0) {
-                    k = getParentIndex(m_TopologyRange, index, pop.size());
+                    k = getParentIndex(topologyRange, index, pop.size());
 //				compareAndSet(localBestFitness, localBestPosition, (AbstractEAIndividual)pop.get(k), useHistoric);
                     indy = (AbstractEAIndividual) pop.get(k);
                     System.arraycopy((double[]) indy.getData(partBestFitKey), 0, localBestFitness, 0, localBestFitness.length);
@@ -1137,8 +1137,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
                 }
                 break;
-            case random: // m_TopologyRange random informants, may be the same several times
-                for (int i = 0; i < m_TopologyRange; i++) {
+            case random: // topologyRange random informants, may be the same several times
+                for (int i = 0; i < topologyRange; i++) {
                     // select random informant
                     indy = (AbstractEAIndividual) pop.get(RNG.randomInt(0, pop.size() - 1));
                     // set local values
@@ -1245,7 +1245,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         for (int i = 0; i < curPosition.length; i++) {
             newPosition[i] = curPosition[i] + curVelocity[i];
         }
-        if (m_CheckRange && isOutOfRange(newPosition, range)) {
+        if (checkRange && isOutOfRange(newPosition, range)) {
             System.err.println("error, individual violates constraints!");
         }
 
@@ -1254,7 +1254,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             ((InterfaceDataTypeDouble) indy).setDoubleGenotype(newPosition);
         } else {
             ((InterfaceDataTypeDouble) indy).setDoubleGenotype(newPosition); // WARNING, this does a checkBounds in any case!
-            if (!m_CheckRange) {
+            if (!checkRange) {
                 System.err.println("warning, checkbounds will be forced by InterfaceESIndividual!");
             }
         }
@@ -1516,7 +1516,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 for (int i = 0; i < leaders.size(); i++) {
                     dist = metric.distance((AbstractEAIndividual) sortedPop[cur], leaders.get(i));
                     //System.out.println("dist is "+dist);
-                    if ((m_swarmRadius * 2.) > dist) {    // a formal leader is found
+                    if ((swarmRadius * 2.) > dist) {    // a formal leader is found
                         int sSize = (Integer) (leaders.get(i)).getData(multiSwSizeKey);
                         if ((maxSubSwarmSize > 0) && (sSize >= maxSubSwarmSize)) {
                             // swarm is too big already
@@ -1546,7 +1546,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 cur++;
             }
 //			for (int i=0; i<pop.size(); i++) { // this causes quadratic complexity. however, popsizes are usually small for pso, so its acceptable for testing
-//			if ((i!=index) && ((m_swarmRadius*2.)>metric.distance((AbstractEAIndividual)pop.get(i), (AbstractEAIndividual)pop.get(index)))) {
+//			if ((i!=index) && ((swarmRadius*2.)>metric.distance((AbstractEAIndividual)pop.get(i), (AbstractEAIndividual)pop.get(index)))) {
 //			this.compareAndSet(localBestFitness, localBestPosition, (AbstractEAIndividual)pop.get(i));
 //			}
 //			}
@@ -1563,7 +1563,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             AbstractEAIndividualComparator comp = new AbstractEAIndividualComparator(partBestFitKey);
             for (int i = 0; i < pop.size(); i++) {
                 // loop over the part of the tree which is complete (full degree in each level)
-                parentIndex = getParentIndex(m_TopologyRange, i, pop.size());
+                parentIndex = getParentIndex(topologyRange, i, pop.size());
                 if (comp.compare(pop.get(i), pop.get(parentIndex)) < 0) { // sibling is dominant!
                     // so switch them
                     indy = (AbstractEAIndividual) pop.get(i);
@@ -1755,7 +1755,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 if (indy == null) {
                     System.err.println("Error in PSO.setPopulation!");
                 } else if (!indy.hasData(partTypeKey)) {
-                    initIndividualDefaults(indy, m_InitialVelocity);
+                    initIndividualDefaults(indy, initialVelocity);
                     initIndividualMemory(indy);
                     indy.putData(indexKey, i);
                     indy.setIndividualIndex(i);
@@ -1787,11 +1787,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param f
      */
     public void setInitialVelocity(double f) {
-        this.m_InitialVelocity = f;
+        this.initialVelocity = f;
     }
 
     public double getInitialVelocity() {
-        return this.m_InitialVelocity;
+        return this.initialVelocity;
     }
 
     public String initialVelocityTipText() {
@@ -1810,11 +1810,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         if (k > 1) {
             k = 1;
         }
-        this.m_SpeedLimit = k;
+        this.speedLimit = k;
     }
 
     public double getSpeedLimit() {
-        return this.m_SpeedLimit;
+        return this.speedLimit;
     }
 
     /**
@@ -1824,7 +1824,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @return
      */
     protected double getSpeedLimit(int index) {
-        return this.m_SpeedLimit;
+        return this.speedLimit;
     }
 
     public String speedLimitTipText() {
@@ -1853,8 +1853,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             if (!getAlgoType().isSelectedString("Constriction")) {
                 System.err.println("Warning, PSO algorithm variant constriction expected!");
             }
-            m_Phi1 = tau1;
-            m_Phi2 = tau2;
+            phi1 = tau1;
+            phi2 = tau2;
             setInertnessOrChi(2. / (Math.abs(2 - pSum - Math.sqrt((pSum * pSum) - (4 * pSum)))));
         }
     }
@@ -1882,14 +1882,14 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param l
      */
     public void setPhi1(double l) {
-        this.m_Phi1 = l;
+        this.phi1 = l;
         if (algType.getSelectedTag().getID() == 1) {
             setConstriction(getPhi1(), getPhi2());
         }
     }
 
     public double getPhi1() {
-        return this.m_Phi1;
+        return this.phi1;
     }
 
     public String phi1TipText() {
@@ -1902,14 +1902,14 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param l
      */
     public void setPhi2(double l) {
-        this.m_Phi2 = l;
+        this.phi2 = l;
         if (algType.getSelectedTag().getID() == 1) {
             setConstriction(getPhi1(), getPhi2());
         }
     }
 
     public double getPhi2() {
-        return this.m_Phi2;
+        return this.phi2;
     }
 
     public String phi2TipText() {
@@ -1924,8 +1924,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param phi2
      */
     public void setPhiValues(double phi1, double phi2) {
-        m_Phi1 = phi1;
-        m_Phi2 = phi2;
+        this.phi1 = phi1;
+        this.phi2 = phi2;
         if (algType.isSelectedString("Constriction")) {
             setConstriction(phi1, phi2);
         }
@@ -1940,8 +1940,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param inertness
      */
     public void setParameterValues(double phi1, double phi2, double inertness) {
-        m_Phi1 = phi1;
-        m_Phi2 = phi2;
+        this.phi1 = phi1;
+        this.phi2 = phi2;
         setInertnessOrChi(inertness);
     }
 
@@ -2008,11 +2008,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param s The range.
      */
     public void setTopologyRange(int s) {
-        this.m_TopologyRange = s;
+        this.topologyRange = s;
     }
 
     public int getTopologyRange() {
-        return this.m_TopologyRange;
+        return this.topologyRange;
     }
 
     public String topologyRangeTipText() {
@@ -2025,11 +2025,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param s Check Constraints.
      */
     public void setCheckRange(boolean s) {
-        this.m_CheckRange = s;
+        this.checkRange = s;
     }
 
     public boolean isCheckRange() {
-        return this.m_CheckRange;
+        return this.checkRange;
     }
 
     public String checkRangeTipText() {
@@ -2102,11 +2102,11 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     public double getSubSwarmRadius() {
-        return m_swarmRadius;
+        return swarmRadius;
     }
 
     public void setSubSwarmRadius(double radius) {
-        m_swarmRadius = radius;
+        swarmRadius = radius;
     }
 
     public String subSwarmRadiusTipText() {

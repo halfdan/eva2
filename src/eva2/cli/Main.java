@@ -4,6 +4,7 @@ import com.google.gson.*;
 import eva2.OptimizerFactory;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.enums.DETypeEnum;
+import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
@@ -15,8 +16,6 @@ import eva2.optimization.operator.selection.SelectXProbRouletteWheel;
 import eva2.optimization.operator.terminators.CombinedTerminator;
 import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.AbstractOptimizationProblem;
-import eva2.optimization.problems.AbstractProblemDouble;
 import eva2.optimization.problems.AbstractProblemDoubleOffset;
 import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.optimization.strategies.InterfaceOptimizer;
@@ -493,15 +492,42 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 break;
             }
             case "ParticleSwarmOptimization": {
-                opt.addOption("initialVelocity", true, "Initial Velocity");
+                double phi1 = 2.05, phi2 = 2.05, speedLimit = 0.1;
+                int topoRange = 2;
+                PSOTopologyEnum selectedTopology = PSOTopologyEnum.star;
+
                 opt.addOption("speedLimit", true, "Speed Limit");
                 opt.addOption("topology", true, "Particle Swarm Topology (0-7)");
-                opt.addOption("swarmRadius", true, "Radius of the Swarm");
                 opt.addOption("phi1", true, "Phi 1");
                 opt.addOption("phi2", true, "Phi 2");
-                opt.addOption("inertnessOrChi", true, "Inertness or Chi");
-                opt.addOption("algType", true, "Type of PSO");
 
+                /**
+                 * Parse default options.
+                 */
+                try {
+                    commandLine = cliParser.parse(opt, optimizerParams);
+                } catch (ParseException e) {
+                    showHelp(opt);
+                    System.exit(-1);
+                }
+
+                if (commandLine.hasOption("phi1")) {
+                    phi1 = Double.parseDouble(commandLine.getOptionValue("phi1"));
+                }
+
+                if (commandLine.hasOption("phi2")) {
+                    phi2 = Double.parseDouble(commandLine.getOptionValue("phi2"));
+                }
+
+                if (commandLine.hasOption("topology")) {
+                    selectedTopology = PSOTopologyEnum.getFromId(Integer.parseInt(commandLine.getOptionValue("topology")));
+                }
+
+                if (commandLine.hasOption("speedLimit")) {
+                    speedLimit = Double.parseDouble(commandLine.getOptionValue("speedLimit"));
+                }
+
+                this.optimizer = OptimizerFactory.createParticleSwarmOptimization(problem, this.populationSize, phi1, phi2, speedLimit, selectedTopology, topoRange, this);
                 break;
             }
             case "EvolutionStrategies": {
@@ -535,6 +561,18 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                     pc = Double.parseDouble(commandLine.getOptionValue("pc"));
                 } else {
                     pc = 0.9;
+                }
+
+                if (commandLine.hasOption("mu")) {
+                    mu = Integer.parseInt(commandLine.getOptionValue("mu"));
+                }
+
+                if (commandLine.hasOption("lambda")) {
+                    lambda = Integer.parseInt(commandLine.getOptionValue("lambda"));
+                }
+
+                if (commandLine.hasOption("plusStrategy")) {
+                    plusStrategy = Boolean.parseBoolean(commandLine.getOptionValue("plusStrategy"));
                 }
 
                 this.optimizer = OptimizerFactory.createEvolutionStrategy(mu, lambda, plusStrategy, this.mutator, pm, this.crossover, pc, this.selection, problem, this);

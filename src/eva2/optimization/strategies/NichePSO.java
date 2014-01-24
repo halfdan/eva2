@@ -1017,7 +1017,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 //	}
     public void SetMainSwarmTopologyTag(int mainSwarmTopologyTag) {
         // Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random"  in that order starting by 0.
-        this.mainSwarmTopology = PSOTopologyEnum.translateOldID(mainSwarmTopologyTag);
+        this.mainSwarmTopology = PSOTopologyEnum.getFromId(mainSwarmTopologyTag);
     }
 
     public PSOTopologyEnum getMainSwarmTopology() {
