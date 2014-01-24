@@ -505,10 +505,39 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 break;
             }
             case "EvolutionStrategies": {
-                double cm, cr;
-                int mu, lambda;
-                boolean plusStrategy;
-                //this.optimizer = OptimizerFactory.createEvolutionStrategy()
+                double pm, pc;
+                int mu = 5, lambda = 20;
+                boolean plusStrategy = false;
+
+                opt.addOption("pm", true, "Mutation Probability");
+                opt.addOption("pc", true, "Crossover Probability");
+                opt.addOption("mu", true, "Mu");
+                opt.addOption("lambda", true, "Lambda");
+                opt.addOption("plusStrategy", true, "Whether to use the plus or comma strategy.");
+
+                /**
+                 * Parse default options.
+                 */
+                try {
+                    commandLine = cliParser.parse(opt, optimizerParams);
+                } catch (ParseException e) {
+                    showHelp(opt);
+                    System.exit(-1);
+                }
+
+                if (commandLine.hasOption("pm")) {
+                    pm = Double.parseDouble(commandLine.getOptionValue("pm"));
+                } else {
+                    pm = 0.01;
+                }
+
+                if (commandLine.hasOption("pc")) {
+                    pc = Double.parseDouble(commandLine.getOptionValue("pc"));
+                } else {
+                    pc = 0.9;
+                }
+
+                this.optimizer = OptimizerFactory.createEvolutionStrategy(mu, lambda, plusStrategy, this.mutator, pm, this.crossover, pc, this.selection, problem, this);
                 break;
             }
             default:
