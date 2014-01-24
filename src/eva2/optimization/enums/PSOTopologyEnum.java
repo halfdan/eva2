@@ -37,7 +37,7 @@ public enum PSOTopologyEnum {
      * @param oldID
      * @return
      */
-    public static PSOTopologyEnum translateOldID(int oldID) {
+    public static PSOTopologyEnum getFromId(int oldID) {
         switch (oldID) {
             case 0:
                 return linear;
@@ -56,7 +56,7 @@ public enum PSOTopologyEnum {
             case 7:
                 return dms;
             default:
-                System.err.println("Error: invalid old topology ID in PSOTopologyEnum translateOldID! Returning grid.");
+                System.err.println("Error: invalid old topology ID in PSOTopologyEnum getFromId! Returning grid.");
                 return grid;
         }
     }
