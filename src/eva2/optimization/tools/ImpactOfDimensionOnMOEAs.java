@@ -67,15 +67,15 @@ public class ImpactOfDimensionOnMOEAs {
 
     public void save(double[][] log) {
         String tmpS;
-        BufferedWriter m_OutputFile = null;
+        BufferedWriter outputFile = null;
         try {
-            m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Impact_Of_Dimension_On_MOEAs.dat")));
+            outputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("Impact_Of_Dimension_On_MOEAs.dat")));
         } catch (FileNotFoundException e) {
             System.out.println("Could not open output file! Filename: Impact_Of_Dimension_On_MOEAs.dat");
         }
         try {
             tmpS = "Dim;P100;P200;P300;P400;P500\n";
-            m_OutputFile.write(tmpS);
+            outputFile.write(tmpS);
             for (int i = 0; i < log.length; i++) {
                 tmpS = "" + i + ";";
                 for (int j = 0; j < log[i].length; j++) {
@@ -85,13 +85,13 @@ public class ImpactOfDimensionOnMOEAs {
                     }
                 }
                 tmpS += "\n";
-                m_OutputFile.write(tmpS);
+                outputFile.write(tmpS);
             }
         } catch (IOException e) {
             System.out.println("Problems writing to output file!");
         }
         try {
-            m_OutputFile.close();
+            outputFile.close();
         } catch (IOException e) {
 
         }

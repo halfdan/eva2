@@ -11,11 +11,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 13.09.2005
- * Time: 18:51:10
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class DeNovofilter {
 

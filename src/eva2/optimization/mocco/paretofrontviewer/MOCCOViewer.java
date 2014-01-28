@@ -101,8 +101,8 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
 //        this.add(this.m_Main, BorderLayout.CENTER);
 //        this.m_ViewPanel    = new JPanel();
 //        this.m_ViewPanel.setLayout(new BorderLayout());
-//        this.m_View         = new ParetoFrontView2D(this);
-//        this.m_ViewPanel.add((JPanel)this.m_View, BorderLayout.CENTER);
+//        this.view         = new ParetoFrontView2D(this);
+//        this.m_ViewPanel.add((JPanel)this.view, BorderLayout.CENTER);
 //        this.m_Parameters   = new JPanel();
 //        this.m_Parameters.setLayout(new BorderLayout());
 //        this.m_Choices      = new JPanel();
@@ -665,7 +665,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
 //          for (int i = 0; i < m_JCShow.length; i++) {
 //              m_MOCCO.m_State.m_Show[i] = m_JCShow[i].isSelected();
 //          }
-//          m_View.updateView();
+//          view.updateView();
 //      }
 //  };
 //  ActionListener colorModeChanged = new ActionListener() {
@@ -673,7 +673,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
 //          for (int i = 0; i < m_JColor.length; i++) {
 //              m_MOCCO.m_State.m_Color[i] = getColor(m_JColor[i].getSelectedIndex());
 //          }
-//          m_View.updateView();
+//          view.updateView();
 //      }
 //  };
 //

@@ -8,17 +8,13 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 23.02.2005
- * Time: 19:17:38
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PortfolioFrontTester {
 
-    private Plot m_Plot;
+    private Plot plot;
     private int index = 0;
-    private BufferedWriter m_OutputFile = null;
+    private BufferedWriter outputFile = null;
     private double[] loss;
     private double[][] risk;
 
@@ -201,7 +197,7 @@ public class PortfolioFrontTester {
 
     private void saveThisStuff(ArrayList c, ArrayList e) {
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K2_Limits045_CompleteList.txt")));
+            this.outputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K2_Limits045_CompleteList.txt")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -215,12 +211,12 @@ public class PortfolioFrontTester {
             this.writeToFile(line);
         }
         try {
-            this.m_OutputFile.close();
+            this.outputFile.close();
         } catch (java.io.IOException ex) {
         }
         // next file
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K2_Limits045_ListElements.txt")));
+            this.outputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K2_Limits045_ListElements.txt")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -242,14 +238,14 @@ public class PortfolioFrontTester {
             this.writeToFile(line);
         }
         try {
-            this.m_OutputFile.close();
+            this.outputFile.close();
         } catch (java.io.IOException ex) {
         }
     }
 
     private void saveThisStuffK3(ArrayList c, ArrayList e) {
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K3_Limits0283_CompleteList.txt")));
+            this.outputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K3_Limits0283_CompleteList.txt")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -263,12 +259,12 @@ public class PortfolioFrontTester {
             this.writeToFile(line);
         }
         try {
-            this.m_OutputFile.close();
+            this.outputFile.close();
         } catch (java.io.IOException ex) {
         }
         // next file
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K3_Limits0283_ListElements.txt")));
+            this.outputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("PortX_K3_Limits0283_ListElements.txt")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -301,7 +297,7 @@ public class PortfolioFrontTester {
             this.writeToFile(line);
         }
         try {
-            this.m_OutputFile.close();
+            this.outputFile.close();
         } catch (java.io.IOException ex) {
         }
     }
@@ -313,12 +309,12 @@ public class PortfolioFrontTester {
      */
     private void writeToFile(String line) {
         String write = line + "\n";
-        if (this.m_OutputFile == null) {
+        if (this.outputFile == null) {
             return;
         }
         try {
-            this.m_OutputFile.write(write, 0, write.length());
-            this.m_OutputFile.flush();
+            this.outputFile.write(write, 0, write.length());
+            this.outputFile.flush();
         } catch (IOException e) {
             System.out.println("Problems writing to output file!");
         }
@@ -328,12 +324,12 @@ public class PortfolioFrontTester {
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;
-        this.m_Plot = new Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
+        this.plot = new Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
 
     }
 
     private void showLine(double[][] elm) {
-        GraphPointSet mySet = new GraphPointSet(this.index, this.m_Plot.getFunctionArea());
+        GraphPointSet mySet = new GraphPointSet(this.index, this.plot.getFunctionArea());
         mySet.setConnectedMode(false);
         this.index++;
         for (int i = 0; i < elm.length; i++) {

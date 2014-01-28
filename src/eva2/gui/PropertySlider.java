@@ -71,7 +71,7 @@ class PropertySlider extends JPanel {
      */
     protected void updateUs() {
         try {
-            //String x = m_Editor.getAsText();
+            //String x = editor.getAsText();
             slider.setValue(((Integer) propertyEditor.getValue()).intValue());
         } catch (IllegalArgumentException ex) {
         }

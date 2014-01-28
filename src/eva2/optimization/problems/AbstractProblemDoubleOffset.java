@@ -1,11 +1,7 @@
 package eva2.optimization.problems;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 17:58:55
- * To change this template use Options | File Templates.
+ *
  */
 public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble implements Interface2DBorderProblem {
 

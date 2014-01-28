@@ -142,7 +142,7 @@ public class PropertySelectableList<T> implements java.io.Serializable {
 //			m_Objects=newOs;
 //			m_Selection=newSs;
 //		}
-//		m_Support.firePropertyChange("PropertySelectableList", null, this);
+//		propertyChangeSupport.firePropertyChange("PropertySelectableList", null, this);
 //	}
 
     public void addPropertyChangeListener(PropertyChangeListener l) {
