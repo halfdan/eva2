@@ -4,15 +4,10 @@ import java.util.BitSet;
 
 /**
  * This is a gray coding for integers, sorry no variable number of bits here.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 18:40:03
- * To change this template use Options | File Templates.
  */
 public class GAGrayCodingInteger implements InterfaceGAIntegerCoding, java.io.Serializable {
 
-    GAStandardCodingInteger m_HelpingHand = new GAStandardCodingInteger();
+    GAStandardCodingInteger standardCodingInteger = new GAStandardCodingInteger();
 
     /**
      * This method decodes a part of a given BitSet into a int value. This method may change the contens
@@ -52,7 +47,7 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding, java.io.Se
                 tmpBitSet.clear(i);
             }
         }
-        return this.m_HelpingHand.decodeValue(tmpBitSet, range, tmpLocus, correction);
+        return this.standardCodingInteger.decodeValue(tmpBitSet, range, tmpLocus, correction);
     }
 
     /**
@@ -74,7 +69,7 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding, java.io.Se
         tmpLocus[0] = 0;
         tmpLocus[1] = locus[1];
         tmpBitSet = new BitSet(tmpLocus.length);
-        this.m_HelpingHand.codeValue(value, range, tmpBitSet, tmpLocus);
+        this.standardCodingInteger.codeValue(value, range, tmpBitSet, tmpLocus);
 
 //        if (tmpBitSet.get(0)) refBitSet.set(locus[1]);
 //        else refBitSet.clear(locus[1]);
@@ -103,7 +98,7 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding, java.io.Se
      */
     @Override
     public int calculateNecessaryBits(int[] range) {
-        return this.m_HelpingHand.calculateNecessaryBits(range);
+        return this.standardCodingInteger.calculateNecessaryBits(range);
     }
 
     /**

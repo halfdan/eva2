@@ -56,8 +56,8 @@ public class GPNodeSum extends AbstractGPNode implements java.io.Serializable {
         Object tmpObj;
         double result = 0;
 
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            tmpObj = this.m_Nodes[i].evaluate(environment);
+        for (int i = 0; i < this.nodes.length; i++) {
+            tmpObj = this.nodes[i].evaluate(environment);
             if (tmpObj instanceof double[]) {
                 result += Mathematics.sum((double[]) tmpObj);
             } else if (tmpObj instanceof Double[]) {

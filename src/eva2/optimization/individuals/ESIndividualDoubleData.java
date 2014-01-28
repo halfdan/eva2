@@ -137,14 +137,6 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         this.genotype = newDesPa;
         this.range = newRange;
         this.phenotype = null; // mark as invalid
-
-//        changed 28.08.03 by request of Spieth
-//        this.m_DecisionParameters   = new double[length];
-//        this.range                = new double[length][2];
-//        for (int i = 0; i < this.range.length; i++) {
-//            this.range[i][0] = -10;
-//            this.range[i][1] = 10;
-//        }
     }
 
     /**

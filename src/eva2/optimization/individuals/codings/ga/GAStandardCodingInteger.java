@@ -8,11 +8,6 @@ import java.util.BitSet;
 
 /**
  * The traditional binary coding for integer number, no variable number of bits here, sorry.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 16:38:45
- * To change this template use Options | File Templates.
  */
 public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.io.Serializable {
 

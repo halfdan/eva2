@@ -8,28 +8,23 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * This individual combines a real-valued phenotype with a tree-based phenotype.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.04.2003
- * Time: 10:04:44
- * To change this template use Options | File Templates.
+ *
  */
 public class GAPIndividualProgramData extends AbstractEAIndividual implements InterfaceDataTypeProgram, InterfaceDataTypeDouble, java.io.Serializable {
 
-    private InterfaceDataTypeDouble m_Numbers = new ESIndividualDoubleData();
-    private InterfaceDataTypeProgram m_Program = new GPIndividualProgramData();
+    private InterfaceDataTypeDouble numberData = new ESIndividualDoubleData();
+    private InterfaceDataTypeProgram programData = new GPIndividualProgramData();
 
     public GAPIndividualProgramData() {
         this.mutationProbability = 1.0;
         this.crossoverProbability = 1.0;
-        this.m_Numbers = new GAIndividualDoubleData();
-        this.m_Program = new GPIndividualProgramData();
+        this.numberData = new GAIndividualDoubleData();
+        this.programData = new GPIndividualProgramData();
     }
 
     public GAPIndividualProgramData(GAPIndividualProgramData individual) {
-        this.m_Numbers = (InterfaceDataTypeDouble) ((AbstractEAIndividual) individual.getNumbers()).clone();
-        this.m_Program = (InterfaceDataTypeProgram) ((AbstractEAIndividual) individual.getProgramRepresentation()).clone();
+        this.numberData = (InterfaceDataTypeDouble) ((AbstractEAIndividual) individual.getNumbers()).clone();
+        this.programData = (InterfaceDataTypeProgram) ((AbstractEAIndividual) individual.getProgramRepresentation()).clone();
 
         // cloning the members of AbstractEAIndividual
         this.age = individual.age;
@@ -63,10 +58,10 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAPIndividualProgramData) {
             GAPIndividualProgramData indy = (GAPIndividualProgramData) individual;
-            if (!((AbstractEAIndividual) this.m_Numbers).equalGenotypes((AbstractEAIndividual) indy.m_Numbers)) {
+            if (!((AbstractEAIndividual) this.numberData).equalGenotypes((AbstractEAIndividual) indy.numberData)) {
                 return false;
             }
-            if (!((AbstractEAIndividual) this.m_Program).equalGenotypes((AbstractEAIndividual) indy.m_Program)) {
+            if (!((AbstractEAIndividual) this.programData).equalGenotypes((AbstractEAIndividual) indy.programData)) {
                 return false;
             }
             return true;
@@ -82,14 +77,14 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void init(InterfaceOptimizationProblem opt) {
-        ((AbstractEAIndividual) this.m_Numbers).init(opt);
-        ((AbstractEAIndividual) this.m_Program).init(opt);
+        ((AbstractEAIndividual) this.numberData).init(opt);
+        ((AbstractEAIndividual) this.programData).init(opt);
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-        ((AbstractEAIndividual) this.m_Numbers).defaultInit(prob);
-        ((AbstractEAIndividual) this.m_Program).defaultInit(prob);
+        ((AbstractEAIndividual) this.numberData).defaultInit(prob);
+        ((AbstractEAIndividual) this.programData).defaultInit(prob);
     }
 
     /**
@@ -103,15 +98,15 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof Object[]) {
             if (((Object[]) obj)[0] instanceof double[]) {
-                ((AbstractEAIndividual) this.m_Numbers).initByValue(((Object[]) obj)[0], opt);
-                ((AbstractEAIndividual) this.m_Program).initByValue(((Object[]) obj)[1], opt);
+                ((AbstractEAIndividual) this.numberData).initByValue(((Object[]) obj)[0], opt);
+                ((AbstractEAIndividual) this.programData).initByValue(((Object[]) obj)[1], opt);
             } else {
-                ((AbstractEAIndividual) this.m_Numbers).initByValue(((Object[]) obj)[1], opt);
-                ((AbstractEAIndividual) this.m_Program).initByValue(((Object[]) obj)[0], opt);
+                ((AbstractEAIndividual) this.numberData).initByValue(((Object[]) obj)[1], opt);
+                ((AbstractEAIndividual) this.programData).initByValue(((Object[]) obj)[0], opt);
             }
         } else {
-            ((AbstractEAIndividual) this.m_Numbers).init(opt);
-            ((AbstractEAIndividual) this.m_Program).init(opt);
+            ((AbstractEAIndividual) this.numberData).init(opt);
+            ((AbstractEAIndividual) this.programData).init(opt);
             System.out.println("Initial value for GAPIndividualDoubleData is not suitable!");
         }
     }
@@ -122,17 +117,17 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     @Override
     public void mutate() {
         if (RNG.flipCoin(this.mutationProbability)) {
-            ((AbstractEAIndividual) this.m_Numbers).mutate();
+            ((AbstractEAIndividual) this.numberData).mutate();
         }
         if (RNG.flipCoin(this.mutationProbability)) {
-            ((AbstractEAIndividual) this.m_Program).mutate();
+            ((AbstractEAIndividual) this.programData).mutate();
         }
     }
 
     @Override
     public void defaultMutate() {
-        ((AbstractEAIndividual) this.m_Numbers).defaultMutate();
-        ((AbstractEAIndividual) this.m_Program).defaultMutate();
+        ((AbstractEAIndividual) this.numberData).defaultMutate();
+        ((AbstractEAIndividual) this.programData).defaultMutate();
     }
 
     /**
@@ -193,8 +188,8 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     @Override
     public String getStringRepresentation() {
         String result = "This is a hybrid Individual:\n";
-        result += "The Numbers Part:\n" + ((AbstractEAIndividual) this.m_Numbers).getStringRepresentation();
-        result += "\nThe Binarys Part:\n" + ((AbstractEAIndividual) this.m_Program).getStringRepresentation();
+        result += "The Numbers Part:\n" + ((AbstractEAIndividual) this.numberData).getStringRepresentation();
+        result += "\nThe Binarys Part:\n" + ((AbstractEAIndividual) this.programData).getStringRepresentation();
         return result;
     }
 
@@ -208,7 +203,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void setDoubleDataLength(int length) {
-        this.m_Numbers.setDoubleDataLength(length);
+        this.numberData.setDoubleDataLength(length);
     }
 
     /**
@@ -218,7 +213,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public int size() {
-        return this.m_Numbers.size();
+        return this.numberData.size();
     }
 
     /**
@@ -230,7 +225,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void setDoubleRange(double[][] range) {
-        this.m_Numbers.setDoubleRange(range);
+        this.numberData.setDoubleRange(range);
     }
 
     /**
@@ -240,7 +235,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public double[][] getDoubleRange() {
-        return this.m_Numbers.getDoubleRange();
+        return this.numberData.getDoubleRange();
     }
 
     /**
@@ -250,7 +245,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public double[] getDoubleData() {
-        return this.m_Numbers.getDoubleData();
+        return this.numberData.getDoubleData();
     }
 
     /**
@@ -261,7 +256,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public double[] getDoubleDataWithoutUpdate() {
-        return this.m_Numbers.getDoubleDataWithoutUpdate();
+        return this.numberData.getDoubleDataWithoutUpdate();
     }
 
     /**
@@ -272,7 +267,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void setDoublePhenotype(double[] doubleData) {
-        this.m_Numbers.setDoublePhenotype(doubleData);
+        this.numberData.setDoublePhenotype(doubleData);
     }
 
     /**
@@ -283,7 +278,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void setDoubleGenotype(double[] doubleData) {
-        this.m_Numbers.setDoubleGenotype(doubleData);
+        this.numberData.setDoubleGenotype(doubleData);
     }
 
 /************************************************************************************
@@ -296,7 +291,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void setProgramDataLength(int length) {
-        this.m_Program.setProgramDataLength(length);
+        this.programData.setProgramDataLength(length);
     }
 
     /**
@@ -306,7 +301,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public InterfaceProgram[] getProgramData() {
-        return this.m_Program.getProgramData();
+        return this.programData.getProgramData();
     }
 
     /**
@@ -317,7 +312,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public InterfaceProgram[] getProgramDataWithoutUpdate() {
-        return this.m_Program.getProgramDataWithoutUpdate();
+        return this.programData.getProgramDataWithoutUpdate();
     }
 
     /**
@@ -327,7 +322,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void SetProgramPhenotype(InterfaceProgram[] program) {
-        this.m_Program.SetProgramPhenotype(program);
+        this.programData.SetProgramPhenotype(program);
     }
 
     /**
@@ -337,7 +332,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void SetProgramGenotype(InterfaceProgram[] program) {
-        this.m_Program.SetProgramGenotype(program);
+        this.programData.SetProgramGenotype(program);
     }
 
     /**
@@ -347,7 +342,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public void SetFunctionArea(Object[] area) {
-        this.m_Program.SetFunctionArea(area);
+        this.programData.SetFunctionArea(area);
     }
 
     /**
@@ -357,7 +352,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      */
     @Override
     public Object[] getFunctionArea() {
-        return this.m_Program.getFunctionArea();
+        return this.programData.getFunctionArea();
     }
 
 /**********************************************************************************************************************
@@ -380,11 +375,11 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @param Numbers The new representation for the inner constants.
      */
     public void setNumbers(InterfaceDataTypeDouble Numbers) {
-        this.m_Numbers = Numbers;
+        this.numberData = Numbers;
     }
 
     public InterfaceDataTypeDouble getNumbers() {
-        return this.m_Numbers;
+        return this.numberData;
     }
 
     public String numbersTipText() {
@@ -397,11 +392,11 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @param program The new representation for the program.
      */
     public void setProgramRepresentation(InterfaceDataTypeProgram program) {
-        this.m_Program = program;
+        this.programData = program;
     }
 
     public InterfaceDataTypeProgram getProgramRepresentation() {
-        return this.m_Program;
+        return this.programData;
     }
 
     public String programRepresentationTipText() {

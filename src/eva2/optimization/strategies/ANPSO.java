@@ -943,21 +943,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         this.maxInitialSubSwarmSize = maxSubSwarmSize;
     }
 
-//	public void setMainSwarmPhi2(double mainSwarmPhi2) {
-//		super.SetMainSwarmPhi2(mainSwarmPhi2);
-//	}
-//	public String mainSwarmPhi2TipText(){
-//		return "weights the social component for the PSO used to train the main swarm";
-//	}
-
-//	/** This method allows you to choose the topology type.
-//	 * @param s  The type.
-//	 */
-//	public void setMainSwarmTopology(SelectedTag s) {
-//		mainSwarm.m_Topology = s;
-//		this.mainSwarmTopologyTag = s.getSelectedTagID();
-//		GenericObjectEditor.setHideProperty(getClass(), "mainSwarmTopologyRange", mainSwarmTopologyTag == 3); // "Multi-Swarm" has no topologyRange
-//	}
 
     public String mainSwarmTopologyTipText() {
         return "sets the topology type used to train the main swarm";

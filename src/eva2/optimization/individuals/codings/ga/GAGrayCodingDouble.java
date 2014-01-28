@@ -9,15 +9,10 @@ import java.util.BitSet;
 /**
  * This gives the gray coding for double with a variable number of bits for coding
  * As far as i recall the least significant bit is to the left.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 18:39:51
- * To change this template use Options | File Templates.
  */
 public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Serializable {
 
-    GAStandardCodingDouble m_HelpingHand = new GAStandardCodingDouble();
+    GAStandardCodingDouble standardCodingDouble = new GAStandardCodingDouble();
 
     /**
      * This method decodes a part of a given BitSet into a double value. This method may change the contens
@@ -52,7 +47,7 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
                 tmpBitSet.clear(i);
             }
         }
-        return this.m_HelpingHand.decodeValue(tmpBitSet, range, tmpLocus, correction);
+        return this.standardCodingDouble.decodeValue(tmpBitSet, range, tmpLocus, correction);
     }
 
     /**
@@ -74,7 +69,7 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
         tmpLocus[0] = 0;
         tmpLocus[1] = locus[1];
         tmpBitSet = new BitSet(tmpLocus.length);
-        this.m_HelpingHand.codeValue(value, range, tmpBitSet, tmpLocus);
+        this.standardCodingDouble.codeValue(value, range, tmpBitSet, tmpLocus);
         if (tmpBitSet.get(0)) {
             refBitSet.set(locus[0]);
         } else {

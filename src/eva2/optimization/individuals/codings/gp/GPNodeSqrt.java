@@ -60,7 +60,7 @@ public class GPNodeSqrt extends AbstractGPNode implements java.io.Serializable {
         Object tmpObj;
         double result = 1;
 
-        tmpObj = this.m_Nodes[0].evaluate(environment);
+        tmpObj = this.nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
             result = Math.sqrt(Math.abs(((Double) tmpObj).doubleValue()));
         }
@@ -77,7 +77,7 @@ public class GPNodeSqrt extends AbstractGPNode implements java.io.Serializable {
 //     */
 //    public String getStringRepresentation() {
 //        String result = "sqrt( ";
-//        for (int i = 0; i < this.m_Nodes.length; i++) result += this.m_Nodes[i].getStringRepresentation() +" ";
+//        for (int i = 0; i < this.nodes.length; i++) result += this.nodes[i].getStringRepresentation() +" ";
 //        result += ")";
 //        return result;
 //    }

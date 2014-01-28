@@ -15,10 +15,10 @@ import eva2.optimization.problems.InterfaceProgramProblem;
  */
 public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable {
 
-    private String m_Identifier;
+    private String identifier;
 
     public GPNodeOutput() {
-        this.m_Identifier = "Y";
+        this.identifier = "Y";
     }
 
     /**
@@ -27,11 +27,11 @@ public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable
      * @param identifier The name of the sensor requested.
      */
     public GPNodeOutput(String identifier) {
-        this.m_Identifier = identifier;
+        this.identifier = identifier;
     }
 
     public GPNodeOutput(GPNodeOutput node) {
-        this.m_Identifier = node.m_Identifier;
+        this.identifier = node.identifier;
         this.cloneMembers(node);
     }
 
@@ -39,7 +39,7 @@ public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable
     public boolean equals(Object obj) {
         if (obj instanceof GPNodeOutput) {
             GPNodeOutput node = (GPNodeOutput) obj;
-            if (!this.m_Identifier.equalsIgnoreCase(node.m_Identifier)) {
+            if (!this.identifier.equalsIgnoreCase(node.identifier)) {
                 return false;
             }
             return true;
@@ -55,7 +55,7 @@ public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable
      */
     @Override
     public String getName() {
-        return "Actuator:" + this.m_Identifier;
+        return "Actuator:" + this.identifier;
     }
 
     /**
@@ -85,13 +85,13 @@ public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable
      */
     @Override
     public Object evaluate(InterfaceProgramProblem environment) {
-        environment.setActuatorValue(this.m_Identifier, null);
+        environment.setActuatorValue(this.identifier, null);
         return null;
     }
 
     @Override
     public String getOpIdentifier() {
-        return "OUT:" + m_Identifier;
+        return "OUT:" + identifier;
     }
 //    /** This method returns a string representation
 //     * @return string
