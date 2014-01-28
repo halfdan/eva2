@@ -78,7 +78,7 @@ public class ScaledBorder implements Border {
     /**
      * the  displayed labels
      */
-    public String x_label, y_label;
+    public String xLabel, yLabel;
 
     /**
      * foreground and background colors
@@ -281,18 +281,18 @@ public class ScaledBorder implements Border {
                     inner_insets.top + cd.height + marker_length);
         }
 
-        if (y_label != null) {
-            Dimension yld = new Dimension(fm.getAscent() + fm.getDescent(), fm.stringWidth(y_label));
+        if (yLabel != null) {
+            Dimension yld = new Dimension(fm.getAscent() + fm.getDescent(), fm.stringWidth(yLabel));
             AffineTransform T = new AffineTransform(0, -1, 1, 0, 0, 0);
             Font old = g.getFont(), f = old.deriveFont(T);
             g.setFont(f);
-            g.drawString(y_label, y_label2border + fm.getAscent(), inner_insets.top + (cd.height + yld.height) / 2);
+            g.drawString(yLabel, y_label2border + fm.getAscent(), inner_insets.top + (cd.height + yld.height) / 2);
             g.setFont(old);
         }
 
-        if (x_label != null) {
+        if (xLabel != null) {
             g.drawString(
-                    x_label, inner_insets.left + (cd.width - fm.stringWidth(x_label)) / 2,
+                    xLabel, inner_insets.left + (cd.width - fm.stringWidth(xLabel)) / 2,
                     d.height - outer_insets.bottom - x_label2border - fm.getDescent());
         }
 
@@ -630,7 +630,7 @@ public class ScaledBorder implements Border {
         }
 
         // left:
-        if (y_label != null) {
+        if (yLabel != null) {
             insets.left += fm.getAscent() + fm.getDescent();
         }
         insets.left += y_label2values * digit_width;
@@ -670,7 +670,7 @@ public class ScaledBorder implements Border {
 
         // bottom:
         insets.bottom += 1 + fontHeight + x_label2border;
-        if (x_label != null) {
+        if (xLabel != null) {
             insets.bottom += fontHeight;
         }
 

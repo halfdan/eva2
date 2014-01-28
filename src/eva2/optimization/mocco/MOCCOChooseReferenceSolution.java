@@ -14,19 +14,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.10.2005
- * Time: 18:42:52
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOCCOChooseReferenceSolution extends MOCCOPhase implements InterfaceProcessElement, InterfaceRefSolutionListener {
 
-    AbstractEAIndividual m_ReferenceSolution = null;
-    JPanel m_Selected;
+    AbstractEAIndividual referenceSolution = null;
+    JPanel selected;
 
     public MOCCOChooseReferenceSolution(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
+        this.mocco = mocco;
     }
 
     /**
@@ -34,40 +30,40 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
+        this.mocco.controlPanel.removeAll();
 
         // The button panel
         JButton tmpB = new JButton("Continue to strategy parameterization.");
         tmpB.addActionListener(continue2);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
         // the parameter panel
-        this.m_Mocco.m_JPanelParameters.removeAll();
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
-        this.m_Mocco.m_JPanelParameters.add(this.makeHelpText("Please choose a reference solution " +
+        this.mocco.parameterPanel.removeAll();
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
+        this.mocco.parameterPanel.add(this.makeHelpText("Please choose a reference solution " +
                 "from the Pareto-optimal solutions (grey circles) given to the right."), BorderLayout.NORTH);
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new BorderLayout());
         tmpP.add(new JLabel("Currently selected solution:"), BorderLayout.NORTH);
-        this.m_Selected = new JPanel();
-        tmpP.add(this.m_Selected, BorderLayout.CENTER);
+        this.selected = new JPanel();
+        tmpP.add(this.selected, BorderLayout.CENTER);
         this.updateSelected();
-        this.m_Mocco.m_View.setRefSolutionSelectable(true);
-        this.m_Mocco.m_View.setUniquelySelectable(true);
-        this.m_Mocco.m_View.addRefSolutionSelectionListener(this);
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
-        this.m_Mocco.m_JPanelParameters.validate();
-        this.m_Mocco.m_JPanelControl.validate();
+        this.mocco.view.setRefSolutionSelectable(true);
+        this.mocco.view.setUniquelySelectable(true);
+        this.mocco.view.addRefSolutionSelectionListener(this);
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.CENTER);
+        this.mocco.parameterPanel.validate();
+        this.mocco.controlPanel.validate();
     }
 
     private void updateSelected() {
-        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Mocco.m_State.m_CurrentProblem).getProblemObjectives();
-        this.m_Selected.removeAll();
-        this.m_Selected.setLayout(new BorderLayout());
-        if (this.m_ReferenceSolution == null) {
-            this.m_Selected.add(new JLabel("Selected Individual: none"), BorderLayout.NORTH);
+        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) this.mocco.state.currentProblem).getProblemObjectives();
+        this.selected.removeAll();
+        this.selected.setLayout(new BorderLayout());
+        if (this.referenceSolution == null) {
+            this.selected.add(new JLabel("Selected Individual: none"), BorderLayout.NORTH);
         } else {
-            this.m_Selected.add(new JLabel("Selected Individual: " + this.m_ReferenceSolution), BorderLayout.NORTH);
-            //double[] fitness = this.m_ReferenceSolution.getFitness();
+            this.selected.add(new JLabel("Selected Individual: " + this.referenceSolution), BorderLayout.NORTH);
+            //double[] fitness = this.referenceSolution.getFitness();
             JPanel tmpP = new JPanel();
             JTextField textA;
             tmpP.setLayout(new GridBagLayout());
@@ -104,28 +100,28 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
                 gbc.gridx = 2;
                 gbc.gridy = i + 1;
                 gbc.weightx = 1;
-                textA = new JTextField("" + ((Double) m_ReferenceSolution.getData(obj[i].getIdentName())).doubleValue());
+                textA = new JTextField("" + ((Double) referenceSolution.getData(obj[i].getIdentName())).doubleValue());
                 textA.setEditable(false);
                 tmpP.add(textA, gbc);
 
             }
-            this.m_Selected.add(tmpP, BorderLayout.CENTER);
+            this.selected.add(tmpP, BorderLayout.CENTER);
         }
-        this.m_Selected.validate();
+        this.selected.validate();
     }
 
     ActionListener continue2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            if (m_ReferenceSolution != null) {
-                m_Mocco.m_View.setRefSolutionSelectable(false);
-                m_Mocco.m_View.removeRefSolutionSelectionListeners();
-                m_Mocco.m_JPanelControl.removeAll();
-                m_Mocco.m_JPanelControl.validate();
-                m_Mocco.m_JPanelParameters.removeAll();
-                m_Finished = true;
+            if (referenceSolution != null) {
+                mocco.view.setRefSolutionSelectable(false);
+                mocco.view.removeRefSolutionSelectionListeners();
+                mocco.controlPanel.removeAll();
+                mocco.controlPanel.validate();
+                mocco.parameterPanel.removeAll();
+                hasFinished = true;
             } else {
-                JOptionPane.showMessageDialog(m_Mocco.m_JFrame,
+                JOptionPane.showMessageDialog(mocco.getMainFrame(),
                         "No reference solution selected. Cannot proceed!",
                         "Warning", JOptionPane.WARNING_MESSAGE);
             }
@@ -133,7 +129,7 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
     };
 
     public AbstractEAIndividual getReferenceSolution() {
-        return this.m_ReferenceSolution;
+        return this.referenceSolution;
     }
     /******************************************************************************
      *     InterfaceSelectionListener
@@ -147,11 +143,11 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
      */
     @Override
     public void individualSelected(AbstractEAIndividual indy) {
-        Population pop = this.m_Mocco.m_State.m_ParetoFront.getMarkedIndividuals();
+        Population pop = this.mocco.state.paretoFront.getMarkedIndividuals();
         if (pop.size() == 1) {
-            this.m_ReferenceSolution = (AbstractEAIndividual) pop.get(0);
+            this.referenceSolution = (AbstractEAIndividual) pop.get(0);
         } else {
-            this.m_ReferenceSolution = null;
+            this.referenceSolution = null;
         }
         this.updateSelected();
     }

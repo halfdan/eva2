@@ -27,17 +27,17 @@ import java.awt.event.ActionListener;
  */
 public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfaceProcessElement {
 
-    private double[] m_RefPoint;
-    private MOSOLpMetric m_LpMetric;
-    private IslandModelEA m_Island;
-    private GeneralOptimizationEditorProperty m_EMOSO, m_EIMEA;
-    private int m_Perturbations = 4;
-    private double m_Perturbation = 0.01;
-    private JTextField m_NumPer, m_SizePer;
-    JPanel m_Parameters;
+    private double[] refPoint;
+    private MOSOLpMetric lpMetric;
+    private IslandModelEA islandModelEA;
+    private GeneralOptimizationEditorProperty optimizationEditorProperty, optimizationEditorProperty1;
+    private int perturbations = 4;
+    private double perturbation = 0.01;
+    private JTextField numPerTextField, sizePerTextField;
+    JPanel parameterPanel;
 
     public MOCCOParameterizeRefPoint(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
+        this.mocco = mocco;
     }
 
     /**
@@ -45,78 +45,78 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
+        this.mocco.controlPanel.removeAll();
 
         // The button panel
         JButton tmpB = new JButton("Start optimization.");
         tmpB.setToolTipText("Start the adhoc online optimization.");
         tmpB.addActionListener(continue2);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
         tmpB = new JButton("Save task.");
         tmpB.setToolTipText("Save the optimization problem and algorithm to *.ser file for offline optimization.");
         tmpB.addActionListener(saveState2FileForOfflineOptimization);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
         // the parameter panel
-        this.m_Mocco.m_JPanelParameters.removeAll();
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
-        this.m_Mocco.m_JPanelParameters.add(this.makeHelpText("Please parameterized the reference point method." +
+        this.mocco.parameterPanel.removeAll();
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
+        this.mocco.parameterPanel.add(this.makeHelpText("Please parameterized the reference point method." +
                 " Typically this methods generates a set of solutions by using k perturbations of the reference point given." +
                 " Also the choice of the optimization algorithms and migration rate for the heterogeneuos island model EA is critical." +
                 " Please note that the server settings will override k!"), BorderLayout.NORTH);
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new BorderLayout());
-        this.m_Parameters = new JPanel();
-//        this.m_Choice.setBorder(BorderFactory.createCompoundBorder(
+        this.parameterPanel = new JPanel();
+//        this.choicePanel.setBorder(BorderFactory.createCompoundBorder(
 //		    BorderFactory.createTitledBorder("Step Method:"),
 //			BorderFactory.createEmptyBorder(0, 5, 5, 5)));
-        tmpP.add(this.m_Parameters, BorderLayout.CENTER);
+        tmpP.add(this.parameterPanel, BorderLayout.CENTER);
         this.installChoice();
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
-        this.m_Mocco.m_JPanelParameters.validate();
-        this.m_Mocco.m_JPanelControl.validate();
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.CENTER);
+        this.mocco.parameterPanel.validate();
+        this.mocco.controlPanel.validate();
     }
 
     private void installChoice() {
-        this.m_Parameters.setLayout(new GridBagLayout());
+        this.parameterPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("Choose number of Perturbations k:"), gbc);
+        this.parameterPanel.add(new JLabel("Choose number of Perturbations k:"), gbc);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
-        this.m_NumPer = new JTextField("" + this.m_Perturbations);
-        this.m_Parameters.add(this.m_NumPer, gbc);
+        this.numPerTextField = new JTextField("" + this.perturbations);
+        this.parameterPanel.add(this.numPerTextField, gbc);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("Choose amount of Perturbation:"), gbc);
+        this.parameterPanel.add(new JLabel("Choose amount of Perturbation:"), gbc);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 1;
-        this.m_SizePer = new JTextField("" + this.m_Perturbation);
-        this.m_Parameters.add(this.m_SizePer, gbc);
+        this.sizePerTextField = new JTextField("" + this.perturbation);
+        this.parameterPanel.add(this.sizePerTextField, gbc);
         // lpmetric
-        this.m_EMOSO = new GeneralOptimizationEditorProperty();
-        this.m_LpMetric = new MOSOLpMetric();
-        this.m_LpMetric.getReference().setDoubleArray(this.m_RefPoint);
-        this.m_EMOSO.name = "Lp-Metric";
+        this.optimizationEditorProperty = new GeneralOptimizationEditorProperty();
+        this.lpMetric = new MOSOLpMetric();
+        this.lpMetric.getReference().setDoubleArray(this.refPoint);
+        this.optimizationEditorProperty.name = "Lp-Metric";
         try {
-            this.m_EMOSO.value = this.m_LpMetric;
-            this.m_EMOSO.editor = PropertyEditorProvider.findEditor(this.m_EMOSO.value.getClass());
-            if (this.m_EMOSO.editor == null) {
-                this.m_EMOSO.editor = PropertyEditorProvider.findEditor(MOSOLpMetric.class);
+            this.optimizationEditorProperty.value = this.lpMetric;
+            this.optimizationEditorProperty.editor = PropertyEditorProvider.findEditor(this.optimizationEditorProperty.value.getClass());
+            if (this.optimizationEditorProperty.editor == null) {
+                this.optimizationEditorProperty.editor = PropertyEditorProvider.findEditor(MOSOLpMetric.class);
             }
-            if (this.m_EMOSO.editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) this.m_EMOSO.editor).setClassType(MOSOLpMetric.class);
+            if (this.optimizationEditorProperty.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) this.optimizationEditorProperty.editor).setClassType(MOSOLpMetric.class);
             }
-            this.m_EMOSO.editor.setValue(this.m_EMOSO.value);
-            AbstractObjectEditor.findViewFor(this.m_EMOSO);
-            if (this.m_EMOSO.view != null) {
-                this.m_EMOSO.view.repaint();
+            this.optimizationEditorProperty.editor.setValue(this.optimizationEditorProperty.value);
+            AbstractObjectEditor.findViewFor(this.optimizationEditorProperty);
+            if (this.optimizationEditorProperty.view != null) {
+                this.optimizationEditorProperty.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -124,35 +124,35 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("" + this.m_EMOSO.name), gbc);
+        this.parameterPanel.add(new JLabel("" + this.optimizationEditorProperty.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1;
-        this.m_Parameters.add(this.m_EMOSO.view, gbc);
+        this.parameterPanel.add(this.optimizationEditorProperty.view, gbc);
         // IslandModelEA
-        this.m_EIMEA = new GeneralOptimizationEditorProperty();
-        this.m_Island = new IslandModelEA();
-        this.m_Island.setHeterogeneousProblems(true);
-        this.m_Island.setLocalOnly(true);
-        this.m_Island.setMigrationRate(2);
-        this.m_Island.setMigrationStrategy(new SOBestMigration());
-        this.m_Island.setNumberLocalCPUs(this.m_Perturbations);
-        this.m_Island.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
-        this.m_Mocco.m_State.m_Optimizer = this.m_Island;
-        this.m_EIMEA.name = "Island Model EA";
+        this.optimizationEditorProperty1 = new GeneralOptimizationEditorProperty();
+        this.islandModelEA = new IslandModelEA();
+        this.islandModelEA.setHeterogeneousProblems(true);
+        this.islandModelEA.setLocalOnly(true);
+        this.islandModelEA.setMigrationRate(2);
+        this.islandModelEA.setMigrationStrategy(new SOBestMigration());
+        this.islandModelEA.setNumberLocalCPUs(this.perturbations);
+        this.islandModelEA.setProblem(this.mocco.state.currentProblem);
+        this.mocco.state.optimizer = this.islandModelEA;
+        this.optimizationEditorProperty1.name = "Island Model EA";
         try {
-            this.m_EIMEA.value = this.m_Island;
-            this.m_EIMEA.editor = PropertyEditorProvider.findEditor(this.m_EIMEA.value.getClass());
-            if (this.m_EIMEA.editor == null) {
-                this.m_EIMEA.editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
+            this.optimizationEditorProperty1.value = this.islandModelEA;
+            this.optimizationEditorProperty1.editor = PropertyEditorProvider.findEditor(this.optimizationEditorProperty1.value.getClass());
+            if (this.optimizationEditorProperty1.editor == null) {
+                this.optimizationEditorProperty1.editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
             }
-            if (this.m_EIMEA.editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) this.m_EIMEA.editor).setClassType(IslandModelEA.class);
+            if (this.optimizationEditorProperty1.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) this.optimizationEditorProperty1.editor).setClassType(IslandModelEA.class);
             }
-            this.m_EIMEA.editor.setValue(this.m_EIMEA.value);
-            AbstractObjectEditor.findViewFor(this.m_EIMEA);
-            if (this.m_EIMEA.view != null) {
-                this.m_EIMEA.view.repaint();
+            this.optimizationEditorProperty1.editor.setValue(this.optimizationEditorProperty1.value);
+            AbstractObjectEditor.findViewFor(this.optimizationEditorProperty1);
+            if (this.optimizationEditorProperty1.view != null) {
+                this.optimizationEditorProperty1.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -160,16 +160,16 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("" + this.m_EIMEA.name), gbc);
+        this.parameterPanel.add(new JLabel("" + this.optimizationEditorProperty1.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.weightx = 1;
-        this.m_Parameters.add(this.m_EIMEA.view, gbc);
+        this.parameterPanel.add(this.optimizationEditorProperty1.view, gbc);
         // Terminator
         GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
         editor.name = "Terminator";
         try {
-            editor.value = this.m_Mocco.m_State.m_Terminator;
+            editor.value = this.mocco.state.terminator;
             editor.editor = PropertyEditorProvider.findEditor(editor.value.getClass());
             if (editor.editor == null) {
                 editor.editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
@@ -188,11 +188,11 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("" + editor.name), gbc);
+        this.parameterPanel.add(new JLabel("" + editor.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.weightx = 1;
-        this.m_Parameters.add(editor.view, gbc);
+        this.parameterPanel.add(editor.view, gbc);
     }
 
     /**
@@ -202,7 +202,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
      * @param point the reference point
      */
     public void setReferencePoint(double[] point) {
-        this.m_RefPoint = point;
+        this.refPoint = point;
     }
 
     ActionListener satisfiedChanged = new ActionListener() {
@@ -217,65 +217,65 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         public void actionPerformed(ActionEvent event) {
             // first read the values
             try {
-                m_Perturbations = new Integer(m_NumPer.getText()).intValue();
+                perturbations = new Integer(numPerTextField.getText()).intValue();
             } catch (java.lang.NumberFormatException e) {
                 System.out.println("Can't read k.");
             }
             try {
-                m_Perturbation = new Double(m_SizePer.getText()).doubleValue();
+                perturbation = new Double(sizePerTextField.getText()).doubleValue();
             } catch (java.lang.NumberFormatException e) {
                 System.out.println("Can't read amount of perturbation.");
             }
-            if (m_EIMEA.value instanceof IslandModelEA) {
-                m_Island = (IslandModelEA) m_EIMEA.value;
+            if (optimizationEditorProperty1.value instanceof IslandModelEA) {
+                islandModelEA = (IslandModelEA) optimizationEditorProperty1.value;
             } else {
                 System.out.println("The selected optimizer does not allow heterogenuous multi-starts!");
             }
-            if (m_EMOSO.value instanceof MOSOLpMetric) {
-                m_LpMetric = (MOSOLpMetric) m_EMOSO.value;
+            if (optimizationEditorProperty.value instanceof MOSOLpMetric) {
+                lpMetric = (MOSOLpMetric) optimizationEditorProperty.value;
             } else {
                 System.out.println("The selected MOSO conversion is not suited for the reference point approach!");
             }
             // then set the values
-//            if (!m_Island.getLocalOnly()) {
+//            if (!islandModelEA.getLocalOnly()) {
             // ToDo: Think of new ways to do this!
-                /*PropertyRemoteServers t = m_Island.getServers();
+                /*PropertyRemoteServers t = islandModelEA.getServers();
                 String[] servers = t.getServerNodes();
-                if (servers.length != m_Perturbations) {
+                if (servers.length != perturbations) {
                     System.out.println("Warning: Number of servers overrides number of perturbations!");
-                    m_Perturbations = servers.length;
+                    perturbations = servers.length;
                 }*/
 //            } else {
-//                m_Island.setNumberLocalCPUs(m_Perturbations);
+//                islandModelEA.setNumberLocalCPUs(perturbations);
 //            }
-            m_Mocco.m_State.m_Optimizer = m_Island;
-            m_Mocco.m_State.m_Optimizer.setProblem(m_Mocco.m_State.m_CurrentProblem);
-            m_Island.init();
+            mocco.state.optimizer = islandModelEA;
+            mocco.state.optimizer.setProblem(mocco.state.currentProblem);
+            islandModelEA.init();
             double[] tmpD;
-            MOSOLpMetric[] tmpLPs = new MOSOLpMetric[m_Perturbations];
-            for (int i = 0; i < m_Perturbations; i++) {
-                tmpD = new double[m_RefPoint.length];
+            MOSOLpMetric[] tmpLPs = new MOSOLpMetric[perturbations];
+            for (int i = 0; i < perturbations; i++) {
+                tmpD = new double[refPoint.length];
                 for (int j = 0; j < tmpD.length; j++) {
                     if (i > 0) {
-                        tmpD[j] = m_RefPoint[j] + RNG.gaussianDouble(m_Perturbation);
+                        tmpD[j] = refPoint[j] + RNG.gaussianDouble(perturbation);
                     } else {
-                        tmpD[j] = m_RefPoint[j];
+                        tmpD[j] = refPoint[j];
                     }
                 }
-                tmpLPs[i] = (MOSOLpMetric) m_LpMetric.clone();
+                tmpLPs[i] = (MOSOLpMetric) lpMetric.clone();
                 // I've to set this before I change the parameters, because the problem sets the
                 // output dimension based on the AbstractMultiObjectiveOptimizationProblem and
                 // that one has not the faintest idea about the true output dimension                
-                ((AbstractMultiObjectiveOptimizationProblem) m_Island.getOptimizers()[i].getProblem()).setMOSOConverter(tmpLPs[i]);
+                ((AbstractMultiObjectiveOptimizationProblem) islandModelEA.getOptimizers()[i].getProblem()).setMOSOConverter(tmpLPs[i]);
                 tmpLPs[i].setOutputDimension(tmpD.length);
                 tmpLPs[i].getReference().setDoubleArray(tmpD);
             }
-            m_Mocco.m_View.removeReferencePoint();
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelControl.validate();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Mocco.m_JPanelParameters.validate();
-            m_Finished = true;
+            mocco.view.removeReferencePoint();
+            mocco.controlPanel.removeAll();
+            mocco.controlPanel.validate();
+            mocco.parameterPanel.removeAll();
+            mocco.parameterPanel.validate();
+            hasFinished = true;
         }
     };
 }

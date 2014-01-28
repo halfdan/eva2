@@ -1,6 +1,5 @@
 package eva2.optimization.mocco.paretofrontviewer;
 
-
 import eva2.gui.plot.FunctionArea;
 import eva2.gui.plot.GraphPointSet;
 import eva2.gui.plot.InterfaceDPointWithContent;
@@ -16,68 +15,63 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.11.2005
- * Time: 11:16:11
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontView, InterfaceRefPointListener {
 
-    public MOCCOViewer m_MOCCOViewer;
-    private JPanel m_JPMain;
-    private JPanel m_JPTop;
-    private JComboBox m_JCObjective1, m_JCObjective2, m_JCFitObj;
-    private FunctionArea m_Area;
-    private ScaledBorder m_AreaBorder;
-    private InterfaceRefPointListener m_RefPointListener;
+    public MOCCOViewer moccoViewer;
+    private JPanel mainPanel;
+    private JPanel topPanel;
+    private JComboBox objective1, objective2, fitObjective;
+    private FunctionArea functionArea;
+    private ScaledBorder areaBorder;
+    private InterfaceRefPointListener refPointListener;
 
     public ParetoFrontView2D(MOCCOViewer t) {
-        this.m_MOCCOViewer = t;
+        this.moccoViewer = t;
         this.init();
     }
 
     private void init() {
-        this.m_JPMain = new JPanel();
-        this.m_JPMain.setLayout(new BorderLayout());
+        this.mainPanel = new JPanel();
+        this.mainPanel.setLayout(new BorderLayout());
         this.setLayout(new BorderLayout());
-        this.add(this.m_JPMain, BorderLayout.CENTER);
-        this.m_Area = new FunctionArea("?", "?");
-        this.m_Area.setPreferredSize(new Dimension(450, 450));
-        this.m_Area.setMinimumSize(new Dimension(450, 450));
-        this.m_AreaBorder = new ScaledBorder();
-        this.m_AreaBorder.x_label = "?";
-        this.m_AreaBorder.y_label = "?";
-        this.m_Area.setBorder(this.m_AreaBorder);
-        this.m_Area.setBackground(Color.WHITE);
-        this.m_JPMain.add(this.m_Area, BorderLayout.CENTER);
-        this.m_JPTop = new JPanel();
-        this.m_JPTop.setLayout(new GridLayout(1, 5));
+        this.add(this.mainPanel, BorderLayout.CENTER);
+        this.functionArea = new FunctionArea("?", "?");
+        this.functionArea.setPreferredSize(new Dimension(450, 450));
+        this.functionArea.setMinimumSize(new Dimension(450, 450));
+        this.areaBorder = new ScaledBorder();
+        this.areaBorder.xLabel = "?";
+        this.areaBorder.yLabel = "?";
+        this.functionArea.setBorder(this.areaBorder);
+        this.functionArea.setBackground(Color.WHITE);
+        this.mainPanel.add(this.functionArea, BorderLayout.CENTER);
+        this.topPanel = new JPanel();
+        this.topPanel.setLayout(new GridLayout(1, 5));
         String[] tmp = new String[2];
         tmp[0] = "Fitness";
         tmp[1] = "Objective";
-        this.m_JCFitObj = new JComboBox(tmp);
-        this.m_JCFitObj.setSelectedIndex(0);
-        this.m_JCFitObj.addActionListener(this.jcombobox2Listener);
-        this.m_JCObjective1 = new JComboBox(this.getAvailableObjectiveNames());
-        this.m_JCObjective1.setSelectedIndex(0);
-        this.m_JCObjective1.addActionListener(this.jcomboboxListener);
-        this.m_JPTop.add(this.m_JCObjective1);
-        this.m_JPTop.add(new JLabel(" vs "));
-        this.m_JCObjective2 = new JComboBox(this.getAvailableObjectiveNames());
+        this.fitObjective = new JComboBox(tmp);
+        this.fitObjective.setSelectedIndex(0);
+        this.fitObjective.addActionListener(this.jcombobox2Listener);
+        this.objective1 = new JComboBox(this.getAvailableObjectiveNames());
+        this.objective1.setSelectedIndex(0);
+        this.objective1.addActionListener(this.jcomboboxListener);
+        this.topPanel.add(this.objective1);
+        this.topPanel.add(new JLabel(" vs "));
+        this.objective2 = new JComboBox(this.getAvailableObjectiveNames());
         try {
-            this.m_JCObjective2.setSelectedIndex(1);
+            this.objective2.setSelectedIndex(1);
         } catch (java.lang.IllegalArgumentException a) {
             // there seems to be no alternative
         }
-        this.m_JCObjective2.addActionListener(this.jcomboboxListener);
-        this.m_JPTop.add(this.m_JCObjective2);
-        this.m_JPTop.add(new JLabel(" using:"));
+        this.objective2.addActionListener(this.jcomboboxListener);
+        this.topPanel.add(this.objective2);
+        this.topPanel.add(new JLabel(" using:"));
 
-        this.m_JPTop.add(this.m_JCFitObj);
-        this.m_JPMain.add(this.m_JPTop, BorderLayout.NORTH);
+        this.topPanel.add(this.fitObjective);
+        this.mainPanel.add(this.topPanel, BorderLayout.NORTH);
         this.updateView();
     }
 
@@ -96,39 +90,39 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
     };
 
     public void updateObjectiveComboBoxes() {
-        m_JCObjective1.removeActionListener(jcomboboxListener);
-        m_JCObjective2.removeActionListener(jcomboboxListener);
-        m_JCObjective1.removeAllItems();
+        objective1.removeActionListener(jcomboboxListener);
+        objective2.removeActionListener(jcomboboxListener);
+        objective1.removeAllItems();
         String[] tmpS = getAvailableObjectiveNames();
         for (int i = 0; i < tmpS.length; i++) {
-            m_JCObjective1.addItem(tmpS[i]);
+            objective1.addItem(tmpS[i]);
         }
-        m_JCObjective1.setSelectedIndex(0);
-        m_JCObjective2.removeAllItems();
+        objective1.setSelectedIndex(0);
+        objective2.removeAllItems();
         tmpS = getAvailableObjectiveNames();
         for (int i = 0; i < tmpS.length; i++) {
-            m_JCObjective2.addItem(tmpS[i]);
+            objective2.addItem(tmpS[i]);
         }
-        m_JCObjective2.setSelectedIndex(1);
-        m_JCObjective1.addActionListener(jcomboboxListener);
-        m_JCObjective2.addActionListener(jcomboboxListener);
+        objective2.setSelectedIndex(1);
+        objective1.addActionListener(jcomboboxListener);
+        objective2.addActionListener(jcomboboxListener);
         updateView();
     }
 
     private String[] getAvailableObjectiveNames() {
         String[] result = null;
-        if (this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem == null) {
+        if (this.moccoViewer.moccoStandalone.state.currentProblem == null) {
             result = new String[1];
             result[0] = "none";
             return result;
         }
-        if (this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
-            InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem) this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
+        if (this.moccoViewer.moccoStandalone.state.currentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
+            InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem) this.moccoViewer.moccoStandalone.state.currentProblem).getProblemObjectives();
             result = new String[tmp.length];
             for (int i = 0; i < tmp.length; i++) {
                 result[i] = tmp[i].getIdentName();
             }
-            if (this.m_JCFitObj.getSelectedIndex() == 0) {
+            if (this.fitObjective.getSelectedIndex() == 0) {
                 // in this case constraints have to be omitted
                 ArrayList tmpList = new ArrayList();
                 for (int i = 0; i < tmp.length; i++) {
@@ -154,28 +148,28 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
     public void updateView() {
         // i assume that all the populations are evaluated
         // all using the same problem
-        this.m_Area.removeAll();
+        this.functionArea.removeAll();
         // first set the names of the objectives
         String[] tmpS = this.getAvailableObjectiveNames();
-        if (tmpS.length != this.m_JCObjective1.getItemCount()) {
+        if (tmpS.length != this.objective1.getItemCount()) {
             updateObjectiveComboBoxes();
         }
         boolean equal = true;
         for (int i = 0; i < tmpS.length; i++) {
-            if (!tmpS[i].equalsIgnoreCase((String) this.m_JCObjective1.getItemAt(i))) {
+            if (!tmpS[i].equalsIgnoreCase((String) this.objective1.getItemAt(i))) {
                 equal = false;
             }
         }
         if (!equal) {
             updateObjectiveComboBoxes();
         }
-        if (this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
-            //InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem)this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
+        if (this.moccoViewer.moccoStandalone.state.currentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
+            //InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem)this.moccoViewer.moccoStandalone.state.currentProblem).getProblemObjectives();
             String[] objectives = this.getAvailableObjectiveNames();
-            this.m_AreaBorder.x_label = "" + objectives[this.m_JCObjective1.getSelectedIndex()];
-            this.m_AreaBorder.y_label = "" + objectives[this.m_JCObjective2.getSelectedIndex()];
+            this.areaBorder.xLabel = "" + objectives[this.objective1.getSelectedIndex()];
+            this.areaBorder.yLabel = "" + objectives[this.objective2.getSelectedIndex()];
         }
-        if ((this.m_MOCCOViewer.m_MOCCO.m_State.m_ParetoFront != null) && (this.m_MOCCOViewer.m_MOCCO.m_State.m_ParetoFront.size() > 0)) {
+        if ((this.moccoViewer.moccoStandalone.state.paretoFront != null) && (this.moccoViewer.moccoStandalone.state.paretoFront.size() > 0)) {
             this.plot2DParetoFront();
         }
         this.validate();
@@ -186,28 +180,27 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
      */
     public void plot2DParetoFront() {
         double xmin = Double.POSITIVE_INFINITY, ymin = Double.POSITIVE_INFINITY, xmax = Double.NEGATIVE_INFINITY, ymax = Double.NEGATIVE_INFINITY;
-        this.m_Area.clearAll();
-        this.m_Area.setBackground(Color.WHITE);
+        this.functionArea.clearAll();
+        this.functionArea.setBackground(Color.WHITE);
         GraphPointSet mySet;
         DPoint myPoint;
         double[] fitness;
         int indexX, indexY;
-        indexX = this.m_JCObjective1.getSelectedIndex();
-        indexY = this.m_JCObjective2.getSelectedIndex();
+        indexX = this.objective1.getSelectedIndex();
+        indexY = this.objective2.getSelectedIndex();
         // first plot the populations
         if (false) {
-            for (int i = 0; i < this.m_MOCCOViewer.m_MOCCO.m_State.m_PopulationHistory.length; i++) {
-                //System.out.println("Population " + i+" show " +this.m_MOCCOViewer.m_MOCCO.m_State.show[i]);
-                if (this.m_MOCCOViewer.m_MOCCO.m_State.m_Show[i]) {
-                    mySet = new GraphPointSet(i + 10, this.m_Area);
+            for (int i = 0; i < this.moccoViewer.moccoStandalone.state.populationHistory.length; i++) {
+                //System.out.println("Population " + i+" show " +this.moccoViewer.moccoStandalone.state.show[i]);
+                if (this.moccoViewer.moccoStandalone.state.show[i]) {
+                    mySet = new GraphPointSet(i + 10, this.functionArea);
                     mySet.setConnectedMode(false);
-                    mySet.setColor(this.m_MOCCOViewer.m_MOCCO.m_State.m_Color[i]);
-                    //System.out.println(((ArrayList)this.m_Boss.m_FitnessCache.get(i)).size()+"/"+((ArrayList)this.m_Boss.m_ObjectiveCache.get(i)).size());
-                    if (this.m_JCFitObj.getSelectedIndex() == 0) {
-                        for (int j = 0; j < ((ArrayList) this.m_MOCCOViewer.m_MOCCO.m_State.m_FitnessCache.get(i)).size(); j++) {
-                            fitness = (double[]) ((ArrayList) this.m_MOCCOViewer.m_MOCCO.m_State.m_FitnessCache.get(i)).get(j);
+                    mySet.setColor(this.moccoViewer.moccoStandalone.state.colors[i]);
+                    if (this.fitObjective.getSelectedIndex() == 0) {
+                        for (int j = 0; j < ((ArrayList) this.moccoViewer.moccoStandalone.state.fitnessCache.get(i)).size(); j++) {
+                            fitness = (double[]) ((ArrayList) this.moccoViewer.moccoStandalone.state.fitnessCache.get(i)).get(j);
                             myPoint = new DPoint(fitness[indexX], fitness[indexY]);
-                            if (((Double) ((ArrayList) this.m_MOCCOViewer.m_MOCCO.m_State.m_ConstraintCache.get(i)).get(j)).doubleValue() == 0) {
+                            if (((Double) ((ArrayList) this.moccoViewer.moccoStandalone.state.constraintCache.get(i)).get(j)).doubleValue() == 0) {
                                 myPoint.setIcon(new Chart2DDPointIconCross());
                             } else {
                                 myPoint.setIcon(new Chart2DDPointIconPoint());
@@ -227,10 +220,10 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                             }
                         }
                     } else {
-                        for (int j = 0; j < ((ArrayList) this.m_MOCCOViewer.m_MOCCO.m_State.m_ObjectiveCache.get(i)).size(); j++) {
-                            fitness = (double[]) ((ArrayList) this.m_MOCCOViewer.m_MOCCO.m_State.m_ObjectiveCache.get(i)).get(j);
+                        for (int j = 0; j < ((ArrayList) this.moccoViewer.moccoStandalone.state.objectiveCache.get(i)).size(); j++) {
+                            fitness = (double[]) ((ArrayList) this.moccoViewer.moccoStandalone.state.objectiveCache.get(i)).get(j);
                             myPoint = new DPoint(fitness[indexX], fitness[indexY]);
-                            if (((Double) ((ArrayList) this.m_MOCCOViewer.m_MOCCO.m_State.m_ConstraintCache.get(i)).get(j)).doubleValue() == 0) {
+                            if (((Double) ((ArrayList) this.moccoViewer.moccoStandalone.state.constraintCache.get(i)).get(j)).doubleValue() == 0) {
                                 myPoint.setIcon(new Chart2DDPointIconCross());
                             } else {
                                 myPoint.setIcon(new Chart2DDPointIconPoint());
@@ -254,18 +247,18 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
             }
         }
         // now mark the ParetoFront
-        Population pf = this.m_MOCCOViewer.m_MOCCO.m_State.m_ParetoFront;
+        Population pf = this.moccoViewer.moccoStandalone.state.paretoFront;
         if (pf.size() > 0) {
             DPoint point;
             DPointIcon icon;
-            mySet = new GraphPointSet(1, this.m_Area);
+            mySet = new GraphPointSet(1, this.functionArea);
             mySet.setConnectedMode(false);
             mySet.setColor(Color.BLACK);
             for (int i = 0; i < pf.size(); i++) {
-                if (this.m_JCFitObj.getSelectedIndex() == 0) {
+                if (this.fitObjective.getSelectedIndex() == 0) {
                     fitness = ((AbstractEAIndividual) pf.get(i)).getFitness();
                 } else {
-                    InterfaceOptimizationObjective[] tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
+                    InterfaceOptimizationObjective[] tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.moccoViewer.moccoStandalone.state.currentProblem).getProblemObjectives();
                     fitness = new double[tmpObj.length];
                     for (int k = 0; k < tmpObj.length; k++) {
                         fitness[k] = ((Double) ((AbstractEAIndividual) pf.get(i)).getData(tmpObj[k].getIdentName())).doubleValue();
@@ -273,10 +266,10 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                 }
                 point = new DPoint(fitness[indexX], fitness[indexY]);
                 icon = new Chart2DDPointContentSelectable();
-                if (this.m_MOCCOViewer.m_RefSolutionSelectable) {
-                    ((Chart2DDPointContentSelectable) icon).addSelectionListener(this.m_MOCCOViewer);
+                if (this.moccoViewer.refSolutionSelectable) {
+                    ((Chart2DDPointContentSelectable) icon).addSelectionListener(this.moccoViewer);
                 }
-                ((InterfaceDPointWithContent) icon).setProblem(this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem);
+                ((InterfaceDPointWithContent) icon).setProblem(this.moccoViewer.moccoStandalone.state.currentProblem);
                 ((InterfaceDPointWithContent) icon).setEAIndividual((AbstractEAIndividual) pf.get(i));
                 point.setIcon(icon);
                 mySet.addDPoint(point);
@@ -295,7 +288,7 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
             }
         }
 
-        mySet = new GraphPointSet(0, this.m_Area);
+        mySet = new GraphPointSet(0, this.functionArea);
         mySet.setConnectedMode(false);
         double xrange = (xmax - xmin), yrange = (ymax - ymin);
         if ((new Double(xrange)).isNaN()) {
@@ -309,19 +302,19 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
         }
 
         // now lets prepare the contraints or goals if any...
-        if ((this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) &&
-                (this.m_JCFitObj.getSelectedIndex() == 1)) {
-            InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem) this.m_MOCCOViewer.m_MOCCO.m_State.m_CurrentProblem).getProblemObjectives();
+        if ((this.moccoViewer.moccoStandalone.state.currentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) &&
+                (this.fitObjective.getSelectedIndex() == 1)) {
+            InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem) this.moccoViewer.moccoStandalone.state.currentProblem).getProblemObjectives();
             for (int i = 0; i < tmp.length; i++) {
                 if ((!(tmp[i].getOptimizationMode().equalsIgnoreCase("Objective"))) &&
-                        ((this.m_JCObjective1.getSelectedIndex() == i) ||
-                                (this.m_JCObjective2.getSelectedIndex() == i))) {
+                        ((this.objective1.getSelectedIndex() == i) ||
+                                (this.objective2.getSelectedIndex() == i))) {
                     double tmpD = tmp[i].getConstraintGoal();
                     if (!(new Double(tmpD)).isNaN()) {
                         // draw a line indicating the constraint/goals
-                        mySet = new GraphPointSet(500 + i, this.m_Area);
+                        mySet = new GraphPointSet(500 + i, this.functionArea);
                         mySet.setConnectedMode(true);
-                        if (this.m_JCObjective1.getSelectedIndex() == i) {
+                        if (this.objective1.getSelectedIndex() == i) {
                             if ((tmpD > xmin - 0.1 * xrange) && (tmpD < xmax + 0.1 * xrange)) {
                                 mySet.addDPoint(tmpD, ymin - 0.1 * yrange);
                                 mySet.addDPoint(tmpD, ymin - 0.1 * yrange);
@@ -342,29 +335,29 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
         }
 
         // lets prepare to reference point selection
-        if (this.m_MOCCOViewer.m_RefPointSelectable) {
-            this.m_Area.addRefPointSelectionListener(this);
+        if (this.moccoViewer.refPointSelectable) {
+            this.functionArea.addRefPointSelectionListener(this);
         } else {
-            this.m_Area.removeRefPointSelectionListeners();
+            this.functionArea.removeRefPointSelectionListeners();
             this.removeRefPointSelectionListeners();
         }
 
         // lets show a reference point if given...
-        if ((this.m_MOCCOViewer.m_ReferencePoint != null) && (this.m_JCFitObj.getSelectedIndex() == 0)) {
-            mySet = new GraphPointSet(1001, this.m_Area);
+        if ((this.moccoViewer.referencePoint != null) && (this.fitObjective.getSelectedIndex() == 0)) {
+            mySet = new GraphPointSet(1001, this.functionArea);
             mySet.setConnectedMode(true);
             mySet.setColor(Color.RED);
-            double tmpD = this.m_MOCCOViewer.m_ReferencePoint[this.m_JCObjective1.getSelectedIndex()];
+            double tmpD = this.moccoViewer.referencePoint[this.objective1.getSelectedIndex()];
             if ((tmpD > xmin - 0.1 * xrange) && (tmpD < xmax + 0.1 * xrange)) {
                 mySet.addDPoint(tmpD, ymin - 0.1 * yrange);
                 mySet.addDPoint(tmpD, ymin - 0.1 * yrange);
                 mySet.addDPoint(tmpD, ymax + 0.1 * yrange);
                 mySet.addDPoint(tmpD, ymax + 0.1 * yrange);
             }
-            mySet = new GraphPointSet(1002, this.m_Area);
+            mySet = new GraphPointSet(1002, this.functionArea);
             mySet.setConnectedMode(true);
             mySet.setColor(Color.RED);
-            tmpD = this.m_MOCCOViewer.m_ReferencePoint[this.m_JCObjective2.getSelectedIndex()];
+            tmpD = this.moccoViewer.referencePoint[this.objective2.getSelectedIndex()];
             if ((tmpD > ymin - 0.1 * yrange) && (tmpD < ymax + 0.1 * yrange)) {
                 mySet.addDPoint(xmin - 0.1 * xrange, tmpD);
                 mySet.addDPoint(xmin - 0.1 * xrange, tmpD);
@@ -387,15 +380,15 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
      */
     @Override
     public void refPointGiven(double[] point) {
-        if (this.m_JCFitObj.getSelectedIndex() == 1) {
-            JOptionPane.showMessageDialog(this.m_MOCCOViewer.m_MOCCO.m_JFrame,
+        if (this.fitObjective.getSelectedIndex() == 1) {
+            JOptionPane.showMessageDialog(this.moccoViewer.moccoStandalone.getMainFrame(),
                     "Reference point needs to be selected in fitness space!",
                     "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            double[] tmpD = this.m_MOCCOViewer.m_ReferencePoint;
-            tmpD[this.m_JCObjective1.getSelectedIndex()] = point[0];
-            tmpD[this.m_JCObjective2.getSelectedIndex()] = point[1];
-            this.m_MOCCOViewer.refPointGiven(tmpD);
+            double[] tmpD = this.moccoViewer.referencePoint;
+            tmpD[this.objective1.getSelectedIndex()] = point[0];
+            tmpD[this.objective2.getSelectedIndex()] = point[1];
+            this.moccoViewer.refPointGiven(tmpD);
         }
     }
 
@@ -406,7 +399,7 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
      * @param a The selection listener
      */
     public void addRefPointSelectionListener(InterfaceRefPointListener a) {
-        this.m_RefPointListener = a;
+        this.refPointListener = a;
     }
 
     /**
@@ -415,13 +408,13 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
      * @return InterfaceSelectionListener
      */
     public InterfaceRefPointListener getRefPointSelectionListener() {
-        return this.m_RefPointListener;
+        return this.refPointListener;
     }
 
     /**
      * This method allows to remove the selection listner to the PointIcon
      */
     public void removeRefPointSelectionListeners() {
-        this.m_RefPointListener = null;
+        this.refPointListener = null;
     }
 }

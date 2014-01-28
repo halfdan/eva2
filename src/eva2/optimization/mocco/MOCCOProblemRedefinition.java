@@ -19,11 +19,11 @@ import java.awt.event.ActionListener;
  */
 public class MOCCOProblemRedefinition extends MOCCOPhase implements InterfaceProcessElement {
 
-    private InterfaceOptimizationProblem m_Problem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public MOCCOProblemRedefinition(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
-        this.m_Problem = (InterfaceOptimizationProblem) this.m_Mocco.m_State.m_CurrentProblem.clone();
+        this.mocco = mocco;
+        this.optimizationProblem = (InterfaceOptimizationProblem) this.mocco.state.currentProblem.clone();
     }
 
     /**
@@ -31,16 +31,16 @@ public class MOCCOProblemRedefinition extends MOCCOPhase implements InterfacePro
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
+        this.mocco.controlPanel.removeAll();
 
         // The button panel
         JButton tmpB = new JButton("Continue to choose the optimization strategy.");
         tmpB.setToolTipText("This finializes the problem redefinition process.");
         tmpB.addActionListener(continue2);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
 
         // the parameter panel
-        this.m_Mocco.m_JPanelParameters.removeAll();
+        this.mocco.parameterPanel.removeAll();
         JComponent tmpC = new JPanel();
         tmpC.setLayout(new BorderLayout());
         JPanel tmpP = new JPanel();
@@ -61,34 +61,34 @@ public class MOCCOProblemRedefinition extends MOCCOPhase implements InterfacePro
         tmpB = new JButton("Reevaluate Problem");
         tmpB.addActionListener(reevaluate);
         tmpP.add(tmpB, gbc);
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.NORTH);
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.NORTH);
 
-        JParaPanel paraPanel = new JParaPanel(this.m_Problem, "MyGUI");
+        JParaPanel paraPanel = new JParaPanel(this.optimizationProblem, "MyGUI");
         tmpC = (paraPanel.makePanel());
-        this.m_Mocco.m_JPanelParameters.add(tmpC, BorderLayout.CENTER);
+        this.mocco.parameterPanel.add(tmpC, BorderLayout.CENTER);
 
-        this.m_Mocco.m_JFrame.setVisible(true);
-        this.m_Mocco.m_JFrame.validate();
+        this.mocco.getMainFrame().setVisible(true);
+        this.mocco.getMainFrame().validate();
     }
 
     ActionListener continue2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_State.m_CurrentProblem = (InterfaceOptimizationProblem) m_Problem.clone();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelControl.validate();
-            m_Finished = true;
+            mocco.state.currentProblem = (InterfaceOptimizationProblem) optimizationProblem.clone();
+            mocco.parameterPanel.removeAll();
+            mocco.controlPanel.removeAll();
+            mocco.controlPanel.validate();
+            hasFinished = true;
         }
     };
     ActionListener reevaluate = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_State.m_CurrentProblem = (InterfaceOptimizationProblem) m_Problem.clone();
-            m_Mocco.m_State.m_CurrentProblem = m_Problem;
-            m_Mocco.m_State.makeFitnessCache(true);
-            m_Mocco.m_View.problemChanged(true);
+            mocco.state.currentProblem = (InterfaceOptimizationProblem) optimizationProblem.clone();
+            mocco.state.currentProblem = optimizationProblem;
+            mocco.state.makeFitnessCache(true);
+            mocco.view.problemChanged(true);
         }
     };
 }

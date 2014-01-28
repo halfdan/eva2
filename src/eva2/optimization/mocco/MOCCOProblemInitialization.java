@@ -19,10 +19,10 @@ import java.awt.event.ActionListener;
  */
 public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceProcessElement {
 
-    private JComboBox m_ProblemChooser;
+    private JComboBox problemChooser;
 
     public MOCCOProblemInitialization(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
+        this.mocco = mocco;
     }
 
     /**
@@ -30,24 +30,24 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
+        this.mocco.controlPanel.removeAll();
 
         // The button panel
         JButton tmpB = new JButton("Continue to choose the initial number of solution alternatives.");
         tmpB.setToolTipText("This finializes the original problem definition.");
         tmpB.addActionListener(continue2);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
 
         // the parameter panel
         this.initProblemDefinition();
 
-        this.m_Mocco.m_JFrame.setVisible(true);
-        this.m_Mocco.m_JFrame.validate();
+        this.mocco.getMainFrame().setVisible(true);
+        this.mocco.getMainFrame().validate();
     }
 
     private void initProblemDefinition() {
-        this.m_Mocco.m_JPanelParameters.removeAll();
-        this.m_ProblemChooser = new JComboBox();
+        this.mocco.parameterPanel.removeAll();
+        this.problemChooser = new JComboBox();
         JComponent tmpC = new JPanel();
         tmpC.setLayout(new BorderLayout());
 
@@ -57,11 +57,11 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        this.m_ProblemChooser.setModel(new DefaultComboBoxModel(altern));
+        this.problemChooser.setModel(new DefaultComboBoxModel(altern));
 
-        String objectName = (this.m_Mocco.m_State.m_OriginalProblem.getClass().getName());
-        this.m_ProblemChooser.getModel().setSelectedItem(objectName);
-        this.m_ProblemChooser.addActionListener(problemChanged);
+        String objectName = (this.mocco.state.originalProblem.getClass().getName());
+        this.problemChooser.getModel().setSelectedItem(objectName);
+        this.problemChooser.addActionListener(problemChanged);
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -73,36 +73,36 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
                 "with the InterfaceMultiObjectiveDeNovoProblem can be optimized using the MOCCO approach."), gbc);
         gbc.gridx = 0;
         gbc.gridy = 1;
-        tmpP.add(this.m_ProblemChooser, gbc);
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.NORTH);
-        JParaPanel paraPanel = new JParaPanel(this.m_Mocco.m_State.m_OriginalProblem, "MyGUI");
-        this.m_Mocco.m_JPanelParameters.add(paraPanel.makePanel(), BorderLayout.CENTER);
+        tmpP.add(this.problemChooser, gbc);
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.NORTH);
+        JParaPanel paraPanel = new JParaPanel(this.mocco.state.originalProblem, "MyGUI");
+        this.mocco.parameterPanel.add(paraPanel.makePanel(), BorderLayout.CENTER);
     }
 
     ActionListener continue2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelControl.validate();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Finished = true;
+            mocco.controlPanel.removeAll();
+            mocco.controlPanel.validate();
+            mocco.parameterPanel.removeAll();
+            hasFinished = true;
         }
     };
 
     ActionListener problemChanged = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            String className = (String) m_ProblemChooser.getSelectedItem();
-            m_Mocco.m_JPanelParameters.removeAll();
+            String className = (String) problemChooser.getSelectedItem();
+            mocco.parameterPanel.removeAll();
             Object n = null;
             try {
                 n = (Object) Class.forName(className).newInstance();
             } catch (Exception ex) {
             }
-            m_Mocco.m_State.m_OriginalProblem = (InterfaceOptimizationProblem) n;
+            mocco.state.originalProblem = (InterfaceOptimizationProblem) n;
             initProblemDefinition();
-            m_Mocco.m_JPanelParameters.validate();
+            mocco.parameterPanel.validate();
         }
     };
 }

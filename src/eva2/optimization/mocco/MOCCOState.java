@@ -25,88 +25,88 @@ import java.util.ArrayList;
 public class MOCCOState {
 
     public transient boolean isVisible = false;
-    public InterfaceOptimizer m_Optimizer = new MultiObjectiveEA();
-    public InterfaceOptimizer m_BackupOptimizer;
-    public InterfaceTerminator m_Terminator = new EvaluationTerminator();
-    public InterfaceOptimizationProblem m_OriginalProblem = null;
-    public InterfaceOptimizationProblem m_CurrentProblem;
-    public InterfaceOptimizationProblem m_BackupProblem;
-    public int m_InitialPopulationSize = 50;
+    public InterfaceOptimizer optimizer = new MultiObjectiveEA();
+    public InterfaceOptimizer backupOptimizer;
+    public InterfaceTerminator terminator = new EvaluationTerminator();
+    public InterfaceOptimizationProblem originalProblem = null;
+    public InterfaceOptimizationProblem currentProblem;
+    public InterfaceOptimizationProblem backupProblem;
+    public int initialPopulationSize = 50;
     // the population history
-    public Population m_ParetoFront;
-    public Population[] m_PopulationHistory = new Population[0];
-    public boolean[] m_Show;
-    public boolean[] m_Use;
-    public Color[] m_Color;
+    public Population paretoFront;
+    public Population[] populationHistory = new Population[0];
+    public boolean[] show;
+    public boolean[] use;
+    public Color[] colors;
     // the fitness cache for fast plotting
-    public ArrayList m_FitnessCache = new ArrayList();
-    public ArrayList m_ObjectiveCache = new ArrayList();
-    public ArrayList m_ConstraintCache = new ArrayList();
+    public ArrayList fitnessCache = new ArrayList();
+    public ArrayList objectiveCache = new ArrayList();
+    public ArrayList constraintCache = new ArrayList();
 
     public MOCCOState() {
     }
 
     public void restore() {
-        Population pop = this.m_Optimizer.getPopulation();
-        if (this.m_BackupProblem != null) {
-            this.m_CurrentProblem = this.m_BackupProblem;
-            this.m_BackupProblem = null;
+        Population pop = this.optimizer.getPopulation();
+        if (this.backupProblem != null) {
+            this.currentProblem = this.backupProblem;
+            this.backupProblem = null;
         }
-        if (this.m_BackupOptimizer != null) {
-            this.m_Optimizer = this.m_BackupOptimizer;
-            this.m_BackupOptimizer = null;
+        if (this.backupOptimizer != null) {
+            this.optimizer = this.backupOptimizer;
+            this.backupOptimizer = null;
         }
-        this.m_Optimizer.setPopulation(pop);
-        this.m_Optimizer.setProblem(this.m_CurrentProblem);
-        this.m_CurrentProblem.evaluate(this.m_Optimizer.getPopulation());
+        this.optimizer.setPopulation(pop);
+        this.optimizer.setProblem(this.currentProblem);
+        this.currentProblem.evaluate(this.optimizer.getPopulation());
     }
 
     public void makeBackup() {
-        this.m_BackupProblem = (InterfaceOptimizationProblem) this.m_CurrentProblem.clone();
-        this.m_BackupOptimizer = (InterfaceOptimizer) this.m_Optimizer.clone();
-        this.m_BackupOptimizer.setProblem(null);
+        this.backupProblem = (InterfaceOptimizationProblem) this.currentProblem.clone();
+        this.backupOptimizer = (InterfaceOptimizer) this.optimizer.clone();
+        this.backupOptimizer.setProblem(null);
     }
 
     public void addPopulation2History(Population pop) {
         InterfaceOptimizationObjective[] tmpObj = null;
 
-        if (this.m_Show == null) {
-            this.m_Use = new boolean[1];
-            this.m_Use[0] = true;
-            this.m_Show = new boolean[1];
-            this.m_Show[0] = true;
-            this.m_Color = new Color[1];
-            this.m_Color[0] = this.getColor4Index(0);
+        if (this.show == null) {
+            this.use = new boolean[1];
+            this.use[0] = true;
+            this.show = new boolean[1];
+            this.show[0] = true;
+            this.colors = new Color[1];
+            this.colors[0] = this.getColor4Index(0);
         } else {
-            boolean[] newUse = new boolean[this.m_Show.length + 1];
-            boolean[] newShow = new boolean[this.m_Show.length + 1];
-            Color[] newColor = new Color[this.m_Show.length + 1];
-            for (int i = 0; i < this.m_Show.length; i++) {
-                newUse[i] = this.m_Use[i];
-                newShow[i] = this.m_Show[i];
-                newColor[i] = this.m_Color[i];
+            boolean[] newUse = new boolean[this.show.length + 1];
+            boolean[] newShow = new boolean[this.show.length + 1];
+            Color[] newColor = new Color[this.show.length + 1];
+            for (int i = 0; i < this.show.length; i++) {
+                newUse[i] = this.use[i];
+                newShow[i] = this.show[i];
+                newColor[i] = this.colors[i];
             }
-            newUse[m_Show.length] = true;
-            newShow[m_Show.length] = true;
-            newColor[m_Show.length] = this.getColor4Index(this.m_PopulationHistory.length);
-            this.m_Use = newUse;
-            this.m_Show = newShow;
-            this.m_Color = newColor;
+            newUse[show.length] = true;
+            newShow[show.length] = true;
+            newColor[show.length] = this.getColor4Index(this.populationHistory.length);
+            this.use = newUse;
+            this.show = newShow;
+            this.colors = newColor;
         }
 
-        Population[] newPop = new Population[this.m_PopulationHistory.length + 1];
-        for (int i = 0; i < this.m_PopulationHistory.length; i++) {
-            newPop[i] = this.m_PopulationHistory[i];
+        Population[] newPop = new Population[this.populationHistory.length + 1];
+        for (int i = 0; i < this.populationHistory.length; i++) {
+            newPop[i] = this.populationHistory[i];
         }
         newPop[newPop.length - 1] = (Population) pop.clone();
         newPop[newPop.length - 1].addPopulation(newPop[newPop.length - 1].getArchive());
         newPop[newPop.length - 1].SetArchive(null);
-        this.m_PopulationHistory = newPop;
+        this.populationHistory = newPop;
         ArrayList fitness = new ArrayList();
         ArrayList objectives = new ArrayList();
         ArrayList constraint = new ArrayList();
-        if (this.m_CurrentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
-            tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_CurrentProblem).getProblemObjectives();
+        if (this.currentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
+            tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.currentProblem).getProblemObjectives();
         }
         for (int j = 0; j < newPop[newPop.length - 1].size(); j++) {
             if (tmpObj != null) {
@@ -119,11 +119,11 @@ public class MOCCOState {
             fitness.add(((AbstractEAIndividual) newPop[newPop.length - 1].get(j)).getFitness());
             constraint.add(new Double(((AbstractEAIndividual) newPop[newPop.length - 1].get(j)).getConstraintViolation()));
         }
-        if (this.m_ObjectiveCache != null) {
-            this.m_ObjectiveCache.add(objectives);
+        if (this.objectiveCache != null) {
+            this.objectiveCache.add(objectives);
         }
-        this.m_FitnessCache.add(fitness);
-        this.m_ConstraintCache.add(constraint);
+        this.fitnessCache.add(fitness);
+        this.constraintCache.add(constraint);
     }
 
     /**
@@ -152,9 +152,9 @@ public class MOCCOState {
 
     public void reduce2ParetoFront(int i) {
         ArchivingAllDominating arch = new ArchivingAllDominating();
-        arch.addElementsToArchive(this.m_PopulationHistory[i]);
-        this.m_PopulationHistory[i] = this.m_PopulationHistory[i].getArchive();
-        this.m_PopulationHistory[i].SetArchive(null);
+        arch.addElementsToArchive(this.populationHistory[i]);
+        this.populationHistory[i] = this.populationHistory[i].getArchive();
+        this.populationHistory[i].SetArchive(null);
         this.makeFitnessCache(false);
     }
 
@@ -165,12 +165,12 @@ public class MOCCOState {
      */
     public Population getSelectedPopulations() {
         Population result = new Population();
-        for (int i = 0; i < this.m_PopulationHistory.length; i++) {
-            if (this.m_Use[i]) {
-                result.addPopulation(this.m_PopulationHistory[i]);
+        for (int i = 0; i < this.populationHistory.length; i++) {
+            if (this.use[i]) {
+                result.addPopulation(this.populationHistory[i]);
             }
         }
-        this.m_CurrentProblem.evaluate(result);
+        this.currentProblem.evaluate(result);
         return result;
     }
 
@@ -184,65 +184,65 @@ public class MOCCOState {
         InterfaceOptimizationObjective[] tmpObj = null;
         if (reevaluate) {
             // clear all archives, since problem dimension may have changed
-            for (int i = 0; i < this.m_PopulationHistory.length; i++) {
-                if (this.m_PopulationHistory[i].getArchive() != null) {
-                    this.m_PopulationHistory[i].addPopulation(this.m_PopulationHistory[i].getArchive());
-                    this.m_PopulationHistory[i].SetArchive(null);
+            for (int i = 0; i < this.populationHistory.length; i++) {
+                if (this.populationHistory[i].getArchive() != null) {
+                    this.populationHistory[i].addPopulation(this.populationHistory[i].getArchive());
+                    this.populationHistory[i].SetArchive(null);
                 }
             }
-            Population pop = this.m_Optimizer.getPopulation();
+            Population pop = this.optimizer.getPopulation();
             if (pop.getArchive() != null) {
                 pop.addPopulation(pop.getArchive());
                 pop.SetArchive(null);
             }
-            this.m_CurrentProblem.evaluate(pop);
+            this.currentProblem.evaluate(pop);
         }
-        this.m_FitnessCache = new ArrayList();
-        this.m_ObjectiveCache = null;
-        this.m_ConstraintCache = new ArrayList();
-        if (this.m_CurrentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
-            this.m_ObjectiveCache = new ArrayList();
-            tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_CurrentProblem).getProblemObjectives();
+        this.fitnessCache = new ArrayList();
+        this.objectiveCache = null;
+        this.constraintCache = new ArrayList();
+        if (this.currentProblem instanceof InterfaceMultiObjectiveDeNovoProblem) {
+            this.objectiveCache = new ArrayList();
+            tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.currentProblem).getProblemObjectives();
         }
-        this.m_ParetoFront = new Population();
-        for (int i = 0; i < this.m_PopulationHistory.length; i++) {
+        this.paretoFront = new Population();
+        for (int i = 0; i < this.populationHistory.length; i++) {
             if (reevaluate) {
-                ((AbstractMultiObjectiveOptimizationProblem) this.m_CurrentProblem).resetParetoFront();
-                this.m_CurrentProblem.evaluate(this.m_PopulationHistory[i]);
+                ((AbstractMultiObjectiveOptimizationProblem) this.currentProblem).resetParetoFront();
+                this.currentProblem.evaluate(this.populationHistory[i]);
             }
-            this.m_ParetoFront.addPopulation(this.m_PopulationHistory[i]);
+            this.paretoFront.addPopulation(this.populationHistory[i]);
             ArrayList fitness = new ArrayList();
             ArrayList objectives = new ArrayList();
             ArrayList constraint = new ArrayList();
-            for (int j = 0; j < this.m_PopulationHistory[i].size(); j++) {
+            for (int j = 0; j < this.populationHistory[i].size(); j++) {
                 if (tmpObj != null) {
                     double[] tmoF = new double[tmpObj.length];
                     for (int k = 0; k < tmpObj.length; k++) {
-                        if (this.m_PopulationHistory[i].get(j) == null) {
+                        if (this.populationHistory[i].get(j) == null) {
                             System.out.println("Individual " + i + " == null!");
                         }
                         if (tmpObj[k] == null) {
                             System.out.println("Objective " + k + " == null!");
                         }
-                        if (((AbstractEAIndividual) this.m_PopulationHistory[i].get(j)).getData(tmpObj[k].getIdentName()) == null) {
+                        if (((AbstractEAIndividual) this.populationHistory[i].get(j)).getData(tmpObj[k].getIdentName()) == null) {
                             System.out.println("User Data " + k + " " + tmpObj[k].getIdentName() + " == null!");
                         }
-                        tmoF[k] = ((Double) ((AbstractEAIndividual) this.m_PopulationHistory[i].get(j)).getData(tmpObj[k].getIdentName())).doubleValue();
+                        tmoF[k] = ((Double) ((AbstractEAIndividual) this.populationHistory[i].get(j)).getData(tmpObj[k].getIdentName())).doubleValue();
                     }
                     objectives.add(tmoF);
                 }
-                fitness.add(((AbstractEAIndividual) this.m_PopulationHistory[i].get(j)).getFitness());
-                constraint.add(new Double(((AbstractEAIndividual) this.m_PopulationHistory[i].get(j)).getConstraintViolation()));
+                fitness.add(((AbstractEAIndividual) this.populationHistory[i].get(j)).getFitness());
+                constraint.add(new Double(((AbstractEAIndividual) this.populationHistory[i].get(j)).getConstraintViolation()));
             }
-            if (this.m_ObjectiveCache != null) {
-                this.m_ObjectiveCache.add(objectives);
+            if (this.objectiveCache != null) {
+                this.objectiveCache.add(objectives);
             }
-            this.m_FitnessCache.add(fitness);
-            this.m_ConstraintCache.add(constraint);
+            this.fitnessCache.add(fitness);
+            this.constraintCache.add(constraint);
         }
         ArchivingAllDominating arch = new ArchivingAllDominating();
-        arch.addElementsToArchive(this.m_ParetoFront);
-        this.m_ParetoFront = this.m_ParetoFront.getArchive();
-        this.m_ParetoFront.SetArchive(null);
+        arch.addElementsToArchive(this.paretoFront);
+        this.paretoFront = this.paretoFront.getArchive();
+        this.paretoFront.SetArchive(null);
     }
 }

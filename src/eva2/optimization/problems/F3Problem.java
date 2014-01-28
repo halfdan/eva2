@@ -58,13 +58,9 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
         result += "Dimension   : " + this.problemDimension + "\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.

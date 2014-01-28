@@ -29,8 +29,8 @@ public class TestingDArea {
         area.setVisibleRectangle(0, -3, 10, 10);//plotArea.setAutoFocus(true);
         area.setMinRectangle(0, 0, 1, 1);
         ScaledBorder myBorder = new ScaledBorder();
-        myBorder.x_label = "x";//"App. " + Name + " func. calls";
-        myBorder.y_label = "y";//"fitness";
+        myBorder.xLabel = "x";//"App. " + Name + " func. calls";
+        myBorder.yLabel = "y";//"fitness";
         area.setBorder(myBorder);
         area.setAutoGrid(true);
         area.setGridVisible(true);

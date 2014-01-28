@@ -77,8 +77,8 @@ public class FunctionArea extends DArea implements Serializable {
         setBackground(new Color(253, 253, 253)); // not quite white
         // setAutoFocus(true);
         scaledBorder = new ScaledBorder();
-        scaledBorder.x_label = xname; // "App. " + Name + " func. calls";
-        scaledBorder.y_label = yname; // "fitness";
+        scaledBorder.xLabel = xname; // "App. " + Name + " func. calls";
+        scaledBorder.yLabel = yname; // "fitness";
         setBorder(scaledBorder);
         setAutoGrid(true);
         setGridVisible(true);
@@ -1122,9 +1122,9 @@ public class FunctionArea extends DArea implements Serializable {
             setYScale(null);
             ScaledBorder buffer = scaledBorder;
             scaledBorder = new ScaledBorder();
-            scaledBorder.x_label = buffer.x_label; // "App. " + Name +
+            scaledBorder.xLabel = buffer.xLabel; // "App. " + Name +
             // " func. calls";
-            scaledBorder.y_label = buffer.y_label; // "fitness";
+            scaledBorder.yLabel = buffer.yLabel; // "fitness";
             scaledBorder.setStandardPattern(false); // default decimal pattern on y axis
             setBorder(scaledBorder);
         }

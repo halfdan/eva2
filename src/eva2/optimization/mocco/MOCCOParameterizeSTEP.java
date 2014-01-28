@@ -23,23 +23,19 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.10.2005
- * Time: 18:42:04
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProcessElement {
 
-    private AbstractEAIndividual m_RefSolution;
-    private JTextField[] m_RefSol, m_Relax, m_Weight;
-    private JCheckBox[] m_Satisfied;
-    JPanel m_Choice;
-    private InterfaceOptimizer m_Opt;
-    private GeneralOptimizationEditorProperty m_EOpt;
+    private AbstractEAIndividual refSolution;
+    private JTextField[] refSolTextField, relaxTextField, weightTextField;
+    private JCheckBox[] satisfied;
+    JPanel choicePanel;
+    private InterfaceOptimizer optimizer;
+    private GeneralOptimizationEditorProperty optimizationEditorProperty;
 
     public MOCCOParameterizeSTEP(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
+        this.mocco = mocco;
     }
 
     /**
@@ -47,50 +43,50 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
+        this.mocco.controlPanel.removeAll();
 
         // The button panel
         JButton tmpB = new JButton("Start optimization.");
         tmpB.setToolTipText("Start the adhoc online optimization.");
         tmpB.addActionListener(continue2);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
         tmpB = new JButton("Save task.");
         tmpB.setToolTipText("Save the optimization problem and algorithm to *.ser file for offline optimization.");
         tmpB.addActionListener(saveState2FileForOfflineOptimization);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
 
         // the parameter panel
-        this.m_Mocco.m_JPanelParameters.removeAll();
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
-        this.m_Mocco.m_JPanelParameters.add(this.makeHelpText("Please classify the achieved fitness values in" +
+        this.mocco.parameterPanel.removeAll();
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
+        this.mocco.parameterPanel.add(this.makeHelpText("Please classify the achieved fitness values in" +
                 " satisfying and unsatisfying results. For the satisfied objectives relaxation-level can be given" +
                 " by which this objective is allowed to worsen. For the unsatisfied objectives weights can be given" +
                 " for weigthed aggregation."), BorderLayout.NORTH);
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new BorderLayout());
-        this.m_Choice = new JPanel();
-        //this.m_Choice.setBorder(BorderFactory.createCompoundBorder(
+        this.choicePanel = new JPanel();
+        //this.choicePanel.setBorder(BorderFactory.createCompoundBorder(
         //    BorderFactory.createTitledBorder("Step Method:"),
         //	BorderFactory.createEmptyBorder(0, 5, 5, 5)));
-        tmpP.add(this.m_Choice, BorderLayout.CENTER);
+        tmpP.add(this.choicePanel, BorderLayout.CENTER);
         this.installChoice();
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
-        this.m_Mocco.m_JPanelParameters.validate();
-        this.m_Mocco.m_JPanelControl.validate();
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.CENTER);
+        this.mocco.parameterPanel.validate();
+        this.mocco.controlPanel.validate();
     }
 
     private void installChoice() {
-        this.m_Choice.setLayout(new GridBagLayout());
+        this.choicePanel.setLayout(new GridBagLayout());
         JPanel panelSTEP = new JPanel();
         panelSTEP.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Parameterize Perferences:"),
                 BorderFactory.createEmptyBorder(0, 5, 5, 5)));
         panelSTEP.setLayout(new GridBagLayout());
-        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Mocco.m_State.m_CurrentProblem).getProblemObjectives();
-        this.m_RefSol = new JTextField[obj.length];
-        this.m_Relax = new JTextField[obj.length];
-        this.m_Weight = new JTextField[obj.length];
-        this.m_Satisfied = new JCheckBox[obj.length];
+        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) this.mocco.state.currentProblem).getProblemObjectives();
+        this.refSolTextField = new JTextField[obj.length];
+        this.relaxTextField = new JTextField[obj.length];
+        this.weightTextField = new JTextField[obj.length];
+        this.satisfied = new JCheckBox[obj.length];
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.BOTH;
@@ -131,58 +127,58 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
             }
             gbc.gridx = 2;
             gbc.gridy = i + 1;
-            this.m_RefSol[i] = new JTextField("" + ((Double) m_RefSolution.getData(obj[i].getIdentName())).doubleValue());
-            this.m_RefSol[i].setEditable(false);
-            panelSTEP.add(this.m_RefSol[i], gbc);
+            this.refSolTextField[i] = new JTextField("" + ((Double) refSolution.getData(obj[i].getIdentName())).doubleValue());
+            this.refSolTextField[i].setEditable(false);
+            panelSTEP.add(this.refSolTextField[i], gbc);
             gbc.gridx = 3;
             gbc.gridy = i + 1;
-            this.m_Satisfied[i] = new JCheckBox();
-            this.m_Satisfied[i].addActionListener(satisfiedChanged);
-            panelSTEP.add(this.m_Satisfied[i], gbc);
+            this.satisfied[i] = new JCheckBox();
+            this.satisfied[i].addActionListener(satisfiedChanged);
+            panelSTEP.add(this.satisfied[i], gbc);
             gbc.gridx = 4;
             gbc.gridy = i + 1;
-            this.m_Weight[i] = new JTextField("1.0");
+            this.weightTextField[i] = new JTextField("1.0");
             if (obj[i].getOptimizationMode().contains("Objective")) {
-                this.m_Weight[i].setEditable(true);
+                this.weightTextField[i].setEditable(true);
             } else {
-                this.m_Weight[i].setEditable(false);
+                this.weightTextField[i].setEditable(false);
             }
-            //this.m_Satisfied[i].addActionListener(valueChanged);
-            panelSTEP.add(this.m_Weight[i], gbc);
+            //this.satisfied[i].addActionListener(valueChanged);
+            panelSTEP.add(this.weightTextField[i], gbc);
             gbc.gridx = 5;
             gbc.gridy = i + 1;
-            this.m_Relax[i] = new JTextField("0.0");
-            this.m_Relax[i].setEditable(false);
-            //this.m_Satisfied[i].addActionListener(valueChanged);
-            panelSTEP.add(this.m_Relax[i], gbc);
+            this.relaxTextField[i] = new JTextField("0.0");
+            this.relaxTextField[i].setEditable(false);
+            //this.satisfied[i].addActionListener(valueChanged);
+            panelSTEP.add(this.relaxTextField[i], gbc);
         }
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         gbc.gridy = 0;
-        this.m_Choice.add(panelSTEP, gbc);
+        this.choicePanel.add(panelSTEP, gbc);
 
         // the optimizer
         gbc.gridwidth = 1;
-        this.m_EOpt = new GeneralOptimizationEditorProperty();
-        this.m_Opt = new GeneticAlgorithm();
-        this.m_Opt.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
-        this.m_Mocco.m_State.m_Optimizer = this.m_Opt;
-        this.m_EOpt.name = "Island Model EA";
+        this.optimizationEditorProperty = new GeneralOptimizationEditorProperty();
+        this.optimizer = new GeneticAlgorithm();
+        this.optimizer.setProblem(this.mocco.state.currentProblem);
+        this.mocco.state.optimizer = this.optimizer;
+        this.optimizationEditorProperty.name = "Island Model EA";
         try {
-            this.m_EOpt.value = this.m_Opt;
-            this.m_EOpt.editor = PropertyEditorProvider.findEditor(this.m_EOpt.value.getClass());
-            if (this.m_EOpt.editor == null) {
-                this.m_EOpt.editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
+            this.optimizationEditorProperty.value = this.optimizer;
+            this.optimizationEditorProperty.editor = PropertyEditorProvider.findEditor(this.optimizationEditorProperty.value.getClass());
+            if (this.optimizationEditorProperty.editor == null) {
+                this.optimizationEditorProperty.editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
             }
-            if (this.m_EOpt.editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) this.m_EOpt.editor).setClassType(InterfaceOptimizer.class);
+            if (this.optimizationEditorProperty.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) this.optimizationEditorProperty.editor).setClassType(InterfaceOptimizer.class);
             }
-            this.m_EOpt.editor.setValue(this.m_EOpt.value);
-            AbstractObjectEditor.findViewFor(this.m_EOpt);
-            if (this.m_EOpt.view != null) {
-                this.m_EOpt.view.repaint();
+            this.optimizationEditorProperty.editor.setValue(this.optimizationEditorProperty.value);
+            AbstractObjectEditor.findViewFor(this.optimizationEditorProperty);
+            if (this.optimizationEditorProperty.view != null) {
+                this.optimizationEditorProperty.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -190,16 +186,16 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 2;
-        this.m_Choice.add(new JLabel("" + this.m_EOpt.name), gbc);
+        this.choicePanel.add(new JLabel("" + this.optimizationEditorProperty.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1;
-        this.m_Choice.add(this.m_EOpt.view, gbc);
+        this.choicePanel.add(this.optimizationEditorProperty.view, gbc);
         // Terminator
         GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
         editor.name = "Terminator";
         try {
-            editor.value = this.m_Mocco.m_State.m_Terminator;
+            editor.value = this.mocco.state.terminator;
             editor.editor = PropertyEditorProvider.findEditor(editor.value.getClass());
             if (editor.editor == null) {
                 editor.editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
@@ -218,11 +214,11 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 2;
-        this.m_Choice.add(new JLabel("" + editor.name), gbc);
+        this.choicePanel.add(new JLabel("" + editor.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.weightx = 1;
-        this.m_Choice.add(editor.view, gbc);
+        this.choicePanel.add(editor.view, gbc);
     }
 
     /**
@@ -232,28 +228,28 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
      * @param indy the reference solution
      */
     public void setReferenceSolution(AbstractEAIndividual indy) {
-        this.m_RefSolution = indy;
+        this.refSolution = indy;
     }
 
     ActionListener satisfiedChanged = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) m_Mocco.m_State.m_CurrentProblem).getProblemObjectives();
-            for (int i = 0; i < m_Satisfied.length; i++) {
+            InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) mocco.state.currentProblem).getProblemObjectives();
+            for (int i = 0; i < satisfied.length; i++) {
                 if (obj[i].getOptimizationMode().contains("Objective")) {
-                    if (m_Satisfied[i].isSelected()) {
-                        m_Relax[i].setEditable(true);
-                        m_Weight[i].setEditable(false);
+                    if (satisfied[i].isSelected()) {
+                        relaxTextField[i].setEditable(true);
+                        weightTextField[i].setEditable(false);
                     } else {
-                        m_Relax[i].setEditable(false);
-                        m_Weight[i].setEditable(true);
+                        relaxTextField[i].setEditable(false);
+                        weightTextField[i].setEditable(true);
                     }
                 } else {
-                    m_Relax[i].setEditable(false);
-                    m_Weight[i].setEditable(false);
+                    relaxTextField[i].setEditable(false);
+                    weightTextField[i].setEditable(false);
                 }
             }
-            m_Choice.validate();
+            choicePanel.validate();
         }
     };
 
@@ -261,22 +257,22 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
         @Override
         public void actionPerformed(ActionEvent event) {
             // first fetch the data from the choice and set constraints
-            InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) m_Mocco.m_State.m_CurrentProblem).getProblemObjectives();
+            InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) mocco.state.currentProblem).getProblemObjectives();
 
             double[] weights, relax;
-            weights = new double[m_RefSol.length];
-            relax = new double[m_RefSol.length];
-            for (int i = 0; i < m_RefSol.length; i++) {
-                weights[i] = new Double(m_Weight[i].getText()).doubleValue();
-                relax[i] = new Double(m_Relax[i].getText()).doubleValue();
-                if ((m_Satisfied[i].isSelected()) && (obj[i].getOptimizationMode().contains("Objective"))) {
+            weights = new double[refSolTextField.length];
+            relax = new double[refSolTextField.length];
+            for (int i = 0; i < refSolTextField.length; i++) {
+                weights[i] = new Double(weightTextField[i].getText()).doubleValue();
+                relax[i] = new Double(relaxTextField[i].getText()).doubleValue();
+                if ((satisfied[i].isSelected()) && (obj[i].getOptimizationMode().contains("Objective"))) {
                     weights[i] = 0;
                     if (obj[i].is2BMinimized()) {
                         // check this sounds wierd => sounds correct if objectives are used above stupid!
-                        relax[i] = ((Double) m_RefSolution.getData(obj[i].getIdentName())).doubleValue()
+                        relax[i] = ((Double) refSolution.getData(obj[i].getIdentName())).doubleValue()
                                 + Math.abs(relax[i]);
                     } else {
-                        relax[i] = ((Double) m_RefSolution.getData(obj[i].getIdentName())).doubleValue()
+                        relax[i] = ((Double) refSolution.getData(obj[i].getIdentName())).doubleValue()
                                 - Math.abs(relax[i]);
                     }
                     obj[i].SetConstraintGoal(relax[i]);
@@ -304,17 +300,17 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
 //                }
 //            }
             MOSOWeightedFitness wf = new MOSOWeightedFitness();
-            ((AbstractMultiObjectiveOptimizationProblem) m_Mocco.m_State.m_CurrentProblem).setMOSOConverter(wf);
+            ((AbstractMultiObjectiveOptimizationProblem) mocco.state.currentProblem).setMOSOConverter(wf);
             double[] setWeights = mapObjectives2Fitness(weights);
             PropertyDoubleArray da = new PropertyDoubleArray(setWeights);
             wf.setWeights(da);
-            m_Opt.setProblem(m_Mocco.m_State.m_CurrentProblem);
-            m_Mocco.m_State.m_Optimizer = m_Opt;
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelControl.validate();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Mocco.m_JPanelParameters.validate();
-            m_Finished = true;
+            optimizer.setProblem(mocco.state.currentProblem);
+            mocco.state.optimizer = optimizer;
+            mocco.controlPanel.removeAll();
+            mocco.controlPanel.validate();
+            mocco.parameterPanel.removeAll();
+            mocco.parameterPanel.validate();
+            hasFinished = true;
         }
     };
 
@@ -328,7 +324,7 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
      */
     public double[] mapObjectives2Fitness(double[] d) {
         ArrayList tmpA = new ArrayList();
-        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Mocco.m_State.m_CurrentProblem).getProblemObjectives();
+        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) this.mocco.state.currentProblem).getProblemObjectives();
         System.out.println("Calling mapObjectives2Fitness");
         System.out.println("obj.length = " + obj.length);
         System.out.println("d.length   = " + d.length);

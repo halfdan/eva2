@@ -24,10 +24,10 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
     public final static int STRATEGY_REFP = 2;
     public final static int STRATEGY_TBCH = 3;
     public final static int STRATEGY_GDF = 4;
-    public int m_Strategy = MOCCOChooseMOStrategy.STRATEGY_MOEA;
+    public int moStrategy = MOCCOChooseMOStrategy.STRATEGY_MOEA;
 
     public MOCCOChooseMOStrategy(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
+        this.mocco = mocco;
     }
 
     /**
@@ -35,14 +35,14 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
-        this.m_Mocco.m_JPanelParameters.removeAll();
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
+        this.mocco.controlPanel.removeAll();
+        this.mocco.parameterPanel.removeAll();
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
 
         // The button panel
 
         // the parameter panel
-        this.m_Mocco.m_JPanelParameters.add(this.makeHelpText("Please choose a multi-objective" +
+        this.mocco.parameterPanel.add(this.makeHelpText("Please choose a multi-objective" +
                 " optimization strategy for the next optimization iteration. The different optimization approaches" +
                 " not only differ in the number of soltuion alternatives generated (more soltuions typicall require" +
                 " higher computational effort), but also in the amount of input required by the decision maker (DM)."), BorderLayout.NORTH);
@@ -87,7 +87,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
         tmpP.add(this.makeInformationText("Geoffrion-Dyer-Feinberg Method", "Here the DM needs to select a reference solution" +
                 " from the currently known solution. For this solution the DM has to specify trade-off values for each" +
                 " objective. This method assumes a linear utility function by results in a simple weighted aggregation."), gbc);
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.CENTER);
 
         tmpB = new JButton();
         bytes = loader.getBytesFromResourceLocation("images/MOCCO/MOCCO_STEP.gif", true);
@@ -138,8 +138,8 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
                 " reference point and tries to minimze the L-metric (=Inf). To obtain multiple alternative soltuions" +
                 " a weighted L-metric is used with different weigths for a number of optimization runs."), gbc);
 
-        this.m_Mocco.m_JPanelParameters.validate();
-        this.m_Mocco.m_JPanelControl.validate();
+        this.mocco.parameterPanel.validate();
+        this.mocco.controlPanel.validate();
     }
 
     /**
@@ -148,52 +148,52 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
      * @return the strategy
      */
     public int getMOStrategy() {
-        return this.m_Strategy;
+        return this.moStrategy;
     }
 
     ActionListener choosenMOEA = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Strategy = STRATEGY_MOEA;
-            m_Finished = true;
+            mocco.controlPanel.removeAll();
+            mocco.parameterPanel.removeAll();
+            moStrategy = STRATEGY_MOEA;
+            hasFinished = true;
         }
     };
     ActionListener choosenSTEP = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Strategy = STRATEGY_STEP;
-            m_Finished = true;
+            mocco.controlPanel.removeAll();
+            mocco.parameterPanel.removeAll();
+            moStrategy = STRATEGY_STEP;
+            hasFinished = true;
         }
     };
     ActionListener choosenREFP = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Strategy = STRATEGY_REFP;
-            m_Finished = true;
+            mocco.controlPanel.removeAll();
+            mocco.parameterPanel.removeAll();
+            moStrategy = STRATEGY_REFP;
+            hasFinished = true;
         }
     };
     ActionListener choosenTBCH = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Strategy = STRATEGY_TBCH;
-            m_Finished = true;
+            mocco.controlPanel.removeAll();
+            mocco.parameterPanel.removeAll();
+            moStrategy = STRATEGY_TBCH;
+            hasFinished = true;
         }
     };
     ActionListener choosenGDF = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Strategy = STRATEGY_GDF;
-            m_Finished = true;
+            mocco.controlPanel.removeAll();
+            mocco.parameterPanel.removeAll();
+            moStrategy = STRATEGY_GDF;
+            hasFinished = true;
         }
     };
 }
