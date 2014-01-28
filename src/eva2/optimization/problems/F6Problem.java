@@ -14,8 +14,8 @@ import java.io.Serializable;
 @Description("Generalized Rastrigin's function.")
 public class F6Problem extends AbstractProblemDoubleOffset
         implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, InterfaceLocalSearchable, Serializable, InterfaceInterestingHistogram {
-    private double m_A = 10;
-    private double m_Omega = 2 * Math.PI;
+    private double a = 10;
+    private double omega = 2 * Math.PI;
     private transient GradientDescentAlgorithm localSearchOptimizer = null;
 
     public F6Problem() {
@@ -24,8 +24,8 @@ public class F6Problem extends AbstractProblemDoubleOffset
 
     public F6Problem(F6Problem b) {
         super(b);
-        this.m_A = b.m_A;
-        this.m_Omega = b.m_Omega;
+        this.a = b.a;
+        this.omega = b.omega;
     }
 
     public F6Problem(int dim) {
@@ -52,10 +52,10 @@ public class F6Problem extends AbstractProblemDoubleOffset
     public double[] evaluate(double[] x) {
         x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0] = x.length * this.m_A + yOffset;
+        result[0] = x.length * this.a + yOffset;
         for (int i = 0; i < x.length; i++) {
             double xi = x[i] - xOffset;
-            result[0] += Math.pow(xi, 2) - this.m_A * Math.cos(this.m_Omega * xi);
+            result[0] += Math.pow(xi, 2) - this.a * Math.cos(this.omega * xi);
         }
         return result;
     }
@@ -67,7 +67,7 @@ public class F6Problem extends AbstractProblemDoubleOffset
         for (int j = 0; j < x.length; j++) {
             result[j] = 0;
             double xj = x[j] - xOffset;
-            result[j] += 2 * xj + this.m_Omega * this.m_A * Math.sin(this.m_Omega * xj);
+            result[j] += 2 * xj + this.omega * this.a * Math.sin(this.omega * xj);
         }
         return result;
     }
@@ -106,11 +106,11 @@ public class F6Problem extends AbstractProblemDoubleOffset
      * @param a The offset for the decision variables.
      */
     public void setA(double a) {
-        this.m_A = a;
+        this.a = a;
     }
 
     public double getA() {
-        return this.m_A;
+        return this.a;
     }
 
     public String aTipText() {
@@ -124,11 +124,11 @@ public class F6Problem extends AbstractProblemDoubleOffset
      * @param Omega The offset for the objective value.
      */
     public void setOmega(double Omega) {
-        this.m_Omega = Omega;
+        this.omega = Omega;
     }
 
     public double getOmega() {
-        return this.m_Omega;
+        return this.omega;
     }
 
     public String omegaTipText() {

@@ -20,12 +20,12 @@ import java.util.ArrayList;
  */
 @Description("T1 is to be minimized.")
 public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implements java.io.Serializable {
-    protected int m_ProblemDimension = 30;
-    protected int m_OutputDimension = 2;
-    protected double m_Noise = 0.0;
-    protected double m_XOffSet = 0.0;
-    protected double m_YOffSet = 0.0;
-    protected boolean m_ApplyConstraints = false;
+    protected int problemDimension = 30;
+    protected int outputDimension = 2;
+    protected double noise = 0.0;
+    protected double xOffset = 0.0;
+    protected double yOffset = 0.0;
+    protected boolean applyConstraints = false;
 
 //    transient private GraphPointSet     mySet;
 
@@ -43,35 +43,35 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
             this.template = (AbstractEAIndividual) ((AbstractEAIndividual) b.template).clone();
         }
         //AbstractMultiObjectiveOptimizationProblem
-        if (b.m_MOSOConverter != null) {
-            this.m_MOSOConverter = (InterfaceMOSOConverter) b.m_MOSOConverter.clone();
+        if (b.mosoConverter != null) {
+            this.mosoConverter = (InterfaceMOSOConverter) b.mosoConverter.clone();
         }
-        if (b.m_Metric != null) {
-            this.m_Metric = (InterfaceParetoFrontMetric) b.m_Metric.clone();
+        if (b.metric != null) {
+            this.metric = (InterfaceParetoFrontMetric) b.metric.clone();
         }
-        if (b.m_ParetoFront != null) {
-            this.m_ParetoFront = (Population) b.m_ParetoFront.clone();
+        if (b.paretoFront != null) {
+            this.paretoFront = (Population) b.paretoFront.clone();
         }
-        if (b.m_Border != null) {
-            this.m_Border = new double[b.m_Border.length][2];
-            for (int i = 0; i < this.m_Border.length; i++) {
-                this.m_Border[i][0] = b.m_Border[i][0];
-                this.m_Border[i][1] = b.m_Border[i][1];
+        if (b.border != null) {
+            this.border = new double[b.border.length][2];
+            for (int i = 0; i < this.border.length; i++) {
+                this.border[i][0] = b.border[i][0];
+                this.border[i][1] = b.border[i][1];
             }
         }
-        if (b.m_AreaConst4Parallelization != null) {
-            this.m_AreaConst4Parallelization = new ArrayList();
-            for (int i = 0; i < b.m_AreaConst4Parallelization.size(); i++) {
-                this.m_AreaConst4Parallelization.add(((InterfaceConstraint) b.m_AreaConst4Parallelization.get(i)).clone());
+        if (b.areaConst4Parallelization != null) {
+            this.areaConst4Parallelization = new ArrayList();
+            for (int i = 0; i < b.areaConst4Parallelization.size(); i++) {
+                this.areaConst4Parallelization.add(((InterfaceConstraint) b.areaConst4Parallelization.get(i)).clone());
             }
         }
         // TF1Problem
-        this.m_ApplyConstraints = b.m_ApplyConstraints;
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_OutputDimension = b.m_OutputDimension;
-        this.m_Noise = b.m_Noise;
-        this.m_XOffSet = b.m_XOffSet;
-        this.m_YOffSet = b.m_YOffSet;
+        this.applyConstraints = b.applyConstraints;
+        this.problemDimension = b.problemDimension;
+        this.outputDimension = b.outputDimension;
+        this.noise = b.noise;
+        this.xOffset = b.xOffset;
+        this.yOffset = b.yOffset;
     }
 
     /**
@@ -91,11 +91,11 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      */
     @Override
     public void initializePopulation(Population population) {
-        this.m_ParetoFront = new Population();
+        this.paretoFront = new Population();
 
         double[][] newRange = makeRange();
 
-        ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.m_ProblemDimension);
+        ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.problemDimension);
         ((InterfaceDataTypeDouble) this.template).setDoubleRange(newRange);
 
         AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
@@ -106,8 +106,8 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     }
 
     protected double[][] makeRange(double lower, double upper) {
-        double[][] newRange = new double[this.m_ProblemDimension][2];
-        for (int i = 0; i < this.m_ProblemDimension; i++) {
+        double[][] newRange = new double[this.problemDimension][2];
+        for (int i = 0; i < this.problemDimension; i++) {
             newRange[i][0] = lower;
             newRange[i][1] = upper;
         }
@@ -127,17 +127,17 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
         System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
         for (int i = 0; i < x.length; i++) {
-            x[i] -= this.m_XOffSet;
+            x[i] -= this.xOffset;
         }
         fitness = this.doEvaluation(x);
         for (int i = 0; i < fitness.length; i++) {
             // add noise to the fitness
-            fitness[i] += RNG.gaussianDouble(this.m_Noise);
-            fitness[i] += this.m_YOffSet;
+            fitness[i] += RNG.gaussianDouble(this.noise);
+            fitness[i] += this.yOffset;
             // set the fitness of the individual
             individual.SetFitness(i, fitness[i]);
         }
-        if (this.m_ApplyConstraints) {
+        if (this.applyConstraints) {
             if (fitness[0] > 0.5) {
                 individual.addConstraintViolation(fitness[0] - 0.5);
             }
@@ -151,7 +151,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
                 individual.addConstraintViolation(x[3] - 0.1);
             }
         }
-        individual.checkAreaConst4Parallelization(this.m_AreaConst4Parallelization);
+        individual.checkAreaConst4Parallelization(this.areaConst4Parallelization);
     }
 
     /**
@@ -203,7 +203,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
 
     @Override
     public void drawAdditionalData(Plot plot, Population pop, int index) {
-        AbstractMultiObjectiveOptimizationProblem.drawWithConstraints(plot, pop, m_Border, index);
+        AbstractMultiObjectiveOptimizationProblem.drawWithConstraints(plot, pop, border, index);
     }
 
     /**
@@ -219,8 +219,8 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         result += "T1 Problem:\n";
         result += "Here the individual codes a vector of real number x and T1(x)= x is to be minimized.\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension + "\n";
-        result += "Noise level : " + this.m_Noise + "\n";
+        result += "Dimension   : " + this.problemDimension + "\n";
+        result += "Noise level : " + this.noise + "\n";
         result += "Solution representation:\n";
         //result += this.template.getSolutionRepresentationFor();
         return result;
@@ -281,11 +281,11 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         if (noise < 0) {
             noise = 0;
         }
-        this.m_Noise = noise;
+        this.noise = noise;
     }
 
     public double getNoise() {
-        return this.m_Noise;
+        return this.noise;
     }
 
     public String noiseTipText() {
@@ -298,11 +298,11 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * @param XOffSet The offset for the decision variables.
      */
     public void setXOffSet(double XOffSet) {
-        this.m_XOffSet = XOffSet;
+        this.xOffset = XOffSet;
     }
 
     public double getXOffSet() {
-        return this.m_XOffSet;
+        return this.xOffset;
     }
 
     public String xOffSetTipText() {
@@ -316,11 +316,11 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * @param YOffSet The offset for the objective value.
      */
     public void setYOffSet(double YOffSet) {
-        this.m_YOffSet = YOffSet;
+        this.yOffset = YOffSet;
     }
 
     public double getYOffSet() {
-        return this.m_YOffSet;
+        return this.yOffset;
     }
 
     public String yOffSetTipText() {
@@ -333,11 +333,11 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * @param d The number of input dimensions
      */
     public void setProblemDimension(int d) {
-        this.m_ProblemDimension = d;
+        this.problemDimension = d;
     }
 
     public int getProblemDimension() {
-        return this.m_ProblemDimension;
+        return this.problemDimension;
     }
 
     public String problemDimensionTipText() {
@@ -348,15 +348,15 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
 //     * @param a The number of objective variables
 //     */
 //    public void setOutputDimension(int a) {
-//        this.m_OutputDimension = a;
-//        this.m_Border = new double[this.m_OutputDimension][2];
-//        for (int i = 0; i < this.m_Border.length; i++) {
-//            this.m_Border[i][0] = 0;
-//            this.m_Border[i][1] = 5;
+//        this.outputDimension = a;
+//        this.border = new double[this.outputDimension][2];
+//        for (int i = 0; i < this.border.length; i++) {
+//            this.border[i][0] = 0;
+//            this.border[i][1] = 5;
 //        }
 //    }
 //    public int getOutputDimension() {
-//        return this.m_OutputDimension;
+//        return this.outputDimension;
 //    }
 //    public String outputDimensionTipText() {
 //        return "Number of objective variables.";
@@ -383,13 +383,13 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      */
     @Override
     public void setMOSOConverter(InterfaceMOSOConverter b) {
-        this.m_MOSOConverter = b;
-        this.m_MOSOConverter.setOutputDimension(this.m_OutputDimension);
+        this.mosoConverter = b;
+        this.mosoConverter.setOutputDimension(this.outputDimension);
     }
 
     @Override
     public InterfaceMOSOConverter getMOSOConverter() {
-        return this.m_MOSOConverter;
+        return this.mosoConverter;
     }
 
     @Override
@@ -401,10 +401,10 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
 //     * @param b     state.
 //     */
 //    public void setApplyConstraints(boolean b) {
-//        this.m_ApplyConstraints = b;
+//        this.applyConstraints = b;
 //    }
 //    public boolean getApplyConstraints() {
-//        return this.m_ApplyConstraints;
+//        return this.applyConstraints;
 //    }
 //    public String applyConstraintsTipText() {
 //        return "Toggle application of constraint (works only for T1).";
@@ -419,11 +419,11 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      * @param pop The pareto-front archive.
      */
     public void setParetoFront(Population pop) {
-        this.m_ParetoFront = pop;
+        this.paretoFront = pop;
     }
 
     public Population getParetoFront() {
-        return this.m_ParetoFront;
+        return this.paretoFront;
     }
 
     public String paretoFrontTipText() {

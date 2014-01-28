@@ -15,11 +15,11 @@ import java.util.BitSet;
 @Description("Maximize the value of the knapsack without exceeding the weight limit")
 public class BKnapsackProblem extends AbstractProblemBinary implements java.io.Serializable {
 
-    private int m_Limit = 5000;
-    private double m_Punish = 2.0;
-    private double m_LocalSearch = 0.0;
-    private boolean m_Lamarckism = false;
-    private double m_ProblemSpecificInit = 0.0;
+    private int limit = 5000;
+    private double punish = 2.0;
+    private double localSearch = 0.0;
+    private boolean lamarckism = false;
+    private double problemSpecificInit = 0.0;
     static final int[][] items = {
             {334, -328},
             {303, -291},
@@ -130,10 +130,10 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         //AbstractOptimizationProblem
         cloneObjects(b);
         // BKnapsackProblem
-        this.m_Limit = b.m_Limit;
-        this.m_Punish = b.m_Punish;
-        this.m_LocalSearch = b.m_LocalSearch;
-        this.m_Lamarckism = b.m_Lamarckism;
+        this.limit = b.limit;
+        this.punish = b.punish;
+        this.localSearch = b.localSearch;
+        this.lamarckism = b.lamarckism;
     }
 
     @Override
@@ -161,7 +161,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
 
     protected void initIndy(int k, AbstractEAIndividual indy) {
         indy.init(this);
-        if (RNG.flipCoin(this.m_ProblemSpecificInit)) {
+        if (RNG.flipCoin(this.problemSpecificInit)) {
             BitSet tmpSet = new BitSet();
             tmpSet.clear();
 
@@ -184,7 +184,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
 
         tmpBitSet = ((InterfaceDataTypeBinary) individual).getBinaryData();
         result = this.eval(tmpBitSet);
-        if (RNG.flipCoin(this.m_LocalSearch)) {
+        if (RNG.flipCoin(this.localSearch)) {
             // first remove surplus assets
             while (result[1] > 0) {
                 // search for an element to replace
@@ -232,7 +232,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
                 }
 
                 for (int i = 0; i < items.length; i++) {
-                    if (items[i][0] < this.m_Limit - weight) {
+                    if (items[i][0] < this.limit - weight) {
                         // possible candidate
                         if (stronger < 0) {
                             stronger = i;
@@ -249,7 +249,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
                 result = this.eval(tmpBitSet);
             }
 
-            if (this.m_Lamarckism) {
+            if (this.lamarckism) {
                 ((InterfaceDataTypeBinary) individual).setBinaryGenotype(tmpBitSet);
             }
         }
@@ -285,8 +285,8 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
             }
         }
         // write the solution
-        result[1] = Math.max(0, result[1] - this.m_Limit);
-        result[0] = (this.m_Punish * result[1]) + result[2];
+        result[1] = Math.max(0, result[1] - this.limit);
+        result[0] = (this.punish * result[1]) + result[2];
         return result;
     }
 
@@ -330,7 +330,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
 
         result.append("Knapsack Problem:\n");
         result.append("The task is to find a packing for a knapsack with limited size(");
-        result.append(this.m_Limit);
+        result.append(this.limit);
         result.append(") and maximal value.\n");
         result.append("The default setting with limit=5000 allows a knapsack with value 5100. Note: value reads negative.");
         result.append("Available items {(weight/value),...}: {");
@@ -344,7 +344,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         result.append("}\n");
         result.append("Parameters:\n");
         result.append("Punish rate: ");
-        result.append(this.m_Punish);
+        result.append(this.punish);
         result.append("\n");
         result.append("Solution representation:\n");
         //result += this.template.getSolutionRepresentationFor();
@@ -369,11 +369,11 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @param punish The number of multiruns that are to be performed
      */
     public void setPunishment(double punish) {
-        this.m_Punish = punish;
+        this.punish = punish;
     }
 
     public double getPunishment() {
-        return this.m_Punish;
+        return this.punish;
     }
 
     public String punishmentTipText() {
@@ -405,11 +405,11 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @param b gives the chance of problemspecific initialization.
      */
     public void setProblemSpecificInit(double b) {
-        this.m_ProblemSpecificInit = b;
+        this.problemSpecificInit = b;
     }
 
     public double getProblemSpecificInit() {
-        return this.m_ProblemSpecificInit;
+        return this.problemSpecificInit;
     }
 
     public String problemSpecificInitTipText() {
@@ -424,11 +424,11 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @param b gives the chance of problemspecific local search.
      */
     public void setLocalSearch(double b) {
-        this.m_LocalSearch = b;
+        this.localSearch = b;
     }
 
     public double getLocalSearch() {
-        return this.m_LocalSearch;
+        return this.localSearch;
     }
 
     public String localSearchTipText() {
@@ -441,11 +441,11 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @param b toggles lamarckism.
      */
     public void setLamarckism(boolean b) {
-        this.m_Lamarckism = b;
+        this.lamarckism = b;
     }
 
     public boolean getLamarckism() {
-        return this.m_Lamarckism;
+        return this.lamarckism;
     }
 
     public String lamarckismTipText() {
@@ -453,11 +453,11 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     }
 
     public int getWeightLimit() {
-        return m_Limit;
+        return limit;
     }
 
     public void setWeightLimit(int mLimit) {
-        m_Limit = mLimit;
+        limit = mLimit;
     }
 
     public String weightLimitTipText() {

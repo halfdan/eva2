@@ -57,7 +57,7 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
         result += "I1 Problem:\n";
         result += "Here the individual codes a vector of int numbers x and F1(x)= x^2 is to be minimized.\n";
         result += "Parameters:\n";
-        result += "Dimension   : " + this.m_ProblemDimension + "\n";
+        result += "Dimension   : " + this.problemDimension + "\n";
         result += "Solution representation:\n";
         return result;
     }

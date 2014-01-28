@@ -16,7 +16,7 @@ import java.util.List;
 
 public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDouble
         implements Interface2DBorderProblem, InterfaceMultimodalProblemKnown {
-    protected static InterfaceDistanceMetric m_Metric = new PhenotypeMetric();
+    protected static InterfaceDistanceMetric distanceMetric = new PhenotypeMetric();
     private double globalOptimum = 0;
     protected Population listOfOptima;
     protected double epsilon = 0.05;

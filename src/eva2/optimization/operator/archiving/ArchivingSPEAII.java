@@ -288,7 +288,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 //            result[i] = Double.POSITIVE_INFINITY;
 //            for (int j = 0; j < result.length; j++) {
 //                if (i != j) {
-//                    tmpD = this.m_Metric.distance((AbstractEAIndividual)pop.get(i), (AbstractEAIndividual)pop.get(j));
+//                    tmpD = this.distanceMetric.distance((AbstractEAIndividual)pop.get(i), (AbstractEAIndividual)pop.get(j));
 //                    if (tmpD < result[i]) result[i] = tmpD;
 //                }
 //            }

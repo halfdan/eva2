@@ -25,11 +25,7 @@ import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.04.2004
- * Time: 13:32:08
- * To change this template use File | Settings | File Templates.
+ *
  */
 public abstract class AbstractMultiObjectiveOptimizationProblem extends AbstractOptimizationProblem {
 
@@ -47,14 +43,14 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         AbstractEAIndividual ind;
         Vector<AbstractEAIndividual> resultrep;
         Population pop;
-        Semaphore m_Semaphore = null;
+        Semaphore semaphore = null;
 
         public MultiObjectiveEvalThread(AbstractMultiObjectiveOptimizationProblem prob, AbstractEAIndividual ind, Vector<AbstractEAIndividual> resultrep, Population pop, Semaphore sema) {
             this.ind = ind;
             this.prob = prob;
             this.resultrep = resultrep;
             this.pop = pop;
-            this.m_Semaphore = sema;
+            this.semaphore = sema;
         }
 
         @Override
@@ -66,47 +62,47 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
             fitness = ind.getFitness();
             // check and update border if necessary
-            if (m_Border == null) {
-                prob.m_Border = new double[fitness.length][2];
-            } else if (fitness.length != prob.m_Border.length) {
-                //System.out.println("AbstractMOOptimizationProblem: Warning fitness.length("+fitness.length+") doesn't fit border.length("+this.m_Border.length+")");
+            if (border == null) {
+                prob.border = new double[fitness.length][2];
+            } else if (fitness.length != prob.border.length) {
+                //System.out.println("AbstractMOOptimizationProblem: Warning fitness.length("+fitness.length+") doesn't fit border.length("+this.border.length+")");
                 //System.out.println("Resetting the border!");
-                prob.m_Border = new double[fitness.length][2];
+                prob.border = new double[fitness.length][2];
             }
             for (int j = 0; j < fitness.length; j++) {
-//	                if ((this.m_Border[j][0] > fitness[j]) || (this.m_Border[j][1] < fitness[j])) {
+//	                if ((this.border[j][0] > fitness[j]) || (this.border[j][1] < fitness[j])) {
 //	                    System.out.println("border... " + j);
-//	                    System.out.println(this.m_Border[j][0]+" > "+fitness[j]);
-//	                    System.out.println(this.m_Border[j][1]+" < "+fitness[j]);
+//	                    System.out.println(this.border[j][0]+" > "+fitness[j]);
+//	                    System.out.println(this.border[j][1]+" < "+fitness[j]);
 //	                }
-                prob.m_Border[j][0] = Math.min(prob.m_Border[j][0], fitness[j]);
-                prob.m_Border[j][1] = Math.max(prob.m_Border[j][1], fitness[j]);
+                prob.border[j][0] = Math.min(prob.border[j][0], fitness[j]);
+                prob.border[j][1] = Math.max(prob.border[j][1], fitness[j]);
             }
             pop.incrFunctionCalls();
-            m_Semaphore.release();
+            semaphore.release();
 
         }
     }
 
-    protected InterfaceMOSOConverter m_MOSOConverter = new MOSONoConvert();
-    protected InterfaceParetoFrontMetric m_Metric = new MetricS();
-    transient protected Population m_ParetoFront = new Population();
-    public ArrayList m_AreaConst4Parallelization = new ArrayList();
-    protected int m_OutputDimension = 2;
-    double m_defaultBorderLow = 0;
-    double m_defaultBorderHigh = 5;
+    protected InterfaceMOSOConverter mosoConverter = new MOSONoConvert();
+    protected InterfaceParetoFrontMetric metric = new MetricS();
+    transient protected Population paretoFront = new Population();
+    public ArrayList areaConst4Parallelization = new ArrayList();
+    protected int outputDimension = 2;
+    double defaultBorderLow = 0;
+    double defaultBorderHigh = 5;
 
-    transient protected double[][] m_Border;
-    transient protected Plot m_Plot;
-    transient protected JFrame m_Result;
-    protected transient boolean m_Show = false;
+    transient protected double[][] border;
+    transient protected Plot plot;
+    transient protected JFrame resultFrame;
+    protected transient boolean show = false;
 
     public AbstractMultiObjectiveOptimizationProblem(double borderHigh) {
         super();
-        m_defaultBorderHigh = borderHigh;
+        defaultBorderHigh = borderHigh;
         this.template = new ESIndividualDoubleData();
         makeBorder();
-        if (this.m_Show) {
+        if (this.show) {
             this.initProblemFrame();
         }
     }
@@ -121,17 +117,17 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * @param b True if the pareto-front is to be shown.
      */
     public void setShowParetoFront(boolean b) {
-        this.m_Show = b;
-        if (this.m_Show) {
+        this.show = b;
+        if (this.show) {
             this.initProblemFrame();
-        } else if (this.m_Plot != null) {
-            this.m_Plot.dispose();
-            this.m_Plot = null;
+        } else if (this.plot != null) {
+            this.plot.dispose();
+            this.plot = null;
         }
     }
 
     public boolean isShowParetoFront() {
-        return this.m_Show;
+        return this.show;
     }
 
     public String showParetoFrontTipText() {
@@ -155,28 +151,28 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     @Override
     public void initializeProblem() {
         makeBorder();
-        this.m_ParetoFront = new Population();
-        if (this.m_Show) {
+        this.paretoFront = new Population();
+        if (this.show) {
             this.initProblemFrame();
         }
     }
 
     protected void makeBorder() {
-        if (this.m_Border == null) {
-            this.m_Border = new double[m_OutputDimension][2];
+        if (this.border == null) {
+            this.border = new double[outputDimension][2];
         }
-        for (int i = 0; i < this.m_Border.length; i++) {
-            this.m_Border[i][0] = getLowerBorder(i);
-            this.m_Border[i][1] = getUpperBorder(i);
+        for (int i = 0; i < this.border.length; i++) {
+            this.border[i][0] = getLowerBorder(i);
+            this.border[i][1] = getUpperBorder(i);
         }
     }
 
     protected double getUpperBorder(int i) {
-        return m_defaultBorderHigh;
+        return defaultBorderHigh;
     }
 
     protected double getLowerBorder(int i) {
-        return m_defaultBorderLow;
+        return defaultBorderLow;
     }
 
     /**
@@ -212,13 +208,13 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * This caused a lot of trouble for the DeNovo Approach of MOCCO
      */
     public void resetParetoFront() {
-        this.m_ParetoFront = new Population();
+        this.paretoFront = new Population();
     }
 
     @Override
     public void evaluatePopulationStart(Population population) {
         super.evaluatePopulationStart(population);
-        if (this.m_Show && (this.m_Plot == null)) {
+        if (this.show && (this.plot == null)) {
             this.initProblemFrame();
         }
     }
@@ -233,21 +229,21 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             AbstractEAIndividual tmpIndy = (AbstractEAIndividual) population.get(i);
             fitness = tmpIndy.getFitness();
             // check and update border if necessary
-            if (m_Border == null) {
-                this.m_Border = new double[fitness.length][2];
-            } else if (fitness.length != this.m_Border.length) {
-                //System.out.println("AbstractMOOptimizationProblem: Warning fitness.length("+fitness.length+") doesn't fit border.length("+this.m_Border.length+")");
+            if (border == null) {
+                this.border = new double[fitness.length][2];
+            } else if (fitness.length != this.border.length) {
+                //System.out.println("AbstractMOOptimizationProblem: Warning fitness.length("+fitness.length+") doesn't fit border.length("+this.border.length+")");
                 //System.out.println("Resetting the border!");
-                this.m_Border = new double[fitness.length][2];
+                this.border = new double[fitness.length][2];
             }
             for (int j = 0; j < fitness.length; j++) {
-//                if ((this.m_Border[j][0] > fitness[j]) || (this.m_Border[j][1] < fitness[j])) {
+//                if ((this.border[j][0] > fitness[j]) || (this.border[j][1] < fitness[j])) {
 //                    System.out.println("border... " + j);
-//                    System.out.println(this.m_Border[j][0]+" > "+fitness[j]);
-//                    System.out.println(this.m_Border[j][1]+" < "+fitness[j]);
+//                    System.out.println(this.border[j][0]+" > "+fitness[j]);
+//                    System.out.println(this.border[j][1]+" < "+fitness[j]);
 //                }
-                this.m_Border[j][0] = Math.min(this.m_Border[j][0], fitness[j]);
-                this.m_Border[j][1] = Math.max(this.m_Border[j][1], fitness[j]);
+                this.border[j][0] = Math.min(this.border[j][0], fitness[j]);
+                this.border[j][1] = Math.max(this.border[j][1], fitness[j]);
             }
         }
 
@@ -260,16 +256,16 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         // could be pretty many
 
         // currently the problem should be multi-criteria
-        logPopToParetoFront(m_ParetoFront, population);
+        logPopToParetoFront(paretoFront, population);
 
         // Sometimes you want to transform a multiobjective optimization problem
         // into a single objective one, this way single objective optimization
         // algorithms can be applied more easily
-        this.m_MOSOConverter.convertMultiObjective2SingleObjective(population);
+        this.mosoConverter.convertMultiObjective2SingleObjective(population);
 
-        if (this.m_Show) {
-            if (m_Plot.isValid()) {
-                AbstractMultiObjectiveOptimizationProblem.drawProblem(population, m_Plot, this);
+        if (this.show) {
+            if (plot.isValid()) {
+                AbstractMultiObjectiveOptimizationProblem.drawProblem(population, plot, this);
             }
         }
     }
@@ -307,12 +303,12 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;
-        if (this.m_Plot == null) {
-            m_Plot = new Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
+        if (this.plot == null) {
+            plot = new Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
         }
 
         // plot init stuff
-        this.initAdditionalData(this.m_Plot, 10);
+        this.initAdditionalData(this.plot, 10);
     }
 
     /**
@@ -388,7 +384,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             // MOOpt was converted into a SOOpt
             if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(p)) {
                 // in this case i have to use my local archive
-                tmpPop = moProblem.m_ParetoFront;
+                tmpPop = moProblem.paretoFront;
             } else {
                 // in this case i use the population of the optimizer
                 // and eventually the population.archive if there is one
@@ -427,8 +423,8 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             }
             plot.setUnconnectedPoint(tmpFitness[0], tmpFitness[1], index);
         }
-        plot.setUnconnectedPoint(this.m_Border[0][1], this.m_Border[1][1], index);
-        plot.setUnconnectedPoint(this.m_Border[0][0], this.m_Border[1][0], index);
+        plot.setUnconnectedPoint(this.border[0][1], this.border[1][1], index);
+        plot.setUnconnectedPoint(this.border[0][0], this.border[1][0], index);
     }
 
     /**
@@ -526,8 +522,8 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             return new Double(this.calculateMetric(pop));
         } else {
             // in this case the local Pareto-Front could be multi-objective
-            if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(this.m_ParetoFront)) {
-                return new Double(this.calculateMetric(this.m_ParetoFront));
+            if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(this.paretoFront)) {
+                return new Double(this.calculateMetric(this.paretoFront));
             } else {
                 return new Double(pop.getBestEAIndividual().getFitness(0));
             }
@@ -540,7 +536,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * @return the local Pareto-front log
      */
     public Population getLocalParetoFront() {
-        return this.m_ParetoFront;
+        return this.paretoFront;
     }
 
     @Override
@@ -552,7 +548,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
         Object[] result = new Object[2];
-        if (m_MOSOConverter != null && !(m_MOSOConverter instanceof MOSONoConvert)) {
+        if (mosoConverter != null && !(mosoConverter instanceof MOSONoConvert)) {
             result[0] = Double.NaN;
             result[1] = Double.NaN;
         } else {
@@ -591,7 +587,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         if (pop == null || (pop.size() == 0)) {
             return Double.NaN;
         }
-        return this.m_Metric.calculateMetricOn(pop, this);
+        return this.metric.calculateMetricOn(pop, this);
     }
 
     /**
@@ -600,7 +596,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * @return The objective space range
      */
     public double[][] getObjectiveSpaceRange() {
-        return this.m_Border;
+        return this.border;
     }
 
     /**
@@ -609,7 +605,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * @return The output dimension
      */
     public int getOutputDimension() {
-        return this.m_OutputDimension;
+        return this.outputDimension;
     }
 
 //    /** This method will calculate the s-Metric if an archive population is present.
@@ -619,8 +615,8 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 //    public double tcalculateSMetric(Population population) {
 //        double result = 0;
 //
-//        ((SMetric)this.m_Metric).setObjectiveSpaceRange(this.m_Border);
-//        result = this.m_Metric.calculateMetricOn(population);
+//        ((SMetric)this.distanceMetric).setObjectiveSpaceRange(this.border);
+//        result = this.distanceMetric.calculateMetricOn(population);
 //
 //        return result;
 //    }
@@ -632,7 +628,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 //    public double calculateRelativeSMetric(Population population, double[][] ref) {
 //        double result = 0;
 //        SMetricWithReference tmpMetric = new SMetricWithReference();
-//        tmpMetric.setObjectiveSpaceRange(this.m_Border);
+//        tmpMetric.setObjectiveSpaceRange(this.border);
 //        tmpMetric.setReferenceFront(ref);
 //        result = tmpMetric.calculateMetricOn(population);
 //        return result;
@@ -645,12 +641,12 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * @param b The new MO2SO converter.
      */
     public void setMOSOConverter(InterfaceMOSOConverter b) {
-        this.m_MOSOConverter = b;
-        this.m_MOSOConverter.setOutputDimension(this.m_OutputDimension);
+        this.mosoConverter = b;
+        this.mosoConverter.setOutputDimension(this.outputDimension);
     }
 
     public InterfaceMOSOConverter getMOSOConverter() {
-        return this.m_MOSOConverter;
+        return this.mosoConverter;
     }
 
     public String mOSOConverterTipText() {
@@ -663,11 +659,11 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      * @param b The new metric.
      */
     public void setMetric(InterfaceParetoFrontMetric b) {
-        this.m_Metric = b;
+        this.metric = b;
     }
 
     public InterfaceParetoFrontMetric getMetric() {
-        return this.m_Metric;
+        return this.metric;
     }
 
     public String metricTipText() {

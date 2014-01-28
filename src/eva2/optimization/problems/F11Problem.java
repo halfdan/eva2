@@ -9,7 +9,7 @@ import eva2.util.annotation.Description;
 @Description("Griewank Function")
 public class F11Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
 
-    private double m_D = 4000;
+    private double d = 4000;
 
     public F11Problem() {
         this.problemDimension = 10;
@@ -19,7 +19,7 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
 
     public F11Problem(F11Problem b) {
         super(b);
-        this.m_D = b.m_D;
+        this.d = b.d;
     }
 
     /**
@@ -48,7 +48,7 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
             result[0] += Math.pow(xi, 2);
             tmpProd *= Math.cos((xi) / Math.sqrt(i + 1));
         }
-        result[0] = ((result[0] / this.m_D) - tmpProd + 1) + yOffset;
+        result[0] = ((result[0] / this.d) - tmpProd + 1) + yOffset;
         return result;
     }
 
@@ -88,11 +88,11 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
     public void setD(double d) {
 //        if (d < 1) d = 1;// how can this be limited to [1,2] if 4000 is default?
 //        if (d > 2) d = 2;// MK FIXED: this obviously was a copy-paste error from F10
-        this.m_D = d;
+        this.d = d;
     }
 
     public double getD() {
-        return this.m_D;
+        return this.d;
     }
 
     public String dTipText() {

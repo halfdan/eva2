@@ -23,14 +23,14 @@ import java.util.List;
 public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         implements Interface2DBorderProblem, InterfaceProblemDouble, InterfaceHasInitRange {
 
-    protected AbstractEAIndividual m_OverallBest = null;
-    protected int m_ProblemDimension = 10;
-    protected String m_Command = "";
-    protected String m_WorkingDir = "";
-    PropertyDoubleArray m_Range = new PropertyDoubleArray(m_ProblemDimension, 2, -10, 10);
-    PropertyDoubleArray m_initRange = new PropertyDoubleArray(m_ProblemDimension, 2, -10, 10);
+    protected AbstractEAIndividual bestIndividuum = null;
+    protected int problemDimension = 10;
+    protected String command = "";
+    protected String workingDir = "";
+    PropertyDoubleArray range = new PropertyDoubleArray(problemDimension, 2, -10, 10);
+    PropertyDoubleArray initializationRange = new PropertyDoubleArray(problemDimension, 2, -10, 10);
     private String additionalArg = "";
-    protected InterfaceMOSOConverter m_MosoConverter = new MOSONoConvert();
+    protected InterfaceMOSOConverter mosoConverter = new MOSONoConvert();
 
     // Private Subclass to redirect Streams within an extra Thread to avoid dead
     // locks
@@ -70,7 +70,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
 
     public ExternalRuntimeProblem() {
         this.template = new ESIndividualDoubleData();
-        ((ESIndividualDoubleData) this.template).setDoubleDataLength(m_ProblemDimension);
+        ((ESIndividualDoubleData) this.template).setDoubleDataLength(problemDimension);
         ((ESIndividualDoubleData) this.template).setDoubleRange(makeRange());
     }
 
@@ -80,27 +80,27 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
             this.template = (AbstractEAIndividual) ((AbstractEAIndividual) b.template).clone();
         }
         //ExternalRuntimeProblem
-        if (b.m_OverallBest != null) {
-            this.m_OverallBest = (AbstractEAIndividual) ((AbstractEAIndividual) b.m_OverallBest).clone();
+        if (b.bestIndividuum != null) {
+            this.bestIndividuum = (AbstractEAIndividual) ((AbstractEAIndividual) b.bestIndividuum).clone();
         }
-        this.m_ProblemDimension = b.m_ProblemDimension;
-        this.m_Command = b.m_Command;
-        if (b.m_Range != null) {
-            this.m_Range = (PropertyDoubleArray) b.m_Range.clone();
+        this.problemDimension = b.problemDimension;
+        this.command = b.command;
+        if (b.range != null) {
+            this.range = (PropertyDoubleArray) b.range.clone();
         } else {
-            this.m_Range = null;
+            this.range = null;
         }
-        if (b.m_initRange != null) {
-            this.m_initRange = (PropertyDoubleArray) b.m_initRange.clone();
+        if (b.initializationRange != null) {
+            this.initializationRange = (PropertyDoubleArray) b.initializationRange.clone();
         } else {
-            this.m_initRange = null;
+            this.initializationRange = null;
         }
-        if (b.m_MosoConverter != null) {
-            this.m_MosoConverter = (InterfaceMOSOConverter) b.m_MosoConverter.clone();
+        if (b.mosoConverter != null) {
+            this.mosoConverter = (InterfaceMOSOConverter) b.mosoConverter.clone();
         } else {
-            this.m_MosoConverter = null;
+            this.mosoConverter = null;
         }
-        this.m_WorkingDir = b.m_WorkingDir;
+        this.workingDir = b.workingDir;
     }
 
     /**
@@ -118,21 +118,21 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
      */
     @Override
     public void initializeProblem() {
-        this.m_OverallBest = null;
-        File f = new File(m_Command);
+        this.bestIndividuum = null;
+        File f = new File(command);
         if (f.exists()) {
-            m_Command = f.getAbsolutePath();
+            command = f.getAbsolutePath();
         } else {
             String sep = System.getProperty("file.separator");
-            if (m_WorkingDir.endsWith(sep)) {
-                f = new File(m_WorkingDir + m_Command);
+            if (workingDir.endsWith(sep)) {
+                f = new File(workingDir + command);
             } else {
-                f = new File(m_WorkingDir + sep + m_Command);
+                f = new File(workingDir + sep + command);
             }
             if (f.exists()) {
-                m_Command = f.getAbsolutePath();
+                command = f.getAbsolutePath();
             } else {
-                System.err.println("Warning, " + this.getClass() + " could not find command " + m_Command + " in " + m_WorkingDir);
+                System.err.println("Warning, " + this.getClass() + " could not find command " + command + " in " + workingDir);
             }
         }
     }
@@ -144,9 +144,9 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
      */
     @Override
     public void initializePopulation(Population population) {
-        this.m_OverallBest = null;
+        this.bestIndividuum = null;
 
-        ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.m_ProblemDimension);
+        ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.problemDimension);
         ((InterfaceDataTypeDouble) this.template).setDoubleRange(makeRange());
 
         AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
@@ -154,13 +154,13 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
 
     @Override
     public double[][] makeRange() {
-        if (m_Range == null) {
+        if (range == null) {
             System.err.println("Warning, range not set in ExternalRuntimeProblem.makeRange!");
         }
-        if (m_Range.getNumRows() != getProblemDimension()) {
+        if (range.getNumRows() != getProblemDimension()) {
             System.err.println("Warning, problem dimension and range dimension dont match in ExternalRuntimeProblem.makeRange!");
         }
-        return m_Range.getDoubleArrayShallow().clone();
+        return range.getDoubleArrayShallow().clone();
     }
 
     public void setRange(double[][] range) {
@@ -174,14 +174,14 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
      * @param range
      */
     public void setRange(PropertyDoubleArray range) {
-        if (range.getNumRows() < this.m_ProblemDimension) {
-            System.err.println("Warning, expected range of dimension " + m_ProblemDimension + " in setRange!");
+        if (range.getNumRows() < this.problemDimension) {
+            System.err.println("Warning, expected range of dimension " + problemDimension + " in setRange!");
         }
-        m_Range.setDoubleArray(range.getDoubleArrayShallow());
+        this.range.setDoubleArray(range.getDoubleArrayShallow());
     }
 
     public PropertyDoubleArray getRange() {
-        return m_Range;
+        return range;
     }
 
     public String rangeTipText() {
@@ -190,12 +190,12 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
 
     @Override
     public double getRangeLowerBound(int dim) {
-        return m_Range.getValue(dim, 0);
+        return range.getValue(dim, 0);
     }
 
     @Override
     public double getRangeUpperBound(int dim) {
-        return m_Range.getValue(dim, 1);
+        return range.getValue(dim, 1);
     }
 
 
@@ -217,16 +217,16 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
 //        if (this.m_UseTestConstraint) {
 //            if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
 //        }
-        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
-            this.m_OverallBest = (AbstractEAIndividual) individual.clone();
+        if ((this.bestIndividuum == null) || (this.bestIndividuum.getFitness(0) > individual.getFitness(0))) {
+            this.bestIndividuum = (AbstractEAIndividual) individual.clone();
         }
     }
 
     @Override
     public void evaluatePopulationEnd(Population population) {
         super.evaluatePopulationEnd(population);
-        if (m_MosoConverter != null) {
-            m_MosoConverter.convertMultiObjective2SingleObjective(population);
+        if (mosoConverter != null) {
+            mosoConverter.convertMultiObjective2SingleObjective(population);
         }
     }
 
@@ -292,22 +292,22 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         ArrayList<Double> fitList = new ArrayList<Double>();
 
         List<String> parameters = new ArrayList<String>();
-        parameters.add(this.m_Command);
+        parameters.add(this.command);
         if (additionalArg != null && (additionalArg.length() > 0)) {
             parameters.add(additionalArg);
         }
-        for (int i = 0; i < this.m_ProblemDimension; i++) {
+        for (int i = 0; i < this.problemDimension; i++) {
             String p = prepareParameter(x, i);
             parameters.add(p);
         }
 
-        List<String> res = runProcess(parameters, m_WorkingDir);
+        List<String> res = runProcess(parameters, workingDir);
         try {
             for (String str : res) {
                 fitList.add(new Double(str));
             }
         } catch (NumberFormatException e) {
-            System.err.println("Error: " + m_Command + " delivered malformatted output for " + BeanInspector.toString(x));
+            System.err.println("Error: " + command + " delivered malformatted output for " + BeanInspector.toString(x));
             e.printStackTrace();
         }
         double[] fit = new double[fitList.size()];
@@ -341,7 +341,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         sb.append("External Runtime Problem:\n");
         sb.append("Here the individual codes a vector of real number x is to be minimized on a user given external problem.\nParameters:\n");
         sb.append("Dimension   : ");
-        sb.append(this.m_ProblemDimension);
+        sb.append(this.problemDimension);
 
         return sb.toString();
     }
@@ -368,14 +368,14 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
      * @param t Length of the x vector that is to be optimized
      */
     public void setProblemDimension(int t) {
-        this.m_ProblemDimension = t;
-        this.m_Range.adaptRowCount(t);
-        this.m_initRange.adaptRowCount(t);
+        this.problemDimension = t;
+        this.range.adaptRowCount(t);
+        this.initializationRange.adaptRowCount(t);
     }
 
     @Override
     public int getProblemDimension() {
-        return this.m_ProblemDimension;
+        return this.problemDimension;
     }
 
     public String problemDimensionTipText() {
@@ -388,11 +388,11 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
      * @param t Length of the x vector at is to be optimized
      */
     public void setCommand(String t) {
-        this.m_Command = t;
+        this.command = t;
     }
 
     public String getCommand() {
-        return this.m_Command;
+        return this.command;
     }
 
     public String commandTipText() {
@@ -405,11 +405,11 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
      * @param t working directory
      */
     public void setWorkingDirectory(String t) {
-        this.m_WorkingDir = t;
+        this.workingDir = t;
     }
 
     public String getWorkingDirectory() {
-        return this.m_WorkingDir;
+        return this.workingDir;
     }
 
     public String workingDirectoryTipText() {
@@ -417,11 +417,11 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     }
 
     public InterfaceMOSOConverter getMosoConverter() {
-        return m_MosoConverter;
+        return mosoConverter;
     }
 
     public void setMosoConverter(InterfaceMOSOConverter mMosoConverter) {
-        m_MosoConverter = mMosoConverter;
+        mosoConverter = mMosoConverter;
     }
 
     public String mosoConverterTipText() {
@@ -472,13 +472,13 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     //	@Override
     @Override
     public Object getInitRange() {
-        if (m_initRange == null) {
-            if (m_Range == null) {
+        if (initializationRange == null) {
+            if (range == null) {
                 System.err.println("Warning, neither range nor initRange has been set in ExternalRuntimeProblem!");
             }
-            return m_Range.getDoubleArrayShallow();
+            return range.getDoubleArrayShallow();
         } else {
-            return m_initRange.getDoubleArrayShallow();
+            return initializationRange.getDoubleArrayShallow();
         }
     }
 
@@ -488,14 +488,14 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     }
 
     public void setInitialRange(PropertyDoubleArray range) {
-        if (range.getNumRows() < this.m_ProblemDimension) {
-            System.err.println("Warning, expected range of dimension " + m_ProblemDimension + " in setInitRange!");
+        if (range.getNumRows() < this.problemDimension) {
+            System.err.println("Warning, expected range of dimension " + problemDimension + " in setInitRange!");
         }
-        m_initRange = new PropertyDoubleArray(range);
+        initializationRange = new PropertyDoubleArray(range);
     }
 
     public PropertyDoubleArray getInitialRange() {
-        return m_initRange;
+        return initializationRange;
     }
 
     public String initialRangeTipText() {

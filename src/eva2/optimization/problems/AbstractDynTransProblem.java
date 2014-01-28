@@ -64,9 +64,6 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
                 //	myplot.addGraph(0, 1);
                 myplot.jump();
             } else {
-                if (TRACE) {
-                    System.out.println("creating myplot instance");
-                }
                 double[] tmpD = new double[2];
                 tmpD[0] = 0;
                 tmpD[1] = 0;
@@ -135,12 +132,9 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
      */
     @Override
     public void initPopulationAt(Population population, double time) {
-        if (TRACE) {
-            System.out.println("DynTransProblem at " + this + " initPop, problem is " + getProblem());
-        }
         getProblem().initializePopulation(population);
-        for (int i = 0; i < population.size(); i++) {
-            ((AbstractEAIndividual) population.get(i)).setAge(0);
+        for (Object individuum : population) {
+            ((AbstractEAIndividual) individuum).setAge(0);
         }
     }
 

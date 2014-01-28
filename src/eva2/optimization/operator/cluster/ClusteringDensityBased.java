@@ -210,7 +210,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
 //     */
 //    public boolean belongsToSpecies(AbstractEAIndividual indy, Population species, Population pop) {
 //        if (this.m_TestConvergingSpeciesOnBestOnly) {
-//            if (this.m_Metric.distance(indy, species.getBestEAIndividual()) < this.m_ClusterDistance) return true;
+//            if (this.distanceMetric.distance(indy, species.getBestEAIndividual()) < this.m_ClusterDistance) return true;
 //            else return false;
 //        } else {
 //            Population tmpPop = (Population)species.clone();
