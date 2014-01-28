@@ -17,16 +17,11 @@ import java.util.Vector;
 
 /**
  * This gives an abstract node, with default functionality for get and set methods.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 13:12:53
- * To change this template use Options | File Templates.
  */
 public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serializable {
-    protected AbstractGPNode m_Parent;
-    protected AbstractGPNode[] m_Nodes = new AbstractGPNode[0];
-    protected int m_Depth = 0;
+    protected AbstractGPNode parentNode;
+    protected AbstractGPNode[] nodes = new AbstractGPNode[0];
+    protected int depth = 0;
     private static final boolean TRACE = false;
 
     /**
@@ -77,11 +72,11 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param node the node to clone values from
      */
     protected void cloneMembers(AbstractGPNode node) {
-        this.m_Depth = node.m_Depth;
-        this.m_Parent = node.m_Parent;
-        this.m_Nodes = new AbstractGPNode[node.m_Nodes.length];
-        for (int i = 0; i < node.m_Nodes.length; i++) {
-            this.m_Nodes[i] = (AbstractGPNode) node.m_Nodes[i].clone();
+        this.depth = node.depth;
+        this.parentNode = node.parentNode;
+        this.nodes = new AbstractGPNode[node.nodes.length];
+        for (int i = 0; i < node.nodes.length; i++) {
+            this.nodes[i] = (AbstractGPNode) node.nodes[i].clone();
         }
     }
 
@@ -90,9 +85,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         sbuf.append(op);
         if (node.getArity() > 0) {
             sbuf.append("(");
-            for (int i = 0; i < node.m_Nodes.length; i++) {
-                sbuf.append(node.m_Nodes[i].getStringRepresentation());
-                if (i < node.m_Nodes.length - 1) {
+            for (int i = 0; i < node.nodes.length; i++) {
+                sbuf.append(node.nodes[i].getStringRepresentation());
+                if (i < node.nodes.length - 1) {
                     sbuf.append(", ");
                 }
             }
@@ -156,10 +151,10 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
                     return new Pair<AbstractGPNode, String>(currentNode, restStr);
                 } else {
                     restStr = str.substring(cutFront + 1).trim(); // cut this op and front brace
-                    currentNode.m_Nodes = new AbstractGPNode[currentNode.getArity()];
+                    currentNode.nodes = new AbstractGPNode[currentNode.getArity()];
                     for (int i = 0; i < currentNode.getArity(); i++) {
                         Pair<AbstractGPNode, String> nextState = parseFromString(restStr, nodeTypes);
-                        currentNode.m_Nodes[i] = nextState.head();
+                        currentNode.nodes[i] = nextState.head();
                         try {
                             restStr = nextState.tail().substring(1).trim(); // cut comma or brace
                         } catch (StringIndexOutOfBoundsException e) {
@@ -384,7 +379,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return The depth.
      */
     public int getDepth() {
-        return this.m_Depth;
+        return this.depth;
     }
 
     /**
@@ -393,7 +388,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param depth The depth of the node
      */
     public void setDepth(int depth) {
-        this.m_Depth = depth;
+        this.depth = depth;
     }
 
     /**
@@ -403,7 +398,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return The requested node.
      */
     public AbstractGPNode getNode(int index) {
-        return this.m_Nodes[index];
+        return this.nodes[index];
     }
 
     /**
@@ -414,8 +409,8 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public void setNode(AbstractGPNode node, int index) {
         node.setParent(this);
-        node.setDepth(this.m_Depth + 1);
-        this.m_Nodes[index] = node;
+        node.setDepth(this.depth + 1);
+        this.nodes[index] = node;
     }
 
     /**
@@ -426,10 +421,10 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public void setNode(AbstractGPNode newnode, AbstractGPNode oldnode) {
         newnode.setParent(this);
-        newnode.updateDepth(this.m_Depth + 1);
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            if (this.m_Nodes[i] == oldnode) {
-                this.m_Nodes[i] = newnode;
+        newnode.updateDepth(this.depth + 1);
+        for (int i = 0; i < this.nodes.length; i++) {
+            if (this.nodes[i] == oldnode) {
+                this.nodes[i] = newnode;
 //        		System.out.println("SWITCHED " + i);
             }
         }
@@ -442,8 +437,8 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public void addNodesTo(ArrayList ListOfNodes) {
         ListOfNodes.add(this);
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            this.m_Nodes[i].addNodesTo(ListOfNodes);
+        for (int i = 0; i < this.nodes.length; i++) {
+            this.nodes[i].addNodesTo(ListOfNodes);
         }
     }
 
@@ -464,9 +459,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return
      */
     public AbstractGPNode getRandomLeaf() {
-        if (m_Nodes.length > 0) {
-            int k = RNG.randomInt(m_Nodes.length);
-            return m_Nodes[k].getRandomLeaf();
+        if (nodes.length > 0) {
+            int k = RNG.randomInt(nodes.length);
+            return nodes[k].getRandomLeaf();
         } else {
             return this;
         }
@@ -478,14 +473,14 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param parent The new parent
      */
     public void setParent(AbstractGPNode parent) {
-        this.m_Parent = parent;
+        this.parentNode = parent;
     }
 
     /**
      * This method allows you to get the parent of the node
      */
     public AbstractGPNode getParent() {
-        return this.m_Parent;
+        return this.parentNode;
     }
 
     /**
@@ -494,14 +489,14 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param parent The parent
      */
     public void connect(AbstractGPNode parent) {
-        this.m_Parent = parent;
+        this.parentNode = parent;
         if (parent != null) {
-            this.m_Depth = this.m_Parent.getDepth() + 1;
+            this.depth = this.parentNode.getDepth() + 1;
         } else {
-            this.m_Depth = 0;
+            this.depth = 0;
         }
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            this.m_Nodes[i].connect(this);
+        for (int i = 0; i < this.nodes.length; i++) {
+            this.nodes[i].connect(this);
         }
     }
 
@@ -509,7 +504,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * This method will simply init the array of nodes
      */
     public void initNodeArray() {
-        this.m_Nodes = new AbstractGPNode[this.getArity()];
+        this.nodes = new AbstractGPNode[this.getArity()];
     }
 
     /**
@@ -519,16 +514,16 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param depth The absolute target depth.
      */
     public void initFull(GPArea area, int depth) {
-        this.m_Nodes = new AbstractGPNode[this.getArity()];
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            if (this.m_Depth + 1 >= depth) {
-                this.m_Nodes[i] = (AbstractGPNode) area.getRandomNodeWithArity(0).clone();
+        this.nodes = new AbstractGPNode[this.getArity()];
+        for (int i = 0; i < this.nodes.length; i++) {
+            if (this.depth + 1 >= depth) {
+                this.nodes[i] = (AbstractGPNode) area.getRandomNodeWithArity(0).clone();
             } else {
-                this.m_Nodes[i] = (AbstractGPNode) area.getRandomNonTerminal().clone();
+                this.nodes[i] = (AbstractGPNode) area.getRandomNonTerminal().clone();
             }
-            this.m_Nodes[i].setDepth(this.m_Depth + 1);
-            this.m_Nodes[i].setParent(this);
-            this.m_Nodes[i].initFull(area, depth);
+            this.nodes[i].setDepth(this.depth + 1);
+            this.nodes[i].setParent(this);
+            this.nodes[i].initFull(area, depth);
         }
     }
 
@@ -539,16 +534,16 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param depth The absolute target depth.
      */
     public void initGrow(GPArea area, int depth) {
-        this.m_Nodes = new AbstractGPNode[this.getArity()];
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            if (this.m_Depth + 1 >= depth) {
-                this.m_Nodes[i] = (AbstractGPNode) area.getRandomNodeWithArity(0).clone();
+        this.nodes = new AbstractGPNode[this.getArity()];
+        for (int i = 0; i < this.nodes.length; i++) {
+            if (this.depth + 1 >= depth) {
+                this.nodes[i] = (AbstractGPNode) area.getRandomNodeWithArity(0).clone();
             } else {
-                this.m_Nodes[i] = (AbstractGPNode) area.getRandomNode().clone();
+                this.nodes[i] = (AbstractGPNode) area.getRandomNode().clone();
             }
-            this.m_Nodes[i].setDepth(this.m_Depth + 1);
-            this.m_Nodes[i].setParent(this);
-            this.m_Nodes[i].initGrow(area, depth);
+            this.nodes[i].setDepth(this.depth + 1);
+            this.nodes[i].setParent(this);
+            this.nodes[i].initGrow(area, depth);
         }
     }
 
@@ -559,8 +554,8 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public int getNumberOfNodes() {
         int result = 1;
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            result += this.m_Nodes[i].getNumberOfNodes();
+        for (int i = 0; i < this.nodes.length; i++) {
+            result += this.nodes[i].getNumberOfNodes();
         }
         return result;
     }
@@ -571,10 +566,10 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return The max depth.
      */
     public int getMaxDepth() {
-        int result = this.m_Depth;
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            if (this.m_Nodes[i] != null) {
-                result = Math.max(result, this.m_Nodes[i].getMaxDepth());
+        int result = this.depth;
+        for (int i = 0; i < this.nodes.length; i++) {
+            if (this.nodes[i] != null) {
+                result = Math.max(result, this.nodes[i].getMaxDepth());
             }
         }
         return result;
@@ -587,7 +582,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public int getSubtreeDepth() {
         int maxDepth = getMaxDepth();
-        return maxDepth - m_Depth;
+        return maxDepth - depth;
     }
 
     /**
@@ -602,11 +597,11 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         } else {
             return false;
         }
-//        if (depth > this.m_Depth) return false;
+//        if (depth > this.depth) return false;
 //        else {
 //            boolean result = true;
-//            for (int i = 0; i < this.m_Nodes.length; i++) {
-//                result = result & this.m_Nodes[i].isMaxDepthViolated(depth);
+//            for (int i = 0; i < this.nodes.length; i++) {
+//                result = result & this.nodes[i].isMaxDepthViolated(depth);
 //            }
 //            return result;
 //        }
@@ -618,21 +613,21 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param depth The max depth.
      */
     public void repairMaxDepth(GPArea area, int depth) {
-        if (this.m_Depth == depth - 1) {
+        if (this.depth == depth - 1) {
             // in this case i need to check whether or not my
             // follow-up nodes are terminals
-            for (int i = 0; i < this.m_Nodes.length; i++) {
-                if (this.m_Nodes[i].getArity() != 0) {
+            for (int i = 0; i < this.nodes.length; i++) {
+                if (this.nodes[i].getArity() != 0) {
                     // replace this node with a new node
-                    this.m_Nodes[i] = (AbstractGPNode) area.getRandomNodeWithArity(0).clone();
-                    this.m_Nodes[i].setDepth(this.m_Depth + 1);
-                    this.m_Nodes[i].setParent(this);
+                    this.nodes[i] = (AbstractGPNode) area.getRandomNodeWithArity(0).clone();
+                    this.nodes[i].setDepth(this.depth + 1);
+                    this.nodes[i].setParent(this);
                 }
             }
         } else {
             // else i call the method on my followup nodes
-            for (int i = 0; i < this.m_Nodes.length; i++) {
-                this.m_Nodes[i].repairMaxDepth(area, depth);
+            for (int i = 0; i < this.nodes.length; i++) {
+                this.nodes[i].repairMaxDepth(area, depth);
             }
         }
 
@@ -652,11 +647,11 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
             if (this.getArity() != node.getArity()) {
                 return false;
             }
-            if (this.m_Nodes.length != node.m_Nodes.length) {
+            if (this.nodes.length != node.nodes.length) {
                 return false;
             }
-            for (int i = 0; i < this.m_Nodes.length; i++) {
-                if (!this.m_Nodes[i].equals(node.m_Nodes[i])) {
+            for (int i = 0; i < this.nodes.length; i++) {
+                if (!this.nodes[i].equals(node.nodes[i])) {
                     return false;
                 }
             }
@@ -672,9 +667,9 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param myDepth
      */
     public void updateDepth(int myDepth) {
-        m_Depth = myDepth;
-        for (int i = 0; i < m_Nodes.length; i++) {
-            m_Nodes[i].updateDepth(myDepth + 1);
+        depth = myDepth;
+        for (int i = 0; i < nodes.length; i++) {
+            nodes[i].updateDepth(myDepth + 1);
         }
     }
 
@@ -684,12 +679,12 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @param myDepth
      */
     public boolean checkDepth(int myDepth) {
-        if (m_Depth != myDepth) {
+        if (depth != myDepth) {
             System.err.println("Depth was wrong at level " + myDepth);
             return false;
         }
-        for (int i = 0; i < m_Nodes.length; i++) {
-            if (!m_Nodes[i].checkDepth(myDepth + 1)) {
+        for (int i = 0; i < nodes.length; i++) {
+            if (!nodes[i].checkDepth(myDepth + 1)) {
                 return false;
             }
         }

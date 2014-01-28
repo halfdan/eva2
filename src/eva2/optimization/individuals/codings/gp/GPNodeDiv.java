@@ -7,14 +7,9 @@ import eva2.optimization.problems.InterfaceProgramProblem;
  * A division node with two arguments and secure division. If
  * the second argument is absolute smaller than 0.00000001 the
  * result is 1.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 16:01:18
- * To change this template use Options | File Templates.
  */
 public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
-    private double m_LowerBorderForSec = 0.00000001;
+    private double lowerBorderForSec = 0.00000001;
 
 
     public GPNodeDiv() {
@@ -22,7 +17,7 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
     }
 
     public GPNodeDiv(GPNodeDiv node) {
-        this.m_LowerBorderForSec = node.m_LowerBorderForSec;
+        this.lowerBorderForSec = node.lowerBorderForSec;
         this.cloneMembers(node);
     }
 
@@ -67,20 +62,20 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
         double result = 1;
         double tmpValue = 0;
 
-        tmpObj = this.m_Nodes[0].evaluate(environment);
+        tmpObj = this.nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
             result = ((Double) tmpObj).doubleValue();
         }
-        for (int i = 1; i < this.m_Nodes.length; i++) {
-            tmpObj = this.m_Nodes[i].evaluate(environment);
+        for (int i = 1; i < this.nodes.length; i++) {
+            tmpObj = this.nodes[i].evaluate(environment);
             if (tmpObj instanceof Double) {
                 tmpValue = ((Double) tmpObj).doubleValue();
             }
-            if (Math.abs(tmpValue) < this.m_LowerBorderForSec) {
+            if (Math.abs(tmpValue) < this.lowerBorderForSec) {
                 if (tmpValue < 0) {
-                    tmpValue = -this.m_LowerBorderForSec;
+                    tmpValue = -this.lowerBorderForSec;
                 } else {
-                    tmpValue = this.m_LowerBorderForSec;
+                    tmpValue = this.lowerBorderForSec;
                 }
             }
             result /= tmpValue;
@@ -97,6 +92,6 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
 //     * @return string
 //     */
 //    public String getStringRepresentation() {
-//    	return AbstractGPNode.makeStringRepresentation(m_Nodes, "/");
+//    	return AbstractGPNode.makeStringRepresentation(nodes, "/");
 //    }
 }

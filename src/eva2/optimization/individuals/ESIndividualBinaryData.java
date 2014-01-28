@@ -17,34 +17,34 @@ import java.util.BitSet;
 @eva2.util.annotation.Description(value = "This is an ES individual adopted to optimize binary values.")
 public class ESIndividualBinaryData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeBinary, java.io.Serializable {
 
-    private BitSet m_Phenotype = new BitSet();
-    private double[] m_Genotype;
-    private boolean m_UseHardSwitch = false;
-    private double[][] m_Range;
+    private BitSet phenotype = new BitSet();
+    private double[] genotype;
+    private boolean useHardSwitch = false;
+    private double[][] initializationRange;
 
     public ESIndividualBinaryData() {
         this.mutationProbability = 1.0;
         this.mutationOperator = new MutateESGlobal();
         this.crossoverProbability = 0.5;
         this.crossoverOperator = new CrossoverESDefault();
-        this.m_Genotype = new double[1];
-        this.m_Range = new double[1][2];
-        this.m_Range[0][0] = 0;
-        this.m_Range[0][1] = 1;
+        this.genotype = new double[1];
+        this.initializationRange = new double[1][2];
+        this.initializationRange[0][0] = 0;
+        this.initializationRange[0][1] = 1;
     }
 
     public ESIndividualBinaryData(ESIndividualBinaryData individual) {
-        if (individual.m_Phenotype != null) {
-            this.m_Phenotype = (BitSet) individual.m_Phenotype.clone();
+        if (individual.phenotype != null) {
+            this.phenotype = (BitSet) individual.phenotype.clone();
         }
-        this.m_Genotype = new double[individual.m_Genotype.length];
-        this.m_Range = new double[individual.m_Genotype.length][2];
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i] = individual.m_Genotype[i];
-            this.m_Range[i][0] = individual.m_Range[i][0];
-            this.m_Range[i][1] = individual.m_Range[i][1];
+        this.genotype = new double[individual.genotype.length];
+        this.initializationRange = new double[individual.genotype.length][2];
+        for (int i = 0; i < this.genotype.length; i++) {
+            this.genotype[i] = individual.genotype[i];
+            this.initializationRange[i][0] = individual.initializationRange[i][0];
+            this.initializationRange[i][1] = individual.initializationRange[i][1];
         }
-        this.m_UseHardSwitch = individual.m_UseHardSwitch;
+        this.useHardSwitch = individual.useHardSwitch;
 
         // cloning the members of AbstractEAIndividual
         this.age = individual.age;
@@ -78,20 +78,20 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof ESIndividualBinaryData) {
             ESIndividualBinaryData indy = (ESIndividualBinaryData) individual;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+            if ((this.genotype == null) || (indy.genotype == null)) {
                 return false;
             }
-            if ((this.m_Range == null) || (indy.m_Range == null)) {
+            if ((this.initializationRange == null) || (indy.initializationRange == null)) {
                 return false;
             }
-            for (int i = 0; i < this.m_Range.length; i++) {
-                if (this.m_Genotype[i] != indy.m_Genotype[i]) {
+            for (int i = 0; i < this.initializationRange.length; i++) {
+                if (this.genotype[i] != indy.genotype[i]) {
                     return false;
                 }
-                if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+                if (this.initializationRange[i][0] != indy.initializationRange[i][0]) {
                     return false;
                 }
-                if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                if (this.initializationRange[i][1] != indy.initializationRange[i][1]) {
                     return false;
                 }
             }
@@ -111,11 +111,11 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setBinaryDataLength(int length) {
-        this.m_Genotype = new double[length];
-        this.m_Range = new double[length][2];
-        for (int i = 0; i < this.m_Range.length; i++) {
-            this.m_Range[i][0] = 0;
-            this.m_Range[i][1] = 1;
+        this.genotype = new double[length];
+        this.initializationRange = new double[length][2];
+        for (int i = 0; i < this.initializationRange.length; i++) {
+            this.initializationRange[i][0] = 0;
+            this.initializationRange[i][1] = 1;
         }
     }
 
@@ -126,7 +126,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public int size() {
-        return this.m_Genotype.length;
+        return this.genotype.length;
     }
 
     /**
@@ -136,26 +136,26 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public BitSet getBinaryData() {
-        if (this.m_UseHardSwitch) {
+        if (this.useHardSwitch) {
             // In this case it is only tested if the genotyp is bigger than 0.5
-            for (int i = 0; i < this.m_Genotype.length; i++) {
-                if (this.m_Genotype[i] > 0.5) {
-                    this.m_Phenotype.set(i);
+            for (int i = 0; i < this.genotype.length; i++) {
+                if (this.genotype[i] > 0.5) {
+                    this.phenotype.set(i);
                 } else {
-                    this.m_Phenotype.clear(i);
+                    this.phenotype.clear(i);
                 }
             }
         } else {
             // in this case the value of the genotype is interpreted as a probability
-            for (int i = 0; i < this.m_Genotype.length; i++) {
-                if (RNG.flipCoin(this.m_Genotype[i])) {
-                    this.m_Phenotype.set(i);
+            for (int i = 0; i < this.genotype.length; i++) {
+                if (RNG.flipCoin(this.genotype[i])) {
+                    this.phenotype.set(i);
                 } else {
-                    this.m_Phenotype.clear(i);
+                    this.phenotype.clear(i);
                 }
             }
         }
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -166,7 +166,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public BitSet getBinaryDataWithoutUpdate() {
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -176,7 +176,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setBinaryPhenotype(BitSet binaryData) {
-        this.m_Phenotype = binaryData;
+        this.phenotype = binaryData;
     }
 
     /**
@@ -188,26 +188,23 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
     @Override
     public void setBinaryGenotype(BitSet binaryData) {
         this.setBinaryPhenotype(binaryData);
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            if (this.m_UseHardSwitch) {
+        for (int i = 0; i < this.genotype.length; i++) {
+            if (this.useHardSwitch) {
                 if (binaryData.get(i)) {
-                    this.m_Genotype[i] = RNG.randomDouble(0.55, 1.0);
+                    this.genotype[i] = RNG.randomDouble(0.55, 1.0);
                 } else {
-                    this.m_Genotype[i] = RNG.randomDouble(0.0, 0.45);
+                    this.genotype[i] = RNG.randomDouble(0.0, 0.45);
                 }
             } else {
                 if (binaryData.get(i)) {
-                    this.m_Genotype[i] = 0.9;
+                    this.genotype[i] = 0.9;
                 } else {
-                    this.m_Genotype[i] = 0.1;
+                    this.genotype[i] = 0.1;
                 }
             }
         }
     }
 
-/************************************************************************************
- * AbstractEAIndividual methods
- */
     /**
      * This method will init the individual with a given value for the
      * phenotype.
@@ -248,16 +245,12 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
         }
         result += "})\n Value: ";
         result += "[";
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            result += this.m_Genotype[i] + "; ";
+        for (int i = 0; i < this.genotype.length; i++) {
+            result += this.genotype[i] + "; ";
         }
         result += "]";
         return result;
     }
-
-/************************************************************************************
- * InterfaceESIndividual methods
- */
 
     /**
      * This method will allow the user to read the ES 'genotype'
@@ -266,7 +259,7 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public double[] getDGenotype() {
-        return this.m_Genotype;
+        return this.genotype;
     }
 
     /**
@@ -276,34 +269,26 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setDGenotype(double[] b) {
-        this.m_Genotype = b;
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            if (this.m_Genotype[i] < this.m_Range[i][0]) {
-                this.m_Genotype[i] = this.m_Range[1][0];
+        this.genotype = b;
+        for (int i = 0; i < this.genotype.length; i++) {
+            if (this.genotype[i] < this.initializationRange[i][0]) {
+                this.genotype[i] = this.initializationRange[1][0];
             }
-            if (this.m_Genotype[i] > this.m_Range[i][1]) {
-                this.m_Genotype[i] = this.m_Range[1][1];
+            if (this.genotype[i] > this.initializationRange[i][1]) {
+                this.genotype[i] = this.initializationRange[1][1];
             }
         }
     }
 
-//    /** This method will set the range of the double attributes. If range.length
-//     * does not equal doubledata.length only range[i] will be used to set all
-//     * ranges.
-//     * @param range     The new range for the double data.
-//     */
-//    public void setDoubleRange(double[][] range) {
-//        this.m_Range = range;
-//    }
 
     /**
      * This method will return the range for all double attributes.
      *
-     * @return The range array.
+     * @return The initializationRange array.
      */
     @Override
     public double[][] getDoubleRange() {
-        return this.m_Range;
+        return this.initializationRange;
     }
 
     /**
@@ -311,15 +296,15 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void defaultMutate() {
-        ESIndividualDoubleData.defaultMutate(m_Genotype, m_Range);
+        ESIndividualDoubleData.defaultMutate(genotype, initializationRange);
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitRange() != null)) {
-            ESIndividualDoubleData.defaultInit(m_Genotype, (double[][]) ((InterfaceHasInitRange) prob).getInitRange());
+            ESIndividualDoubleData.defaultInit(genotype, (double[][]) ((InterfaceHasInitRange) prob).getInitRange());
         } else {
-            ESIndividualDoubleData.defaultInit(m_Genotype, m_Range);
+            ESIndividualDoubleData.defaultInit(genotype, initializationRange);
         }
     }
 /**********************************************************************************************************************
@@ -343,11 +328,11 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
      * @param b the Switch.
      */
     public void setToggleInterpretation(boolean b) {
-        this.m_UseHardSwitch = b;
+        this.useHardSwitch = b;
     }
 
     public boolean getToggleInterpretation() {
-        return this.m_UseHardSwitch;
+        return this.useHardSwitch;
     }
 
     public String toggleInterpretationTipText() {

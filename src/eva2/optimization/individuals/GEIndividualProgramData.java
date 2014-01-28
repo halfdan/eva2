@@ -21,25 +21,25 @@ import java.util.BitSet;
 @Description(value = "This is a GE individual suited to optimize programs.")
 public class GEIndividualProgramData extends AbstractEAIndividual implements InterfaceGAIndividual, InterfaceDataTypeProgram, java.io.Serializable {
 
-    protected GPArea[] m_Area;
-    protected double m_InitFullGrowRatio = 0.5;
-    protected int m_InitDepth = 5;
-    protected int m_TargetDepth = 10;
-    protected boolean m_CheckTargetDepth = true;
+    protected GPArea[] gpAreas;
+    protected double initFullGrowRatio = 0.5;
+    protected int initDepth = 5;
+    protected int targetDepth = 10;
+    protected boolean checkTargetDepth = true;
 
-    protected BitSet m_Genotype;
-    protected AbstractGPNode[] m_Phenotype;
-    protected int m_GenotypeLengthPerProgram = 240; // this is the overall length
-    protected int m_MaxNumberOfNodes = 80;
-    protected int m_NumberOfBitPerInt = 6;
-    protected int m_CurrentIndex = 0;
-    protected int m_CurrentNumberOfNodes = 0;
-    protected Object[][] m_Rules;
+    protected BitSet genotype;
+    protected AbstractGPNode[] phenotype;
+    protected int genotypeLengthPerProgram = 240; // this is the overall length
+    protected int maxNumberOfNodes = 80;
+    protected int numberOfBitPerInt = 6;
+    protected int currentIndex = 0;
+    protected int currentNumberOfNodes = 0;
+    protected Object[][] rules;
 
     public GEIndividualProgramData() {
-        this.m_Area = new GPArea[1];
-        this.m_GenotypeLengthPerProgram = 240;
-        this.m_Genotype = new BitSet();
+        this.gpAreas = new GPArea[1];
+        this.genotypeLengthPerProgram = 240;
+        this.genotype = new BitSet();
         this.mutationOperator = new MutateDefault();
         this.crossoverOperator = new CrossoverGADefault();
         this.mutationProbability = 0.5;
@@ -47,46 +47,46 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     }
 
     public GEIndividualProgramData(GEIndividualProgramData individual) {
-        if (individual.m_Phenotype != null) {
-            this.m_Phenotype = new AbstractGPNode[individual.m_Phenotype.length];
-            for (int i = 0; i < individual.m_Phenotype.length; i++) {
-                this.m_Phenotype[i] = (AbstractGPNode) individual.m_Phenotype[i].clone();
+        if (individual.phenotype != null) {
+            this.phenotype = new AbstractGPNode[individual.phenotype.length];
+            for (int i = 0; i < individual.phenotype.length; i++) {
+                this.phenotype[i] = (AbstractGPNode) individual.phenotype[i].clone();
             }
         }
-        this.m_GenotypeLengthPerProgram = individual.m_GenotypeLengthPerProgram;
-        this.m_MaxNumberOfNodes = individual.m_MaxNumberOfNodes;
-        this.m_NumberOfBitPerInt = individual.m_NumberOfBitPerInt;
-        this.m_CurrentIndex = individual.m_CurrentIndex;
-        if (individual.m_Genotype != null) {
-            this.m_Genotype = (BitSet) individual.m_Genotype.clone();
+        this.genotypeLengthPerProgram = individual.genotypeLengthPerProgram;
+        this.maxNumberOfNodes = individual.maxNumberOfNodes;
+        this.numberOfBitPerInt = individual.numberOfBitPerInt;
+        this.currentIndex = individual.currentIndex;
+        if (individual.genotype != null) {
+            this.genotype = (BitSet) individual.genotype.clone();
         }
-        if (individual.m_Area != null) {
-            this.m_Area = new GPArea[individual.m_Area.length];
-            for (int i = 0; i < this.m_Area.length; i++) {
-                this.m_Area[i] = (GPArea) individual.m_Area[i].clone();
+        if (individual.gpAreas != null) {
+            this.gpAreas = new GPArea[individual.gpAreas.length];
+            for (int i = 0; i < this.gpAreas.length; i++) {
+                this.gpAreas[i] = (GPArea) individual.gpAreas[i].clone();
             }
         }
         // User                     : "Copy the rules set!"
         // GEIndividualProgramData  : "Naay! I wanna go playing with my friends... !"
-        if (individual.m_Rules != null) {
-            this.m_Rules = new Object[individual.m_Rules.length][];
-            for (int t = 0; t < this.m_Rules.length; t++) {
-                this.m_Rules[t] = new Object[individual.m_Rules[t].length];
-                int[][] copyRulz, orgRulz = (int[][]) individual.m_Rules[t][0];
+        if (individual.rules != null) {
+            this.rules = new Object[individual.rules.length][];
+            for (int t = 0; t < this.rules.length; t++) {
+                this.rules[t] = new Object[individual.rules[t].length];
+                int[][] copyRulz, orgRulz = (int[][]) individual.rules[t][0];
                 copyRulz = new int[orgRulz.length][];
                 for (int i = 0; i < copyRulz.length; i++) {
                     copyRulz[i] = new int[orgRulz[i].length];
                     System.arraycopy(orgRulz[i], 0, copyRulz[i], 0, orgRulz[i].length);
                 }
-                this.m_Rules[t][0] = copyRulz;
+                this.rules[t][0] = copyRulz;
                 AbstractGPNode[] copyNode, orgNode;
-                for (int i = 1; i < this.m_Rules[t].length; i++) {
-                    orgNode = (AbstractGPNode[]) individual.m_Rules[t][i];
+                for (int i = 1; i < this.rules[t].length; i++) {
+                    orgNode = (AbstractGPNode[]) individual.rules[t][i];
                     copyNode = new AbstractGPNode[orgNode.length];
                     for (int j = 0; j < orgNode.length; j++) {
                         copyNode[j] = (AbstractGPNode) orgNode[j].clone();
                     }
-                    this.m_Rules[t][i] = copyNode;
+                    this.rules[t][i] = copyNode;
                 }
             }
         }
@@ -122,19 +122,19 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GEIndividualProgramData) {
             GEIndividualProgramData indy = (GEIndividualProgramData) individual;
-            if (this.m_GenotypeLengthPerProgram != indy.m_GenotypeLengthPerProgram) {
+            if (this.genotypeLengthPerProgram != indy.genotypeLengthPerProgram) {
                 return false;
             }
-            if (this.m_MaxNumberOfNodes != indy.m_MaxNumberOfNodes) {
+            if (this.maxNumberOfNodes != indy.maxNumberOfNodes) {
                 return false;
             }
-            if (this.m_NumberOfBitPerInt != indy.m_NumberOfBitPerInt) {
+            if (this.numberOfBitPerInt != indy.numberOfBitPerInt) {
                 return false;
             }
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+            if ((this.genotype == null) || (indy.genotype == null)) {
                 return false;
             }
-            if (!this.m_Genotype.equals(indy.m_Genotype)) {
+            if (!this.genotype.equals(indy.genotype)) {
                 return false;
             }
             return true;
@@ -147,18 +147,18 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * This method compiles the area
      */
     private void compileArea() {
-        if (this.m_Area == null) {
-            this.m_Rules = null;
+        if (this.gpAreas == null) {
+            this.rules = null;
             return;
         }
-        //this.m_Rules = new Object[this.gpArea.length][];
-        for (int t = 0; t < this.m_Area.length; t++) {
+        //this.rules = new Object[this.gpArea.length][];
+        for (int t = 0; t < this.gpAreas.length; t++) {
             // first lets find out what kind of elements are available
             int arity, maxArity = 0;
 
             // first find out the max arity in the GPArea
-            this.m_Area[t].compileReducedList();
-            ArrayList area = this.m_Area[t].getReducedList();
+            this.gpAreas[t].compileReducedList();
+            ArrayList area = this.gpAreas[t].getReducedList();
             for (int i = 0; i < area.size(); i++) {
                 arity = ((AbstractGPNode) area.get(i)).getArity();
                 if (arity > maxArity) {
@@ -175,7 +175,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
                 directList[((AbstractGPNode) area.get(i)).getArity()].add(area.get(i));
             }
             // Now write the rules
-            this.m_Rules[t] = new Object[maxArity + 2];
+            this.rules[t] = new Object[maxArity + 2];
             // the first rule describes how to decode an <expr>
             int numberOfRules = 0, index = 0;
             int[] tmpRule;
@@ -210,7 +210,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
                     index++;
                 }
             }
-            this.m_Rules[t][0] = trueExpr;
+            this.rules[t][0] = trueExpr;
 
             // now the rules that define <var>, <op1>, <op2>, ....
             AbstractGPNode[] tmpListOfGPNodes;
@@ -219,7 +219,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
                 for (int j = 0; j < directList[i].size(); j++) {
                     tmpListOfGPNodes[j] = (AbstractGPNode) directList[i].get(j);
                 }
-                this.m_Rules[t][i + 1] = tmpListOfGPNodes;
+                this.rules[t][i + 1] = tmpListOfGPNodes;
             }
             // this should be the complete rules set
             //this.printRuleSet();
@@ -232,17 +232,17 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     private void printRuleSet() {
         String result = "";
         AbstractGPNode[] tmpNodes;
-        for (int t = 0; t < this.m_Area.length; t++) {
+        for (int t = 0; t < this.gpAreas.length; t++) {
             // first the Non-Terminals
             result += "N \t := \t{";
-            for (int i = 0; i < this.m_Rules[t].length; i++) {
+            for (int i = 0; i < this.rules[t].length; i++) {
                 if (i == 0) {
                     result += "expr, ";
                 } else {
                     if (i == 1) {
                         result += "var, ";
                     } else {
-                        if (((AbstractGPNode[]) this.m_Rules[t][i]).length > 0) {
+                        if (((AbstractGPNode[]) this.rules[t][i]).length > 0) {
                             result += "op" + (i - 1) + ", ";
                         }
                     }
@@ -251,8 +251,8 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
             result += "}\n";
             // then the Ternimnals
             result += "T \t := \t{";
-            this.m_Area[t].compileReducedList();
-            ArrayList area = this.m_Area[t].getReducedList();
+            this.gpAreas[t].compileReducedList();
+            ArrayList area = this.gpAreas[t].getReducedList();
             for (int i = 0; i < area.size(); i++) {
                 result += ((AbstractGPNode) area.get(i)).getStringRepresentation() + ", ";
             }
@@ -261,12 +261,12 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
             result += "S \t := \t<expr>\n\n";
 
             // now the rules
-            for (int i = 0; i < this.m_Rules[t].length; i++) {
+            for (int i = 0; i < this.rules[t].length; i++) {
                 if (i == 0) {
                     // the first rules
                     result += "0. \t := \t<expr> \t::\t";
                     System.out.println("i: " + i);
-                    int[][] rulz = (int[][]) this.m_Rules[t][i];
+                    int[][] rulz = (int[][]) this.rules[t][i];
                     for (int j = 0; j < rulz.length; j++) {
                         result += this.getRuleString(rulz[j]) + "\n";
                         if ((j + 1) < rulz.length) {
@@ -277,14 +277,14 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
                     // now the rules for the terminals
                     if (i == 1) {
                         // These are the GP-Terminals
-                        tmpNodes = (AbstractGPNode[]) this.m_Rules[t][i];
+                        tmpNodes = (AbstractGPNode[]) this.rules[t][i];
                         result += "1. \t := \t<var> \t::\t" + tmpNodes[0].getStringRepresentation() + "\n";
                         for (int j = 1; j < tmpNodes.length; j++) {
                             result += "\t \t \t \t \t \t" + tmpNodes[j].getStringRepresentation() + "\n";
                         }
                     } else {
                         // These are the GP-Functions
-                        tmpNodes = (AbstractGPNode[]) this.m_Rules[t][i];
+                        tmpNodes = (AbstractGPNode[]) this.rules[t][i];
                         if (tmpNodes.length > 0) {
                             result += i + ". \t := \t<op" + (i - 1) + "> \t::\t" + tmpNodes[0].getStringRepresentation() + "\n";
                             for (int j = 1; j < tmpNodes.length; j++) {
@@ -310,11 +310,11 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     private String getBitSetString() {
         String result = "";
         result += "{";
-        for (int i = 0; i < this.m_GenotypeLengthPerProgram * this.m_Area.length; i++) {
-            if (i % this.m_NumberOfBitPerInt == 0) {
+        for (int i = 0; i < this.genotypeLengthPerProgram * this.gpAreas.length; i++) {
+            if (i % this.numberOfBitPerInt == 0) {
                 result += " ";
             }
-            if (this.m_Genotype.get(i)) {
+            if (this.genotype.get(i)) {
                 result += "1";
             } else {
                 result += "0";
@@ -356,59 +356,59 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public void setProgramDataLength(int length) {
-        GPArea[] oldArea = this.m_Area;
-        Object[][] oldRulz = this.m_Rules;
+        GPArea[] oldArea = this.gpAreas;
+        Object[][] oldRulz = this.rules;
 
-        this.m_Area = new GPArea[length];
-        for (int t = 0; ((t < this.m_Area.length) && (t < oldArea.length)); t++) {
-            this.m_Area[t] = oldArea[t];
+        this.gpAreas = new GPArea[length];
+        for (int t = 0; ((t < this.gpAreas.length) && (t < oldArea.length)); t++) {
+            this.gpAreas[t] = oldArea[t];
         }
-        for (int t = oldArea.length; t < this.m_Area.length; t++) {
-            this.m_Area[t] = oldArea[oldArea.length - 1];
+        for (int t = oldArea.length; t < this.gpAreas.length; t++) {
+            this.gpAreas[t] = oldArea[oldArea.length - 1];
         }
-        this.m_Rules = new Object[length][];
+        this.rules = new Object[length][];
         if (oldRulz == null) {
             return;
         }
-        for (int t = 0; ((t < this.m_Area.length) && (t < oldArea.length)); t++) {
+        for (int t = 0; ((t < this.gpAreas.length) && (t < oldArea.length)); t++) {
             if (oldRulz[t] != null) {
-                this.m_Rules[t] = new Object[oldRulz[t].length];
+                this.rules[t] = new Object[oldRulz[t].length];
                 int[][] copyRulz, orgRulz = (int[][]) oldRulz[t][0];
                 copyRulz = new int[orgRulz.length][];
                 for (int i = 0; i < copyRulz.length; i++) {
                     copyRulz[i] = new int[orgRulz[i].length];
                     System.arraycopy(orgRulz[i], 0, copyRulz[i], 0, orgRulz[i].length);
                 }
-                this.m_Rules[t][0] = copyRulz;
+                this.rules[t][0] = copyRulz;
                 AbstractGPNode[] copyNode, orgNode;
-                for (int i = 1; i < this.m_Rules[t].length; i++) {
+                for (int i = 1; i < this.rules[t].length; i++) {
                     orgNode = (AbstractGPNode[]) oldRulz[t][i];
                     copyNode = new AbstractGPNode[orgNode.length];
                     for (int j = 0; j < orgNode.length; j++) {
                         copyNode[j] = (AbstractGPNode) orgNode[j].clone();
                     }
-                    this.m_Rules[t][i] = copyNode;
+                    this.rules[t][i] = copyNode;
                 }
             }
         }
-        for (int t = oldArea.length; t < this.m_Area.length; t++) {
+        for (int t = oldArea.length; t < this.gpAreas.length; t++) {
             if (oldRulz[oldArea.length - 1] != null) {
-                this.m_Rules[t] = new Object[oldRulz[oldArea.length - 1].length];
+                this.rules[t] = new Object[oldRulz[oldArea.length - 1].length];
                 int[][] copyRulz, orgRulz = (int[][]) oldRulz[oldArea.length - 1][0];
                 copyRulz = new int[orgRulz.length][];
                 for (int i = 0; i < copyRulz.length; i++) {
                     copyRulz[i] = new int[orgRulz[i].length];
                     System.arraycopy(orgRulz[i], 0, copyRulz[i], 0, orgRulz[i].length);
                 }
-                this.m_Rules[t][0] = copyRulz;
+                this.rules[t][0] = copyRulz;
                 AbstractGPNode[] copyNode, orgNode;
-                for (int i = 1; i < this.m_Rules[t].length; i++) {
+                for (int i = 1; i < this.rules[t].length; i++) {
                     orgNode = (AbstractGPNode[]) oldRulz[oldArea.length - 1][i];
                     copyNode = new AbstractGPNode[orgNode.length];
                     for (int j = 0; j < orgNode.length; j++) {
                         copyNode[j] = (AbstractGPNode) orgNode[j].clone();
                     }
-                    this.m_Rules[t][i] = copyNode;
+                    this.rules[t][i] = copyNode;
                 }
             }
         }
@@ -426,13 +426,13 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      */
     private int decodeNextInt(int t) {
         int result = 0;
-        for (int i = 0; i < this.m_NumberOfBitPerInt; i++) {
-            if (this.m_Genotype.get(this.m_CurrentIndex + (t * this.m_GenotypeLengthPerProgram))) {
+        for (int i = 0; i < this.numberOfBitPerInt; i++) {
+            if (this.genotype.get(this.currentIndex + (t * this.genotypeLengthPerProgram))) {
                 result += Math.pow(2, i);
             }
-            this.m_CurrentIndex++;
-            if (this.m_CurrentIndex >= (t + 1) * this.m_GenotypeLengthPerProgram) {
-                this.m_CurrentIndex = t * this.m_GenotypeLengthPerProgram;
+            this.currentIndex++;
+            if (this.currentIndex >= (t + 1) * this.genotypeLengthPerProgram) {
+                this.currentIndex = t * this.genotypeLengthPerProgram;
             }
         }
         return result;
@@ -452,12 +452,12 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
 //        System.out.println("Decoding mode: " + mode);
 
         if (mode == 0) {
-            int[][] rulz = (int[][]) this.m_Rules[t][0];
+            int[][] rulz = (int[][]) this.rules[t][0];
             int[] myRule = rulz[value % rulz.length];
 //            System.out.print("Value % rulz : "+ value +" % " + rulz.length + " = " +(value%rulz.length));
 //            System.out.println(" => my rule " + this.getRuleString(myRule));
-            this.m_CurrentNumberOfNodes += myRule.length;
-            if ((this.m_CurrentNumberOfNodes + myRule.length) > this.m_MaxNumberOfNodes) {
+            this.currentNumberOfNodes += myRule.length;
+            if ((this.currentNumberOfNodes + myRule.length) > this.maxNumberOfNodes) {
                 // no i have to limit the number of nodes
                 myRule = rulz[0];
 //                System.out.println("Limiting to "+ this.getRuleString(myRule));
@@ -468,7 +468,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
                 result.setNode(this.decodeGPNode(t, myRule[i + 1]), i);
             }
         } else {
-            AbstractGPNode[] availableNodes = (AbstractGPNode[]) this.m_Rules[t][mode];
+            AbstractGPNode[] availableNodes = (AbstractGPNode[]) this.rules[t][mode];
 //            System.out.print("Choosing a terminal : "+ value +" % " + availableNodes.length + " = " +(value%availableNodes.length));
 //            System.out.println(" => " +availableNodes[value % availableNodes.length].getStringRepresentation());
             result = (AbstractGPNode) availableNodes[value % availableNodes.length].clone();
@@ -486,34 +486,34 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
 //        if (true) {
 //            String test ="GE decoding:\n";
 //            test += this.getBitSetString() +"\n{";
-//            this.m_CurrentIndex = 0;
-//            for (int i = 0; i < this.m_MaxNumberOfNodes; i++) {
+//            this.currentIndex = 0;
+//            for (int i = 0; i < this.maxNumberOfNodes; i++) {
 //                test += this.decodeNextInt();
-//                if ((i + 1) < this.m_MaxNumberOfNodes) test += "; ";
+//                if ((i + 1) < this.maxNumberOfNodes) test += "; ";
 //            }
 //            test += "}\n";
 //            System.out.println(""+test);
 //        }
         // lets decode the stuff!
-        if (this.m_Rules == null) {
+        if (this.rules == null) {
             this.compileArea();
-            if (this.m_Rules == null) {
+            if (this.rules == null) {
                 return null;
             }
         }
-        this.m_CurrentIndex = 0;
-        this.m_CurrentNumberOfNodes = 0;
+        this.currentIndex = 0;
+        this.currentNumberOfNodes = 0;
         int mode = 0;
-        this.m_Phenotype = new AbstractGPNode[this.m_Area.length];
-        for (int t = 0; t < this.m_Area.length; t++) {
+        this.phenotype = new AbstractGPNode[this.gpAreas.length];
+        for (int t = 0; t < this.gpAreas.length; t++) {
             mode = 0;
-            this.m_CurrentIndex = t * this.m_GenotypeLengthPerProgram;
-            this.m_CurrentNumberOfNodes = 0;
-            this.m_Phenotype[t] = this.decodeGPNode(t, mode);
+            this.currentIndex = t * this.genotypeLengthPerProgram;
+            this.currentNumberOfNodes = 0;
+            this.phenotype[t] = this.decodeGPNode(t, mode);
         }
 //        System.out.println("Decoded: ");
 //        System.out.println(""+ result.getStringRepresentation());
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -524,7 +524,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public InterfaceProgram[] getProgramDataWithoutUpdate() {
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -535,9 +535,9 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     @Override
     public void SetProgramPhenotype(InterfaceProgram[] program) {
         if (program instanceof AbstractGPNode[]) {
-            this.m_Phenotype = new AbstractGPNode[program.length];
+            this.phenotype = new AbstractGPNode[program.length];
             for (int t = 0; t < program.length; t++) {
-                this.m_Phenotype[t] = (AbstractGPNode) ((AbstractGPNode) program[t]).clone();
+                this.phenotype[t] = (AbstractGPNode) ((AbstractGPNode) program[t]).clone();
             }
         }
     }
@@ -563,9 +563,9 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
     @Override
     public void SetFunctionArea(Object[] area) {
         if (area instanceof GPArea[]) {
-            this.m_Area = new GPArea[area.length];
-            for (int t = 0; t < this.m_Area.length; t++) {
-                this.m_Area[t] = (GPArea) area[t];
+            this.gpAreas = new GPArea[area.length];
+            for (int t = 0; t < this.gpAreas.length; t++) {
+                this.gpAreas[t] = (GPArea) area[t];
             }
             this.compileArea();
         }
@@ -578,7 +578,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public Object[] getFunctionArea() {
-        return this.m_Area;
+        return this.gpAreas;
     }
 
 /************************************************************************************
@@ -614,8 +614,8 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
         String result = "";
         result += "GEIndividual coding program:\n";
         result += "{";
-        for (int i = 0; i < this.m_GenotypeLengthPerProgram * this.m_Area.length; i++) {
-            if (this.m_Genotype.get(i)) {
+        for (int i = 0; i < this.genotypeLengthPerProgram * this.gpAreas.length; i++) {
+            if (this.genotype.get(i)) {
                 result += "1";
             } else {
                 result += "0";
@@ -640,7 +640,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public BitSet getBGenotype() {
-        return this.m_Genotype;
+        return this.genotype;
     }
 
     /**
@@ -651,7 +651,7 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public void setBGenotype(BitSet binaryData) {
-        this.m_Genotype = binaryData;
+        this.genotype = binaryData;
     }
 
     /**
@@ -663,16 +663,16 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public int getGenotypeLength() {
-        return this.m_GenotypeLengthPerProgram * this.m_Area.length;
+        return this.genotypeLengthPerProgram * this.gpAreas.length;
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-        for (int i = 0; i < this.m_GenotypeLengthPerProgram * this.m_Area.length; i++) {
+        for (int i = 0; i < this.genotypeLengthPerProgram * this.gpAreas.length; i++) {
             if (RNG.flipCoin(0.5)) {
-                this.m_Genotype.set(i);
+                this.genotype.set(i);
             } else {
-                this.m_Genotype.clear(i);
+                this.genotype.clear(i);
             }
         }
     }
@@ -682,12 +682,12 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      */
     @Override
     public void defaultMutate() {
-        int mutationIndex = RNG.randomInt(0, this.m_GenotypeLengthPerProgram * this.m_Area.length);
+        int mutationIndex = RNG.randomInt(0, this.genotypeLengthPerProgram * this.gpAreas.length);
         //if (mutationIndex > 28) System.out.println("Mutate: " + this.getSolutionRepresentationFor());
-        if (this.m_Genotype.get(mutationIndex)) {
-            this.m_Genotype.clear(mutationIndex);
+        if (this.genotype.get(mutationIndex)) {
+            this.genotype.clear(mutationIndex);
         } else {
-            this.m_Genotype.set(mutationIndex);
+            this.genotype.set(mutationIndex);
         }
         //if (mutationIndex > 28) System.out.println(this.getSolutionRepresentationFor());
     }
@@ -709,11 +709,11 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * @param size The length
      */
     public void setGenotypeLengthPerProgram(int size) {
-        this.m_GenotypeLengthPerProgram = size;
+        this.genotypeLengthPerProgram = size;
     }
 
     public int getGenotypeLengthPerProgram() {
-        return this.m_GenotypeLengthPerProgram;
+        return this.genotypeLengthPerProgram;
     }
 
     public String genotypeLengthPerProgramTipText() {
@@ -727,11 +727,11 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * @param nodes The maximum number of nodes
      */
     public void setMaxNumberOfNodes(int nodes) {
-        this.m_MaxNumberOfNodes = nodes;
+        this.maxNumberOfNodes = nodes;
     }
 
     public int getMaxNumberOfNodes() {
-        return this.m_MaxNumberOfNodes;
+        return this.maxNumberOfNodes;
     }
 
     public String maxNumberOfNodesTipText() {
@@ -745,11 +745,11 @@ public class GEIndividualProgramData extends AbstractEAIndividual implements Int
      * @param length The number of bits per int.
      */
     public void setNumberOfBitPerInt(int length) {
-        this.m_NumberOfBitPerInt = length;
+        this.numberOfBitPerInt = length;
     }
 
     public int getNumberOfBitPerInt() {
-        return this.m_NumberOfBitPerInt;
+        return this.numberOfBitPerInt;
     }
 
     public String numberOfBitPerIntTipText() {

@@ -57,10 +57,10 @@ public class GPNodeFlowExec3 extends AbstractGPNode implements java.io.Serializa
      */
     @Override
     public Object evaluate(InterfaceProgramProblem environment) {
-        Object[] result = new Object[this.m_Nodes.length];
+        Object[] result = new Object[this.nodes.length];
 
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            result[i] = this.m_Nodes[i].evaluate(environment);
+        for (int i = 0; i < this.nodes.length; i++) {
+            result[i] = this.nodes[i].evaluate(environment);
         }
         return result;
     }
@@ -74,7 +74,7 @@ public class GPNodeFlowExec3 extends AbstractGPNode implements java.io.Serializa
 //     */
 //    public String getStringRepresentation() {
 //        String result = "Exec3( ";
-//        for (int i = 0; i < this.m_Nodes.length; i++) result += this.m_Nodes[i].getStringRepresentation() +" ";
+//        for (int i = 0; i < this.nodes.length; i++) result += this.nodes[i].getStringRepresentation() +" ";
 //        result += ")";
 //        return result;
 //    }

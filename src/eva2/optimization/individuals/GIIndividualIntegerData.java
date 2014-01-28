@@ -14,21 +14,21 @@ import eva2.util.annotation.Description;
 @Description(value = "This is a GI individual suited to optimize int values.")
 public class GIIndividualIntegerData extends AbstractEAIndividual implements InterfaceGIIndividual, InterfaceDataTypeInteger, java.io.Serializable {
 
-    private int[] m_Phenotype;
-    private int[][] m_Range;
-    protected int[] m_Genotype;
+    private int[] phenotype;
+    private int[][] initializationRange;
+    protected int[] genotype;
 
     public GIIndividualIntegerData() {
         this.mutationProbability = 0.2;
         this.mutationOperator = new MutateDefault();
         this.crossoverProbability = 0.7;
         this.crossoverOperator = new CrossoverGIDefault();
-        this.m_Range = new int[10][2];
-        for (int i = 0; i < this.m_Range.length; i++) {
-            this.m_Range[i][0] = 0;
-            this.m_Range[i][1] = 7;
+        this.initializationRange = new int[10][2];
+        for (int i = 0; i < this.initializationRange.length; i++) {
+            this.initializationRange[i][0] = 0;
+            this.initializationRange[i][1] = 7;
         }
-        this.m_Genotype = new int[10];
+        this.genotype = new int[10];
     }
 
     public GIIndividualIntegerData(int[][] theRange) {
@@ -37,19 +37,19 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     }
 
     public GIIndividualIntegerData(GIIndividualIntegerData individual) {
-        if (individual.m_Phenotype != null) {
-            this.m_Phenotype = new int[individual.m_Phenotype.length];
-            System.arraycopy(individual.m_Phenotype, 0, this.m_Phenotype, 0, this.m_Phenotype.length);
+        if (individual.phenotype != null) {
+            this.phenotype = new int[individual.phenotype.length];
+            System.arraycopy(individual.phenotype, 0, this.phenotype, 0, this.phenotype.length);
         }
-        if (individual.m_Genotype != null) {
-            this.m_Genotype = new int[individual.m_Genotype.length];
-            System.arraycopy(individual.m_Genotype, 0, this.m_Genotype, 0, this.m_Genotype.length);
+        if (individual.genotype != null) {
+            this.genotype = new int[individual.genotype.length];
+            System.arraycopy(individual.genotype, 0, this.genotype, 0, this.genotype.length);
 
         }
-        this.m_Range = new int[individual.m_Range.length][2];
-        for (int i = 0; i < this.m_Range.length; i++) {
-            this.m_Range[i][0] = individual.m_Range[i][0];
-            this.m_Range[i][1] = individual.m_Range[i][1];
+        this.initializationRange = new int[individual.initializationRange.length][2];
+        for (int i = 0; i < this.initializationRange.length; i++) {
+            this.initializationRange[i][0] = individual.initializationRange[i][0];
+            this.initializationRange[i][1] = individual.initializationRange[i][1];
         }
 
         // cloning the members of AbstractEAIndividual
@@ -85,20 +85,20 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GIIndividualIntegerData) {
             GIIndividualIntegerData indy = (GIIndividualIntegerData) individual;
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+            if ((this.genotype == null) || (indy.genotype == null)) {
                 return false;
             }
-            if (this.m_Genotype.length != indy.m_Genotype.length) {
+            if (this.genotype.length != indy.genotype.length) {
                 return false;
             }
-            for (int i = 0; i < this.m_Range.length; i++) {
-                if (this.m_Genotype[i] != indy.m_Genotype[i]) {
+            for (int i = 0; i < this.initializationRange.length; i++) {
+                if (this.genotype[i] != indy.genotype[i]) {
                     return false;
                 }
-                if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+                if (this.initializationRange[i][0] != indy.initializationRange[i][0]) {
                     return false;
                 }
-                if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                if (this.initializationRange[i][1] != indy.initializationRange[i][1]) {
                     return false;
                 }
             }
@@ -122,20 +122,20 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         int[][] newRange = new int[length][2];
 
         // copy the old values for the decision parameters and the range
-        for (int i = 0; ((i < newDesPa.length) && (i < this.m_Genotype.length)); i++) {
-            newDesPa[i] = this.m_Genotype[i];
-            newRange[i][0] = this.m_Range[i][0];
-            newRange[i][1] = this.m_Range[i][1];
+        for (int i = 0; ((i < newDesPa.length) && (i < this.genotype.length)); i++) {
+            newDesPa[i] = this.genotype[i];
+            newRange[i][0] = this.initializationRange[i][0];
+            newRange[i][1] = this.initializationRange[i][1];
         }
 
         // if the new length is bigger than the last value fills the extra elements
-        for (int i = this.m_Genotype.length; (i < newDesPa.length); i++) {
-            newDesPa[i] = this.m_Genotype[this.m_Genotype.length - 1];
-            newRange[i][0] = this.m_Range[this.m_Genotype.length - 1][0];
-            newRange[i][1] = this.m_Range[this.m_Genotype.length - 1][1];
+        for (int i = this.genotype.length; (i < newDesPa.length); i++) {
+            newDesPa[i] = this.genotype[this.genotype.length - 1];
+            newRange[i][0] = this.initializationRange[this.genotype.length - 1][0];
+            newRange[i][1] = this.initializationRange[this.genotype.length - 1][1];
         }
-        this.m_Genotype = newDesPa;
-        this.m_Range = newRange;
+        this.genotype = newDesPa;
+        this.initializationRange = newRange;
     }
 
     /**
@@ -145,7 +145,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public int size() {
-        return this.m_Range.length;
+        return this.initializationRange.length;
     }
 
     /**
@@ -157,12 +157,12 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public void setIntRange(int[][] range) {
-        if (range.length != this.m_Range.length) {
+        if (range.length != this.initializationRange.length) {
             this.setIntegerDataLength(range.length);
         }
-        for (int i = 0; ((i < this.m_Range.length) && (i < range.length)); i++) {
-            this.m_Range[i][0] = range[i][0];
-            this.m_Range[i][1] = range[i][1];
+        for (int i = 0; ((i < this.initializationRange.length) && (i < range.length)); i++) {
+            this.initializationRange[i][0] = range[i][0];
+            this.initializationRange[i][1] = range[i][1];
         }
     }
 
@@ -173,7 +173,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public int[][] getIntRange() {
-        return this.m_Range;
+        return this.initializationRange;
     }
 
     /**
@@ -183,11 +183,11 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public int[] getIntegerData() {
-        this.m_Phenotype = new int[this.m_Range.length];
-        for (int i = 0; i < this.m_Phenotype.length; i++) {
-            this.m_Phenotype[i] = this.m_Genotype[i];
+        this.phenotype = new int[this.initializationRange.length];
+        for (int i = 0; i < this.phenotype.length; i++) {
+            this.phenotype[i] = this.genotype[i];
         }
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -198,7 +198,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public int[] getIntegerDataWithoutUpdate() {
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -208,7 +208,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public void setIntPhenotype(int[] doubleData) {
-        this.m_Phenotype = doubleData;
+        this.phenotype = doubleData;
     }
 
     /**
@@ -220,9 +220,9 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     @Override
     public void setIntGenotype(int[] doubleData) {
         this.setIntPhenotype(doubleData);
-        this.m_Genotype = new int[this.m_Range.length];
+        this.genotype = new int[this.initializationRange.length];
         for (int i = 0; i < doubleData.length; i++) {
-            this.m_Genotype[i] = doubleData[i];
+            this.genotype[i] = doubleData[i];
         }
     }
 
@@ -240,7 +240,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof int[]) {
             int[] bs = (int[]) obj;
-            if (bs.length != this.m_Range.length) {
+            if (bs.length != this.initializationRange.length) {
                 System.out.println("Init value and requested length doesn't match!");
             }
             this.setIntGenotype(bs);
@@ -278,8 +278,8 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         }
         result += "]\n";
         result += "CodingRange:  [";
-        for (int i = 0; i < this.m_Range.length; i++) {
-            result += "(" + this.m_Range[i][0] + "; " + this.m_Range[i][1] + "); ";
+        for (int i = 0; i < this.initializationRange.length; i++) {
+            result += "(" + this.initializationRange[i][0] + "; " + this.initializationRange[i][1] + "); ";
         }
         result += "]\n";
         return result;
@@ -296,7 +296,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public int[] getIGenotype() {
-        return this.m_Genotype;
+        return this.genotype;
     }
 
     /**
@@ -309,7 +309,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public void setIGenotype(int[] b) {
-        this.m_Genotype = b;
+        this.genotype = b;
     }
 
     /**
@@ -321,7 +321,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public int getGenotypeLength() {
-        return this.m_Genotype.length;
+        return this.genotype.length;
     }
 
     /**
@@ -329,13 +329,13 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
      */
     @Override
     public void defaultMutate() {
-        int mutationIndex = RNG.randomInt(0, this.m_Genotype.length - 1);
-        this.m_Genotype[mutationIndex] = RNG.randomInt(this.m_Range[mutationIndex][0], this.m_Range[mutationIndex][1]);
+        int mutationIndex = RNG.randomInt(0, this.genotype.length - 1);
+        this.genotype[mutationIndex] = RNG.randomInt(this.initializationRange[mutationIndex][0], this.initializationRange[mutationIndex][1]);
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-        int[][] range = m_Range;
+        int[][] range = initializationRange;
         if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitRange() != null)) {
             Object rng = ((InterfaceHasInitRange) prob).getInitRange();
             if (rng instanceof double[][]) {
@@ -353,8 +353,8 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
             }
         }
 
-        for (int i = 0; i < this.m_Genotype.length; i++) {
-            this.m_Genotype[i] = RNG.randomInt(range[i][0], range[i][1]);
+        for (int i = 0; i < this.genotype.length; i++) {
+            this.genotype[i] = RNG.randomInt(range[i][0], range[i][1]);
         }
     }
 

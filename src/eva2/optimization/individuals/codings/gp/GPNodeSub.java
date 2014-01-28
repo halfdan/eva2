@@ -60,12 +60,12 @@ public class GPNodeSub extends AbstractGPNode implements java.io.Serializable {
         Object tmpObj;
         double result = 0;
 
-        tmpObj = this.m_Nodes[0].evaluate(environment);
+        tmpObj = this.nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
             result += ((Double) tmpObj).doubleValue();
         }
-        for (int i = 1; i < this.m_Nodes.length; i++) {
-            tmpObj = this.m_Nodes[i].evaluate(environment);
+        for (int i = 1; i < this.nodes.length; i++) {
+            tmpObj = this.nodes[i].evaluate(environment);
             if (tmpObj instanceof Double) {
                 result -= ((Double) tmpObj).doubleValue();
             }
@@ -81,6 +81,6 @@ public class GPNodeSub extends AbstractGPNode implements java.io.Serializable {
 //     * @return string
 //     */
 //    public String getStringRepresentation() {
-//    	return AbstractGPNode.makeStringRepresentation(m_Nodes, "-");
+//    	return AbstractGPNode.makeStringRepresentation(nodes, "-");
 //    }
 }

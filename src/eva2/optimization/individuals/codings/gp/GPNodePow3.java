@@ -59,7 +59,7 @@ public class GPNodePow3 extends AbstractGPNode implements java.io.Serializable {
         Object tmpObj;
         double result = 1;
 
-        tmpObj = this.m_Nodes[0].evaluate(environment);
+        tmpObj = this.nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
             result = Math.pow(((Double) tmpObj).doubleValue(), 3);
         }
@@ -75,7 +75,7 @@ public class GPNodePow3 extends AbstractGPNode implements java.io.Serializable {
 //     */
 //    public String getStringRepresentation() {
 //        String result = "pow( ";
-//        for (int i = 0; i < this.m_Nodes.length; i++) result += this.m_Nodes[i].getStringRepresentation() +" ";
+//        for (int i = 0; i < this.nodes.length; i++) result += this.nodes[i].getStringRepresentation() +" ";
 //        result += ", 3)";
 //        return result;
 //    }

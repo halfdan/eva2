@@ -153,7 +153,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
             if ((this.checkMaxDepth) && (this.phenotype[i].isMaxDepthViolated(this.maxAllowedDepth))) {
                 System.err.println("Trying to meet the Target Depth! " + this.phenotype[i].isMaxDepthViolated(this.maxAllowedDepth) + " " + phenotype[i].getMaxDepth());
                 this.phenotype[i].repairMaxDepth(this.gpArea[i], this.maxAllowedDepth);
-                //System.out.println("TragetDepth: " + this.m_TargetDepth + " : " + this.m_Program.getMaxDepth());
+                //System.out.println("TragetDepth: " + this.targetDepth + " : " + this.m_Program.getMaxDepth());
             }
         }
         return this.phenotype;

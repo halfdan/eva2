@@ -17,17 +17,17 @@ import java.util.BitSet;
 @Description(value = "This is a GA individual suited to optimize binary values.")
 public class GAIndividualBinaryData extends AbstractEAIndividual implements InterfaceDataTypeBinary, InterfaceGAIndividual, java.io.Serializable {
 
-    protected BitSet m_Genotype = new BitSet();
-    protected BitSet m_Phenotype = new BitSet();
-    protected int m_GenotypeLength;
+    protected BitSet genotype = new BitSet();
+    protected BitSet phenotype = new BitSet();
+    protected int genotypeLength;
 
     public GAIndividualBinaryData() {
         this.mutationProbability = 0.1;
         this.mutationOperator = new MutateGANBit();
         this.crossoverProbability = 1.0;
         this.crossoverOperator = new CrossoverGAGINPoint();
-        this.m_GenotypeLength = 20;
-        this.m_Genotype = new BitSet();
+        this.genotypeLength = 20;
+        this.genotype = new BitSet();
     }
 
     public GAIndividualBinaryData(int genotypeLen) {
@@ -36,12 +36,12 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     }
 
     public GAIndividualBinaryData(GAIndividualBinaryData individual) {
-        if (individual.m_Phenotype != null) {
-            this.m_Phenotype = (BitSet) individual.m_Phenotype.clone();
+        if (individual.phenotype != null) {
+            this.phenotype = (BitSet) individual.phenotype.clone();
         }
-        this.m_GenotypeLength = individual.m_GenotypeLength;
-        if (individual.m_Genotype != null) {
-            this.m_Genotype = (BitSet) individual.m_Genotype.clone();
+        this.genotypeLength = individual.genotypeLength;
+        if (individual.genotype != null) {
+            this.genotype = (BitSet) individual.genotype.clone();
         }
 
         // cloning the members of AbstractEAIndividual
@@ -76,13 +76,13 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAIndividualBinaryData) {
             GAIndividualBinaryData indy = (GAIndividualBinaryData) individual;
-            if (this.m_GenotypeLength != indy.m_GenotypeLength) {
+            if (this.genotypeLength != indy.genotypeLength) {
                 return false;
             }
-            if ((this.m_Genotype == null) || (indy.m_Genotype == null)) {
+            if ((this.genotype == null) || (indy.genotype == null)) {
                 return false;
             }
-            if (!this.m_Genotype.equals(indy.m_Genotype)) {
+            if (!this.genotype.equals(indy.genotype)) {
                 return false;
             }
             return true;
@@ -99,8 +99,8 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     public double defaultEvaulateAsMiniBits() {
         double result = 0;
-        for (int i = 0; i < this.m_GenotypeLength; i++) {
-            if (this.m_Genotype.get(i)) {
+        for (int i = 0; i < this.genotypeLength; i++) {
+            if (this.genotype.get(i)) {
                 result++;
             }
         }
@@ -162,11 +162,11 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         }
         result += "})\n Value: ";
         result += "{";
-        for (int i = 0; i < this.m_GenotypeLength; i++) {
+        for (int i = 0; i < this.genotypeLength; i++) {
             if (i % 8 == 0) {
                 result += "|";
             }
-            if (this.m_Genotype.get(i)) {
+            if (this.genotype.get(i)) {
                 result += "1";
             } else {
                 result += "0";
@@ -184,7 +184,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public BitSet getBGenotype() {
-        return this.m_Genotype;
+        return this.genotype;
     }
 
     /**
@@ -195,7 +195,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setBGenotype(BitSet binaryData) {
-        this.m_Genotype = binaryData;
+        this.genotype = binaryData;
     }
 
     /**
@@ -207,16 +207,16 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public int getGenotypeLength() {
-        return this.m_GenotypeLength;
+        return this.genotypeLength;
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-        for (int i = 0; i < this.m_GenotypeLength; i++) {
+        for (int i = 0; i < this.genotypeLength; i++) {
             if (RNG.flipCoin(0.5)) {
-                this.m_Genotype.set(i);
+                this.genotype.set(i);
             } else {
-                this.m_Genotype.clear(i);
+                this.genotype.clear(i);
             }
         }
     }
@@ -226,12 +226,12 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void defaultMutate() {
-        int mutationIndex = RNG.randomInt(0, this.m_GenotypeLength);
+        int mutationIndex = RNG.randomInt(0, this.genotypeLength);
         //if (mutationIndex > 28) System.out.println("Mutate: " + this.getSolutionRepresentationFor());
-        if (this.m_Genotype.get(mutationIndex)) {
-            this.m_Genotype.clear(mutationIndex);
+        if (this.genotype.get(mutationIndex)) {
+            this.genotype.clear(mutationIndex);
         } else {
-            this.m_Genotype.set(mutationIndex);
+            this.genotype.set(mutationIndex);
         }
         //if (mutationIndex > 28) System.out.println(this.getSolutionRepresentationFor());
     }
@@ -246,7 +246,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setBinaryDataLength(int length) {
-        this.m_GenotypeLength = length;
+        this.genotypeLength = length;
     }
 
     /**
@@ -256,7 +256,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public int size() {
-        return this.m_GenotypeLength;
+        return this.genotypeLength;
     }
 
     /**
@@ -266,8 +266,8 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public BitSet getBinaryData() {
-        this.m_Phenotype = (BitSet) this.m_Genotype.clone();
-        return this.m_Phenotype;
+        this.phenotype = (BitSet) this.genotype.clone();
+        return this.phenotype;
     }
 
     /**
@@ -278,7 +278,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public BitSet getBinaryDataWithoutUpdate() {
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -288,7 +288,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setBinaryPhenotype(BitSet binaryData) {
-        this.m_Phenotype = binaryData;
+        this.phenotype = binaryData;
     }
 
     /**
@@ -300,7 +300,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     @Override
     public void setBinaryGenotype(BitSet binaryData) {
         this.setBinaryPhenotype(binaryData);
-        this.m_Genotype = (BitSet) binaryData.clone();
+        this.genotype = (BitSet) binaryData.clone();
     }
 
     /**

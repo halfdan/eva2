@@ -3,24 +3,17 @@ package eva2.optimization.individuals.codings.gp;
 import eva2.optimization.problems.InterfaceProgramProblem;
 
 /**
- * This node is able to read a sensor value from the environment (e.g. the
- * problem) the sensor to read is given by the identifier and has to be
- * implemented in the problem definition.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 15:38:05
- * To change this template use Options | File Templates.
+ *
  */
 public class GPNodeInput extends AbstractGPNode implements java.io.Serializable {
-    private String m_Identifier;
+    private String identifier;
     private Object lastValue;
 
     /**
      * This method creates a new GPNodeInput
      */
     public GPNodeInput() {
-        this.m_Identifier = "X";
+        this.identifier = "X";
     }
 
     /**
@@ -29,23 +22,23 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
      * @param identifier The name of the sensor requested.
      */
     public GPNodeInput(String identifier) {
-        this.m_Identifier = identifier;
+        this.identifier = identifier;
     }
 
     public GPNodeInput(GPNodeInput node) {
-        this.m_Identifier = node.m_Identifier;
+        this.identifier = node.identifier;
         this.cloneMembers(node);
     }
 
     public void setIdentifier(String str) {
-        m_Identifier = str;
+        identifier = str;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof GPNodeInput) {
             GPNodeInput node = (GPNodeInput) obj;
-            if (!this.m_Identifier.equalsIgnoreCase(node.m_Identifier)) {
+            if (!this.identifier.equalsIgnoreCase(node.identifier)) {
                 return false;
             }
             return true;
@@ -61,7 +54,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
      */
     @Override
     public String getName() {
-        return "Sensor:" + this.m_Identifier;
+        return "Sensor:" + this.identifier;
     }
 
     /**
@@ -91,7 +84,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
      */
     @Override
     public Object evaluate(InterfaceProgramProblem environment) {
-        lastValue = environment.getSensorValue(this.m_Identifier);
+        lastValue = environment.getSensorValue(this.identifier);
         return lastValue;
     }
 
@@ -103,14 +96,14 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
     @Override
     public String getOpIdentifier() {
         if (this.lastValue == null) {
-            return this.m_Identifier;
+            return this.identifier;
         } else {
             if (this.lastValue instanceof Double) {
                 double tmpD = ((Double) this.lastValue).doubleValue();
                 tmpD = ((long) (tmpD * 10000.0 + ((tmpD >= 0.0) ? 0.5 : -0.5))) / 10000.0;
-                return ("S:" + this.m_Identifier + " = " + tmpD);
+                return ("S:" + this.identifier + " = " + tmpD);
             } else {
-                return ("S:" + this.m_Identifier + " = " + this.lastValue.toString());
+                return ("S:" + this.identifier + " = " + this.lastValue.toString());
             }
         }
     }

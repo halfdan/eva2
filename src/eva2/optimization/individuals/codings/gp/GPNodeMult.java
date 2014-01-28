@@ -60,8 +60,8 @@ public class GPNodeMult extends AbstractGPNode implements java.io.Serializable {
         Object tmpObj;
         double result = 1;
 
-        for (int i = 0; i < this.m_Nodes.length; i++) {
-            tmpObj = this.m_Nodes[i].evaluate(environment);
+        for (int i = 0; i < this.nodes.length; i++) {
+            tmpObj = this.nodes[i].evaluate(environment);
             if (tmpObj instanceof Double) {
                 result *= ((Double) tmpObj).doubleValue();
             } else {
@@ -79,6 +79,6 @@ public class GPNodeMult extends AbstractGPNode implements java.io.Serializable {
 //     * @return string
 //     */
 //    public String getStringRepresentation() {
-//    	return AbstractGPNode.makeStringRepresentation(m_Nodes, "*");
+//    	return AbstractGPNode.makeStringRepresentation(nodes, "*");
 //    }
 }

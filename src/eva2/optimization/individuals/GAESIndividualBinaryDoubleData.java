@@ -15,19 +15,19 @@ import java.util.BitSet;
 @Description(value = "This is a mixed data type combining a BitSet and a real-valued vector.")
 public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual implements InterfaceDataTypeBinary, InterfaceDataTypeDouble, java.io.Serializable {
 
-    private InterfaceDataTypeDouble m_Numbers = new ESIndividualDoubleData();
-    private InterfaceDataTypeBinary m_BitSet = new GAIndividualBinaryData();
+    private InterfaceDataTypeDouble doubleIndividual = new ESIndividualDoubleData();
+    private InterfaceDataTypeBinary binaryIndividual = new GAIndividualBinaryData();
 
     public GAESIndividualBinaryDoubleData() {
         this.mutationProbability = 1.0;
         this.crossoverProbability = 1.0;
-        this.m_Numbers = new GAIndividualDoubleData();
-        this.m_BitSet = new GAIndividualBinaryData();
+        this.doubleIndividual = new GAIndividualDoubleData();
+        this.binaryIndividual = new GAIndividualBinaryData();
     }
 
     public GAESIndividualBinaryDoubleData(GAESIndividualBinaryDoubleData individual) {
-        this.m_Numbers = (InterfaceDataTypeDouble) ((AbstractEAIndividual) individual.getNumbers()).clone();
-        this.m_BitSet = (InterfaceDataTypeBinary) ((AbstractEAIndividual) individual.getBitSet()).clone();
+        this.doubleIndividual = (InterfaceDataTypeDouble) ((AbstractEAIndividual) individual.getNumbers()).clone();
+        this.binaryIndividual = (InterfaceDataTypeBinary) ((AbstractEAIndividual) individual.getBitSet()).clone();
 
         // cloning the members of AbstractEAIndividual
         this.age = individual.age;
@@ -61,10 +61,10 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GAESIndividualBinaryDoubleData) {
             GAESIndividualBinaryDoubleData indy = (GAESIndividualBinaryDoubleData) individual;
-            if (!((AbstractEAIndividual) this.m_Numbers).equalGenotypes((AbstractEAIndividual) indy.m_Numbers)) {
+            if (!((AbstractEAIndividual) this.doubleIndividual).equalGenotypes((AbstractEAIndividual) indy.doubleIndividual)) {
                 return false;
             }
-            if (!((AbstractEAIndividual) this.m_BitSet).equalGenotypes((AbstractEAIndividual) indy.m_BitSet)) {
+            if (!((AbstractEAIndividual) this.binaryIndividual).equalGenotypes((AbstractEAIndividual) indy.binaryIndividual)) {
                 return false;
             }
             return true;
@@ -80,14 +80,14 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public void init(InterfaceOptimizationProblem opt) {
-        ((AbstractEAIndividual) this.m_Numbers).init(opt);
-        ((AbstractEAIndividual) this.m_BitSet).init(opt);
+        ((AbstractEAIndividual) this.doubleIndividual).init(opt);
+        ((AbstractEAIndividual) this.binaryIndividual).init(opt);
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-        ((AbstractEAIndividual) this.m_Numbers).defaultInit(prob);
-        ((AbstractEAIndividual) this.m_BitSet).defaultInit(prob);
+        ((AbstractEAIndividual) this.doubleIndividual).defaultInit(prob);
+        ((AbstractEAIndividual) this.binaryIndividual).defaultInit(prob);
     }
 
     /**
@@ -101,15 +101,15 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof Object[]) {
             if (((Object[]) obj)[0] instanceof double[]) {
-                ((AbstractEAIndividual) this.m_Numbers).initByValue(((Object[]) obj)[0], opt);
-                ((AbstractEAIndividual) this.m_BitSet).initByValue(((Object[]) obj)[1], opt);
+                ((AbstractEAIndividual) this.doubleIndividual).initByValue(((Object[]) obj)[0], opt);
+                ((AbstractEAIndividual) this.binaryIndividual).initByValue(((Object[]) obj)[1], opt);
             } else {
-                ((AbstractEAIndividual) this.m_Numbers).initByValue(((Object[]) obj)[1], opt);
-                ((AbstractEAIndividual) this.m_BitSet).initByValue(((Object[]) obj)[0], opt);
+                ((AbstractEAIndividual) this.doubleIndividual).initByValue(((Object[]) obj)[1], opt);
+                ((AbstractEAIndividual) this.binaryIndividual).initByValue(((Object[]) obj)[0], opt);
             }
         } else {
-            ((AbstractEAIndividual) this.m_Numbers).init(opt);
-            ((AbstractEAIndividual) this.m_BitSet).init(opt);
+            ((AbstractEAIndividual) this.doubleIndividual).init(opt);
+            ((AbstractEAIndividual) this.binaryIndividual).init(opt);
             System.out.println("Initial value for GAESIndividualDoubleData is not suitable!");
         }
     }
@@ -120,17 +120,17 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     @Override
     public void mutate() {
         if (RNG.flipCoin(this.mutationProbability)) {
-            ((AbstractEAIndividual) this.m_Numbers).mutate();
+            ((AbstractEAIndividual) this.doubleIndividual).mutate();
         }
         if (RNG.flipCoin(this.mutationProbability)) {
-            ((AbstractEAIndividual) this.m_BitSet).mutate();
+            ((AbstractEAIndividual) this.binaryIndividual).mutate();
         }
     }
 
     @Override
     public void defaultMutate() {
-        ((AbstractEAIndividual) this.m_Numbers).defaultMutate();
-        ((AbstractEAIndividual) this.m_BitSet).defaultMutate();
+        ((AbstractEAIndividual) this.doubleIndividual).defaultMutate();
+        ((AbstractEAIndividual) this.binaryIndividual).defaultMutate();
     }
 
     /**
@@ -173,7 +173,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
                 ((GAESIndividualBinaryDoubleData) result[i]).setBitSet((InterfaceDataTypeBinary) resBin[i]);
             }
 
-            //        result = ((AbstractEAIndividual)this.m_Numbers).mateWith(partners);
+            //        result = ((AbstractEAIndividual)this.doubleIndividual).mateWith(partners);
             //        AbstractEAIndividual dad = (AbstractEAIndividual)result[0];
             //        Population tpartners = new Population();
             //        for (int i = 1; i < result.length; i++) tpartners.add(result[i]);
@@ -206,8 +206,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     @Override
     public String getStringRepresentation() {
         String result = "This is a hybrid Individual:\n";
-        result += "The Numbers Part:\n" + ((AbstractEAIndividual) this.m_Numbers).getStringRepresentation();
-        result += "\nThe Binarys Part:\n" + ((AbstractEAIndividual) this.m_BitSet).getStringRepresentation();
+        result += "The Numbers Part:\n" + ((AbstractEAIndividual) this.doubleIndividual).getStringRepresentation();
+        result += "\nThe Binarys Part:\n" + ((AbstractEAIndividual) this.binaryIndividual).getStringRepresentation();
         return result;
     }
 
@@ -221,8 +221,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public void setDoubleDataLength(int length) {
-        this.m_Numbers.setDoubleDataLength(length);
-        this.m_BitSet.setBinaryDataLength(length);
+        this.doubleIndividual.setDoubleDataLength(length);
+        this.binaryIndividual.setBinaryDataLength(length);
     }
 
     /**
@@ -232,7 +232,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public int size() {
-        return this.m_Numbers.size();
+        return this.doubleIndividual.size();
     }
 
     /**
@@ -244,7 +244,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public void setDoubleRange(double[][] range) {
-        this.m_Numbers.setDoubleRange(range);
+        this.doubleIndividual.setDoubleRange(range);
     }
 
     /**
@@ -254,7 +254,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public double[][] getDoubleRange() {
-        return this.m_Numbers.getDoubleRange();
+        return this.doubleIndividual.getDoubleRange();
     }
 
     /**
@@ -264,7 +264,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public double[] getDoubleData() {
-        return this.m_Numbers.getDoubleData();
+        return this.doubleIndividual.getDoubleData();
     }
 
     /**
@@ -275,7 +275,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public double[] getDoubleDataWithoutUpdate() {
-        return this.m_Numbers.getDoubleDataWithoutUpdate();
+        return this.doubleIndividual.getDoubleDataWithoutUpdate();
     }
 
     /**
@@ -286,7 +286,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public void setDoublePhenotype(double[] doubleData) {
-        this.m_Numbers.setDoublePhenotype(doubleData);
+        this.doubleIndividual.setDoublePhenotype(doubleData);
     }
 
     /**
@@ -298,7 +298,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public void setDoubleGenotype(double[] doubleData) {
-        this.m_Numbers.setDoubleGenotype(doubleData);
+        this.doubleIndividual.setDoubleGenotype(doubleData);
     }
 
     /**
@@ -311,8 +311,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public void setBinaryDataLength(int length) {
-        this.m_Numbers.setDoubleDataLength(length);
-        this.m_BitSet.setBinaryDataLength(length);
+        this.doubleIndividual.setDoubleDataLength(length);
+        this.binaryIndividual.setBinaryDataLength(length);
     }
 
     /**
@@ -321,7 +321,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @return The number of bits stored
      */
     public int GetBinaryDataLength() {
-        return this.m_BitSet.size();
+        return this.binaryIndividual.size();
     }
 
     /**
@@ -331,7 +331,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public BitSet getBinaryData() {
-        return this.m_BitSet.getBinaryData();
+        return this.binaryIndividual.getBinaryData();
     }
 
     /**
@@ -342,7 +342,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public BitSet getBinaryDataWithoutUpdate() {
-        return this.m_BitSet.getBinaryDataWithoutUpdate();
+        return this.binaryIndividual.getBinaryDataWithoutUpdate();
     }
 
     /**
@@ -353,7 +353,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public void setBinaryPhenotype(BitSet binaryData) {
-        this.m_BitSet.setBinaryPhenotype(binaryData);
+        this.binaryIndividual.setBinaryPhenotype(binaryData);
     }
 
     /**
@@ -365,7 +365,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      */
     @Override
     public void setBinaryGenotype(BitSet binaryData) {
-        this.m_BitSet.setBinaryGenotype(binaryData);
+        this.binaryIndividual.setBinaryGenotype(binaryData);
     }
 
 /**********************************************************************************************************************
@@ -388,11 +388,11 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param Numbers The new representation for the inner constants.
      */
     public void setNumbers(InterfaceDataTypeDouble Numbers) {
-        this.m_Numbers = Numbers;
+        this.doubleIndividual = Numbers;
     }
 
     public InterfaceDataTypeDouble getNumbers() {
-        return this.m_Numbers;
+        return this.doubleIndividual;
     }
 
     public String numbersTipText() {
@@ -405,11 +405,11 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param BitSet The new representation for the inner constants.
      */
     public void setBitSet(InterfaceDataTypeBinary BitSet) {
-        this.m_BitSet = BitSet;
+        this.binaryIndividual = BitSet;
     }
 
     public InterfaceDataTypeBinary getBitSet() {
-        return this.m_BitSet;
+        return this.binaryIndividual;
     }
 
     public String bitSetTipText() {

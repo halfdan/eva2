@@ -59,7 +59,7 @@ public class GPNodeCos extends AbstractGPNode implements java.io.Serializable {
         Object tmpObj;
         double result = 1;
 
-        tmpObj = this.m_Nodes[0].evaluate(environment);
+        tmpObj = this.nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
             result = Math.sin(((Double) tmpObj).doubleValue());
         }

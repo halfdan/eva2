@@ -20,36 +20,36 @@ import java.util.BitSet;
 @Description(value = "This is a GA individual suited to optimize double values.")
 public class GAIndividualDoubleData extends AbstractEAIndividual implements InterfaceGAIndividual, InterfaceDataTypeDouble, java.io.Serializable {
 
-    private double[] m_Phenotype;
-    private double[][] m_Range;
+    private double[] phenotype;
+    private double[][] initializationRange;
     protected BitSet genotype;
     protected int genotypeLength;
-    private int m_Precision = 32;
-    private InterfaceGADoubleCoding m_DoubleCoding = new GAStandardCodingDouble();
+    private int precision = 32;
+    private InterfaceGADoubleCoding doubleCoding = new GAStandardCodingDouble();
 
     public GAIndividualDoubleData() {
         this.mutationProbability = 0.1;
         this.mutationOperator = new MutateGAUniform();
         this.crossoverProbability = 0.7;
         this.crossoverOperator = new CrossoverGAGINPoint();
-        this.m_Range = new double[1][2];
-        this.m_Range[0][0] = -10;
-        this.m_Range[0][1] = 10;
-        this.genotypeLength = this.m_Precision;
+        this.initializationRange = new double[1][2];
+        this.initializationRange[0][0] = -10;
+        this.initializationRange[0][1] = 10;
+        this.genotypeLength = this.precision;
         this.genotype = new BitSet();
     }
 
     public GAIndividualDoubleData(GAIndividualDoubleData individual) {
-        if (individual.m_Phenotype != null) {
-            this.m_Phenotype = new double[individual.m_Phenotype.length];
-            System.arraycopy(individual.m_Phenotype, 0, this.m_Phenotype, 0, this.m_Phenotype.length);
+        if (individual.phenotype != null) {
+            this.phenotype = new double[individual.phenotype.length];
+            System.arraycopy(individual.phenotype, 0, this.phenotype, 0, this.phenotype.length);
         }
         this.genotypeLength = individual.genotypeLength;
         this.genotype = (BitSet) individual.genotype.clone();
-        this.m_Range = new double[individual.m_Range.length][2];
-        for (int i = 0; i < this.m_Range.length; i++) {
-            this.m_Range[i][0] = individual.m_Range[i][0];
-            this.m_Range[i][1] = individual.m_Range[i][1];
+        this.initializationRange = new double[individual.initializationRange.length][2];
+        for (int i = 0; i < this.initializationRange.length; i++) {
+            this.initializationRange[i][0] = individual.initializationRange[i][0];
+            this.initializationRange[i][1] = individual.initializationRange[i][1];
         }
 
         // cloning the members of AbstractEAIndividual
@@ -62,8 +62,8 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         for (int i = 0; i < this.selectionProbability.length; i++) {
             this.selectionProbability[i] = individual.selectionProbability[i];
         }
-        this.m_Precision = individual.m_Precision;
-        this.m_DoubleCoding = individual.m_DoubleCoding;
+        this.precision = individual.precision;
+        this.doubleCoding = individual.doubleCoding;
         this.fitness = new double[individual.fitness.length];
         for (int i = 0; i < this.fitness.length; i++) {
             this.fitness[i] = individual.fitness[i];
@@ -96,11 +96,11 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
             if (!this.genotype.equals(indy.genotype)) {
                 return false;
             }
-            for (int i = 0; i < this.m_Range.length; i++) {
-                if (this.m_Range[i][0] != indy.m_Range[i][0]) {
+            for (int i = 0; i < this.initializationRange.length; i++) {
+                if (this.initializationRange[i][0] != indy.initializationRange[i][0]) {
                     return false;
                 }
-                if (this.m_Range[i][1] != indy.m_Range[i][1]) {
+                if (this.initializationRange[i][1] != indy.initializationRange[i][1]) {
                     return false;
                 }
             }
@@ -124,26 +124,18 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         double[][] newRange = new double[length][2];
 
         // copy the old values for the decision parameters and the range
-        for (int i = 0; ((i < newDesPa.length) && (i < this.m_Range.length)); i++) {
-            newRange[i][0] = this.m_Range[i][0];
-            newRange[i][1] = this.m_Range[i][1];
+        for (int i = 0; ((i < newDesPa.length) && (i < this.initializationRange.length)); i++) {
+            newRange[i][0] = this.initializationRange[i][0];
+            newRange[i][1] = this.initializationRange[i][1];
         }
 
         // if the new length is bigger than the last value fills the extra elements
-        for (int i = this.m_Range.length; (i < newDesPa.length); i++) {
-            newRange[i][0] = this.m_Range[this.m_Range.length - 1][0];
-            newRange[i][1] = this.m_Range[this.m_Range.length - 1][1];
+        for (int i = this.initializationRange.length; (i < newDesPa.length); i++) {
+            newRange[i][0] = this.initializationRange[this.initializationRange.length - 1][0];
+            newRange[i][1] = this.initializationRange[this.initializationRange.length - 1][1];
         }
-        this.m_Range = newRange;
-        this.genotypeLength = length * this.m_Precision;
-
-//        changed 28.08.03 by request of Spieth
-//        this.m_DecisionParameters   = new double[length];
-//        this.m_Range                = new double[length][2];
-//        for (int i = 0; i < this.m_Range.length; i++) {
-//            this.m_Range[i][0] = -10;
-//            this.m_Range[i][1] = 10;
-//        }
+        this.initializationRange = newRange;
+        this.genotypeLength = length * this.precision;
     }
 
     /**
@@ -153,7 +145,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public int size() {
-        return this.m_Range.length;
+        return this.initializationRange.length;
     }
 
     /**
@@ -165,13 +157,13 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setDoubleRange(double[][] range) {
-        if (range.length != this.m_Range.length) {
+        if (range.length != this.initializationRange.length) {
             System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
-                    + this.m_Range.length + "!\n Use method setDoubleDataLength first!");
+                    + this.initializationRange.length + "!\n Use method setDoubleDataLength first!");
         }
-        for (int i = 0; ((i < this.m_Range.length) && (i < range.length)); i++) {
-            this.m_Range[i][0] = range[i][0];
-            this.m_Range[i][1] = range[i][1];
+        for (int i = 0; ((i < this.initializationRange.length) && (i < range.length)); i++) {
+            this.initializationRange[i][0] = range[i][0];
+            this.initializationRange[i][1] = range[i][1];
         }
     }
 
@@ -182,7 +174,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public double[][] getDoubleRange() {
-        return this.m_Range;
+        return this.initializationRange;
     }
 
     /**
@@ -193,13 +185,13 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     @Override
     public double[] getDoubleData() {
         int[] locus = new int[2];
-        this.m_Phenotype = new double[this.m_Range.length];
-        for (int i = 0; i < this.m_Range.length; i++) {
-            locus[0] = i * this.m_Precision;
-            locus[1] = this.m_Precision;
-            this.m_Phenotype[i] = this.m_DoubleCoding.decodeValue(this.genotype, this.m_Range[i], locus, false);
+        this.phenotype = new double[this.initializationRange.length];
+        for (int i = 0; i < this.initializationRange.length; i++) {
+            locus[0] = i * this.precision;
+            locus[1] = this.precision;
+            this.phenotype[i] = this.doubleCoding.decodeValue(this.genotype, this.initializationRange[i], locus, false);
         }
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -210,7 +202,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public double[] getDoubleDataWithoutUpdate() {
-        return this.m_Phenotype;
+        return this.phenotype;
     }
 
     /**
@@ -221,7 +213,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setDoublePhenotype(double[] doubleData) {
-        this.m_Phenotype = doubleData;
+        this.phenotype = doubleData;
     }
 
     /**
@@ -235,9 +227,9 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         this.setDoublePhenotype(doubleData);
         int[] locus = new int[2];
         for (int i = 0; i < doubleData.length; i++) {
-            locus[0] = i * this.m_Precision;
-            locus[1] = this.m_Precision;
-            this.m_DoubleCoding.codeValue(doubleData[i], this.m_Range[i], this.genotype, locus);
+            locus[0] = i * this.precision;
+            locus[1] = this.precision;
+            this.doubleCoding.codeValue(doubleData[i], this.initializationRange[i], this.genotype, locus);
         }
     }
 
@@ -256,7 +248,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof double[]) {
             double[] bs = (double[]) obj;
-            if (bs.length != this.m_Range.length) {
+            if (bs.length != this.initializationRange.length) {
                 System.out.println("Init value and requested length doesn't match!");
             }
             this.setDoubleGenotype(bs);
@@ -386,11 +378,11 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param coding The used genotype coding method
      */
     public void setGACoding(InterfaceGADoubleCoding coding) {
-        this.m_DoubleCoding = coding;
+        this.doubleCoding = coding;
     }
 
     public InterfaceGADoubleCoding getGACoding() {
-        return this.m_DoubleCoding;
+        return this.doubleCoding;
     }
 
     public String gADoubleCodingTipText() {
@@ -404,11 +396,11 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param precision The number of multiruns that are to be performed
      */
     public void setPrecision(int precision) {
-        this.m_Precision = precision;
+        this.precision = precision;
     }
 
     public int getPrecision() {
-        return this.m_Precision;
+        return this.precision;
     }
 
     public String precisionTipText() {

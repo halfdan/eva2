@@ -12,19 +12,19 @@ import eva2.util.annotation.Description;
 @Description(value = "This is a mixed data type combining an integer vector with a permutation vector.")
 public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual implements InterfaceDataTypeInteger, InterfaceDataTypePermutation, java.io.Serializable {
 
-    private InterfaceDataTypeInteger m_Integer = new GIIndividualIntegerData();
-    private InterfaceDataTypePermutation m_Permutation = new OBGAIndividualPermutationData();
+    private InterfaceDataTypeInteger integerData = new GIIndividualIntegerData();
+    private InterfaceDataTypePermutation permutationData = new OBGAIndividualPermutationData();
 
     public GIOBGAIndividualIntegerPermutationData() {
         this.mutationProbability = 1.0;
         this.crossoverProbability = 1.0;
-        this.m_Integer = new GIIndividualIntegerData();
-        this.m_Permutation = new OBGAIndividualPermutationData();
+        this.integerData = new GIIndividualIntegerData();
+        this.permutationData = new OBGAIndividualPermutationData();
     }
 
     public GIOBGAIndividualIntegerPermutationData(GIOBGAIndividualIntegerPermutationData individual) {
-        this.m_Integer = (InterfaceDataTypeInteger) ((AbstractEAIndividual) individual.getIntegers()).clone();
-        this.m_Permutation = (InterfaceDataTypePermutation) ((AbstractEAIndividual) individual.getPermutations()).clone();
+        this.integerData = (InterfaceDataTypeInteger) ((AbstractEAIndividual) individual.getIntegers()).clone();
+        this.permutationData = (InterfaceDataTypePermutation) ((AbstractEAIndividual) individual.getPermutations()).clone();
 
         // cloning the members of AbstractEAIndividual
         this.age = individual.age;
@@ -58,10 +58,10 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     public boolean equalGenotypes(AbstractEAIndividual individual) {
         if (individual instanceof GIOBGAIndividualIntegerPermutationData) {
             GIOBGAIndividualIntegerPermutationData indy = (GIOBGAIndividualIntegerPermutationData) individual;
-            if (!((AbstractEAIndividual) this.m_Integer).equalGenotypes((AbstractEAIndividual) indy.m_Integer)) {
+            if (!((AbstractEAIndividual) this.integerData).equalGenotypes((AbstractEAIndividual) indy.integerData)) {
                 return false;
             }
-            if (!((AbstractEAIndividual) this.m_Permutation).equalGenotypes((AbstractEAIndividual) indy.m_Permutation)) {
+            if (!((AbstractEAIndividual) this.permutationData).equalGenotypes((AbstractEAIndividual) indy.permutationData)) {
                 return false;
             }
             return true;
@@ -77,14 +77,14 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public void init(InterfaceOptimizationProblem opt) {
-        ((AbstractEAIndividual) this.m_Integer).init(opt);
-        ((AbstractEAIndividual) this.m_Permutation).init(opt);
+        ((AbstractEAIndividual) this.integerData).init(opt);
+        ((AbstractEAIndividual) this.permutationData).init(opt);
     }
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-        ((AbstractEAIndividual) this.m_Integer).defaultInit(prob);
-        ((AbstractEAIndividual) this.m_Permutation).defaultInit(prob);
+        ((AbstractEAIndividual) this.integerData).defaultInit(prob);
+        ((AbstractEAIndividual) this.permutationData).defaultInit(prob);
     }
 
     /**
@@ -98,15 +98,15 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     public void initByValue(Object obj, InterfaceOptimizationProblem opt) {
         if (obj instanceof Object[]) {
             if (((Object[]) obj)[0] instanceof double[]) {
-                ((AbstractEAIndividual) this.m_Integer).initByValue(((Object[]) obj)[0], opt);
-                ((AbstractEAIndividual) this.m_Permutation).initByValue(((Object[]) obj)[1], opt);
+                ((AbstractEAIndividual) this.integerData).initByValue(((Object[]) obj)[0], opt);
+                ((AbstractEAIndividual) this.permutationData).initByValue(((Object[]) obj)[1], opt);
             } else {
-                ((AbstractEAIndividual) this.m_Integer).initByValue(((Object[]) obj)[1], opt);
-                ((AbstractEAIndividual) this.m_Permutation).initByValue(((Object[]) obj)[0], opt);
+                ((AbstractEAIndividual) this.integerData).initByValue(((Object[]) obj)[1], opt);
+                ((AbstractEAIndividual) this.permutationData).initByValue(((Object[]) obj)[0], opt);
             }
         } else {
-            ((AbstractEAIndividual) this.m_Integer).init(opt);
-            ((AbstractEAIndividual) this.m_Permutation).init(opt);
+            ((AbstractEAIndividual) this.integerData).init(opt);
+            ((AbstractEAIndividual) this.permutationData).init(opt);
             System.out.println("Initial value for GIOBGAIndividualIntegerPermutationData is not suitable!");
         }
     }
@@ -117,17 +117,17 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     @Override
     public void mutate() {
         if (RNG.flipCoin(this.mutationProbability)) {
-            ((AbstractEAIndividual) this.m_Integer).mutate();
+            ((AbstractEAIndividual) this.integerData).mutate();
         }
         if (RNG.flipCoin(this.mutationProbability)) {
-            ((AbstractEAIndividual) this.m_Permutation).mutate();
+            ((AbstractEAIndividual) this.permutationData).mutate();
         }
     }
 
     @Override
     public void defaultMutate() {
-        ((AbstractEAIndividual) this.m_Integer).defaultMutate();
-        ((AbstractEAIndividual) this.m_Permutation).defaultMutate();
+        ((AbstractEAIndividual) this.integerData).defaultMutate();
+        ((AbstractEAIndividual) this.permutationData).defaultMutate();
     }
 
     /**
@@ -169,17 +169,6 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
                 ((GIOBGAIndividualIntegerPermutationData) result[i]).setIntegers((InterfaceDataTypeInteger) resNum[i]);
                 ((GIOBGAIndividualIntegerPermutationData) result[i]).setPermutations((InterfaceDataTypePermutation) resBin[i]);
             }
-
-            //        result = ((AbstractEAIndividual)this.m_Numbers).mateWith(partners);
-            //        AbstractEAIndividual dad = (AbstractEAIndividual)result[0];
-            //        Population tpartners = new Population();
-            //        for (int i = 1; i < result.length; i++) tpartners.add(result[i]);
-            //        result = dad.mateWith(tpartners);
-
-            //        out  = "Result:\n";
-            //        for (int i = 0; i < result.length; i++) out += result[i].getSolutionRepresentationFor() + "\n";
-            //        System.out.println(out);
-
         } else {
             // simply return a number of perfect clones
             result = new AbstractEAIndividual[partners.size() + 1];
@@ -203,8 +192,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     @Override
     public String getStringRepresentation() {
         String result = "This is a hybrid Individual:\n";
-        result += "The Integer Part:\n" + ((AbstractEAIndividual) this.m_Integer).getStringRepresentation();
-        result += "\nThe Permutation Part:\n" + ((AbstractEAIndividual) this.m_Permutation).getStringRepresentation();
+        result += "The Integer Part:\n" + ((AbstractEAIndividual) this.integerData).getStringRepresentation();
+        result += "\nThe Permutation Part:\n" + ((AbstractEAIndividual) this.permutationData).getStringRepresentation();
         return result;
     }
 
@@ -218,7 +207,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public void setIntegerDataLength(int length) {
-        this.m_Integer.setIntegerDataLength(length);
+        this.integerData.setIntegerDataLength(length);
     }
 
     /**
@@ -228,7 +217,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public int size() {
-        return this.m_Integer.size();
+        return this.integerData.size();
     }
 
     /**
@@ -240,7 +229,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public void setIntRange(int[][] range) {
-        this.m_Integer.setIntRange(range);
+        this.integerData.setIntRange(range);
     }
 
     /**
@@ -250,7 +239,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public int[][] getIntRange() {
-        return this.m_Integer.getIntRange();
+        return this.integerData.getIntRange();
     }
 
     /**
@@ -260,7 +249,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public int[] getIntegerData() {
-        return this.m_Integer.getIntegerData();
+        return this.integerData.getIntegerData();
     }
 
     /**
@@ -271,7 +260,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public int[] getIntegerDataWithoutUpdate() {
-        return this.m_Integer.getIntegerDataWithoutUpdate();
+        return this.integerData.getIntegerDataWithoutUpdate();
     }
 
     /**
@@ -281,7 +270,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public void setIntPhenotype(int[] intData) {
-        this.m_Integer.setIntPhenotype(intData);
+        this.integerData.setIntPhenotype(intData);
     }
 
     /**
@@ -292,7 +281,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public void setIntGenotype(int[] intData) {
-        this.m_Integer.setIntGenotype(intData);
+        this.integerData.setIntGenotype(intData);
     }
 
 /**********************************************************************************************************************
@@ -305,8 +294,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public void setPermutationDataLength(int[] length) {
-        this.m_Permutation.setPermutationDataLength(length);
-        this.m_Integer.setIntegerDataLength(length.length);
+        this.permutationData.setPermutationDataLength(length);
+        this.integerData.setIntegerDataLength(length.length);
     }
 
     /**
@@ -316,7 +305,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public int[] sizePermutation() {
-        return this.m_Permutation.sizePermutation();
+        return this.permutationData.sizePermutation();
     }
 
     /**
@@ -326,7 +315,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public int[][] getPermutationData() {
-        return this.m_Permutation.getPermutationData();
+        return this.permutationData.getPermutationData();
     }
 
     /**
@@ -337,7 +326,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      */
     @Override
     public int[][] getPermutationDataWithoutUpdate() {
-        return this.m_Permutation.getPermutationDataWithoutUpdate();
+        return this.permutationData.getPermutationDataWithoutUpdate();
     }
 
     /**
@@ -363,7 +352,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
 
     @Override
     public void setFirstindex(int[] firstindex) {
-        this.m_Permutation.setFirstindex(firstindex);
+        this.permutationData.setFirstindex(firstindex);
     }
 
     /**
@@ -383,11 +372,11 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param Numbers The new representation for the inner constants.
      */
     public void setIntegers(InterfaceDataTypeInteger Numbers) {
-        this.m_Integer = Numbers;
+        this.integerData = Numbers;
     }
 
     public InterfaceDataTypeInteger getIntegers() {
-        return this.m_Integer;
+        return this.integerData;
     }
 
     public String integersTipText() {
@@ -400,11 +389,11 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param p The new representation for the inner constants.
      */
     public void setPermutations(InterfaceDataTypePermutation p) {
-        this.m_Permutation = p;
+        this.permutationData = p;
     }
 
     public InterfaceDataTypePermutation getPermutations() {
-        return this.m_Permutation;
+        return this.permutationData;
     }
 
     public String permutationsTipText() {
