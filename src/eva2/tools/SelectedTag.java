@@ -6,12 +6,12 @@ package eva2.tools;
  */
 
 public class SelectedTag implements java.io.Serializable {
-    protected int m_Selected;
-    protected Tag[] m_Tags;
+    protected int selectedId;
+    protected Tag[] tags;
 
     @Override
     public Object clone() {
-        SelectedTag result = new SelectedTag(this.m_Selected, this.m_Tags);
+        SelectedTag result = new SelectedTag(this.selectedId, this.tags);
         return (Object) result;
     }
 
@@ -43,31 +43,31 @@ public class SelectedTag implements java.io.Serializable {
      * @param tags
      */
     public SelectedTag(int selID, Tag[] tags) {
-        m_Tags = tags;
-        m_Selected = -1;
+        this.tags = tags;
+        selectedId = -1;
         for (int i = 0; i < tags.length; i++) {
             if (i != tags[i].getID()) {
                 System.err.println("warning, SelectedTag with inconsistent ID, this may cause problems");
             }
             if (tags[i].getID() == selID) {
-                m_Selected = i;
+                selectedId = i;
             }
         }
-        if (m_Selected == -1) {
+        if (selectedId == -1) {
             throw new IllegalArgumentException("Selected tag is not valid");
         }
     }
 
     private void init(int selID, String[] tagStrings) {
-        m_Tags = new Tag[tagStrings.length];
-        m_Selected = -1;
-        for (int i = 0; i < m_Tags.length; i++) {
-            m_Tags[i] = new Tag(i, tagStrings[i]);
+        tags = new Tag[tagStrings.length];
+        selectedId = -1;
+        for (int i = 0; i < tags.length; i++) {
+            tags[i] = new Tag(i, tagStrings[i]);
             if (selID == i) {
-                m_Selected = i;
+                selectedId = i;
             }
         }
-        if (m_Selected == -1) {
+        if (selectedId == -1) {
             throw new IllegalArgumentException("Selected tag is not valid");
         }
     }
@@ -81,8 +81,8 @@ public class SelectedTag implements java.io.Serializable {
      * @param i The new selected tag index
      */
     public SelectedTag setSelectedTag(int i) {
-        if ((i >= 0) && (i < this.m_Tags.length)) {
-            this.m_Selected = i;
+        if ((i >= 0) && (i < this.tags.length)) {
+            this.selectedId = i;
         }
         return this;
     }
@@ -95,9 +95,9 @@ public class SelectedTag implements java.io.Serializable {
      * @param str The new selected tag name
      */
     public SelectedTag setSelectedTag(String str) {
-        for (int i = 0; i < m_Tags.length; i++) {
-            if (m_Tags[i].m_String.compareTo(str) == 0) {
-                m_Selected = i;
+        for (int i = 0; i < tags.length; i++) {
+            if (tags[i].text.compareTo(str) == 0) {
+                selectedId = i;
                 return this;
             }
         }
@@ -119,24 +119,24 @@ public class SelectedTag implements java.io.Serializable {
      *
      */
     public Tag getSelectedTag() {
-        return m_Tags[m_Selected];
+        return tags[selectedId];
     }
 
     /**
      *
      */
     public int getSelectedTagID() {
-        return m_Tags[m_Selected].getID();
+        return tags[selectedId].getID();
     }
 
     public String getSelectedString() {
-        return m_Tags[m_Selected].getString();
+        return tags[selectedId].getString();
     }
 
     public int getTagIDByString(String str) {
-        for (int i = 0; i < m_Tags.length; i++) {
-            if (m_Tags[i].equals(str)) {
-                return m_Tags[i].getID();
+        for (int i = 0; i < tags.length; i++) {
+            if (tags[i].equals(str)) {
+                return tags[i].getID();
             }
         }
         return -1;
@@ -157,7 +157,7 @@ public class SelectedTag implements java.io.Serializable {
      *
      */
     public Tag[] getTags() {
-        return m_Tags;
+        return tags;
     }
 
     /**
@@ -171,8 +171,8 @@ public class SelectedTag implements java.io.Serializable {
 
         SelectedTag s = (SelectedTag) o;
 
-        if ((s.getTags() == m_Tags) &&
-                (s.getSelectedTag() == m_Tags[m_Selected])) {
+        if ((s.getTags() == tags) &&
+                (s.getSelectedTag() == tags[selectedId])) {
             return true;
         } else {
             return false;
@@ -187,11 +187,11 @@ public class SelectedTag implements java.io.Serializable {
      */
     public boolean hasSameTags(SelectedTag selT) {
         Tag[] oTags = selT.getTags();
-        if (oTags.length != m_Tags.length) {
+        if (oTags.length != tags.length) {
             return false;
         } else {
             for (int i = 0; i < oTags.length; i++) {
-                if (oTags[i].getString().compareTo(m_Tags[i].getString()) != 0) {
+                if (oTags[i].getString().compareTo(tags[i].getString()) != 0) {
                     return false;
                 }
             }
@@ -201,23 +201,23 @@ public class SelectedTag implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return m_Tags[m_Selected].getString();
+        return tags[selectedId].getString();
 //		Character selSign = '*';
 //		Character separator = '|';
 //		StringBuffer sbuf;
-//		if (m_Selected != 0) sbuf = new StringBuffer(m_Tags[0].getString());
+//		if (selectedId != 0) sbuf = new StringBuffer(tags[0].getString());
 //		else {
 //			sbuf = new StringBuffer(selSign.toString());
-//			sbuf.append(m_Tags[0].getString());
+//			sbuf.append(tags[0].getString());
 //			sbuf.append(selSign);
 //		}
-//		for (int i=1; i<m_Tags.length; i++) {
+//		for (int i=1; i<tags.length; i++) {
 //			sbuf.append(separator);
-//			if (m_Selected == i) {
+//			if (selectedId == i) {
 //				sbuf.append(selSign);
-//				sbuf.append(m_Tags[i].getString());
+//				sbuf.append(tags[i].getString());
 //				sbuf.append(selSign);
-//			} else sbuf.append(m_Tags[i].getString());
+//			} else sbuf.append(tags[i].getString());
 //		}
 //		return sbuf.toString();
     }

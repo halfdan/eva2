@@ -13,20 +13,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.09.2005
- * Time: 10:15:30
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class Chart2DDPointContentSelectable implements InterfaceDPointWithContent, InterfaceSelectablePointIcon, DPointIcon {
 
-    AbstractEAIndividual m_Indy;
-    InterfaceOptimizationProblem m_Problem;
-    private InterfaceRefSolutionListener m_Listener;
-    private Color m_Border = Color.BLACK;
-    private Color m_Fill = null;
-    private int m_Size = 4;
+    AbstractEAIndividual individual;
+    InterfaceOptimizationProblem optimizationProblem;
+    private InterfaceRefSolutionListener refSolutionListener;
+    private Color borderColor = Color.BLACK;
+    private Color fillColor = null;
+    private int size = 4;
 
     /**
      * this method has to be overridden to paint the icon. The point itself lies
@@ -35,17 +31,17 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
     @Override
     public void paint(Graphics g) {
         Color prev = g.getColor();
-        if (this.m_Indy.isMarked()) {
-            this.m_Fill = Color.RED;
+        if (this.individual.isMarked()) {
+            this.fillColor = Color.RED;
         } else {
-            this.m_Fill = Color.LIGHT_GRAY;
+            this.fillColor = Color.LIGHT_GRAY;
         }
-        g.setColor(m_Fill);
-        g.fillOval(-this.m_Size, -this.m_Size, 2 * this.m_Size + 1, 2 * this.m_Size + 1);
-        if (this.m_Border != null) {
-            g.setColor(m_Border);
+        g.setColor(fillColor);
+        g.fillOval(-this.size, -this.size, 2 * this.size + 1, 2 * this.size + 1);
+        if (this.borderColor != null) {
+            g.setColor(borderColor);
         }
-        g.drawOval(-this.m_Size, -this.m_Size, 2 * this.m_Size, 2 * this.m_Size);
+        g.drawOval(-this.size, -this.size, 2 * this.size, 2 * this.size);
         g.setColor(prev);
     }
 
@@ -61,15 +57,15 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
     }
 
     public void setBorderColor(Color c) {
-        this.m_Border = c;
+        this.borderColor = c;
     }
 
     public void setFillColor(Color c) {
-        this.m_Fill = c;
+        this.fillColor = c;
     }
 
     public void setSize(int d) {
-        this.m_Size = d;
+        this.size = d;
     }
 
     /*********************************************************************************************
@@ -84,7 +80,7 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
      */
     @Override
     public void addSelectionListener(InterfaceRefSolutionListener a) {
-        this.m_Listener = a;
+        this.refSolutionListener = a;
     }
 
     /**
@@ -94,7 +90,7 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
      */
     @Override
     public InterfaceRefSolutionListener getSelectionListener() {
-        return this.m_Listener;
+        return this.refSolutionListener;
     }
 
     /**
@@ -102,7 +98,7 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
      */
     @Override
     public void removeSelectionListeners() {
-        this.m_Listener = null;
+        this.refSolutionListener = null;
     }
 
     /**
@@ -112,12 +108,12 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
      */
     @Override
     public void setEAIndividual(AbstractEAIndividual indy) {
-        this.m_Indy = indy;
+        this.individual = indy;
     }
 
     @Override
     public AbstractEAIndividual getEAIndividual() {
-        return this.m_Indy;
+        return this.individual;
     }
 
     /**
@@ -127,12 +123,12 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -141,14 +137,14 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
     @Override
     public void showIndividual() {
         JFrame newFrame = new JFrame();
-        newFrame.setTitle(this.m_Indy.getName() + ": " + this.m_Indy);
+        newFrame.setTitle(this.individual.getName() + ": " + this.individual);
         newFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent ev) {
                 System.gc();
             }
         });
-        newFrame.getContentPane().add(this.m_Problem.drawIndividual(-1, -1, this.m_Indy));
+        newFrame.getContentPane().add(this.optimizationProblem.drawIndividual(-1, -1, this.individual));
         newFrame.setSize(200, 300);
         newFrame.pack();
         newFrame.validate();

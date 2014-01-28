@@ -314,7 +314,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     public Object getSensorValue(String sensor) {
         return PSymbolicRegression.getSensorValue(sensor, m_X, m_C);
 //        for (int i = 0; i < this.m_X.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.m_X[i]);
-//        for (int i = 0; i < this.m_C.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.m_C[i]);
+//        for (int i = 0; i < this.c.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.c[i]);
 //        return new Double(0);
     }
 
@@ -351,7 +351,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
             return new Double(0);
         }
 //        for (int i = 0; i < this.m_X.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.m_X[i]);
-//        for (int i = 0; i < this.m_C.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.m_C[i]);
+//        for (int i = 0; i < this.c.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.c[i]);
 //        return new Double(0);
     }
 

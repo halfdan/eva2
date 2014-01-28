@@ -13,9 +13,9 @@ import java.awt.*;
  */
 public class Chart2DDPointIconPoint implements DPointIcon {
 
-    private Color m_Border = Color.BLACK;
-    private Color m_Fill = Color.BLACK;
-    private int m_Size = 2;
+    private Color borderColor = Color.BLACK;
+    private Color fillColor = Color.BLACK;
+    private int size = 2;
 
     /**
      * this method has to be overridden to paint the icon. The point itself lies
@@ -24,14 +24,14 @@ public class Chart2DDPointIconPoint implements DPointIcon {
     @Override
     public void paint(Graphics g) {
         Color prev = g.getColor();
-        if (m_Fill != null) {
-            g.setColor(m_Fill);
-            g.fillOval(-this.m_Size, -this.m_Size, 2 * this.m_Size, 2 * this.m_Size);
+        if (fillColor != null) {
+            g.setColor(fillColor);
+            g.fillOval(-this.size, -this.size, 2 * this.size, 2 * this.size);
         }
-        if (this.m_Border != null) {
-            g.setColor(m_Border);
+        if (this.borderColor != null) {
+            g.setColor(borderColor);
         }
-        g.drawOval(-this.m_Size, -this.m_Size, (2 * this.m_Size) - 1, (2 * this.m_Size) - 1);
+        g.drawOval(-this.size, -this.size, (2 * this.size) - 1, (2 * this.size) - 1);
         g.setColor(prev);
     }
 
@@ -47,15 +47,15 @@ public class Chart2DDPointIconPoint implements DPointIcon {
     }
 
     public void setBorderColor(Color c) {
-        this.m_Border = c;
+        this.borderColor = c;
     }
 
     public void setFillColor(Color c) {
-        this.m_Fill = c;
+        this.fillColor = c;
     }
 
     public void setSize(int d) {
-        this.m_Size = d;
+        this.size = d;
     }
 
 }

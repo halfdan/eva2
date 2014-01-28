@@ -278,7 +278,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
     }
 
     /**
-     * This mehtod allows you to cluster a population using m_C
+     * This mehtod allows you to cluster a population using c
      *
      * @param pop The population
      * @param c   The centroids

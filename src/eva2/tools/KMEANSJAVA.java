@@ -1,17 +1,4 @@
 package eva2.tools;
-/**
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version: $Revision: 10 $
- *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
- *            $Author: streiche $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import eva2.tools.math.RNG;
 
@@ -22,21 +9,21 @@ import java.util.Comparator;
  */
 public class KMEANSJAVA {
     static public boolean TRACE = false;
-    protected double[][] m_C;
-    protected int[] m_IDX;
+    protected double[][] c;
+    protected int[] indices;
 
     /**
      *
      */
     public double[][] getC() {
-        return m_C;
+        return c;
     }
 
     /**
      *
      */
     public int[] getIDX() {
-        return m_IDX;
+        return indices;
     }
 
     /**
@@ -62,34 +49,34 @@ public class KMEANSJAVA {
             K = samples.length;
         }
         int counter = 0;
-        m_C = new double[K][];
+        c = new double[K][];
         for (int i = 0; i < K; i++) {
-            m_C[i] = (double[]) samples[i].clone();
+            c[i] = (double[]) samples[i].clone();
         }
-        m_IDX = new int[samples.length];
+        indices = new int[samples.length];
         while (counter++ < iterations) {
-            // determine m_IDX start
-            for (int i = 0; i < m_IDX.length; i++) {
+            // determine indices start
+            for (int i = 0; i < indices.length; i++) {
                 int index_nc = 0; // index of nearest cluster
                 double mindist = 999999999;
-                for (int j = 0; j < m_C.length; j++) {
-                    if (mindist > dist(samples[i], m_C[j])) {
-                        mindist = dist(samples[i], m_C[j]);
+                for (int j = 0; j < c.length; j++) {
+                    if (mindist > dist(samples[i], c[j])) {
+                        mindist = dist(samples[i], c[j]);
                         index_nc = j;
                     }
                 }
-                m_IDX[i] = index_nc;
+                indices[i] = index_nc;
             }
-            // determine m_IDX end !
+            // determine indices end !
             // determine the new centers
-            for (int indexofc = 0; indexofc < m_C.length; indexofc++) {
+            for (int indexofc = 0; indexofc < c.length; indexofc++) {
                 double[] newcenter = new double[samples[0].length];
                 int treffer = 0;
-                for (int j = 0; j < m_IDX.length; j++) { //System.out.println("j="+j);
-                    if (m_IDX[j] == indexofc) {
+                for (int j = 0; j < indices.length; j++) { //System.out.println("j="+j);
+                    if (indices[j] == indexofc) {
                         treffer++;
                         for (int d = 0; d < newcenter.length; d++) {
-                            newcenter[d] += m_C[m_IDX[j]][d];
+                            newcenter[d] += c[indices[j]][d];
                             //newcenter[d] = newcenter[d] + samples[j][d];
                         }
                     }
@@ -97,7 +84,7 @@ public class KMEANSJAVA {
                 for (int d = 0; d < newcenter.length; d++) {
                     newcenter[d] /= treffer;
                 }
-                m_C[indexofc] = newcenter;
+                c[indexofc] = newcenter;
             }
             // determine the new centers
         }
@@ -152,8 +139,8 @@ class ClusterComp implements Comparator {
      */
     @Override
     public int compare(Object p1, Object p2) {
-        int x1 = ((Cluster) p1).m_SamplesInCluster;
-        int x2 = ((Cluster) p2).m_SamplesInCluster;
+        int x1 = ((Cluster) p1).samplesInCluster;
+        int x2 = ((Cluster) p2).samplesInCluster;
         if (x1 > x2) {
             return -1;
         }

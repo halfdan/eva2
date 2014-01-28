@@ -127,17 +127,17 @@ package eva2.tools.matlab;
 import java.io.UnsupportedEncodingException;
 
 public class JMatLink extends Thread {
-    private static JMatLink m_Instance = null;
+    private static JMatLink matlinkInstance = null;
 
     /**
      *
      */
     public static JMatLink getInstance() {
         // System.out.println("JMatLink getInstance () {");
-        if (m_Instance == null) {
-            m_Instance = new JMatLink();
+        if (matlinkInstance == null) {
+            matlinkInstance = new JMatLink();
         }
-        return m_Instance;
+        return matlinkInstance;
     }
 
     // static declarations

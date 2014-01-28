@@ -35,7 +35,7 @@ public class MultirunRefiner {
     private JButton refineJButton, exitJButton;
     //    private JButton				confidenceJButton;
     private JTextArea inputText, outputText;
-    private JScrollPane m_SP1, m_SP2;
+    private JScrollPane scrollPane1, scrollPane2;
     private JMenuBar menuBar;
     private JMenu fileMenu;
     private JMenuItem loadMenuItem, saveMenuItem;
@@ -118,10 +118,10 @@ public class MultirunRefiner {
         this.myPanel.setLayout(new GridLayout(1, 2));
         this.inputText = new JTextArea();
         this.outputText = new JTextArea();
-        this.m_SP1 = new JScrollPane(this.inputText);
-        this.m_SP2 = new JScrollPane(this.outputText);
-        this.myPanel.add(this.m_SP1);
-        this.myPanel.add(this.m_SP2);
+        this.scrollPane1 = new JScrollPane(this.inputText);
+        this.scrollPane2 = new JScrollPane(this.outputText);
+        this.myPanel.add(this.scrollPane1);
+        this.myPanel.add(this.scrollPane2);
         this.mainFrame.getContentPane().add(this.myPanel, BorderLayout.CENTER);
 
         this.myJButtonJPanel = new JPanel();
@@ -203,8 +203,6 @@ public class MultirunRefiner {
      * current XML document
      */
     private void writeFile() {
-        // Das hier sollte ich nicht mehr brauchen....
-        //this.m_Document = this.m_XMLPanel.getXML();
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Select destination file");
         fc.setFileFilter(new TXTFileFilter());

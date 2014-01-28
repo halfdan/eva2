@@ -1,24 +1,18 @@
 package eva2.tools.chart2d;
 
-
 import java.awt.*;
 
-
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.04.2004
- * Time: 16:08:15
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class Chart2DDPointIconText implements DPointIcon {
 
-    private DPointIcon m_Icon = new Chart2DDPointIconCross();
-    private String m_Text = " ";
-    private Color m_Color;
+    private DPointIcon icon = new Chart2DDPointIconCross();
+    private String text = " ";
+    private Color color;
 
     public Chart2DDPointIconText(String s) {
-        m_Text = s;
+        text = s;
     }
 
     /**
@@ -27,7 +21,7 @@ public class Chart2DDPointIconText implements DPointIcon {
      * @param icon The new icon
      */
     public void setIcon(DPointIcon icon) {
-        this.m_Icon = icon;
+        this.icon = icon;
     }
 
     /**
@@ -36,9 +30,9 @@ public class Chart2DDPointIconText implements DPointIcon {
      */
     @Override
     public void paint(Graphics g) {
-        this.m_Icon.paint(g);
-        g.setColor(m_Color);
-        g.drawString(this.m_Text, 4, 4);
+        this.icon.paint(g);
+        g.setColor(color);
+        g.drawString(this.text, 4, 4);
     }
 
     /**
@@ -58,6 +52,6 @@ public class Chart2DDPointIconText implements DPointIcon {
      * @param col
      */
     public void setColor(Color col) {
-        m_Color = col;
+        color = col;
     }
 }
