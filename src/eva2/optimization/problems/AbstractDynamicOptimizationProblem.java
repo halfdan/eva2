@@ -10,10 +10,6 @@ import eva2.optimization.population.Population;
  * changes in the problem environment (the target function). The latter may be measured in absolute
  * function evaluations or relative to the population size. The necessary transmutations are to be
  * implemented,  however.
- * <p/>
- * User: MK
- * Date: 19.12.2006
- * Time: 11:02:12
  */
 public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimizationProblem implements java.io.Serializable {
 
@@ -48,10 +44,6 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      */
     private boolean bExtraPlot;
     /**
-     * Debug switch
-     */
-    protected boolean TRACE;
-    /**
      * the plot instance for problem data visualization
      */
     transient protected Plot myplot = null;
@@ -62,7 +54,6 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
     public AbstractDynamicOptimizationProblem() {
         //System.out.println("AbstractDynamicOptimizationProblem()");
         bExtraPlot = false;
-        TRACE = false;
         myplot = null;
         idealInd = null;
 //		initialize(0, 1., 0.1);
@@ -169,9 +160,6 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      */
     public void setSeverity(double sev) {
         severity = sev;
-        if (TRACE) {
-            System.out.println("severity to " + sev);
-        }
     }
 
     /**
@@ -228,9 +216,6 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
     protected void incProblemTime(double dt) {
         currentProblemTime += dt;
         resetProblem(dt);
-        if (TRACE) {
-            System.out.println("new problem time is " + currentProblemTime);
-        }
     }
 
     /**
@@ -344,9 +329,6 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
     }
 
     private void makePlot() {
-        if (TRACE) {
-            System.out.println("creating myplot instance");
-        }
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;

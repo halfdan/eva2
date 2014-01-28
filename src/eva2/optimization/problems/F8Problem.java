@@ -20,8 +20,8 @@ public class F8Problem extends AbstractProblemDoubleOffset
         implements InterfaceInterestingHistogram, InterfaceMultimodalProblem, //InterfaceFirstOrderDerivableProblem,
         InterfaceMultimodalProblemKnown, java.io.Serializable {
 
-    transient protected Population m_ListOfOptima = null;
-    private static transient boolean state_initializing_optima = false;
+    transient protected Population listOfOptima = null;
+    private static transient boolean stateInitializingOptima = false;
     private double a = 20;
     private double b = 0.2;
     private double c = 2 * Math.PI;
@@ -133,7 +133,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 
     @Override
     public double getMaximumPeakRatio(Population pop) {
-        return AbstractMultiModalProblemKnown.getMaximumPeakRatioMinimization(m_ListOfOptima, pop, getDefaultAccuracy(), 0, 5);
+        return AbstractMultiModalProblemKnown.getMaximumPeakRatioMinimization(listOfOptima, pop, getDefaultAccuracy(), 0, 5);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 
     @Override
     public Population getRealOptima() {
-        return m_ListOfOptima;
+        return listOfOptima;
     }
 
     @Override
@@ -172,8 +172,8 @@ public class F8Problem extends AbstractProblemDoubleOffset
     @Override
     public void initListOfOptima() {
         if (listOfOptimaNeedsUpdate()) {
-            state_initializing_optima = true;
-            m_ListOfOptima = new Population();
+            stateInitializingOptima = true;
+            listOfOptima = new Population();
             // ingeniously avoid recursive calls during refinement!
             double[] pos = new double[getProblemDimension()];
             Arrays.fill(pos, getXOffset());
@@ -192,7 +192,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
 //						ab dim 18/20 oder so finde ich plötzlich keine optima bei x[i]<1 mehr???
                             dir = inverseRotateMaybe(dir);
                             pos = refineSolution(this, pos, dir, 0.0005, 1e-20, 0);
-                            if (EuclideanMetric.euclideanDistance(pos, m_ListOfOptima.getEAIndividual(0).getDoublePosition()) < 0.5) {
+                            if (EuclideanMetric.euclideanDistance(pos, listOfOptima.getEAIndividual(0).getDoublePosition()) < 0.5) {
                                 System.err.println("Warning, possibly converged to a wrong optimum in F8Problem.initListOfOptima!");
                             }
                             pos = rotateMaybe(pos);
@@ -204,7 +204,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
                     }
                 }
             }
-            state_initializing_optima = false;
+            stateInitializingOptima = false;
         }
     }
 
@@ -237,13 +237,13 @@ public class F8Problem extends AbstractProblemDoubleOffset
     }
 
     private boolean listOfOptimaNeedsUpdate() {
-        if (state_initializing_optima) {
+        if (stateInitializingOptima) {
             return false;
         } // avoid recursive call during refining with GDA
-        if (m_ListOfOptima == null || (m_ListOfOptima.size() != (1 + 2 * getProblemDimension()))) {
+        if (listOfOptima == null || (listOfOptima.size() != (1 + 2 * getProblemDimension()))) {
             return true;
         } else { // the number of optima is corret - now check different offset or rotation by comparing one fitness value
-            AbstractEAIndividual indy = m_ListOfOptima.getEAIndividual(1);
+            AbstractEAIndividual indy = listOfOptima.getEAIndividual(1);
             double[] curFit = evaluate(indy.getDoublePosition());
             if (Math.abs(Mathematics.dist(curFit, indy.getFitness(), 2)) > 1e-10) {
                 return true;
@@ -254,6 +254,6 @@ public class F8Problem extends AbstractProblemDoubleOffset
     }
 
     private void addOptimum(double[] pos) {
-        AbstractProblemDouble.addUnrotatedOptimum(m_ListOfOptima, this, pos);
+        AbstractProblemDouble.addUnrotatedOptimum(listOfOptima, this, pos);
     }
 }

@@ -23,8 +23,8 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
     Population indiesToPaint = new Population();
     //	private double[]                    m_BestVariables;
 //    private double                      m_BestFitness;
-    private int m_Height, m_Width;
-    FLensProblem m_LensProblem;
+    private int theHeight, theWidth;
+    FLensProblem lensProblem;
 
     public MyLensViewer(FLensProblem f) {
         initView(f);
@@ -36,13 +36,11 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 
     @Override
     public void initView(AbstractOptimizationProblem prob) {
-        this.m_LensProblem = (FLensProblem) prob;
+        this.lensProblem = (FLensProblem) prob;
     }
 
     @Override
     public void resetView() {
-//    	this.m_BestFitness = Double.POSITIVE_INFINITY;
-//    	this.m_BestVariables = new double[10];
         ESIndividualDoubleData dummy = new ESIndividualDoubleData();
         dummy.setFitness(new double[]{Double.POSITIVE_INFINITY});
         indiesToPaint = new Population();
@@ -68,8 +66,8 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         }
         // Create a buffered image in which to draw
 //        try {
-//            this.m_Height   = (int)g.getClipBounds().getHeight();
-//            this.m_Width    = (int)g.getClipBounds().getWidth();
+//            this.theHeight   = (int)g.getClipBounds().getHeight();
+//            this.theWidth    = (int)g.getClipBounds().getWidth();
 //            this.m_CenterX  = (int)g.getClipBounds().getCenterX();
 //            this.m_CenterY  = (int)g.getClipBounds().getCenterY();
 //        } catch (java.lang.NullPointerException npe) {
@@ -77,34 +75,34 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 //        }
         // This might cure the eternal display problems: just ignore clipping and leave it up to swing
         Dimension winDim = getSize();
-        m_Height = winDim.height;
-        m_Width = winDim.width;
-//        m_CenterX = m_Width/2;
-//        m_CenterY = m_Height/2;
+        theHeight = winDim.height;
+        theWidth = winDim.width;
+//        m_CenterX = theWidth/2;
+//        m_CenterY = theHeight/2;
 
-//        if (this.m_Height == 0) this.m_Height = 250;
-//        if (this.m_Width == 0) this.m_Width = 350;
-//        System.out.println(" h w cx cy "  + m_Height + " " + m_Width + " " + m_CenterX + " " + m_CenterY );
-        bufferedImage = new BufferedImage(this.m_Width, this.m_Height, BufferedImage.TYPE_INT_RGB);
+//        if (this.theHeight == 0) this.theHeight = 250;
+//        if (this.theWidth == 0) this.theWidth = 350;
+//        System.out.println(" h w cx cy "  + theHeight + " " + theWidth + " " + m_CenterX + " " + m_CenterY );
+        bufferedImage = new BufferedImage(this.theWidth, this.theHeight, BufferedImage.TYPE_INT_RGB);
         // Create a graphics contents on the buffered image
         Graphics2D g2D = bufferedImage.createGraphics();
         g2D.setPaint(Color.white);
-        tmpShape = new Rectangle(0, 0, this.m_Width, this.m_Height);
+        tmpShape = new Rectangle(0, 0, this.theWidth, this.theHeight);
         g2D.fill(tmpShape);
 
         // now start to plot some interesting stuff
         //draw the mid line
         g2D.setPaint(Color.black);
-        g2D.drawLine(0, this.m_Height / 2, this.m_Width, this.m_Height / 2);
+        g2D.drawLine(0, this.theHeight / 2, this.theWidth, this.theHeight / 2);
         centerLens = 5 + 50;
-        centerScreen = centerLens + (int) this.m_LensProblem.focalLength * 10;
-        segment = 10 * (int) this.m_LensProblem.radius * 2 / (this.m_LensProblem.problemDimension - 1);
+        centerScreen = centerLens + (int) this.lensProblem.focalLength * 10;
+        segment = 10 * (int) this.lensProblem.radius * 2 / (this.lensProblem.problemDimension - 1);
         g2D.setStroke(dashStroke);
-        g2D.drawLine(centerLens, this.m_Height / 2 + (int) this.m_LensProblem.radius * 10, centerLens, this.m_Height / 2 - (int) this.m_LensProblem.radius * 10);
-        g2D.drawLine(centerScreen, this.m_Height / 2 + (int) this.m_LensProblem.radius * 10 + 10, centerScreen, this.m_Height / 2 - (int) this.m_LensProblem.radius * 10 - 10);
+        g2D.drawLine(centerLens, this.theHeight / 2 + (int) this.lensProblem.radius * 10, centerLens, this.theHeight / 2 - (int) this.lensProblem.radius * 10);
+        g2D.drawLine(centerScreen, this.theHeight / 2 + (int) this.lensProblem.radius * 10 + 10, centerScreen, this.theHeight / 2 - (int) this.lensProblem.radius * 10 - 10);
         g2D.setStroke(ds);
 //        System.out.println("indies to paint: " + indiesToPaint.size());
-        paintLens(m_LensProblem.problemDimension, m_Height, m_LensProblem.radius, mag, centerLens, centerScreen, segment, g2D);
+        paintLens(lensProblem.problemDimension, theHeight, lensProblem.radius, mag, centerLens, centerScreen, segment, g2D);
         // Now put everything on the screen
         g.drawImage(bufferedImage, 0, 0, this);
     }
@@ -112,13 +110,13 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
     private void paintLens(int dim, int height, double radius, int mag, int centerLens, int centerScreen, int segment, Graphics2D g2D) {
         for (int i = 0; i < indiesToPaint.size(); i++) {
             AbstractEAIndividual indy = indiesToPaint.getEAIndividual(i);
-            paintLens(indy.getDoublePosition(), m_LensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
+            paintLens(indy.getDoublePosition(), lensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
         }
     }
 
     private void paintLens(AbstractEAIndividual indy, int dim, int height, double radius, int mag, int centerLens, int centerScreen, int segment, Graphics2D g2D) {
         if (indy != null) {
-            paintLens(indy.getDoublePosition(), m_LensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
+            paintLens(indy.getDoublePosition(), lensProblem.testLens(indy.getDoublePosition()), indy.getFitness(0), dim, height, radius, mag, centerLens, centerScreen, segment, g2D);
         }
     }
 
@@ -145,12 +143,12 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
             g2D.drawLine(centerLens, currentXPos + segment / 2, centerScreen, height / 2 + (int) (dots[i - 1] * mag));
 
             currentXPos += segment;
-//            tmpShape = new Rectangle(currentPos-width/2, this.m_Height/2, width, (int)(variables[i]*10));
+//            tmpShape = new Rectangle(currentPos-width/2, this.theHeight/2, width, (int)(variables[i]*10));
 //            g2D.setPaint(Color.red);
 //            g2D.fill(tmpShape);
 //            g2D.setPaint(Color.black);
 //            g2D.draw(tmpShape);
-//            g2D.drawLine(currentPos, this.m_Height/2+5, currentPos, this.m_Height/2-5);
+//            g2D.drawLine(currentPos, this.theHeight/2+5, currentPos, this.theHeight/2-5);
         }
     }
 
@@ -164,7 +162,7 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         if (showAllIfPossible) {
 //			indiesToPaint=population;
             for (int i = 0; i < pop.size(); i++) {
-                MyLensViewer newView = new MyLensViewer(m_LensProblem);
+                MyLensViewer newView = new MyLensViewer(lensProblem);
 
                 Population newPop = new Population();
                 newPop.add(pop.getEAIndividual(i));
@@ -208,7 +206,7 @@ public class FLensProblem extends AbstractOptimizationProblem
     protected double noise = 0.0;
     protected double xOffset = 0.0;
     protected double yOffset = 0.0;
-    transient protected boolean m_Show = false;
+    transient protected boolean show = false;
     //protected int						sleepTime			= 0;
 
     transient private JFrame problemFrame;
@@ -220,7 +218,7 @@ public class FLensProblem extends AbstractOptimizationProblem
 
     public FLensProblem() {
         this.template = new ESIndividualDoubleData();
-        if (this.m_Show) {
+        if (this.show) {
             this.initProblemFrame();
         }
     }
@@ -294,7 +292,7 @@ public class FLensProblem extends AbstractOptimizationProblem
     @Override
     public void initializeProblem() {
         this.overallBest = null;
-        if (this.m_Show) {
+        if (this.show) {
             this.initProblemFrame();
         }
     }
@@ -317,14 +315,14 @@ public class FLensProblem extends AbstractOptimizationProblem
         ((InterfaceDataTypeDouble) this.template).setDoubleRange(range);
 
         AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
-        if (this.m_Show) {
+        if (this.show) {
             this.initProblemFrame();
         }
     }
 
     @Override
     public void evaluatePopulationEnd(Population pop) {
-        if (this.m_Show) {
+        if (this.show) {
             this.updateProblemFrame(pop);
         }
     }
@@ -402,13 +400,13 @@ public class FLensProblem extends AbstractOptimizationProblem
      * @return double[]
      */
     public double[] testLens(double[] x) {
-        double m_SegmentHight = 2 * radius / (x.length - 1);
+        double segmentHeight = 2 * radius / (x.length - 1);
         double[] result = new double[x.length - 1];
         // Computation of fitness. Uses an approximation for very thin lenses.
         // The fitness is the sum over all segments of the deviation from the center
         // of focus of a beam running through a segment.
         for (int i = 1; i < x.length; i++) {
-            result[i - 1] = radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) - focalLength / m_SegmentHight * (epsilon - 1) * (x[i] - x[i - 1]);
+            result[i - 1] = radius - segmentHeight / 2 - segmentHeight * (i - 1) - focalLength / segmentHeight * (epsilon - 1) * (x[i] - x[i - 1]);
         }
         return result;
     }
@@ -581,8 +579,8 @@ public class FLensProblem extends AbstractOptimizationProblem
      * @param show Whether to show the result or not
      */
     public void setShow(boolean show) {
-        this.m_Show = show;
-        if (this.m_Show) {
+        this.show = show;
+        if (this.show) {
             this.initProblemFrame();
         } else {
             this.disposeProblemFrame();
@@ -590,7 +588,7 @@ public class FLensProblem extends AbstractOptimizationProblem
     }
 
     public boolean getShow() {
-        return this.m_Show;
+        return this.show;
     }
 
     public String showTipText() {

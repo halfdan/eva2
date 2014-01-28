@@ -81,7 +81,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
         double[] specificData = pop.getSpecificData();
         if (specificData != null) {
             for (int i = 0; i < specificData.length; i++) {
-//				((ArrayList<Object[]>[]) m_Result.get(i))[optRunsPerformed].add(new Double[] {new Double(functionCalls), specificData[i]});
+//				((ArrayList<Object[]>[]) resultFrame.get(i))[optRunsPerformed].add(new Double[] {new Double(functionCalls), specificData[i]});
                 m_ResultData.get(optRunsPerformed).add(new Object[]{new Double(functionCalls), specificData});
             }
         }

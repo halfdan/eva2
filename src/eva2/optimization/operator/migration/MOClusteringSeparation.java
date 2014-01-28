@@ -186,7 +186,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
                 if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
                     // set the boundaries to perform the constrained
                     // domain principle introduced by Deb et al.
-                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.clear();
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.clear();
                     double[] myClass = c[i];
                     double[][] myOtherClass = new double[c.length - 1][];
                     int index = 0;
@@ -198,7 +198,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
                         index++;
                     }
                     ConstBelongsToDifferentClass b = new ConstBelongsToDifferentClass(myClass, myOtherClass, this.m_KMeans.getUseSearchSpace());
-                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(b);
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.add(b);
 //                    if (this.debug) {
 //                        String out = "";
 //                        out += i+ ". MyClass: {";

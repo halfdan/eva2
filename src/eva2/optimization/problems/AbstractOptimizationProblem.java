@@ -34,11 +34,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 29.08.2003
- * Time: 13:40:12
- * To change this template use Options | File Templates.
+ *
  */
 public abstract class AbstractOptimizationProblem implements InterfaceOptimizationProblem, Serializable {
     class EvalThread extends Thread {

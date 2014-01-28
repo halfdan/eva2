@@ -272,18 +272,18 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
                 if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
                     // set the boundaries to perform the constrained
                     // domain principle introduced by Deb et al.
-                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.clear();
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.clear();
                     if (i > 0) {
                         // add the lower boundary
                         ConstObjectivesInEqualityBiggerThanLinear b = new ConstObjectivesInEqualityBiggerThanLinear(boundaries[i - 1][0], boundaries[i - 1][1]);
 
-                        ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(b);
+                        ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.add(b);
                     }
                     if (i < islands.length - 1) {
                         // add the upper boundary
                         ConstObjectivesInEqualityLesserThanLinear b = new ConstObjectivesInEqualityLesserThanLinear(boundaries[i][0], boundaries[i][1]);
 
-                        ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(b);
+                        ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.add(b);
                     }
                     islands[i].setProblem(prob);
                 }
@@ -380,11 +380,11 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
                 if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
                     // set the boundaries to perform the constrained
                     // domain principle introduced by Deb et al.
-                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.clear();
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.clear();
                     ConstObjectivesInEqualitySmallerThanSurface sts = new ConstObjectivesInEqualitySmallerThanSurface(curBoundingPlane[0], curBoundingPlane[1]);
                     ConstObjectivesInEqualityBiggerThanSurface bts = new ConstObjectivesInEqualityBiggerThanSurface(lastBoundingPlane[0], lastBoundingPlane[1]);
-                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(sts);
-                    ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(bts);
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.add(sts);
+                    ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.add(bts);
                 }
                 islands[i].setProblem(prob);
 //                if (true) {
@@ -393,7 +393,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //                    for (int j = 0; j < newIPOP[i].size(); j++) {
 //                        if(((AbstractEAIndividual)newIPOP[i].get(j)).areaConst4ParallelViolated) {
 //                            System.out.print(j+", ");
-//                            ((AbstractEAIndividual)newIPOP[i].get(j)).checkAreaConst4Parallelization(((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization);
+//                            ((AbstractEAIndividual)newIPOP[i].get(j)).checkAreaConst4Parallelization(((AbstractMultiObjectiveOptimizationProblem)prob).areaConst4Parallelization);
 //                        }
 //                    }
 //                    System.out.println("");
@@ -421,11 +421,11 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //            if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
 //                // set the boundaries to perform the constrained
 //                // domain principle introduced by Deb et al.
-//                ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.clear();
+//                ((AbstractMultiObjectiveOptimizationProblem)prob).areaConst4Parallelization.clear();
 //                ConstObjectivesInEqualitySmallerThanSurface sts = new ConstObjectivesInEqualitySmallerThanSurface(curBoundingPlane[0], curBoundingPlane[1]);
 //                ConstObjectivesInEqualityBiggerThanSurface bts = new ConstObjectivesInEqualityBiggerThanSurface(lastBoundingPlane[0], lastBoundingPlane[1]);
-//                ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(sts);
-//                ((AbstractMultiObjectiveOptimizationProblem)prob).m_AreaConst4Parallelization.add(bts);
+//                ((AbstractMultiObjectiveOptimizationProblem)prob).areaConst4Parallelization.add(sts);
+//                ((AbstractMultiObjectiveOptimizationProblem)prob).areaConst4Parallelization.add(bts);
 //                }
 //            islands[last].SetProblem(prob);
 //        }

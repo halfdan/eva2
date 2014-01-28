@@ -15,24 +15,24 @@ import java.io.Serializable;
 @Description("Sphere Model, changing Environment.")
 public class F7Problem extends AbstractProblemDoubleOffset implements Serializable {
 
-    private double m_t = 250;
-    private double m_Change = 4;
-    protected SelectedTag m_TimeIntervalType;
-    private int m_CurrentTimeStamp;
+    private double t = 250;
+    private double change = 4;
+    protected SelectedTag timeIntervalType;
+    private int currentTimeStamp;
 
     public F7Problem() {
         Tag[] tag = new Tag[2];
         tag[0] = new Tag(0, "Function Calls");
         tag[1] = new Tag(1, "Generation");
-        this.m_TimeIntervalType = new SelectedTag(0, tag);
+        this.timeIntervalType = new SelectedTag(0, tag);
         this.template = new ESIndividualDoubleData();
     }
 
     public F7Problem(F7Problem b) {
         super(b);
-        this.m_Change = b.m_Change;
-        this.m_t = b.m_t;
-        this.m_TimeIntervalType = (SelectedTag) b.m_TimeIntervalType.clone();
+        this.change = b.change;
+        this.t = b.t;
+        this.timeIntervalType = (SelectedTag) b.timeIntervalType.clone();
     }
 
     /**
@@ -59,10 +59,10 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         for (int i = 0; i < population.size(); i++) {
             tmpIndy = (AbstractEAIndividual) population.get(i);
             tmpIndy.resetConstraintViolation();
-            if (this.m_TimeIntervalType.getSelectedTag().getID() == 0) {
-                this.m_CurrentTimeStamp = population.getFunctionCalls();
+            if (this.timeIntervalType.getSelectedTag().getID() == 0) {
+                this.currentTimeStamp = population.getFunctionCalls();
             } else {
-                this.m_CurrentTimeStamp = population.getGeneration();
+                this.currentTimeStamp = population.getGeneration();
             }
             this.evaluate(tmpIndy);
             population.incrFunctionCalls();
@@ -81,13 +81,13 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         x = rotateMaybe(x);
         double[] result = new double[1];
         result[0] = yOffset;
-        if ((Math.floor(this.m_CurrentTimeStamp / this.m_t) % 2) == 0) {
+        if ((Math.floor(this.currentTimeStamp / this.t) % 2) == 0) {
             for (int i = 0; i < x.length - 1; i++) {
                 result[0] += Math.pow(x[i] - xOffset, 2);
             }
         } else {
             for (int i = 0; i < x.length - 1; i++) {
-                result[0] += Math.pow(x[i] - xOffset - this.m_Change, 2);
+                result[0] += Math.pow(x[i] - xOffset - this.change, 2);
             }
         }
         return result;
@@ -130,11 +130,11 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         if (d < 1) {
             d = 1;
         }
-        this.m_t = d;
+        this.t = d;
     }
 
     public double gett() {
-        return this.m_t;
+        return this.t;
     }
 
     public String tTipText() {
@@ -147,11 +147,11 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
      * @param d The mutation operator.
      */
     public void setChange(double d) {
-        this.m_Change = d;
+        this.change = d;
     }
 
     public double getChange() {
-        return this.m_Change;
+        return this.change;
     }
 
     public String changeTipText() {
@@ -164,11 +164,11 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
      * @param d The mutation operator.
      */
     public void setTimeIntervalType(SelectedTag d) {
-        this.m_TimeIntervalType = d;
+        this.timeIntervalType = d;
     }
 
     public SelectedTag getTimeIntervalType() {
-        return this.m_TimeIntervalType;
+        return this.timeIntervalType;
     }
 
     public String timeIntervalTypeTipText() {

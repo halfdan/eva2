@@ -11,8 +11,8 @@ import eva2.optimization.strategies.InterfaceOptimizer;
  */
 public abstract class AbstractProblemInteger extends AbstractOptimizationProblem implements java.io.Serializable {
 
-    protected AbstractEAIndividual m_OverallBest = null;
-    protected int m_ProblemDimension = 10;
+    protected AbstractEAIndividual bestIndividuum = null;
+    protected int problemDimension = 10;
 
     public AbstractProblemInteger() {
         initTemplate();
@@ -31,22 +31,22 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
         if (o.template != null) {
             template = (AbstractEAIndividual) o.template.clone();
         }
-        if (o.m_OverallBest != null) {
-            m_OverallBest = (AbstractEAIndividual) ((AbstractEAIndividual) o.m_OverallBest).clone();
+        if (o.bestIndividuum != null) {
+            bestIndividuum = (AbstractEAIndividual) ((AbstractEAIndividual) o.bestIndividuum).clone();
         }
-        this.m_ProblemDimension = o.m_ProblemDimension;
+        this.problemDimension = o.problemDimension;
     }
 
     @Override
     public void initializeProblem() {
         initTemplate();
-        this.m_OverallBest = null;
+        this.bestIndividuum = null;
     }
 
     @Override
     public void initializePopulation(Population population) {
-        this.m_OverallBest = null;
-        ((InterfaceDataTypeInteger) this.template).setIntegerDataLength(this.m_ProblemDimension);
+        this.bestIndividuum = null;
+        ((InterfaceDataTypeInteger) this.template).setIntegerDataLength(this.problemDimension);
         AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
     }
 
@@ -64,8 +64,8 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
             // set the fitness of the individual
             individual.SetFitness(i, fitness[i]);
         }
-        if ((this.m_OverallBest == null) || (this.m_OverallBest.getFitness(0) > individual.getFitness(0))) {
-            this.m_OverallBest = (AbstractEAIndividual) individual.clone();
+        if ((this.bestIndividuum == null) || (this.bestIndividuum.getFitness(0) > individual.getFitness(0))) {
+            this.bestIndividuum = (AbstractEAIndividual) individual.clone();
         }
     }
 
@@ -120,11 +120,11 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
      * @param n The problem dimension
      */
     public void setProblemDimension(int n) {
-        this.m_ProblemDimension = n;
+        this.problemDimension = n;
     }
 
     public int getProblemDimension() {
-        return this.m_ProblemDimension;
+        return this.problemDimension;
     }
 
     public String problemDimensionTipText() {

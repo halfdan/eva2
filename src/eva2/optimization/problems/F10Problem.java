@@ -9,9 +9,9 @@ import eva2.util.annotation.Description;
 @Description("Weierstrass-Mandelbrot Fractal Function")
 public class F10Problem extends AbstractProblemDoubleOffset implements InterfaceMultimodalProblem, java.io.Serializable {
 
-    private double m_D = 1.5;
-    private double m_b = 2.3;
-    private int m_Iterations = 20;
+    private double d = 1.5;
+    private double b = 2.3;
+    private int iterations = 20;
 
     public F10Problem() {
         this.template = new ESIndividualDoubleData();
@@ -19,9 +19,9 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
 
     public F10Problem(F10Problem b) {
         super(b);
-        this.m_D = b.m_D;
-        this.m_b = b.m_b;
-        this.m_Iterations = b.m_Iterations;
+        this.d = b.d;
+        this.b = b.b;
+        this.iterations = b.iterations;
     }
 
     /**
@@ -48,7 +48,7 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
         result[0] = yOffset;
         for (int i = 0; i < x.length - 1; i++) {
             double xi = x[i] - xOffset;
-            result[0] += ((this.calculateC(xi)) / (c1 * Math.pow(Math.abs(xi), 2 - this.m_D))) + Math.pow(xi, 2) - 1;
+            result[0] += ((this.calculateC(xi)) / (c1 * Math.pow(Math.abs(xi), 2 - this.d))) + Math.pow(xi, 2) - 1;
         }
         return result;
     }
@@ -56,8 +56,8 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
     private double calculateC(double x) {
         double result = 0;
 
-        for (int i = -this.m_Iterations; i < this.m_Iterations + 1; i++) {
-            result += (1 - Math.cos(Math.pow(this.m_b, i) * x)) / (Math.pow(this.m_b, (2 - this.m_D) * i));
+        for (int i = -this.iterations; i < this.iterations + 1; i++) {
+            result += (1 - Math.cos(Math.pow(this.b, i) * x)) / (Math.pow(this.b, (2 - this.d) * i));
         }
 
         return result;
@@ -103,11 +103,11 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
         if (d > 2) {
             d = 2;
         }
-        this.m_D = d;
+        this.d = d;
     }
 
     public double getD() {
-        return this.m_D;
+        return this.d;
     }
 
     public String dTipText() {
@@ -123,11 +123,11 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
         if (b < 1.000001) {
             b = 1.000001;
         }
-        this.m_b = b;
+        this.b = b;
     }
 
     public double getb() {
-        return this.m_b;
+        return this.b;
     }
 
     public String bTipText() {
@@ -143,11 +143,11 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
         if (iters < 2) {
             iters = 2;
         }
-        this.m_Iterations = iters;
+        this.iterations = iters;
     }
 
     public int getIterations() {
-        return this.m_Iterations;
+        return this.iterations;
     }
 
     public String iterationsTipText() {

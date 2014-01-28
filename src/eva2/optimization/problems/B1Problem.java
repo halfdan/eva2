@@ -16,7 +16,7 @@ import java.util.BitSet;
  */
 @Description("The task in this problem is to maximize the number of false bits in a BitSet.")
 public class B1Problem extends AbstractProblemBinary implements java.io.Serializable {
-    public int m_ProblemDimension = 30;
+    public int problemDimension = 30;
 
     public B1Problem() {
         super();
@@ -26,7 +26,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
     public B1Problem(B1Problem b) {
         super.cloneObjects(b);
 
-        this.m_ProblemDimension = b.m_ProblemDimension;
+        this.problemDimension = b.problemDimension;
     }
 
     /**
@@ -73,7 +73,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         this.evaluate(individual);
         String result = "Minimize Number of Bits problem:\n";
         result += individual.getStringRepresentation() + "\n";
-        result += "Scores " + (this.m_ProblemDimension - individual.getFitness(0)) + " zero bits!";
+        result += "Scores " + (this.problemDimension - individual.getFitness(0)) + " zero bits!";
         return result;
     }
 
@@ -90,7 +90,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         result += "Minimize Bits Problem:\n";
         result += "The task is to reduce the number of TRUE Bits in the given bit string.\n";
         result += "Parameters:\n";
-        result += "Number of Bits: " + this.m_ProblemDimension + "\n";
+        result += "Number of Bits: " + this.problemDimension + "\n";
         result += "Solution representation:\n";
         //result += this.template.getSolutionRepresentationFor();
         return result;
@@ -116,12 +116,12 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
      * @param dim The problem dimension.
      */
     public void setProblemDimension(int dim) {
-        this.m_ProblemDimension = dim;
+        this.problemDimension = dim;
     }
 
     @Override
     public int getProblemDimension() {
-        return this.m_ProblemDimension;
+        return this.problemDimension;
     }
 
     public String multiRunsTipText() {
