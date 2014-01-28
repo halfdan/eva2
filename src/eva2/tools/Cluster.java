@@ -7,15 +7,15 @@ public class Cluster {
     /**
      * Number of samples in the cluster.
      */
-    public int m_SamplesInCluster;
+    public int samplesInCluster;
     /**
      * Center of the cluster.
      */
-    public double[] m_Center;
+    public double[] center;
     /**
      * nearest sample (double[]) to the center of the cluster.
      */
-    public double[] m_NearestSample;
+    public double[] nearestSample;
 
     /**
      * This class represents a cluster of
@@ -26,8 +26,8 @@ public class Cluster {
      * @param nearestSample    Nearest sample to cluster center.
      */
     public Cluster(double[] center, int SamplesInCluster, double[] nearestSample) {
-        m_SamplesInCluster = SamplesInCluster;
-        m_Center = center;
-        m_NearestSample = nearestSample;
+        samplesInCluster = SamplesInCluster;
+        this.center = center;
+        this.nearestSample = nearestSample;
     }
 }

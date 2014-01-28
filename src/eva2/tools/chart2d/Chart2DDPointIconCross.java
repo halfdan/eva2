@@ -5,15 +5,11 @@ import java.awt.*;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.04.2004
- * Time: 10:00:50
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class Chart2DDPointIconCross implements DPointIcon {
 
-    private Color m_Color;
+    private Color color;
 
     /**
      * this method has to be overridden to paint the icon. The point itself lies
@@ -22,7 +18,7 @@ public class Chart2DDPointIconCross implements DPointIcon {
     @Override
     public void paint(Graphics g) {
         Color prev = g.getColor();
-        g.setColor(this.m_Color);
+        g.setColor(this.color);
         g.drawLine(-1, 1, 1, -1);
         g.drawLine(-1, -1, 1, 1);
         g.setColor(prev);
@@ -40,6 +36,6 @@ public class Chart2DDPointIconCross implements DPointIcon {
     }
 
     public void setColor(Color c) {
-        this.m_Color = c;
+        this.color = c;
     }
 }

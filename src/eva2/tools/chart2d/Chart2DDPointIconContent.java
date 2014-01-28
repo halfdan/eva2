@@ -19,8 +19,8 @@ import java.awt.event.WindowEvent;
  */
 public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPointIcon {
 
-    AbstractEAIndividual m_Indy;
-    InterfaceOptimizationProblem m_Problem;
+    AbstractEAIndividual individual;
+    InterfaceOptimizationProblem optimizationProblem;
 
     /**
      * this method has to be overridden to paint the icon. The point itself lies
@@ -51,12 +51,12 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
      */
     @Override
     public void setEAIndividual(AbstractEAIndividual indy) {
-        this.m_Indy = indy;
+        this.individual = indy;
     }
 
     @Override
     public AbstractEAIndividual getEAIndividual() {
-        return this.m_Indy;
+        return this.individual;
     }
 
     /**
@@ -66,12 +66,12 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -80,18 +80,18 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
     @Override
     public void showIndividual() {
         JFrame newFrame = new JFrame();
-        if (this.m_Indy == null) {
+        if (this.individual == null) {
             System.out.println("No individual!");
             return;
         }
-        newFrame.setTitle(this.m_Indy.getName() + ": " + this.m_Indy);
+        newFrame.setTitle(this.individual.getName() + ": " + this.individual);
         newFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent ev) {
                 System.gc();
             }
         });
-        newFrame.getContentPane().add(this.m_Problem.drawIndividual(-1, -1, this.m_Indy));
+        newFrame.getContentPane().add(this.optimizationProblem.drawIndividual(-1, -1, this.individual));
         newFrame.setSize(200, 300);
         newFrame.pack();
         newFrame.validate();

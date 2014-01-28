@@ -226,7 +226,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         for (int i = 0; i < this.m_D; i++) {
             this.s_N[i] = (1.0 - this.m_c) * this.s_N[i] + this.m_c * this.cu * this.Bz[i];
         }
-//        System.out.println("C bef:\n" + m_C.toString());
+//        System.out.println("C bef:\n" + c.toString());
         // ADAPT COVARIANCE
         for (int i = 0; i < this.m_D; i++) {
             for (int j = i; j < this.m_D; j++) {
@@ -235,7 +235,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
                 this.m_C.set(j, i, Cij);
             }
         }
-//        System.out.println("C aft:\n" + m_C.toString());
+//        System.out.println("C aft:\n" + c.toString());
         // ADAPT GLOBAL STEPSIZE
         for (int i = 0; i < this.m_D; i++) {
             Bz_d = 0.0;
@@ -250,12 +250,12 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
 
     protected void evaluateNewObjectX(double[] x, double[][] range) {
 //        if (Double.isNaN((x[0]))) System.out.println("treffer in cma "+ x[0]);
-//        if (Double.isNaN((m_C.get(0,0)))) System.out.println("treffer in cma");
+//        if (Double.isNaN((c.get(0,0)))) System.out.println("treffer in cma");
 //        for (int i=0;i<N;i++)   {   // evaluate new random values
 //            m_Z[i] = RNG.gaussianDouble(1.0);
 //        }
-//        m_C = (m_C.plus(m_C.transpose()).times(0.5)); // MAKE C SYMMETRIC
-//        EigenvalueDecomposition helper = new EigenvalueDecomposition(m_C);
+//        c = (c.plus(c.transpose()).times(0.5)); // MAKE C SYMMETRIC
+//        EigenvalueDecomposition helper = new EigenvalueDecomposition(c);
 //        B = helper.getV();
 //        double [] Eigenvalues = helper.getRealEigenvalues();
 //        double[]    tmpD = new double[x.length];

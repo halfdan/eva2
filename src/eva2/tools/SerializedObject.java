@@ -15,11 +15,11 @@ public class SerializedObject implements Serializable {
     /**
      * Stores the serialized object
      */
-    private byte[] m_Serialized;
+    private byte[] serializedBytes;
     /**
      * True if the object has been compressed during storage
      */
-    private boolean m_Compressed;
+    private boolean isCompressed;
 
     /**
      * Serializes the supplied object into a byte array without compression.
@@ -41,8 +41,8 @@ public class SerializedObject implements Serializable {
      * @throws Exception   if the object is not Serializable.
      */
     public SerializedObject(Object obj, boolean compress) throws IOException {
-        m_Compressed = compress;
-        m_Serialized = toByteArray(obj, m_Compressed);
+        isCompressed = compress;
+        serializedBytes = toByteArray(obj, isCompressed);
     }
 
     /**
@@ -77,8 +77,8 @@ public class SerializedObject implements Serializable {
      */
     public Object getObject() throws IOException, ClassNotFoundException {
 //		try {
-        InputStream is = new ByteArrayInputStream(m_Serialized);
-        if (m_Compressed) {
+        InputStream is = new ByteArrayInputStream(serializedBytes);
+        if (isCompressed) {
             is = new GZIPInputStream(is);
         }
         is = new BufferedInputStream(is);
@@ -106,13 +106,13 @@ public class SerializedObject implements Serializable {
             return false;
         }
         // Check serialized length
-        byte[] os = ((SerializedObject) other).m_Serialized;
-        if (os.length != m_Serialized.length) {
+        byte[] os = ((SerializedObject) other).serializedBytes;
+        if (os.length != serializedBytes.length) {
             return false;
         }
         // Check serialized contents
-        for (int i = 0; i < m_Serialized.length; i++) {
-            if (m_Serialized[i] != os[i]) {
+        for (int i = 0; i < serializedBytes.length; i++) {
+            if (serializedBytes[i] != os[i]) {
                 return false;
             }
         }
@@ -126,7 +126,7 @@ public class SerializedObject implements Serializable {
      */
     @Override
     public final int hashCode() {
-        return m_Serialized.length;
+        return serializedBytes.length;
     }
 
     /**
@@ -136,7 +136,7 @@ public class SerializedObject implements Serializable {
      */
     @Override
     public String toString() {
-        return (m_Compressed ? "Compressed object: " : "Uncompressed object: ")
-                + m_Serialized.length + " bytes";
+        return (isCompressed ? "Compressed object: " : "Uncompressed object: ")
+                + serializedBytes.length + " bytes";
     }
 }

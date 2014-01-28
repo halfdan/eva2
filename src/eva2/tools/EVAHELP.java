@@ -1,14 +1,4 @@
 package eva2.tools;
-/**
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version: $Revision: 255 $
- *            $Date: 2007-11-15 14:58:12 +0100 (Thu, 15 Nov 2007) $
- *            $Author: mkron $
- */
 
 import java.io.*;
 import java.net.InetAddress;
@@ -20,7 +10,7 @@ import java.util.Properties;
  */
 public class EVAHELP {
 
-    private static long m_TimeStamp;
+    private static long timestamp;
 
     /**
      *
@@ -58,14 +48,14 @@ public class EVAHELP {
      *
      */
     public static void setTimeStamp() {
-        m_TimeStamp = System.currentTimeMillis();
+        timestamp = System.currentTimeMillis();
     }
 
     /**
      *
      */
     public static long getTimeStamp() {
-        return System.currentTimeMillis() - m_TimeStamp;
+        return System.currentTimeMillis() - timestamp;
     }
 
     /**

@@ -96,8 +96,8 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                     this.m_C[i] = initialSeeds.getEAIndividual(i).getFitness().clone();
                 }
 
-//                this.m_C[i] = data[RNG.randomInt(0, data.length-1)];
-                //this.m_C[i] = data[i];     // This works!!
+//                this.c[i] = data[RNG.randomInt(0, data.length-1)];
+                //this.c[i] = data[i];     // This works!!
                 // we won't check for double instances assuming that double instances
                 // will be ironed out during clustering and to prevent infinite loops
                 // in case there are too many double instances or too few instances
@@ -269,7 +269,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
     }
 
     /**
-     * This method allows you to cluster a population using m_C. The minimal cluster
+     * This method allows you to cluster a population using c. The minimal cluster
      * size is _not_ regarded here.
      *
      * @param pop The population
