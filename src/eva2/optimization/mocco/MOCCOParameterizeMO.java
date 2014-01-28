@@ -85,20 +85,20 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
 
         GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
         editor = new GeneralOptimizationEditorProperty();
-        editor.m_Name = "Optimizer";
+        editor.name = "Optimizer";
         try {
-            editor.m_Value = this.m_Mocco.m_State.m_Optimizer;
-            editor.m_Editor = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) {
-                editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
+            editor.value = this.m_Mocco.m_State.m_Optimizer;
+            editor.editor = PropertyEditorProvider.findEditor(editor.value.getClass());
+            if (editor.editor == null) {
+                editor.editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
             }
-            if (editor.m_Editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceOptimizer.class);
+            if (editor.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) editor.editor).setClassType(InterfaceOptimizer.class);
             }
-            editor.m_Editor.setValue(editor.m_Value);
+            editor.editor.setValue(editor.value);
             AbstractObjectEditor.findViewFor(editor);
-            if (editor.m_View != null) {
-                editor.m_View.repaint();
+            if (editor.view != null) {
+                editor.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -106,27 +106,27 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
-        tmpP.add(new JLabel("" + editor.m_Name), gbc);
+        tmpP.add(new JLabel("" + editor.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 2;
-        tmpP.add(editor.m_View, gbc);
+        tmpP.add(editor.view, gbc);
 
         editor = new GeneralOptimizationEditorProperty();
-        editor.m_Name = "Terminator";
+        editor.name = "Terminator";
         try {
-            editor.m_Value = this.m_Mocco.m_State.m_Terminator;
-            editor.m_Editor = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) {
-                editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
+            editor.value = this.m_Mocco.m_State.m_Terminator;
+            editor.editor = PropertyEditorProvider.findEditor(editor.value.getClass());
+            if (editor.editor == null) {
+                editor.editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
             }
-            if (editor.m_Editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
+            if (editor.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) editor.editor).setClassType(InterfaceTerminator.class);
             }
-            editor.m_Editor.setValue(editor.m_Value);
+            editor.editor.setValue(editor.value);
             AbstractObjectEditor.findViewFor(editor);
-            if (editor.m_View != null) {
-                editor.m_View.repaint();
+            if (editor.view != null) {
+                editor.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -134,11 +134,11 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 1;
-        tmpP.add(new JLabel("" + editor.m_Name), gbc);
+        tmpP.add(new JLabel("" + editor.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.weightx = 2;
-        tmpP.add(editor.m_View, gbc);
+        tmpP.add(editor.view, gbc);
         this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
         this.m_Mocco.m_JPanelParameters.add(this.makeInformationText("Multi-Objective Optimiaztion", "" +
                 "Please choose an appropriate multi-objecitve optimizer."), BorderLayout.NORTH);

@@ -8,89 +8,61 @@ import java.beans.PropertyEditor;
 import java.io.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 20.04.2005
- * Time: 11:41:29
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GeneralGEOFaker extends JPanel {
 
-    private JButton open, save, ok, edit;
-    private JFileChooser m_FileChooser;
-    //    private Vector                  m_ClassesLongName;
-//    private SourceCodeEditor        m_SourceCodeEditor;
-//    private PropertyDialog          m_SourceCodeEditorFrame;
-    private PropertyEditor m_Editor;
-    private JPanel m_Interior;
-    private Class m_ClassType;
+    private JButton openButton, saveButton, okButton, editButton;
+    private JFileChooser fileChooser;
+    private PropertyEditor editor;
+    private JPanel interiorPanel;
+    private Class classType;
 
     public GeneralGEOFaker(PropertyEditor e, JPanel i) {
-        this.m_Interior = i;
-        this.m_Editor = e;
-        this.m_ClassType = this.m_Editor.getValue().getClass();
+        this.interiorPanel = i;
+        this.editor = e;
+        this.classType = this.editor.getValue().getClass();
         init();
     }
 
     private void init() {
         this.setLayout(new BorderLayout());
 
-        open = new JButton("Open...");
-        open.setToolTipText("Load a configured object");
-        open.setEnabled(true);
-        open.addActionListener(new ActionListener() {
+        openButton = new JButton("Open...");
+        openButton.setToolTipText("Load a configured object");
+        openButton.setEnabled(true);
+        openButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Object object = openObject();
                 if (object != null) {
                     // setValue takes care of: Making sure obj is of right type,
                     // and firing property change.
-                    m_Editor.setValue(object);
+                    editor.setValue(object);
                     // Need a second setValue to get property values filled in OK.
                     // Not sure why.
-                    m_Editor.setValue(object); // <- Hannes ?!?!?
+                    editor.setValue(object); // <- Hannes ?!?!?
                 }
             }
         });
 
-        save = new JButton("Save...");
-        save.setToolTipText("Save the current configured object");
-        save.setEnabled(true);
-        save.addActionListener(new ActionListener() {
+        saveButton = new JButton("Save...");
+        saveButton.setToolTipText("Save the current configured object");
+        saveButton.setEnabled(true);
+        saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveObject(m_Editor.getValue());
+                saveObject(editor.getValue());
             }
         });
 
-        edit = new JButton("Edit Source");
-        edit.setToolTipText("Edit the Source");
-        edit.setEnabled(false);
-//        edit.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                edit.setEnabled(false);
-//                m_SourceCodeEditor = new SourceCodeEditor();
-//                String className = m_Editor.getValue().getClass().getName();
-//                m_SourceCodeEditor.editSource(Main.DYNAMICCLASSES_PROPERTIES.getProperty(className));
-//                m_SourceCodeEditorFrame = new PropertyDialog(m_SourceCodeEditor, "test", 50, 50);
-//                m_SourceCodeEditorFrame.pack();
-//                m_SourceCodeEditorFrame.addWindowListener(new WindowAdapter() {
-//                    public void windowClosing (WindowEvent e) {
-//                        m_SourceCodeEditor = null;
-//                        edit.setEnabled(true);
-//                    }
-//                });
-//                m_SourceCodeEditor.addPropertyChangeListener(new PropertyChangeListener() {
-//                    public void propertyChange(PropertyChangeEvent evt) {
-//                        sourceChanged();
-//                    }
-//                });
-//            }
-//        });
+        editButton = new JButton("Edit Source");
+        editButton.setToolTipText("Edit the Source");
+        editButton.setEnabled(false);
 
-        ok = new JButton("OK");
-        ok.setEnabled(true);
-        ok.addActionListener(new ActionListener() {
+        okButton = new JButton("OK");
+        okButton.setEnabled(true);
+        okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
@@ -100,14 +72,14 @@ public class GeneralGEOFaker extends JPanel {
             }
         });
         setLayout(new BorderLayout());
-        add(this.m_Interior, BorderLayout.CENTER);
+        add(this.interiorPanel, BorderLayout.CENTER);
         JPanel okcButs = new JPanel();
         okcButs.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         okcButs.setLayout(new GridLayout(1, 4, 5, 5));
-        okcButs.add(open);
-        okcButs.add(save);
-        okcButs.add(ok);
-        okcButs.add(edit);
+        okcButs.add(openButton);
+        okcButs.add(saveButton);
+        okcButs.add(okButton);
+        okcButs.add(editButton);
         add(okcButs, BorderLayout.SOUTH);
     }
 
@@ -117,18 +89,18 @@ public class GeneralGEOFaker extends JPanel {
      * @return the loaded object, or null if the operation was cancelled
      */
     protected Object openObject() {
-        if (m_FileChooser == null) {
+        if (fileChooser == null) {
             createFileChooser();
         }
-        int returnVal = m_FileChooser.showOpenDialog(this);
+        int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File selected = m_FileChooser.getSelectedFile();
+            File selected = fileChooser.getSelectedFile();
             try {
                 ObjectInputStream oi = new ObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
                 Object obj = oi.readObject();
                 oi.close();
-                if (!m_ClassType.isAssignableFrom(obj.getClass())) {
-                    throw new Exception("Object not of type: " + m_ClassType.getName());
+                if (!classType.isAssignableFrom(obj.getClass())) {
+                    throw new Exception("Object not of type: " + classType.getName());
                 }
                 return obj;
             } catch (Exception ex) {
@@ -144,12 +116,12 @@ public class GeneralGEOFaker extends JPanel {
      * @param object The object to save.
      */
     protected void saveObject(Object object) {
-        if (m_FileChooser == null) {
+        if (fileChooser == null) {
             createFileChooser();
         }
-        int returnVal = m_FileChooser.showSaveDialog(this);
+        int returnVal = fileChooser.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File sFile = m_FileChooser.getSelectedFile();
+            File sFile = fileChooser.getSelectedFile();
             try {
                 ObjectOutputStream oo = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(sFile)));
                 oo.writeObject(object);
@@ -161,7 +133,7 @@ public class GeneralGEOFaker extends JPanel {
     }
 
     protected void createFileChooser() {
-        m_FileChooser = new JFileChooser(new File("/resources"));
-        m_FileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser = new JFileChooser(new File("/resources"));
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
 }

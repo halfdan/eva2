@@ -47,7 +47,7 @@ public class PropertyText extends JTextField {
             String x = getText();
             if (!propertyEditor.getAsText().equals(x)) {
                 propertyEditor.setAsText(x);
-//				setText(m_Editor.getAsText());
+//				setText(editor.getAsText());
             }
         } catch (IllegalArgumentException ex) {
 //			System.err.println("Warning: Couldnt set value (PropertyText)");

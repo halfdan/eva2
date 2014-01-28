@@ -109,20 +109,20 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         this.m_Island.setNumberLocalCPUs(this.m_Perturbations);
         this.m_Island.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
         this.m_Mocco.m_State.m_Optimizer = this.m_Island;
-        this.m_EIMEA.m_Name = "Island Model EA";
+        this.m_EIMEA.name = "Island Model EA";
         try {
-            this.m_EIMEA.m_Value = this.m_Island;
-            this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(this.m_EIMEA.m_Value.getClass());
-            if (this.m_EIMEA.m_Editor == null) {
-                this.m_EIMEA.m_Editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
+            this.m_EIMEA.value = this.m_Island;
+            this.m_EIMEA.editor = PropertyEditorProvider.findEditor(this.m_EIMEA.value.getClass());
+            if (this.m_EIMEA.editor == null) {
+                this.m_EIMEA.editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
             }
-            if (this.m_EIMEA.m_Editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) this.m_EIMEA.m_Editor).setClassType(IslandModelEA.class);
+            if (this.m_EIMEA.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) this.m_EIMEA.editor).setClassType(IslandModelEA.class);
             }
-            this.m_EIMEA.m_Editor.setValue(this.m_EIMEA.m_Value);
+            this.m_EIMEA.editor.setValue(this.m_EIMEA.value);
             AbstractObjectEditor.findViewFor(this.m_EIMEA);
-            if (this.m_EIMEA.m_View != null) {
-                this.m_EIMEA.m_View.repaint();
+            if (this.m_EIMEA.view != null) {
+                this.m_EIMEA.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -130,27 +130,27 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("" + this.m_EIMEA.m_Name), gbc);
+        this.m_Parameters.add(new JLabel("" + this.m_EIMEA.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1;
-        this.m_Parameters.add(this.m_EIMEA.m_View, gbc);
+        this.m_Parameters.add(this.m_EIMEA.view, gbc);
         // Terminator
         GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
-        editor.m_Name = "Terminator";
+        editor.name = "Terminator";
         try {
-            editor.m_Value = this.m_Mocco.m_State.m_Terminator;
-            editor.m_Editor = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) {
-                editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
+            editor.value = this.m_Mocco.m_State.m_Terminator;
+            editor.editor = PropertyEditorProvider.findEditor(editor.value.getClass());
+            if (editor.editor == null) {
+                editor.editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
             }
-            if (editor.m_Editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
+            if (editor.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) editor.editor).setClassType(InterfaceTerminator.class);
             }
-            editor.m_Editor.setValue(editor.m_Value);
+            editor.editor.setValue(editor.value);
             AbstractObjectEditor.findViewFor(editor);
-            if (editor.m_View != null) {
-                editor.m_View.repaint();
+            if (editor.view != null) {
+                editor.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -158,11 +158,11 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("" + editor.m_Name), gbc);
+        this.m_Parameters.add(new JLabel("" + editor.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.weightx = 1;
-        this.m_Parameters.add(editor.m_View, gbc);
+        this.m_Parameters.add(editor.view, gbc);
     }
 
     private JComponent makeLimits4Weigths() {
@@ -230,8 +230,8 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
             } catch (NumberFormatException e) {
                 System.out.println("Can't read k.");
             }
-            if (m_EIMEA.m_Value instanceof IslandModelEA) {
-                m_Island = (IslandModelEA) m_EIMEA.m_Value;
+            if (m_EIMEA.value instanceof IslandModelEA) {
+                m_Island = (IslandModelEA) m_EIMEA.value;
             } else {
                 System.out.println("The selected optimizer does not allow heterogenuous multi-starts!");
             }

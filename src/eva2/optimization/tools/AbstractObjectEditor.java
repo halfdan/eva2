@@ -18,26 +18,20 @@ import java.util.Hashtable;
 /**
  * TODO
  * This class should be unified with GenericObjectEditor.
- * <p/>
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.08.2004
- * Time: 13:39:42
- * To change this template use File | Settings | File Templates.
  */
 
 public abstract class AbstractObjectEditor implements PropertyEditor, java.beans.PropertyChangeListener {
     /**
      * Handles property change notification
      */
-    public PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    public PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     /**
      * The Object that is to be edited
      */
-    public Object m_Object;
-    public Object m_Backup;
+    public Object object;
+    public Object backupObject;
     public GeneralGenericObjectEditorPanel objectEditorPanel;
-    public Hashtable m_Editors = new Hashtable();
+    public Hashtable editorTable = new Hashtable();
 
     /**
      * ****************************** java.beans.PropertyChangeListener ************************
@@ -45,18 +39,18 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 
     /**
@@ -69,7 +63,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("------------- here-----------------");
         this.updateCenterComponent(evt); // Let our panel update before guys downstream
-        m_Support.firePropertyChange("", m_Backup, m_Object);
+        propertyChangeSupport.firePropertyChange("", backupObject, object);
     }
 
     /********************************* PropertyEditor *************************/
@@ -139,7 +133,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      * @param n   new
      */
     public void firePropertyChange(String s, Object old, Object n) {
-        m_Support.firePropertyChange(s, old, n);
+        propertyChangeSupport.firePropertyChange(s, old, n);
     }
 
     /**
@@ -152,7 +146,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
 
     @Override
     public Object getValue() {
-        return this.m_Object;
+        return this.object;
     }
 
     /**
@@ -174,26 +168,26 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
         GridBagLayout gbLayout = new GridBagLayout();
         JPanel result = new JPanel();
         JPanel centerWrapper = new JPanel();
-        this.m_Editors.clear();
+        this.editorTable.clear();
 
         result.setLayout(new BorderLayout());
         result.setVisible(true);
         // Define the upper area containing the desription and the help button
         String globalInfo = this.getGlobalInfo();
         JTextArea jt = new JTextArea();
-        StringBuffer m_HelpText;
-        String m_ClassName;
-        JButton m_HelpBut;
-        m_ClassName = "Genetic Algorithm";
-        m_HelpText = new StringBuffer("NAME\n");
-        m_HelpText.append(m_ClassName).append("\n\n");
-        m_HelpText.append("SYNOPSIS\n").append(globalInfo).append("\n\n");
-        m_HelpBut = new JButton("Help");
-        m_HelpBut.setToolTipText("More information about " + m_ClassName);
-        m_HelpBut.addActionListener(new ActionListener() {
+        StringBuffer helpText;
+        String className;
+        JButton helpButton;
+        className = "Genetic Algorithm";
+        helpText = new StringBuffer("NAME\n");
+        helpText.append(className).append("\n\n");
+        helpText.append("SYNOPSIS\n").append(globalInfo).append("\n\n");
+        helpButton = new JButton("Help");
+        helpButton.setToolTipText("More information about " + className);
+        helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent a) {
-                HtmlDemo temp = new HtmlDemo(EVAHELP.cutClassName(m_Object.getClass().getName()) + ".html");
+                HtmlDemo temp = new HtmlDemo(EVAHELP.cutClassName(object.getClass().getName()) + ".html");
                 temp.show();
             }
         });
@@ -212,7 +206,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
         JPanel p2 = new JPanel();
         p2.setLayout(new BorderLayout());
         if (HtmlDemo.resourceExists(getHelpFileName())) {
-            p2.add(m_HelpBut, BorderLayout.NORTH);
+            p2.add(helpButton, BorderLayout.NORTH);
         }
         jp.add(p2, BorderLayout.EAST);
         GridBagConstraints gbConstraints = new GridBagConstraints();
@@ -231,7 +225,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
     }
 
     public String getHelpFileName() {
-        return EVAHELP.cutClassName(m_Object.getClass().getName()) + ".html";
+        return EVAHELP.cutClassName(object.getClass().getName()) + ".html";
     }
 
     /**
@@ -270,28 +264,28 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
             if (propertyDescriptor.getName().equalsIgnoreCase(prop)) {
                 result = new GeneralOptimizationEditorProperty();
                 Object args[] = {};
-                result.m_getMethod = propertyDescriptor.getReadMethod();
-                result.m_setMethod = propertyDescriptor.getWriteMethod();
-                result.m_PropertyType = propertyDescriptor.getPropertyType();
-                result.m_Name = propertyDescriptor.getDisplayName();
-                result.m_Label = new JLabel(result.m_Name, SwingConstants.RIGHT);
-                result.m_TipText = BeanInspector.getToolTipText(result.m_Name, methods, target);
+                result.getMethod = propertyDescriptor.getReadMethod();
+                result.setMethod = propertyDescriptor.getWriteMethod();
+                result.propertyType = propertyDescriptor.getPropertyType();
+                result.name = propertyDescriptor.getDisplayName();
+                result.label = new JLabel(result.name, SwingConstants.RIGHT);
+                result.tipText = BeanInspector.getToolTipText(result.name, methods, target);
                 try {
-                    result.m_Value = result.m_getMethod.invoke(target, args);
-                    result.m_Editor = PropertyEditorProvider.findEditor(propertyDescriptor, result.m_Value);
-                    if (result.m_Editor == null) {
-                        result.m_Editor = PropertyEditorProvider.findEditor(result.m_PropertyType);
+                    result.value = result.getMethod.invoke(target, args);
+                    result.editor = PropertyEditorProvider.findEditor(propertyDescriptor, result.value);
+                    if (result.editor == null) {
+                        result.editor = PropertyEditorProvider.findEditor(result.propertyType);
                     }
-                    if (result.m_Editor instanceof GenericObjectEditor) {
-                        ((GenericObjectEditor) result.m_Editor).setClassType(result.m_PropertyType);
+                    if (result.editor instanceof GenericObjectEditor) {
+                        ((GenericObjectEditor) result.editor).setClassType(result.propertyType);
                     }
 
 
-                    result.m_Editor.setValue(result.m_Value);
-                    result.m_Editor.addPropertyChangeListener(this);
+                    result.editor.setValue(result.value);
+                    result.editor.addPropertyChangeListener(this);
                     this.findViewFor(result);
-                    if (result.m_View != null) {
-                        result.m_View.repaint();
+                    if (result.view != null) {
+                        result.view.repaint();
                     }
                 } catch (Exception e) {
                     System.out.println("Darn cant read the value...");
@@ -311,9 +305,9 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      * @param editor The property the select a view for.
      */
     public static void findViewFor(GeneralOptimizationEditorProperty editor) {
-        editor.m_View = PropertySheetPanel.getView(editor.m_Editor);
-        if (editor.m_View == null) {
-            System.out.println("Warning: Property \"" + editor.m_Name
+        editor.view = PropertySheetPanel.getView(editor.editor);
+        if (editor.view == null) {
+            System.out.println("Warning: Property \"" + editor.name
                     + "\" has non-displayabale editor.  Skipping.");
         }
     }

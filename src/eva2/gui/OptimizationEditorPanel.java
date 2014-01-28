@@ -161,7 +161,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
             @Override
             public void actionPerformed(final ActionEvent event) {
                 if (backupObject != null) {
-                    // TODO m_goe.setObject(m_Object);
+                    // TODO m_goe.setObject(object);
                     genericObjectEditor.setValue(copyObject(backupObject));
                     updateClassType();
                     updateChooser();

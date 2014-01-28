@@ -131,20 +131,20 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
         this.m_Opt = new GeneticAlgorithm();
         this.m_Opt.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
         this.m_Mocco.m_State.m_Optimizer = this.m_Opt;
-        this.m_EOpt.m_Name = "Island Model EA";
+        this.m_EOpt.name = "Island Model EA";
         try {
-            this.m_EOpt.m_Value = this.m_Opt;
-            this.m_EOpt.m_Editor = PropertyEditorProvider.findEditor(this.m_EOpt.m_Value.getClass());
-            if (this.m_EOpt.m_Editor == null) {
-                this.m_EOpt.m_Editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
+            this.m_EOpt.value = this.m_Opt;
+            this.m_EOpt.editor = PropertyEditorProvider.findEditor(this.m_EOpt.value.getClass());
+            if (this.m_EOpt.editor == null) {
+                this.m_EOpt.editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
             }
-            if (this.m_EOpt.m_Editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) this.m_EOpt.m_Editor).setClassType(InterfaceOptimizer.class);
+            if (this.m_EOpt.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) this.m_EOpt.editor).setClassType(InterfaceOptimizer.class);
             }
-            this.m_EOpt.m_Editor.setValue(this.m_EOpt.m_Value);
+            this.m_EOpt.editor.setValue(this.m_EOpt.value);
             AbstractObjectEditor.findViewFor(this.m_EOpt);
-            if (this.m_EOpt.m_View != null) {
-                this.m_EOpt.m_View.repaint();
+            if (this.m_EOpt.view != null) {
+                this.m_EOpt.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -152,27 +152,27 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 2;
-        this.m_Choice.add(new JLabel("" + this.m_EOpt.m_Name), gbc);
+        this.m_Choice.add(new JLabel("" + this.m_EOpt.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1;
-        this.m_Choice.add(this.m_EOpt.m_View, gbc);
+        this.m_Choice.add(this.m_EOpt.view, gbc);
         // Terminator
         GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
-        editor.m_Name = "Terminator";
+        editor.name = "Terminator";
         try {
-            editor.m_Value = this.m_Mocco.m_State.m_Terminator;
-            editor.m_Editor = PropertyEditorProvider.findEditor(editor.m_Value.getClass());
-            if (editor.m_Editor == null) {
-                editor.m_Editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
+            editor.value = this.m_Mocco.m_State.m_Terminator;
+            editor.editor = PropertyEditorProvider.findEditor(editor.value.getClass());
+            if (editor.editor == null) {
+                editor.editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
             }
-            if (editor.m_Editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) editor.m_Editor).setClassType(InterfaceTerminator.class);
+            if (editor.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) editor.editor).setClassType(InterfaceTerminator.class);
             }
-            editor.m_Editor.setValue(editor.m_Value);
+            editor.editor.setValue(editor.value);
             AbstractObjectEditor.findViewFor(editor);
-            if (editor.m_View != null) {
-                editor.m_View.repaint();
+            if (editor.view != null) {
+                editor.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -180,11 +180,11 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 2;
-        this.m_Choice.add(new JLabel("" + editor.m_Name), gbc);
+        this.m_Choice.add(new JLabel("" + editor.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.weightx = 1;
-        this.m_Choice.add(editor.m_View, gbc);
+        this.m_Choice.add(editor.view, gbc);
 
     }
 

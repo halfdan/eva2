@@ -73,21 +73,21 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
         this.m_Editors = new GeneralOptimizationEditorProperty[list.length];
         for (int i = 0; i < list.length; i++) {
             this.m_Editors[i] = new GeneralOptimizationEditorProperty();
-            this.m_Editors[i].m_Name = list[i].getStringRepresentation();
+            this.m_Editors[i].name = list[i].getStringRepresentation();
             try {
-                this.m_Editors[i].m_Value = list[i];
-                this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(this.m_Editors[i].m_Value.getClass());
-                if (this.m_Editors[i].m_Editor == null) {
-                    this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceCrossover.class);
+                this.m_Editors[i].value = list[i];
+                this.m_Editors[i].editor = PropertyEditorProvider.findEditor(this.m_Editors[i].value.getClass());
+                if (this.m_Editors[i].editor == null) {
+                    this.m_Editors[i].editor = PropertyEditorProvider.findEditor(InterfaceCrossover.class);
                 }
-                if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor) {
-                    ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceCrossover.class);
+                if (this.m_Editors[i].editor instanceof GenericObjectEditor) {
+                    ((GenericObjectEditor) this.m_Editors[i].editor).setClassType(InterfaceCrossover.class);
                 }
-                this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
-                this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
+                this.m_Editors[i].editor.setValue(this.m_Editors[i].value);
+                this.m_Editors[i].editor.addPropertyChangeListener(this);
                 AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                if (this.m_Editors[i].m_View != null) {
-                    this.m_Editors[i].m_View.repaint();
+                if (this.m_Editors[i].view != null) {
+                    this.m_Editors[i].view.repaint();
                 }
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
@@ -190,7 +190,7 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
             gbc.fill = GridBagConstraints.BOTH;
             gbc.gridx = 1;
             gbc.weightx = 10;
-            this.m_Targets[i] = this.m_Editors[i].m_View;
+            this.m_Targets[i] = this.m_Editors[i].view;
             this.m_TargetList.add(this.m_Targets[i], gbc);
             // The delete button
             gbc.anchor = GridBagConstraints.WEST;
@@ -239,21 +239,21 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
             InterfaceCrossover[] list = m_CrossoversWithWeights.getSelectedCrossers();
             l--;
             newEdit[l] = new GeneralOptimizationEditorProperty();
-            newEdit[l].m_Name = list[l].getStringRepresentation();
+            newEdit[l].name = list[l].getStringRepresentation();
             try {
-                newEdit[l].m_Value = list[l];
-                newEdit[l].m_Editor = PropertyEditorProvider.findEditor(newEdit[l].m_Value.getClass());
-                if (newEdit[l].m_Editor == null) {
-                    newEdit[l].m_Editor = PropertyEditorProvider.findEditor(InterfaceCrossover.class);
+                newEdit[l].value = list[l];
+                newEdit[l].editor = PropertyEditorProvider.findEditor(newEdit[l].value.getClass());
+                if (newEdit[l].editor == null) {
+                    newEdit[l].editor = PropertyEditorProvider.findEditor(InterfaceCrossover.class);
                 }
-                if (newEdit[l].m_Editor instanceof GenericObjectEditor) {
-                    ((GenericObjectEditor) newEdit[l].m_Editor).setClassType(InterfaceCrossover.class);
+                if (newEdit[l].editor instanceof GenericObjectEditor) {
+                    ((GenericObjectEditor) newEdit[l].editor).setClassType(InterfaceCrossover.class);
                 }
-                newEdit[l].m_Editor.setValue(newEdit[l].m_Value);
-                newEdit[l].m_Editor.addPropertyChangeListener(m_self);
+                newEdit[l].editor.setValue(newEdit[l].value);
+                newEdit[l].editor.addPropertyChangeListener(m_self);
                 AbstractObjectEditor.findViewFor(newEdit[l]);
-                if (newEdit[l].m_View != null) {
-                    newEdit[l].m_View.repaint();
+                if (newEdit[l].view != null) {
+                    newEdit[l].view.repaint();
                 }
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
@@ -499,26 +499,26 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
         for (int i = 0; i < list.length; i++) {
             if (oldVal.equals(list[i])) {
                 list[i] = (InterfaceCrossover) newVal;
-                this.m_Editors[i].m_Name = list[i].getStringRepresentation();
+                this.m_Editors[i].name = list[i].getStringRepresentation();
                 try {
-                    this.m_Editors[i].m_Value = list[i];
-                    this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(this.m_Editors[i].m_Value.getClass());
-                    if (this.m_Editors[i].m_Editor == null) {
-                        this.m_Editors[i].m_Editor = PropertyEditorProvider.findEditor(InterfaceCrossover.class);
+                    this.m_Editors[i].value = list[i];
+                    this.m_Editors[i].editor = PropertyEditorProvider.findEditor(this.m_Editors[i].value.getClass());
+                    if (this.m_Editors[i].editor == null) {
+                        this.m_Editors[i].editor = PropertyEditorProvider.findEditor(InterfaceCrossover.class);
                     }
-                    if (this.m_Editors[i].m_Editor instanceof GenericObjectEditor) {
-                        ((GenericObjectEditor) this.m_Editors[i].m_Editor).setClassType(InterfaceCrossover.class);
+                    if (this.m_Editors[i].editor instanceof GenericObjectEditor) {
+                        ((GenericObjectEditor) this.m_Editors[i].editor).setClassType(InterfaceCrossover.class);
                     }
-                    this.m_Editors[i].m_Editor.setValue(this.m_Editors[i].m_Value);
-                    this.m_Editors[i].m_Editor.addPropertyChangeListener(this);
+                    this.m_Editors[i].editor.setValue(this.m_Editors[i].value);
+                    this.m_Editors[i].editor.addPropertyChangeListener(this);
                     AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                    if (this.m_Editors[i].m_View != null) {
-                        this.m_Editors[i].m_View.repaint();
+                    if (this.m_Editors[i].view != null) {
+                        this.m_Editors[i].view.repaint();
                     }
                 } catch (Exception e) {
                     System.out.println("Darn can't read the value...");
                 }
-                this.m_Targets[i] = this.m_Editors[i].m_View;
+                this.m_Targets[i] = this.m_Editors[i].view;
                 i = list.length;
             }
         }

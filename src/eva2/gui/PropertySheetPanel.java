@@ -852,8 +852,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 if (updateFieldView(i)) {
                     doRepaint = true;
                 }
-            }// end if (m_Editors[i] == editor) {
-        } // end for (int i = 0 ; i < m_Editors.length; i++) {	
+            }// end if (editorTable[i] == editor) {
+        } // end for (int i = 0 ; i < editorTable.length; i++) {
         if (doRepaint) {    // some components have been hidden or reappeared
             // MK this finally seems to work right, with a scroll pane, too.
             Container p = this;

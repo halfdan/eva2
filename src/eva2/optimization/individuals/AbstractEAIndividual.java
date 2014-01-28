@@ -238,7 +238,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
 //    public String getIndividualName() {
-//        return this.m_Name;
+//        return this.name;
 //    }
 
     /**
@@ -248,14 +248,14 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public void giveNewName() {
         // I dont think this is required for now
 //        String  name = "";
-//        if (this.m_Name.length() == 0) {
-//            this.m_Name = GONamingBox.getRandomName();
+//        if (this.name.length() == 0) {
+//            this.name = GONamingBox.getRandomName();
 //        } else {
-//            if (this.m_Name.split(" ").length > 1) {
-//                name = GONamingBox.getRandomName() + " " + this.m_Name.split(" ")[0] + "owitsch";
-//                this.m_Name = name;
+//            if (this.name.split(" ").length > 1) {
+//                name = GONamingBox.getRandomName() + " " + this.name.split(" ")[0] + "owitsch";
+//                this.name = name;
 //            } else {
-//                this.m_Name = GONamingBox.getRandomName() + " " + this.m_Name + "owitsch";
+//                this.name = GONamingBox.getRandomName() + " " + this.name + "owitsch";
 //            }
 //        }
     }

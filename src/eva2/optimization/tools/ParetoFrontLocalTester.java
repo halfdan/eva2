@@ -8,18 +8,14 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 06.10.2004
- * Time: 14:10:37
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class ParetoFrontLocalTester {
 
     // ToDo: Have this on another frame (won't show as JInternalFrame)
-    private Plot m_Plot;
+    private Plot plot;
     private int index = 0;
-    private BufferedWriter m_OutputFile = null;
+    private BufferedWriter outputFile = null;
 
     private void show() {
         double[] loss = new double[5];
@@ -87,7 +83,7 @@ public class ParetoFrontLocalTester {
 
     private void saveThisStuff(ArrayList c, ArrayList e) {
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("CompleteList")));
+            this.outputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("CompleteList")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -101,12 +97,12 @@ public class ParetoFrontLocalTester {
             this.writeToFile(line);
         }
         try {
-            this.m_OutputFile.close();
+            this.outputFile.close();
         } catch (java.io.IOException ex) {
         }
         // next file
         try {
-            this.m_OutputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("ListElements")));
+            this.outputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("ListElements")));
         } catch (FileNotFoundException ex) {
             System.out.println("Could not open output file!");
         }
@@ -128,7 +124,7 @@ public class ParetoFrontLocalTester {
             this.writeToFile(line);
         }
         try {
-            this.m_OutputFile.close();
+            this.outputFile.close();
         } catch (java.io.IOException ex) {
         }
     }
@@ -140,12 +136,12 @@ public class ParetoFrontLocalTester {
      */
     private void writeToFile(String line) {
         String write = line + "\n";
-        if (this.m_OutputFile == null) {
+        if (this.outputFile == null) {
             return;
         }
         try {
-            this.m_OutputFile.write(write, 0, write.length());
-            this.m_OutputFile.flush();
+            this.outputFile.write(write, 0, write.length());
+            this.outputFile.flush();
         } catch (IOException e) {
             System.out.println("Problems writing to output file!");
         }
@@ -155,12 +151,12 @@ public class ParetoFrontLocalTester {
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;
-        this.m_Plot = new Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
+        this.plot = new Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
 
     }
 
     private void showLine(double[][] elm) {
-        GraphPointSet mySet = new GraphPointSet(this.index, this.m_Plot.getFunctionArea());
+        GraphPointSet mySet = new GraphPointSet(this.index, this.plot.getFunctionArea());
         this.index++;
         for (int i = 0; i < elm.length; i++) {
             mySet.addDPoint(elm[i][1], elm[i][0]);

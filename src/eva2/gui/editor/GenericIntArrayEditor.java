@@ -66,7 +66,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
         this.m_OKButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //m_Backup = copyObject(m_Object);
+                //backupObject = copyObject(object);
                 if ((m_CustomEditor.getTopLevelAncestor() != null) && (m_CustomEditor.getTopLevelAncestor() instanceof Window)) {
                     Window w = (Window) m_CustomEditor.getTopLevelAncestor();
                     w.dispose();
