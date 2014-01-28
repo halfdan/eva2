@@ -37,8 +37,8 @@ import java.util.logging.Logger;
 @Description(value = "Basic implementation of the Bayesian Optimization Algorithm based on the works by Martin Pelikan and David E. Goldberg.")
 public class BOA implements InterfaceOptimizer, java.io.Serializable {
     private static final Logger LOGGER = Logger.getLogger(BOA.class.getName());
-    transient private InterfacePopulationChangedEventListener m_Listener = null;
-    private String m_Identifier = "BOA";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener = null;
+    private String identifier = "BOA";
     private int probDim = 8;
     private int fitCrit = -1;
     private int PopSize = 50;
@@ -82,8 +82,8 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     }
 
     public BOA(BOA b) {
-        this.m_Listener = b.m_Listener;
-        this.m_Identifier = b.m_Identifier;
+        this.populationChangedEventListener = b.populationChangedEventListener;
+        this.identifier = b.identifier;
         this.probDim = b.probDim;
         this.fitCrit = b.fitCrit;
         this.PopSize = b.PopSize;
@@ -126,7 +126,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     private void createDirectoryIfNeeded(String directoryName) {
@@ -141,8 +141,8 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -546,8 +546,8 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -568,12 +568,12 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     @Override

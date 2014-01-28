@@ -39,12 +39,12 @@ import java.io.Serializable;
 public class ClusteringHillClimbing implements InterfacePopulationChangedEventListener,
         InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
     public static final boolean TRACE = false;
-    transient private String m_Identifier = "";
-    private Population m_Population = new Population();
+    transient private String identifier = "";
+    private Population population = new Population();
     private transient Population archive = new Population();
-    private InterfaceOptimizationProblem m_Problem = new F1Problem();
+    private InterfaceOptimizationProblem optimizationProblem = new F1Problem();
     private int hcEvalCycle = 1000;
     private int initialPopSize = 100;
     private int loopCnt = 0;
@@ -72,8 +72,8 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 
     public ClusteringHillClimbing(ClusteringHillClimbing other) {
         hideHideable();
-        m_Population = (Population) other.m_Population.clone();
-        m_Problem = (InterfaceOptimizationProblem) other.m_Problem.clone();
+        population = (Population) other.population.clone();
+        optimizationProblem = (InterfaceOptimizationProblem) other.optimizationProblem.clone();
 
         hcEvalCycle = other.hcEvalCycle;
         initialPopSize = other.initialPopSize;
@@ -103,12 +103,12 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -118,24 +118,24 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -148,10 +148,10 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         mutator = new MutateESFixedStepSize(initialStepSize);
         archive = new Population();
         hideHideable();
-        m_Population.setTargetSize(initialPopSize);
-        this.m_Problem.initializePopulation(this.m_Population);
-        m_Population.addPopulationChangedEventListener(null); // noone will be notified directly on pop changes
-        this.m_Problem.evaluate(this.m_Population);
+        population.setTargetSize(initialPopSize);
+        this.optimizationProblem.initializePopulation(this.population);
+        population.addPopulationChangedEventListener(null); // noone will be notified directly on pop changes
+        this.optimizationProblem.evaluate(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -164,11 +164,11 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
     @Override
     public void initByPopulation(Population pop, boolean reset) {
         loopCnt = 0;
-        this.m_Population = (Population) pop.clone();
-        m_Population.addPopulationChangedEventListener(null);
+        this.population = (Population) pop.clone();
+        population.addPopulationChangedEventListener(null);
         if (reset) {
-            this.m_Population.init();
-            this.m_Problem.evaluate(this.m_Population);
+            this.population.init();
+            this.optimizationProblem.evaluate(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
@@ -177,8 +177,8 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -187,13 +187,13 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         double improvement;
 
         loopCnt++;
-        m_Population.addPopulationChangedEventListener(this);
-        m_Population.setNotifyEvalInterval(notifyGuiEvery);
+        population.addPopulationChangedEventListener(this);
+        population.setNotifyEvalInterval(notifyGuiEvery);
         Pair<Population, Double> popD;
-        int funCallsBefore = m_Population.getFunctionCalls();
-        int evalsNow, lastOverhead = (m_Population.getFunctionCalls() % hcEvalCycle);
+        int funCallsBefore = population.getFunctionCalls();
+        int evalsNow, lastOverhead = (population.getFunctionCalls() % hcEvalCycle);
         if (lastOverhead > 0) {
-            evalsNow = (2 * hcEvalCycle - (m_Population.getFunctionCalls() % hcEvalCycle));
+            evalsNow = (2 * hcEvalCycle - (population.getFunctionCalls() % hcEvalCycle));
         } else {
             evalsNow = hcEvalCycle;
         }
@@ -201,7 +201,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
             if (TRACE) {
                 System.out.println("evalCycle: " + hcEvalCycle + ", evals now: " + evalsNow);
             }
-            popD = PostProcess.clusterLocalSearch(localSearchMethod, m_Population, (AbstractOptimizationProblem) m_Problem, sigmaClust, evalsNow, 0.5, mutator);
+            popD = PostProcess.clusterLocalSearch(localSearchMethod, population, (AbstractOptimizationProblem) optimizationProblem, sigmaClust, evalsNow, 0.5, mutator);
             //		(population, (AbstractOptimizationProblem)problem, sigmaClust, hcEvalCycle - (population.getFunctionCalls() % hcEvalCycle), 0.5);
             if (popD.head().getFunctionCalls() == funCallsBefore) {
                 System.err.println("Bad case, increasing allowed evaluations!");
@@ -209,12 +209,12 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
             }
         } while (popD.head().getFunctionCalls() == funCallsBefore);
         improvement = popD.tail();
-        m_Population = popD.head();
+        population = popD.head();
         if (TRACE) {
-            System.out.println("num inds after clusterLS: " + m_Population.size());
+            System.out.println("num inds after clusterLS: " + population.size());
         }
 
-        popD.head().setGeneration(m_Population.getGeneration() + 1);
+        popD.head().setGeneration(population.getGeneration() + 1);
 
         if (doReinitialization && (improvement < minImprovement)) {
             if (TRACE) {
@@ -231,21 +231,21 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
                 }
 
                 // store results
-                archive.setFunctionCalls(m_Population.getFunctionCalls());
-                archive.addPopulation(m_Population);
+                archive.setFunctionCalls(population.getFunctionCalls());
+                archive.addPopulation(population);
 
                 Population tmpPop = new Population();
                 tmpPop.addPopulationChangedEventListener(null);
                 tmpPop.setTargetSize(initialPopSize);
-                this.m_Problem.initializePopulation(tmpPop);
-                tmpPop.setSameParams(m_Population);
+                this.optimizationProblem.initializePopulation(tmpPop);
+                tmpPop.setSameParams(population);
                 tmpPop.setTargetSize(initialPopSize);
-                this.m_Problem.evaluate(tmpPop);
+                this.optimizationProblem.evaluate(tmpPop);
 
                 // reset population while keeping function calls etc.
-                m_Population.clear();
-                m_Population.addPopulation(tmpPop);
-                m_Population.incrFunctionCallsBy(tmpPop.size());
+                population.clear();
+                population.addPopulation(tmpPop);
+                population.incrFunctionCallsBy(tmpPop.size());
 
             } else {  // decrease step size for hc
                 if (localSearchMethod != PostProcessMethod.hillClimber) {
@@ -270,7 +270,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 //				System.out.println("bla");
 //			}
             // set funcalls to real value
-            m_Population.setFunctionCalls(((Population) source).getFunctionCalls());
+            population.setFunctionCalls(((Population) source).getFunctionCalls());
 //			System.out.println("FunCallIntervalReached at " + (((Population)source).getFunctionCalls()));
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
@@ -288,12 +288,12 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {
@@ -304,11 +304,11 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
     public InterfaceSolutionSet getAllSolutions() {
         Population tmp = new Population();
         tmp.addPopulation(archive);
-        tmp.addPopulation(m_Population);
-        tmp.setFunctionCalls(m_Population.getFunctionCalls());
-        tmp.setGeneration(m_Population.getGeneration());
+        tmp.addPopulation(population);
+        tmp.setFunctionCalls(population.getFunctionCalls());
+        tmp.setGeneration(population.getGeneration());
 //    	tmp = PostProcessInterim.clusterBest(tmp, sigma, 0, PostProcessInterim.KEEP_LONERS, PostProcessInterim.BEST_ONLY);
-        return new SolutionSet(m_Population, tmp);
+        return new SolutionSet(population, tmp);
     }
 
     /**
@@ -323,8 +323,8 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         sbuf.append(", initial pop size: ");
         sbuf.append(getPopulation().getTargetSize());
         sbuf.append("Optimization Problem: ");
-        sbuf.append(this.m_Problem.getStringRepresentationForProblem(this));
-        sbuf.append(this.m_Population.getStringRepresentation());
+        sbuf.append(this.optimizationProblem.getStringRepresentationForProblem(this));
+        sbuf.append(this.population.getStringRepresentation());
         return sbuf.toString();
     }
 
@@ -485,7 +485,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 
     @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
-        return new Object[]{m_Population.size(), mutator.getSigma(), archive.size(), archive.getPopulationMeasures()[0]};
+        return new Object[]{population.size(), mutator.getSigma(), archive.size(), archive.getPopulationMeasures()[0]};
     }
 
     public boolean isDoReinitialization() {

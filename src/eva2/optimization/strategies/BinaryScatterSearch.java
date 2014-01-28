@@ -32,8 +32,8 @@ import java.util.BitSet;
 public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 
     private static boolean TRACE = false;
-    transient private InterfacePopulationChangedEventListener m_Listener = null;
-    private String m_Identifier = "BinaryScatterSearch";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener = null;
+    private String identifier = "BinaryScatterSearch";
     private int MaxImpIter = 5;
     private int poolSize = 100;
     private int refSetSize = 10;
@@ -64,8 +64,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * @param b
      */
     public BinaryScatterSearch(BinaryScatterSearch b) {
-        this.m_Listener = b.m_Listener;
-        this.m_Identifier = b.m_Identifier;
+        this.populationChangedEventListener = b.populationChangedEventListener;
+        this.identifier = b.identifier;
         this.MaxImpIter = b.MaxImpIter;
         this.poolSize = b.poolSize;
         this.refSetSize = b.refSetSize;
@@ -153,14 +153,14 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -773,12 +773,12 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     @Override
@@ -797,8 +797,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     }
 
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 

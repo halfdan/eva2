@@ -197,7 +197,7 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
         // first plot the populations
         if (false) {
             for (int i = 0; i < this.m_MOCCOViewer.m_MOCCO.m_State.m_PopulationHistory.length; i++) {
-                //System.out.println("Population " + i+" show " +this.m_MOCCOViewer.m_MOCCO.m_State.m_Show[i]);
+                //System.out.println("Population " + i+" show " +this.m_MOCCOViewer.m_MOCCO.m_State.show[i]);
                 if (this.m_MOCCOViewer.m_MOCCO.m_State.m_Show[i]) {
                     mySet = new GraphPointSet(i + 10, this.m_Area);
                     mySet.setConnectedMode(false);

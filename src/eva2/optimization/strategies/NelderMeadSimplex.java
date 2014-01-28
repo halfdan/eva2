@@ -28,10 +28,10 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     // simulating the generational cycle. Set rather small (eg 5) for use as local search, higher for global search (eg 50)
     private int generationCycle = 50;
     private int fitIndex = 0; // choose criterion for multi objective functions
-    private Population m_Population;
-    private AbstractOptimizationProblem m_Problem;
-    private transient Vector<InterfacePopulationChangedEventListener> m_Listener;
-    private String m_Identifier = "NelderMeadSimplex";
+    private Population population;
+    private AbstractOptimizationProblem optimizationProblem;
+    private transient Vector<InterfacePopulationChangedEventListener> populationChangedEventListeners;
+    private String identifier = "NelderMeadSimplex";
     private boolean checkConstraints = true;
 
     public NelderMeadSimplex() {
@@ -44,11 +44,11 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     }
 
     public NelderMeadSimplex(NelderMeadSimplex a) {
-        m_Problem = (AbstractOptimizationProblem) a.m_Problem.clone();
-        setPopulation((Population) a.m_Population.clone());
+        optimizationProblem = (AbstractOptimizationProblem) a.optimizationProblem.clone();
+        setPopulation((Population) a.population.clone());
         populationSize = a.populationSize;
         generationCycle = a.generationCycle;
-        m_Identifier = a.m_Identifier;
+        identifier = a.identifier;
     }
 
     @Override
@@ -58,17 +58,17 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
     @Override
     public void setIdentifier(String name) {
-        m_Identifier = name;
+        identifier = name;
     }
 
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        m_Problem = (AbstractOptimizationProblem) problem;
+        optimizationProblem = (AbstractOptimizationProblem) problem;
     }
 
     public boolean setProblemAndPopSize(InterfaceOptimizationProblem problem) {
         setProblem(problem);
-        if (m_Problem instanceof AbstractProblemDouble) {
+        if (optimizationProblem instanceof AbstractProblemDouble) {
             setPopulationSize(((AbstractProblemDouble) problem).getProblemDimension() + 1);
             return true;
         } else {
@@ -85,11 +85,11 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
         if (ea != null) {
-            if (m_Listener == null) {
-                m_Listener = new Vector<InterfacePopulationChangedEventListener>();
+            if (populationChangedEventListeners == null) {
+                populationChangedEventListeners = new Vector<InterfacePopulationChangedEventListener>();
             }
-            if (!m_Listener.contains(ea)) {
-                m_Listener.add(ea);
+            if (!populationChangedEventListeners.contains(ea)) {
+                populationChangedEventListeners.add(ea);
             }
         }
     }
@@ -97,10 +97,10 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == null) {
+        if (populationChangedEventListeners == null) {
             return false;
         } else {
-            return m_Listener.remove(ea);
+            return populationChangedEventListeners.remove(ea);
         }
     }
 
@@ -167,7 +167,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 //
 //		problem.evaluate(reflectedInd);
         AbstractEAIndividual reflectedInd = createEvalIndy(bestpop, r);
-        this.m_Population.incrFunctionCalls();
+        this.population.incrFunctionCalls();
 
         if (firstIsBetter(best, reflectedInd) && firstIsBetter(reflectedInd, bestpop.getWorstEAIndividual(fitIndex))) {
             return reflectedInd;
@@ -181,7 +181,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
             }
 
             AbstractEAIndividual e_ind = createEvalIndy(bestpop, e);
-            this.m_Population.incrFunctionCalls();
+            this.population.incrFunctionCalls();
 
             if (firstIsBetter(e_ind, reflectedInd)) { //expandiertes ist besser als reflektiertes
                 return e_ind;
@@ -202,7 +202,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 //			((InterfaceDataTypeDouble)c_ind).setDoubleGenotype(c);
 //			problem.evaluate(c_ind);
             AbstractEAIndividual c_ind = createEvalIndy(bestpop, c);
-            this.m_Population.incrFunctionCalls();
+            this.population.incrFunctionCalls();
             if (firstIsBetterEqual(c_ind, worst)) {
                 return c_ind;
             }
@@ -214,46 +214,46 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
         AbstractEAIndividual e_ind = (AbstractEAIndividual) ((AbstractEAIndividual) pop.getIndividual(1)).clone();
         ((InterfaceDataTypeDouble) e_ind).setDoubleGenotype(newGenotype);
         e_ind.resetConstraintViolation();
-        m_Problem.evaluate(e_ind);
+        optimizationProblem.evaluate(e_ind);
         if (e_ind.getFitness(0) < 6000) {
-            m_Problem.evaluate(e_ind);
+            optimizationProblem.evaluate(e_ind);
         }
         return e_ind;
     }
 
     @Override
     public String getIdentifier() {
-        return m_Identifier;
+        return identifier;
     }
 
     @Override
     public String getName() {
-        return m_Identifier;
+        return identifier;
     }
 
     @Override
     public Population getPopulation() {
-        return m_Population;
+        return population;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return m_Problem;
+        return optimizationProblem;
     }
 
     @Override
     public String getStringRepresentation() {
         StringBuilder strB = new StringBuilder(200);
         strB.append("Nelder-Mead-Simplex Strategy:\nOptimization Problem: ");
-        strB.append(this.m_Problem.getStringRepresentationForProblem(this));
+        strB.append(this.optimizationProblem.getStringRepresentationForProblem(this));
         strB.append("\n");
-        strB.append(this.m_Population.getStringRepresentation());
+        strB.append(this.population.getStringRepresentation());
         return strB.toString();
     }
 
     @Override
     public void init() {
-        initByPopulation(m_Population, true);
+        initByPopulation(population, true);
     }
 
     @Override
@@ -261,16 +261,16 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
         setPopulation(pop);
         pop.addPopulationChangedEventListener(this);
         if (reset) {
-            m_Problem.initializePopulation(m_Population);
-            m_Problem.evaluate(m_Population);
+            optimizationProblem.initializePopulation(population);
+            optimizationProblem.evaluate(population);
         }
 //		fireNextGenerationPerformed();
     }
 
     private void fireNextGenerationPerformed() {
-        if (m_Listener != null) {
-            for (int i = 0; i < m_Listener.size(); i++) {
-                m_Listener.elementAt(i).registerPopulationStateChanged(this, Population.NEXT_GENERATION_PERFORMED);
+        if (populationChangedEventListeners != null) {
+            for (int i = 0; i < populationChangedEventListeners.size(); i++) {
+                populationChangedEventListeners.elementAt(i).registerPopulationStateChanged(this, Population.NEXT_GENERATION_PERFORMED);
             }
         }
     }
@@ -279,11 +279,11 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     public void optimize() {
         // make at least as many calls as there are individuals within the population.
         // this simulates the generational loop expected by some other modules
-        int evalCntStart = m_Population.getFunctionCalls();
+        int evalCntStart = population.getFunctionCalls();
         int evalsDone = 0;
-        m_Problem.evaluatePopulationStart(m_Population);
+        optimizationProblem.evaluatePopulationStart(population);
         do {
-            AbstractEAIndividual ind = simplexStep(m_Population);
+            AbstractEAIndividual ind = simplexStep(population);
             if (ind != null) { //Verbesserung gefunden
                 double[] x = ((InterfaceDataTypeDouble) ind).getDoubleData();
                 double[][] range = ((InterfaceDataTypeDouble) ind).getDoubleRange();
@@ -294,32 +294,32 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 //					problem.evaluate(ind);
 //					this.population.incrFunctionCalls();
                 }
-                m_Population.set(m_Population.getIndexOfWorstIndividualNoConstr(fitIndex), ind, fitIndex);
+                population.set(population.getIndexOfWorstIndividualNoConstr(fitIndex), ind, fitIndex);
             } else {//keine Verbesserung gefunden shrink!!
 
-                double[] u_1 = ((InterfaceDataTypeDouble) m_Population.getBestEAIndividual(fitIndex)).getDoubleData();
+                double[] u_1 = ((InterfaceDataTypeDouble) population.getBestEAIndividual(fitIndex)).getDoubleData();
 
-                for (int j = 0; j < m_Population.size(); j++) {
-                    double[] c = ((InterfaceDataTypeDouble) m_Population.getEAIndividual(j)).getDoubleData();
+                for (int j = 0; j < population.size(); j++) {
+                    double[] c = ((InterfaceDataTypeDouble) population.getEAIndividual(j)).getDoubleData();
                     for (int i = 0; i < c.length; i++) {
                         c[i] = 0.5 * c[i] + 0.5 * u_1[i];
                     }
-                    ((InterfaceDataTypeDouble) m_Population.getEAIndividual(j)).setDoubleGenotype(c);
+                    ((InterfaceDataTypeDouble) population.getEAIndividual(j)).setDoubleGenotype(c);
 //					population.getEAIndividual(j).resetConstraintViolation(); // not a good idea because during evaluation, a stats update may be performed which mustnt see indies which are evaluated, but possible constraints have been reset.
                 }
-                m_Problem.evaluate(m_Population);
+                optimizationProblem.evaluate(population);
             }
-            evalsDone = m_Population.getFunctionCalls() - evalCntStart;
+            evalsDone = population.getFunctionCalls() - evalCntStart;
         } while (evalsDone < generationCycle);
-        m_Problem.evaluatePopulationEnd(m_Population);
-        this.m_Population.incrGeneration();
+        optimizationProblem.evaluatePopulationEnd(population);
+        this.population.incrGeneration();
     }
 
     @Override
     public void setPopulation(Population pop) {
-        m_Population = pop;
-        m_Population.addPopulationChangedEventListener(this);
-        m_Population.setNotifyEvalInterval(populationSize);
+        population = pop;
+        population.addPopulationChangedEventListener(this);
+        population.setNotifyEvalInterval(populationSize);
     }
 
     @Override
@@ -340,9 +340,9 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
      */
     public void setPopulationSize(int populationSize) {
         this.populationSize = populationSize;
-        if (m_Population != null) {
-            m_Population.setTargetSize(populationSize);
-            m_Population.setNotifyEvalInterval(m_Population.getTargetSize());
+        if (population != null) {
+            population.setTargetSize(populationSize);
+            population.setNotifyEvalInterval(population.getTargetSize());
         }
     }
 

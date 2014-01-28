@@ -32,7 +32,7 @@ import java.io.IOException;
  */
 public class MOClusteringSeparation implements InterfaceMigration, java.io.Serializable {
 
-    public boolean m_Debug = false;
+    public boolean debug = false;
     private ClusteringKMeans m_KMeans = new ClusteringKMeans();
     private ArchivingNSGAII m_NSGAII = new ArchivingNSGAII();
     private boolean m_UseConstraints = true;
@@ -44,7 +44,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
     }
 
     public MOClusteringSeparation(MOClusteringSeparation b) {
-        this.m_Debug = b.m_Debug;
+        this.debug = b.debug;
         this.m_UseConstraints = b.m_UseConstraints;
         if (b.m_KMeans != null) {
             this.m_KMeans = (ClusteringKMeans) b.m_KMeans.clone();
@@ -98,7 +98,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
         // collect the populations
         for (int i = 0; i < islands.length; i++) {
             oldIPOP[i] = islands[i].getPopulation();
-            if (this.m_Debug) {
+            if (this.debug) {
                 System.out.println("Got population from " + i + " of size " + oldIPOP[i].size());
             }
             collector.addPopulation((Population) oldIPOP[i].clone());
@@ -106,7 +106,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
         }
         memory = (Population) collector.clone();
 
-//        if (this.m_Debug) {
+//        if (this.debug) {
 //            // let's see how they arrive here
 //            Plot        plot;
 //            double[]    tmpD = new double[2];
@@ -146,7 +146,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
         double[][] c = this.m_KMeans.getC();
         newIPOP = this.m_KMeans.cluster(collector, c);
 
-        if (this.m_Debug) {
+        if (this.debug) {
             Plot plot;
             double[] tmpD = new double[2];
             tmpD[0] = 0;
@@ -199,7 +199,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
                     }
                     ConstBelongsToDifferentClass b = new ConstBelongsToDifferentClass(myClass, myOtherClass, this.m_KMeans.getUseSearchSpace());
                     ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(b);
-//                    if (this.m_Debug) {
+//                    if (this.debug) {
 //                        String out = "";
 //                        out += i+ ". MyClass: {";
 //                        for (int j = 0; j < myClass.length; j++) out += myClass[j]+"; ";
@@ -228,7 +228,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
             if (!oldIPOP[i].targetSizeReached()) {
                 oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize() - oldIPOP[i].size()));
             }
-            if (this.m_Debug) {
+            if (this.debug) {
                 System.out.println("Setting " + i + " to population size " + oldIPOP[i].size());
             }
             islands[i].setPopulation(oldIPOP[i]);

@@ -54,8 +54,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      */
     public ParticleSubSwarmOptimization(ParticleSubSwarmOptimization a) {
         super(a);
-        if (a.m_BestIndividual != null) {
-            m_BestIndividual = (AbstractEAIndividual) a.m_BestIndividual.clone();
+        if (a.bestIndividual != null) {
+            bestIndividual = (AbstractEAIndividual) a.bestIndividual.clone();
         }
 
         maxAllowedSwarmRadiusNormal = a.maxAllowedSwarmRadiusNormal;
@@ -250,7 +250,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @tested junit&
-     * updates the m_BestIndividual member which represents the gbest individual
+     * updates the bestIndividual member which represents the gbest individual
      * (i.e. the best position and fitness encountered by any particle of the swarm)
      * Beware: if a particle enters the swarm its knowledge about its pbest enters the swarm,
      * on the other side: if a particle leaves the swarm its knowledge leaves the swarm as well.
@@ -259,18 +259,18 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         if (getPopulation().size() == 0) {
             return;
         }
-        // First: set m_BestIndividual to any personal best position in the swarm  (-> bestindypbest).
-        // This is necessary because the current m_BestIndividual my came from
+        // First: set bestIndividual to any personal best position in the swarm  (-> bestindypbest).
+        // This is necessary because the current bestIndividual my came from
         // an individual that left the swarm and would never be replaced if it
         // would dominate all remaining positions in the swarm.
         AbstractEAIndividual bestindy = getPopulation().getBestEAIndividual();
         AbstractEAIndividual bestindypbest = (AbstractEAIndividual) bestindy.getData("PersonalBestKey");
-        m_BestIndividual = (AbstractEAIndividual) bestindypbest.clone();
+        bestIndividual = (AbstractEAIndividual) bestindypbest.clone();
         for (int i = 0; i < getPopulation().size(); ++i) {
             AbstractEAIndividual currentindy = getPopulation().getEAIndividual(i);
             AbstractEAIndividual currentindypbest = (AbstractEAIndividual) currentindy.getData("PersonalBestKey");
-            if (currentindypbest.isDominating(m_BestIndividual)) {
-                m_BestIndividual = (AbstractEAIndividual) currentindypbest.clone();
+            if (currentindypbest.isDominating(bestIndividual)) {
+                bestIndividual = (AbstractEAIndividual) currentindypbest.clone();
 //				++gbestImprovmentsInARow;
             } //else gbestImprovmentsInARow = 0;
         }
@@ -347,7 +347,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      */
     public void updateMaxPosDist() {
         //  compute the maximal possible distance in the search space:
-        AbstractOptimizationProblem prob = (AbstractOptimizationProblem) m_Problem;
+        AbstractOptimizationProblem prob = (AbstractOptimizationProblem) optimizationProblem;
         // problem must have called initializeProblem, so that the template is set correctly. This shouls always be the case here...
         AbstractEAIndividual template = prob.getIndividualTemplate();
         if (template == null) {
@@ -481,7 +481,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         Population tmp = new Population();
         tmp.setTargetSize(particleIndices.length);
         //////////////
-        AbstractOptimizationProblem prob = (AbstractOptimizationProblem) m_Problem;
+        AbstractOptimizationProblem prob = (AbstractOptimizationProblem) optimizationProblem;
         AbstractEAIndividual template = prob.getIndividualTemplate(); // problem must be inited at this point
         AbstractEAIndividual tmpIndy;
 
@@ -494,7 +494,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         ///////////
 
         ParticleSubSwarmOptimization tmpopt = new ParticleSubSwarmOptimization();
-        tmpopt.setProblem(this.m_Problem);
+        tmpopt.setProblem(this.optimizationProblem);
         tmpopt.evaluatePopulation(tmp);
         tmpopt.initByPopulation(tmp, false); // + size FCs
 
@@ -605,7 +605,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
         updateMaxPosDist();
     }
 
@@ -623,11 +623,11 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
         for (int i = 0; i < population.size(); ++i) {
             AbstractEAIndividual indy = population.getEAIndividual(i);
-            //double dist = metric.distance(m_BestIndividual, indy);
-            double sqrdDist = EuclideanMetric.squaredEuclideanDistance(AbstractEAIndividual.getDoublePositionShallow(m_BestIndividual),
+            //double dist = metric.distance(bestIndividual, indy);
+            double sqrdDist = EuclideanMetric.squaredEuclideanDistance(AbstractEAIndividual.getDoublePositionShallow(bestIndividual),
                     AbstractEAIndividual.getDoublePositionShallow(indy));
 
-            //dist = distance(m_BestIndividual, indy);
+            //dist = distance(bestIndividual, indy);
             if (sqrdDist > max) {
                 max = sqrdDist;
             }
@@ -773,7 +773,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     public AbstractEAIndividual getGBestIndividual() {
-        return m_BestIndividual;
+        return bestIndividual;
     }
 
     /**

@@ -44,9 +44,9 @@ import java.util.ArrayList;
 @Description("A scatter search variant after Rodiguez-Fernandez, J.Egea and J.Banga: Novel metaheuristic for parameter estimation in nonlinear dynamic biological systems, BMC Bioinf. 2006")
 public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 
-    transient private InterfacePopulationChangedEventListener m_Listener = null;
-    private String m_Identifier = "ScatterSearch";
-    private AbstractOptimizationProblem problem = new F1Problem();
+    transient private InterfacePopulationChangedEventListener listener = null;
+    private String identifier = "ScatterSearch";
+    private AbstractOptimizationProblem optimizationProblem = new F1Problem();
     private Population oldRefSet, refSet = new Population(10);
     private transient Population combinations = null;
     private AbstractEAIndividual template = null;
@@ -79,7 +79,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
     public ScatterSearch(ScatterSearch o) {
         this.refSet = (Population) o.refSet.clone();
-        this.problem = (AbstractOptimizationProblem) o.problem.clone();
+        this.optimizationProblem = (AbstractOptimizationProblem) o.optimizationProblem.clone();
         this.template = (AbstractEAIndividual) o.template.clone();
         this.range = ((InterfaceDataTypeDouble) template).getDoubleRange();
         this.refSetSize = o.refSetSize;
@@ -104,7 +104,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.problem = (AbstractOptimizationProblem) problem;
+        this.optimizationProblem = (AbstractOptimizationProblem) problem;
     }
 
     @Override
@@ -136,7 +136,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
      * @param pop
      */
     private void initRefSet(Population pop) {
-        problem.evaluate(pop);
+        optimizationProblem.evaluate(pop);
         if (TRACE) {
             System.out.println("building ref set from pop with avg dist " + pop.getPopulationMeasures()[0]);
         }
@@ -156,11 +156,11 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         firstTime = true;
         refSet = null;
         combinations = null;
-        template = problem.getIndividualTemplate();
+        template = optimizationProblem.getIndividualTemplate();
         if (!(template instanceof InterfaceDataTypeDouble)) {
             System.err.println("Requiring double data!");
         } else {
-            Object dim = BeanInspector.callIfAvailable(problem, "getProblemDimension", null);
+            Object dim = BeanInspector.callIfAvailable(optimizationProblem, "getProblemDimension", null);
             if (dim == null) {
                 System.err.println("Couldnt get problem dimension!");
             }
@@ -176,15 +176,15 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.listener != null) {
+            this.listener.registerPopulationStateChanged(this, name);
         }
     }
 
     //	public double evaluate(double[] x) {
 //		AbstractEAIndividual indy = (AbstractEAIndividual)template.clone();
 //		((InterfaceDataTypeDouble)indy).setDoubleGenotype(x);
-//		problem.evaluate(indy);
+//		optimizationProblem.evaluate(indy);
 //		return indy.getFitness(0);
 //	}
     @Override
@@ -224,7 +224,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         }
         firstTime = false;
 
-        problem.evaluatePopulationStart(refSet);
+        optimizationProblem.evaluatePopulationStart(refSet);
         int funCallsStart = refSet.getFunctionCalls();
         do {
             if (combinations == null || combinations.size() == 0) {
@@ -243,7 +243,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
                 updateRefSet(refSet, combinations, oldRefSet);
             }
         } while (refSet.getFunctionCalls() - funCallsStart < generationCycle);
-        problem.evaluatePopulationEnd(refSet);
+        optimizationProblem.evaluatePopulationEnd(refSet);
 
         if (TRACE) {
             System.out.println("Improvements: " + lastImprovementCount);
@@ -302,7 +302,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
             }
             AbstractEAIndividual winner = diversifiedPop.getEAIndividual(sel);
             // evaluate the new indy
-            problem.evaluate(winner);
+            optimizationProblem.evaluate(winner);
             // 	add it to the newRefSet, increase h
             newRefSet.add(winner);
             newRefSet.incrFunctionCalls();
@@ -416,7 +416,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         if (localSearchMethod.getSelectedTagID() == 0) {
             return localSolverHC(cand, hcSteps);
         } else {
-            return PostProcess.localSolverNMS(cand, hcSteps, nelderMeadInitPerturbation, problem);
+            return PostProcess.localSolverNMS(cand, hcSteps, nelderMeadInitPerturbation, optimizationProblem);
         }
     }
 
@@ -425,7 +425,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 //		double[] fitBefore = cand.getFitness();
         Population hcPop = new Population(1);
         hcPop.add(cand);
-        int stepsDone = PostProcess.processWithHC(hcPop, problem, hcSteps);
+        int stepsDone = PostProcess.processWithHC(hcPop, optimizationProblem, hcSteps);
         return new Pair<AbstractEAIndividual, Integer>(hcPop.getEAIndividual(0), stepsDone);
     }
 
@@ -548,7 +548,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
             Mathematics.projectToRange(combi, range);
         }
         ((InterfaceDataTypeDouble) resIndy).setDoubleGenotype(combi);
-        problem.evaluate(resIndy);
+        optimizationProblem.evaluate(resIndy);
         refSet.incrFunctionCalls();
         return resIndy;
     }
@@ -735,12 +735,12 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     ///////////// Trivials...
     @Override
     public void setIdentifier(String name) {
-        m_Identifier = name;
+        identifier = name;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return problem;
+        return optimizationProblem;
     }
 
     @Override
@@ -751,14 +751,14 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        m_Listener = ea;
+        listener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (listener == ea) {
+            listener = null;
             return true;
         } else {
             return false;
@@ -767,7 +767,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
     @Override
     public String getIdentifier() {
-        return m_Identifier;
+        return identifier;
     }
 
     @Override
@@ -872,7 +872,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
             InterfaceTerminator term, String dataPrefix,
             AbstractOptimizationProblem problem, InterfacePopulationChangedEventListener listener) {
 
-//		problem.initializeProblem();
+//		optimizationProblem.initializeProblem();
 
         OptimizationParameters params = specialSS(localSearchSteps, localSearchFitnessFilter, nmInitPerturb, relativeFitCrit, refSetSize, problem, term);
 

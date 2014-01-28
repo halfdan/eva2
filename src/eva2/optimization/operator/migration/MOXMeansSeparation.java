@@ -103,7 +103,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
         }
         memory = (Population) collector.clone();
 
-//        if (this.m_Debug) {
+//        if (this.debug) {
 //            // let's see how they arrive here
 //            Plot        plot;
 //            double[]    tmpD = new double[2];
@@ -201,7 +201,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
                     }
                     ConstBelongsToDifferentClass b = new ConstBelongsToDifferentClass(myClass, myOtherClass, this.m_XMeans.getUseSearchSpace());
                     ((AbstractMultiObjectiveOptimizationProblem) prob).m_AreaConst4Parallelization.add(b);
-//                    if (this.m_Debug) {
+//                    if (this.debug) {
 //                        String out = "";
 //                        out += i+ ". MyClass: {";
 //                        for (int j = 0; j < myClass.length; j++) out += myClass[j]+"; ";
