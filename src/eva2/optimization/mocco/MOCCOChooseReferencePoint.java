@@ -12,20 +12,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.10.2005
- * Time: 18:42:30
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfaceProcessElement, InterfaceRefPointListener {
 
-    private JTextField[] m_JTextField;
-    private double[] m_ReferencePoint;
-    JPanel m_Selected;
+    private JTextField[] textField;
+    private double[] referencePoint;
+    JPanel selectedPanel;
 
     public MOCCOChooseReferencePoint(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
+        this.mocco = mocco;
     }
 
     /**
@@ -33,46 +29,46 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
+        this.mocco.controlPanel.removeAll();
 
         // The button panel
         JButton tmpB = new JButton("Continue to algorithm parametrization.");
         tmpB.addActionListener(continue2);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
         // the parameter panel
-        this.m_Mocco.m_JPanelParameters.removeAll();
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
-        this.m_Mocco.m_JPanelParameters.add(this.makeHelpText("Choose a reference point of aspiration levels" +
+        this.mocco.parameterPanel.removeAll();
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
+        this.mocco.parameterPanel.add(this.makeHelpText("Choose a reference point of aspiration levels" +
                 " which are not necessarily attainable, but will be used as goal for the following optimzation" +
                 " process. For the sake of simplicity this reference point has to be selected in fitness space only!"), BorderLayout.NORTH);
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new BorderLayout());
         tmpP.add(new JLabel("Currently selected solution:"), BorderLayout.NORTH);
-        this.m_Selected = new JPanel();
-        tmpP.add(this.m_Selected, BorderLayout.CENTER);
-        this.m_Mocco.m_View.setRefPointSelectable(true);
-        this.m_Mocco.m_View.addRefPointSelectionListener(this);
+        this.selectedPanel = new JPanel();
+        tmpP.add(this.selectedPanel, BorderLayout.CENTER);
+        this.mocco.view.setRefPointSelectable(true);
+        this.mocco.view.addRefPointSelectionListener(this);
         this.updateSelected();
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
-        this.m_Mocco.m_JPanelParameters.validate();
-        this.m_Mocco.m_JPanelControl.validate();
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.CENTER);
+        this.mocco.parameterPanel.validate();
+        this.mocco.controlPanel.validate();
     }
 
     private void updateSelected() {
-        this.m_Selected.removeAll();
-        InterfaceOptimizationObjective[] objectives = ((InterfaceMultiObjectiveDeNovoProblem) this.m_Mocco.m_State.m_CurrentProblem).getProblemObjectives();
-        this.m_Selected.setLayout(new BorderLayout());
-        if (this.m_Mocco.m_View.m_ReferencePoint == null) {
-            this.m_Selected.add(new JLabel("No reference point! Wierd there should be a default value!?"), BorderLayout.NORTH);
+        this.selectedPanel.removeAll();
+        InterfaceOptimizationObjective[] objectives = ((InterfaceMultiObjectiveDeNovoProblem) this.mocco.state.currentProblem).getProblemObjectives();
+        this.selectedPanel.setLayout(new BorderLayout());
+        if (this.mocco.view.referencePoint == null) {
+            this.selectedPanel.add(new JLabel("No reference point! Wierd there should be a default value!?"), BorderLayout.NORTH);
         } else {
-            this.m_Selected.add(new JLabel("Selected Reference Point:"), BorderLayout.NORTH);
+            this.selectedPanel.add(new JLabel("Selected Reference Point:"), BorderLayout.NORTH);
             JPanel tmpP = new JPanel();
-            this.m_JTextField = new JTextField[this.m_Mocco.m_View.m_ReferencePoint.length];
+            this.textField = new JTextField[this.mocco.view.referencePoint.length];
             tmpP.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.anchor = GridBagConstraints.WEST;
             gbc.fill = GridBagConstraints.BOTH;
-            for (int i = 0; i < this.m_Mocco.m_View.m_ReferencePoint.length; i++) {
+            for (int i = 0; i < this.mocco.view.referencePoint.length; i++) {
                 gbc.gridx = 0;
                 gbc.gridy = i;
                 gbc.weightx = 1;
@@ -80,14 +76,14 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
                 gbc.gridx = 1;
                 gbc.gridy = i;
                 gbc.weightx = 1;
-                this.m_JTextField[i] = new JTextField("" + this.m_Mocco.m_View.m_ReferencePoint[i]);
-                this.m_JTextField[i].setEditable(true);
-                this.m_JTextField[i].addActionListener(refPointEdited);
-                tmpP.add(this.m_JTextField[i], gbc);
+                this.textField[i] = new JTextField("" + this.mocco.view.referencePoint[i]);
+                this.textField[i].setEditable(true);
+                this.textField[i].addActionListener(refPointEdited);
+                tmpP.add(this.textField[i], gbc);
             }
-            this.m_Selected.add(tmpP, BorderLayout.CENTER);
+            this.selectedPanel.add(tmpP, BorderLayout.CENTER);
         }
-        this.m_Selected.validate();
+        this.selectedPanel.validate();
     }
 
     /**
@@ -96,29 +92,29 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
      * @return double[]     The reference point
      */
     public double[] getReferencePoint() {
-        return this.m_ReferencePoint;
+        return this.referencePoint;
     }
 
     ActionListener refPointEdited = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            for (int i = 0; i < m_JTextField.length; i++) {
-                m_Mocco.m_View.m_ReferencePoint[i] = new Double(m_JTextField[i].getText()).doubleValue();
+            for (int i = 0; i < textField.length; i++) {
+                mocco.view.referencePoint[i] = new Double(textField[i].getText()).doubleValue();
             }
-            m_Mocco.m_View.problemChanged(false);
+            mocco.view.problemChanged(false);
         }
     };
 
     ActionListener continue2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_ReferencePoint = m_Mocco.m_View.m_ReferencePoint;
-            m_Mocco.m_View.setRefPointSelectable(false);
-            m_Mocco.m_View.removeRefPointSelectionListeners();
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelControl.validate();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Finished = true;
+            referencePoint = mocco.view.referencePoint;
+            mocco.view.setRefPointSelectable(false);
+            mocco.view.removeRefPointSelectionListeners();
+            mocco.controlPanel.removeAll();
+            mocco.controlPanel.validate();
+            mocco.parameterPanel.removeAll();
+            hasFinished = true;
         }
     };
 
@@ -135,7 +131,7 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
      */
     @Override
     public void refPointGiven(double[] point) {
-        this.m_ReferencePoint = point;
+        this.referencePoint = point;
         this.updateSelected();
     }
 }

@@ -16,8 +16,8 @@ import java.awt.event.ActionListener;
  */
 public abstract class MOCCOPhase implements InterfaceProcessElement {
 
-    public MOCCOStandalone m_Mocco;
-    public volatile boolean m_Finished = false;
+    public MOCCOStandalone mocco;
+    public volatile boolean hasFinished = false;
 
     /**
      * This method will call the init method and will go to stall
@@ -32,7 +32,7 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
      */
     @Override
     public boolean isFinished() {
-        return this.m_Finished;
+        return this.hasFinished;
     }
 
     /**

@@ -8,18 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 25.10.2005
- * Time: 10:07:09
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOCCOInitialPopulationSize extends MOCCOPhase implements InterfaceProcessElement {
 
-    private JTextField m_JTextField;
+    private JTextField textField;
 
     public MOCCOInitialPopulationSize(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
+        this.mocco = mocco;
     }
 
     /**
@@ -27,16 +23,16 @@ public class MOCCOInitialPopulationSize extends MOCCOPhase implements InterfaceP
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
+        this.mocco.controlPanel.removeAll();
 
         // The button panel
         JButton tmpB = new JButton("Continue to problem redefinition/analyzation.");
         tmpB.addActionListener(continue2);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
         // the parameter panel
-        this.m_Mocco.m_JPanelParameters.removeAll();
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
-        this.m_Mocco.m_JPanelParameters.add(this.makeHelpText("Please choose a size for the " +
+        this.mocco.parameterPanel.removeAll();
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
+        this.mocco.parameterPanel.add(this.makeHelpText("Please choose a size for the " +
                 "initial set of solution alternatives necessary to start the MOCCO optimization " +
                 "cycle."), BorderLayout.NORTH);
         JPanel tmpP = new JPanel();
@@ -48,33 +44,33 @@ public class MOCCOInitialPopulationSize extends MOCCOPhase implements InterfaceP
         gbc.gridx = 0;
         gbc.gridy = 0;
         tmpP.add(new JLabel("Initial Solution Set Size:"), gbc);
-        this.m_JTextField = new JTextField("" + this.m_Mocco.m_State.m_InitialPopulationSize);
-        this.m_JTextField.addActionListener(popSizeEdited);
+        this.textField = new JTextField("" + this.mocco.state.initialPopulationSize);
+        this.textField.addActionListener(popSizeEdited);
         gbc.gridx = 1;
-        tmpP.add(this.m_JTextField, gbc);
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
-        this.m_Mocco.m_JPanelParameters.validate();
-        this.m_Mocco.m_JPanelControl.validate();
+        tmpP.add(this.textField, gbc);
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.CENTER);
+        this.mocco.parameterPanel.validate();
+        this.mocco.controlPanel.validate();
     }
 
 
     ActionListener continue2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelControl.validate();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Finished = true;
+            mocco.controlPanel.removeAll();
+            mocco.controlPanel.validate();
+            mocco.parameterPanel.removeAll();
+            hasFinished = true;
         }
     };
 
     ActionListener popSizeEdited = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            String s = m_JTextField.getText();
+            String s = textField.getText();
             try {
                 int t = new Integer(s).intValue();
-                m_Mocco.m_State.m_InitialPopulationSize = t;
+                mocco.state.initialPopulationSize = t;
             } catch (java.lang.NumberFormatException e) {
 
             }

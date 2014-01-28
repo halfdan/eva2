@@ -27,7 +27,7 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
 
 
     public MOCCOParameterizeSO(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
+        this.mocco = mocco;
     }
 
     /**
@@ -35,37 +35,37 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
+        this.mocco.controlPanel.removeAll();
 
         // The button panel
         JButton tmpB = new JButton("Start optimization.");
         tmpB.setToolTipText("Start the adhoc online optimization.");
         tmpB.addActionListener(continue2);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
         tmpB = new JButton("Save task.");
         tmpB.setToolTipText("Save the optimization problem and algorithm to *.ser file for offline optimization.");
         tmpB.addActionListener(saveState2FileForOfflineOptimization);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
 
         // the parameter panel
         this.init();
 
-        this.m_Mocco.m_JFrame.setVisible(true);
-        this.m_Mocco.m_JFrame.validate();
+        this.mocco.getMainFrame().setVisible(true);
+        this.mocco.getMainFrame().validate();
     }
 
     private void init() {
-        if (this.m_Mocco.m_State.m_Optimizer instanceof MultiObjectiveEA) {
-            JOptionPane.showMessageDialog(this.m_Mocco.m_JFrame,
-                    "The current " + this.m_Mocco.m_State.m_Optimizer.getName() +
+        if (this.mocco.state.optimizer instanceof MultiObjectiveEA) {
+            JOptionPane.showMessageDialog(this.mocco.getMainFrame(),
+                    "The current " + this.mocco.state.optimizer.getName() +
                             " is no single-objective optimizer. I'm defaulting to " +
                             "a Genetic Algorithms, please parameterize accordingly.",
                     "Warning", JOptionPane.WARNING_MESSAGE);
-            this.m_Mocco.m_State.m_Optimizer = new GeneticAlgorithm();
-            this.m_Mocco.m_State.m_Optimizer.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
+            this.mocco.state.optimizer = new GeneticAlgorithm();
+            this.mocco.state.optimizer.setProblem(this.mocco.state.currentProblem);
         }
-        this.m_Mocco.m_JPanelParameters.removeAll();
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
+        this.mocco.parameterPanel.removeAll();
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -75,7 +75,7 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
         GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
         editor.name = "Optimizer";
         try {
-            editor.value = this.m_Mocco.m_State.m_Optimizer;
+            editor.value = this.mocco.state.optimizer;
             editor.editor = PropertyEditorProvider.findEditor(editor.value.getClass());
             if (editor.editor == null) {
                 editor.editor = PropertyEditorProvider.findEditor(InterfaceOptimizer.class);
@@ -103,7 +103,7 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
         editor = new GeneralOptimizationEditorProperty();
         editor.name = "Terminator";
         try {
-            editor.value = this.m_Mocco.m_State.m_Terminator;
+            editor.value = this.mocco.state.terminator;
             editor.editor = PropertyEditorProvider.findEditor(editor.value.getClass());
             if (editor.editor == null) {
                 editor.editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
@@ -127,8 +127,8 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
         gbc.gridy = 1;
         gbc.weightx = 2;
         tmpP.add(editor.view, gbc);
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
-        this.m_Mocco.m_JPanelParameters.add(this.makeInformationText("Single-Objective Optimiaztion", "" +
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.CENTER);
+        this.mocco.parameterPanel.add(this.makeInformationText("Single-Objective Optimiaztion", "" +
                 "Please choose an appropriate single-objecitve optimizer."), BorderLayout.NORTH);
 
     }
@@ -136,9 +136,9 @@ public class MOCCOParameterizeSO extends MOCCOPhase implements InterfaceProcessE
     ActionListener continue2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Finished = true;
+            mocco.controlPanel.removeAll();
+            mocco.parameterPanel.removeAll();
+            hasFinished = true;
         }
     };
 }

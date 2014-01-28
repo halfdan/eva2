@@ -1,6 +1,5 @@
 package eva2.optimization.go;
 
-import eva2.gui.JParaPanel;
 import eva2.gui.PropertyDoubleArray;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.*;
@@ -20,28 +19,24 @@ import java.awt.event.WindowEvent;
 import java.io.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 21.10.2005
- * Time: 14:31:56
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOCCOStandalone implements InterfaceStandaloneOptimization, InterfacePopulationChangedEventListener, Serializable {
 
-    public volatile MOCCOState m_State;
+    public volatile MOCCOState state;
     private SwingWorker worker;
-    private volatile boolean m_StillWorking = false;
-    public int m_Iteration = -1;
-    public JFrame m_JFrame;
+    private volatile boolean stillWorking = false;
+    public int iteration = -1;
+    private JFrame mainFrame;
     //public ParetoFrontView      n_ParetoFrontView;
-    public boolean m_Debug = false;
-    public MOCCOViewer m_View;
-    public JPanel m_JPanelMain, m_JPanelParameters, m_JPanelControl, m_JPanelButtom;
-    private JLabel m_CurrentState;
-    private JProgressBar m_ProgressBar;
+    private boolean debug = false;
+    public MOCCOViewer view;
+    public JPanel mainPanel, parameterPanel, controlPanel, buttonPanel;
+    private JLabel currentState;
+    private JProgressBar progressBar;
 
     public MOCCOStandalone() {
-        this.m_State = new MOCCOState();
+        this.state = new MOCCOState();
     }
 
     /**
@@ -49,44 +44,43 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
      * frame
      */
     public void initMOCCOFrame() {
-        JParaPanel paraPanel = new JParaPanel(this, "MyGUI");
 
-        this.m_State.isVisible = true;
-        this.m_JFrame = new JFrame();
-        this.m_JFrame.setTitle("MOCCO - Interactive Multi-Objective Optimization");
-        this.m_JFrame.setSize(1200, 750);
-        this.m_JFrame.setLocation(50, 50);
-        this.m_JFrame.addWindowListener(new WindowAdapter() {
+        this.state.isVisible = true;
+        this.mainFrame = new JFrame();
+        this.mainFrame.setTitle("MOCCO - Interactive Multi-Objective Optimization");
+        this.mainFrame.setSize(1200, 750);
+        this.mainFrame.setLocation(50, 50);
+        this.mainFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent ev) {
                 System.exit(0);
             }
         });
         // init basic panel structure
-        this.m_JPanelMain = new JPanel();
-        this.m_JPanelParameters = new JPanel();
-        this.m_JPanelParameters.setPreferredSize(new Dimension(500, 300));
-        this.m_JPanelParameters.setMinimumSize(new Dimension(500, 300));
-        this.m_JPanelControl = new JPanel();
-        this.m_View = new MOCCOViewer(this);
-        this.m_JFrame.getContentPane().add(this.m_JPanelMain);
-        this.m_JPanelMain.setLayout(new BorderLayout());
-        this.m_JPanelMain.add(this.m_JPanelParameters, BorderLayout.WEST);
-        this.m_JPanelMain.add(this.m_View, BorderLayout.CENTER);
-        this.m_JPanelButtom = new JPanel();
-        this.m_JPanelButtom.setLayout(new BorderLayout());
+        this.mainPanel = new JPanel();
+        this.parameterPanel = new JPanel();
+        this.parameterPanel.setPreferredSize(new Dimension(500, 300));
+        this.parameterPanel.setMinimumSize(new Dimension(500, 300));
+        this.controlPanel = new JPanel();
+        this.view = new MOCCOViewer(this);
+        this.mainFrame.getContentPane().add(this.mainPanel);
+        this.mainPanel.setLayout(new BorderLayout());
+        this.mainPanel.add(this.parameterPanel, BorderLayout.WEST);
+        this.mainPanel.add(this.view, BorderLayout.CENTER);
+        this.buttonPanel = new JPanel();
+        this.buttonPanel.setLayout(new BorderLayout());
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new GridLayout(2, 1));
-        this.m_CurrentState = new JLabel("Problem Initialization");
-        tmpP.add(this.m_CurrentState);
-        this.m_ProgressBar = new JProgressBar();
-        tmpP.add(this.m_ProgressBar);
-        this.m_JPanelButtom.add(tmpP, BorderLayout.CENTER);
-        this.m_JPanelControl.setMinimumSize(new Dimension(400, 0));
-        this.m_JPanelControl.setPreferredSize(new Dimension(400, 0));
-        this.m_JPanelButtom.add(this.m_JPanelControl, BorderLayout.EAST);
-        this.m_JPanelMain.add(this.m_JPanelButtom, BorderLayout.SOUTH);
-        this.m_JFrame.validate();
+        this.currentState = new JLabel("Problem Initialization");
+        tmpP.add(this.currentState);
+        this.progressBar = new JProgressBar();
+        tmpP.add(this.progressBar);
+        this.buttonPanel.add(tmpP, BorderLayout.CENTER);
+        this.controlPanel.setMinimumSize(new Dimension(400, 0));
+        this.controlPanel.setPreferredSize(new Dimension(400, 0));
+        this.buttonPanel.add(this.controlPanel, BorderLayout.EAST);
+        this.mainPanel.add(this.buttonPanel, BorderLayout.SOUTH);
+        this.mainFrame.validate();
         // everything is prepared let's start the main loop
         this.MOCCOOptimization();
     }
@@ -95,15 +89,15 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
         boolean cont = true;
         InterfaceProcessElement tmpP;
         while (cont) {
-            this.m_Iteration++;
-            while (m_StillWorking) {
+            this.iteration++;
+            while (stillWorking) {
                 try {
                     Thread.sleep(1000);
                 } catch (java.lang.InterruptedException e) {
                 }
             }
-            if (this.m_State.m_OriginalProblem == null) {
-                this.m_State.m_OriginalProblem = new TF1Problem();
+            if (this.state.originalProblem == null) {
+                this.state.originalProblem = new TF1Problem();
                 tmpP = new MOCCOProblemInitialization(this);
                 tmpP.initProcessElementParametrization();
                 while (!tmpP.isFinished()) {
@@ -112,9 +106,9 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
                     } catch (java.lang.InterruptedException e) {
                     }
                 }
-                this.m_State.m_CurrentProblem = (InterfaceOptimizationProblem) this.m_State.m_OriginalProblem.clone();
-                this.m_View.problemChanged(true);
-                this.m_JPanelParameters.removeAll();
+                this.state.currentProblem = (InterfaceOptimizationProblem) this.state.originalProblem.clone();
+                this.view.problemChanged(true);
+                this.parameterPanel.removeAll();
                 tmpP = new MOCCOInitialPopulationSize(this);
                 tmpP.initProcessElementParametrization();
                 while (!tmpP.isFinished()) {
@@ -123,16 +117,16 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
                     } catch (java.lang.InterruptedException e) {
                     }
                 }
-                this.m_State.m_InitialPopulationSize = Math.max(1, this.m_State.m_InitialPopulationSize);
+                this.state.initialPopulationSize = Math.max(1, this.state.initialPopulationSize);
                 Population pop = new Population();
-                pop.setTargetSize(this.m_State.m_InitialPopulationSize);
-                this.m_State.m_CurrentProblem = (InterfaceOptimizationProblem) this.m_State.m_OriginalProblem.clone();
-                this.m_State.m_CurrentProblem.initializePopulation(pop);
-                this.m_State.m_CurrentProblem.evaluate(pop);
-                this.m_State.addPopulation2History(pop);
-                this.m_View.problemChanged(true);
+                pop.setTargetSize(this.state.initialPopulationSize);
+                this.state.currentProblem = (InterfaceOptimizationProblem) this.state.originalProblem.clone();
+                this.state.currentProblem.initializePopulation(pop);
+                this.state.currentProblem.evaluate(pop);
+                this.state.addPopulation2History(pop);
+                this.view.problemChanged(true);
             }
-            ((InterfaceMultiObjectiveDeNovoProblem) this.m_State.m_CurrentProblem).deactivateRepresentationEdit();
+            ((InterfaceMultiObjectiveDeNovoProblem) this.state.currentProblem).deactivateRepresentationEdit();
             this.updateStatus("Analysis/Redefinition", 33);
             tmpP = new MOCCOProblemRedefinition(this);
             tmpP.initProcessElementParametrization();
@@ -142,11 +136,11 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
                 } catch (java.lang.InterruptedException e) {
                 }
             }
-            this.m_State.makeFitnessCache(true);
-            this.m_State.m_CurrentProblem.initializeProblem();
-            this.m_State.makeBackup();
-            this.m_View.problemChanged(true);
-            if (this.m_State.m_CurrentProblem.isMultiObjective()) {
+            this.state.makeFitnessCache(true);
+            this.state.currentProblem.initializeProblem();
+            this.state.makeBackup();
+            this.view.problemChanged(true);
+            if (this.state.currentProblem.isMultiObjective()) {
                 this.updateStatus("MO Strategy Selection", 50);
                 tmpP = new MOCCOChooseMOStrategy(this);
                 tmpP.initProcessElementParametrization();
@@ -292,20 +286,20 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
     private void checkForObjectives(String w) {
         System.out.println("I'm currently " + w);
         System.out.print("Original Problem is ");
-        if (this.m_State.m_OriginalProblem.isMultiObjective()) {
+        if (this.state.originalProblem.isMultiObjective()) {
             System.out.println("multi-objective.");
         } else {
             System.out.println("single-objective.");
         }
         System.out.print("Current Problem is ");
-        if (this.m_State.m_CurrentProblem.isMultiObjective()) {
+        if (this.state.currentProblem.isMultiObjective()) {
             System.out.println("multi-objective.");
         } else {
             System.out.println("single-objective.");
         }
-        if (this.m_State.m_BackupProblem != null) {
+        if (this.state.backupProblem != null) {
             System.out.print("Backup Problem is ");
-            if (this.m_State.m_BackupProblem.isMultiObjective()) {
+            if (this.state.backupProblem.isMultiObjective()) {
                 System.out.println("multi-objective.");
             } else {
                 System.out.println("single-objective.");
@@ -318,9 +312,9 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
     private void checktForMOSO(String w) {
         String s;
         System.out.println("I'm currently at " + w);
-        InterfaceMOSOConverter moso = ((AbstractMultiObjectiveOptimizationProblem) this.m_State.m_CurrentProblem).getMOSOConverter();
+        InterfaceMOSOConverter moso = ((AbstractMultiObjectiveOptimizationProblem) this.state.currentProblem).getMOSOConverter();
         System.out.println("MOSO selected: " + moso.getName());
-        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) this.m_State.m_CurrentProblem).getProblemObjectives();
+        InterfaceOptimizationObjective[] obj = ((InterfaceMultiObjectiveDeNovoProblem) this.state.currentProblem).getProblemObjectives();
         s = "Objectives: {";
         for (int i = 0; i < obj.length; i++) {
             s += obj[i].getIdentName();
@@ -391,11 +385,11 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
         } else {
             String file = args[0];
             go.openObject(file);
-            if (go.m_State == null) {
+            if (go.state == null) {
                 System.out.println("No valid input state!");
                 System.exit(0);
             } else {
-                if (go.m_State.m_Optimizer.getPopulation().getFunctionCalls() == 0) {
+                if (go.state.optimizer.getPopulation().getFunctionCalls() == 0) {
                     // start to optimize
                     go.startExperiment();
                     file = file.replaceAll(".ser", "");
@@ -425,8 +419,8 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
             }
             return obj;
         } catch (Exception ex) {
-            if (this.m_JFrame != null) {
-                JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(), "Open object file", JOptionPane.ERROR_MESSAGE);
+            if (this.mainFrame != null) {
+                JOptionPane.showMessageDialog(this.mainFrame, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(), "Open object file", JOptionPane.ERROR_MESSAGE);
             } else {
                 System.out.println("Couldn't read object: " + selected.getName() + "\n" + ex.getMessage());
             }
@@ -443,11 +437,11 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
         File sFile = new File(saveAs);
         try {
             ObjectOutputStream oo = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(sFile)));
-            oo.writeObject(this.m_State);
+            oo.writeObject(this.state);
             oo.close();
         } catch (Exception ex) {
-            if (this.m_JFrame != null) {
-                JOptionPane.showMessageDialog(this.m_JFrame, "Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage(), "Save object", JOptionPane.ERROR_MESSAGE);
+            if (this.mainFrame != null) {
+                JOptionPane.showMessageDialog(this.mainFrame, "Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage(), "Save object", JOptionPane.ERROR_MESSAGE);
             } else {
                 System.out.println("Couldn't write to file: " + sFile.getName() + "\n" + ex.getMessage());
             }
@@ -463,19 +457,19 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
      */
     @Override
     public void startExperiment() {
-        if (this.m_JFrame != null) {
+        if (this.mainFrame != null) {
         }
-        this.m_StillWorking = true;
-        this.m_State.m_Optimizer.setProblem(this.m_State.m_CurrentProblem);
-        if (this.m_Debug) {
-            System.out.println("" + this.m_State.m_Optimizer.getStringRepresentation());
+        this.stillWorking = true;
+        this.state.optimizer.setProblem(this.state.currentProblem);
+        if (this.debug) {
+            System.out.println("" + this.state.optimizer.getStringRepresentation());
         }
-        this.m_State.m_CurrentProblem.evaluate(this.m_State.m_Optimizer.getPopulation());
-        this.m_State.m_Optimizer.getPopulation().setFunctionCalls(0);
-        if (this.m_State.m_Optimizer.getPopulation().size() == 0) {
-            this.m_State.m_Optimizer.init();
+        this.state.currentProblem.evaluate(this.state.optimizer.getPopulation());
+        this.state.optimizer.getPopulation().setFunctionCalls(0);
+        if (this.state.optimizer.getPopulation().size() == 0) {
+            this.state.optimizer.init();
         }
-        this.m_State.m_Optimizer.addPopulationChangedEventListener(this);
+        this.state.optimizer.addPopulationChangedEventListener(this);
         worker = new SwingWorker() {
             @Override
             public Object construct() {
@@ -485,26 +479,26 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
             @Override
             public void finished() {
                 Population[] pop = null;
-                if (m_State.m_Optimizer instanceof IslandModelEA) {
-                    InterfaceOptimizer[] opt = ((IslandModelEA) m_State.m_Optimizer).getOptimizers();
+                if (state.optimizer instanceof IslandModelEA) {
+                    InterfaceOptimizer[] opt = ((IslandModelEA) state.optimizer).getOptimizers();
                     pop = new Population[opt.length];
                     for (int i = 0; i < opt.length; i++) {
                         pop[i] = opt[i].getPopulation();
                     }
                 }
-                m_State.restore();
+                state.restore();
                 if (pop == null) {
-                    m_State.addPopulation2History(m_State.m_Optimizer.getPopulation());
+                    state.addPopulation2History(state.optimizer.getPopulation());
                 } else {
                     for (int i = 0; i < pop.length; i++) {
-                        m_State.m_CurrentProblem.evaluate(pop[i]);
-                        m_State.addPopulation2History(pop[i]);
+                        state.currentProblem.evaluate(pop[i]);
+                        state.addPopulation2History(pop[i]);
                     }
                 }
-                if (m_View != null) {
-                    m_View.problemChanged(true);
+                if (view != null) {
+                    view.problemChanged(true);
                 }
-                m_StillWorking = false;
+                stillWorking = false;
             }
         };
         worker.start();
@@ -517,16 +511,16 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
      * changing the progress bars value.
      */
     void updateStatus(final String t, final int i) {
-        if (this.m_ProgressBar != null) {
+        if (this.progressBar != null) {
             Runnable doSetProgressBarValue = new Runnable() {
                 @Override
                 public void run() {
-                    m_ProgressBar.setValue(i);
+                    progressBar.setValue(i);
                 }
             };
             SwingUtilities.invokeLater(doSetProgressBarValue);
         }
-        this.m_CurrentState.setText(t);
+        this.currentState.setText(t);
     }
 
     /**
@@ -541,11 +535,11 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
             if (Thread.interrupted()) {
                 throw new InterruptedException();
             }
-            while (!this.m_State.m_Terminator.isTerminated(this.m_State.m_Optimizer.getPopulation())) {
+            while (!this.state.terminator.isTerminated(this.state.optimizer.getPopulation())) {
                 if (Thread.interrupted()) {
                     throw new InterruptedException();
                 }
-                this.m_State.m_Optimizer.optimize();
+                this.state.optimizer.optimize();
             }
             System.gc();
         } catch (InterruptedException e) {
@@ -574,11 +568,11 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
     public void registerPopulationStateChanged(Object source, String name) {
         int currentProgress;
         if (name.equals(Population.NEXT_GENERATION_PERFORMED)) {
-            if (this.m_State.isVisible) {
+            if (this.state.isVisible) {
                 Population population = ((InterfaceOptimizer) source).getPopulation();
                 double x = 100;
-                if (this.m_State.m_Terminator instanceof EvaluationTerminator) {
-                    double y = x / (double) ((EvaluationTerminator) this.m_State.m_Terminator).getFitnessCalls();
+                if (this.state.terminator instanceof EvaluationTerminator) {
+                    double y = x / (double) ((EvaluationTerminator) this.state.terminator).getFitnessCalls();
                     currentProgress = (int) (population.getFunctionCalls() * y);
                 } else {
                     currentProgress = (int) (0);
@@ -588,5 +582,9 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
                 // perhaps i could write it to file!?
             }
         }
+    }
+
+    public JFrame getMainFrame() {
+        return this.mainFrame;
     }
 }

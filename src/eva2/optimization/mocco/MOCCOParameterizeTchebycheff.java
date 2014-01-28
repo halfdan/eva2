@@ -19,24 +19,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.10.2005
- * Time: 18:42:04
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements InterfaceProcessElement {
 
-    private double[] m_RefPoint;
-    private IslandModelEA m_Island;
-    private GeneralOptimizationEditorProperty m_EIMEA;
-    private int m_Perturbations = 4;
-    private JTextField m_NumPer;
-    JPanel m_Parameters;
-    private JTextField[] m_UpperLimit, m_LowerLimit;
+    private double[] refPoint;
+    private IslandModelEA islandModelEA;
+    private GeneralOptimizationEditorProperty optimizationEditorProperty;
+    private int perturbations = 4;
+    private JTextField numPer;
+    JPanel parameterPanel;
+    private JTextField[] upperLimit, lowerLimit;
 
     public MOCCOParameterizeTchebycheff(MOCCOStandalone mocco) {
-        this.m_Mocco = mocco;
+        this.mocco = mocco;
     }
 
     /**
@@ -44,51 +40,48 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
      */
     @Override
     public void initProcessElementParametrization() {
-        this.m_Mocco.m_JPanelControl.removeAll();
+        this.mocco.controlPanel.removeAll();
 
         // The button panel
         JButton tmpB = new JButton("Start optimization.");
         tmpB.setToolTipText("Start the adhoc online optimization.");
         tmpB.addActionListener(continue2);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
         tmpB = new JButton("Save task.");
         tmpB.setToolTipText("Save the optimization problem and algorithm to *.ser file for offline optimization.");
         tmpB.addActionListener(saveState2FileForOfflineOptimization);
-        this.m_Mocco.m_JPanelControl.add(tmpB);
+        this.mocco.controlPanel.add(tmpB);
         // the parameter panel
-        this.m_Mocco.m_JPanelParameters.removeAll();
-        this.m_Mocco.m_JPanelParameters.setLayout(new BorderLayout());
-        this.m_Mocco.m_JPanelParameters.add(this.makeHelpText("Please parameterized the Tchebycheff method." +
+        this.mocco.parameterPanel.removeAll();
+        this.mocco.parameterPanel.setLayout(new BorderLayout());
+        this.mocco.parameterPanel.add(this.makeHelpText("Please parameterized the Tchebycheff method." +
                 " Typically this methods generates a set of solutions by using k perturbations of the weights used for the weighted Tchebycheff metric." +
                 " But also the choice of the optimization algorithms and migration rate for the heterogeneuos island model EA is critical." +
                 " Please note that any server server settings will override k!"), BorderLayout.NORTH);
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new BorderLayout());
-        this.m_Parameters = new JPanel();
-//        this.m_Choice.setBorder(BorderFactory.createCompoundBorder(
-//		    BorderFactory.createTitledBorder("Step Method:"),
-//			BorderFactory.createEmptyBorder(0, 5, 5, 5)));
-        tmpP.add(this.m_Parameters, BorderLayout.CENTER);
+        this.parameterPanel = new JPanel();
+        tmpP.add(this.parameterPanel, BorderLayout.CENTER);
         this.installChoice();
-        this.m_Mocco.m_JPanelParameters.add(tmpP, BorderLayout.CENTER);
-        this.m_Mocco.m_JPanelParameters.validate();
-        this.m_Mocco.m_JPanelControl.validate();
+        this.mocco.parameterPanel.add(tmpP, BorderLayout.CENTER);
+        this.mocco.parameterPanel.validate();
+        this.mocco.controlPanel.validate();
     }
 
     private void installChoice() {
-        this.m_Parameters.setLayout(new GridBagLayout());
+        this.parameterPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("Choose number of Perturbations k:"), gbc);
+        this.parameterPanel.add(new JLabel("Choose number of Perturbations k:"), gbc);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1;
-        this.m_NumPer = new JTextField("" + this.m_Perturbations);
-        this.m_Parameters.add(this.m_NumPer, gbc);
+        this.numPer = new JTextField("" + this.perturbations);
+        this.parameterPanel.add(this.numPer, gbc);
         // weight constraints
         JComponent tmpP = this.makeLimits4Weigths();
         tmpP.setBorder(BorderFactory.createCompoundBorder(
@@ -98,31 +91,31 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         gbc.gridwidth = 2;
         gbc.gridy = 1;
         gbc.weightx = 2;
-        this.m_Parameters.add(tmpP, gbc);
+        this.parameterPanel.add(tmpP, gbc);
         // IslandModelEA
-        this.m_EIMEA = new GeneralOptimizationEditorProperty();
-        this.m_Island = new IslandModelEA();
-        this.m_Island.setHeterogeneousProblems(true);
-        this.m_Island.setLocalOnly(true);
-        this.m_Island.setMigrationRate(2);
-        this.m_Island.setMigrationStrategy(new SOBestMigration());
-        this.m_Island.setNumberLocalCPUs(this.m_Perturbations);
-        this.m_Island.setProblem(this.m_Mocco.m_State.m_CurrentProblem);
-        this.m_Mocco.m_State.m_Optimizer = this.m_Island;
-        this.m_EIMEA.name = "Island Model EA";
+        this.optimizationEditorProperty = new GeneralOptimizationEditorProperty();
+        this.islandModelEA = new IslandModelEA();
+        this.islandModelEA.setHeterogeneousProblems(true);
+        this.islandModelEA.setLocalOnly(true);
+        this.islandModelEA.setMigrationRate(2);
+        this.islandModelEA.setMigrationStrategy(new SOBestMigration());
+        this.islandModelEA.setNumberLocalCPUs(this.perturbations);
+        this.islandModelEA.setProblem(this.mocco.state.currentProblem);
+        this.mocco.state.optimizer = this.islandModelEA;
+        this.optimizationEditorProperty.name = "Island Model EA";
         try {
-            this.m_EIMEA.value = this.m_Island;
-            this.m_EIMEA.editor = PropertyEditorProvider.findEditor(this.m_EIMEA.value.getClass());
-            if (this.m_EIMEA.editor == null) {
-                this.m_EIMEA.editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
+            this.optimizationEditorProperty.value = this.islandModelEA;
+            this.optimizationEditorProperty.editor = PropertyEditorProvider.findEditor(this.optimizationEditorProperty.value.getClass());
+            if (this.optimizationEditorProperty.editor == null) {
+                this.optimizationEditorProperty.editor = PropertyEditorProvider.findEditor(IslandModelEA.class);
             }
-            if (this.m_EIMEA.editor instanceof GenericObjectEditor) {
-                ((GenericObjectEditor) this.m_EIMEA.editor).setClassType(IslandModelEA.class);
+            if (this.optimizationEditorProperty.editor instanceof GenericObjectEditor) {
+                ((GenericObjectEditor) this.optimizationEditorProperty.editor).setClassType(IslandModelEA.class);
             }
-            this.m_EIMEA.editor.setValue(this.m_EIMEA.value);
-            AbstractObjectEditor.findViewFor(this.m_EIMEA);
-            if (this.m_EIMEA.view != null) {
-                this.m_EIMEA.view.repaint();
+            this.optimizationEditorProperty.editor.setValue(this.optimizationEditorProperty.value);
+            AbstractObjectEditor.findViewFor(this.optimizationEditorProperty);
+            if (this.optimizationEditorProperty.view != null) {
+                this.optimizationEditorProperty.view.repaint();
             }
         } catch (Exception e) {
             System.out.println("Darn can't read the value...");
@@ -130,16 +123,16 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("" + this.m_EIMEA.name), gbc);
+        this.parameterPanel.add(new JLabel("" + this.optimizationEditorProperty.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 1;
-        this.m_Parameters.add(this.m_EIMEA.view, gbc);
+        this.parameterPanel.add(this.optimizationEditorProperty.view, gbc);
         // Terminator
         GeneralOptimizationEditorProperty editor = new GeneralOptimizationEditorProperty();
         editor.name = "Terminator";
         try {
-            editor.value = this.m_Mocco.m_State.m_Terminator;
+            editor.value = this.mocco.state.terminator;
             editor.editor = PropertyEditorProvider.findEditor(editor.value.getClass());
             if (editor.editor == null) {
                 editor.editor = PropertyEditorProvider.findEditor(InterfaceTerminator.class);
@@ -158,18 +151,18 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 2;
-        this.m_Parameters.add(new JLabel("" + editor.name), gbc);
+        this.parameterPanel.add(new JLabel("" + editor.name), gbc);
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.weightx = 1;
-        this.m_Parameters.add(editor.view, gbc);
+        this.parameterPanel.add(editor.view, gbc);
     }
 
     private JComponent makeLimits4Weigths() {
         JPanel result = new JPanel();
         result.setLayout(new GridBagLayout());
-        this.m_UpperLimit = new JTextField[this.m_RefPoint.length];
-        this.m_LowerLimit = new JTextField[this.m_RefPoint.length];
+        this.upperLimit = new JTextField[this.refPoint.length];
+        this.lowerLimit = new JTextField[this.refPoint.length];
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.BOTH;
@@ -188,7 +181,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         gbc.gridx = 3;
         gbc.gridy = 0;
         result.add(new JLabel("Upper"), gbc);
-        for (int i = 0; i < this.m_RefPoint.length; i++) {
+        for (int i = 0; i < this.refPoint.length; i++) {
             gbc.gridx = 0;
             gbc.gridy = i + 1;
             gbc.weightx = 1;
@@ -196,16 +189,16 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
             gbc.gridx = 1;
             gbc.gridy = i + 1;
             gbc.weightx = 2;
-            result.add(new JLabel("" + this.m_RefPoint[i]), gbc);
+            result.add(new JLabel("" + this.refPoint[i]), gbc);
             gbc.gridx = 2;
             gbc.gridy = i + 1;
             gbc.weightx = 1;
-            this.m_LowerLimit[i] = new JTextField("0.0");
-            result.add(this.m_LowerLimit[i], gbc);
+            this.lowerLimit[i] = new JTextField("0.0");
+            result.add(this.lowerLimit[i], gbc);
             gbc.gridx = 3;
             gbc.gridy = i + 1;
-            this.m_UpperLimit[i] = new JTextField("1.0");
-            result.add(this.m_UpperLimit[i], gbc);
+            this.upperLimit[i] = new JTextField("1.0");
+            result.add(this.upperLimit[i], gbc);
 
         }
         return result;
@@ -218,7 +211,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
      * @param point the reference point
      */
     public void setReferencePoint(double[] point) {
-        this.m_RefPoint = point;
+        this.refPoint = point;
     }
 
     ActionListener continue2 = new ActionListener() {
@@ -226,43 +219,43 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         public void actionPerformed(ActionEvent event) {
             // first read the values
             try {
-                m_Perturbations = new Integer(m_NumPer.getText()).intValue();
+                perturbations = new Integer(numPer.getText()).intValue();
             } catch (NumberFormatException e) {
                 System.out.println("Can't read k.");
             }
-            if (m_EIMEA.value instanceof IslandModelEA) {
-                m_Island = (IslandModelEA) m_EIMEA.value;
+            if (optimizationEditorProperty.value instanceof IslandModelEA) {
+                islandModelEA = (IslandModelEA) optimizationEditorProperty.value;
             } else {
                 System.out.println("The selected optimizer does not allow heterogenuous multi-starts!");
             }
             // then set the values
-//            if (!m_Island.getLocalOnly()) {
+//            if (!islandModelEA.getLocalOnly()) {
             // ToDo: Think of new ways to do this!
-/*                PropertyRemoteServers servs = m_Island.getServers();
+/*                PropertyRemoteServers servs = islandModelEA.getServers();
                 String[] servers = servs.getServerNodes();
-                if (servers.length != m_Perturbations) {
+                if (servers.length != perturbations) {
                     System.out.println("Warning: Number of servers overrides number of perturbations!");
-                    m_Perturbations = servers.length;
+                    perturbations = servers.length;
                 }*/
 //            } else {
-//                m_Island.setNumberLocalCPUs(m_Perturbations);
+//                islandModelEA.setNumberLocalCPUs(perturbations);
 //            }
-            m_Mocco.m_State.m_Optimizer = m_Island;
-            m_Mocco.m_State.m_Optimizer.setProblem(m_Mocco.m_State.m_CurrentProblem);
-            m_Island.init();
+            mocco.state.optimizer = islandModelEA;
+            mocco.state.optimizer.setProblem(mocco.state.currentProblem);
+            islandModelEA.init();
             double[] tmpD;
             double sum = 0, l = 0, u = 1;
-            MOSOWeightedLPTchebycheff[] tmpLPs = new MOSOWeightedLPTchebycheff[m_Perturbations];
-            for (int i = 0; i < m_Perturbations; i++) {
-                tmpD = new double[m_RefPoint.length];
+            MOSOWeightedLPTchebycheff[] tmpLPs = new MOSOWeightedLPTchebycheff[perturbations];
+            for (int i = 0; i < perturbations; i++) {
+                tmpD = new double[refPoint.length];
                 sum = 0;
                 for (int j = 0; j < tmpD.length; j++) {
                     try {
-                        l = new Double(m_LowerLimit[j].getText()).doubleValue();
+                        l = new Double(lowerLimit[j].getText()).doubleValue();
                     } catch (NumberFormatException e) {
                     }
                     try {
-                        u = new Double(m_UpperLimit[j].getText()).doubleValue();
+                        u = new Double(upperLimit[j].getText()).doubleValue();
                     } catch (NumberFormatException e) {
                     }
                     if (l < 0) {
@@ -297,17 +290,17 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
                 // I've to set this before I change the parameters, because the problem sets the
                 // output dimension based on the AbstractMultiObjectiveOptimizationProblem and
                 // that one has not the faintest idea about the true output dimension
-                ((AbstractMultiObjectiveOptimizationProblem) m_Island.getOptimizers()[i].getProblem()).setMOSOConverter(tmpLPs[i]);
+                ((AbstractMultiObjectiveOptimizationProblem) islandModelEA.getOptimizers()[i].getProblem()).setMOSOConverter(tmpLPs[i]);
                 tmpLPs[i].setOutputDimension(tmpD.length);
-                tmpLPs[i].getIdealPWeights().m_IdealValue = m_RefPoint;
-                tmpLPs[i].getIdealPWeights().m_Weights = tmpD;
+                tmpLPs[i].getIdealPWeights().idealValue = refPoint;
+                tmpLPs[i].getIdealPWeights().weights = tmpD;
             }
-            m_Mocco.m_View.removeReferencePoint();
-            m_Mocco.m_JPanelControl.removeAll();
-            m_Mocco.m_JPanelControl.validate();
-            m_Mocco.m_JPanelParameters.removeAll();
-            m_Mocco.m_JPanelParameters.validate();
-            m_Finished = true;
+            mocco.view.removeReferencePoint();
+            mocco.controlPanel.removeAll();
+            mocco.controlPanel.validate();
+            mocco.parameterPanel.removeAll();
+            mocco.parameterPanel.validate();
+            hasFinished = true;
         }
     };
 }

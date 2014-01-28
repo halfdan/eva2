@@ -123,8 +123,8 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
 
         @Override
         public void keyReleased(KeyEvent event) {
-            double[] tmpT = m_WLPT.m_IdealValue;
-            double[] tmpP = m_WLPT.m_Weights;
+            double[] tmpT = m_WLPT.idealValue;
+            double[] tmpP = m_WLPT.weights;
 
             for (int i = 0; i < tmpT.length; i++) {
 
@@ -144,8 +144,8 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
                 }
             }
 
-            m_WLPT.m_IdealValue = tmpT;
-            m_WLPT.m_Weights = tmpP;
+            m_WLPT.idealValue = tmpT;
+            m_WLPT.weights = tmpP;
         }
     };
 
@@ -164,8 +164,8 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      * This method updates the data panel
      */
     private void updateDataPanel() {
-        double[] tmpT = this.m_WLPT.m_IdealValue;
-        double[] tmpP = this.m_WLPT.m_Weights;
+        double[] tmpT = this.m_WLPT.idealValue;
+        double[] tmpP = this.m_WLPT.weights;
         int obj = this.m_WLPT.m_P;
 
         this.m_PValue.setText("" + obj);
