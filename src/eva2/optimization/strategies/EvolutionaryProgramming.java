@@ -11,6 +11,9 @@ import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Evolutionary programming by Fogel. Works fine but is actually a quite greedy
  * local search strategy solely based on mutation. To prevent any confusion, the
@@ -20,21 +23,21 @@ import eva2.util.annotation.Description;
 @Description("This is a basic Evolutionary Programming scheme.")
 public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Serializable {
 
-    private int m_PopulationSize = 0;
-    private Population m_Population = new Population();
-    private InterfaceOptimizationProblem m_Problem = new F1Problem();
-    private InterfaceSelection m_EnvironmentSelection = new SelectEPTournaments();
-    private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    private int populationSize = 0;
+    private Population population = new Population();
+    private InterfaceOptimizationProblem optimizationProblem = new F1Problem();
+    private InterfaceSelection environmentSelection = new SelectEPTournaments();
+    private String identifier = "";
+    transient private List<InterfacePopulationChangedEventListener> populationChangedEventListeners = new ArrayList<>();
 
     public EvolutionaryProgramming() {
     }
 
     public EvolutionaryProgramming(EvolutionaryProgramming a) {
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
-        this.m_Identifier = a.m_Identifier;
-        this.m_EnvironmentSelection = (InterfaceSelection) a.m_EnvironmentSelection.clone();
+        this.population = (Population) a.population.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
+        this.identifier = a.identifier;
+        this.environmentSelection = (InterfaceSelection)a.environmentSelection.clone();
     }
 
     @Override
@@ -44,9 +47,9 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
 
     @Override
     public void init() {
-        this.m_Problem.initializePopulation(this.m_Population);
-        this.evaluatePopulation(this.m_Population);
-        this.m_PopulationSize = this.m_Population.size();
+        this.optimizationProblem.initializePopulation(this.population);
+        this.evaluatePopulation(this.population);
+        this.populationSize = this.population.size();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -57,10 +60,10 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Population = (Population) pop.clone();
+        this.population = (Population) pop.clone();
         if (reset) {
-            this.m_Population.init();
-            this.evaluatePopulation(this.m_Population);
+            this.population.init();
+            this.evaluatePopulation(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
@@ -71,7 +74,7 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
      * @param population The population that is to be evaluated
      */
     private void evaluatePopulation(Population population) {
-        this.m_Problem.evaluate(population);
+        this.optimizationProblem.evaluate(population);
         population.incrGeneration();
     }
 
@@ -80,12 +83,12 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
      * population of evaluated individuals.
      */
     private Population generateChildren() {
-        Population result = (Population) this.m_Population.cloneWithoutInds();
+        Population result = (Population) this.population.cloneWithoutInds();
         AbstractEAIndividual mutant;
 
         result.clear();
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            mutant = (AbstractEAIndividual) ((AbstractEAIndividual) this.m_Population.get(i)).clone();
+        for (int i = 0; i < this.population.size(); i++) {
+            mutant = (AbstractEAIndividual) ((AbstractEAIndividual) this.population.get(i)).clone();
             double tmpD = mutant.getMutationProbability();
             mutant.setMutationProbability(1.0);
             mutant.mutate();
@@ -99,14 +102,14 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
     public void optimize() {
         Population nextGeneration, parents;
 
-        this.m_EnvironmentSelection.prepareSelection(this.m_Population);
-        parents = this.m_EnvironmentSelection.selectFrom(this.m_Population, this.m_PopulationSize);
-        this.m_Population.clear();
-        this.m_Population.addPopulation(parents);
+        this.environmentSelection.prepareSelection(this.population);
+        parents = this.environmentSelection.selectFrom(this.population, this.populationSize);
+        this.population.clear();
+        this.population.addPopulation(parents);
         nextGeneration = this.generateChildren();
         this.evaluatePopulation(nextGeneration);
-        nextGeneration.addPopulation(this.m_Population);
-        this.m_Population = nextGeneration;
+        nextGeneration.addPopulation(this.population);
+        this.population = nextGeneration;
 
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
@@ -118,26 +121,21 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
      */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListeners.add(ea);
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
-            return true;
-        } else {
-            return false;
-        }
+        return this.populationChangedEventListeners.remove(ea);
     }
 
     /**
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        for(InterfacePopulationChangedEventListener l : this.populationChangedEventListeners) {
+            l.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -148,12 +146,12 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -167,8 +165,8 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
         String result = "";
         result += "Evolutionary Programming:\n";
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -179,12 +177,12 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -206,12 +204,12 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {
@@ -229,11 +227,11 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
      * @param selection
      */
     public void setEnvironmentSelection(InterfaceSelection selection) {
-        this.m_EnvironmentSelection = selection;
+        this.environmentSelection = selection;
     }
 
     public InterfaceSelection getEnvironmentSelection() {
-        return this.m_EnvironmentSelection;
+        return this.environmentSelection;
     }
 
     public String environmentSelectionTipText() {
