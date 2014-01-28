@@ -642,7 +642,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
 //          gbc.gridx       = 3;
 //          gbc.gridy       = i+1;
 //          this.m_JCShow[i] = new JCheckBox();
-//          this.m_JCShow[i].setSelected(this.m_MOCCO.m_State.m_Show[i]);
+//          this.m_JCShow[i].setSelected(this.m_MOCCO.m_State.show[i]);
 //          this.m_JCShow[i].addActionListener(showModeChanged);
 //          this.m_History.add(this.m_JCShow[i], gbc);
 //          gbc.gridx       = 4;
@@ -663,7 +663,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
 //  ActionListener showModeChanged = new ActionListener() {
 //      public void actionPerformed(ActionEvent event) {
 //          for (int i = 0; i < m_JCShow.length; i++) {
-//              m_MOCCO.m_State.m_Show[i] = m_JCShow[i].isSelected();
+//              m_MOCCO.m_State.show[i] = m_JCShow[i].isSelected();
 //          }
 //          view.updateView();
 //      }

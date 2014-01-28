@@ -175,10 +175,10 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
 //     * @param b     True in case of the debug mode.
 //     */
 //    public void setDebugFront(boolean b) {
-//        this.m_Debug = b;
+//        this.debug = b;
 //    }
 //    public boolean getDebugFront() {
-//        return this.m_Debug;
+//        return this.debug;
 //    }
 //    public String debugFrontTipText() {
 //        return "Toggles the debug mode.";

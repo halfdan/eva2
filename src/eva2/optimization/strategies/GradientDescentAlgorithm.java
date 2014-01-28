@@ -24,8 +24,8 @@ import eva2.util.annotation.Description;
 @Description("Gradient Descent can be applied to derivable functions (InterfaceFirstOrderDerivableProblem).")
 public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Serializable {
 
-    private InterfaceOptimizationProblem m_Problem;
-    InterfaceDataTypeDouble m_Best, m_Test;
+    private InterfaceOptimizationProblem optimizationProblem;
+    InterfaceDataTypeDouble bestDataTypeDouble, testDataTypeDouble;
     private int iterations = 1;
     private double wDecreaseStepSize = 0.5;
     private double wIncreaseStepSize = 1.1;
@@ -41,12 +41,12 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     double localmaxstepsize = 10;
     double localminstepsize = 1e-10;
     private boolean momentumterm = false;
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
     public double maximumabsolutechange = 0.2;
     //  Hashtable             indyhash;
     // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String m_Identifier = "";
-    private Population m_Population;
+    transient private String identifier = "";
+    private Population population;
     private static boolean TRACE = false;
     private static final String lockKey = "gdaLockDataKey";
     private static final String lastFitnessKey = "gdaLastFitDataKey";
@@ -61,7 +61,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         this.setPopulation((Population) pop.clone());
         if (reset) {
             this.getPopulation().init();
-            this.m_Problem.evaluate(this.getPopulation());
+            this.optimizationProblem.evaluate(this.getPopulation());
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
         //System.out.println("initByPopulation() called");
@@ -70,8 +70,8 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
     public GradientDescentAlgorithm() {
 //    indyhash = new Hashtable();
-        this.m_Population = new Population();
-        this.m_Population.setTargetSize(1);
+        this.population = new Population();
+        this.population.setTargetSize(1);
     }
 
     /**
@@ -108,8 +108,8 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     public void init() {
         //System.out.println("init() called ");
 //    indyhash = new Hashtable();
-        this.m_Problem.initializePopulation(this.m_Population);
-        this.m_Problem.evaluate(this.m_Population);
+        this.optimizationProblem.initializePopulation(this.population);
+        this.optimizationProblem.evaluate(this.population);
     }
 
     public double signum(double val) {
@@ -122,8 +122,8 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         AbstractEAIndividual indy;
 //      if ((this.indyhash == null) || (this.indyhash.size() <1)) init();
 
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            indy = ((AbstractEAIndividual) this.m_Population.get(i));
+        for (int i = 0; i < this.population.size(); i++) {
+            indy = ((AbstractEAIndividual) this.population.get(i));
             if (!indy.hasData(gradientKey)) {
                 //System.out.println("new indy to hash");
 //        Hashtable history = new Hashtable();
@@ -146,9 +146,9 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
             }
         }
         // System.out.println("hashtable built");
-        for (int i = 0; i < this.m_Population.size(); i++) {
+        for (int i = 0; i < this.population.size(); i++) {
 
-            indy = ((AbstractEAIndividual) this.m_Population.get(i));
+            indy = ((AbstractEAIndividual) this.population.get(i));
             double[][] range = ((InterfaceDataTypeDouble) indy).getDoubleRange();
             double[] params = ((InterfaceDataTypeDouble) indy).getDoubleData();
             indy.putData(oldParamsKey, params);
@@ -157,7 +157,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
             double indystepsize = ((Double) indy.getData(stepSizeKey)).doubleValue();
             //   System.out.println("indystepsize" + indystepsize);
 
-            if ((this.m_Problem instanceof InterfaceFirstOrderDerivableProblem) && (indy instanceof InterfaceDataTypeDouble)) {
+            if ((this.optimizationProblem instanceof InterfaceFirstOrderDerivableProblem) && (indy instanceof InterfaceDataTypeDouble)) {
 //        Hashtable history = (Hashtable) indyhash.get(indy);
                 for (int iterations = 0; iterations < this.iterations; iterations++) {
 
@@ -165,7 +165,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
                     double[] wstepsize = (double[]) indy.getData(wStepSizeKey);
                     double[] oldchange = null;
 
-                    double[] gradient = ((InterfaceFirstOrderDerivableProblem) m_Problem).getFirstOrderGradients(params);
+                    double[] gradient = ((InterfaceFirstOrderDerivableProblem) optimizationProblem).getFirstOrderGradients(params);
                     if (TRACE) {
                         System.out.println("GDA: " + BeanInspector.toString(params) + ", grad: " + BeanInspector.toString(gradient));
                     }
@@ -245,12 +245,12 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
             }
         } // for loop population size
 
-        this.m_Problem.evaluate(this.m_Population);
-        m_Population.incrGeneration();
+        this.optimizationProblem.evaluate(this.population);
+        population.incrGeneration();
 
         if (this.recovery) {
-            for (int i = 0; i < this.m_Population.size(); i++) {
-                indy = ((AbstractEAIndividual) this.m_Population.get(i));
+            for (int i = 0; i < this.population.size(); i++) {
+                indy = ((AbstractEAIndividual) this.population.get(i));
 //        Hashtable history = (Hashtable) indyhash.get(indy);
                 if (indy.getFitness()[0] > recoverythreshold) {
                     if (TRACE) {
@@ -273,15 +273,15 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
                 } else {
                 }
             }
-            this.m_Problem.evaluate(this.m_Population);
-            m_Population.incrGeneration();
+            this.optimizationProblem.evaluate(this.population);
+            population.incrGeneration();
         }
 
         if (this.globalStepSizeAdaption) {
 
             //System.out.println("gsa main");
-            for (int i = 0; i < this.m_Population.size(); i++) {
-                indy = ((AbstractEAIndividual) this.m_Population.get(i));
+            for (int i = 0; i < this.population.size(); i++) {
+                indy = ((AbstractEAIndividual) this.population.get(i));
 //        Hashtable history = (Hashtable) indyhash.get(indy);
 //        if (history == null) break;
                 if (indy.getData(lastFitnessKey) != null) {
@@ -312,14 +312,14 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     private double momentumweigth = 0.1;
 
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
@@ -334,7 +334,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 //      if (indyhash.contains(pop.get(i))) newindyhash.put(pop.get(i), indyhash.get(pop.get(i)));
 //    }
 //    indyhash = newindyhash;
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     /**
@@ -344,23 +344,23 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
 
-        m_Problem = problem;
+        optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return m_Problem;
+        return optimizationProblem;
     }
 
     @Override
@@ -370,14 +370,14 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;

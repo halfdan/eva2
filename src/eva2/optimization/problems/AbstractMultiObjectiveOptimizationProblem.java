@@ -381,7 +381,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         Population tmpPop = null;
 
         if (p.getGeneration() > 2) {
-//            m_Plot = new eva2.gui.plot.Plot("Multiobjective Optimization", "Y1", "Y2");
+//            plot = new eva2.gui.plot.Plot("Multiobjective Optimization", "Y1", "Y2");
             // i want to plot the pareto front for MOEA and other strategies
             // but i have to differentiate between the case where
             // there is a true MOEA at work and where the

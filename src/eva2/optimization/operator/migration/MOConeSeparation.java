@@ -34,7 +34,7 @@ import java.io.IOException;
  */
 public class MOConeSeparation implements InterfaceMigration, java.io.Serializable {
 
-    public boolean m_Debug = false;
+    public boolean debug = false;
     private boolean m_UseAllToDetermineR = false;  // since i'm only interessted in the pareto-front this should be set to false!!
     private boolean m_UseConstraints = true;
     private InterfaceSelection m_Selection = new SelectRandom();
@@ -45,7 +45,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
     }
 
     public MOConeSeparation(MOConeSeparation b) {
-        this.m_Debug = b.m_Debug;
+        this.debug = b.debug;
         this.m_UseConstraints = b.m_UseConstraints;
         this.m_UseAllToDetermineR = b.m_UseAllToDetermineR;
         if (b.m_Selection != null) {
@@ -91,7 +91,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         // collect the populations
         for (int i = 0; i < islands.length; i++) {
             oldIPOP[i] = islands[i].getPopulation();
-            if (this.m_Debug) {
+            if (this.debug) {
                 System.out.println("Got population from " + i + " of size " + oldIPOP[i].size());
             }
             collector.addPopulation((Population) oldIPOP[i].clone());
@@ -118,7 +118,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             if (!oldIPOP[i].targetSizeReached()) {
                 oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize() - oldIPOP[i].size()));
             }
-            if (this.m_Debug) {
+            if (this.debug) {
                 System.out.println("Setting island " + i + " to population size " + oldIPOP[i].size());
             }
             allDom.addElementsToArchive(oldIPOP[i]);
@@ -136,7 +136,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
     private void coneSeparation2D(Population collector, Population[] newIPOP, InterfaceOptimizer[] islands) {
         AbstractEAIndividual indy;
 
-//        if (this.m_Debug) {
+//        if (this.debug) {
 //            // let's see how they arrive here
 //            // This shows that the Drecksbeutels
 //            // indeed spread out, even within
@@ -212,7 +212,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         // the rest belongs to newIPOP.length-1
         newIPOP[newIPOP.length - 1].addPopulation(collector);
 
-        if (this.m_Debug) {
+        if (this.debug) {
             Plot plot;
             double[] tmpD = new double[2];
             tmpD[0] = 0;

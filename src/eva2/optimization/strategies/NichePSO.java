@@ -119,16 +119,16 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     protected InterfaceAbsorptionStrategy absorptionStrategy = new StandardAbsorptionStrategy();
     protected InterfaceSubswarmCreationStrategy subswarmCreationStrategy = new StandardSubswarmCreationStrategy();
     // the problem
-    protected InterfaceOptimizationProblem m_Problem = new FM0Problem();
+    protected InterfaceOptimizationProblem optimizationProblem = new FM0Problem();
     // only used by island model ?
-    protected String m_Identifier = "";
+    protected String identifier = "";
     // eventListener
-    transient protected InterfacePopulationChangedEventListener m_Listener;
+    transient protected InterfacePopulationChangedEventListener populationChangedEventListener;
     // for debugging: file containing the output 
     transient protected BufferedWriter outputFile = null;
     // for debugging and plotting	-----------------------------------------------
-    transient protected TopoPlot m_TopologySwarm;
-    transient protected boolean m_shownextplot = false;
+    transient protected TopoPlot topoPlot;
+    transient protected boolean showNextPlot = false;
     transient protected boolean deactivationOccured = false;
     transient protected boolean mergingOccurd = false;
     transient protected boolean absorbtionOccurd = false;
@@ -214,9 +214,9 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         this.absorptionStrategy = (InterfaceAbsorptionStrategy) a.absorptionStrategy.clone();
         this.subswarmCreationStrategy = (InterfaceSubswarmCreationStrategy) a.subswarmCreationStrategy.clone();
 
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
 
-        this.m_Identifier = a.m_Identifier;
+        this.identifier = a.identifier;
     }
 
     /**
@@ -239,7 +239,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     protected void initMainSwarm() {
         // pass NichePSO parameter on to the mainswarmoptimzer
         setMainSwarmSize(mainSwarmSize); // (particles are initialized later via init)
-        getMainSwarm().setProblem(m_Problem);
+        getMainSwarm().setProblem(optimizationProblem);
         getMainSwarm().SetMaxAllowedSwarmRadius(maxAllowedSwarmRadius);
         getMainSwarm().getPopulation().setGeneration(0);
 
@@ -267,7 +267,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     protected void initSubswarmOptimizerTemplate() {
         // pass on the parameters set via NichePSO (done in the analogous nichePSO-Setters as well -> no init() necessary)
-        getSubswarmOptimizerTemplate().setProblem(m_Problem);
+        getSubswarmOptimizerTemplate().setProblem(optimizationProblem);
         getSubswarmOptimizerTemplate().SetMaxAllowedSwarmRadius(maxAllowedSwarmRadius);
 
         // choose PSO-type for the subswarmoptimizer
@@ -294,7 +294,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     public ParticleSubSwarmOptimization getNewSubSwarmOptimizer() {
         //initSubswarmOptimizerTemplate();
         ParticleSubSwarmOptimization template = (ParticleSubSwarmOptimization) getSubswarmOptimizerTemplate().clone(); // this implicitely clones the problem but does not initialize it again...
-        template.setProblem(this.m_Problem); //... let all subswarms use the same correct initialised problem instance
+        template.setProblem(this.optimizationProblem); //... let all subswarms use the same correct initialised problem instance
         return template;
     }
 
@@ -459,8 +459,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     protected void doPlot() {
-        m_shownextplot = (deactivationOccured || mergingOccurd || absorbtionOccurd || creationOccurd);// repopoccurd || reinitoccurd);
-        if (this.getMainSwarm().getPopulation().getGeneration() % this.getShowCycle() == 0) {// || m_shownextplot){
+        showNextPlot = (deactivationOccured || mergingOccurd || absorbtionOccurd || creationOccurd);// repopoccurd || reinitoccurd);
+        if (this.getMainSwarm().getPopulation().getGeneration() % this.getShowCycle() == 0) {// || showNextPlot){
             // plot merging step
             if (mergingOccurd) {
                 plotMainSwarm(false);
@@ -476,7 +476,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
                 }
             }
             // plot main step
-            synchronized (m_TopologySwarm.getClass()) {
+            synchronized (topoPlot.getClass()) {
                 plotMainSwarm(false);
                 plotSubSwarms();
                 //plotAdditionalInfo();
@@ -494,7 +494,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             }
 
             //plotBoundStdDevInMainSwarm(0.5);
-            m_shownextplot = false;
+            showNextPlot = false;
         }
     }
 
@@ -572,8 +572,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         this.borg.add((ParticleSubSwarmOptimization) borg.clone()); // for plotting only
         this.others.add((ParticleSubSwarmOptimization) others.clone()); // for plotting only
         mergingOccurd = true;
-        this.borgbest.add(borg.m_BestIndividual); // for plotting only
-        this.othersbest.add(others.m_BestIndividual); // for plotting only
+        this.borgbest.add(borg.bestIndividual); // for plotting only
+        this.othersbest.add(others.bestIndividual); // for plotting only
     }
 
     /**
@@ -705,8 +705,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @tested Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -718,14 +718,14 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -906,11 +906,11 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 //		AbstractEAIndividual[] representatives = new AbstractEAIndividual[getSubSwarms().size()+1];
         for (int i = 0; i < getSubSwarms().size(); ++i) {
             if (!onlyInactive || (!subSwarms.get(i).isActive())) {
-                representatives.add((AbstractEAIndividual) (subSwarms.get(i)).m_BestIndividual.clone());
+                representatives.add((AbstractEAIndividual) (subSwarms.get(i)).bestIndividual.clone());
             }
         }
         if (!onlyInactive && (getMainSwarm().getPopulation().size() != 0)) {
-            representatives.add((AbstractEAIndividual) getMainSwarm().m_BestIndividual.clone()); // assures at least one solution, even if no subswarm has been created 
+            representatives.add((AbstractEAIndividual) getMainSwarm().bestIndividual.clone()); // assures at least one solution, even if no subswarm has been created
         }
         return representatives;
     }
@@ -1275,7 +1275,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -1285,7 +1285,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         // set member
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
         // pass on to the main- and subswarm optimizers
         getMainSwarm().setProblem(problem);
         for (int i = 0; i < getSubSwarms().size(); ++i) {
@@ -1300,7 +1300,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     /**
@@ -1309,7 +1309,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -1456,7 +1456,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @tested emp
      */
     public String getPerformanceAsString() {
-        if (!(m_Problem instanceof InterfaceMultimodalProblem)) {
+        if (!(optimizationProblem instanceof InterfaceMultimodalProblem)) {
             System.out.println("getPerformanceAsString: problem not instanceof InterfaceMultimodalProblem");
             return "";
         }
@@ -1467,10 +1467,10 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         Population elitepop = getSubswarmRepresentatives(false);
 
         // use elite population to compute performance
-        if (m_Problem instanceof InterfaceMultimodalProblem) {
-            result += ((InterfaceMultimodalProblemKnown) m_Problem).getNumberOfFoundOptima(elitepop);
-            result += "(" + ((InterfaceMultimodalProblemKnown) m_Problem).getRealOptima().size() + ")\t";
-            result += ((InterfaceMultimodalProblemKnown) m_Problem).getMaximumPeakRatio(elitepop) + "\t";
+        if (optimizationProblem instanceof InterfaceMultimodalProblem) {
+            result += ((InterfaceMultimodalProblemKnown) optimizationProblem).getNumberOfFoundOptima(elitepop);
+            result += "(" + ((InterfaceMultimodalProblemKnown) optimizationProblem).getRealOptima().size() + ")\t";
+            result += ((InterfaceMultimodalProblemKnown) optimizationProblem).getMaximumPeakRatio(elitepop) + "\t";
             //boolean[] opts = ((InterfaceMultimodalProblem)problem).whichOptimaAreFound(elitepop);
             //result += "Optima:";
             //for (int i = 0; i < opts.length; ++i){
@@ -1516,13 +1516,10 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             outputPath.mkdirs();
         }
 
-        //String outputPath = getDirForCurrentExperiment()+"/NichePSO-LogFiles/";
-        //OutputPath = OutputPath + dirForCurrentExperiment+"\\NichePSO-LogFiles\\"; 
-
         // file name
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd'_'HH.mm.ss'_'E");
-        String m_StartDate = formatter.format(new Date());
-        String name = "NichePSO-LogFile" + "__" + m_StartDate + ".dat";
+        String startDate = formatter.format(new Date());
+        String name = "NichePSO-LogFile" + "__" + startDate + ".dat";
 
         File f = new File(outputPath, name); // plattform independent representation...
 
@@ -1634,10 +1631,10 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         double[] a = new double[2];
         a[0] = 0.0;
         a[1] = 0.0;
-        this.m_TopologySwarm = new TopoPlot("NichePSO-MainSwarm", "x", "y", a, a);
-        this.m_TopologySwarm.setParams(60, 60);
-        if (m_Problem instanceof Interface2DBorderProblem) {
-            this.m_TopologySwarm.setTopology((Interface2DBorderProblem) this.m_Problem);
+        this.topoPlot = new TopoPlot("NichePSO-MainSwarm", "x", "y", a, a);
+        this.topoPlot.setParams(60, 60);
+        if (optimizationProblem instanceof Interface2DBorderProblem) {
+            this.topoPlot.setTopology((Interface2DBorderProblem) this.optimizationProblem);
         } // draws colored plot
     }
 
@@ -1646,12 +1643,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     protected void cleanPlotSwarm() {
         // delete all previous points
-        DElement[] elements = this.m_TopologySwarm.getFunctionArea().getDElements();
+        DElement[] elements = this.topoPlot.getFunctionArea().getDElements();
         int lastIndex = elements.length - 1;
         DElement last = elements[lastIndex];
         while (last instanceof DPointSet || last instanceof DPoint || last instanceof DPointIcon) {
-            this.m_TopologySwarm.getFunctionArea().removeDElement(last);
-//			elements = this.m_TopologySwarm.getFunctionArea().getDElements();
+            this.topoPlot.getFunctionArea().removeDElement(last);
+//			elements = this.topoPlot.getFunctionArea().getDElements();
             lastIndex--;
             last = elements[lastIndex];
         }
@@ -1678,23 +1675,8 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             DPointIcon icon = new Chart2DDPointIconText(id + ds);
             ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
             point.setIcon(icon);
-            this.m_TopologySwarm.getFunctionArea().addDElement(point);
+            this.topoPlot.getFunctionArea().addDElement(point);
         }
-
-        //try to add further information to MainSwarm-Plot at once
-       /* popRep  = new DPointSet();
-         for (int i = 0; i < mainpop.size(); ++i){
-         tmpIndy1 = (InterfaceDataTypeDouble)mainpop.get(i);
-         DPoint point = new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]);	          
-         double[] da = (double[])(((AbstractEAIndividual)tmpIndy1).getData("StdDevKey"));//Math.round(100*((AbstractEAIndividual)tmpIndy1).getFitness(0))/(double)100;
-         double d = da[0]; 
-         String ds = String.format("%6.2f", d);
-         DPointIcon icon = new Chart2DDPointIconText(ds);
-         ((Chart2DDPointIconText)icon).setIcon(new Chart2DDPointIconCircle());
-         point.setIcon(icon);
-         popRep.addDPoint(point);	            
-         }
-         this.m_TopologyMainSwarm.plotArea.addDElement(popRep);       */
     }
 
     /**
@@ -1712,7 +1694,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         DPointIcon icon = new Chart2DDPointIconText(ds);
         ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
         point.setIcon(icon);
-        this.m_TopologySwarm.getFunctionArea().addDElement(point);
+        this.topoPlot.getFunctionArea().addDElement(point);
     }
 
     /**
@@ -1737,7 +1719,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
             point.setIcon(icon);
             if (d < boundary) {
-                this.m_TopologySwarm.getFunctionArea().addDElement(point);
+                this.topoPlot.getFunctionArea().addDElement(point);
             }
         }
     }
@@ -1754,7 +1736,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         DPointIcon icon = new Chart2DDPointIconText(text);
         ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
         point.setIcon(icon);
-        this.m_TopologySwarm.getFunctionArea().addDElement(point);
+        this.topoPlot.getFunctionArea().addDElement(point);
     }
 
     /**
@@ -1768,14 +1750,14 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         DPointIcon icon = new Chart2DDPointIconText(text);
         ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
         point.setIcon(icon);
-        this.m_TopologySwarm.getFunctionArea().addDElement(point);
+        this.topoPlot.getFunctionArea().addDElement(point);
     }
 
     /**
      * @tested cleans the previous plot and plots the mainswarm as points
      */
     protected void plotMainSwarm(boolean withIDs) {
-        if (this.m_Problem instanceof Interface2DBorderProblem) {
+        if (this.optimizationProblem instanceof Interface2DBorderProblem) {
             DPointSet popRep = new DPointSet();
             InterfaceDataTypeDouble tmpIndy1;
 
@@ -1787,7 +1769,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
                 tmpIndy1 = (InterfaceDataTypeDouble) mainpop.get(i);
                 popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
             }
-            this.m_TopologySwarm.getFunctionArea().addDElement(popRep); // time consuming
+            this.topoPlot.getFunctionArea().addDElement(popRep); // time consuming
 
             // identify every particle in the main swarm
             if (withIDs) {
@@ -1821,10 +1803,10 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         for (int i = 0; i < this.getSubSwarms().size(); ++i) {
             ParticleSubSwarmOptimization currentsub = this.getSubSwarms().get(i);
             if (!currentsub.isActive() && plotInactive) {
-                plotCircleForIndy(currentsub.m_BestIndividual, String.valueOf(i) + "[I]");
+                plotCircleForIndy(currentsub.bestIndividual, String.valueOf(i) + "[I]");
             }
             if (currentsub.isActive() && plotActive) {
-                plotCircleForIndy(currentsub.m_BestIndividual, String.valueOf(i));
+                plotCircleForIndy(currentsub.bestIndividual, String.valueOf(i));
             }
         }
     }
@@ -1848,7 +1830,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     protected void plotSwarmToMerge(ParticleSubSwarmOptimization swarm, int index) {
         InterfaceDataTypeDouble tmpIndy1;
         Population swarmpop = (Population) swarm.getPopulation();
-        InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) swarm.m_BestIndividual;
+        InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) swarm.bestIndividual;
         DPointSet popRep = new DPointSet();
 
         //...draw SubSwarm as points
@@ -1857,7 +1839,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             tmpIndy1 = (InterfaceDataTypeDouble) swarmpop.get(j);
             popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
         }
-        this.m_TopologySwarm.getFunctionArea().addDElement(popRep); // time consuming
+        this.topoPlot.getFunctionArea().addDElement(popRep); // time consuming
 
         //...draw circle for best 
         if (!swarm.isActive()) {
@@ -1874,7 +1856,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
             popRep.addDPoint(new DPoint(best.getDoubleData()[0], best.getDoubleData()[1]));
         }
-        this.m_TopologySwarm.getFunctionArea().addDElement(popRep); // time consuming
+        this.topoPlot.getFunctionArea().addDElement(popRep); // time consuming
 
     }
 
@@ -1883,7 +1865,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * individual
      */
     protected void plotSubSwarms() {
-        if (this.m_Problem instanceof Interface2DBorderProblem) {
+        if (this.optimizationProblem instanceof Interface2DBorderProblem) {
             //DPointSet               popRep  = new DPointSet();
             InterfaceDataTypeDouble tmpIndy1;
 
@@ -1894,7 +1876,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
                 ParticleSubSwarmOptimization currentsubswarm = this.getSubSwarms().get(i);
                 Population currentsubswarmpop = (Population) currentsubswarm.getPopulation();
                 //InterfaceDataTypeDouble best = (InterfaceDataTypeDouble)currentsubswarmpop.getBestIndividual();
-                InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) currentsubswarm.m_BestIndividual;
+                InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) currentsubswarm.bestIndividual;
                 DPointSet popRep = new DPointSet();
 
                 //...draw SubSwarm as points
@@ -1903,7 +1885,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
                     tmpIndy1 = (InterfaceDataTypeDouble) currentsubswarmpop.get(j);
                     popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
                 }
-                this.m_TopologySwarm.getFunctionArea().addDElement(popRep); // time consuming
+                this.topoPlot.getFunctionArea().addDElement(popRep); // time consuming
 
                 //...draw circle for best 
                 if (!currentsubswarm.isActive()) {
@@ -1932,7 +1914,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
                     popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
                     popRep.addDPoint(new DPoint(best.getDoubleData()[0], best.getDoubleData()[1]));
                 }
-                this.m_TopologySwarm.getFunctionArea().addDElement(popRep); // time consuming
+                this.topoPlot.getFunctionArea().addDElement(popRep); // time consuming
             }
         } // endif
     }
@@ -1985,7 +1967,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         // from deactivation and reinit
         if (deactivationOccured) {
             for (int i = 0; i < deactivatedSwarm.size(); ++i) {
-                plotCircleForIndy(deactivatedSwarm.get(i).m_BestIndividual, "   deac");
+                plotCircleForIndy(deactivatedSwarm.get(i).bestIndividual, "   deac");
             }
 //			for (int i = 0; i < reinitedSwarm.size(); ++i){
 //				plotSwarm(reinitedSwarm.get(i),"   reinit");
@@ -2029,7 +2011,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         DPointIcon icon = new Chart2DDPointIconText("");
         ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconPoint());
         point.setIcon(icon);
-        this.m_TopologySwarm.getFunctionArea().addDElement(point);
+        this.topoPlot.getFunctionArea().addDElement(point);
 
         //plot oldPos
         if (!(indy.getData("oldPosition") == null)) {
@@ -2038,7 +2020,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             icon = new Chart2DDPointIconText("");
             ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCross());
             point.setIcon(icon);
-            this.m_TopologySwarm.getFunctionArea().addDElement(point);
+            this.topoPlot.getFunctionArea().addDElement(point);
         }
 
         //plot personalBestPos
@@ -2047,7 +2029,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         icon = new Chart2DDPointIconText("");
         ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
         point.setIcon(icon);
-        this.m_TopologySwarm.getFunctionArea().addDElement(point);
+        this.topoPlot.getFunctionArea().addDElement(point);
 
         //plot neighbourBestPos
         double[] neighbourBestPos = (double[]) indy.getData("neighbourBestPos");
@@ -2055,7 +2037,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         icon = new Chart2DDPointIconText("");
         ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconContent());
         point.setIcon(icon);
-        this.m_TopologySwarm.getFunctionArea().addDElement(point);
+        this.topoPlot.getFunctionArea().addDElement(point);
     }
 
     //    protected void saveCurrentPlotAsJPG(String filename){
@@ -2077,16 +2059,16 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 //		
 //		File f = new File(outputPath,name); 
 //		
-//		synchronized(m_TopologySwarm){
+//		synchronized(topoPlot){
 //			try {
-//				JFrame frame = m_TopologySwarm.internalFrame;
+//				JFrame frame = topoPlot.internalFrame;
 //				Robot       robot = new Robot();
 //				Rectangle   area;
 //				area        = frame.getBounds();
 //				BufferedImage   bufferedImage   = robot.createScreenCapture(area);
 //
 //				// JFileChooser    fc              = new JFileChooser();
-//				// if (fc.showSaveDialog(m_TopologySwarm.internalFrame) != JFileChooser.APPROVE_OPTION) return;
+//				// if (fc.showSaveDialog(topoPlot.internalFrame) != JFileChooser.APPROVE_OPTION) return;
 //				System.out.println("Name " + f.getName());
 //				try {
 //					FileOutputStream fos = new FileOutputStream(f);

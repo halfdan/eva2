@@ -22,31 +22,31 @@ import eva2.util.annotation.Description;
 @Description("This is Evolutionary Multi-Criteria Optimization Algorithm hybridized with Local Searchers to span the Pareto-Front.")
 public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Serializable {
 
-    private InterfaceOptimizer m_MOOptimizer = new MultiObjectiveEA();
-    private InterfaceOptimizer m_SOOptimizer = new GeneticAlgorithm();
-    private InterfaceOptimizer[] m_SOOptimizers;
-    private Population m_Population = new Population();
-    private int m_MigrationRate = 5;
-    private int m_OutputDimension = 2;
-    private InterfaceOptimizationProblem m_Problem = new FM0Problem();
-    private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    private InterfaceOptimizer multiObjectiveEA = new MultiObjectiveEA();
+    private InterfaceOptimizer singleObjectiveEA = new GeneticAlgorithm();
+    private InterfaceOptimizer[] singleObjectiveOptimizers;
+    private Population population = new Population();
+    private int migrationRate = 5;
+    private int outputDimension = 2;
+    private InterfaceOptimizationProblem optimizationProblem = new FM0Problem();
+    private String identifier = "";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
     public WingedMultiObjectiveEA() {
     }
 
     public WingedMultiObjectiveEA(WingedMultiObjectiveEA a) {
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
-        this.m_MOOptimizer = (InterfaceOptimizer) a.m_MOOptimizer.clone();
-        this.m_SOOptimizer = (InterfaceOptimizer) a.m_SOOptimizer.clone();
-        if (a.m_SOOptimizers != null) {
-            this.m_SOOptimizers = new InterfaceOptimizer[a.m_SOOptimizers.length];
-            for (int i = 0; i < this.m_SOOptimizers.length; i++) {
-                this.m_SOOptimizers[i] = (InterfaceOptimizer) a.m_SOOptimizers[i].clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
+        this.multiObjectiveEA = (InterfaceOptimizer) a.multiObjectiveEA.clone();
+        this.singleObjectiveEA = (InterfaceOptimizer) a.singleObjectiveEA.clone();
+        if (a.singleObjectiveOptimizers != null) {
+            this.singleObjectiveOptimizers = new InterfaceOptimizer[a.singleObjectiveOptimizers.length];
+            for (int i = 0; i < this.singleObjectiveOptimizers.length; i++) {
+                this.singleObjectiveOptimizers[i] = (InterfaceOptimizer) a.singleObjectiveOptimizers[i].clone();
             }
         }
-        this.m_MigrationRate = a.m_MigrationRate;
-        this.m_Population = (Population) a.m_Population.clone();
+        this.migrationRate = a.migrationRate;
+        this.population = (Population) a.population.clone();
     }
 
     @Override
@@ -56,19 +56,19 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
 
     @Override
     public void init() {
-        if (this.m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
-            AbstractMultiObjectiveOptimizationProblem tmpProb = (AbstractMultiObjectiveOptimizationProblem) this.m_Problem;
+        if (this.optimizationProblem instanceof AbstractMultiObjectiveOptimizationProblem) {
+            AbstractMultiObjectiveOptimizationProblem tmpProb = (AbstractMultiObjectiveOptimizationProblem) this.optimizationProblem;
             AbstractMultiObjectiveOptimizationProblem tmpP;
             MOSOWeightedFitness tmpWF;
             PropertyDoubleArray tmpDA;
-            int dim = this.m_OutputDimension;
+            int dim = this.outputDimension;
             double[] weights;
             // dim = tmpProb.getOutputDimension();
-            this.m_MOOptimizer.setProblem((InterfaceOptimizationProblem) this.m_Problem.clone());
-            this.m_MOOptimizer.init();
-            this.m_SOOptimizers = new InterfaceOptimizer[dim];
+            this.multiObjectiveEA.setProblem((InterfaceOptimizationProblem) this.optimizationProblem.clone());
+            this.multiObjectiveEA.init();
+            this.singleObjectiveOptimizers = new InterfaceOptimizer[dim];
             for (int i = 0; i < dim; i++) {
-                tmpP = (AbstractMultiObjectiveOptimizationProblem) this.m_Problem.clone();
+                tmpP = (AbstractMultiObjectiveOptimizationProblem) this.optimizationProblem.clone();
                 weights = new double[dim];
                 for (int j = 0; j < dim; j++) {
                     weights[j] = 0;
@@ -78,13 +78,13 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
                 tmpWF = new MOSOWeightedFitness();
                 tmpWF.setWeights(tmpDA);
                 tmpP.setMOSOConverter(tmpWF);
-                this.m_SOOptimizers[i] = (InterfaceOptimizer) this.m_SOOptimizer.clone();
-                this.m_SOOptimizers[i].setProblem(tmpP);
-                this.m_SOOptimizers[i].init();
+                this.singleObjectiveOptimizers[i] = (InterfaceOptimizer) this.singleObjectiveEA.clone();
+                this.singleObjectiveOptimizers[i].setProblem(tmpP);
+                this.singleObjectiveOptimizers[i].init();
             }
         } else {
-            this.m_SOOptimizer.setProblem(this.m_Problem);
-            this.m_SOOptimizer.init();
+            this.singleObjectiveEA.setProblem(this.optimizationProblem);
+            this.singleObjectiveEA.init();
         }
         this.communicate();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
@@ -98,19 +98,19 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        if (this.m_Problem instanceof AbstractMultiObjectiveOptimizationProblem) {
-            AbstractMultiObjectiveOptimizationProblem tmpProb = (AbstractMultiObjectiveOptimizationProblem) this.m_Problem;
+        if (this.optimizationProblem instanceof AbstractMultiObjectiveOptimizationProblem) {
+            AbstractMultiObjectiveOptimizationProblem tmpProb = (AbstractMultiObjectiveOptimizationProblem) this.optimizationProblem;
             AbstractMultiObjectiveOptimizationProblem tmpP;
             MOSOWeightedFitness tmpWF;
             PropertyDoubleArray tmpDA;
             int dim = 2;
             double[] weights;
             // dim = tmpProb.getOutputDimension();
-            this.m_MOOptimizer.setProblem((InterfaceOptimizationProblem) this.m_Problem.clone());
-            this.m_MOOptimizer.initByPopulation(pop, reset);
-            this.m_SOOptimizers = new InterfaceOptimizer[dim];
+            this.multiObjectiveEA.setProblem((InterfaceOptimizationProblem) this.optimizationProblem.clone());
+            this.multiObjectiveEA.initByPopulation(pop, reset);
+            this.singleObjectiveOptimizers = new InterfaceOptimizer[dim];
             for (int i = 0; i < dim; i++) {
-                tmpP = (AbstractMultiObjectiveOptimizationProblem) this.m_Problem.clone();
+                tmpP = (AbstractMultiObjectiveOptimizationProblem) this.optimizationProblem.clone();
                 weights = new double[dim];
                 for (int j = 0; j < dim; j++) {
                     weights[j] = 0;
@@ -120,13 +120,13 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
                 tmpWF = new MOSOWeightedFitness();
                 tmpWF.setWeights(tmpDA);
                 tmpP.setMOSOConverter(tmpWF);
-                this.m_SOOptimizers[i] = (InterfaceOptimizer) this.m_SOOptimizer.clone();
-                this.m_SOOptimizers[i].setProblem(tmpP);
-                this.m_SOOptimizers[i].initByPopulation(pop, reset);
+                this.singleObjectiveOptimizers[i] = (InterfaceOptimizer) this.singleObjectiveEA.clone();
+                this.singleObjectiveOptimizers[i].setProblem(tmpP);
+                this.singleObjectiveOptimizers[i].initByPopulation(pop, reset);
             }
         } else {
-            this.m_SOOptimizer.setProblem(this.m_Problem);
-            this.m_SOOptimizer.initByPopulation(pop, reset);
+            this.singleObjectiveEA.setProblem(this.optimizationProblem);
+            this.singleObjectiveEA.initByPopulation(pop, reset);
         }
         this.communicate();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
@@ -138,12 +138,12 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     @Override
     public void optimize() {
 
-        this.m_MOOptimizer.optimize();
-        for (int i = 0; i < this.m_SOOptimizers.length; i++) {
-            this.m_SOOptimizers[i].optimize();
+        this.multiObjectiveEA.optimize();
+        for (int i = 0; i < this.singleObjectiveOptimizers.length; i++) {
+            this.singleObjectiveOptimizers[i].optimize();
         }
-        this.m_Population.incrGeneration();
-        if ((this.m_Population.getGeneration() % this.m_MigrationRate) == 0) {
+        this.population.incrGeneration();
+        if ((this.population.getGeneration() % this.migrationRate) == 0) {
             this.communicate();
         }
 
@@ -157,21 +157,21 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      */
     private void communicate() {
         int oldFunctionCalls;
-        this.m_Population.clear();
-        this.m_Population.setFunctionCalls(0);
+        this.population.clear();
+        this.population.setFunctionCalls(0);
         Population pop;
         // first collect all the data
-        pop = (Population) this.m_MOOptimizer.getPopulation().clone();
-        this.m_Population.addPopulation(pop);
-        this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
-        for (int i = 0; i < this.m_SOOptimizers.length; i++) {
-            pop = (Population) this.m_SOOptimizers[i].getPopulation().clone();
-            this.m_Population.addPopulation(pop);
-            this.m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
+        pop = (Population) this.multiObjectiveEA.getPopulation().clone();
+        this.population.addPopulation(pop);
+        this.population.incrFunctionCallsBy(pop.getFunctionCalls());
+        for (int i = 0; i < this.singleObjectiveOptimizers.length; i++) {
+            pop = (Population) this.singleObjectiveOptimizers[i].getPopulation().clone();
+            this.population.addPopulation(pop);
+            this.population.incrFunctionCallsBy(pop.getFunctionCalls());
         }
-        oldFunctionCalls = this.m_Population.getFunctionCalls();
-        this.m_Problem.evaluate(this.m_Population);
-        this.m_Population.setFunctionCalls(oldFunctionCalls);
+        oldFunctionCalls = this.population.getFunctionCalls();
+        this.optimizationProblem.evaluate(this.population);
+        this.population.setFunctionCalls(oldFunctionCalls);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 //        double plotValue = (this.problem.getDoublePlotValue(this.population)).doubleValue();
         // now they are synchronized lets migrate
@@ -182,29 +182,29 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      * This method implements the migration between the optimzers
      */
     private void migrate() {
-        AbstractEAIndividual[] bestIndys = new AbstractEAIndividual[this.m_OutputDimension];
+        AbstractEAIndividual[] bestIndys = new AbstractEAIndividual[this.outputDimension];
         double tmpF1, tmpF2;
         // for each dimension find the best
-        for (int i = 0; i < this.m_OutputDimension; i++) {
-            bestIndys[i] = (AbstractEAIndividual) ((AbstractEAIndividual) this.m_Population.get(0)).clone();
+        for (int i = 0; i < this.outputDimension; i++) {
+            bestIndys[i] = (AbstractEAIndividual) ((AbstractEAIndividual) this.population.get(0)).clone();
             tmpF1 = bestIndys[i].getFitness(i);
             // for each individual find the best
-            for (int j = 0; j < this.m_Population.size(); j++) {
-                if (((AbstractEAIndividual) this.m_Population.get(j)).getFitness(i) < tmpF1) {
-                    bestIndys[i] = (AbstractEAIndividual) ((AbstractEAIndividual) this.m_Population.get(j)).clone();
+            for (int j = 0; j < this.population.size(); j++) {
+                if (((AbstractEAIndividual) this.population.get(j)).getFitness(i) < tmpF1) {
+                    bestIndys[i] = (AbstractEAIndividual) ((AbstractEAIndividual) this.population.get(j)).clone();
                     tmpF1 = bestIndys[i].getFitness(i);
                 }
             }
         }
         // now perform the migration
         AbstractEAIndividual tmpIndy;
-        for (int i = 0; i < this.m_OutputDimension; i++) {
+        for (int i = 0; i < this.outputDimension; i++) {
             tmpIndy = (AbstractEAIndividual) bestIndys[i].clone();
-            this.m_MOOptimizer.getProblem().evaluate(tmpIndy);
-            this.m_MOOptimizer.getPopulation().set(i, tmpIndy);
+            this.multiObjectiveEA.getProblem().evaluate(tmpIndy);
+            this.multiObjectiveEA.getPopulation().set(i, tmpIndy);
             tmpIndy = (AbstractEAIndividual) bestIndys[i].clone();
-            this.m_SOOptimizers[i].getProblem().evaluate(tmpIndy);
-            this.m_SOOptimizers[i].getPopulation().set(0, bestIndys[i]);
+            this.singleObjectiveOptimizers[i].getProblem().evaluate(tmpIndy);
+            this.singleObjectiveOptimizers[i].getPopulation().set(0, bestIndys[i]);
         }
     }
 
@@ -215,14 +215,14 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -233,8 +233,8 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -245,12 +245,12 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -264,8 +264,8 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
         String result = "";
         result += "EMO:\n";
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -276,12 +276,12 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -303,12 +303,12 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {
@@ -326,11 +326,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      * @return The current optimizing method
      */
     public InterfaceOptimizer getMOOptimizer() {
-        return this.m_MOOptimizer;
+        return this.multiObjectiveEA;
     }
 
     public void setMOOptimizer(InterfaceOptimizer b) {
-        this.m_MOOptimizer = b;
+        this.multiObjectiveEA = b;
     }
 
     public String mOOptimizerTipText() {
@@ -343,11 +343,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      * @return The current optimizing method
      */
     public InterfaceOptimizer getSOOptimizer() {
-        return this.m_SOOptimizer;
+        return this.singleObjectiveEA;
     }
 
     public void setSOOptimizer(InterfaceOptimizer b) {
-        this.m_SOOptimizer = b;
+        this.singleObjectiveEA = b;
     }
 
     public String sOOptimizerTipText() {
@@ -360,11 +360,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
      * @return The current optimizing method
      */
     public int getMigrationRate() {
-        return this.m_MigrationRate;
+        return this.migrationRate;
     }
 
     public void setMigrationRate(int b) {
-        this.m_MigrationRate = b;
+        this.migrationRate = b;
     }
 
     public String migrationRateTipText() {

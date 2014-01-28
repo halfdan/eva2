@@ -574,7 +574,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 //            if (isActive(curSpecies)) { // Lets have only active species...
             if ((haltingWindow > 0) && (this.testSpeciesForConvergence(curSpecies))) {
 ///////////////////////////////////////////// Halting Window /////////////////////////////////////////////////
-//                    if (this.m_Debug) {
+//                    if (this.debug) {
 //                        System.out.println("Undiff.Size: " + this.undifferentiatedPopulation.size() +"/"+this.undifferentiatedPopulation.getPopulationSize());
 //                        System.out.println("Diff.Size  : " + ((Population)this.species.get(i)).size() +"/"+((Population)this.species.get(i)).getPopulationSize());
 //                    }
@@ -617,11 +617,11 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 undifferentiatedPopulation.addPopulation(initializeIndividuals(toReinit));
                 undifferentiatedPopulation.incrFunctionCallsBy(toReinit);
 
-//                    if (this.m_Debug) {
+//                    if (this.debug) {
 //                        System.out.println("Undiff.Size: " + this.undifferentiatedPopulation.size() +"/"+this.undifferentiatedPopulation.getPopulationSize());
 //                        System.out.println("Diff.Size  : " + ((Population)this.species.get(i)).size() +"/"+((Population)this.species.get(i)).getPopulationSize());
 //                    }
-//                    if (this.m_Debug) System.out.println("--------------------------End converged");
+//                    if (this.debug) System.out.println("--------------------------End converged");
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
             } else {
                 // actually optimize D_i
@@ -718,7 +718,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                     printState("---After differentiation", reinitPop);
                 }
 
-                //if (this.m_Show) this.plot();
+                //if (this.show) this.plot();
             } // end of species differentiation
 
             // plot the populations

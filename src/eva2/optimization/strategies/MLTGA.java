@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 public class MLTGA implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 
     private static final Logger LOGGER = Logger.getLogger(MLTGA.class.getName());
-    transient private InterfacePopulationChangedEventListener m_Listener = null;
-    private String m_Identifier = "LTGA";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener = null;
+    private String identifier = "MLTGA";
     private int probDim = 8;
     private int fitCrit = -1;
     private int popSize = 50;
@@ -39,8 +39,8 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     }
 
     public MLTGA(MLTGA l) {
-        this.m_Listener = l.m_Listener;
-        this.m_Identifier = l.m_Identifier;
+        this.populationChangedEventListener = l.populationChangedEventListener;
+        this.identifier = l.identifier;
         this.probDim = l.probDim;
         this.popSize = l.popSize;
         this.population = (Population) l.population.clone();
@@ -65,15 +65,15 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
 
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -287,8 +287,8 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -309,12 +309,12 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
 
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     @Override

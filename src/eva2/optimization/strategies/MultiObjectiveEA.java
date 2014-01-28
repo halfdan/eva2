@@ -30,24 +30,24 @@ import eva2.util.annotation.Description;
 @Description("This is a general Multi-objective Evolutionary Optimization Framework.")
 public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializable {
 
-    private InterfaceOptimizer m_Optimizer = new GeneticAlgorithm();
-    private InterfaceArchiving m_Archiver = new ArchivingNSGAII();
-    private InterfaceInformationRetrieval m_InformationRetrieval = new InformationRetrievalInserting();
-    private InterfaceOptimizationProblem m_Problem = new FM0Problem();
-    private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    private InterfaceOptimizer optimizer = new GeneticAlgorithm();
+    private InterfaceArchiving archiver = new ArchivingNSGAII();
+    private InterfaceInformationRetrieval informationRetrieval = new InformationRetrievalInserting();
+    private InterfaceOptimizationProblem optimizationProblem = new FM0Problem();
+    private String identifier = "";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
     public MultiObjectiveEA() {
-        this.m_Optimizer.getPopulation().setTargetSize(100);
-        ((GeneticAlgorithm) this.m_Optimizer).setParentSelection(new SelectMONonDominated());
-        ((GeneticAlgorithm) this.m_Optimizer).setPartnerSelection(new SelectMONonDominated());
+        this.optimizer.getPopulation().setTargetSize(100);
+        ((GeneticAlgorithm) this.optimizer).setParentSelection(new SelectMONonDominated());
+        ((GeneticAlgorithm) this.optimizer).setPartnerSelection(new SelectMONonDominated());
     }
 
     public MultiObjectiveEA(MultiObjectiveEA a) {
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
-        this.m_Optimizer = (InterfaceOptimizer) a.m_Optimizer.clone();
-        this.m_Archiver = (InterfaceArchiving) a.m_Archiver.clone();
-        this.m_InformationRetrieval = (InterfaceInformationRetrieval) a.m_InformationRetrieval.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
+        this.optimizer = (InterfaceOptimizer) a.optimizer.clone();
+        this.archiver = (InterfaceArchiving) a.archiver.clone();
+        this.informationRetrieval = (InterfaceInformationRetrieval) a.informationRetrieval.clone();
     }
 
     public MultiObjectiveEA(InterfaceOptimizer subOpt, InterfaceArchiving archiving, int archiveSize,
@@ -66,8 +66,8 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
 
     @Override
     public void init() {
-        this.m_Optimizer.init();
-        this.m_Archiver.addElementsToArchive(this.m_Optimizer.getPopulation());
+        this.optimizer.init();
+        this.archiver.addElementsToArchive(this.optimizer.getPopulation());
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -79,8 +79,8 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Optimizer.initByPopulation(pop, reset);
-        this.m_Archiver.addElementsToArchive(this.m_Optimizer.getPopulation());
+        this.optimizer.initByPopulation(pop, reset);
+        this.archiver.addElementsToArchive(this.optimizer.getPopulation());
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -91,11 +91,11 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     public void optimize() {
 //        double[][] may = this.showMay(this.optimizer.getPopulation());
         // This is in total compliance with Koch's framework nice isn't it?
-        this.m_Optimizer.optimize();
+        this.optimizer.optimize();
         // now comes all the multiobjective optimization stuff
         // This is the Environment Selection
-        this.m_Archiver.addElementsToArchive(this.m_Optimizer.getPopulation());
-        //if (true) this.m_Archiver.plotArchive(this.optimizer.getPopulation());
+        this.archiver.addElementsToArchive(this.optimizer.getPopulation());
+        //if (true) this.archiver.plotArchive(this.optimizer.getPopulation());
 //        if (false) {
 //            int popSize = this.optimizer.getPopulation().size();
 //            int archiveSize = this.optimizer.getPopulation().getArchive().size();
@@ -112,7 +112,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
 
         // The InformationRetrieval will choose from the archive and the current population
         // the population from which in the next generation the parents will be selected.
-        this.m_InformationRetrieval.retrieveInformationFrom(this.m_Optimizer.getPopulation());
+        this.informationRetrieval.retrieveInformationFrom(this.optimizer.getPopulation());
 
 //        double[][] mayday = this.showMay(this.optimizer.getPopulation());
 //        if ((mayday[0][0] > may[0][0]) || (mayday[1][1] > may[1][1])) {
@@ -157,14 +157,14 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
 
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -172,8 +172,8 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     }
 
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -184,13 +184,13 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
-        this.m_Optimizer.setProblem(problem);
+        this.optimizationProblem = problem;
+        this.optimizer.setProblem(problem);
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -204,11 +204,11 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         String result = "";
         result += "Multi-Objective Evolutionary Algorithm:\n";
         result += "Using:\n";
-        result += " Archiving Strategy    = " + this.m_Archiver.getClass().toString() + "\n";
-        result += " Information Retrieval = " + this.m_InformationRetrieval.getClass().toString() + "\n";
+        result += " Archiving Strategy    = " + this.archiver.getClass().toString() + "\n";
+        result += " Information Retrieval = " + this.informationRetrieval.getClass().toString() + "\n";
         result += " Information Retrieval = " + this.getClass().toString() + "\n";
-        result += " Optimizer             = " + this.m_Optimizer.getClass().toString() + "\n";
-        result += this.m_Optimizer.getStringRepresentation() + "\n";
+        result += " Optimizer             = " + this.optimizer.getClass().toString() + "\n";
+        result += this.optimizer.getStringRepresentation() + "\n";
         //result += "=> The Optimization Problem: ";
         //result += this.problem.getStringRepresentationForProblem(this) +"\n";
         //result += this.population.getStringRepresentation();
@@ -222,12 +222,12 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -249,12 +249,12 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public Population getPopulation() {
-        return this.m_Optimizer.getPopulation();
+        return this.optimizer.getPopulation();
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Optimizer.setPopulation(pop);
+        this.optimizer.setPopulation(pop);
     }
 
     public String populationTipText() {
@@ -272,11 +272,11 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      * @return The current optimizing method
      */
     public InterfaceOptimizer getOptimizer() {
-        return this.m_Optimizer;
+        return this.optimizer;
     }
 
     public void setOptimizer(InterfaceOptimizer b) {
-        this.m_Optimizer = b;
+        this.optimizer = b;
     }
 
     public String optimizerTipText() {
@@ -289,11 +289,11 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      * @return The current optimizing method
      */
     public InterfaceArchiving getArchivingStrategy() {
-        return this.m_Archiver;
+        return this.archiver;
     }
 
     public void setArchivingStrategy(InterfaceArchiving b) {
-        this.m_Archiver = b;
+        this.archiver = b;
     }
 
     public String archivingStrategyTipText() {
@@ -307,11 +307,11 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      * @return The current optimizing method
      */
     public InterfaceInformationRetrieval getInformationRetrieval() {
-        return this.m_InformationRetrieval;
+        return this.informationRetrieval;
     }
 
     public void setInformationRetrieval(InterfaceInformationRetrieval b) {
-        this.m_InformationRetrieval = b;
+        this.informationRetrieval = b;
     }
 
     public String informationRetrievalTipText() {
@@ -324,19 +324,19 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      * @return The current optimizing method
      */
     public int getArchiveSize() {
-        Population archive = this.m_Optimizer.getPopulation().getArchive();
+        Population archive = this.optimizer.getPopulation().getArchive();
         if (archive == null) {
             archive = new Population();
-            this.m_Optimizer.getPopulation().SetArchive(archive);
+            this.optimizer.getPopulation().SetArchive(archive);
         }
         return archive.getTargetSize();
     }
 
     public void setArchiveSize(int b) {
-        Population archive = this.m_Optimizer.getPopulation().getArchive();
+        Population archive = this.optimizer.getPopulation().getArchive();
         if (archive == null) {
             archive = new Population();
-            this.m_Optimizer.getPopulation().SetArchive(archive);
+            this.optimizer.getPopulation().SetArchive(archive);
         }
         archive.setTargetSize(b);
     }

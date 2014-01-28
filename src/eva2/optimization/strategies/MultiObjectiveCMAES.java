@@ -40,21 +40,21 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
         public boolean seen = false;
     }
 
-    private String m_Identifier = "MOCMAES";
-    private Population m_Population;
-    private AbstractOptimizationProblem m_Problem;
-    transient private InterfacePopulationChangedEventListener m_Listener;
-    private int m_lambda = 1;
-    private int m_lambdamo = 1;
+    private String identifier = "MOCMAES";
+    private Population population;
+    private AbstractOptimizationProblem optimizationProblem;
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
+    private int lambda = 1;
+    private int lambdaMO = 1;
 
     public MultiObjectiveCMAES() {
-        m_Population = new Population(m_lambdamo);
+        population = new Population(lambdaMO);
     }
 
     public MultiObjectiveCMAES(MultiObjectiveCMAES a) {
-        m_Problem = (AbstractOptimizationProblem) a.m_Problem.clone();
-        setPopulation((Population) a.m_Population.clone());
-        m_lambda = a.m_lambda;
+        optimizationProblem = (AbstractOptimizationProblem) a.optimizationProblem.clone();
+        setPopulation((Population) a.population.clone());
+        lambda = a.lambda;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      */
     @Override
     public void setIdentifier(String name) {
-        m_Identifier = name;
+        identifier = name;
     }
 
     /*
@@ -88,7 +88,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        m_Problem = (AbstractOptimizationProblem) problem;
+        optimizationProblem = (AbstractOptimizationProblem) problem;
     }
 
     /**
@@ -99,7 +99,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     /*
@@ -120,7 +120,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      */
     @Override
     public String getIdentifier() {
-        return m_Identifier;
+        return identifier;
     }
 
     /*
@@ -130,7 +130,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      */
     @Override
     public String getName() {
-        return "(1+" + m_lambda + ") MO-CMA-ES";
+        return "(1+" + lambda + ") MO-CMA-ES";
     }
 
     /*
@@ -140,7 +140,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      */
     @Override
     public Population getPopulation() {
-        return m_Population;
+        return population;
     }
 
     /*
@@ -150,7 +150,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      */
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return m_Problem;
+        return optimizationProblem;
     }
 
     /*
@@ -162,10 +162,10 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     @Override
     public String getStringRepresentation() {
         StringBuilder strB = new StringBuilder(200);
-        strB.append("(1+" + m_lambda + ") MO-CMA-ES:\nOptimization Problem: ");
-        strB.append(this.m_Problem.getStringRepresentationForProblem(this));
+        strB.append("(1+" + lambda + ") MO-CMA-ES:\nOptimization Problem: ");
+        strB.append(this.optimizationProblem.getStringRepresentationForProblem(this));
         strB.append("\n");
-        strB.append(this.m_Population.getStringRepresentation());
+        strB.append(this.population.getStringRepresentation());
         return strB.toString();
     }
 
@@ -177,10 +177,10 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     @Override
     public void init() {
         // initByPopulation(population, true);
-        this.m_Population.setTargetSize(m_lambdamo);
-        this.m_Problem.initializePopulation(this.m_Population);
+        this.population.setTargetSize(lambdaMO);
+        this.optimizationProblem.initializePopulation(this.population);
         // children = new Population(population.size());
-        this.evaluatePopulation(this.m_Population);
+        this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 
     }
@@ -196,8 +196,8 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     public void initByPopulation(Population pop, boolean reset) {
         setPopulation(pop);
         if (reset) {
-            m_Problem.initializePopulation(m_Population);
-            m_Problem.evaluate(m_Population);
+            optimizationProblem.initializePopulation(population);
+            optimizationProblem.evaluate(population);
 
         }
     }
@@ -208,7 +208,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * @param population The population that is to be evaluated
      */
     private void evaluatePopulation(Population population) {
-        this.m_Problem.evaluate(population);
+        this.optimizationProblem.evaluate(population);
     }
 
     /*
@@ -222,20 +222,20 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
         HashMap<Long, CounterClass> SuccessCounterMap = new HashMap<Long, CounterClass>();
 
         // Eltern markieren und f�r die Z�hlung vorbereiten
-        for (int j = 0; j < m_lambdamo && j < m_Population.size(); j++) {
-            m_Population.getEAIndividual(j).putData("Parent",
-                    m_Population.getEAIndividual(j));
-            SuccessCounterMap.put(m_Population.getEAIndividual(j).getIndyID(),
+        for (int j = 0; j < lambdaMO && j < population.size(); j++) {
+            population.getEAIndividual(j).putData("Parent",
+                    population.getEAIndividual(j));
+            SuccessCounterMap.put(population.getEAIndividual(j).getIndyID(),
                     new CounterClass(0));
         }
 
         // Kinder erzeugen
-        Population children = new Population(m_lambdamo * m_lambda);
-        children.setGeneration(m_Population.getGeneration());
+        Population children = new Population(lambdaMO * lambda);
+        children.setGeneration(population.getGeneration());
 
         for (int j = 0; j < children.getTargetSize(); j++) {
-            AbstractEAIndividual parent = m_Population.getEAIndividual(j
-                    % m_lambdamo);
+            AbstractEAIndividual parent = population.getEAIndividual(j
+                    % lambdaMO);
             AbstractEAIndividual indy = (AbstractEAIndividual) parent.clone();
             indy.mutate();
             indy.putData("Parent", parent);
@@ -243,29 +243,29 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
         }
         evaluatePopulation(children);
 
-        m_Population.addPopulation(children);
+        population.addPopulation(children);
         // Ranking
         ArchivingNSGAII dummyArchive = new ArchivingNSGAIISMeasure();
         Population[] store = dummyArchive
-                .getNonDominatedSortedFronts(m_Population);
-        store = dummyArchive.getNonDominatedSortedFronts(m_Population);
+                .getNonDominatedSortedFronts(population);
+        store = dummyArchive.getNonDominatedSortedFronts(population);
         dummyArchive.calculateCrowdingDistance(store);
 
         // Vergleichen und den Successcounter hochz�hlen wenn wir besser als
         // unser Elter sind
-        for (int j = 0; j < m_Population.size(); j++) {
-            AbstractEAIndividual parent = (AbstractEAIndividual) m_Population
+        for (int j = 0; j < population.size(); j++) {
+            AbstractEAIndividual parent = (AbstractEAIndividual) population
                     .getEAIndividual(j).getData("Parent");
-            if (m_Population.getEAIndividual(j) != parent) { // Eltern nicht mit
+            if (population.getEAIndividual(j) != parent) { // Eltern nicht mit
                 // sich selber
                 // vergleichen
                 int parentParetoLevel = ((Integer) parent
                         .getData("ParetoLevel")).intValue();
                 double parentSMeasure = ((Double) parent.getData("HyperCube"))
                         .doubleValue();
-                int childParetoLevel = ((Integer) m_Population.getEAIndividual(
+                int childParetoLevel = ((Integer) population.getEAIndividual(
                         j).getData("ParetoLevel")).intValue();
-                double childSMeasure = ((Double) m_Population
+                double childSMeasure = ((Double) population
                         .getEAIndividual(j).getData("HyperCube")).doubleValue();
                 if (childParetoLevel < parentParetoLevel
                         || ((childParetoLevel == parentParetoLevel) && childSMeasure > parentSMeasure)) {
@@ -278,17 +278,17 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
         }
 
         // Selection
-        m_Population.clear();
+        population.clear();
         for (int i = 0; i < store.length; i++) {
-            if (m_Population.size() + store[i].size() <= m_lambdamo) { // Die
+            if (population.size() + store[i].size() <= lambdaMO) { // Die
                 // Front
                 // passt
                 // noch
                 // komplett
-                m_Population.addPopulation(store[i]);
+                population.addPopulation(store[i]);
 
             } else { // die besten aus der aktuellen Front heraussuchen bis voll
-                while (store[i].size() > 0 && m_Population.size() < m_lambdamo) {
+                while (store[i].size() > 0 && population.size() < lambdaMO) {
                     AbstractEAIndividual indy = store[i].getEAIndividual(0);
                     double bestMeasure = ((Double) indy.getData("HyperCube"))
                             .doubleValue(); // TODO mal noch effizient machen
@@ -302,7 +302,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
                             indy = store[i].getEAIndividual(j);
                         }
                     }
-                    m_Population.add(indy);
+                    population.add(indy);
                     store[i].removeMember(indy);
                 }
             }
@@ -310,9 +310,9 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
         }
 
         // Strategieparemeter updaten
-        for (int j = 0; j < m_Population.size(); j++) {
+        for (int j = 0; j < population.size(); j++) {
 
-            AbstractEAIndividual indy = m_Population.getEAIndividual(j);
+            AbstractEAIndividual indy = population.getEAIndividual(j);
             if (indy.getMutationOperator() instanceof MutateESCovarianceMatrixAdaptionPlus) { // Das
                 // geht
                 // nur
@@ -329,7 +329,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
                         .getMutationOperator();
                 double rate = ((double) SuccessCounterMap.get(parent
                         .getIndyID()).value)
-                        / ((double) m_lambda);
+                        / ((double) lambda);
 
                 if (indy != parent) {
                     muta.updateCovariance();
@@ -342,8 +342,8 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
             children.getEAIndividual(j).putData("Parent", null);
         }
 
-        m_Population.incrFunctionCallsBy(children.size());
-        m_Population.incrGeneration();
+        population.incrFunctionCallsBy(children.size());
+        population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 
     }
@@ -370,9 +370,9 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      */
     @Override
     public void setPopulation(Population pop) {
-        m_Population = pop;
-        m_Population.setNotifyEvalInterval(1);
-        m_lambdamo = m_Population.getTargetSize();
+        population = pop;
+        population.setNotifyEvalInterval(1);
+        lambdaMO = population.getTargetSize();
 
     }
 
@@ -382,22 +382,22 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * @param name
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
     public int getLambda() {
-        return m_lambda;
+        return lambda;
     }
 
     public void setLambda(int mLambda) {
-        m_lambda = mLambda;
+        lambda = mLambda;
     }
 
     /*
-     * public int getLambdaMo() { return m_lambdamo; }
+     * public int getLambdaMo() { return lambdaMO; }
      * 
-     * public void setLambdaMo(int mLambda) { m_lambdamo = mLambda; }
+     * public void setLambdaMo(int mLambda) { lambdaMO = mLambda; }
      */
 }

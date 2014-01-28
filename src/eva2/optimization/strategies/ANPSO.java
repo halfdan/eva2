@@ -554,7 +554,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
                     if (reinitSuperfl) {
                         for (int i = 0; i < tmpPop.size(); i++) {
                             AbstractEAIndividual indy = tmpPop.getEAIndividual(i);
-                            indy.init(m_Problem);
+                            indy.init(optimizationProblem);
                             indy.resetFitness(Double.MAX_VALUE); // TODO this is not so nice... they should be collected in a reinit-list and inserted at the beginning of the next optimize step
                             ParticleSwarmOptimization.initIndividualDefaults(indy, 0.2);
                             ParticleSwarmOptimization.initIndividualMemory(indy);
@@ -802,10 +802,10 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 //		}
         for (int i = 0; i < getSubSwarms().size(); ++i) {
             AbstractEAIndividual bestSS = ((ParticleSubSwarmOptimization) getSubSwarms().get(i)).getBestIndividual();
-            elitePop.addIndividual((AbstractEAIndividual) ((ParticleSubSwarmOptimization) getSubSwarms().get(i)).m_BestIndividual.clone());
+            elitePop.addIndividual((AbstractEAIndividual) ((ParticleSubSwarmOptimization) getSubSwarms().get(i)).bestIndividual.clone());
         }
         for (int i = 0; i < inactiveSubSwarms.size(); ++i) {
-            elitePop.addIndividual((AbstractEAIndividual) ((ParticleSubSwarmOptimization) inactiveSubSwarms.get(i)).m_BestIndividual.clone());
+            elitePop.addIndividual((AbstractEAIndividual) ((ParticleSubSwarmOptimization) inactiveSubSwarms.get(i)).bestIndividual.clone());
         }
         return elitePop;
     }
@@ -830,7 +830,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      */
     @Override
     protected void plotSubSwarms() {
-        if (this.m_Problem instanceof Interface2DBorderProblem) {
+        if (this.optimizationProblem instanceof Interface2DBorderProblem) {
             //DPointSet               popRep  = new DPointSet();
             InterfaceDataTypeDouble tmpIndy1;
 
@@ -839,7 +839,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
             // for all inactive SubSwarms from ANPSO...
             for (int i = 0; i < this.inactiveSubSwarms.size(); i++) {
                 ParticleSubSwarmOptimization currentsubswarm = this.inactiveSubSwarms.get(i);
-                InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) currentsubswarm.m_BestIndividual;
+                InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) currentsubswarm.bestIndividual;
                 plotCircleForIndy((AbstractEAIndividual) best, "[I]");
             }
 
@@ -848,7 +848,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
                 ParticleSubSwarmOptimization currentsubswarm = this.getSubSwarms().get(i);
                 Population currentsubswarmpop = (Population) currentsubswarm.getPopulation();
                 //InterfaceDataTypeDouble best = (InterfaceDataTypeDouble)currentsubswarmpop.getBestIndividual();
-                InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) currentsubswarm.m_BestIndividual;
+                InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) currentsubswarm.bestIndividual;
                 DPointSet popRep = new DPointSet();
 
                 //...draw SubSwarm as points
@@ -857,7 +857,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
                     tmpIndy1 = (InterfaceDataTypeDouble) currentsubswarmpop.get(j);
                     popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
                 }
-                this.m_TopologySwarm.getFunctionArea().addDElement(popRep); // time consuming
+                this.topoPlot.getFunctionArea().addDElement(popRep); // time consuming
 
                 //...draw circle for best
                 if (!currentsubswarm.isActive()) {
@@ -886,7 +886,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
                     popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
                     popRep.addDPoint(new DPoint(best.getDoubleData()[0], best.getDoubleData()[1]));
                 }
-                this.m_TopologySwarm.getFunctionArea().addDElement(popRep); // time consuming
+                this.topoPlot.getFunctionArea().addDElement(popRep); // time consuming
             }
         } // endif
     }

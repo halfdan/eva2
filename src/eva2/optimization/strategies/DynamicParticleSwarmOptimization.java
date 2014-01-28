@@ -164,44 +164,44 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         resetFitness(indy);
 
         plotIndy(position, null, (Integer) (indy.getData(indexKey)));
-//            if (this.m_Show) {
-//                this.m_Plot.setUnconnectedPoint(position[0], position[1], (Integer)(indy.getData(indexKey)));
-        //this.m_Plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index+1);
+//            if (this.show) {
+//                this.plot.setUnconnectedPoint(position[0], position[1], (Integer)(indy.getData(indexKey)));
+        //this.plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index+1);
 //        }
         //System.out.println("quantum particle " + index + " set to " + newPos[0] + "/" + newPos[1]);
     }
 
     private void plotBestIndy() {
-        if (m_Plot != null) {
+        if (plot != null) {
             double[] curPosition = ((InterfaceDataTypeDouble) population.getBestEAIndividual()).getDoubleData();
 
             if (lastBestPlot != null) {
-                this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], 0);
+                this.plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], 0);
             }
-            this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], 0);
+            this.plot.setConnectedPoint(curPosition[0], curPosition[1], 0);
             lastBestPlot = curPosition.clone();
         }
     }
 
     @Override
     protected void plotIndy(double[] curPosition, double[] curVelocity, int index) {
-        if (this.m_Show) {
+        if (this.show) {
             if (plotBestOnly) {
                 if (index != ((Integer) (population.getBestEAIndividual().getData(indexKey)))) {
                     return;
                 } else {
-//					if (lastBestPlot != null) this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], index);
-//					this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index);
-                    this.m_Plot.setUnconnectedPoint(curPosition[0], curPosition[1], index);
+//					if (lastBestPlot != null) this.plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], index);
+//					this.plot.setConnectedPoint(curPosition[0], curPosition[1], index);
+                    this.plot.setUnconnectedPoint(curPosition[0], curPosition[1], index);
                     lastBestPlot = curPosition.clone();
                 }
             } else {
                 if (curVelocity == null) {
 
-                    this.m_Plot.setUnconnectedPoint(curPosition[0], curPosition[1], index);
+                    this.plot.setUnconnectedPoint(curPosition[0], curPosition[1], index);
                 } else {
-                    this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index);
-                    this.m_Plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index);
+                    this.plot.setConnectedPoint(curPosition[0], curPosition[1], index);
+                    this.plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index);
                 }
             }
         }
@@ -253,14 +253,6 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         if (envHasChanged) {
             double chi;
             double[] curVelocity = new double[lastVelocity.length];
-            /* old ways
-                curVelocity[i]  = this.m_Inertness * velocity[i];
-
-                curVelocity[i]  += (this.phi1 * getSpeedLimit(index) * (range[i][1] - range[i][0]) * RNG.randomDouble(-1., 1.));
-                // the component from the social model
-                curVelocity[i]  += this.phi2*RNG.randomDouble(0,1)*(localBestPos[i]-curPosition[i]);
- 
-			*/
             for (int i = 0; i < lastVelocity.length; i++) {
                 // the component from the old velocity
                 curVelocity[i] = this.inertnessOrChi * lastVelocity[i];
@@ -401,7 +393,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     protected void evaluatePopulation(Population population) {
         envHasChanged = false;
         super.evaluatePopulation(population);
-        if (m_Show && plotBestOnly) {
+        if (show && plotBestOnly) {
             plotBestIndy();
         }
 
@@ -427,11 +419,11 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     @Override
     protected void logBestIndividual() {
         // log the best individual of the population
-        if (envHasChanged || (this.population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual))) {
-            this.m_BestIndividual = (AbstractEAIndividual) this.population.getBestEAIndividual().clone();
-            this.m_BestIndividual.putData(partBestFitKey, this.m_BestIndividual.getFitness());
-            this.m_BestIndividual.putData(partBestPosKey, ((InterfaceDataTypeDouble) this.m_BestIndividual).getDoubleData());
-            //System.out.println("-- best ind set to " + ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData()[0] + "/" + ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData()[1]);
+        if (envHasChanged || (this.population.getBestEAIndividual().isDominatingDebConstraints(this.bestIndividual))) {
+            this.bestIndividual = (AbstractEAIndividual) this.population.getBestEAIndividual().clone();
+            this.bestIndividual.putData(partBestFitKey, this.bestIndividual.getFitness());
+            this.bestIndividual.putData(partBestPosKey, ((InterfaceDataTypeDouble) this.bestIndividual).getDoubleData());
+            //System.out.println("-- best ind set to " + ((InterfaceDataTypeDouble)this.bestIndividual).getDoubleData()[0] + "/" + ((InterfaceDataTypeDouble)this.bestIndividual).getDoubleData()[1]);
         }
     }
 
@@ -499,7 +491,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     public String getStringRepresentation() {
         StringBuilder strB = new StringBuilder(200);
         strB.append("Dynamic Particle Swarm Optimization:\nOptimization Problem: ");
-        strB.append(this.m_Problem.getStringRepresentationForProblem(this));
+        strB.append(this.optimizationProblem.getStringRepresentationForProblem(this));
         strB.append("\n");
         strB.append(this.population.getStringRepresentation());
         return strB.toString();
@@ -686,7 +678,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     }
 
     public Plot getPlot() {
-        return m_Plot;
+        return plot;
     }
 
     /**

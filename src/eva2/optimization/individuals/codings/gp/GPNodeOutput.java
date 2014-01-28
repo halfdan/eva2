@@ -97,6 +97,6 @@ public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable
 //     * @return string
 //     */
 //    public String getStringRepresentation() {
-//        return ("( A:" +this.m_Identifier + " )");
+//        return ("( A:" +this.identifier + " )");
 //    }
 }

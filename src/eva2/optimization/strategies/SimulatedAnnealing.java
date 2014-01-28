@@ -21,29 +21,29 @@ import eva2.util.annotation.Description;
 public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializable {
     // These variables are necessary for the simple testcase
 
-    private InterfaceOptimizationProblem m_Problem = new B1Problem();
-    private int m_MultiRuns = 100;
-    private int m_FitnessCalls = 100;
-    private int m_FitnessCallsNeeded = 0;
-    GAIndividualBinaryData m_Best, m_Test;
-    public double m_InitialTemperature = 2, m_CurrentTemperature;
-    public double m_Alpha = 0.9;
+    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
+    private int multiRuns = 100;
+    private int fitnessCalls = 100;
+    private int fitnessCallsNeeded = 0;
+    GAIndividualBinaryData bestIndividual, testIndividual;
+    public double initialTemperature = 2, currentTemperature;
+    public double alpha = 0.9;
     // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
-    private Population m_Population;
+    transient private String identifier = "";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
+    private Population population;
 
     public SimulatedAnnealing() {
-        this.m_Population = new Population();
-        this.m_Population.setTargetSize(10);
+        this.population = new Population();
+        this.population.setTargetSize(10);
     }
 
     public SimulatedAnnealing(SimulatedAnnealing a) {
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
-        this.m_InitialTemperature = a.m_InitialTemperature;
-        this.m_CurrentTemperature = a.m_CurrentTemperature;
-        this.m_Alpha = a.m_Alpha;
+        this.population = (Population) a.population.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
+        this.initialTemperature = a.initialTemperature;
+        this.currentTemperature = a.currentTemperature;
+        this.alpha = a.alpha;
     }
 
     @Override
@@ -56,9 +56,9 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
      */
     @Override
     public void init() {
-        this.m_Problem.initializePopulation(this.m_Population);
-        this.m_Problem.evaluate(this.m_Population);
-        this.m_CurrentTemperature = this.m_InitialTemperature;
+        this.optimizationProblem.initializePopulation(this.population);
+        this.optimizationProblem.evaluate(this.population);
+        this.currentTemperature = this.initialTemperature;
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -70,11 +70,11 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Population = (Population) pop.clone();
-        this.m_CurrentTemperature = this.m_InitialTemperature;
+        this.population = (Population) pop.clone();
+        this.currentTemperature = this.initialTemperature;
         if (reset) {
-            this.m_Population.init();
-            this.m_Problem.evaluate(this.m_Population);
+            this.population.init();
+            this.optimizationProblem.evaluate(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
@@ -85,32 +85,32 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
     @Override
     public void optimize() {
         AbstractEAIndividual indy;
-        Population original = (Population) this.m_Population.clone();
+        Population original = (Population) this.population.clone();
         double delta;
 
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            indy = ((AbstractEAIndividual) this.m_Population.get(i));
+        for (int i = 0; i < this.population.size(); i++) {
+            indy = ((AbstractEAIndividual) this.population.get(i));
             double tmpD = indy.getMutationProbability();
             indy.setMutationProbability(1.0);
             indy.mutate();
             indy.setMutationProbability(tmpD);
         }
-        this.m_Problem.evaluate(this.m_Population);
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.m_Population.get(i)))) {
-                this.m_Population.remove(i);
-                this.m_Population.add(i, original.get(i));
+        this.optimizationProblem.evaluate(this.population);
+        for (int i = 0; i < this.population.size(); i++) {
+            if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.population.get(i)))) {
+                this.population.remove(i);
+                this.population.add(i, original.get(i));
             } else {
-                delta = this.calculateDelta(((AbstractEAIndividual) original.get(i)), ((AbstractEAIndividual) this.m_Population.get(i)));
+                delta = this.calculateDelta(((AbstractEAIndividual) original.get(i)), ((AbstractEAIndividual) this.population.get(i)));
                 //System.out.println("delta: " + delta);
-                if (Math.exp(-delta / this.m_CurrentTemperature) > RNG.randomInt(0, 1)) {
-                    this.m_Population.remove(i);
-                    this.m_Population.add(i, original.get(i));
+                if (Math.exp(-delta / this.currentTemperature) > RNG.randomInt(0, 1)) {
+                    this.population.remove(i);
+                    this.population.add(i, original.get(i));
                 }
             }
         }
-        this.m_CurrentTemperature = this.m_Alpha * this.m_CurrentTemperature;
-        this.m_Population.incrGeneration();
+        this.currentTemperature = this.alpha * this.currentTemperature;
+        this.population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -138,36 +138,36 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
      * This method will init the HillClimber
      */
     public void defaultInit() {
-        this.m_FitnessCallsNeeded = 0;
-        this.m_Best = new GAIndividualBinaryData();
-        this.m_Best.defaultInit(m_Problem);
+        this.fitnessCallsNeeded = 0;
+        this.bestIndividual = new GAIndividualBinaryData();
+        this.bestIndividual.defaultInit(optimizationProblem);
     }
 
     /**
      * This method will optimize
      */
     public void defaultOptimize() {
-        for (int i = 0; i < m_FitnessCalls; i++) {
-            this.m_Test = (GAIndividualBinaryData) ((this.m_Best).clone());
-            this.m_Test.defaultMutate();
-            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) {
-                this.m_Best = this.m_Test;
+        for (int i = 0; i < fitnessCalls; i++) {
+            this.testIndividual = (GAIndividualBinaryData) ((this.bestIndividual).clone());
+            this.testIndividual.defaultMutate();
+            if (this.testIndividual.defaultEvaulateAsMiniBits() < this.bestIndividual.defaultEvaulateAsMiniBits()) {
+                this.bestIndividual = this.testIndividual;
             }
-            this.m_FitnessCallsNeeded = i;
-            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) {
-                i = this.m_FitnessCalls + 1;
+            this.fitnessCallsNeeded = i;
+            if (this.bestIndividual.defaultEvaulateAsMiniBits() == 0) {
+                i = this.fitnessCalls + 1;
             }
         }
     }
@@ -180,27 +180,27 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
     public static void main(String[] args) {
         SimulatedAnnealing program = new SimulatedAnnealing();
         int TmpMeanCalls = 0, TmpMeanFitness = 0;
-        for (int i = 0; i < program.m_MultiRuns; i++) {
+        for (int i = 0; i < program.multiRuns; i++) {
             program.defaultInit();
             program.defaultOptimize();
-            TmpMeanCalls += program.m_FitnessCallsNeeded;
-            TmpMeanFitness += program.m_Best.defaultEvaulateAsMiniBits();
+            TmpMeanCalls += program.fitnessCallsNeeded;
+            TmpMeanFitness += program.bestIndividual.defaultEvaulateAsMiniBits();
         }
-        TmpMeanCalls /= program.m_MultiRuns;
-        TmpMeanFitness /= program.m_MultiRuns;
-        System.out.println("(" + program.m_MultiRuns + "/" + program.m_FitnessCalls + ") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
+        TmpMeanCalls /= program.multiRuns;
+        TmpMeanFitness /= program.multiRuns;
+        System.out.println("(" + program.multiRuns + "/" + program.fitnessCalls + ") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
 
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -208,8 +208,8 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
     }
 
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -222,14 +222,14 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
     @Override
     public String getStringRepresentation() {
         String result = "";
-        if (this.m_Population.size() > 1) {
-            result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
+        if (this.population.size() > 1) {
+            result += "Multi(" + this.population.size() + ")-Start Hill Climbing:\n";
         } else {
             result += "Simulated Annealing:\n";
         }
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -240,12 +240,12 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
 
@@ -268,12 +268,12 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {
@@ -291,11 +291,11 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
      * @return The initial temperature.
      */
     public double getInitialTemperature() {
-        return this.m_InitialTemperature;
+        return this.initialTemperature;
     }
 
     public void setInitialTemperature(double pop) {
-        this.m_InitialTemperature = pop;
+        this.initialTemperature = pop;
     }
 
     public String initialTemperatureTipText() {
@@ -308,13 +308,13 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
      * @return The cooling rate.
      */
     public double getAlpha() {
-        return this.m_Alpha;
+        return this.alpha;
     }
 
     public void setAlpha(double a) {
-        this.m_Alpha = a;
-        if (this.m_Alpha > 1) {
-            this.m_Alpha = 1.0;
+        this.alpha = a;
+        if (this.alpha > 1) {
+            this.alpha = 1.0;
         }
     }
 

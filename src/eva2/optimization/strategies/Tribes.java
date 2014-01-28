@@ -135,9 +135,9 @@ import java.util.List;
 public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
     public static final boolean TRACE = false;
-    protected String m_Identifier = "TRIBES";
-    transient private InterfacePopulationChangedEventListener m_Listener = null;
-    protected AbstractOptimizationProblem m_problem;
+    protected String identifier = "TRIBES";
+    transient private InterfacePopulationChangedEventListener listener = null;
+    protected AbstractOptimizationProblem optimizationProblem;
     protected Population population;
     public static int maxExplorerNb = 200;
     public static int maxMemoryNb = 300;
@@ -165,8 +165,8 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     protected int initExplorerNb = 3; // Number of explorers at the very beginning
     // use full range (0) or subspace (1) for init options 0 and 1
     protected int rangeInitType = 1;
-    private boolean m_Show = false;
-    transient protected Plot m_Plot = null;
+    private boolean show = false;
+    transient protected Plot plot = null;
 //	private int useAnchors = 0;	// use anchors to detect environment changes? 
 
     @Override
@@ -200,7 +200,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
 //		System.out.println("TRIBES.SetProblem()");
-        m_problem = (AbstractOptimizationProblem) problem;
+        optimizationProblem = (AbstractOptimizationProblem) problem;
         range = null;
         if (problem instanceof InterfaceHasInitRange) {
             initRange = (double[][]) ((InterfaceHasInitRange) problem).getInitRange();
@@ -215,7 +215,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 //		System.out.println("TRIBES.init()");
         // Generate a swarm
         swarm = new TribesSwarm(this, range, initRange); // TODO initRange is hard coded equal to problem range
-        //swarm.generateSwarm(initExplorerNb, initType, m_problem);
+        //swarm.generateSwarm(initExplorerNb, initType, optimizationProblem);
 
         //   swarm.displaySwarm(swarm,out);
         //  print("\n Best after init: "+swarm.Best.position.fitness,out);
@@ -232,7 +232,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
         population.addAll(swarm.toPopulation());
         population.init();    // necessary to allow for multi-runs
 
-        if (m_Show) {
+        if (show) {
             show();
         }
 
@@ -274,15 +274,15 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
             }
             //* initOption Options: 0 - random, 1 - on the bounds, 2 - sunny spell, 3 - around a center
             //* rangeInitType for options 0,1: 1 means use initRange, 0 use default range
-            swarm.generateSwarm(initExplorerNb, initOption, rangeInitType, m_problem);
+            swarm.generateSwarm(initExplorerNb, initOption, rangeInitType, optimizationProblem);
         }
         iter++;
 
-        m_problem.evaluatePopulationStart(population);
+        optimizationProblem.evaluatePopulationStart(population);
         swarm.setSwarmSize();
         // swarm.Best.positionPrev = swarm.Best.position;
 
-        swarm.moveSwarm(range, new TribesParam(), informOption, m_problem); //*** HERE IT MOVES and EVALUATES
+        swarm.moveSwarm(range, new TribesParam(), informOption, optimizationProblem); //*** HERE IT MOVES and EVALUATES
         //public void moveSwarm(double[][] range, int fitnessSize, TribesParam pb, TribesSwarm swarm,
         //      int informOption, AbstractOptimizationProblem prob) {
 
@@ -297,7 +297,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
                         adapt = iter; // Memorize at which iteration adaptation occurs
 
                         for (int i = 0; i < swarm.getTribeCnt(); i++) {
-                            swarm.reinitTribe(i, rangeInitType, m_problem);
+                            swarm.reinitTribe(i, rangeInitType, optimizationProblem);
                         }
                     }
                 }
@@ -311,16 +311,16 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
                 if (adaptThreshold >= adaptMax) {
                     adapt = iter; // Memorize at which iteration adaptation occurs
-                    swarm.adaptSwarm(rangeInitType, m_problem); // Re´alise l'adaptation
+                    swarm.adaptSwarm(rangeInitType, optimizationProblem); // Re´alise l'adaptation
                 }
             }
         }
         population.clear();
         population.addAll(swarm.toPopulation());
-        if (m_Show) {
+        if (show) {
             plotAll(population);
         }
-        m_problem.evaluatePopulationEnd(population);
+        optimizationProblem.evaluatePopulationEnd(population);
 
 //		this.population.incrFunctionCallsby(evals);
         this.population.incrGeneration();
@@ -348,12 +348,12 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
     // TODO
     private void plotIndy(double[] curPosition, double[] curVelocity, int index) {
-        if (this.m_Show) {
+        if (this.show) {
             if (curVelocity == null) {
-                this.m_Plot.setUnconnectedPoint(curPosition[0], curPosition[1], index);
+                this.plot.setUnconnectedPoint(curPosition[0], curPosition[1], index);
             } else {
-                this.m_Plot.setConnectedPoint(curPosition[0], curPosition[1], index);
-                this.m_Plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index);
+                this.plot.setConnectedPoint(curPosition[0], curPosition[1], index);
+                this.plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index);
             }
         }
     }
@@ -362,14 +362,14 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
      * This method is simply for debugging.
      */
     protected void show() {
-        if (this.m_Plot == null) {
+        if (this.plot == null) {
 //			InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble)this.population.get(0);
 //			double[][] range = indy.getDoubleRange();
 //			double[] tmpD = new double[2];
 //			tmpD[0] = 0;
 //			tmpD[1] = 0;
-            this.m_Plot = new Plot("TRIBES " + population.getGeneration(), "x1", "x2", range[0], range[1]);
-//			this.m_Plot.setCornerPoints(range, 0);
+            this.plot = new Plot("TRIBES " + population.getGeneration(), "x1", "x2", range[0], range[1]);
+//			this.plot.setCornerPoints(range, 0);
         }
     }
 
@@ -623,14 +623,14 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
      */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.listener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (listener == ea) {
+            listener = null;
             return true;
         } else {
             return false;
@@ -638,8 +638,8 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     }
 
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.listener != null) {
+            this.listener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -649,12 +649,12 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return m_Identifier;
+        return identifier;
     }
 
     @Override
@@ -664,7 +664,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return m_problem;
+        return optimizationProblem;
     }
 
     @Override
@@ -730,19 +730,19 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 //	}
 
     /**
-     * @return the m_Show
+     * @return the show
      */
     public boolean isShow() {
-        return m_Show;
+        return show;
     }
 
     /**
-     * @param show the m_Show to set
+     * @param show the show to set
      */
     public void setShow(boolean show) {
-        m_Show = show;
+        this.show = show;
         if (!show) {
-            m_Plot = null;
+            plot = null;
         }
     }
 }

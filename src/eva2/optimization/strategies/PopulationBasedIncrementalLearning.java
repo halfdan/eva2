@@ -28,30 +28,30 @@ import eva2.util.annotation.Description;
 public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, java.io.Serializable {
 
     // These variables are necessary for the simple testcase
-    private InterfaceOptimizationProblem m_Problem = new B1Problem();
-    private boolean m_UseElitism = true;
-    private InterfaceSelection m_SelectionOperator = new SelectBestIndividuals();
-    transient private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
-    private Population m_Population = new PBILPopulation();
-    private double m_LearningRate = 0.04;
-    private double m_MutationRate = 0.5;
-    private double m_MutateSigma = 0.01;
-    private int m_NumberOfPositiveSamples = 1;
-    private double[] m_initialProbabilities = ((PBILPopulation) m_Population).getProbabilityVector();
+    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
+    private boolean useElitism = true;
+    private InterfaceSelection selectionOperator = new SelectBestIndividuals();
+    transient private String identifier = "";
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
+    private Population population = new PBILPopulation();
+    private double learningRate = 0.04;
+    private double mutationRate = 0.5;
+    private double mutateSigma = 0.01;
+    private int numberOfPositiveSamples = 1;
+    private double[] initialProbabilities = ((PBILPopulation) population).getProbabilityVector();
 
     public PopulationBasedIncrementalLearning() {
     }
 
     public PopulationBasedIncrementalLearning(PopulationBasedIncrementalLearning a) {
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
-        this.m_LearningRate = a.m_LearningRate;
-        this.m_MutationRate = a.m_MutationRate;
-        this.m_MutateSigma = a.m_MutateSigma;
-        this.m_NumberOfPositiveSamples = a.m_NumberOfPositiveSamples;
-        this.m_UseElitism = a.m_UseElitism;
-        this.m_SelectionOperator = (InterfaceSelection) a.m_SelectionOperator.clone();
+        this.population = (Population) a.population.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
+        this.learningRate = a.learningRate;
+        this.mutationRate = a.mutationRate;
+        this.mutateSigma = a.mutateSigma;
+        this.numberOfPositiveSamples = a.numberOfPositiveSamples;
+        this.useElitism = a.useElitism;
+        this.selectionOperator = (InterfaceSelection) a.selectionOperator.clone();
     }
 
     @Override
@@ -61,15 +61,15 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
 
     @Override
     public void init() {
-        this.m_Problem.initializePopulation(this.m_Population);
-        if ((m_initialProbabilities != null) && (m_initialProbabilities.length == ((PBILPopulation) m_Population).getProbabilityVector().length)) {
-            ((PBILPopulation) m_Population).setProbabilityVector(m_initialProbabilities);
+        this.optimizationProblem.initializePopulation(this.population);
+        if ((initialProbabilities != null) && (initialProbabilities.length == ((PBILPopulation) population).getProbabilityVector().length)) {
+            ((PBILPopulation) population).setProbabilityVector(initialProbabilities);
         } else {
-            if (m_initialProbabilities != null) {
+            if (initialProbabilities != null) {
                 System.err.println("Warning: initial probability vector doesnt match in length!");
             }
         }
-        this.evaluatePopulation(this.m_Population);
+        this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -84,13 +84,13 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         if (!(pop.getEAIndividual(0) instanceof InterfaceGAIndividual)) {
             System.err.println("Error: PBIL only works with GAIndividuals!");
         }
-        this.m_Population = new PBILPopulation();
-        this.m_Population.addPopulation((Population) pop.clone());
+        this.population = new PBILPopulation();
+        this.population.addPopulation((Population) pop.clone());
         if (reset) {
-            this.m_Population.init();
-            this.evaluatePopulation(this.m_Population);
+            this.population.init();
+            this.evaluatePopulation(this.population);
         }
-        ((PBILPopulation) this.m_Population).buildProbabilityVector();
+        ((PBILPopulation) this.population).buildProbabilityVector();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -100,7 +100,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @param population The population that is to be evaluated
      */
     private void evaluatePopulation(Population population) {
-        this.m_Problem.evaluate(population);
+        this.optimizationProblem.evaluate(population);
         population.incrGeneration();
     }
 
@@ -109,16 +109,14 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * population of evaluated individuals.
      */
     private Population generateChildren() {
-        PBILPopulation result = (PBILPopulation) this.m_Population.clone();
+        PBILPopulation result = (PBILPopulation) this.population.clone();
         Population examples;
 
-//        this.m_NormationOperator.computeSelectionProbability(this.population, "Fitness");
-        //System.out.println("Population:"+this.population.getSolutionRepresentationFor());
-        this.m_SelectionOperator.prepareSelection(this.m_Population);
-        examples = this.m_SelectionOperator.selectFrom(this.m_Population, this.m_NumberOfPositiveSamples);
-        //System.out.println("Parents:"+parents.getSolutionRepresentationFor());
-        result.learnFrom(examples, this.m_LearningRate);
-        result.mutateProbabilityVector(this.m_MutationRate, this.m_MutateSigma);
+
+        this.selectionOperator.prepareSelection(this.population);
+        examples = this.selectionOperator.selectFrom(this.population, this.numberOfPositiveSamples);
+        result.learnFrom(examples, this.learningRate);
+        result.mutateProbabilityVector(this.mutationRate, this.mutateSigma);
         result.initPBIL();
         return result;
     }
@@ -130,12 +128,12 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
 
         nextGeneration = this.generateChildren();
         this.evaluatePopulation(nextGeneration);
-        if (this.m_UseElitism) {
-            elite = this.m_Population.getBestEAIndividual();
-            this.m_Population = nextGeneration;
-            this.m_Population.add(0, elite);
+        if (this.useElitism) {
+            elite = this.population.getBestEAIndividual();
+            this.population = nextGeneration;
+            this.population.add(0, elite);
         } else {
-            this.m_Population = nextGeneration;
+            this.population = nextGeneration;
         }
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
@@ -147,9 +145,9 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
-        if (m_Problem instanceof AbstractOptimizationProblem) {
-            if (!(((AbstractOptimizationProblem) m_Problem).getIndividualTemplate() instanceof InterfaceGAIndividual)) {
+        this.optimizationProblem = problem;
+        if (optimizationProblem instanceof AbstractOptimizationProblem) {
+            if (!(((AbstractOptimizationProblem) optimizationProblem).getIndividualTemplate() instanceof InterfaceGAIndividual)) {
                 System.err.println("Error: PBIL only works with GAIndividuals!");
             }
         }
@@ -157,19 +155,19 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -180,8 +178,8 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -196,8 +194,8 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         String result = "";
         result += "Population Based Incremental Learning:\n";
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -208,12 +206,12 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -235,12 +233,12 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {
@@ -251,18 +249,6 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(getPopulation());
     }
-//    /** This method will set the normation method that is to be used.
-//     * @param normation
-//     */
-//    public void setNormationMethod (InterfaceNormation normation) {
-//        this.m_NormationOperator = normation;
-//    }
-//    public InterfaceNormation getNormationMethod () {
-//        return this.m_NormationOperator;
-//    }
-//    public String normationMethodTipText() {
-//        return "Select the normation method.";
-//    }
 
     /**
      * This method will set the selection method that is to be used
@@ -270,11 +256,11 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @param selection
      */
     public void setSelectionMethod(InterfaceSelection selection) {
-        this.m_SelectionOperator = selection;
+        this.selectionOperator = selection;
     }
 
     public InterfaceSelection getSelectionMethod() {
-        return this.m_SelectionOperator;
+        return this.selectionOperator;
     }
 
     public String selectionMethodTipText() {
@@ -287,11 +273,11 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @param elitism
      */
     public void setElitism(boolean elitism) {
-        this.m_UseElitism = elitism;
+        this.useElitism = elitism;
     }
 
     public boolean getElitism() {
-        return this.m_UseElitism;
+        return this.useElitism;
     }
 
     public String elitismTipText() {
@@ -304,14 +290,14 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @param LearningRate
      */
     public void setLearningRate(double LearningRate) {
-        this.m_LearningRate = LearningRate;
-        if (this.m_LearningRate < 0) {
-            this.m_LearningRate = 0;
+        this.learningRate = LearningRate;
+        if (this.learningRate < 0) {
+            this.learningRate = 0;
         }
     }
 
     public double getLearningRate() {
-        return this.m_LearningRate;
+        return this.learningRate;
     }
 
     public String learningRateTipText() {
@@ -324,17 +310,17 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @param m
      */
     public void setMutationRate(double m) {
-        this.m_MutationRate = m;
-        if (this.m_MutationRate < 0) {
-            this.m_MutationRate = 0;
+        this.mutationRate = m;
+        if (this.mutationRate < 0) {
+            this.mutationRate = 0;
         }
-        if (this.m_MutationRate > 1) {
-            this.m_MutationRate = 1;
+        if (this.mutationRate > 1) {
+            this.mutationRate = 1;
         }
     }
 
     public double getMutationRate() {
-        return this.m_MutationRate;
+        return this.mutationRate;
     }
 
     public String mutationRateTipText() {
@@ -347,14 +333,14 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @param m
      */
     public void setMutateSigma(double m) {
-        this.m_MutateSigma = m;
-        if (this.m_MutateSigma < 0) {
-            this.m_MutateSigma = 0;
+        this.mutateSigma = m;
+        if (this.mutateSigma < 0) {
+            this.mutateSigma = 0;
         }
     }
 
     public double getMutateSigma() {
-        return this.m_MutateSigma;
+        return this.mutateSigma;
     }
 
     public String mutateSigmaTipText() {
@@ -367,14 +353,14 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
      * @param PositiveSamples
      */
     public void setPositiveSamples(int PositiveSamples) {
-        this.m_NumberOfPositiveSamples = PositiveSamples;
-        if (this.m_NumberOfPositiveSamples < 1) {
-            this.m_NumberOfPositiveSamples = 1;
+        this.numberOfPositiveSamples = PositiveSamples;
+        if (this.numberOfPositiveSamples < 1) {
+            this.numberOfPositiveSamples = 1;
         }
     }
 
     public int getPositiveSamples() {
-        return this.m_NumberOfPositiveSamples;
+        return this.numberOfPositiveSamples;
     }
 
     public String positiveSamplesTipText() {
@@ -382,10 +368,10 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     }
 
     public double[] getInitialProbabilities() {
-        return m_initialProbabilities;
+        return initialProbabilities;
     }
 
     public void setInitialProbabilities(double[] probabilities) {
-        m_initialProbabilities = probabilities;
+        initialProbabilities = probabilities;
     }
 }

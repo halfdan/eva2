@@ -52,7 +52,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     @Parameter(name = "Lambda", description = "Enhance greediness through amplification of the differential vector to the best individual for DE2.")
     private double lambda = 0.6;
 
-    private double m_Mt = 0.05;
+    private double mt = 0.05;
     private int maximumAge = -1;
     private boolean reEvaluate = false;
     // to log the parents of a newly created indy.
@@ -60,8 +60,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private transient Vector<AbstractEAIndividual> parents = null;
     private boolean randomizeFKLambda = false;
     private boolean generational = true;
-    private String m_Identifier = "";
-    transient private Vector<InterfacePopulationChangedEventListener> m_Listener = new Vector<InterfacePopulationChangedEventListener>();
+    private String identifier = "";
+    transient private Vector<InterfacePopulationChangedEventListener> populationChangedEventListeners = new Vector<>();
     private boolean forceRange = true;
     private boolean cyclePop = false; // if true, individuals are used as parents in a cyclic sequence - otherwise randomly 
     private boolean compareToParent = true;  // if true, the challenge indy is compared to its parent, otherwise to a random individual
@@ -80,7 +80,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         differentialWeight = f;
         crossoverRate = k;
         this.lambda = lambda;
-        m_Mt = mt;
+        this.mt = mt;
     }
 
     /**
@@ -92,11 +92,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         this.DEType = a.DEType;
         this.population = (Population) a.population.clone();
         this.optimizationProblem = (AbstractOptimizationProblem) a.optimizationProblem.clone();
-        this.m_Identifier = a.m_Identifier;
+        this.identifier = a.identifier;
         this.differentialWeight = a.differentialWeight;
         this.crossoverRate = a.crossoverRate;
         this.lambda = a.lambda;
-        this.m_Mt = a.m_Mt;
+        this.mt = a.mt;
 
         this.maximumAge = a.maximumAge;
         this.randomizeFKLambda = a.randomizeFKLambda;
@@ -393,7 +393,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 if (parents != null) {
                     parents.add(pop.getEAIndividual(parentIndex));
                 }  // Add wherever oX is used directly
-                if (RNG.flipCoin(this.m_Mt)) {
+                if (RNG.flipCoin(this.mt)) {
                     double[] xk, xl;
                     double p, pj, pk, pl;
                     InterfaceDataTypeDouble indy1 = null, indy2 = null;
@@ -679,16 +679,16 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        if (this.m_Listener == null) {
-            this.m_Listener = new Vector<InterfacePopulationChangedEventListener>();
+        if (this.populationChangedEventListeners == null) {
+            this.populationChangedEventListeners = new Vector<InterfacePopulationChangedEventListener>();
         }
-        this.m_Listener.add(ea);
+        this.populationChangedEventListeners.add(ea);
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener != null && m_Listener.removeElement(ea)) {
+        if (populationChangedEventListeners != null && populationChangedEventListeners.removeElement(ea)) {
 
             return true;
         } else {
@@ -702,9 +702,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param name
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            for (int i = 0; i < this.m_Listener.size(); i++) {
-                this.m_Listener.get(i).registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListeners != null) {
+            for (int i = 0; i < this.populationChangedEventListeners.size(); i++) {
+                this.populationChangedEventListeners.get(i).registerPopulationStateChanged(this, name);
             }
         }
     }
@@ -747,12 +747,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -854,17 +854,17 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      * @param l
      */
     public void setMt(double l) {
-        this.m_Mt = l;
-        if (this.m_Mt < 0) {
-            this.m_Mt = 0;
+        this.mt = l;
+        if (this.mt < 0) {
+            this.mt = 0;
         }
-        if (this.m_Mt > 1) {
-            this.m_Mt = 1;
+        if (this.mt > 1) {
+            this.mt = 1;
         }
     }
 
     public double getMt() {
-        return this.m_Mt;
+        return this.mt;
     }
 
     public String mtTipText() {

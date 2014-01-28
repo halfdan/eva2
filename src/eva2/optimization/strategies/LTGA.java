@@ -27,7 +27,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
 
     private static final Logger LOGGER = Logger.getLogger(LTGA.class.getName());
     transient private InterfacePopulationChangedEventListener populationChangedEventListener = null;
-    private String m_Identifier = "LTGA";
+    private String identifier = "LTGA";
     private int probDim = 8;
     private int fitCrit = -1;
     private int popSize = 50;
@@ -42,7 +42,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
 
     public LTGA(LTGA l) {
         this.populationChangedEventListener = l.populationChangedEventListener;
-        this.m_Identifier = l.m_Identifier;
+        this.identifier = l.identifier;
         this.probDim = l.probDim;
         this.popSize = l.popSize;
         this.population = (Population) l.population.clone();
@@ -328,12 +328,12 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
 
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     @Override

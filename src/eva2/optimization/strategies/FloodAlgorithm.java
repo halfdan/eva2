@@ -23,28 +23,28 @@ import eva2.util.annotation.Description;
 public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable {
     // These variables are necessary for the simple testcase
 
-    private InterfaceOptimizationProblem m_Problem = new B1Problem();
-    private int m_MultiRuns = 100;
-    private int m_FitnessCalls = 100;
-    private int m_FitnessCallsNeeded = 0;
-    GAIndividualBinaryData m_Best, m_Test;
-    public double m_InitialFloodPeak = 2000.0, m_CurrentFloodPeak;
-    public double m_DrainRate = 1.0;
+    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
+    private int multiRuns = 100;
+    private int fitnessCalls = 100;
+    private int fitnessCallsNeeded = 0;
+    GAIndividualBinaryData bestIndividual, testIndividual;
+    public double initialFloodPeak = 2000.0, currentFloodPeak;
+    public double drainRate = 1.0;
     // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
-    private Population m_Population;
+    transient private String identifier = "";
+    transient private InterfacePopulationChangedEventListener listener;
+    private Population population;
 
     public FloodAlgorithm() {
-        this.m_Population = new Population();
-        this.m_Population.setTargetSize(10);
+        this.population = new Population();
+        this.population.setTargetSize(10);
     }
 
     public FloodAlgorithm(FloodAlgorithm a) {
-        this.m_Population = (Population) a.m_Population.clone();
-        this.m_Problem = (InterfaceOptimizationProblem) a.m_Problem.clone();
-        this.m_InitialFloodPeak = a.m_InitialFloodPeak;
-        this.m_DrainRate = a.m_DrainRate;
+        this.population = (Population) a.population.clone();
+        this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
+        this.initialFloodPeak = a.initialFloodPeak;
+        this.drainRate = a.drainRate;
     }
 
     @Override
@@ -57,9 +57,9 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      */
     @Override
     public void init() {
-        this.m_Problem.initializePopulation(this.m_Population);
-        this.m_Problem.evaluate(this.m_Population);
-        this.m_CurrentFloodPeak = this.m_InitialFloodPeak;
+        this.optimizationProblem.initializePopulation(this.population);
+        this.optimizationProblem.evaluate(this.population);
+        this.currentFloodPeak = this.initialFloodPeak;
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -70,13 +70,13 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      */
     @Override
     public void initByPopulation(Population pop, boolean reset) {
-        this.m_Population = (Population) pop.clone();
+        this.population = (Population) pop.clone();
         if (reset) {
-            this.m_Population.init();
-            this.m_Problem.evaluate(this.m_Population);
+            this.population.init();
+            this.optimizationProblem.evaluate(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
-        this.m_CurrentFloodPeak = this.m_InitialFloodPeak;
+        this.currentFloodPeak = this.initialFloodPeak;
     }
 
     /**
@@ -85,26 +85,26 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     @Override
     public void optimize() {
         AbstractEAIndividual indy;
-        Population original = (Population) this.m_Population.clone();
+        Population original = (Population) this.population.clone();
         double[] fitness;
 
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            indy = ((AbstractEAIndividual) this.m_Population.get(i));
+        for (int i = 0; i < this.population.size(); i++) {
+            indy = ((AbstractEAIndividual) this.population.get(i));
             double tmpD = indy.getMutationProbability();
             indy.setMutationProbability(1.0);
             indy.mutate();
             indy.setMutationProbability(tmpD);
         }
-        this.m_Problem.evaluate(this.m_Population);
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            fitness = ((AbstractEAIndividual) this.m_Population.get(i)).getFitness();
-            if (fitness[0] > this.m_CurrentFloodPeak) {
-                this.m_Population.remove(i);
-                this.m_Population.add(i, original.get(i));
+        this.optimizationProblem.evaluate(this.population);
+        for (int i = 0; i < this.population.size(); i++) {
+            fitness = ((AbstractEAIndividual) this.population.get(i)).getFitness();
+            if (fitness[0] > this.currentFloodPeak) {
+                this.population.remove(i);
+                this.population.add(i, original.get(i));
             }
         }
-        this.m_CurrentFloodPeak -= this.m_DrainRate;
-        this.m_Population.incrGeneration();
+        this.currentFloodPeak -= this.drainRate;
+        this.population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -132,36 +132,36 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
+        this.optimizationProblem = problem;
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
      * This method will init the HillClimber
      */
     public void defaultInit() {
-        this.m_FitnessCallsNeeded = 0;
-        this.m_Best = new GAIndividualBinaryData();
-        this.m_Best.defaultInit(m_Problem);
+        this.fitnessCallsNeeded = 0;
+        this.bestIndividual = new GAIndividualBinaryData();
+        this.bestIndividual.defaultInit(optimizationProblem);
     }
 
     /**
      * This method will optimize
      */
     public void defaultOptimize() {
-        for (int i = 0; i < m_FitnessCalls; i++) {
-            this.m_Test = (GAIndividualBinaryData) ((this.m_Best).clone());
-            this.m_Test.defaultMutate();
-            if (this.m_Test.defaultEvaulateAsMiniBits() < this.m_Best.defaultEvaulateAsMiniBits()) {
-                this.m_Best = this.m_Test;
+        for (int i = 0; i < fitnessCalls; i++) {
+            this.testIndividual = (GAIndividualBinaryData) ((this.bestIndividual).clone());
+            this.testIndividual.defaultMutate();
+            if (this.testIndividual.defaultEvaulateAsMiniBits() < this.bestIndividual.defaultEvaulateAsMiniBits()) {
+                this.bestIndividual = this.testIndividual;
             }
-            this.m_FitnessCallsNeeded = i;
-            if (this.m_Best.defaultEvaulateAsMiniBits() == 0) {
-                i = this.m_FitnessCalls + 1;
+            this.fitnessCallsNeeded = i;
+            if (this.bestIndividual.defaultEvaulateAsMiniBits() == 0) {
+                i = this.fitnessCalls + 1;
             }
         }
     }
@@ -174,15 +174,15 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     public static void main(String[] args) {
         FloodAlgorithm program = new FloodAlgorithm();
         int TmpMeanCalls = 0, TmpMeanFitness = 0;
-        for (int i = 0; i < program.m_MultiRuns; i++) {
+        for (int i = 0; i < program.multiRuns; i++) {
             program.defaultInit();
             program.defaultOptimize();
-            TmpMeanCalls += program.m_FitnessCallsNeeded;
-            TmpMeanFitness += program.m_Best.defaultEvaulateAsMiniBits();
+            TmpMeanCalls += program.fitnessCallsNeeded;
+            TmpMeanFitness += program.bestIndividual.defaultEvaulateAsMiniBits();
         }
-        TmpMeanCalls /= program.m_MultiRuns;
-        TmpMeanFitness /= program.m_MultiRuns;
-        System.out.println("(" + program.m_MultiRuns + "/" + program.m_FitnessCalls + ") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
+        TmpMeanCalls /= program.multiRuns;
+        TmpMeanFitness /= program.multiRuns;
+        System.out.println("(" + program.multiRuns + "/" + program.fitnessCalls + ") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
 
     /**
@@ -192,14 +192,14 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.listener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (listener == ea) {
+            listener = null;
             return true;
         } else {
             return false;
@@ -210,8 +210,8 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.listener != null) {
+            this.listener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -224,14 +224,14 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
     @Override
     public String getStringRepresentation() {
         String result = "";
-        if (this.m_Population.size() > 1) {
-            result += "Multi(" + this.m_Population.size() + ")-Start Hill Climbing:\n";
+        if (this.population.size() > 1) {
+            result += "Multi(" + this.population.size() + ")-Start Hill Climbing:\n";
         } else {
             result += "Simulated Annealing:\n";
         }
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -242,12 +242,12 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
     /**
@@ -269,12 +269,12 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      */
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
     }
 
     public String populationTipText() {
@@ -293,11 +293,11 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      * @return The initial flood level.
      */
     public double getInitialFloodPeak() {
-        return this.m_InitialFloodPeak;
+        return this.initialFloodPeak;
     }
 
     public void setInitialFloodPeak(double pop) {
-        this.m_InitialFloodPeak = pop;
+        this.initialFloodPeak = pop;
     }
 
     public String initialFloodPeakTipText() {
@@ -311,13 +311,13 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
      * @return The drain rate.
      */
     public double getDrainRate() {
-        return this.m_DrainRate;
+        return this.drainRate;
     }
 
     public void setDrainRate(double a) {
-        this.m_DrainRate = a;
-        if (this.m_DrainRate < 0) {
-            this.m_DrainRate = 0.0;
+        this.drainRate = a;
+        if (this.drainRate < 0) {
+            this.drainRate = 0.0;
         }
     }
 

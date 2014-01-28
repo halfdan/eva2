@@ -19,7 +19,6 @@ import java.util.Hashtable;
  * be applied to problems which implement the InterfaceLocalSearchable else the
  * local search will not be activated at all.
  *
- * @version 1.0
  */
 @Description("This is a basic generational Memetic Algorithm. Local search steps are performed on a selected subset "
         + "of individuals after certain numbers of global search iterations. Note "
@@ -38,21 +37,21 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     // int counter = 0; !?
     // int maxfunctioncalls = 1000; !?
     private boolean TRACE = false;
-    private String m_Identifier = "";
-    private InterfaceOptimizationProblem m_Problem = new F1Problem();
-    private InterfaceOptimizer m_GlobalOptimizer = new GeneticAlgorithm();
+    private String identifier = "";
+    private InterfaceOptimizationProblem optimizationProblem = new F1Problem();
+    private InterfaceOptimizer globalOptimizer = new GeneticAlgorithm();
     private InterfaceSelection selectorPlug = new SelectBestIndividuals();
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
     public MemeticAlgorithm() {
     }
 
     public MemeticAlgorithm(MemeticAlgorithm a) {
         // this.population = (Population)a.population.clone();
-        this.m_Problem = (InterfaceLocalSearchable) a.m_Problem.clone();
-        this.m_GlobalOptimizer = (InterfaceOptimizer) a.m_GlobalOptimizer;
+        this.optimizationProblem = (InterfaceLocalSearchable) a.optimizationProblem.clone();
+        this.globalOptimizer = (InterfaceOptimizer) a.globalOptimizer;
         this.selectorPlug = (InterfaceSelection) a.selectorPlug;
-        this.m_Identifier = a.m_Identifier;
+        this.identifier = a.identifier;
         this.localSearchSteps = a.localSearchSteps;
         this.subsetsize = a.subsetsize;
         this.globalSearchIterations = a.globalSearchIterations;
@@ -69,7 +68,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
         this.setPopulation((Population) pop.clone());
         if (reset) {
             this.getPopulation().init();
-            this.m_Problem.evaluate(this.getPopulation());
+            this.optimizationProblem.evaluate(this.getPopulation());
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
@@ -77,9 +76,9 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     @Override
     public void init() {
         // counter = 0;
-        this.m_GlobalOptimizer.setProblem(this.m_Problem);
-        this.m_GlobalOptimizer.init();
-        this.evaluatePopulation(this.m_GlobalOptimizer.getPopulation());
+        this.globalOptimizer.setProblem(this.optimizationProblem);
+        this.globalOptimizer.init();
+        this.evaluatePopulation(this.globalOptimizer.getPopulation());
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -89,7 +88,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
      * @param population The population that is to be evaluated
      */
     private void evaluatePopulation(Population population) {
-        this.m_Problem.evaluate(population);
+        this.optimizationProblem.evaluate(population);
         population.incrGeneration();
     }
 
@@ -99,17 +98,17 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
         if (TRACE) {
             System.out.println("global search");
         }
-        this.m_GlobalOptimizer.optimize();
+        this.globalOptimizer.optimize();
 
-        if ((globalSearchIterations > 0) && (((this.m_GlobalOptimizer.getPopulation().getGeneration() % this.globalSearchIterations) == 0))
+        if ((globalSearchIterations > 0) && (((this.globalOptimizer.getPopulation().getGeneration() % this.globalSearchIterations) == 0))
                 && (this.localSearchSteps > 0)
-                && (this.m_Problem instanceof InterfaceLocalSearchable)) {
+                && (this.optimizationProblem instanceof InterfaceLocalSearchable)) {
             // here the local search is performed
             if (TRACE) {
                 System.out.println("Performing local search on " + subsetsize
                         + " individuals.");
             }
-            Population gop = this.m_GlobalOptimizer.getPopulation();
+            Population gop = this.globalOptimizer.getPopulation();
             Population subset = selectorPlug.selectFrom(gop, subsetsize);
             Population subsetclone = new Population();
             for (int i = 0; i < subset.size(); i++) {
@@ -129,7 +128,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
             }
 
             // int dosearchsteps = this.localSearchSteps;
-            double cost = ((InterfaceLocalSearchable) this.m_Problem)
+            double cost = ((InterfaceLocalSearchable) this.optimizationProblem)
                     .getLocalSearchStepFunctionCallEquivalent();
             // int calls = gop.getFunctionCalls() + (int) Math.round(localSearchSteps
             // * cost * subset.size());
@@ -143,9 +142,9 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
             // stopit = true;
             // }
             for (int i = 0; i < localSearchSteps; i++) {
-                ((InterfaceLocalSearchable) this.m_Problem).doLocalSearch(subsetclone);
+                ((InterfaceLocalSearchable) this.optimizationProblem).doLocalSearch(subsetclone);
             }
-            this.m_Problem.evaluate(subsetclone);
+            this.optimizationProblem.evaluate(subsetclone);
             if (this.lamarckism) {
                 gop.removeAll(subset);
                 gop.addPopulation(subsetclone);
@@ -174,7 +173,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 
         if (TRACE) {
             System.out.println("function calls"
-                    + this.m_GlobalOptimizer.getPopulation().getFunctionCalls());
+                    + this.globalOptimizer.getPopulation().getFunctionCalls());
         }
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
@@ -187,14 +186,14 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        this.populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (populationChangedEventListener == ea) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;
@@ -205,11 +204,11 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
+        if (this.populationChangedEventListener != null) {
             if (TRACE) {
                 System.out.println("firePropertyChangedEvent MA");
             }
-            this.m_Listener.registerPopulationStateChanged(this, name);
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -220,13 +219,13 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
      */
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
-        this.m_Problem = problem;
-        this.m_GlobalOptimizer.setProblem(this.m_Problem);
+        this.optimizationProblem = problem;
+        this.globalOptimizer.setProblem(this.optimizationProblem);
     }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return this.m_Problem;
+        return this.optimizationProblem;
     }
 
     /**
@@ -240,8 +239,8 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
         String result = "";
         result += "Memetic Algorithm:\n";
         result += "Optimization Problem: ";
-        result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_GlobalOptimizer.getStringRepresentation();
+        result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
+        result += this.globalOptimizer.getStringRepresentation();
         return result;
     }
 
@@ -252,12 +251,12 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
      */
     @Override
     public void setIdentifier(String name) {
-        this.m_Identifier = name;
+        this.identifier = name;
     }
 
     @Override
     public String getIdentifier() {
-        return this.m_Identifier;
+        return this.identifier;
     }
 
 
@@ -280,12 +279,12 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
      */
     @Override
     public Population getPopulation() {
-        return this.m_GlobalOptimizer.getPopulation();
+        return this.globalOptimizer.getPopulation();
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_GlobalOptimizer.setPopulation(pop);
+        this.globalOptimizer.setPopulation(pop);
     }
 
     public String populationTipText() {
@@ -295,16 +294,16 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     /**
      * Choose the global optimization strategy to use
      *
-     * @param m_GlobalOptimizer
+     * @param globalOptimizer
      */
-    public void setGlobalOptimizer(InterfaceOptimizer m_GlobalOptimizer) {
-        this.m_GlobalOptimizer = m_GlobalOptimizer;
-        this.m_GlobalOptimizer.setProblem(this.getProblem());
+    public void setGlobalOptimizer(InterfaceOptimizer globalOptimizer) {
+        this.globalOptimizer = globalOptimizer;
+        this.globalOptimizer.setProblem(this.getProblem());
         this.init();
     }
 
     public InterfaceOptimizer getGlobalOptimizer() {
-        return m_GlobalOptimizer;
+        return globalOptimizer;
     }
 
     public String globalOptimizerTipText() {
