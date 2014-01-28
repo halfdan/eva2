@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * Generalized Rastrigin's function.
  */
-@Description("Generalized Rastrigins's function.")
+@Description("Generalized Rastrigin's function.")
 public class F6Problem extends AbstractProblemDoubleOffset
         implements InterfaceMultimodalProblem, InterfaceFirstOrderDerivableProblem, InterfaceLocalSearchable, Serializable, InterfaceInterestingHistogram {
     private double m_A = 10;

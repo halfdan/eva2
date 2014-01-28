@@ -537,7 +537,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             ParticleSubSwarmOptimization currentsubswarm = getSubSwarms().get(i);
             if (currentsubswarm.isActive()) {
                 actCnt++;
-                avgSize += currentsubswarm.m_Population.size();
+                avgSize += currentsubswarm.population.size();
             }
         }
         if (actCnt > 0) {

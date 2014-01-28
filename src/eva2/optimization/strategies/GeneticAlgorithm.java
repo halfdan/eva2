@@ -13,6 +13,8 @@ import eva2.optimization.problems.F1Problem;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 
+import java.util.Vector;
+
 /**
  * The traditional genetic algorithms as devised by Holland. To only special
  * here it the plague factor which reduces the population size to tune from a
@@ -30,7 +32,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
     private int plague = 0;
     private int numberOfPartners = 1;
     private String identifier = "";
-    transient private InterfacePopulationChangedEventListener popChangedListener;
+    transient private Vector<InterfacePopulationChangedEventListener> changeListener;
 
     public GeneticAlgorithm() {
     }
@@ -163,14 +165,16 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
      */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.popChangedListener = ea;
+        if (this.changeListener == null) {
+            this.changeListener = new Vector<InterfacePopulationChangedEventListener>();
+        }
+        this.changeListener.add(ea);
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (popChangedListener == ea) {
-            popChangedListener = null;
+        if (changeListener != null && changeListener.removeElement(ea)) {
             return true;
         } else {
             return false;
@@ -178,11 +182,15 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
     }
 
     /**
-     * Something has changed.
+     * Something has changed
+     *
+     * @param name
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.popChangedListener != null) {
-            this.popChangedListener.registerPopulationStateChanged(this, name);
+        if (this.changeListener != null) {
+            for (int i = 0; i < this.changeListener.size(); i++) {
+                this.changeListener.get(i).registerPopulationStateChanged(this, name);
+            }
         }
     }
 

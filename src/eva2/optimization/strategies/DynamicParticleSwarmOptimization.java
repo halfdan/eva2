@@ -173,7 +173,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 
     private void plotBestIndy() {
         if (m_Plot != null) {
-            double[] curPosition = ((InterfaceDataTypeDouble) m_Population.getBestEAIndividual()).getDoubleData();
+            double[] curPosition = ((InterfaceDataTypeDouble) population.getBestEAIndividual()).getDoubleData();
 
             if (lastBestPlot != null) {
                 this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], 0);
@@ -187,7 +187,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     protected void plotIndy(double[] curPosition, double[] curVelocity, int index) {
         if (this.m_Show) {
             if (plotBestOnly) {
-                if (index != ((Integer) (m_Population.getBestEAIndividual().getData(indexKey)))) {
+                if (index != ((Integer) (population.getBestEAIndividual().getData(indexKey)))) {
                     return;
                 } else {
 //					if (lastBestPlot != null) this.m_Plot.setConnectedPoint(lastBestPlot[0], lastBestPlot[1], index);
@@ -314,7 +314,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      */
     @Override
     protected double getSpeedLimit(int index) {
-        if (index >= ((double) (m_Population.size() * highEnergyRatio))) {
+        if (index >= ((double) (population.size() * highEnergyRatio))) {
             return speedLimit;
         } else {
             if (highEnergyRaise == 0.) {
@@ -330,11 +330,11 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     protected void startOptimize() {
         super.startOptimize();
         if (detectAnchor >= 0) {    // set the new detection anchor individual
-            detectAnchor = RNG.randomInt(0, m_Population.size() - 1);
+            detectAnchor = RNG.randomInt(0, population.size() - 1);
             if (detectFit == null) {
-                detectFit = (m_Population.getIndividual(detectAnchor).getFitness()).clone();
+                detectFit = (population.getIndividual(detectAnchor).getFitness()).clone();
             } else {
-                System.arraycopy(m_Population.getIndividual(detectAnchor).getFitness(), 0, detectFit, 0, detectFit.length);
+                System.arraycopy(population.getIndividual(detectAnchor).getFitness(), 0, detectFit, 0, detectFit.length);
             }
         }
     }
@@ -351,8 +351,8 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         double quantumCount = 0.;
         // do what the usual function does plus announce quantum particles
         if (quantumRatio > 0.) {
-            for (int i = 0; i < this.m_Population.size(); i++) {
-                AbstractEAIndividual indy = (AbstractEAIndividual) m_Population.get(i);
+            for (int i = 0; i < this.population.size(); i++) {
+                AbstractEAIndividual indy = (AbstractEAIndividual) population.get(i);
                 if (i >= quantumCount) {
                     indy.putData(partTypeKey, quantumType);
                     quantumCount += 1. / quantumRatio;
@@ -405,7 +405,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
             plotBestIndy();
         }
 
-        envHasChanged = detectChange(m_Population);
+        envHasChanged = detectChange(this.population);
 
 //	    if (envHasChanged) {
 //	    	System.out.println("environmental change detected!");
@@ -427,8 +427,8 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     @Override
     protected void logBestIndividual() {
         // log the best individual of the population
-        if (envHasChanged || (this.m_Population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual))) {
-            this.m_BestIndividual = (AbstractEAIndividual) this.m_Population.getBestEAIndividual().clone();
+        if (envHasChanged || (this.population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual))) {
+            this.m_BestIndividual = (AbstractEAIndividual) this.population.getBestEAIndividual().clone();
             this.m_BestIndividual.putData(partBestFitKey, this.m_BestIndividual.getFitness());
             this.m_BestIndividual.putData(partBestPosKey, ((InterfaceDataTypeDouble) this.m_BestIndividual).getDoubleData());
             //System.out.println("-- best ind set to " + ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData()[0] + "/" + ((InterfaceDataTypeDouble)this.m_BestIndividual).getDoubleData()[1]);
@@ -449,7 +449,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         switch (changeDetectStrategy.getSelectedTag().getID()) {
             case 0:
                 if (detectAnchor >= 0) {
-                    return !(java.util.Arrays.equals(detectFit, m_Population.getIndividual(detectAnchor).getFitness()));
+                    return !(java.util.Arrays.equals(detectFit, this.population.getIndividual(detectAnchor).getFitness()));
                 } else {
                     System.err.println("warning, inconsistency in detectChange");
                 }
@@ -501,7 +501,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         strB.append("Dynamic Particle Swarm Optimization:\nOptimization Problem: ");
         strB.append(this.m_Problem.getStringRepresentationForProblem(this));
         strB.append("\n");
-        strB.append(this.m_Population.getStringRepresentation());
+        strB.append(this.population.getStringRepresentation());
         return strB.toString();
     }
 

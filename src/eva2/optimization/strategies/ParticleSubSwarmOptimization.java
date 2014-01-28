@@ -114,8 +114,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      * and sets the current fitness as the first value
      */
     protected void initIndividuals() {
-        for (int i = 0; i < m_Population.size(); ++i) {
-            AbstractEAIndividual indy = (AbstractEAIndividual) (m_Population.getEAIndividual(i));
+        for (int i = 0; i < population.size(); ++i) {
+            AbstractEAIndividual indy = (AbstractEAIndividual) (population.getEAIndividual(i));
             initSubSwarmDefaultsOf(indy);
         }
     }
@@ -283,8 +283,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      */
     public void updateFitnessArchives() {
         //int lim = 3; // maximal number of fitnessvalues remembered from former iterations
-        for (int i = 0; i < m_Population.size(); ++i) {
-            AbstractEAIndividual indy = (AbstractEAIndividual) m_Population.getEAIndividual(i);
+        for (int i = 0; i < population.size(); ++i) {
+            AbstractEAIndividual indy = (AbstractEAIndividual) population.getEAIndividual(i);
             Vector<Double> fitArchive_old = (Vector<Double>) (indy.getData(NichePSO.fitArchiveKey));
             double scalarFitness = sum(indy.getFitness()); // if multiobjective, use the sum of all fitnessvalues (dont use the norm because fitnessvalues may be negative)
             Double fitness = new Double(scalarFitness);
@@ -310,8 +310,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      * to the std deviation over the last 3 fitness values
      */
     public void updateFitnessStdDev() {
-        for (int i = 0; i < m_Population.size(); ++i) {
-            AbstractEAIndividual currentindy = m_Population.getEAIndividual(i);
+        for (int i = 0; i < population.size(); ++i) {
+            AbstractEAIndividual currentindy = population.getEAIndividual(i);
             Vector<Double> fitnessArchive = (Vector<Double>) (currentindy.getData(NichePSO.fitArchiveKey));
             // the stddev is computed over 3 values as suggested in
             // "a niching particle swarm optimizer" by Brits et al.
@@ -325,8 +325,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      * update the personal best representation if the current individual is better than the pbest
      */
     public void updatePersonalBest() {
-        for (int i = 0; i < m_Population.size(); ++i) {
-            AbstractEAIndividual currentindy = m_Population.getEAIndividual(i);
+        for (int i = 0; i < population.size(); ++i) {
+            AbstractEAIndividual currentindy = population.getEAIndividual(i);
             AbstractEAIndividual pbest = (AbstractEAIndividual) currentindy.getData("PersonalBestKey");
             if (currentindy.isDominating(pbest)) {
                 initPersonalBestOf(currentindy);
@@ -529,10 +529,10 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      * adds a population and its function calls to this.population
      */
     public void addPopulation(Population pop) {
-        m_Population.addPopulation(pop);
+        population.addPopulation(pop);
 
         // dont peculate the function calls from the added population (which is going to be deleted in NichePSO)
-        m_Population.incrFunctionCallsBy(pop.getFunctionCalls());
+        population.incrFunctionCallsBy(pop.getFunctionCalls());
     }
 
     /**
@@ -544,7 +544,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     public boolean addIndividual(IndividualInterface ind) {
         // nothing to do regarding function calls
         // old calls were counted in old population new calls are now counted in this population
-        return m_Population.addIndividual(ind);
+        return population.addIndividual(ind);
     }
 
     /**
@@ -571,7 +571,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      * removes an individual
      */
     public boolean removeSubIndividual(IndividualInterface ind) {
-        return m_Population.removeMember(ind);
+        return population.removeMember(ind);
     }
 
     public void removeSubPopulation(Population pop, boolean allowMissing) { // this is very slow...
@@ -621,8 +621,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         double max = Double.NEGATIVE_INFINITY;
         //PhenotypeMetric metric = new PhenotypeMetric();
 
-        for (int i = 0; i < m_Population.size(); ++i) {
-            AbstractEAIndividual indy = m_Population.getEAIndividual(i);
+        for (int i = 0; i < population.size(); ++i) {
+            AbstractEAIndividual indy = population.getEAIndividual(i);
             //double dist = metric.distance(m_BestIndividual, indy);
             double sqrdDist = EuclideanMetric.squaredEuclideanDistance(AbstractEAIndividual.getDoublePositionShallow(m_BestIndividual),
                     AbstractEAIndividual.getDoublePositionShallow(indy));

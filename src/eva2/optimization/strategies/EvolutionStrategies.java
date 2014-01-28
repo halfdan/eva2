@@ -14,6 +14,8 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Parameter;
 
+import java.util.Vector;
+
 /**
  * Evolution strategies by Rechenberg and Schwefel, but please remember that
  * this only gives the generation strategy and not the coding. But this is the
@@ -35,6 +37,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 
     @Parameter(description = "Determines whether the +-Strategy should be used.", name = "usePlus")
     protected boolean usePlusStrategy = false;
+
     protected Population population = new Population();
     protected InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private InterfaceSelection parentSelection = new SelectRandom();
@@ -44,7 +47,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     protected int origPopSize = -1; // especially for CBN
     private boolean forceOrigPopSize = true;// especially for CBN
     transient private String identifier = "";
-    transient private InterfacePopulationChangedEventListener changeListener;
+    transient private Vector<InterfacePopulationChangedEventListener> changeListener;
     public static final String esMuParam = "EvolutionStrategyMuParameter";
     public static final String esLambdaParam = "EvolutionStrategyLambdaParameter";
 
@@ -247,13 +250,16 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
      */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.changeListener = ea;
+        if (this.changeListener == null) {
+            this.changeListener = new Vector<InterfacePopulationChangedEventListener>();
+        }
+        this.changeListener.add(ea);
     }
 
     @Override
-    public boolean removePopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        if (changeListener == ea) {
-            changeListener = null;
+    public boolean removePopulationChangedEventListener(
+            InterfacePopulationChangedEventListener ea) {
+        if (changeListener != null && changeListener.removeElement(ea)) {
             return true;
         } else {
             return false;
@@ -262,10 +268,14 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 
     /**
      * Something has changed
+     *
+     * @param name
      */
     protected void firePropertyChangedEvent(String name) {
         if (this.changeListener != null) {
-            this.changeListener.registerPopulationStateChanged(this, name);
+            for (int i = 0; i < this.changeListener.size(); i++) {
+                this.changeListener.get(i).registerPopulationStateChanged(this, name);
+            }
         }
     }
 

@@ -46,7 +46,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * Generated serial version uid.
      */
     private static final long serialVersionUID = -149996122795669589L;
-    protected Population m_Population = new Population();
+    protected Population population = new Population();
     Object[] sortedPop = null;
     protected AbstractEAIndividual m_BestIndividual = null;
     protected InterfaceOptimizationProblem m_Problem = new F1Problem();
@@ -94,7 +94,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     transient final static String sortedIndexKey = "sortedParticleIndex";
     transient final static String dmsGroupIndexKey = "dmsGroupIndex";
     protected String m_Identifier = "";
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    transient private Vector<InterfacePopulationChangedEventListener> changeListener;
     transient private TopoPlot topoPlot = null;
     /// sleep time so that visual plot can be followed easier
     protected int sleepTime = 0;
@@ -128,7 +128,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         if (a.algType != null) {
             this.algType = (SelectedTag) a.algType.clone();
         }
-        this.m_Population = (Population) a.m_Population.clone();
+        this.population = (Population) a.population.clone();
         this.m_Problem = a.m_Problem;
         this.m_Identifier = a.m_Identifier;
         this.initialVelocity = a.initialVelocity;
@@ -153,7 +153,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     public ParticleSwarmOptimization(int popSize, double p1, double p2, PSOTopologyEnum topo, int topoRange) {
         this();
         algType.setSelectedTag(1); // set to constriction
-        m_Population = new Population(popSize);
+        population = new Population(popSize);
         setPhiValues(p1, p2);
         topologyRange = topoRange;
         topology = topo;
@@ -205,13 +205,13 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         }
         tracedVelocity = null;
         if (!externalInitialPop) {
-            this.m_Problem.initializePopulation(this.m_Population);
+            this.m_Problem.initializePopulation(this.population);
         }
         // evaluation needs to be done here now, as its omitted if reset is false
-        initDefaults(this.m_Population);
-        this.evaluatePopulation(this.m_Population);
+        initDefaults(this.population);
+        this.evaluatePopulation(this.population);
         if (m_BestIndividual == null) {
-            m_BestIndividual = m_Population.getBestEAIndividual();
+            m_BestIndividual = population.getBestEAIndividual();
         }
         initByPopulation(null, false);
         externalInitialPop = false;
@@ -409,7 +409,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     protected boolean isParticleTypeByIndex(int index, int type) {
-        return isParticleType((AbstractEAIndividual) m_Population.get(index), type);
+        return isParticleType((AbstractEAIndividual) population.get(index), type);
     }
 
     protected boolean isParticleType(AbstractEAIndividual indy, int type) {
@@ -448,31 +448,31 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     @Override
     public void initByPopulation(Population pop, boolean reset) {
         if (pop != null) {
-            this.m_Population = (Population) pop.clone();
+            this.population = (Population) pop.clone();
             externalInitialPop = true;
         }
         if (reset) {
-            this.m_Population.init();
+            this.population.init();
         }
 
         AbstractEAIndividual indy;
 
-        if (!defaultsDone(m_Population.getEAIndividual(0))) {
-            initDefaults(m_Population);
+        if (!defaultsDone(population.getEAIndividual(0))) {
+            initDefaults(population);
         }
 
         if (reset) {
-            this.evaluatePopulation(this.m_Population);
+            this.evaluatePopulation(this.population);
         }
 
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            indy = (AbstractEAIndividual) this.m_Population.get(i);
+        for (int i = 0; i < this.population.size(); i++) {
+            indy = (AbstractEAIndividual) this.population.get(i);
             if (indy instanceof InterfaceDataTypeDouble) {
                 initIndividualMemory(indy);
             }
         }
 
-        this.m_BestIndividual = (AbstractEAIndividual) this.m_Population.getBestEAIndividual().clone();
+        this.m_BestIndividual = (AbstractEAIndividual) this.population.getBestEAIndividual().clone();
 
         if (reset) {
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
@@ -484,15 +484,15 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             if (topologyRange < 2) {
                 System.err.println("Error, tree/hpso requires topology range of at least 2!");
             } else {
-                while (getMaxNodes(topologyRange, treeLevels) < m_Population.size()) {
+                while (getMaxNodes(topologyRange, treeLevels) < population.size()) {
                     treeLevels++;
                 }
-                treeOrphans = m_Population.size() - getMaxNodes(topologyRange, treeLevels - 1);
+                treeOrphans = population.size() - getMaxNodes(topologyRange, treeLevels - 1);
                 treeLastFullLevelNodeCnt = (int) Math.pow(topologyRange, treeLevels - 1);
             }
         }
         if (getTopology() == PSOTopologyEnum.dms) {
-            dmsLinks = regroupSwarm(m_Population, getTopologyRange());
+            dmsLinks = regroupSwarm(population, getTopologyRange());
         }
     }
 
@@ -871,18 +871,18 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     private double[] getSuccessfulVel(int index) {
         if (true) {
-            return (double[]) m_Population.getEAIndividual(index).getData(lastSuccessKey);
+            return (double[]) population.getEAIndividual(index).getData(lastSuccessKey);
         } else { // random one
             ArrayList<Integer> successes = new ArrayList<Integer>();
-            for (int i = 0; i < this.m_Population.size(); i++) {
-                double[] succVel = (double[]) m_Population.getEAIndividual(i).getData(lastSuccessKey);
+            for (int i = 0; i < this.population.size(); i++) {
+                double[] succVel = (double[]) population.getEAIndividual(i).getData(lastSuccessKey);
                 if (succVel != null) {
                     successes.add(new Integer(i));
                 }
             }
             if (successes.size() > 0) {
                 int i = successes.get(RNG.randomInt(successes.size()));
-                return (double[]) m_Population.getEAIndividual(i).getData(lastSuccessKey);
+                return (double[]) population.getEAIndividual(i).getData(lastSuccessKey);
             } else {
                 return null;
             }
@@ -1360,10 +1360,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         updatePopulation();
 
         // evaluate the population
-        this.evaluatePopulation(this.m_Population);
+        this.evaluatePopulation(this.population);
 
         // update the individual memory
-        updateSwarmMemory(m_Population);
+        updateSwarmMemory(population);
 
         // log the best individual of the population
         logBestIndividual();
@@ -1403,9 +1403,9 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     protected void maybeClearPlot() {
-        if (((m_Population.getGeneration() % 23) == 0) && isShow() && (m_Plot != null)) {
+        if (((population.getGeneration() % 23) == 0) && isShow() && (m_Plot != null)) {
             m_Plot.clearAll();
-            InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) this.m_Population.get(0);
+            InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) this.population.get(0);
             double[][] range = indy.getDoubleRange();
             m_Plot.setCornerPoints(range, 0);
         }
@@ -1416,8 +1416,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      */
     protected void startOptimize() {
         if (TRACE) {
-            for (int i = 0; i < m_Population.size(); i++) {
-                AbstractEAIndividual indy = m_Population.getEAIndividual(i);
+            for (int i = 0; i < population.size(); i++) {
+                AbstractEAIndividual indy = population.getEAIndividual(i);
                 System.out.println(BeanInspector.toString(indy.getData(partTypeKey)));
                 System.out.println(BeanInspector.toString(indy.getData(partBestPosKey)));
                 System.out.println(BeanInspector.toString(indy.getData(partBestFitKey)));
@@ -1434,8 +1434,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * Log the best individual so far.
      */
     protected void logBestIndividual() {
-        if (this.m_Population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual)) {
-            this.m_BestIndividual = (AbstractEAIndividual) this.m_Population.getBestEAIndividual().clone();
+        if (this.population.getBestEAIndividual().isDominatingDebConstraints(this.m_BestIndividual)) {
+            this.m_BestIndividual = (AbstractEAIndividual) this.population.getBestEAIndividual().clone();
             this.m_BestIndividual.putData(partBestFitKey, this.m_BestIndividual.getFitness().clone());
             this.m_BestIndividual.putData(partBestPosKey, ((InterfaceDataTypeDouble) this.m_BestIndividual).getDoubleData());
 //			System.out.println("new best: "+m_BestIndividual.toString());
@@ -1447,10 +1447,10 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      */
     protected void updatePopulation() {
 
-        updateTopology(this.m_Population);
+        updateTopology(this.population);
 
-        for (int i = 0; i < this.m_Population.size(); i++) {
-            this.updateIndividual(i, (AbstractEAIndividual) m_Population.get(i), this.m_Population);
+        for (int i = 0; i < this.population.size(); i++) {
+            this.updateIndividual(i, (AbstractEAIndividual) population.get(i), this.population);
         }
 
         if (m_Show) {
@@ -1467,8 +1467,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                     this.topoPlot.setTopology((Interface2DBorderProblem) this.m_Problem);
                 }
 
-                for (int i = 0; i < this.m_Population.size(); i++) {
-                    tmpIndy1 = (InterfaceDataTypeDouble) this.m_Population.get(i);
+                for (int i = 0; i < this.population.size(); i++) {
+                    tmpIndy1 = (InterfaceDataTypeDouble) this.population.get(i);
                     popRep.addDPoint(new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]));
                 }
                 this.topoPlot.getFunctionArea().addDElement(popRep);
@@ -1651,33 +1651,47 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      */
     protected void show() {
         if (this.m_Plot == null) {
-            InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) this.m_Population.get(0);
+            InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) this.population.get(0);
             double[][] range = indy.getDoubleRange();
-            this.m_Plot = new Plot("PSO " + m_Population.getGeneration(), "x1", "x2", range[0], range[1]);
+            this.m_Plot = new Plot("PSO " + population.getGeneration(), "x1", "x2", range[0], range[1]);
 //			this.m_Plot.setUnconnectedPoint(range[0][0], range[1][0], 0);
 //			this.m_Plot.setUnconnectedPoint(range[0][1], range[1][1], 0);
         }
     }
 
+    /**
+     * This method allows you to add the LectureGUI as listener to the Optimizer
+     *
+     * @param ea
+     */
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.m_Listener = ea;
+        if (this.changeListener == null) {
+            this.changeListener = new Vector<InterfacePopulationChangedEventListener>();
+        }
+        this.changeListener.add(ea);
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (m_Listener == ea) {
-            m_Listener = null;
+        if (changeListener != null && changeListener.removeElement(ea)) {
             return true;
         } else {
             return false;
         }
     }
 
+    /**
+     * Something has changed
+     *
+     * @param name
+     */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.changeListener != null) {
+            for (int i = 0; i < this.changeListener.size(); i++) {
+                this.changeListener.get(i).registerPopulationStateChanged(this, name);
+            }
         }
     }
 
@@ -1708,7 +1722,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         result += "Particle Swarm Optimization:\n";
         result += "Optimization Problem: ";
         result += this.m_Problem.getStringRepresentationForProblem(this) + "\n";
-        result += this.m_Population.getStringRepresentation();
+        result += this.population.getStringRepresentation();
         return result;
     }
 
@@ -1740,12 +1754,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     @Override
     public Population getPopulation() {
-        return this.m_Population;
+        return this.population;
     }
 
     @Override
     public void setPopulation(Population pop) {
-        this.m_Population = pop;
+        this.population = pop;
         if (pop.size() != pop.getTargetSize()) { // new particle count!
             tracedVelocity = null;
             initByPopulation(null, false);
