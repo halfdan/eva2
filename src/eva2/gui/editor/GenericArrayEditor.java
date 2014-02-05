@@ -63,7 +63,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
      */
     private List<JButton> lowerButtonList = new LinkedList<JButton>();
     private JComponent additionalCenterComp = null;
-    private List<JMenuItem> m_popupItemList = new LinkedList<JMenuItem>();
+    private List<JMenuItem> popupItemList = new LinkedList<JMenuItem>();
     private JButton addButton = new JButton("Add");
     private JButton setButton = new JButton("Set");
     private JButton setAllButton = new JButton("Set all");
@@ -608,11 +608,11 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
 
     public void addPopupItem(String text, ActionListener al) {
         JMenuItem item = createMenuItem(text, true, makeSelectionKnownAL(al));
-        m_popupItemList.add(item);
+        popupItemList.add(item);
     }
 
     public void addPopupMenu() {
-        if (m_popupItemList.size() > 0) {
+        if (popupItemList.size() > 0) {
             elementList.addMouseListener(new MouseAdapter() {
 
                 @Override
@@ -624,7 +624,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                         // do nothing
                     } else { // right click released, so show popup
                         JPopupMenu popupMenu = new JPopupMenu();
-                        for (JMenuItem item : m_popupItemList) {
+                        for (JMenuItem item : popupItemList) {
                             popupMenu.add(item);
                         }
                         popupMenu.show(GenericArrayEditor.this, e.getX(), e.getY());
@@ -685,7 +685,6 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
-//		System.out.println(m_ListModel + " --- " + m_ElementClass);
         String rep;
         if (listModel.getSize() == 0) {
             rep = "Empty";

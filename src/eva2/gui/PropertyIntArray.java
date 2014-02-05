@@ -8,15 +8,15 @@ package eva2.gui;
  * To change this template use File | Settings | File Templates.
  */
 public class PropertyIntArray implements java.io.Serializable {
-    public int[] m_IntArray;
+    public int[] intArray;
 
     public PropertyIntArray(int[] d) {
-        this.m_IntArray = d;
+        this.intArray = d;
     }
 
     public PropertyIntArray(PropertyIntArray d) {
-        this.m_IntArray = new int[d.m_IntArray.length];
-        System.arraycopy(d.m_IntArray, 0, this.m_IntArray, 0, this.m_IntArray.length);
+        this.intArray = new int[d.intArray.length];
+        System.arraycopy(d.intArray, 0, this.intArray, 0, this.intArray.length);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class PropertyIntArray implements java.io.Serializable {
      * @param d The int[]
      */
     public void setIntArray(int[] d) {
-        this.m_IntArray = d;
+        this.intArray = d;
     }
 
     /**
@@ -39,6 +39,6 @@ public class PropertyIntArray implements java.io.Serializable {
      * @return The int array
      */
     public int[] getIntArray() {
-        return this.m_IntArray;
+        return this.intArray;
     }
 }

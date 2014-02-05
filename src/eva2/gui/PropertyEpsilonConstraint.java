@@ -9,18 +9,18 @@ package eva2.gui;
  */
 public class PropertyEpsilonConstraint implements java.io.Serializable {
 
-    public double[] m_TargetValue;
-    public int m_OptimizeObjective;
+    public double[] targetValue;
+    public int optimizeObjective;
 
     public PropertyEpsilonConstraint() {
     }
 
     public PropertyEpsilonConstraint(PropertyEpsilonConstraint e) {
-        if (e.m_TargetValue != null) {
-            this.m_TargetValue = new double[e.m_TargetValue.length];
-            System.arraycopy(e.m_TargetValue, 0, this.m_TargetValue, 0, this.m_TargetValue.length);
+        if (e.targetValue != null) {
+            this.targetValue = new double[e.targetValue.length];
+            System.arraycopy(e.targetValue, 0, this.targetValue, 0, this.targetValue.length);
         }
-        this.m_OptimizeObjective = e.m_OptimizeObjective;
+        this.optimizeObjective = e.optimizeObjective;
     }
 
     @Override

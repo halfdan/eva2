@@ -22,17 +22,17 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     /**
      * The label for when we can't edit that type
      */
-    protected JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
+    protected JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
 
     /**
      * The graphics stuff
      */
-    private JPanel m_CustomEditor, m_NodePanel;
-    protected JCheckBox[] m_BlackCheck;
+    private JPanel customEditor, nodePanel;
+    protected JCheckBox[] blackCheck;
 
 
     public AbstractListSelectionEditor() {
@@ -42,11 +42,11 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
      * This method will init the CustomEditor Panel
      */
     private void initCustomEditor() {
-        this.m_CustomEditor = new JPanel();
-        this.m_CustomEditor.setLayout(new BorderLayout());
-        this.m_CustomEditor.add(new JLabel("Choose:"), BorderLayout.NORTH);
-        this.m_NodePanel = new JPanel();
-        this.m_CustomEditor.add(new JScrollPane(this.m_NodePanel), BorderLayout.CENTER);
+        this.customEditor = new JPanel();
+        this.customEditor.setLayout(new BorderLayout());
+        this.customEditor.add(new JLabel("Choose:"), BorderLayout.NORTH);
+        this.nodePanel = new JPanel();
+        this.customEditor.add(new JScrollPane(this.nodePanel), BorderLayout.CENTER);
         this.updateEditor();
     }
 
@@ -87,22 +87,22 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
      * The object may have changed update the editor. This notifies change listeners automatically.
      */
     private void updateEditor() {
-        if (this.m_NodePanel != null) {
-            this.m_NodePanel.removeAll();
-            this.m_NodePanel.setLayout(new GridLayout(getElementCount(), 1));
-            this.m_BlackCheck = new JCheckBox[getElementCount()];
+        if (this.nodePanel != null) {
+            this.nodePanel.removeAll();
+            this.nodePanel.setLayout(new GridLayout(getElementCount(), 1));
+            this.blackCheck = new JCheckBox[getElementCount()];
             for (int i = 0; i < getElementCount(); i++) {
-                this.m_BlackCheck[i] = new JCheckBox(getElementName(i), isElementSelected(i));
-                this.m_BlackCheck[i].setToolTipText(getElementToolTip(i));
-                this.m_BlackCheck[i].addActionListener(new ActionListener() {
+                this.blackCheck[i] = new JCheckBox(getElementName(i), isElementSelected(i));
+                this.blackCheck[i].setToolTipText(getElementToolTip(i));
+                this.blackCheck[i].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent ev) {
                         if (actionOnSelect()) {
-                            m_Support.firePropertyChange("AbstractListSelectionEditor", null, this);
+                            propertyChangeSupport.firePropertyChange("AbstractListSelectionEditor", null, this);
                         }
                     }
                 });
-                this.m_NodePanel.add(this.m_BlackCheck[i]);
+                this.nodePanel.add(this.blackCheck[i]);
             }
         }
     }
@@ -163,18 +163,18 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 
     /**
@@ -218,14 +218,14 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
      */
     @Override
     public Component getCustomEditor() {
-        if (this.m_CustomEditor == null) {
+        if (this.customEditor == null) {
             this.initCustomEditor();
         }
-        return m_CustomEditor;
+        return customEditor;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        m_Support.firePropertyChange("AbstractListSelectionEditor", null, this);
+        propertyChangeSupport.firePropertyChange("AbstractListSelectionEditor", null, this);
     }
 }

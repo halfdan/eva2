@@ -11,8 +11,8 @@ public class StringSelectionEditor extends AbstractListSelectionEditor {
 
     @Override
     protected boolean actionOnSelect() {
-        for (int i = 0; i < this.m_BlackCheck.length; i++) {
-            strs.setSelected(i, this.m_BlackCheck[i].isSelected());
+        for (int i = 0; i < this.blackCheck.length; i++) {
+            strs.setSelected(i, this.blackCheck[i].isSelected());
         }
         return true;
     }

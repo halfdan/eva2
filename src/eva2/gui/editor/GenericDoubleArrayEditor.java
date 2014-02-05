@@ -53,22 +53,22 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
     /**
      * The label for when we can't edit that type
      */
-    private JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
+    private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
     /**
-     * The FilePath that is to be edited
+     * The filePath that is to be edited
      */
-    private PropertyDoubleArray m_DoubleArray;
+    private PropertyDoubleArray doubleArray;
 
     /**
      * The gaphix stuff
      */
-    private JPanel m_CustomEditor, m_DataPanel, m_ButtonPanel;
-    private JTextField[][] m_InputTextFields;
-    private JButton m_OKButton, m_AddButton, m_DeleteButton, m_NormalizeButton;
+    private JPanel customEditor, dataPanel, buttonPanel;
+    private JTextField[][] inputTextFields;
+    private JButton okButton, addButton, deleteButton, normalizeButton;
 
     /**
      * Which columns has the focus? *
@@ -83,41 +83,41 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      * This method will init the CustomEditor Panel
      */
     private void initCustomEditor() {
-        this.m_CustomEditor = new JPanel();
-        this.m_CustomEditor.setLayout(new BorderLayout());
+        this.customEditor = new JPanel();
+        this.customEditor.setLayout(new BorderLayout());
 
-        this.m_CustomEditor.add(new JLabel("Current Double Array:"), BorderLayout.NORTH);
+        this.customEditor.add(new JLabel("Current Double Array:"), BorderLayout.NORTH);
 
         // init data panel
-        this.m_DataPanel = new JPanel();
+        this.dataPanel = new JPanel();
         this.updateDataPanel();
-        this.m_CustomEditor.add(this.m_DataPanel, BorderLayout.CENTER);
+        this.customEditor.add(this.dataPanel, BorderLayout.CENTER);
 
         // init button panel
-        this.m_ButtonPanel = new JPanel();
-        this.m_AddButton = new JButton("Add");
-        this.m_AddButton.addActionListener(this.addAction);
-        this.m_DeleteButton = new JButton("Delete");
-        this.m_DeleteButton.addActionListener(this.deleteAction);
-        this.m_NormalizeButton = new JButton("Normalize");
-        this.m_NormalizeButton.addActionListener(this.normalizeAction);
-        this.m_OKButton = new JButton("OK");
-        this.m_OKButton.setEnabled(true);
-        this.m_OKButton.addActionListener(new ActionListener() {
+        this.buttonPanel = new JPanel();
+        this.addButton = new JButton("Add");
+        this.addButton.addActionListener(this.addAction);
+        this.deleteButton = new JButton("Delete");
+        this.deleteButton.addActionListener(this.deleteAction);
+        this.normalizeButton = new JButton("Normalize");
+        this.normalizeButton.addActionListener(this.normalizeAction);
+        this.okButton = new JButton("OK");
+        this.okButton.setEnabled(true);
+        this.okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //backupObject = copyObject(object);
-                if ((m_CustomEditor.getTopLevelAncestor() != null) && (m_CustomEditor.getTopLevelAncestor() instanceof Window)) {
-                    Window w = (Window) m_CustomEditor.getTopLevelAncestor();
+                if ((customEditor.getTopLevelAncestor() != null) && (customEditor.getTopLevelAncestor() instanceof Window)) {
+                    Window w = (Window) customEditor.getTopLevelAncestor();
                     w.dispose();
                 }
             }
         });
-        this.m_ButtonPanel.add(this.m_AddButton);
-        this.m_ButtonPanel.add(this.m_DeleteButton);
-        this.m_ButtonPanel.add(this.m_NormalizeButton);
-        this.m_ButtonPanel.add(this.m_OKButton);
-        this.m_CustomEditor.add(this.m_ButtonPanel, BorderLayout.SOUTH);
+        this.buttonPanel.add(this.addButton);
+        this.buttonPanel.add(this.deleteButton);
+        this.buttonPanel.add(this.normalizeButton);
+        this.buttonPanel.add(this.okButton);
+        this.customEditor.add(this.buttonPanel, BorderLayout.SOUTH);
         this.updateEditor();
     }
 
@@ -127,7 +127,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     ActionListener addAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_DoubleArray.addRowCopy(lastFocussedRow); // copy the last focussed row
+            doubleArray.addRowCopy(lastFocussedRow); // copy the last focussed row
             updateEditor();
         }
     };
@@ -138,10 +138,10 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     ActionListener deleteAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            if (!m_DoubleArray.isValidRow(lastFocussedRow)) {
-                m_DoubleArray.deleteRow(m_DoubleArray.getNumRows() - 1);
+            if (!doubleArray.isValidRow(lastFocussedRow)) {
+                doubleArray.deleteRow(doubleArray.getNumRows() - 1);
             } else {
-                m_DoubleArray.deleteRow(lastFocussedRow);
+                doubleArray.deleteRow(lastFocussedRow);
             }
             updateEditor();
         }
@@ -153,7 +153,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     ActionListener normalizeAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_DoubleArray.normalizeColumns();
+            doubleArray.normalizeColumns();
             updateEditor();
         }
     };
@@ -172,21 +172,20 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
 
         @Override
         public void keyReleased(KeyEvent event) {
-            double[][] tmpDD = new double[m_InputTextFields.length][m_InputTextFields[0].length];
+            double[][] tmpDD = new double[inputTextFields.length][inputTextFields[0].length];
 
             for (int i = 0; i < tmpDD.length; i++) {
                 for (int j = 0; j < tmpDD[0].length; j++) {
                     try {
                         double d = 0;
-                        d = new Double(m_InputTextFields[i][j].getText()).doubleValue();
+                        d = new Double(inputTextFields[i][j].getText()).doubleValue();
                         tmpDD[i][j] = d;
                     } catch (Exception e) {
                     }
                 }
-                //tmpD[i] = new Double(m_InputTextField[i].getText()).doubleValue();
             }
 
-            m_DoubleArray.setDoubleArray(tmpDD);
+            doubleArray.setDoubleArray(tmpDD);
             //updateEditor();
         }
     };
@@ -196,49 +195,32 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      * The object may have changed update the editor.
      */
     private void updateEditor() {
-        if (this.m_CustomEditor != null) {
+        if (this.customEditor != null) {
             this.updateDataPanel();
-            this.m_CustomEditor.validate();
-            this.m_CustomEditor.repaint();
+            this.customEditor.validate();
+            this.customEditor.repaint();
         }
     }
 
-//    /** This method updates the data panel
-//     */
-//    private void updateDataPanelOrig() {
-//        double[] tmpD = this.m_DoubleArray.getDoubleArray();
-//
-//        this.m_DataPanel.removeAll();
-//        this.m_DataPanel.setLayout(new GridLayout(tmpD.length, 2));
-//        this.m_InputTextField = new JTextField[tmpD.length];
-//        for (int i = 0; i < tmpD.length; i++) {
-//            JLabel label = new JLabel("Value X"+i+": ");
-//            this.m_DataPanel.add(label);
-//            this.m_InputTextField[i]   = new JTextField();
-//            this.m_InputTextField[i].setText(""+tmpD[i]);
-//            this.m_InputTextField[i].addKeyListener(this.readDoubleArrayAction);
-//            this.m_DataPanel.add(this.m_InputTextField[i]);
-//        }
-//    }
 
     /**
      * This method updates the data panel
      */
     private void updateDataPanel() {
-        int numRows = m_DoubleArray.getNumRows();
-        int numCols = m_DoubleArray.getNumCols();
-        this.m_DataPanel.removeAll();
-        this.m_DataPanel.setLayout(new GridLayout(numRows, numCols + 1));
-        this.m_InputTextFields = new JTextField[numRows][numCols];
+        int numRows = doubleArray.getNumRows();
+        int numCols = doubleArray.getNumCols();
+        this.dataPanel.removeAll();
+        this.dataPanel.setLayout(new GridLayout(numRows, numCols + 1));
+        this.inputTextFields = new JTextField[numRows][numCols];
         for (int i = 0; i < numRows; i++) {
             JLabel label = new JLabel("Value X" + i + ": ");
-            this.m_DataPanel.add(label);
+            this.dataPanel.add(label);
             for (int j = 0; j < numCols; j++) {
-                this.m_InputTextFields[i][j] = new JTextField();
-                this.m_InputTextFields[i][j].setText("" + m_DoubleArray.getValue(i, j));
-                this.m_InputTextFields[i][j].addKeyListener(this.readDoubleArrayAction);
-                this.m_InputTextFields[i][j].addFocusListener(new MyFocusListener(i, this));
-                this.m_DataPanel.add(this.m_InputTextFields[i][j]);
+                this.inputTextFields[i][j] = new JTextField();
+                this.inputTextFields[i][j].setText("" + doubleArray.getValue(i, j));
+                this.inputTextFields[i][j].addKeyListener(this.readDoubleArrayAction);
+                this.inputTextFields[i][j].addFocusListener(new MyFocusListener(i, this));
+                this.dataPanel.add(this.inputTextFields[i][j]);
             }
         }
     }
@@ -257,7 +239,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     @Override
     public void setValue(Object o) {
         if (o instanceof PropertyDoubleArray) {
-            this.m_DoubleArray = (PropertyDoubleArray) o;
+            this.doubleArray = (PropertyDoubleArray) o;
             this.updateEditor();
         }
     }
@@ -269,7 +251,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      */
     @Override
     public Object getValue() {
-        return this.m_DoubleArray;
+        return this.doubleArray;
     }
 
     @Override
@@ -303,18 +285,18 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (support == null) {
+            support = new PropertyChangeSupport(this);
         }
-        m_Support.addPropertyChangeListener(l);
+        support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (support == null) {
+            support = new PropertyChangeSupport(this);
         }
-        m_Support.removePropertyChangeListener(l);
+        support.removePropertyChangeListener(l);
     }
 
     /**
@@ -323,7 +305,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      * @param a The action listener.
      */
     public void addOkListener(ActionListener a) {
-        m_OKButton.addActionListener(a);
+        okButton.addActionListener(a);
     }
 
     /**
@@ -332,7 +314,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      * @param a The action listener
      */
     public void removeOkListener(ActionListener a) {
-        m_OKButton.removeActionListener(a);
+        okButton.removeActionListener(a);
     }
 
     /**
@@ -376,9 +358,9 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      */
     @Override
     public Component getCustomEditor() {
-        if (this.m_CustomEditor == null) {
+        if (this.customEditor == null) {
             this.initCustomEditor();
         }
-        return m_CustomEditor;
+        return customEditor;
     }
 }

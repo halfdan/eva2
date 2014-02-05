@@ -14,7 +14,7 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
     /**
      * The GPArea that is to be edited
      */
-    private GPArea m_AreaObject;
+    private GPArea areaObject;
 
     public GenericAreaEditor() {
         // compiled code
@@ -22,18 +22,18 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
 
     @Override
     protected int getElementCount() {
-        return m_AreaObject.getCompleteList().size();
+        return areaObject.getCompleteList().size();
     }
 
     @Override
     protected String getElementName(int i) {
-        AbstractGPNode an = (AbstractGPNode) m_AreaObject.getCompleteList().get(i);
+        AbstractGPNode an = (AbstractGPNode) areaObject.getCompleteList().get(i);
         return an.getName();
     }
 
     @Override
     protected boolean isElementSelected(int i) {
-        return ((Boolean) m_AreaObject.getBlackList().get(i)).booleanValue();
+        return ((Boolean) areaObject.getBlackList().get(i)).booleanValue();
     }
 
     @Override
@@ -41,18 +41,18 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
         /** This method checks the current BlackList and compiles it
          * to a new ReducedList.
          */
-        for (int i = 0; i < this.m_BlackCheck.length; i++) {
-            this.m_AreaObject.setBlackListElement(i, this.m_BlackCheck[i].isSelected());
+        for (int i = 0; i < this.blackCheck.length; i++) {
+            this.areaObject.setBlackListElement(i, this.blackCheck[i].isSelected());
         }
-        this.m_AreaObject.compileReducedList();
+        this.areaObject.compileReducedList();
         return true;
     }
 
     @Override
     protected boolean setObject(Object o) {
         if (o instanceof GPArea) {
-            this.m_AreaObject = (GPArea) o;
-            m_AreaObject.addPropertyChangeListener(this);
+            this.areaObject = (GPArea) o;
+            areaObject.addPropertyChangeListener(this);
             return true;
         } else {
             return false;
@@ -61,6 +61,6 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
 
     @Override
     public Object getValue() {
-        return this.m_AreaObject;
+        return this.areaObject;
     }
 }

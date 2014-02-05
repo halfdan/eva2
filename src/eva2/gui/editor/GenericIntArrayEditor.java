@@ -13,33 +13,29 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 12.09.2005
- * Time: 10:20:30
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
 
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     /**
      * The label for when we can't edit that type
      */
-    private JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
+    private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
     /**
-     * The FilePath that is to be edited
+     * The filePath that is to be edited
      */
-    private PropertyIntArray m_IntArray;
+    private PropertyIntArray intArray;
 
     /**
      * The gaphix stuff
      */
-    private JPanel m_CustomEditor, m_DataPanel, m_ButtonPanel;
-    private JTextField[] m_InputTextField;
-    private JButton m_OKButton;
+    private JPanel customEditor, dataPanel, buttonPanel;
+    private JTextField[] inputTextField;
+    private JButton okButton;
 
     public GenericIntArrayEditor() {
         // compiled code
@@ -49,32 +45,32 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      * This method will init the CustomEditor Panel
      */
     private void initCustomEditor() {
-        this.m_CustomEditor = new JPanel();
-        this.m_CustomEditor.setLayout(new BorderLayout());
+        this.customEditor = new JPanel();
+        this.customEditor.setLayout(new BorderLayout());
 
-        this.m_CustomEditor.add(new JLabel("Current Int Array:"), BorderLayout.NORTH);
+        this.customEditor.add(new JLabel("Current Int Array:"), BorderLayout.NORTH);
 
         // init data panel
-        this.m_DataPanel = new JPanel();
+        this.dataPanel = new JPanel();
         this.updateDataPanel();
-        this.m_CustomEditor.add(this.m_DataPanel, BorderLayout.CENTER);
+        this.customEditor.add(this.dataPanel, BorderLayout.CENTER);
 
         // init button panel
-        this.m_ButtonPanel = new JPanel();
-        this.m_OKButton = new JButton("OK");
-        this.m_OKButton.setEnabled(true);
-        this.m_OKButton.addActionListener(new ActionListener() {
+        this.buttonPanel = new JPanel();
+        this.okButton = new JButton("OK");
+        this.okButton.setEnabled(true);
+        this.okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //backupObject = copyObject(object);
-                if ((m_CustomEditor.getTopLevelAncestor() != null) && (m_CustomEditor.getTopLevelAncestor() instanceof Window)) {
-                    Window w = (Window) m_CustomEditor.getTopLevelAncestor();
+                if ((customEditor.getTopLevelAncestor() != null) && (customEditor.getTopLevelAncestor() instanceof Window)) {
+                    Window w = (Window) customEditor.getTopLevelAncestor();
                     w.dispose();
                 }
             }
         });
-        this.m_ButtonPanel.add(this.m_OKButton);
-        this.m_CustomEditor.add(this.m_ButtonPanel, BorderLayout.SOUTH);
+        this.buttonPanel.add(this.okButton);
+        this.customEditor.add(this.buttonPanel, BorderLayout.SOUTH);
         this.updateEditor();
     }
 
@@ -92,18 +88,18 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
 
         @Override
         public void keyReleased(KeyEvent event) {
-            int[] tmpD = new int[m_InputTextField.length];
+            int[] tmpD = new int[inputTextField.length];
 
             for (int i = 0; i < tmpD.length; i++) {
                 try {
                     int d = 0;
-                    d = new Integer(m_InputTextField[i].getText()).intValue();
+                    d = new Integer(inputTextField[i].getText()).intValue();
                     tmpD[i] = d;
                 } catch (Exception e) {
 
                 }
             }
-            m_IntArray.setIntArray(tmpD);
+            intArray.setIntArray(tmpD);
         }
     };
 
@@ -111,10 +107,10 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      * The object may have changed update the editor.
      */
     private void updateEditor() {
-        if (this.m_CustomEditor != null) {
+        if (this.customEditor != null) {
             this.updateDataPanel();
-            this.m_CustomEditor.validate();
-            this.m_CustomEditor.repaint();
+            this.customEditor.validate();
+            this.customEditor.repaint();
         }
     }
 
@@ -122,18 +118,18 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      * This method updates the data panel
      */
     private void updateDataPanel() {
-        int[] tmpD = this.m_IntArray.getIntArray();
+        int[] tmpD = this.intArray.getIntArray();
 
-        this.m_DataPanel.removeAll();
-        this.m_DataPanel.setLayout(new GridLayout(tmpD.length, 2));
-        this.m_InputTextField = new JTextField[tmpD.length];
+        this.dataPanel.removeAll();
+        this.dataPanel.setLayout(new GridLayout(tmpD.length, 2));
+        this.inputTextField = new JTextField[tmpD.length];
         for (int i = 0; i < tmpD.length; i++) {
             JLabel label = new JLabel("Value X" + i + ": ");
-            this.m_DataPanel.add(label);
-            this.m_InputTextField[i] = new JTextField();
-            this.m_InputTextField[i].setText("" + tmpD[i]);
-            this.m_InputTextField[i].addKeyListener(this.readIntArrayAction);
-            this.m_DataPanel.add(this.m_InputTextField[i]);
+            this.dataPanel.add(label);
+            this.inputTextField[i] = new JTextField();
+            this.inputTextField[i].setText("" + tmpD[i]);
+            this.inputTextField[i].addKeyListener(this.readIntArrayAction);
+            this.dataPanel.add(this.inputTextField[i]);
         }
     }
 
@@ -146,7 +142,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     @Override
     public void setValue(Object o) {
         if (o instanceof PropertyIntArray) {
-            this.m_IntArray = (PropertyIntArray) o;
+            this.intArray = (PropertyIntArray) o;
             this.updateEditor();
         }
     }
@@ -158,7 +154,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      */
     @Override
     public Object getValue() {
-        return this.m_IntArray;
+        return this.intArray;
     }
 
     @Override
@@ -192,18 +188,18 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 
     /**
@@ -212,7 +208,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      * @param a The action listener.
      */
     public void addOkListener(ActionListener a) {
-        m_OKButton.addActionListener(a);
+        okButton.addActionListener(a);
     }
 
     /**
@@ -221,7 +217,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      * @param a The action listener
      */
     public void removeOkListener(ActionListener a) {
-        m_OKButton.removeActionListener(a);
+        okButton.removeActionListener(a);
     }
 
     /**
@@ -265,9 +261,9 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      */
     @Override
     public Component getCustomEditor() {
-        if (this.m_CustomEditor == null) {
+        if (this.customEditor == null) {
             this.initCustomEditor();
         }
-        return m_CustomEditor;
+        return customEditor;
     }
 }

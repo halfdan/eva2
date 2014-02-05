@@ -10,34 +10,30 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 05.03.2004
- * Time: 15:17:09
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEditor {
 
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     /**
      * The label for when we can't edit that type
      */
-    private JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
+    private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
     /**
-     * The FilePath that is to be edited
+     * The filePath that is to be edited
      */
-    private PropertyEpsilonThreshold m_EpsilonThreshhold;
+    private PropertyEpsilonThreshold epsilonThreshhold;
 
     /**
      * The gaphix stuff
      */
-    private JPanel m_CustomEditor, m_DataPanel, m_ButtonPanel, m_TargetPanel;
-    private JTextField[] m_TargetTextField, m_PunishTextField;
-    private JComboBox m_Objective;
-    private JButton m_OKButton;
+    private JPanel customEditor, dataPanel, buttonPanel, targetPanel;
+    private JTextField[] targetTextField, punishTextField;
+    private JComboBox objectiveComboBox;
+    private JButton okButton;
 
     public GenericEpsilonThresholdEditor() {
         // compiled code
@@ -47,42 +43,42 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
      * This method will init the CustomEditor Panel
      */
     private void initCustomEditor() {
-        this.m_CustomEditor = new JPanel();
-        this.m_CustomEditor.setLayout(new BorderLayout());
+        this.customEditor = new JPanel();
+        this.customEditor.setLayout(new BorderLayout());
 
         // target panel
-        this.m_TargetPanel = new JPanel();
-        this.m_TargetPanel.setLayout(new GridLayout(1, 2));
-        this.m_TargetPanel.add(new JLabel("Optimize:"));
-        this.m_Objective = new JComboBox();
-        for (int i = 0; i < this.m_EpsilonThreshhold.m_TargetValue.length; i++) {
-            this.m_Objective.addItem("Objective " + i);
+        this.targetPanel = new JPanel();
+        this.targetPanel.setLayout(new GridLayout(1, 2));
+        this.targetPanel.add(new JLabel("Optimize:"));
+        this.objectiveComboBox = new JComboBox();
+        for (int i = 0; i < this.epsilonThreshhold.targetValue.length; i++) {
+            this.objectiveComboBox.addItem("Objective " + i);
         }
-        this.m_TargetPanel.add(this.m_Objective);
-        this.m_Objective.addItemListener(this.objectiveAction);
-        this.m_CustomEditor.add(this.m_TargetPanel, BorderLayout.NORTH);
+        this.targetPanel.add(this.objectiveComboBox);
+        this.objectiveComboBox.addItemListener(this.objectiveAction);
+        this.customEditor.add(this.targetPanel, BorderLayout.NORTH);
 
         // init data panel
-        this.m_DataPanel = new JPanel();
+        this.dataPanel = new JPanel();
         this.updateDataPanel();
-        this.m_CustomEditor.add(this.m_DataPanel, BorderLayout.CENTER);
+        this.customEditor.add(this.dataPanel, BorderLayout.CENTER);
 
         // init button panel
-        this.m_ButtonPanel = new JPanel();
-        this.m_OKButton = new JButton("OK");
-        this.m_OKButton.setEnabled(true);
-        this.m_OKButton.addActionListener(new ActionListener() {
+        this.buttonPanel = new JPanel();
+        this.okButton = new JButton("OK");
+        this.okButton.setEnabled(true);
+        this.okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //backupObject = copyObject(object);
-                if ((m_CustomEditor.getTopLevelAncestor() != null) && (m_CustomEditor.getTopLevelAncestor() instanceof Window)) {
-                    Window w = (Window) m_CustomEditor.getTopLevelAncestor();
+                if ((customEditor.getTopLevelAncestor() != null) && (customEditor.getTopLevelAncestor() instanceof Window)) {
+                    Window w = (Window) customEditor.getTopLevelAncestor();
                     w.dispose();
                 }
             }
         });
-        this.m_ButtonPanel.add(this.m_OKButton);
-        this.m_CustomEditor.add(this.m_ButtonPanel, BorderLayout.SOUTH);
+        this.buttonPanel.add(this.okButton);
+        this.customEditor.add(this.buttonPanel, BorderLayout.SOUTH);
         this.updateEditor();
     }
 
@@ -92,7 +88,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     ItemListener objectiveAction = new ItemListener() {
         @Override
         public void itemStateChanged(ItemEvent event) {
-            m_EpsilonThreshhold.m_OptimizeObjective = m_Objective.getSelectedIndex();
+            epsilonThreshhold.optimizeObjective = objectiveComboBox.getSelectedIndex();
             updateEditor();
         }
     };
@@ -111,29 +107,29 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
 
         @Override
         public void keyReleased(KeyEvent event) {
-            double[] tmpT = m_EpsilonThreshhold.m_TargetValue;
-            double[] tmpP = m_EpsilonThreshhold.m_Punishment;
+            double[] tmpT = epsilonThreshhold.targetValue;
+            double[] tmpP = epsilonThreshhold.punishment;
 
             for (int i = 0; i < tmpT.length; i++) {
 
                 try {
                     double d = 0;
-                    d = new Double(m_TargetTextField[i].getText()).doubleValue();
+                    d = new Double(targetTextField[i].getText()).doubleValue();
                     tmpT[i] = d;
                 } catch (Exception e) {
 
                 }
                 try {
                     double d = 0;
-                    d = new Double(m_PunishTextField[i].getText()).doubleValue();
+                    d = new Double(punishTextField[i].getText()).doubleValue();
                     tmpP[i] = d;
                 } catch (Exception e) {
 
                 }
             }
 
-            m_EpsilonThreshhold.m_TargetValue = tmpT;
-            m_EpsilonThreshhold.m_Punishment = tmpP;
+            epsilonThreshhold.targetValue = tmpT;
+            epsilonThreshhold.punishment = tmpP;
         }
     };
 
@@ -141,10 +137,10 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
      * The object may have changed update the editor.
      */
     private void updateEditor() {
-        if (this.m_CustomEditor != null) {
+        if (this.customEditor != null) {
             this.updateDataPanel();
-            this.m_CustomEditor.validate();
-            this.m_CustomEditor.repaint();
+            this.customEditor.validate();
+            this.customEditor.repaint();
         }
     }
 
@@ -152,31 +148,31 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
      * This method updates the data panel
      */
     private void updateDataPanel() {
-        double[] tmpT = this.m_EpsilonThreshhold.m_TargetValue;
-        double[] tmpP = this.m_EpsilonThreshhold.m_Punishment;
-        int obj = this.m_EpsilonThreshhold.m_OptimizeObjective;
+        double[] tmpT = this.epsilonThreshhold.targetValue;
+        double[] tmpP = this.epsilonThreshhold.punishment;
+        int obj = this.epsilonThreshhold.optimizeObjective;
 
-        this.m_DataPanel.removeAll();
-        this.m_DataPanel.setLayout(new GridLayout(tmpT.length + 1, 3));
-        this.m_DataPanel.add(new JLabel());
-        this.m_DataPanel.add(new JLabel("Target Value"));
-        this.m_DataPanel.add(new JLabel("Punishment"));
-        this.m_TargetTextField = new JTextField[tmpT.length];
-        this.m_PunishTextField = new JTextField[tmpT.length];
+        this.dataPanel.removeAll();
+        this.dataPanel.setLayout(new GridLayout(tmpT.length + 1, 3));
+        this.dataPanel.add(new JLabel());
+        this.dataPanel.add(new JLabel("Target Value"));
+        this.dataPanel.add(new JLabel("Punishment"));
+        this.targetTextField = new JTextField[tmpT.length];
+        this.punishTextField = new JTextField[tmpT.length];
         for (int i = 0; i < tmpT.length; i++) {
             JLabel label = new JLabel("Objective " + i + ": ");
-            this.m_DataPanel.add(label);
-            this.m_TargetTextField[i] = new JTextField();
-            this.m_TargetTextField[i].setText("" + tmpT[i]);
-            this.m_TargetTextField[i].addKeyListener(this.readDoubleArrayAction);
-            this.m_DataPanel.add(this.m_TargetTextField[i]);
-            this.m_PunishTextField[i] = new JTextField();
-            this.m_PunishTextField[i].setText("" + tmpP[i]);
-            this.m_PunishTextField[i].addKeyListener(this.readDoubleArrayAction);
-            this.m_DataPanel.add(this.m_PunishTextField[i]);
+            this.dataPanel.add(label);
+            this.targetTextField[i] = new JTextField();
+            this.targetTextField[i].setText("" + tmpT[i]);
+            this.targetTextField[i].addKeyListener(this.readDoubleArrayAction);
+            this.dataPanel.add(this.targetTextField[i]);
+            this.punishTextField[i] = new JTextField();
+            this.punishTextField[i].setText("" + tmpP[i]);
+            this.punishTextField[i].addKeyListener(this.readDoubleArrayAction);
+            this.dataPanel.add(this.punishTextField[i]);
         }
-        this.m_TargetTextField[obj].setEditable(false);
-        this.m_PunishTextField[obj].setEditable(false);
+        this.targetTextField[obj].setEditable(false);
+        this.punishTextField[obj].setEditable(false);
     }
 
 
@@ -188,7 +184,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
     @Override
     public void setValue(Object o) {
         if (o instanceof PropertyEpsilonThreshold) {
-            this.m_EpsilonThreshhold = (PropertyEpsilonThreshold) o;
+            this.epsilonThreshhold = (PropertyEpsilonThreshold) o;
             this.updateEditor();
         }
     }
@@ -200,7 +196,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
      */
     @Override
     public Object getValue() {
-        return this.m_EpsilonThreshhold;
+        return this.epsilonThreshhold;
     }
 
     @Override
@@ -234,18 +230,18 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 
     /**
@@ -254,7 +250,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
      * @param a The action listener.
      */
     public void addOkListener(ActionListener a) {
-        m_OKButton.addActionListener(a);
+        okButton.addActionListener(a);
     }
 
     /**
@@ -263,7 +259,7 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
      * @param a The action listener
      */
     public void removeOkListener(ActionListener a) {
-        m_OKButton.removeActionListener(a);
+        okButton.removeActionListener(a);
     }
 
     /**
@@ -307,9 +303,9 @@ public class GenericEpsilonThresholdEditor extends JPanel implements PropertyEdi
      */
     @Override
     public Component getCustomEditor() {
-        if (this.m_CustomEditor == null) {
+        if (this.customEditor == null) {
             this.initCustomEditor();
         }
-        return m_CustomEditor;
+        return customEditor;
     }
 }

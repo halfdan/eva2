@@ -20,40 +20,36 @@ import java.beans.PropertyEditor;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 14.01.2005
- * Time: 17:32:47
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GenericOptimizationObjectivesEditor extends JPanel implements PropertyEditor, java.beans.PropertyChangeListener {
 
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     /**
      * The label for when we can't edit that type
      */
-    private JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
+    private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
     /**
-     * The FilePath that is to be edited
+     * The filePath that is to be edited
      */
-    private PropertyOptimizationObjectives m_OptimizationObjectives;
+    private PropertyOptimizationObjectives optimizationObjectives;
 
     /**
      * The gaphix stuff
      */
-    private JComponent m_Editor;
-    private JPanel m_TargetList;
-    private JComponent[] m_Targets;
-    private JButton[] m_Delete;
-    private JScrollPane m_ScrollTargets;
-    private GeneralOptimizationEditorProperty[] m_Editors;
-    private PropertyChangeListener m_self;
+    private JComponent editor;
+    private JPanel targetList;
+    private JComponent[] targets;
+    private JButton[] deleteButton;
+    private JScrollPane scrollTargets;
+    private GeneralOptimizationEditorProperty[] editors;
+    private PropertyChangeListener self;
 
     public GenericOptimizationObjectivesEditor() {
-        m_self = this;
+        self = this;
 
     }
 
@@ -61,47 +57,47 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
      * This method will init the CustomEditor Panel
      */
     private void initCustomEditor() {
-        m_self = this;
-        this.m_Editor = new JPanel();
-        this.m_Editor.setPreferredSize(new Dimension(400, 200));
-        this.m_Editor.setMinimumSize(new Dimension(400, 200));
+        self = this;
+        this.editor = new JPanel();
+        this.editor.setPreferredSize(new Dimension(400, 200));
+        this.editor.setMinimumSize(new Dimension(400, 200));
 
         // init the editors
-        InterfaceOptimizationObjective[] list = this.m_OptimizationObjectives.getSelectedTargets();
-        this.m_Editors = new GeneralOptimizationEditorProperty[list.length];
+        InterfaceOptimizationObjective[] list = this.optimizationObjectives.getSelectedTargets();
+        this.editors = new GeneralOptimizationEditorProperty[list.length];
         for (int i = 0; i < list.length; i++) {
-            this.m_Editors[i] = new GeneralOptimizationEditorProperty();
-            this.m_Editors[i].name = list[i].getName();
+            this.editors[i] = new GeneralOptimizationEditorProperty();
+            this.editors[i].name = list[i].getName();
             try {
-                this.m_Editors[i].value = list[i];
-                this.m_Editors[i].editor = PropertyEditorProvider.findEditor(this.m_Editors[i].value.getClass());
-                if (this.m_Editors[i].editor == null) {
-                    this.m_Editors[i].editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
+                this.editors[i].value = list[i];
+                this.editors[i].editor = PropertyEditorProvider.findEditor(this.editors[i].value.getClass());
+                if (this.editors[i].editor == null) {
+                    this.editors[i].editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
                 }
-                if (this.m_Editors[i].editor instanceof GenericObjectEditor) {
-                    ((GenericObjectEditor) this.m_Editors[i].editor).setClassType(InterfaceOptimizationTarget.class);
+                if (this.editors[i].editor instanceof GenericObjectEditor) {
+                    ((GenericObjectEditor) this.editors[i].editor).setClassType(InterfaceOptimizationTarget.class);
                 }
-                this.m_Editors[i].editor.setValue(this.m_Editors[i].value);
-                this.m_Editors[i].editor.addPropertyChangeListener(this);
-                AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                if (this.m_Editors[i].view != null) {
-                    this.m_Editors[i].view.repaint();
+                this.editors[i].editor.setValue(this.editors[i].value);
+                this.editors[i].editor.addPropertyChangeListener(this);
+                AbstractObjectEditor.findViewFor(this.editors[i]);
+                if (this.editors[i].view != null) {
+                    this.editors[i].view.repaint();
                 }
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
             }
         }
-        this.m_TargetList = new JPanel();
+        this.targetList = new JPanel();
         this.updateTargetList();
-        this.m_ScrollTargets = new JScrollPane(this.m_TargetList);
+        this.scrollTargets = new JScrollPane(this.targetList);
 
-        this.m_Editor.setLayout(new BorderLayout());
-        this.m_Editor.add(this.m_ScrollTargets, BorderLayout.CENTER);
+        this.editor.setLayout(new BorderLayout());
+        this.editor.add(this.scrollTargets, BorderLayout.CENTER);
 
         // the add button
         JButton addButton = new JButton("Add Opt. Target");
         addButton.addActionListener(addTarget);
-        this.m_Editor.add(addButton, BorderLayout.SOUTH);
+        this.editor.add(addButton, BorderLayout.SOUTH);
 
         // Some description would be nice
         JTextArea jt = new JTextArea();
@@ -125,7 +121,7 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
         p2.add(help, BorderLayout.NORTH);
         jp.add(p2, BorderLayout.EAST);
         GridBagConstraints gbConstraints = new GridBagConstraints();
-        this.m_Editor.add(jp, BorderLayout.NORTH);
+        this.editor.add(jp, BorderLayout.NORTH);
 
         this.updateEditor();
     }
@@ -136,13 +132,13 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
     private void updateTargetList() {
         BasicResourceLoader loader = BasicResourceLoader.instance();
         byte[] bytes;
-        InterfaceOptimizationObjective[] list = this.m_OptimizationObjectives.getSelectedTargets();
+        InterfaceOptimizationObjective[] list = this.optimizationObjectives.getSelectedTargets();
 
-        this.m_TargetList.removeAll();
-        this.m_TargetList.setLayout(new GridBagLayout());
+        this.targetList.removeAll();
+        this.targetList.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        this.m_Targets = new JComponent[list.length];
-        this.m_Delete = new JButton[list.length];
+        this.targets = new JComponent[list.length];
+        this.deleteButton = new JButton[list.length];
         String[] cups = new String[8];
         for (int i = 0; i < cups.length; i++) {
             cups[i] = "" + (i + 1);
@@ -152,41 +148,41 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
         gbc.weightx = 10;
-        this.m_TargetList.add(new JLabel("Target"), gbc);
+        this.targetList.add(new JLabel("Target"), gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.REMAINDER;
         gbc.gridx = 1;
         gbc.weightx = 1;
-        this.m_TargetList.add(new JLabel("Remove"), gbc);
+        this.targetList.add(new JLabel("Remove"), gbc);
         for (int i = 0; i < list.length; i++) {
             // the status indicator
             gbc.anchor = GridBagConstraints.WEST;
             gbc.fill = GridBagConstraints.BOTH;
             gbc.gridx = 0;
             gbc.weightx = 10;
-//            this.m_Targets[i] = new JButton(""+list[i].getName());
-//            this.m_Targets[i].setEnabled(false);
-            this.m_Targets[i] = this.m_Editors[i].view;
-            this.m_TargetList.add(this.m_Targets[i], gbc);
+//            this.targets[i] = new JButton(""+list[i].getName());
+//            this.targets[i].setEnabled(false);
+            this.targets[i] = this.editors[i].view;
+            this.targetList.add(this.targets[i], gbc);
             // The delete button
             gbc.anchor = GridBagConstraints.WEST;
             gbc.fill = GridBagConstraints.REMAINDER;
             gbc.gridx = 1;
             gbc.weightx = 1;
             bytes = loader.getBytesFromResourceLocation("images/Sub24.gif", true);
-            this.m_Delete[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-            this.m_Delete[i].addActionListener(deleteTarget);
-            this.m_TargetList.add(this.m_Delete[i], gbc);
+            this.deleteButton[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+            this.deleteButton[i].addActionListener(deleteTarget);
+            this.targetList.add(this.deleteButton[i], gbc);
         }
-        this.m_TargetList.repaint();
-        this.m_TargetList.validate();
-        if (this.m_ScrollTargets != null) {
-            this.m_ScrollTargets.validate();
-            this.m_ScrollTargets.repaint();
+        this.targetList.repaint();
+        this.targetList.validate();
+        if (this.scrollTargets != null) {
+            this.scrollTargets.validate();
+            this.scrollTargets.repaint();
         }
-        if (this.m_Editor != null) {
-            this.m_Editor.validate();
-            this.m_Editor.repaint();
+        if (this.editor != null) {
+            this.editor.validate();
+            this.editor.repaint();
         }
     }
 
@@ -206,13 +202,13 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
     ActionListener addTarget = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_OptimizationObjectives.addTarget((InterfaceOptimizationObjective) m_OptimizationObjectives.getAvailableTargets()[0].clone());
-            int l = m_OptimizationObjectives.getSelectedTargets().length;
+            optimizationObjectives.addTarget((InterfaceOptimizationObjective) optimizationObjectives.getAvailableTargets()[0].clone());
+            int l = optimizationObjectives.getSelectedTargets().length;
             GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l];
-            for (int i = 0; i < m_Editors.length; i++) {
-                newEdit[i] = m_Editors[i];
+            for (int i = 0; i < editors.length; i++) {
+                newEdit[i] = editors[i];
             }
-            InterfaceOptimizationObjective[] list = m_OptimizationObjectives.getSelectedTargets();
+            InterfaceOptimizationObjective[] list = optimizationObjectives.getSelectedTargets();
             l--;
             newEdit[l] = new GeneralOptimizationEditorProperty();
             newEdit[l].name = list[l].getName();
@@ -226,7 +222,7 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
                     ((GenericObjectEditor) newEdit[l].editor).setClassType(InterfaceOptimizationTarget.class);
                 }
                 newEdit[l].editor.setValue(newEdit[l].value);
-                newEdit[l].editor.addPropertyChangeListener(m_self);
+                newEdit[l].editor.addPropertyChangeListener(self);
                 AbstractObjectEditor.findViewFor(newEdit[l]);
                 if (newEdit[l].view != null) {
                     newEdit[l].view.repaint();
@@ -234,7 +230,7 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
             }
-            m_Editors = newEdit;
+            editors = newEdit;
             updateTargetList();
         }
     };
@@ -245,17 +241,17 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
     ActionListener deleteTarget = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            int l = m_OptimizationObjectives.getSelectedTargets().length, j = 0;
+            int l = optimizationObjectives.getSelectedTargets().length, j = 0;
             GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l - 1];
-            for (int i = 0; i < m_Delete.length; i++) {
-                if (event.getSource().equals(m_Delete[i])) {
-                    m_OptimizationObjectives.removeTarget(i);
+            for (int i = 0; i < deleteButton.length; i++) {
+                if (event.getSource().equals(deleteButton[i])) {
+                    optimizationObjectives.removeTarget(i);
                 } else {
-                    newEdit[j] = m_Editors[i];
+                    newEdit[j] = editors[i];
                     j++;
                 }
             }
-            m_Editors = newEdit;
+            editors = newEdit;
             updateTargetList();
         }
     };
@@ -264,13 +260,13 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
      * The object may have changed update the editor.
      */
     private void updateEditor() {
-        if (this.m_Editor != null) {
-            this.m_TargetList.validate();
-            this.m_TargetList.repaint();
-            this.m_ScrollTargets.validate();
-            this.m_ScrollTargets.repaint();
-            this.m_Editor.validate();
-            this.m_Editor.repaint();
+        if (this.editor != null) {
+            this.targetList.validate();
+            this.targetList.repaint();
+            this.scrollTargets.validate();
+            this.scrollTargets.repaint();
+            this.editor.validate();
+            this.editor.repaint();
         }
     }
 
@@ -283,7 +279,7 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
     @Override
     public void setValue(Object o) {
         if (o instanceof PropertyOptimizationObjectives) {
-            this.m_OptimizationObjectives = (PropertyOptimizationObjectives) o;
+            this.optimizationObjectives = (PropertyOptimizationObjectives) o;
             this.updateEditor();
         }
     }
@@ -295,7 +291,7 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
      */
     @Override
     public Object getValue() {
-        return this.m_OptimizationObjectives;
+        return this.optimizationObjectives;
     }
 
     @Override
@@ -386,10 +382,10 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
      */
     @Override
     public Component getCustomEditor() {
-        if (this.m_Editor == null) {
+        if (this.editor == null) {
             this.initCustomEditor();
         }
-        return m_Editor;
+        return editor;
     }
 
     /**
@@ -407,18 +403,18 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 
     /**
@@ -431,34 +427,34 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
     public void propertyChange(PropertyChangeEvent evt) {
         Object newVal = evt.getNewValue();
         Object oldVal = evt.getOldValue();
-        InterfaceOptimizationObjective[] list = this.m_OptimizationObjectives.getSelectedTargets();
+        InterfaceOptimizationObjective[] list = this.optimizationObjectives.getSelectedTargets();
         for (int i = 0; i < list.length; i++) {
             if (oldVal.equals(list[i])) {
                 list[i] = (InterfaceOptimizationObjective) newVal;
-                this.m_Editors[i].name = list[i].getName();
+                this.editors[i].name = list[i].getName();
                 try {
-                    this.m_Editors[i].value = list[i];
-                    this.m_Editors[i].editor = PropertyEditorProvider.findEditor(this.m_Editors[i].value.getClass());
-                    if (this.m_Editors[i].editor == null) {
-                        this.m_Editors[i].editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
+                    this.editors[i].value = list[i];
+                    this.editors[i].editor = PropertyEditorProvider.findEditor(this.editors[i].value.getClass());
+                    if (this.editors[i].editor == null) {
+                        this.editors[i].editor = PropertyEditorProvider.findEditor(InterfaceOptimizationObjective.class);
                     }
-                    if (this.m_Editors[i].editor instanceof GenericObjectEditor) {
-                        ((GenericObjectEditor) this.m_Editors[i].editor).setClassType(InterfaceOptimizationTarget.class);
+                    if (this.editors[i].editor instanceof GenericObjectEditor) {
+                        ((GenericObjectEditor) this.editors[i].editor).setClassType(InterfaceOptimizationTarget.class);
                     }
-                    this.m_Editors[i].editor.setValue(this.m_Editors[i].value);
-                    this.m_Editors[i].editor.addPropertyChangeListener(this);
-                    AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                    if (this.m_Editors[i].view != null) {
-                        this.m_Editors[i].view.repaint();
+                    this.editors[i].editor.setValue(this.editors[i].value);
+                    this.editors[i].editor.addPropertyChangeListener(this);
+                    AbstractObjectEditor.findViewFor(this.editors[i]);
+                    if (this.editors[i].view != null) {
+                        this.editors[i].view.repaint();
                     }
                 } catch (Exception e) {
                     System.out.println("Darn can't read the value...");
                 }
-                this.m_Targets[i] = this.m_Editors[i].view;
+                this.targets[i] = this.editors[i].view;
             }
         }
         //this.m_OptimizationTargets.setSelectedTargets(list);
         this.updateCenterComponent(evt); // Let our panel update before guys downstream
-        m_Support.firePropertyChange("", m_OptimizationObjectives, m_OptimizationObjectives);
+        propertyChangeSupport.firePropertyChange("", optimizationObjectives, optimizationObjectives);
     }
 }

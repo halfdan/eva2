@@ -1,17 +1,4 @@
 package eva2.gui.editor;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 194 $
- *            $Date: 2007-10-23 13:43:24 +0200 (Tue, 23 Oct 2007) $
- *            $Author: mkron $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import eva2.gui.PropertyDialog;
 
@@ -25,18 +12,14 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 public class BigStringEditor implements PropertyEditor {
-    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
-    private PropertyEditor m_ElementEditor;
-    private JTextArea m_TextArea;
-    private JScrollPane m_ScrollPane;
-    private JPanel m_Panel;
-    //  private Source m_Source;
-    private JButton m_SetButton;
-    static private boolean m_finished = false;
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    private PropertyEditor elementEditor;
+    private JTextArea textArea;
+    private JScrollPane scrollPane;
+    private JPanel panel;
+    private JButton setButton;
+    static private boolean isFinished = false;
 
     /**
      *
@@ -44,7 +27,7 @@ public class BigStringEditor implements PropertyEditor {
     public static void editSource(String file) {
 
         try {
-            m_finished = false;
+            isFinished = false;
             BigStringEditor editor = new BigStringEditor();
 
             PropertyDialog dialog = new PropertyDialog(editor, file, 50, 50);
@@ -63,7 +46,7 @@ public class BigStringEditor implements PropertyEditor {
 
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    m_finished = true;
+                    isFinished = true;
                 }
 
                 @Override
@@ -87,7 +70,7 @@ public class BigStringEditor implements PropertyEditor {
                 }
             }
             );
-            while (m_finished == false) {
+            while (isFinished == false) {
                 try {
                     Thread.sleep(1000);
                 } catch (Exception e) {
@@ -107,24 +90,24 @@ public class BigStringEditor implements PropertyEditor {
      */
     public BigStringEditor() {
         super();
-//    m_TextArea = new JEditTextArea();
-//    m_TextArea.setTokenMarker(new JavaTokenMarker());
-        m_TextArea = new JTextArea(60, 60);
-        m_TextArea.setEditable(true);
-        m_TextArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        m_ScrollPane = new JScrollPane(m_TextArea);
-        m_Panel = new JPanel();
-        m_Panel.setBorder(BorderFactory.createTitledBorder("Sourcecode"));
-        m_Panel.setLayout(new BorderLayout());
-        m_SetButton = new JButton("SET");
-        m_SetButton.addActionListener(new ActionListener() {
+//    textArea = new JEditTextArea();
+//    textArea.setTokenMarker(new JavaTokenMarker());
+        textArea = new JTextArea(60, 60);
+        textArea.setEditable(true);
+        textArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        scrollPane = new JScrollPane(textArea);
+        panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder("Sourcecode"));
+        panel.setLayout(new BorderLayout());
+        setButton = new JButton("SET");
+        setButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setValue(m_TextArea.getText());
+                setValue(textArea.getText());
             }
         });
-        m_Panel.add(m_ScrollPane, BorderLayout.CENTER);
-        m_Panel.add(m_SetButton, BorderLayout.SOUTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(setButton, BorderLayout.SOUTH);
     }
 
     /**
@@ -132,17 +115,11 @@ public class BigStringEditor implements PropertyEditor {
      */
     @Override
     public void setValue(Object value) {
-        m_ElementEditor = null;
+        elementEditor = null;
         if (value instanceof String) {
-//      m_Source.setString((String)value);
-            m_TextArea.setText((String) value);
-
+            textArea.setText((String) value);
         }
-/*    if (value instanceof Source) {
-       // m_Source = (Source) value;
-       m_TextArea.setText(((Source)value).getString());
-    }*/
-        m_Support.firePropertyChange("", null, null);
+        propertyChangeSupport.firePropertyChange("", null, null);
     }
 
     /**
@@ -150,7 +127,6 @@ public class BigStringEditor implements PropertyEditor {
      */
     @Override
     public Object getValue() {
-        // m_Source.setString(m_TextArea.getText());
         return null;
     }
 
@@ -183,7 +159,6 @@ public class BigStringEditor implements PropertyEditor {
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
-        //String rep = EVAHELP.cutClassName(m_ElementClass.getName());
         gfx.drawString("BigStringEditor", 2, fm.getHeight() + vpad - 3);
     }
 
@@ -224,23 +199,23 @@ public class BigStringEditor implements PropertyEditor {
      */
     @Override
     public Component getCustomEditor() {
-        return m_Panel;
+        return panel;
     }
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 }
 

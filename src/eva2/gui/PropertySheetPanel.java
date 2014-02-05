@@ -61,7 +61,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     /**
      * StringBuffer containing help text for the object being edited
      */
-//    private StringBuffer            m_HelpText;
     private String className;
     /**
      * Button to pop up the full help text in a separate frame.
@@ -225,9 +224,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             if (methsFound == 2) {
                 break; // small speed-up
             }
-        } // end for (int i = 0; i < m_Methods.length; i++) {
-        // restore hide states of all properties
-//        GenericObjectEditor.setHideProperties(m_Target.getClass(), hideStateBackup);
+        }
 
         // Now lets search for the individual properties, their
         // values, views and editors...
@@ -243,7 +240,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         for (int i = 0; i < propertyDescriptors.length; i++) {
             // For each property do this
             // Don't display hidden or expert properties.
-            // if (m_Properties[i].isHidden() || m_Properties[i].isExpert()) continue;
             // we now look at hidden properties, they can be shown or hidden dynamically (MK)
             String name = propertyDescriptors[i].getDisplayName();
             if (objectValues[i] == null) {
@@ -333,7 +329,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         for (int i = 0; i < props.length; i++) {
             // For each property do this
             // Don't display hidden or expert properties.
-            // if (m_Properties[i].isHidden() || m_Properties[i].isExpert()) continue;
             // we now look at hidden properties, they can be shown or hidden dynamically (MK)
             String name = props[i].getDisplayName();
             if (props[i].isExpert() && omitExpert) {
@@ -357,8 +352,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 ex.printStackTrace();
                 values[i] = null;
             }
-//	            PropertyEditor  editor  = null;
-            //Class           pec     = m_Properties[i].getPropertyEditorClass();
             values[i] = value;
 
         } // end for each property
@@ -766,7 +759,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             viewWrappers[i].repaint();
         }
 
-//        System.out.println("Value: "+value +" / m_Values[i]: " + m_Values[i]);
         // Now try to update the target with the new value of the property
         // and allow the target to do some changes to the value, therefore
         // reread the new value from the target
@@ -777,7 +769,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             // setting the current value to the target object
             setter.invoke(targetObject, args);
             // i could also get the new value
-            //value = getter.invoke(m_Target, args2);
             // Now i'm reading the set value from the target to my local values
             objectValues[i] = getter.invoke(targetObject, args2);
 
@@ -967,10 +958,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                         ((PropertyText) views[i]).setText(val.toString());
                     }
                 } else if (views[i] instanceof PropertyPanel) {
-                    valChanged = false;//!((PropertyPanel)m_Views[i]).equals(value);
                     // disregard whole panels and hope for the best
                 } else if (views[i] instanceof PropertyValueSelector) {
-                    //changed = !((SelectedTag)val).isSelectedString((String)((PropertyValueSelector)m_Views[i]).getSelectedItem());
                     // interestingly there seems to be an implicit update of the ValueSelector, possible changes
                     // are already applied, all we need to see it is a repaint
                     views[i].repaint();

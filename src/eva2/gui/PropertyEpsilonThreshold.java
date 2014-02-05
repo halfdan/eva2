@@ -9,23 +9,23 @@ package eva2.gui;
  */
 public class PropertyEpsilonThreshold implements java.io.Serializable {
 
-    public double[] m_Punishment;
-    public double[] m_TargetValue;
-    public int m_OptimizeObjective;
+    public double[] punishment;
+    public double[] targetValue;
+    public int optimizeObjective;
 
     public PropertyEpsilonThreshold() {
     }
 
     public PropertyEpsilonThreshold(PropertyEpsilonThreshold e) {
-        if (e.m_TargetValue != null) {
-            this.m_TargetValue = new double[e.m_TargetValue.length];
-            System.arraycopy(e.m_TargetValue, 0, this.m_TargetValue, 0, this.m_TargetValue.length);
+        if (e.targetValue != null) {
+            this.targetValue = new double[e.targetValue.length];
+            System.arraycopy(e.targetValue, 0, this.targetValue, 0, this.targetValue.length);
         }
-        if (e.m_Punishment != null) {
-            this.m_Punishment = new double[e.m_Punishment.length];
-            System.arraycopy(e.m_Punishment, 0, this.m_Punishment, 0, this.m_Punishment.length);
+        if (e.punishment != null) {
+            this.punishment = new double[e.punishment.length];
+            System.arraycopy(e.punishment, 0, this.punishment, 0, this.punishment.length);
         }
-        this.m_OptimizeObjective = e.m_OptimizeObjective;
+        this.optimizeObjective = e.optimizeObjective;
     }
 
     @Override
