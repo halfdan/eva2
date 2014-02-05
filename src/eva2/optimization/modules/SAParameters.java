@@ -17,22 +17,14 @@ import java.io.Serializable;
 import java.util.logging.Level;
 
 /**
- * The class gives access to all SA parameters for the EvA
- * top level GUI.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.06.2004
- * Time: 21:25:12
- * To change this template use File | Settings | File Templates.
+ *
  */
-public class SAParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
+public class SAParameters extends AbstractOptimizationParameters implements Serializable {
     // Opt. Algorithms and Parameters
-    private InterfaceOptimizer m_Optimizer = new SimulatedAnnealing();
-    private InterfaceOptimizationProblem m_Problem = new B1Problem();
-    //private int                             functionCalls     = 1000;
-    private InterfaceTerminator m_Terminator = new EvaluationTerminator();
-    //    private String                          m_OutputFileName    = "none";
-    transient private InterfacePopulationChangedEventListener m_Listener;
+    private InterfaceOptimizer optimizer = new SimulatedAnnealing();
+    private InterfaceOptimizationProblem problem = new B1Problem();
+    private InterfaceTerminator terminator = new EvaluationTerminator();
+    transient private InterfacePopulationChangedEventListener changedEventListener;
 
     /**
      * Load or create a new instance of the class.
@@ -92,11 +84,11 @@ public class SAParameters extends AbstractOptimizationParameters implements Inte
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((SimulatedAnnealing) this.m_Optimizer).getPopulation();
+        return ((SimulatedAnnealing) this.optimizer).getPopulation();
     }
 
     public void setPopulation(Population pop) {
-        ((SimulatedAnnealing) this.m_Optimizer).setPopulation(pop);
+        ((SimulatedAnnealing) this.optimizer).setPopulation(pop);
     }
 
     public String populationTipText() {
@@ -110,11 +102,11 @@ public class SAParameters extends AbstractOptimizationParameters implements Inte
      * @return The initial temperature.
      */
     public double getInitialTemperature() {
-        return ((SimulatedAnnealing) this.m_Optimizer).getInitialTemperature();
+        return ((SimulatedAnnealing) this.optimizer).getInitialTemperature();
     }
 
     public void setInitialTemperature(double pop) {
-        ((SimulatedAnnealing) this.m_Optimizer).setInitialTemperature(pop);
+        ((SimulatedAnnealing) this.optimizer).setInitialTemperature(pop);
     }
 
     public String initialTemperatureTipText() {
@@ -128,14 +120,14 @@ public class SAParameters extends AbstractOptimizationParameters implements Inte
      * @return The initial temperature.
      */
     public double getAlpha() {
-        return ((SimulatedAnnealing) this.m_Optimizer).getAlpha();
+        return ((SimulatedAnnealing) this.optimizer).getAlpha();
     }
 
     public void setAlpha(double a) {
         if (a > 1) {
             a = 1.0;
         }
-        ((SimulatedAnnealing) this.m_Optimizer).setAlpha(a);
+        ((SimulatedAnnealing) this.optimizer).setAlpha(a);
     }
 
     public String alphaTipText() {

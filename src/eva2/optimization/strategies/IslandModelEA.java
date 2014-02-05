@@ -38,7 +38,6 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     private InterfaceOptimizer optimizer = new GeneticAlgorithm();
     private InterfaceMigration migration = new SOBestMigration();
     private InterfaceOptimizationProblem optimizationProblem = new F8Problem();
-    //    private String[]                                m_NodesList;
     private int migrationRate = 10;
     private boolean heterogeneousProblems = false;
     // These are the processor to run on
@@ -104,15 +103,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         } else {
             // this is running on remote machines
             // ToDo: Parallelize with Threads?!?
-            /*if (this.m_LocalServer == null) {
-             this.m_LocalServer = RMIServer.getInstance();
-             }
-             try {
-             myLocal = (InterfacePopulationChangedEventListener) RMIProxyLocal.newInstance(this);
-             } catch(Exception e) {
-             System.err.println("Island Model EA warning on local RMIServer... but i'll start anyway!");
-             }
-             String[] nodesList = this.m_Servers.getCheckedServerNodes();
+            /*
              if ((nodesList == null) || (nodesList.length == 0)) {
              throw new RuntimeException("Error, no active remote servers available! Activate servers or use localOnly mode.");
              }
@@ -182,18 +173,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             // this is running on remote machines
             // ToDo: Parallellize with threads?!?
             /*
-             if (this.m_LocalServer == null) {
-             this.m_LocalServer = RMIServer.getInstance();
-             }
-             try {
-             myLocal = (InterfacePopulationChangedEventListener) RMIProxyLocal.newInstance(this);
-             } catch(Exception e) {
-             System.err.println("Island Model EA warning on local RMIServer... but i'll try to start anyway!");
-             }
-             String[] nodesList = this.m_Servers.getCheckedServerNodes();
-             if ((nodesList == null) || (nodesList.length == 0)) {
-             return;
-             }
+
              this.islands = new InterfaceOptimizer[nodesList.length];
              for (int i = 0; i < nodesList.length; i++) {
              this.islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.optimizer, nodesList[i]);
@@ -613,11 +593,6 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             System.err.println("Number of CPUs must be at least 1!");
         }
     }
-    // TODO Deactivated from GUI because the current implementation does not really parallelize on a multicore. 
-    // Instead, the new direct problem parallelization can be used.
-//    public int getNumberLocalCPUs() {
-//        return this.m_LocalCPUs;
-//    }
 
     public String numberLocalCPUsTipText() {
         return "Set the number of local CPUS (>=1, only used in local mode).";

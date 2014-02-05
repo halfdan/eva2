@@ -29,39 +29,28 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
      */
     public double decodeValueOld(BitSet refBitSet, double[] range, int[] locus, boolean correction) {
         double u_max, u_min;
-        int m_start, m_length;
+        int mStart, mLength;
         long tmpV;
         double output;
         //BitSet      tmpBitSet;
 
         u_min = range[0];
         u_max = range[1];
-        m_start = locus[0];
-        m_length = locus[1];
+        mStart = locus[0];
+        mLength = locus[1];
 
-        if (m_length != lastLen) {
-            lastMaxVal = Math.pow(2, m_length) - 1;
-            lastLen = m_length;
+        if (mLength != lastLen) {
+            lastMaxVal = Math.pow(2, mLength) - 1;
+            lastLen = mLength;
         }
 
-        //tmpBitSet = new BitSet(m_length);
         tmpV = 0;
-        for (int i = 0; i < m_length; i++) {
-            if (refBitSet.get(m_start + m_length - 1 - i)) {
+        for (int i = 0; i < mLength; i++) {
+            if (refBitSet.get(mStart + mLength - 1 - i)) {
                 tmpV += Math.pow(2, i);
-                //      tmpBitSet.set(m_length - 1 - i);
             }
         }
-        //System.out.println("intval is "+tmpV);
-        //output = ((double)tmpV/m_max)*(u_max - u_min) + u_min;
         output = (((double) tmpV * (u_max - u_min)) / lastMaxVal) + u_min;
-//        System.out.println("m_min/m_max " + m_min +"/"+m_max);
-//        System.out.println("u_min/u_max " + u_min +"/"+u_max);
-//        System.out.println("Decoding Long Value: " + tmpV);
-//        System.out.println("Decoding Real Value: " + output);
-        // correction is not necessary
-        //System.out.print("FLOAT Value decoded : " + output + " " + this.printBitSet(tmpBitSet, m_length));
-        //System.out.println(tmpV + "/" + m_max + "*(" + u_max + "-" + u_min + ")+" + u_min +"\n");
         return output;
     }
 
@@ -77,11 +66,11 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
     @Override
     public double decodeValue(BitSet refBitSet, double[] range, int[] locus, boolean correction) {
         long val = (refBitSet.get(locus[0]) ? 1 : 0);
-        int m_length = locus[1];
+        int mLength = locus[1];
 
-        if (m_length != lastLen) {
-            lastMaxVal = Math.pow(2, m_length) - 1;
-            lastLen = m_length;
+        if (mLength != lastLen) {
+            lastMaxVal = Math.pow(2, mLength) - 1;
+            lastLen = mLength;
         }
 
         for (int i = 1 + locus[0]; i < locus[0] + locus[1]; i++) {
@@ -106,23 +95,19 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
      */
     @Override
     public void codeValue(double value, double[] range, BitSet refBitSet, int[] locus) {
-        double u_max, u_min, m_max, m_min;
+        double uMax, uMin, mMax, mMin;
         int m_start, m_length, counter = 0;
         long tmpV;
         BitSet tmpBitSet;
 
-        u_min = range[0];
-        u_max = range[1];
+        uMin = range[0];
+        uMax = range[1];
         m_start = locus[0];
         m_length = locus[1];
-        m_max = Math.pow(2, m_length) - 1;
-        m_min = 0;
+        mMax = Math.pow(2, m_length) - 1;
+        mMin = 0;
         // here the value will be quantified
-        tmpV = Math.round((((value - u_min) * m_max / (u_max - u_min))));
-//        System.out.println("m_min/m_max " + m_min +"/"+m_max);
-//        System.out.println("u_min/u_max " + u_min +"/"+u_max);
-//        System.out.println("Coding Long Value: " + tmpV);
-//        System.out.println("Coding Real Value: " + value);
+        tmpV = Math.round((((value - uMin) * mMax / (uMax - uMin))));
         tmpBitSet = new BitSet(m_length);
         while (tmpV >= 1) {
             //System.out.println(tmpV);

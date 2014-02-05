@@ -1,14 +1,5 @@
 package eva2.optimization.stat;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 320 $
- *            $Date: 2007-12-06 16:05:11 +0100 (Thu, 06 Dec 2007) $
- *            $Author: mkron $
- */
+
 
 import eva2.gui.plot.DataViewer;
 import eva2.gui.plot.DataViewerInterface;
@@ -24,7 +15,6 @@ import java.util.logging.Logger;
 public class GenericStatistics implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(GenericStatistics.class.getName());
-    //private Object m_target;
     private int test;
     private String[] propertyNames;
     private boolean[] states;
@@ -43,7 +33,6 @@ public class GenericStatistics implements Serializable {
      *
      */
     private GenericStatistics(GenericStatistics Source) {
-        //m_target = Source.m_target;
         test = Source.test;
         propertyNames = Source.propertyNames;
         states = Source.states;
@@ -57,17 +46,13 @@ public class GenericStatistics implements Serializable {
      *
      */
     public GenericStatistics(Object target) {
-        //m_target = target;
-        //System.out.println("GenericStatistics-->");
         try {
             fields = getDeclaredFields(target);
-            //if (TRACE) System.out.println("fields-->"+m_fields.length);
             propertyNames = new String[fields.length];
             states = new boolean[fields.length];
             for (int i = 0; i < fields.length; i++) {
                 String desc = fields[i].toString(); //System.out.println("desc "+desc);
                 int istransient = desc.indexOf("transient");
-                //if (TRACE) System.out.println("Field :"+m_fields[i].getName() );
                 Object FieldValue = null;
                 if (istransient == -1 || fields[i].getName().equals("elementData")) {  // the elementdatahack
                     fields[i].setAccessible(true);
@@ -176,13 +161,12 @@ public class GenericStatistics implements Serializable {
                 if (fields[i].getName().equals(propertyNames[n])) {
                     String desc = fields[i].toString(); //System.out.println("desc "+desc);
                     int istransient = desc.indexOf("transient");
-                    //if (TRACE) System.out.println("Field :"+m_fields[i].getName() );
+
                     Object FieldValue = null;
                     if (istransient == -1 || fields[i].getName().equals("elementData")) {  // the elementdatahack
                         fields[i].setAccessible(true);
                         try {
                             FieldValue = fields[i].get(target);
-                            //System.out.println("m_PropertyNames "+m_PropertyNames[n] +" value "+FieldValue.toString());
                             if (FieldValue instanceof Double) {
                                 data[index] = ((Double) FieldValue).doubleValue();
                             }

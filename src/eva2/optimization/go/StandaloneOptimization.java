@@ -40,8 +40,8 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
     transient private JFrame mainFrame;
     transient private JPanel mainPanel;
     transient private JPanel buttonPanel;
-    transient private JButton m_RunButton, m_StopButton, m_Continue, m_ShowSolution;
-    transient private JComponent optionsPanel, m_O1, m_O2;
+    transient private JButton runButton, stopButton, continueButton, showSolutionButton;
+    transient private JComponent optionsPanel, parameterPanel1, parameterPanel2;
     transient private JComponent statusPanel;
     transient private JLabel statusField;
     transient private JProgressBar progressBar;
@@ -65,12 +65,12 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
     transient private Population backupPopulation;
     transient private boolean continueFlag;
     // Plot Panel stuff
-    transient private Plot m_Plot;
+    transient private Plot plot;
     transient private ArrayList performedRuns = new ArrayList();
     transient private ArrayList<Double[]> tmpData;
     transient private BufferedWriter outputFile;
     // Test
-    transient private List m_List;
+    transient private List list;
 
     /**
      * Create a new EALectureGUI.
@@ -111,26 +111,26 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
         this.mainPanel.setLayout(new BorderLayout());
         // build the button panel
         this.buttonPanel = new JPanel();
-        this.m_RunButton = new JButton("Run");
-        this.m_RunButton.addActionListener(this.runListener);
-        this.m_RunButton.setEnabled(true);
-        this.m_RunButton.setToolTipText("Run the optimization process with the current parameter settings.");
-        this.m_StopButton = new JButton("Stop");
-        this.m_StopButton.addActionListener(this.stopListener);
-        this.m_StopButton.setEnabled(false);
-        this.m_StopButton.setToolTipText("Stop the runnig the optimization process.");
-        this.m_Continue = new JButton("Continue");
-        this.m_Continue.addActionListener(this.continueListener);
-        this.m_Continue.setEnabled(false);
-        this.m_Continue.setToolTipText("Resume the previous optimization (check termination criteria and multiruns = 1!).");
-        this.m_ShowSolution = new JButton("Show Solution");
-        this.m_ShowSolution.addActionListener(this.showSolListener);
-        this.m_ShowSolution.setEnabled(true);
-        this.m_ShowSolution.setToolTipText("Show the current best solution.");
-        this.buttonPanel.add(this.m_RunButton);
-        this.buttonPanel.add(this.m_Continue);
-        this.buttonPanel.add(this.m_StopButton);
-        this.buttonPanel.add(this.m_ShowSolution);
+        this.runButton = new JButton("Run");
+        this.runButton.addActionListener(this.runListener);
+        this.runButton.setEnabled(true);
+        this.runButton.setToolTipText("Run the optimization process with the current parameter settings.");
+        this.stopButton = new JButton("Stop");
+        this.stopButton.addActionListener(this.stopListener);
+        this.stopButton.setEnabled(false);
+        this.stopButton.setToolTipText("Stop the runnig the optimization process.");
+        this.continueButton = new JButton("Continue");
+        this.continueButton.addActionListener(this.continueListener);
+        this.continueButton.setEnabled(false);
+        this.continueButton.setToolTipText("Resume the previous optimization (check termination criteria and multiruns = 1!).");
+        this.showSolutionButton = new JButton("Show Solution");
+        this.showSolutionButton.addActionListener(this.showSolListener);
+        this.showSolutionButton.setEnabled(true);
+        this.showSolutionButton.setToolTipText("Show the current best solution.");
+        this.buttonPanel.add(this.runButton);
+        this.buttonPanel.add(this.continueButton);
+        this.buttonPanel.add(this.stopButton);
+        this.buttonPanel.add(this.showSolutionButton);
         this.mainPanel.add(this.buttonPanel, BorderLayout.NORTH);
 
         // build the Options Panel
@@ -151,12 +151,12 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
         if ((object != null) && (editor != null)) {
             paraPanel.registerEditor(object, editor);
         }
-        this.m_O1 = (paraPanel.makePanel());
+        this.parameterPanel1 = (paraPanel.makePanel());
         this.optionsPanel = new JTabbedPane();
         JParaPanel paraPanel2 = new JParaPanel(this.optimizationParameters, "MyGUI");
-        this.m_O2 = (paraPanel2.makePanel());
-        ((JTabbedPane) this.optionsPanel).addTab("Optimization Parameters", this.m_O2);
-        ((JTabbedPane) this.optionsPanel).addTab("Statistics", this.m_O1);
+        this.parameterPanel2 = (paraPanel2.makePanel());
+        ((JTabbedPane) this.optionsPanel).addTab("Optimization Parameters", this.parameterPanel2);
+        ((JTabbedPane) this.optionsPanel).addTab("Statistics", this.parameterPanel1);
         this.mainPanel.add(this.optionsPanel, BorderLayout.CENTER);
 
         // build the Status Panel
@@ -171,7 +171,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
         double[] tmpD = new double[2];
         tmpD[0] = 1;
         tmpD[1] = 1;
-        this.m_Plot = new Plot("EA Lecture Plot", "Function calls", "Fitness", true);
+        this.plot = new Plot("EA Lecture Plot", "Function calls", "Fitness", true);
         // validate and show
         this.mainFrame.validate();
         this.mainFrame.setVisible(true);
@@ -192,16 +192,16 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
 
                 @Override
                 public void finished() {
-                    m_RunButton.setEnabled(true);
-                    m_Continue.setEnabled(true);
-                    m_StopButton.setEnabled(false);
+                    runButton.setEnabled(true);
+                    continueButton.setEnabled(true);
+                    stopButton.setEnabled(false);
                     backupPopulation = (Population) optimizationParameters.getOptimizer().getPopulation().clone();
                 }
             };
             worker.start();
-            m_RunButton.setEnabled(false);
-            m_Continue.setEnabled(false);
-            m_StopButton.setEnabled(true);
+            runButton.setEnabled(false);
+            continueButton.setEnabled(false);
+            stopButton.setEnabled(true);
         }
     };
     /**
@@ -212,12 +212,12 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
     ActionListener stopListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_RunButton.setEnabled(true);
-            m_Continue.setEnabled(true);
-            m_StopButton.setEnabled(false);
+            runButton.setEnabled(true);
+            continueButton.setEnabled(true);
+            stopButton.setEnabled(false);
             worker.interrupt();
             for (int i = 0; i < multiRuns; i++) {
-                m_Plot.clearGraph(1000 + i);
+                plot.clearGraph(1000 + i);
             }
         }
     };
@@ -238,9 +238,9 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
 
                 @Override
                 public void finished() {
-                    m_RunButton.setEnabled(true);
-                    m_Continue.setEnabled(true);
-                    m_StopButton.setEnabled(false);
+                    runButton.setEnabled(true);
+                    continueButton.setEnabled(true);
+                    stopButton.setEnabled(false);
                     backupPopulation = (Population) optimizationParameters.getOptimizer().getPopulation().clone();
                     continueFlag = false;
                 }
@@ -250,9 +250,9 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
             continueFlag = true;
             multiRuns = 1;      // multiruns machen bei continue einfach keinen Sinn...
             worker.start();
-            m_RunButton.setEnabled(false);
-            m_Continue.setEnabled(false);
-            m_StopButton.setEnabled(true);
+            runButton.setEnabled(false);
+            continueButton.setEnabled(false);
+            stopButton.setEnabled(true);
         }
     };
     /**
@@ -334,14 +334,6 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 break;
             }
         }
-        String m_MyHostName = "_";
-        try {
-            m_MyHostName = InetAddress.getLocalHost().getHostName();
-        } catch (Exception e) {
-            System.out.println("ERROR getting HostName (GOStandalone.startExperiment) " + e.getMessage());
-        }
-//        EVAMail.SendMail("GOTask on "+m_MyHostName+ " finished", "Have a look at the results at the result file", "streiche@informatik.uni-tuebingen.de");
-
     }
 
     /**
@@ -362,8 +354,8 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
             if (!this.outputFileName.equalsIgnoreCase("none")) {
                 String name = "";
                 SimpleDateFormat formatter = new SimpleDateFormat("E'_'yyyy.MM.dd'_'HH.mm.ss");
-                String m_StartDate = formatter.format(new Date());
-                name = this.outputPath + this.outputFileName + "_" + this.experimentName + "_" + m_StartDate + ".dat";
+                String startDate = formatter.format(new Date());
+                name = this.outputPath + this.outputFileName + "_" + this.experimentName + "_" + startDate + ".dat";
                 try {
                     this.outputFile = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name)));
                 } catch (FileNotFoundException e) {
@@ -389,7 +381,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
 
             for (int j = 0; j < this.multiRuns; j++) {
                 this.optimizationParameters.getProblem().initializeProblem(); // in the loop as well, dynamic probs may need that (MK)
-                this.tmpData = new ArrayList<Double[]>();
+                this.tmpData = new ArrayList<>();
                 this.currentRun = j;
                 if (this.show) {
                     this.statusField.setText("Optimizing Run " + (j + 1) + " of " + this.multiRuns + " Multi Runs...");
@@ -427,7 +419,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 tmpMultiRun.add(this.tmpData);
             }
             if (this.show) {
-                this.m_Plot.setInfoString(this.currentExperiment, this.experimentName, 0.5f);
+                this.plot.setInfoString(this.currentExperiment, this.experimentName, 0.5f);
             }
             if (this.show) {
                 this.draw();
@@ -449,7 +441,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
         }
         if (this.show) {
             for (int i = 0; i < this.multiRuns; i++) {
-                this.m_Plot.clearGraph(1000 + i);
+                this.plot.clearGraph(1000 + i);
             }
         }
         updateStatus(0);
@@ -497,21 +489,13 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 }
             }
             // Now enter this stuff into the graph
-            this.m_Plot.clearGraph(this.currentExperiment);
-//            tmpColor = Color.darkGray;
-//            if (this.optimizationParameters.getOptimizer().getName().equalsIgnoreCase("MCS")) tmpColor = Color.magenta;
-//            if (this.optimizationParameters.getOptimizer().getName().equalsIgnoreCase("MS-HC")) tmpColor = Color.green;
-//            if (this.optimizationParameters.getOptimizer().getName().equalsIgnoreCase("GA")) tmpColor = Color.blue;
-//            if (this.optimizationParameters.getOptimizer().getName().equalsIgnoreCase("PBIL")) tmpColor = Color.CYAN;
-//            if (this.optimizationParameters.getOptimizer().getName().equalsIgnoreCase("CHC")) tmpColor = Color.ORANGE;
-//            if (this.optimizationParameters.getOptimizer().getName().equalsIgnoreCase("ES")) tmpColor = Color.red;
-//            if (this.optimizationParameters.getOptimizer().getName().equalsIgnoreCase("CBN-EA")) tmpColor = Color.black;
+            this.plot.clearGraph(this.currentExperiment);
 
             for (int j = 0; j < data.length; j++) {
                 if (this.continueFlag) {
-                    this.m_Plot.setConnectedPoint(data[j][0] + this.recentFunctionCalls, data[j][1], this.currentExperiment);
+                    this.plot.setConnectedPoint(data[j][0] + this.recentFunctionCalls, data[j][1], this.currentExperiment);
                 } else {
-                    this.m_Plot.setConnectedPoint(data[j][0], data[j][1], this.currentExperiment);
+                    this.plot.setConnectedPoint(data[j][0], data[j][1], this.currentExperiment);
                 }
             }
             this.currentExperiment++;
@@ -594,11 +578,11 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
             tmpData[0] = new Double(population.getFunctionCalls());
             // instead of adding simply the best fitness value i'll ask the problem what to show
             tmpData[1] = this.optimizationParameters.getProblem().getDoublePlotValue(population);
-            if (this.m_Plot != null) {
+            if (this.plot != null) {
                 if (this.continueFlag) {
-                    this.m_Plot.setConnectedPoint(tmpData[0].doubleValue() + this.recentFunctionCalls, tmpData[1].doubleValue(), 1000 + this.currentRun);
+                    this.plot.setConnectedPoint(tmpData[0].doubleValue() + this.recentFunctionCalls, tmpData[1].doubleValue(), 1000 + this.currentRun);
                 } else {
-                    this.m_Plot.setConnectedPoint(tmpData[0].doubleValue(), tmpData[1].doubleValue(), 1000 + this.currentRun);
+                    this.plot.setConnectedPoint(tmpData[0].doubleValue(), tmpData[1].doubleValue(), 1000 + this.currentRun);
                 }
             }
             this.tmpData.add(tmpData);
@@ -714,66 +698,14 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
      * @param name
      */
     public void setList(List name) {
-        this.m_List = name;
+        this.list = name;
     }
 
-    public List getListe() {
-        return this.m_List;
+    public List getList() {
+        return this.list;
     }
 
     public String listTipText() {
         return "Set the name for the output file, if 'none' no output file will be created.";
     }
-//    /** This method allows you to set the number of functions calls that are to
-//     * be evaluated. Note generational optimizers may exceed this number since
-//     * they allways evaluate the complete population
-//     * @param functionCalls The maximal number of Function calls
-//     */
-//    public void setFunctionCalls(int functionCalls) {
-//        this.functionCalls = functionCalls;
-//    }
-//    public int getFunctionCalls() {
-//        return this.functionCalls;
-//    }
-//    public String functionCallsTipText() {
-//        return "The maxiaml number of function(fitness) evaluations that are performed. Mote: Generational algorihtms may be delayed!";
-//    }
-//
-//    /** This method allows you to set the current optimizing algorithm
-//     * @param optimizer The new optimizing algorithm
-//     */
-//    public void setOptimizer(InterfaceOptimizer optimizer) {
-//        this.optimizer = optimizer;
-//        this.optimizer.addPopulationChangedEventListener(this);
-//        this.experimentName   = this.optimizer.getName()+"-"+this.performedRuns.size();
-//        this.optimizer.SetProblem(this.problem);
-//    }
-//    public InterfaceOptimizer getOptimizer() {
-//        return this.optimizer;
-//    }
-//    public String optimizerTipText() {
-//        return "Choose a optimizing strategies.";
-//    }
-//    /** This method will set the problem that is to be optimized
-//     * @param problem
-//     */
-//    public void SetProblem (InterfaceOptimizationProblem problem) {
-//        this.problem = problem;
-//        this.optimizer.SetProblem(this.problem);
-//    }
-//    public InterfaceOptimizationProblem getProblem () {
-//        return this.problem;
-//    }
-//    public String problemTipText() {
-//        return "Choose the problem that is to optimize and the EA individual parameters.";
-//    }
-//    public void setTest(InterfaceTest v) {
-//        this.test = v;
-//    }
-//    public InterfaceTest getTest() {
-//        return this.test;
-//    }
-//    public String testTipText() {
-//        return "Test";
-//    }
 }

@@ -5,29 +5,29 @@ package eva2.optimization.stat;
  *
  */
 public class MovingAverage {
-    private int m_size = 0;
-    private int m_index = 0;
-    private double m_Average;
-    private double[] m_array;
-    private boolean m_overflow = false;
+    private int size = 0;
+    private int index = 0;
+    private double average;
+    private double[] array;
+    private boolean overflow = false;
 
     /**
      *
      */
     public MovingAverage(int size) {
-        m_size = size;
-        m_array = new double[size];
+        this.size = size;
+        array = new double[size];
     }
 
     /**
      *
      */
     private MovingAverage(MovingAverage Source) {
-        m_size = Source.m_size;
-        m_index = Source.m_index;
-        m_Average = Source.m_Average;
-        m_array = (double[]) Source.m_array.clone();
-        m_overflow = Source.m_overflow;
+        size = Source.size;
+        index = Source.index;
+        average = Source.average;
+        array = (double[]) Source.array.clone();
+        overflow = Source.overflow;
     }
 
     /**
@@ -41,29 +41,29 @@ public class MovingAverage {
      *
      */
     public void add(double value) {
-        m_array[m_index] = value;
-        m_index++;
-        if (m_index == m_size) {
-            m_index = 0;
-            m_overflow = true;
+        array[index] = value;
+        index++;
+        if (index == size) {
+            index = 0;
+            overflow = true;
         }
         //
-        m_Average = 0;
-        int tail = m_index;
-        //if (m_overflow=true)
-        if (m_overflow) {
-            tail = m_size;
+        average = 0;
+        int tail = index;
+        //if (overflow=true)
+        if (overflow) {
+            tail = size;
         }
         for (int i = 0; i < tail; i++) {
-            m_Average += m_array[i];
+            average += array[i];
         }
-        m_Average /= tail;
+        average /= tail;
     }
 
     /**
      *
      */
     public double getAverage() {
-        return m_Average;
+        return average;
     }
 }

@@ -43,10 +43,10 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     public final static int OUTPUT_FILE_WINDOW = 2;
     SelectedTag outputTo = new SelectedTag("File (current dir.)", "Text-window", "Both file and text-window");
     private int verboK = 10;
-    private int m_Textoutput = 0;
+    private int textoutput = 0;
     private int multiRuns = 1;
     private String resultFilePrefix = "EvA2";
-    protected String m_Name = "not defined";
+    protected String name = "not defined";
     private boolean useStatPlot = true;
     private boolean showAdditionalProblemInfo = false;
     private double convergenceRateThreshold = 0.001;
@@ -87,7 +87,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      *
      */
     public StatisticsParameter() {
-        m_Name = "Statistics";
+        name = "Statistics";
         outputVerbosity.setSelectedTag(VERBOSITY_KTH_IT);
         outputTo.setSelectedTag(1);
     }
@@ -98,9 +98,8 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     @Override
     public String toString() {
         String ret = "\r\nStatisticsParameter (" + super.toString() + "):\r\nmultiRuns=" + multiRuns
-                + ", m_Textoutput=" + m_Textoutput
-                + //		", m_Plotoutput=" + m_Plotoutput +
-                ", verbosity= " + outputVerbosity.getSelectedString()
+                + ", textoutput=" + textoutput
+                + ", verbosity= " + outputVerbosity.getSelectedString()
                 + "\nTo " + outputTo.getSelectedString()
                 + ", " + BeanInspector.toString(graphSel.getStrings());
         return ret;
@@ -125,9 +124,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     private StatisticsParameter(StatisticsParameter Source) {
         convergenceRateThreshold = Source.convergenceRateThreshold;
         useStatPlot = Source.useStatPlot;
-        m_Textoutput = Source.m_Textoutput;
-//		m_Plotoutput = Source.m_Plotoutput;
-//		m_PlotFitness = Source.m_PlotFitness;
+        textoutput = Source.textoutput;
         multiRuns = Source.multiRuns;
         resultFilePrefix = Source.resultFilePrefix;
         verboK = Source.verboK;
@@ -145,7 +142,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public String getName() {
-        return m_Name;
+        return name;
     }
 
     /**

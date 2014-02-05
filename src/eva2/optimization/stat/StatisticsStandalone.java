@@ -19,9 +19,8 @@ import java.util.List;
 public class StatisticsStandalone extends AbstractStatistics implements InterfaceStatistics, Serializable {
     private static final long serialVersionUID = -8451652609212653368L;
 
-    //	private String m_InfoString;
-    private ArrayList<ArrayList<Object[]>> m_ResultData = null;
-    private ArrayList<String> m_ResultHeaderStrings = null;
+    private ArrayList<ArrayList<Object[]>> resultData = null;
+    private ArrayList<String> resultHeaderStrings = null;
     private boolean collectData = false;
 
 
@@ -54,25 +53,25 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
     @Override
     protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
         if (collectData) {
-            m_ResultData = new ArrayList<ArrayList<Object[]>>(statisticsParameter.getMultiRuns());
+            resultData = new ArrayList<ArrayList<Object[]>>(statisticsParameter.getMultiRuns());
             List<String> description = getOutputHeaderFieldNames(informerList);
-            m_ResultHeaderStrings = new ArrayList<String>();
+            resultHeaderStrings = new ArrayList<String>();
             for (String str : description) {
-                m_ResultHeaderStrings.add(str);
+                resultHeaderStrings.add(str);
             }
             for (int i = 0; i < statisticsParameter.getMultiRuns(); i++) {
-                m_ResultData.add(new ArrayList<Object[]>());
+                resultData.add(new ArrayList<Object[]>());
             }
         } else {
-            m_ResultData = null;
-            m_ResultHeaderStrings = null;
+            resultData = null;
+            resultHeaderStrings = null;
         }
     }
 
     @Override
     protected void plotCurrentResults() {
-        if (collectData && (m_ResultData != null)) {
-            m_ResultData.get(optRunsPerformed).add(currentStatObjectData);
+        if (collectData && (resultData != null)) {
+            resultData.get(optRunsPerformed).add(currentStatObjectData);
         }
     }
 
@@ -82,7 +81,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
         if (specificData != null) {
             for (int i = 0; i < specificData.length; i++) {
 //				((ArrayList<Object[]>[]) resultFrame.get(i))[optRunsPerformed].add(new Double[] {new Double(functionCalls), specificData[i]});
-                m_ResultData.get(optRunsPerformed).add(new Object[]{new Double(functionCalls), specificData});
+                resultData.get(optRunsPerformed).add(new Object[]{new Double(functionCalls), specificData});
             }
         }
     }
@@ -108,14 +107,14 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
     }
 
     public ArrayList<ArrayList<Object[]>> getCollectedData() {
-        return m_ResultData;
+        return resultData;
     }
 
     public ArrayList<Object[]> getCollectedRunData(int runIndex) {
-        return m_ResultData.get(runIndex);
+        return resultData.get(runIndex);
     }
 
     public ArrayList<String> getCollectedDataHeaders() {
-        return m_ResultHeaderStrings;
+        return resultHeaderStrings;
     }
 }
