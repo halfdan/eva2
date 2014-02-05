@@ -12,11 +12,6 @@ import java.awt.event.WindowEvent;
  * Self-organizing maps, a simple, but easy to visualize method
  * for classification. The Dikel flag is an undocumented extension,
  * which seems to work but is not published.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 09.12.2004
- * Time: 15:10:45
- * To change this template use File | Settings | File Templates.
  */
 public class ClassificationSelfOrganizingMaps implements java.io.Serializable, InterfaceClassification {
 
@@ -24,55 +19,55 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * Generated serial version identifer.
      */
     private static final long serialVersionUID = 1447707947002269263L;
-    private int m_Dim1 = 5, m_Dim2 = 15;
-    private int m_AlternativeClasses;
-    private double[][][] m_SOM;
-    private int[][][] m_SOMClass;
-    private double[][] m_Range; //[dimension][min, max, mean, sigma]
-    private double m_Alpha = 0.4;
-    private int m_TrainingCycles = 250;
-    private int m_NeighborhoodSize = 2;
-    private boolean m_DikelThis = true;
+    private int dim1 = 5, dim2 = 15;
+    private int alternativeClasses;
+    private double[][][] SOM;
+    private int[][][] SOMClass;
+    private double[][] range; //[dimension][min, max, mean, sigma]
+    private double alpha = 0.4;
+    private int trainingCycles = 250;
+    private int neighborhoodSize = 2;
+    private boolean dikelThis = true;
     private boolean debug = false;
 
     public ClassificationSelfOrganizingMaps() {
     }
 
     public ClassificationSelfOrganizingMaps(ClassificationSelfOrganizingMaps a) {
-        this.m_Dim1 = a.m_Dim1;
-        this.m_Dim2 = a.m_Dim2;
-        this.m_AlternativeClasses = a.m_AlternativeClasses;
-        this.m_NeighborhoodSize = a.m_NeighborhoodSize;
-        this.m_Alpha = a.m_Alpha;
-        this.m_DikelThis = a.m_DikelThis;
-        this.m_TrainingCycles = a.m_TrainingCycles;
-        if (a.m_SOM != null) {
-            this.m_SOM = new double[a.m_SOM.length][a.m_SOM[0].length][a.m_SOM[0][0].length];
-            for (int i = 0; i < a.m_SOM.length; i++) {
-                for (int j = 0; j < a.m_SOM[0].length; j++) {
-                    for (int k = 0; k < a.m_SOM[0][0].length; k++) {
-                        this.m_SOM[i][j][k] = a.m_SOM[i][j][k];
+        this.dim1 = a.dim1;
+        this.dim2 = a.dim2;
+        this.alternativeClasses = a.alternativeClasses;
+        this.neighborhoodSize = a.neighborhoodSize;
+        this.alpha = a.alpha;
+        this.dikelThis = a.dikelThis;
+        this.trainingCycles = a.trainingCycles;
+        if (a.SOM != null) {
+            this.SOM = new double[a.SOM.length][a.SOM[0].length][a.SOM[0][0].length];
+            for (int i = 0; i < a.SOM.length; i++) {
+                for (int j = 0; j < a.SOM[0].length; j++) {
+                    for (int k = 0; k < a.SOM[0][0].length; k++) {
+                        this.SOM[i][j][k] = a.SOM[i][j][k];
                     }
                 }
             }
         }
-        if (a.m_SOMClass != null) {
-            this.m_SOMClass = new int[a.m_SOMClass.length][a.m_SOMClass[0].length][a.m_SOMClass[0][0].length];
-            for (int i = 0; i < a.m_SOMClass.length; i++) {
-                for (int j = 0; j < a.m_SOMClass[0].length; j++) {
-                    for (int k = 0; k < a.m_SOMClass[0][0].length; k++) {
-                        this.m_SOMClass[i][j][k] = a.m_SOMClass[i][j][k];
+        if (a.SOMClass != null) {
+            this.SOMClass = new int[a.SOMClass.length][a.SOMClass[0].length][a.SOMClass[0][0].length];
+            for (int i = 0; i < a.SOMClass.length; i++) {
+                for (int j = 0; j < a.SOMClass[0].length; j++) {
+                    for (int k = 0; k < a.SOMClass[0][0].length; k++) {
+                        this.SOMClass[i][j][k] = a.SOMClass[i][j][k];
                     }
                 }
             }
         }
-        if (a.m_Range != null) {
-            this.m_Range = new double[a.m_Range.length][4];
-            for (int i = 0; i < this.m_Range.length; i++) {
-                this.m_Range[i][0] = a.m_Range[i][0];
-                this.m_Range[i][1] = a.m_Range[i][1];
-                this.m_Range[i][2] = a.m_Range[i][2];
-                this.m_Range[i][3] = a.m_Range[i][3];
+        if (a.range != null) {
+            this.range = new double[a.range.length][4];
+            for (int i = 0; i < this.range.length; i++) {
+                this.range[i][0] = a.range[i][0];
+                this.range[i][1] = a.range[i][1];
+                this.range[i][2] = a.range[i][2];
+                this.range[i][3] = a.range[i][3];
             }
         }
     }
@@ -96,34 +91,34 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      */
     @Override
     public void init(double[][] space, int[] type) {
-        this.m_AlternativeClasses = 0;
+        this.alternativeClasses = 0;
         for (int i = 0; i < type.length; i++) {
-            this.m_AlternativeClasses = Math.max(type[i], this.m_AlternativeClasses);
+            this.alternativeClasses = Math.max(type[i], this.alternativeClasses);
         }
-        this.m_AlternativeClasses++;
-        this.m_SOM = new double[this.m_Dim1][this.m_Dim2][space[0].length];
-        this.m_SOMClass = new int[this.m_Dim1][this.m_Dim2][this.m_AlternativeClasses];
-        this.m_Range = new double[space[0].length][4];
-        for (int i = 0; i < this.m_Range.length; i++) {
-            this.m_Range[i][0] = Double.POSITIVE_INFINITY;
-            this.m_Range[i][1] = Double.NEGATIVE_INFINITY;
-            this.m_Range[i][2] = 0;
-            this.m_Range[i][3] = 0;
+        this.alternativeClasses++;
+        this.SOM = new double[this.dim1][this.dim2][space[0].length];
+        this.SOMClass = new int[this.dim1][this.dim2][this.alternativeClasses];
+        this.range = new double[space[0].length][4];
+        for (int i = 0; i < this.range.length; i++) {
+            this.range[i][0] = Double.POSITIVE_INFINITY;
+            this.range[i][1] = Double.NEGATIVE_INFINITY;
+            this.range[i][2] = 0;
+            this.range[i][3] = 0;
         }
         for (int i = 0; i < space.length; i++) {
             for (int k = 0; k < space[0].length; k++) {
-                this.m_Range[k][0] = Math.min(this.m_Range[k][0], space[i][k]);
-                this.m_Range[k][1] = Math.max(this.m_Range[k][1], space[i][k]);
-                this.m_Range[k][2] += space[i][k];
+                this.range[k][0] = Math.min(this.range[k][0], space[i][k]);
+                this.range[k][1] = Math.max(this.range[k][1], space[i][k]);
+                this.range[k][2] += space[i][k];
             }
         }
-        for (int i = 0; i < this.m_Range.length; i++) {
-            this.m_Range[i][2] /= ((double) space.length);
+        for (int i = 0; i < this.range.length; i++) {
+            this.range[i][2] /= ((double) space.length);
             for (int j = 0; j < space.length; j++) {
-                this.m_Range[i][3] += Math.pow((this.m_Range[i][2] - space[j][i]), 2);
+                this.range[i][3] += Math.pow((this.range[i][2] - space[j][i]), 2);
             }
-            this.m_Range[i][3] = Math.sqrt(this.m_Range[i][3] / ((double) space.length));
-//            System.out.println("Range: ["+this.m_Range[i][0]+", "+this.m_Range[i][1]+"] Mean: "+this.m_Range[i][2]+" Var: "+this.m_Range[i][3]);
+            this.range[i][3] = Math.sqrt(this.range[i][3] / ((double) space.length));
+//            System.out.println("Range: ["+this.range[i][0]+", "+this.range[i][1]+"] Mean: "+this.range[i][2]+" Var: "+this.range[i][3]);
         }
         this.initSOM();
 //        if (this.debug) this.drawSOM(space, type);
@@ -133,15 +128,15 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * This method inits the weights of the SOM in the current range
      */
     private void initSOM() {
-        for (int i = 0; i < this.m_SOM.length; i++) {
-            for (int j = 0; j < this.m_SOM[0].length; j++) {
-                for (int k = 0; k < this.m_SOM[0][0].length; k++) {
-                    this.m_SOM[i][j][k] = 0 * RNG.randomDouble(
-                            (this.m_Range[k][0] - this.m_Range[k][2]) / (1 + this.m_Range[k][3]),
-                            (this.m_Range[k][1] - this.m_Range[k][2]) / (1 + this.m_Range[k][3]));
+        for (int i = 0; i < this.SOM.length; i++) {
+            for (int j = 0; j < this.SOM[0].length; j++) {
+                for (int k = 0; k < this.SOM[0][0].length; k++) {
+                    this.SOM[i][j][k] = 0 * RNG.randomDouble(
+                            (this.range[k][0] - this.range[k][2]) / (1 + this.range[k][3]),
+                            (this.range[k][1] - this.range[k][2]) / (1 + this.range[k][3]));
                 }
-                for (int k = 0; k < this.m_SOMClass[0][0].length; k++) {
-                    this.m_SOMClass[i][j][k] = 0;
+                for (int k = 0; k < this.SOMClass[0][0].length; k++) {
+                    this.SOMClass[i][j][k] = 0;
                 }
             }
         }
@@ -158,24 +153,24 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
     @Override
     public void train(double[][] space, int[] type) {
         // first init the assignment to zero
-        for (int i = 0; i < this.m_SOM.length; i++) {
-            for (int j = 0; j < this.m_SOM[0].length; j++) {
-                for (int k = 0; k < this.m_SOMClass[0][0].length; k++) {
-                    this.m_SOMClass[i][j][k] = 0;
+        for (int i = 0; i < this.SOM.length; i++) {
+            for (int j = 0; j < this.SOM[0].length; j++) {
+                for (int k = 0; k < this.SOMClass[0][0].length; k++) {
+                    this.SOMClass[i][j][k] = 0;
                 }
             }
         }
         // now train the stuff
         int[] order;
         int[] winner;
-        for (int t = 0; t < this.m_TrainingCycles; t++) {
+        for (int t = 0; t < this.trainingCycles; t++) {
             // train the full set
             order = RNG.randomPerm(space.length);
             for (int i = 0; i < order.length; i++) {
                 winner = this.findWinningNeuron(space[order[i]]);
                 // now i got the winning neuron *puh*
                 // update this neuron and the neighbors
-                this.update(winner, space[order[i]], t / ((double) this.m_TrainingCycles));
+                this.update(winner, space[order[i]], t / ((double) this.trainingCycles));
 
             }
 //            if (this.debug) this.drawSOM(space, type);
@@ -184,7 +179,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         // most likely it is a percentage value
         for (int i = 0; i < space.length; i++) {
             winner = this.findWinningNeuron(space[i]);
-            this.m_SOMClass[winner[0]][winner[1]][type[i]]++;
+            this.SOMClass[winner[0]][winner[1]][type[i]]++;
         }
         if (this.debug) {
             this.drawSOM(space, type);
@@ -199,25 +194,25 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param t    The current time
      */
     private void update(int[] w, double[] data, double t) {
-        double a = this.m_Alpha * (1 - t);
+        double a = this.alpha * (1 - t);
         double dist;
         int[] tmpI = new int[2];
 
         // move the winner to the data point
-        if (this.m_DikelThis) {
+        if (this.dikelThis) {
             this.drikelWinnerTo(w, data, a);
         } else {
             this.moveNeuronTo(w, data, a);
         }
 
         // move the neighbors to the data point
-        for (int i = -this.m_NeighborhoodSize; i <= this.m_NeighborhoodSize; i++) {
-            for (int j = -this.m_NeighborhoodSize; j <= this.m_NeighborhoodSize; j++) {
+        for (int i = -this.neighborhoodSize; i <= this.neighborhoodSize; i++) {
+            for (int j = -this.neighborhoodSize; j <= this.neighborhoodSize; j++) {
                 // not the original point
                 if ((j != 0) || (i != 0)) {
                     // not outside the array
-                    if ((this.m_SOM.length > w[0] + i) && (w[0] + i >= 0)
-                            && (this.m_SOM[0].length > w[1] + j) && (w[1] + j >= 0)) {
+                    if ((this.SOM.length > w[0] + i) && (w[0] + i >= 0)
+                            && (this.SOM[0].length > w[1] + j) && (w[1] + j >= 0)) {
                         dist = Math.sqrt(i * i + j * j);
                         tmpI[0] = w[0] + i;
                         tmpI[1] = w[1] + j;
@@ -239,9 +234,9 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         result[0] = 0;
         result[1] = 0;
         // find the winning neuron for order[j]
-        for (int m = 0; m < this.m_SOM.length; m++) {
-            for (int n = 0; n < this.m_SOM[0].length; n++) {
-                dist = this.distance(this.m_SOM[m][n], data);
+        for (int m = 0; m < this.SOM.length; m++) {
+            for (int n = 0; n < this.SOM[0].length; n++) {
+                dist = this.distance(this.SOM[m][n], data);
                 if (minDist > dist) {
                     minDist = dist;
                     result[0] = m;
@@ -264,7 +259,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         double result = 0;
 
         for (int i = 0; i < n.length; i++) {
-            result += Math.pow(n[i] - (d[i] - this.m_Range[i][2]) / (1 + this.m_Range[i][3]), 2);
+            result += Math.pow(n[i] - (d[i] - this.range[i][2]) / (1 + this.range[i][3]), 2);
         }
         result = Math.sqrt(result);
 
@@ -279,11 +274,11 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param a The scaling factor
      */
     public void moveNeuronTo(int[] w, double[] d, double a) {
-        double[] vec = new double[this.m_SOM[w[0]][w[1]].length];
+        double[] vec = new double[this.SOM[w[0]][w[1]].length];
 
-        for (int i = 0; i < this.m_SOM[w[0]][w[1]].length; i++) {
-            vec[i] = (d[i] - this.m_Range[i][2]) / (1 + this.m_Range[i][3]) - this.m_SOM[w[0]][w[1]][i];
-            this.m_SOM[w[0]][w[1]][i] += a * vec[i];
+        for (int i = 0; i < this.SOM[w[0]][w[1]].length; i++) {
+            vec[i] = (d[i] - this.range[i][2]) / (1 + this.range[i][3]) - this.SOM[w[0]][w[1]][i];
+            this.SOM[w[0]][w[1]][i] += a * vec[i];
         }
     }
 
@@ -296,11 +291,11 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param a The scaling factor
      */
     public void drikelWinnerTo(int[] w, double[] d, double a) {
-        double[] vec = new double[this.m_SOM[w[0]][w[1]].length];
-        double[] nec = new double[this.m_SOM[w[0]][w[1]].length];
+        double[] vec = new double[this.SOM[w[0]][w[1]].length];
+        double[] nec = new double[this.SOM[w[0]][w[1]].length];
 
-        for (int i = 0; i < this.m_SOM[w[0]][w[1]].length; i++) {
-            vec[i] = (d[i] - this.m_Range[i][2]) / (1 + this.m_Range[i][3]) - this.m_SOM[w[0]][w[1]][i];
+        for (int i = 0; i < this.SOM[w[0]][w[1]].length; i++) {
+            vec[i] = (d[i] - this.range[i][2]) / (1 + this.range[i][3]) - this.SOM[w[0]][w[1]][i];
             nec[i] = 0;
         }
         for (int i = -1; i <= 1; i++) {
@@ -308,18 +303,18 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
                 // not the original point
                 if ((j != 0) || (i != 0)) {
                     // not outside the array
-                    if ((this.m_SOM.length > w[0] + i) && (w[0] + i >= 0)
-                            && (this.m_SOM[0].length > w[1] + j) && (w[1] + j >= 0)) {
-                        for (int k = 0; k < this.m_SOM[0][0].length; k++) {
-                            nec[k] += (d[k] - this.m_Range[k][2]) / (1 + this.m_Range[k][3]) - this.m_SOM[w[0] + i][w[1] + j][k];
+                    if ((this.SOM.length > w[0] + i) && (w[0] + i >= 0)
+                            && (this.SOM[0].length > w[1] + j) && (w[1] + j >= 0)) {
+                        for (int k = 0; k < this.SOM[0][0].length; k++) {
+                            nec[k] += (d[k] - this.range[k][2]) / (1 + this.range[k][3]) - this.SOM[w[0] + i][w[1] + j][k];
                         }
                     }
                 }
             }
         }
-        for (int i = 0; i < this.m_SOM[w[0]][w[1]].length; i++) {
+        for (int i = 0; i < this.SOM[w[0]][w[1]].length; i++) {
             vec[i] -= (a / 2.0) * nec[i];
-            this.m_SOM[w[0]][w[1]][i] += a * vec[i];
+            this.SOM[w[0]][w[1]][i] += a * vec[i];
         }
     }
 
@@ -335,10 +330,10 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         int mostClasses = 0;
         int result = 0;
 
-        for (int i = 0; i < this.m_SOMClass[winner[0]][winner[1]].length; i++) {
-            if (mostClasses < this.m_SOMClass[winner[0]][winner[1]][i]) {
+        for (int i = 0; i < this.SOMClass[winner[0]][winner[1]].length; i++) {
+            if (mostClasses < this.SOMClass[winner[0]][winner[1]][i]) {
                 result = i;
-                mostClasses = this.m_SOMClass[winner[0]][winner[1]][i];
+                mostClasses = this.SOMClass[winner[0]][winner[1]][i];
             }
         }
         return result;
@@ -367,16 +362,16 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         DArea area = new DArea();
         area.setBorder(myBorder);
         area.setBackground(Color.white);
-        for (int i = 0; i < this.m_SOM.length; i++) {
-            for (int j = 0; j < this.m_SOM[0].length; j++) {
-                pos1 = this.m_SOM[i][j];
-                if ((i + 1) < this.m_SOM.length) {
-                    pos2 = this.m_SOM[i + 1][j];
+        for (int i = 0; i < this.SOM.length; i++) {
+            for (int j = 0; j < this.SOM[0].length; j++) {
+                pos1 = this.SOM[i][j];
+                if ((i + 1) < this.SOM.length) {
+                    pos2 = this.SOM[i + 1][j];
                     tmpL = new DLine(pos1[0], pos1[1], pos2[0], pos2[1], Color.BLACK);
                     area.addDElement(tmpL);
                 }
-                if ((j + 1) < this.m_SOM[i].length) {
-                    pos2 = this.m_SOM[i][j + 1];
+                if ((j + 1) < this.SOM[i].length) {
+                    pos2 = this.SOM[i][j + 1];
                     tmpL = new DLine(pos1[0], pos1[1], pos2[0], pos2[1], Color.BLACK);
                     area.addDElement(tmpL);
                 }
@@ -390,7 +385,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
 //            area.addDElement(tmpP);
 //        }
         for (int i = 0; i < data.length; i++) {
-            tmpP = new DPoint((data[i][0] - this.m_Range[0][2]) / (1 + this.m_Range[0][3]), (data[i][1] - this.m_Range[1][2]) / (1 + this.m_Range[1][3]));
+            tmpP = new DPoint((data[i][0] - this.range[0][2]) / (1 + this.range[0][3]), (data[i][1] - this.range[1][2]) / (1 + this.range[1][3]));
             tmpP.setIcon(new Chart2DDPointIconCross());
             tmpP.setColor(this.getColorFor(types[i]));
             area.addDElement(tmpP);
@@ -407,22 +402,22 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
     public JComponent getViewOnSOM() {
         DArea result = new DArea();
         result.setBackground(Color.WHITE);
-        result.setVisibleRectangle(0, 0, this.m_SOM.length, this.m_SOM[0].length);
-        result.setPreferredSize(new Dimension(this.m_SOM.length * 10, this.m_SOM[0].length * 10));
-        result.setMinimumSize(new Dimension(this.m_SOM.length * 2, this.m_SOM[0].length * 2));
+        result.setVisibleRectangle(0, 0, this.SOM.length, this.SOM[0].length);
+        result.setPreferredSize(new Dimension(this.SOM.length * 10, this.SOM[0].length * 10));
+        result.setMinimumSize(new Dimension(this.SOM.length * 2, this.SOM[0].length * 2));
         DRectangle tmpRect;
         int best;
         double total;
         double currentP;
         double lastP;
-        for (int i = 0; i < this.m_SOM.length; i++) {
-            for (int j = 0; j < this.m_SOM[i].length; j++) {
+        for (int i = 0; i < this.SOM.length; i++) {
+            for (int j = 0; j < this.SOM[i].length; j++) {
                 total = 0;
                 currentP = 0;
                 lastP = 0;
                 // first determine how many instances have been assigned to
-                for (int k = 0; k < this.m_SOMClass[i][j].length; k++) {
-                    total += this.m_SOMClass[i][j][k];
+                for (int k = 0; k < this.SOMClass[i][j].length; k++) {
+                    total += this.SOMClass[i][j][k];
                 }
                 // now determine the percentage for each class and draw the box
                 if (false) {
@@ -430,17 +425,17 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
                     tmpRect = new DRectangle(i, j, 1, 1);
                     tmpRect.setColor(Color.BLACK);
                     best = 0;
-                    for (int k = 0; k < this.m_SOMClass[i][j].length; k++) {
-                        if (best < this.m_SOMClass[i][j][k]) {
-                            best = this.m_SOMClass[i][j][k];
+                    for (int k = 0; k < this.SOMClass[i][j].length; k++) {
+                        if (best < this.SOMClass[i][j][k]) {
+                            best = this.SOMClass[i][j][k];
                             tmpRect.setFillColor(this.getColorFor(k));
                         }
                     }
                     result.addDElement(tmpRect);
                 } else {
                     // try to draw the percentage for each element
-                    for (int k = 0; k < this.m_SOMClass[i][j].length; k++) {
-                        currentP = this.m_SOMClass[i][j][k] / total;
+                    for (int k = 0; k < this.SOMClass[i][j].length; k++) {
+                        currentP = this.SOMClass[i][j][k] / total;
                         if (currentP > 0) {
                             tmpRect = new DRectangle(i, j + lastP, 1, currentP);
                             tmpRect.setColor(this.getColorFor(k));
@@ -536,11 +531,11 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         if (t < 1) {
             t = 1;
         }
-        this.m_Dim1 = t;
+        this.dim1 = t;
     }
 
     public int getSizeX() {
-        return this.m_Dim1;
+        return this.dim1;
     }
 
     public String sizeXTipText() {
@@ -557,11 +552,11 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         if (t < 1) {
             t = 1;
         }
-        this.m_Dim2 = t;
+        this.dim2 = t;
     }
 
     public int getSizeY() {
-        return this.m_Dim2;
+        return this.dim2;
     }
 
     public String sizeYTipText() {
@@ -577,11 +572,11 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         if (t < 1) {
             t = 1;
         }
-        this.m_TrainingCycles = t;
+        this.trainingCycles = t;
     }
 
     public int getTrainingCycles() {
-        return this.m_TrainingCycles;
+        return this.trainingCycles;
     }
 
     public String trainingCyclesTipText() {
@@ -597,11 +592,11 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         if (t < 0) {
             t = 0;
         }
-        this.m_NeighborhoodSize = t;
+        this.neighborhoodSize = t;
     }
 
     public int getNeighborhoodSize() {
-        return this.m_NeighborhoodSize;
+        return this.neighborhoodSize;
     }
 
     public String neighborhoodSizeTipText() {
@@ -620,11 +615,11 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         if (t > 0.5) {
             t = 0.5;
         }
-        this.m_Alpha = t;
+        this.alpha = t;
     }
 
     public double getAlpha() {
-        return this.m_Alpha;
+        return this.alpha;
     }
 
     public String AlphaTipText() {
@@ -637,11 +632,11 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      * @param t The dikel factor
      */
     public void setDikelThis(boolean t) {
-        this.m_DikelThis = t;
+        this.dikelThis = t;
     }
 
     public boolean getDikelThis() {
-        return this.m_DikelThis;
+        return this.dikelThis;
     }
 
     public String dikelThisTipText() {

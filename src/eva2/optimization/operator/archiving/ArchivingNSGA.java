@@ -9,13 +9,13 @@ import eva2.optimization.population.Population;
 @eva2.util.annotation.Description(value ="Non-dominating sorting GA revision 1.0.")
 public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializable {
 
-    public InterfaceRemoveSurplusIndividuals m_Cleaner = new RemoveSurplusIndividualsDynamicHyperCube();
+    public InterfaceRemoveSurplusIndividuals cleaner = new RemoveSurplusIndividualsDynamicHyperCube();
 
     public ArchivingNSGA() {
     }
 
     public ArchivingNSGA(ArchivingNSGA a) {
-        this.m_Cleaner = (InterfaceRemoveSurplusIndividuals) a.m_Cleaner.clone();
+        this.cleaner = (InterfaceRemoveSurplusIndividuals) a.cleaner.clone();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
         // Now clear the archive of surplus individuals
         Population archive = pop.getArchive();
 
-        this.m_Cleaner.removeSurplusIndividuals(archive);
+        this.cleaner.removeSurplusIndividuals(archive);
     }
 
     /**
@@ -67,11 +67,11 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
      * @param s The design mode.
      */
     public void setCleaner(InterfaceRemoveSurplusIndividuals s) {
-        this.m_Cleaner = s;
+        this.cleaner = s;
     }
 
     public InterfaceRemoveSurplusIndividuals getCleaner() {
-        return this.m_Cleaner;
+        return this.cleaner;
     }
 
     public String cleanerTipText() {

@@ -13,15 +13,15 @@ import java.util.BitSet;
  */
 public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializable {
 
-    private int m_NumberOfMutations = 1;
-    private int m_MaxInveredBits = 5;
+    private int numberOfMutations = 1;
+    private int maxInveredBits = 5;
 
     public MutateGAInvertBits() {
     }
 
     public MutateGAInvertBits(MutateGAInvertBits mutator) {
-        this.m_NumberOfMutations = mutator.m_NumberOfMutations;
-        this.m_MaxInveredBits = mutator.m_MaxInveredBits;
+        this.numberOfMutations = mutator.numberOfMutations;
+        this.maxInveredBits = mutator.maxInveredBits;
     }
 
     /**
@@ -44,10 +44,10 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGAInvertBits) {
             MutateGAInvertBits mut = (MutateGAInvertBits) mutator;
-            if (this.m_NumberOfMutations != mut.m_NumberOfMutations) {
+            if (this.numberOfMutations != mut.numberOfMutations) {
                 return false;
             }
-            if (this.m_MaxInveredBits != mut.m_MaxInveredBits) {
+            if (this.maxInveredBits != mut.maxInveredBits) {
                 return false;
             }
             return true;
@@ -76,11 +76,11 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
     public void mutate(AbstractEAIndividual individual) {
         if (individual instanceof InterfaceGAIndividual) {
             BitSet tmpBitSet = ((InterfaceGAIndividual) individual).getBGenotype();
-            int[][] mutationIndices = new int[this.m_NumberOfMutations][2];
+            int[][] mutationIndices = new int[this.numberOfMutations][2];
             for (int i = 0; i < mutationIndices.length; i++) {
                 mutationIndices[i][0] = RNG.randomInt(0, ((InterfaceGAIndividual) individual).getGenotypeLength());
                 ;
-                mutationIndices[i][1] = RNG.randomInt(0, this.m_MaxInveredBits);
+                mutationIndices[i][1] = RNG.randomInt(0, this.maxInveredBits);
                 ;
             }
             // ToDo: double instances of mutationIndices could be checked here... *sigh*
@@ -150,11 +150,11 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
         if (mutations < 0) {
             mutations = 0;
         }
-        this.m_NumberOfMutations = mutations;
+        this.numberOfMutations = mutations;
     }
 
     public int getNumberOfMutations() {
-        return this.m_NumberOfMutations;
+        return this.numberOfMutations;
     }
 
     public String numberOfMutationsTipText() {
@@ -171,11 +171,11 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
         if (mutations < 0) {
             mutations = 0;
         }
-        this.m_MaxInveredBits = mutations;
+        this.maxInveredBits = mutations;
     }
 
     public int getMaxInveredBits() {
-        return this.m_MaxInveredBits;
+        return this.maxInveredBits;
     }
 
     public String maxInveredBitsTipText() {

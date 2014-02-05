@@ -17,13 +17,13 @@ import java.util.ArrayList;
  */
 public class ArchivingPESAII extends AbstractArchiving implements java.io.Serializable {
 
-    private int m_GridSize = 4;
+    private int gridSize = 4;
 
     public ArchivingPESAII() {
     }
 
     public ArchivingPESAII(ArchivingPESAII a) {
-        this.m_GridSize = a.m_GridSize;
+        this.gridSize = a.gridSize;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
         }
 //        if (debug) {
 //            System.out.println("The bounds are ("+bounds[0][0]+"/"+bounds[0][1]+")("+bounds[1][0]+"/"+bounds[1][1]+")");
-//            System.out.println("Gridwidth is "+((bounds[0][1] - bounds[0][0])/this.m_GridSize)+"/"+((bounds[1][1] - bounds[1][0])/this.m_GridSize));
+//            System.out.println("Gridwidth is "+((bounds[0][1] - bounds[0][0])/this.gridSize)+"/"+((bounds[1][1] - bounds[1][0])/this.gridSize));
 //        }
 
         // now that i got the bounds i can calculate the squeeze grid
@@ -128,7 +128,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                 tmpFit = ((AbstractEAIndividual) pop.get(i)).getFitness();
                 coll = new ArrayList();
                 for (int j = 0; j < tmpFit.length; j++) {
-                    grid[j] = (bounds[j][1] - bounds[j][0]) / this.m_GridSize;
+                    grid[j] = (bounds[j][1] - bounds[j][0]) / this.gridSize;
                     curGrid[j] = (int) ((tmpFit[j] - bounds[j][0]) / grid[j]);
                 }
 //                if (debug) {
@@ -201,11 +201,11 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
      * @param b The new size of a grid element.
      */
     public void setGridSize(int b) {
-        this.m_GridSize = b;
+        this.gridSize = b;
     }
 
     public int getGridSize() {
-        return this.m_GridSize;
+        return this.gridSize;
     }
 
     public String gridSizeTipText() {

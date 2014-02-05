@@ -13,17 +13,13 @@ import java.util.ArrayList;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 02.04.2003
- * Time: 16:29:47
- * To change this template use Options | File Templates.
+ *
  */
 public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, InterfaceAdditionalPopulationInformer {
-    protected double m_MutationStepSize = 0.2;
-    protected double m_Tau1 = 0.15;
-    protected double m_LowerLimitStepSize = 0.0000005;
-    protected MutateESCrossoverTypeEnum m_CrossoverType = MutateESCrossoverTypeEnum.none;
+    protected double mutationStepSize = 0.2;
+    protected double tau1 = 0.15;
+    protected double lowerLimitStepSize = 0.0000005;
+    protected MutateESCrossoverTypeEnum crossoverType = MutateESCrossoverTypeEnum.none;
 
     public MutateESGlobal() {
     }
@@ -48,10 +44,10 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
     }
 
     public MutateESGlobal(MutateESGlobal mutator) {
-        this.m_MutationStepSize = mutator.m_MutationStepSize;
-        this.m_Tau1 = mutator.m_Tau1;
-        this.m_LowerLimitStepSize = mutator.m_LowerLimitStepSize;
-        this.m_CrossoverType = mutator.m_CrossoverType;
+        this.mutationStepSize = mutator.mutationStepSize;
+        this.tau1 = mutator.tau1;
+        this.lowerLimitStepSize = mutator.lowerLimitStepSize;
+        this.crossoverType = mutator.crossoverType;
     }
 
     /**
@@ -74,13 +70,13 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESGlobal) {
             MutateESGlobal mut = (MutateESGlobal) mutator;
-            if (this.m_MutationStepSize != mut.m_MutationStepSize) {
+            if (this.mutationStepSize != mut.mutationStepSize) {
                 return false;
             }
-            if (this.m_Tau1 != mut.m_Tau1) {
+            if (this.tau1 != mut.tau1) {
                 return false;
             }
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+            if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
                 return false;
             }
             return true;
@@ -112,12 +108,12 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
         if (individual instanceof InterfaceESIndividual) {
             double[] x = ((InterfaceESIndividual) individual).getDGenotype();
             double[][] range = ((InterfaceESIndividual) individual).getDoubleRange();
-            this.m_MutationStepSize *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
-            if (this.m_MutationStepSize < this.m_LowerLimitStepSize) {
-                this.m_MutationStepSize = this.m_LowerLimitStepSize;
+            this.mutationStepSize *= Math.exp(this.tau1 * RNG.gaussianDouble(1));
+            if (this.mutationStepSize < this.lowerLimitStepSize) {
+                this.mutationStepSize = this.lowerLimitStepSize;
             }
             for (int i = 0; i < x.length; i++) {
-                x[i] += ((range[i][1] - range[i][0]) / 2) * RNG.gaussianDouble(this.m_MutationStepSize);
+                x[i] += ((range[i][1] - range[i][0]) / 2) * RNG.gaussianDouble(this.mutationStepSize);
                 if (range[i][0] > x[i]) {
                     x[i] = range[i][0];
                 }
@@ -140,14 +136,14 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      */
     @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
-        if (m_CrossoverType != MutateESCrossoverTypeEnum.none) {
+        if (crossoverType != MutateESCrossoverTypeEnum.none) {
             ArrayList<Double> tmpList = new ArrayList<Double>();
             if (indy1.getMutationOperator() instanceof MutateESGlobal) {
-                tmpList.add(new Double(((MutateESGlobal) indy1.getMutationOperator()).m_MutationStepSize));
+                tmpList.add(new Double(((MutateESGlobal) indy1.getMutationOperator()).mutationStepSize));
             }
             for (int i = 0; i < partners.size(); i++) {
                 if (((AbstractEAIndividual) partners.get(i)).getMutationOperator() instanceof MutateESGlobal) {
-                    tmpList.add(new Double(((MutateESGlobal) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).m_MutationStepSize));
+                    tmpList.add(new Double(((MutateESGlobal) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).mutationStepSize));
                 }
             }
             double[] list = new double[tmpList.size()];
@@ -158,16 +154,16 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
                 return;
             }
 
-            switch (this.m_CrossoverType) {
+            switch (this.crossoverType) {
                 case intermediate:
-                    this.m_MutationStepSize = 0;
+                    this.mutationStepSize = 0;
                     for (int i = 0; i < list.length; i++) {
-                        this.m_MutationStepSize += list[i];
+                        this.mutationStepSize += list[i];
                     }
-                    this.m_MutationStepSize /= (double) list.length;
+                    this.mutationStepSize /= (double) list.length;
                     break;
                 case discrete:
-                    this.m_MutationStepSize = list[RNG.randomInt(0, list.length - 1)];
+                    this.mutationStepSize = list[RNG.randomInt(0, list.length - 1)];
                     break;
                 case none: // do nothing
                     break;
@@ -215,13 +211,13 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      */
     public void setMutationStepSize(double d) {
         if (d < 0) {
-            d = this.m_LowerLimitStepSize;
+            d = this.lowerLimitStepSize;
         }
-        this.m_MutationStepSize = d;
+        this.mutationStepSize = d;
     }
 
     public double getMutationStepSize() {
-        return this.m_MutationStepSize;
+        return this.mutationStepSize;
     }
 
     public String mutationStepSizeTipText() {
@@ -237,11 +233,11 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
         if (d < 0) {
             d = 0;
         }
-        this.m_LowerLimitStepSize = d;
+        this.lowerLimitStepSize = d;
     }
 
     public double getLowerLimitStepSize() {
-        return this.m_LowerLimitStepSize;
+        return this.lowerLimitStepSize;
     }
 
     public String lowerLimitStepSizeTipText() {
@@ -257,11 +253,11 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
         if (d < 0) {
             d = 0;
         }
-        this.m_Tau1 = d;
+        this.tau1 = d;
     }
 
     public double getTau1() {
-        return this.m_Tau1;
+        return this.tau1;
     }
 
     public String tau1TipText() {
@@ -274,11 +270,11 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * @param d The mutation operator.
      */
     public void setCrossoverType(MutateESCrossoverTypeEnum d) {
-        this.m_CrossoverType = d;
+        this.crossoverType = d;
     }
 
     public MutateESCrossoverTypeEnum getCrossoverType() {
-        return this.m_CrossoverType;
+        return this.crossoverType;
     }
 
     public String crossoverTypeTipText() {
@@ -309,6 +305,6 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      */
     @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
-        return new Object[]{m_MutationStepSize};
+        return new Object[]{mutationStepSize};
     }
 }

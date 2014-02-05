@@ -14,42 +14,38 @@ import eva2.tools.math.RNG;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 02.04.2003
- * Time: 17:58:30
- * To change this template use Options | File Templates.
+ *
  */
 public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopulationInformer, java.io.Serializable {
 
-    protected double m_MutationStepSize = 0.2;
-    protected double m_Tau1 = 0.15;
-    protected double m_LowerLimitStepSize = 0.0000005;
-    private double[] m_Sigmas;
-    protected double m_Tau2 = 0.15;
-    protected SelectedTag m_CrossoverType;
+    protected double mutationStepSize = 0.2;
+    protected double tau1 = 0.15;
+    protected double lowerLimitStepSize = 0.0000005;
+    private double[] sigmas;
+    protected double tau2 = 0.15;
+    protected SelectedTag crossoverType;
 
     public MutateESLocal() {
-        this.m_Sigmas = null;
+        this.sigmas = null;
         Tag[] tag = new Tag[3];
         tag[0] = new Tag(0, "None");
         tag[1] = new Tag(1, "Intermediate");
         tag[2] = new Tag(2, "Discrete");
-        this.m_CrossoverType = new SelectedTag(0, tag);
+        this.crossoverType = new SelectedTag(0, tag);
     }
 
     public MutateESLocal(MutateESLocal mutator) {
-        if (mutator.m_Sigmas != null) {
-            this.m_Sigmas = new double[mutator.m_Sigmas.length];
-            for (int i = 0; i < this.m_Sigmas.length; i++) {
-                this.m_Sigmas[i] = mutator.m_Sigmas[i];
+        if (mutator.sigmas != null) {
+            this.sigmas = new double[mutator.sigmas.length];
+            for (int i = 0; i < this.sigmas.length; i++) {
+                this.sigmas[i] = mutator.sigmas[i];
             }
         }
-        this.m_MutationStepSize = mutator.m_MutationStepSize;
-        this.m_Tau1 = mutator.m_Tau1;
-        this.m_Tau2 = mutator.m_Tau2;
-        this.m_LowerLimitStepSize = mutator.m_LowerLimitStepSize;
-        this.m_CrossoverType = (SelectedTag) mutator.m_CrossoverType.clone();
+        this.mutationStepSize = mutator.mutationStepSize;
+        this.tau1 = mutator.tau1;
+        this.tau2 = mutator.tau2;
+        this.lowerLimitStepSize = mutator.lowerLimitStepSize;
+        this.crossoverType = (SelectedTag) mutator.crossoverType.clone();
     }
 
     /**
@@ -75,18 +71,18 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
         }
         if (mutator instanceof MutateESLocal) {
             MutateESLocal mut = (MutateESLocal) mutator;
-            if (this.m_Tau1 != mut.m_Tau1) {
+            if (this.tau1 != mut.tau1) {
                 return false;
             }
-            if (this.m_Tau2 != mut.m_Tau2) {
+            if (this.tau2 != mut.tau2) {
                 return false;
             }
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+            if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
                 return false;
             }
-            if (this.m_Sigmas != null) {
-                for (int i = 0; i < this.m_Sigmas.length; i++) {
-                    if (this.m_Sigmas[i] != mut.m_Sigmas[i]) {
+            if (this.sigmas != null) {
+                for (int i = 0; i < this.sigmas.length; i++) {
+                    if (this.sigmas[i] != mut.sigmas[i]) {
                         return false;
                     }
                 }
@@ -109,9 +105,9 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         if (individual instanceof InterfaceESIndividual) {
             // init the Sigmas
-            this.m_Sigmas = new double[((InterfaceESIndividual) individual).getDGenotype().length];
-            for (int i = 0; i < this.m_Sigmas.length; i++) {
-                this.m_Sigmas[i] = this.m_MutationStepSize;
+            this.sigmas = new double[((InterfaceESIndividual) individual).getDGenotype().length];
+            for (int i = 0; i < this.sigmas.length; i++) {
+                this.sigmas[i] = this.mutationStepSize;
             }
         }
     }
@@ -132,11 +128,11 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
             double tmpR = RNG.gaussianDouble(1);
 
             for (int i = 0; i < x.length; i++) {
-                this.m_Sigmas[i] *= Math.exp(this.m_Tau1 * tmpR + this.m_Tau2 * RNG.gaussianDouble(1));
-                if (this.m_Sigmas[i] < this.m_LowerLimitStepSize) {
-                    this.m_Sigmas[i] = this.m_LowerLimitStepSize;
+                this.sigmas[i] *= Math.exp(this.tau1 * tmpR + this.tau2 * RNG.gaussianDouble(1));
+                if (this.sigmas[i] < this.lowerLimitStepSize) {
+                    this.sigmas[i] = this.lowerLimitStepSize;
                 }
-                x[i] += ((range[i][1] - range[i][0]) / 2) * RNG.gaussianDouble(this.m_Sigmas[i]);
+                x[i] += ((range[i][1] - range[i][0]) / 2) * RNG.gaussianDouble(this.sigmas[i]);
                 if (range[i][0] > x[i]) {
                     x[i] = range[i][0];
                 }
@@ -161,13 +157,13 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
         ArrayList tmpListA = new ArrayList();
         ArrayList tmpListB = new ArrayList();
         if (indy1.getMutationOperator() instanceof MutateESLocal) {
-            tmpListA.add(new Double(((MutateESLocal) indy1.getMutationOperator()).m_MutationStepSize));
-            tmpListB.add(((MutateESLocal) indy1.getMutationOperator()).m_Sigmas);
+            tmpListA.add(new Double(((MutateESLocal) indy1.getMutationOperator()).mutationStepSize));
+            tmpListB.add(((MutateESLocal) indy1.getMutationOperator()).sigmas);
         }
         for (int i = 0; i < partners.size(); i++) {
             if (((AbstractEAIndividual) partners.get(i)).getMutationOperator() instanceof MutateESLocal) {
-                tmpListA.add(new Double(((MutateESLocal) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).m_MutationStepSize));
-                tmpListB.add(((MutateESLocal) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).m_Sigmas);
+                tmpListA.add(new Double(((MutateESLocal) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).mutationStepSize));
+                tmpListB.add(((MutateESLocal) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).sigmas);
             }
         }
         double[] listA = new double[tmpListA.size()];
@@ -179,30 +175,30 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
         if (listA.length <= 1) {
             return;
         }
-        switch (this.m_CrossoverType.getSelectedTag().getID()) {
+        switch (this.crossoverType.getSelectedTag().getID()) {
             case 1: {
-                this.m_MutationStepSize = 0;
-                for (int i = 0; i < this.m_Sigmas.length; i++) {
-                    this.m_Sigmas[i] = 0;
+                this.mutationStepSize = 0;
+                for (int i = 0; i < this.sigmas.length; i++) {
+                    this.sigmas[i] = 0;
                 }
                 for (int i = 0; i < listA.length; i++) {
-                    this.m_MutationStepSize += listA[i];
-                    for (int j = 0; j < this.m_Sigmas.length; j++) {
-                        this.m_Sigmas[j] += listB[i][j];
+                    this.mutationStepSize += listA[i];
+                    for (int j = 0; j < this.sigmas.length; j++) {
+                        this.sigmas[j] += listB[i][j];
                     }
                 }
-                this.m_MutationStepSize /= (double) listA.length;
-                for (int i = 0; i < this.m_Sigmas.length; i++) {
-                    this.m_Sigmas[i] /= (double) listA.length;
+                this.mutationStepSize /= (double) listA.length;
+                for (int i = 0; i < this.sigmas.length; i++) {
+                    this.sigmas[i] /= (double) listA.length;
                 }
                 break;
             }
             case 2: {
                 int rn = RNG.randomInt(0, listA.length - 1);
-                this.m_MutationStepSize = listA[rn];
-                for (int i = 0; i < this.m_Sigmas.length; i++) {
+                this.mutationStepSize = listA[rn];
+                for (int i = 0; i < this.sigmas.length; i++) {
                     rn = RNG.randomInt(0, listA.length - 1);
-                    this.m_Sigmas[i] = listB[rn][i];
+                    this.sigmas[i] = listB[rn][i];
                 }
                 break;
             }
@@ -252,13 +248,13 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      */
     public void setMutationStepSize(double d) {
         if (d < 0) {
-            d = this.m_LowerLimitStepSize;
+            d = this.lowerLimitStepSize;
         }
-        this.m_MutationStepSize = d;
+        this.mutationStepSize = d;
     }
 
     public double getMutationStepSize() {
-        return this.m_MutationStepSize;
+        return this.mutationStepSize;
     }
 
     public String mutationStepSizeTipText() {
@@ -274,11 +270,11 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
         if (d < 0) {
             d = 0;
         }
-        this.m_LowerLimitStepSize = d;
+        this.lowerLimitStepSize = d;
     }
 
     public double getLowerLimitStepSize() {
-        return this.m_LowerLimitStepSize;
+        return this.lowerLimitStepSize;
     }
 
     public String lowerLimitStepSizeTipText() {
@@ -294,11 +290,11 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
         if (d < 0) {
             d = 0;
         }
-        this.m_Tau1 = d;
+        this.tau1 = d;
     }
 
     public double getTau1() {
-        return this.m_Tau1;
+        return this.tau1;
     }
 
     public String tau1TipText() {
@@ -314,11 +310,11 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
         if (d < 0) {
             d = 0;
         }
-        this.m_Tau2 = d;
+        this.tau2 = d;
     }
 
     public double getTau2() {
-        return this.m_Tau2;
+        return this.tau2;
     }
 
     public String tau2TipText() {
@@ -331,11 +327,11 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * @param d The mutation operator.
      */
     public void setCrossoverType(SelectedTag d) {
-        this.m_CrossoverType = d;
+        this.crossoverType = d;
     }
 
     public SelectedTag getCrossoverType() {
-        return this.m_CrossoverType;
+        return this.crossoverType;
     }
 
     public String crossoverTypeTipText() {
@@ -366,6 +362,6 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      */
     @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
-        return new Object[]{m_Sigmas};
+        return new Object[]{sigmas};
     }
 }

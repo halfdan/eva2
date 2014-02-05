@@ -26,19 +26,14 @@ import java.io.IOException;
  * This method implements the cone separation subdivision
  * scheme, this method rearanges the populations and may
  * impose area constraints on the subpopulations.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.09.2004
- * Time: 17:39:26
- * To change this template use File | Settings | File Templates.
  */
 public class MOConeSeparation implements InterfaceMigration, java.io.Serializable {
 
     public boolean debug = false;
-    private boolean m_UseAllToDetermineR = false;  // since i'm only interessted in the pareto-front this should be set to false!!
-    private boolean m_UseConstraints = true;
-    private InterfaceSelection m_Selection = new SelectRandom();
-    private double[][] m_3DBounds;
+    private boolean useAllToDetermineR = false;  // since i'm only interessted in the pareto-front this should be set to false!!
+    private boolean useConstraints = true;
+    private InterfaceSelection selection = new SelectRandom();
+    private double[][] bounds3D;
 
     public MOConeSeparation() {
 
@@ -46,10 +41,10 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 
     public MOConeSeparation(MOConeSeparation b) {
         this.debug = b.debug;
-        this.m_UseConstraints = b.m_UseConstraints;
-        this.m_UseAllToDetermineR = b.m_UseAllToDetermineR;
-        if (b.m_Selection != null) {
-            this.m_Selection = (InterfaceSelection) b.m_Selection.clone();
+        this.useConstraints = b.useConstraints;
+        this.useAllToDetermineR = b.useAllToDetermineR;
+        if (b.selection != null) {
+            this.selection = (InterfaceSelection) b.selection.clone();
         }
     }
 
@@ -116,7 +111,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             oldIPOP[i].addPopulation(newIPOP[i]);
             // todo remove this for nice pictures
             if (!oldIPOP[i].targetSizeReached()) {
-                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize() - oldIPOP[i].size()));
+                oldIPOP[i].addPopulation(this.selection.selectFrom(memory, oldIPOP[i].getTargetSize() - oldIPOP[i].size()));
             }
             if (this.debug) {
                 System.out.println("Setting island " + i + " to population size " + oldIPOP[i].size());
@@ -170,7 +165,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         Population archive = collector.getArchive();
         Population ref;
 
-        if (this.m_UseAllToDetermineR) {
+        if (this.useAllToDetermineR) {
             ref = collector;
         } else {
             ref = archive;
@@ -264,7 +259,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
             }
         }
 
-        if (this.m_UseConstraints) {
+        if (this.useConstraints) {
             // i should set the constraints to the optimizers
             InterfaceOptimizationProblem prob;
             for (int i = 0; i < islands.length; i++) {
@@ -308,7 +303,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         Population archive = collector.getArchive();
         Population ref;
 
-        if (this.m_UseAllToDetermineR) {
+        if (this.useAllToDetermineR) {
             ref = collector;
         } else {
             ref = archive;
@@ -342,12 +337,12 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         firstVec = this.getNormalized(firstVec);
         double[] normDist = this.getNormalized(distopian);
 
-        this.m_3DBounds = new double[normals.length + 2][3];
-        this.m_3DBounds[0] = distopian;
+        this.bounds3D = new double[normals.length + 2][3];
+        this.bounds3D[0] = distopian;
 
         for (int i = 0; i < normals.length; i++) {
             normals[i] = this.rotVector(firstVec, normDist, Math.toRadians(i * angIncr));
-            this.m_3DBounds[i + 1] = normals[i];
+            this.bounds3D[i + 1] = normals[i];
         }
 
         // now i got the bounding planes
@@ -375,7 +370,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //                    j--;
                 }
             }
-            if (this.m_UseConstraints) {
+            if (this.useConstraints) {
                 prob = (InterfaceOptimizationProblem) islands[i].getProblem();
                 if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
                     // set the boundaries to perform the constrained
@@ -416,7 +411,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //
 //        int last = newIPOP.length-1;
 //        newIPOP[last].addPopulation(collector);
-//        if (this.m_UseConstraints) {
+//        if (this.useConstraints) {
 //            prob = (InterfaceOptimizationProblem) islands[last].getProblem();
 //            if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
 //                // set the boundaries to perform the constrained
@@ -689,7 +684,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //        } catch (FileNotFoundException e) {
 //            System.out.println("Could not open output file! Filename: ");
 //        }
-//        double[][] surf = cone.m_3DBounds;
+//        double[][] surf = cone.bounds3D;
 //        cone.writeToFile(outfile, "0\t 0\t 0");
 //        cone.writeToFile(outfile, ""+surf[0][0]+"\t"+surf[0][1]+"\t"+surf[0][2]);
 //        cone.writeToFile(outfile, ""+surf[0][0]+"\t"+surf[0][1]+"\t"+surf[0][2]);
@@ -778,11 +773,11 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
      * @return The modus to calculate the reference point.
      */
     public boolean getUseAllToDetermineR() {
-        return this.m_UseAllToDetermineR;
+        return this.useAllToDetermineR;
     }
 
     public void setUseAllToDetermineR(boolean b) {
-        this.m_UseAllToDetermineR = b;
+        this.useAllToDetermineR = b;
     }
 
     public String useAllToDetermineRTipText() {
@@ -797,11 +792,11 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
      * @return The modus of constraints.
      */
     public boolean getUseConstraints() {
-        return this.m_UseConstraints;
+        return this.useConstraints;
     }
 
     public void setUseConstraints(boolean b) {
-        this.m_UseConstraints = b;
+        this.useConstraints = b;
     }
 
     public String useConstraintsTipText() {

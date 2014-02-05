@@ -14,22 +14,17 @@ import eva2.tools.chart2d.DPoint;
 /**
  * The strength Pareto EA in it's second version, which is based on
  * dominance counts.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 31.03.2004
- * Time: 15:01:06
- * To change this template use File | Settings | File Templates.
  */
 public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serializable {
 
-    private InterfaceDistanceMetric m_Metric = new ObjectiveSpaceMetric();
+    private InterfaceDistanceMetric metric = new ObjectiveSpaceMetric();
     private boolean soutDebug = false;
 
     public ArchivingSPEAII() {
     }
 
     public ArchivingSPEAII(ArchivingSPEAII a) {
-        this.m_Metric = (InterfaceDistanceMetric) a.m_Metric.clone();
+        this.metric = (InterfaceDistanceMetric) a.metric.clone();
     }
 
     @Override
@@ -70,7 +65,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         Population archive = new Population();
         archive.setTargetSize(pop.getArchive().getTargetSize());
 
-//        archive = this.m_Selection.selectFrom(tmpPop, archive.getPopulationSize());
+//        archive = this.selections.selectFrom(tmpPop, archive.getPopulationSize());
 
         // first i'll add all non-dominated
         for (int i = 0; i < RawFitness.length; i++) {
@@ -201,10 +196,10 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
             for (int i = 0; i < result.length; i++) {
                 System.out.println("Result " + i + ": " + result[i]);
             }
-            this.m_Plot = new Plot("Debug SPEAII", "Y1", "Y2", true);
-            this.m_Plot.setUnconnectedPoint(0, 0, 11);
-            this.m_Plot.setUnconnectedPoint(1.2, 2.0, 11);
-            GraphPointSet mySet = new GraphPointSet(10, this.m_Plot.getFunctionArea());
+            this.plot = new Plot("Debug SPEAII", "Y1", "Y2", true);
+            this.plot.setUnconnectedPoint(0, 0, 11);
+            this.plot.setUnconnectedPoint(1.2, 2.0, 11);
+            GraphPointSet mySet = new GraphPointSet(10, this.plot.getFunctionArea());
             double[][] trueFitness;
             trueFitness = new double[pop.size()][];
             for (int i = 0; i < pop.size(); i++) {
@@ -253,7 +248,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         for (int i = 0; i < pop.size(); i++) {
             distMatrix[i][i] = 0.0;
             for (int j = i + 1; j < pop.size(); j++) {
-                distMatrix[i][j] = this.m_Metric.distance((AbstractEAIndividual) pop.get(i), (AbstractEAIndividual) pop.get(j));
+                distMatrix[i][j] = this.metric.distance((AbstractEAIndividual) pop.get(i), (AbstractEAIndividual) pop.get(j));
                 distMatrix[j][i] = distMatrix[i][j];
             }
         }
@@ -345,7 +340,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         for (int i = 0; i < pop.size(); i++) {
             distMatrix[i][i] = 0.0;
             for (int j = i + 1; j < pop.size(); j++) {
-                distMatrix[i][j] = this.m_Metric.distance((AbstractEAIndividual) pop.get(i), (AbstractEAIndividual) pop.get(j));
+                distMatrix[i][j] = this.metric.distance((AbstractEAIndividual) pop.get(i), (AbstractEAIndividual) pop.get(j));
                 distMatrix[j][i] = distMatrix[i][j];
             }
         }

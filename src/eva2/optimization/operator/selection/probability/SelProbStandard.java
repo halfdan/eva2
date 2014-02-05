@@ -7,12 +7,6 @@ import eva2.optimization.population.Population;
  * A simple sum to calculate the selection probability.
  * <p/>
  * p(i is selected) = exp(-fitness(i))/sum_j(exp(-fitness(j)))
- * <p/>
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 16:54:48
- * To change this template use File | Settings | File Templates.
  */
 public class SelProbStandard extends AbstractSelProb implements java.io.Serializable {
 

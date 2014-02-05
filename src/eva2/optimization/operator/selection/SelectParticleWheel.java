@@ -12,36 +12,31 @@ import eva2.tools.math.RNG;
  * This method implements the roulette wheel selection for
  * a partical filter. In case of multiple fitness values the selection
  * critria should be selected randomly for each selection event.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.03.2003
- * Time: 16:36:11
- * To change this template use Options | File Templates.
  */
 public class SelectParticleWheel implements InterfaceSelection, java.io.Serializable {
 
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private boolean obeyDebsConstViolationPrinciple = true;
     /**
      * Comment for <code>serialVersionUID</code>
      */
     private static final long serialVersionUID = 1L;
-    private InterfaceSelectionProbability m_SelProbCalculator = new SelProbStandard();
+    private InterfaceSelectionProbability selProbCalculator = new SelProbStandard();
     private boolean selectFixedSteps = false;
 
     public SelectParticleWheel() {
     }
 
     public SelectParticleWheel(double scalingProb) {
-        m_SelProbCalculator = new SelProbStandardScaling(scalingProb);
+        selProbCalculator = new SelProbStandardScaling(scalingProb);
     }
 
     public SelectParticleWheel(InterfaceSelectionProbability selProb) {
-        m_SelProbCalculator = selProb;
+        selProbCalculator = selProb;
     }
 
     public SelectParticleWheel(SelectParticleWheel a) {
-        this.m_SelProbCalculator = (InterfaceSelectionProbability) a.m_SelProbCalculator.clone();
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.selProbCalculator = (InterfaceSelectionProbability) a.selProbCalculator.clone();
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -51,7 +46,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
 
     @Override
     public void prepareSelection(Population population) {
-        m_SelProbCalculator.computeSelectionProbability(population, "Fitness", m_ObeyDebsConstViolationPrinciple);
+        selProbCalculator.computeSelectionProbability(population, "Fitness", obeyDebsConstViolationPrinciple);
     }
 
     /**
@@ -178,11 +173,11 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {
@@ -208,18 +203,18 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
     }
 
     /**
-     * @return the m_SelProbCalculator
+     * @return the selProbCalculator
      */
     public InterfaceSelectionProbability getSelProbCalculator() {
-        return m_SelProbCalculator;
+        return selProbCalculator;
     }
 
     /**
-     * @param selProbCalculator the m_SelProbCalculator to set
+     * @param selProbCalculator the selProbCalculator to set
      */
     public void setSelProbCalculator(
             InterfaceSelectionProbability selProbCalculator) {
-        m_SelProbCalculator = selProbCalculator;
+        this.selProbCalculator = selProbCalculator;
     }
 
     public String selProbCalculatorTipText() {

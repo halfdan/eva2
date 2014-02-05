@@ -72,7 +72,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
             // therefore we could add some individuals from front[index]
             // to the archive using the crowding distance sorting
             fronts[index].setTargetSize(archive.getTargetSize() - archive.size());
-            this.m_Cleaner.removeSurplusIndividuals(fronts[index]);
+            this.cleaner.removeSurplusIndividuals(fronts[index]);
             archive.addPopulation(fronts[index]);
         }
         for (int i = 0; i < fronts.length; i++) {

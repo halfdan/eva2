@@ -1,17 +1,4 @@
 package eva2.optimization.operator.terminators;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 319 $
- *            $Date: 2007-12-05 11:29:32 +0100 (Wed, 05 Dec 2007) $
- *            $Author: mkron $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import eva2.gui.BeanInspector;
 import eva2.optimization.population.InterfaceSolutionSet;
@@ -20,23 +7,19 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 
 import java.io.Serializable;
 
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
-
 /**
  *
  */
 public class FitnessValueTerminator implements InterfaceTerminator,
         Serializable {
-    protected double[] m_FitnessValue;
+    protected double[] fitnessValue;
     private String msg = "";
 
     /**
      *
      */
     public FitnessValueTerminator() {
-        m_FitnessValue = new double[]{0.1};
+        fitnessValue = new double[]{0.1};
     }
 
     @Override
@@ -55,7 +38,7 @@ public class FitnessValueTerminator implements InterfaceTerminator,
      *
      */
     public FitnessValueTerminator(double[] v) {
-        m_FitnessValue = (double[]) v.clone();
+        fitnessValue = (double[]) v.clone();
     }
 
     @Override
@@ -67,11 +50,11 @@ public class FitnessValueTerminator implements InterfaceTerminator,
     public boolean isTerminated(PopulationInterface Pop) {
         double[] fit = Pop.getBestFitness();
         for (int i = 0; i < fit.length; i++) {
-            if (m_FitnessValue[i] < fit[i]) {
+            if (fitnessValue[i] < fit[i]) {
                 return false;
             }
         }
-        msg = "Fitness value reached " + BeanInspector.toString(m_FitnessValue);
+        msg = "Fitness value reached " + BeanInspector.toString(fitnessValue);
         return true;
     }
 
@@ -85,7 +68,7 @@ public class FitnessValueTerminator implements InterfaceTerminator,
      */
     @Override
     public String toString() {
-        String ret = "FitnessValueTerminator,m_FitnessValue=" + m_FitnessValue;
+        String ret = "FitnessValueTerminator,fitnessValue=" + fitnessValue;
         return ret;
     }
 
@@ -93,14 +76,14 @@ public class FitnessValueTerminator implements InterfaceTerminator,
      *
      */
     public void setFitnessValue(double[] x) {
-        m_FitnessValue = x;
+        fitnessValue = x;
     }
 
     /**
      *
      */
     public double[] getFitnessValue() {
-        return m_FitnessValue;
+        return fitnessValue;
     }
 
     public String fitnessValueTipText() {

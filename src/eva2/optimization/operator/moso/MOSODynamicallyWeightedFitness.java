@@ -4,25 +4,21 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.03.2004
- * Time: 18:59:14
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private double m_F = 50;
-    private int m_CurrentGeneration = 0;
-    private int m_OutputDimension = 2;
+    private double f = 50;
+    private int currentGeneration = 0;
+    private int outputDimension = 2;
 
     public MOSODynamicallyWeightedFitness() {
     }
 
     public MOSODynamicallyWeightedFitness(MOSODynamicallyWeightedFitness b) {
-        this.m_CurrentGeneration = b.m_CurrentGeneration;
-        this.m_F = b.m_F;
-        this.m_OutputDimension = b.m_OutputDimension;
+        this.currentGeneration = b.currentGeneration;
+        this.f = b.f;
+        this.outputDimension = b.outputDimension;
     }
 
     @Override
@@ -41,7 +37,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
      */
     @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
-        this.m_CurrentGeneration = pop.getGeneration();
+        this.currentGeneration = pop.getGeneration();
         for (int i = 0; i < pop.size(); i++) {
             this.convertSingleIndividual((AbstractEAIndividual) pop.get(i));
         }
@@ -63,7 +59,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
         weights = new double[tmpFit.length];
 
         // calculate the dynamic weights
-        weights[0] = Math.pow(Math.sin(2 * Math.PI * (double) this.m_CurrentGeneration / this.m_F), 2);
+        weights[0] = Math.pow(Math.sin(2 * Math.PI * (double) this.currentGeneration / this.f), 2);
         weights[1] = 1 - weights[0];
 
         for (int i = 0; (i < 2) && (i < tmpFit.length); i++) {
@@ -81,7 +77,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
      */
     @Override
     public void setOutputDimension(int dim) {
-        this.m_OutputDimension = dim;
+        this.outputDimension = dim;
         // i think as far as i got not solution for the (n>2) dimensional case
         // i could simply ignore this....
     }
@@ -125,11 +121,11 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
      * @param f The frequency of change.
      */
     public void setF(double f) {
-        this.m_F = f;
+        this.f = f;
     }
 
     public double getF() {
-        return this.m_F;
+        return this.f;
     }
 
     public String fTipText() {

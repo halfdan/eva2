@@ -7,29 +7,24 @@ import eva2.optimization.population.Population;
 
 /**
  * Here we have the infamous fitness sharing method.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.06.2005
- * Time: 15:23:05
- * To change this template use File | Settings | File Templates.
  */
 public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Serializable {
 
-    private InterfaceSelectionProbability m_BasicNormationMethod = new SelProbStandard();
-    private InterfaceDistanceMetric m_DistanceMetric = new PhenotypeMetric();
-    private double m_SharingDistance = 0.1;
+    private InterfaceSelectionProbability basicNormationMethod = new SelProbStandard();
+    private InterfaceDistanceMetric distanceMetric = new PhenotypeMetric();
+    private double sharingDistance = 0.1;
 
     public SelProbFitnessSharing() {
     }
 
     public SelProbFitnessSharing(SelProbFitnessSharing a) {
-        if (a.m_BasicNormationMethod != null) {
-            this.m_BasicNormationMethod = (InterfaceSelectionProbability) a.m_BasicNormationMethod.clone();
+        if (a.basicNormationMethod != null) {
+            this.basicNormationMethod = (InterfaceSelectionProbability) a.basicNormationMethod.clone();
         }
-        if (a.m_DistanceMetric != null) {
-            this.m_DistanceMetric = (InterfaceDistanceMetric) a.m_DistanceMetric;
+        if (a.distanceMetric != null) {
+            this.distanceMetric = (InterfaceDistanceMetric) a.distanceMetric;
         }
-        this.m_SharingDistance = a.m_SharingDistance;
+        this.sharingDistance = a.sharingDistance;
     }
 
     @Override
@@ -48,7 +43,7 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
      */
     @Override
     public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst) {
-        this.m_BasicNormationMethod.computeSelectionProbability(population, data, obeyConst);
+        this.basicNormationMethod.computeSelectionProbability(population, data, obeyConst);
         // now perform fitness sharing
         double[] selProb = new double[population.size()];
         double distance, sharing, sum = 0;
@@ -59,9 +54,9 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
             sharing = 0;
             for (int j = 0; j < population.size(); j++) {
                 if (i != j) {
-                    distance = this.m_DistanceMetric.distance(tmpIndy1, ((AbstractEAIndividual) population.get(i)));
-                    if (distance < this.m_SharingDistance) {
-                        sharing += (1 - distance / this.m_SharingDistance);
+                    distance = this.distanceMetric.distance(tmpIndy1, ((AbstractEAIndividual) population.get(i)));
+                    if (distance < this.sharingDistance) {
+                        sharing += (1 - distance / this.sharingDistance);
                     }
                 }
             }
@@ -101,11 +96,11 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
      * @return The new selection pressure q.
      */
     public InterfaceSelectionProbability getBasicNormationMethod() {
-        return this.m_BasicNormationMethod;
+        return this.basicNormationMethod;
     }
 
     public void setBasicNormationMethod(InterfaceSelectionProbability b) {
-        this.m_BasicNormationMethod = b;
+        this.basicNormationMethod = b;
     }
 
     public String basicNormationMethodTipText() {
@@ -118,11 +113,11 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
      * @return The new selection pressure q.
      */
     public InterfaceDistanceMetric getDistanceMetric() {
-        return this.m_DistanceMetric;
+        return this.distanceMetric;
     }
 
     public void setDistanceMetric(InterfaceDistanceMetric b) {
-        this.m_DistanceMetric = b;
+        this.distanceMetric = b;
     }
 
     public String distanceMetricTipText() {
@@ -135,14 +130,14 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
      * @return The new selection pressure q.
      */
     public double getSharingDistance() {
-        return this.m_SharingDistance;
+        return this.sharingDistance;
     }
 
     public void setSharingDistance(double b) {
         if (b < 0.000001) {
             b = 0.000001;
         }
-        this.m_SharingDistance = b;
+        this.sharingDistance = b;
     }
 
     public String sharingDistanceTipText() {

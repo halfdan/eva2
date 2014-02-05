@@ -5,29 +5,25 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 05.03.2004
- * Time: 15:49:16
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private PropertyDoubleArray m_Reference = null;
-    private int m_P = 2;
+    private PropertyDoubleArray reference = null;
+    private int p = 2;
 
     public MOSOLpMetric() {
         double[] tmpD = new double[2];
         for (int i = 0; i < tmpD.length; i++) {
             tmpD[i] = 0.0;
         }
-        this.m_Reference = new PropertyDoubleArray(tmpD);
+        this.reference = new PropertyDoubleArray(tmpD);
     }
 
     public MOSOLpMetric(MOSOLpMetric b) {
-        this.m_P = b.m_P;
-        if (b.m_Reference != null) {
-            this.m_Reference = (PropertyDoubleArray) b.m_Reference.clone();
+        this.p = b.p;
+        if (b.reference != null) {
+            this.reference = (PropertyDoubleArray) b.reference.clone();
         }
     }
 
@@ -64,18 +60,18 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
 
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
-        if (m_P >= 1) {
+        if (p >= 1) {
             // standard Lp Metric
             resultFit[0] = 0;
-            for (int i = 0; (i < this.m_Reference.getNumRows()) && (i < tmpFit.length); i++) {
-                resultFit[0] += Math.pow(Math.abs(tmpFit[i] - this.m_Reference.getValue(i, 0)), this.m_P);
+            for (int i = 0; (i < this.reference.getNumRows()) && (i < tmpFit.length); i++) {
+                resultFit[0] += Math.pow(Math.abs(tmpFit[i] - this.reference.getValue(i, 0)), this.p);
             }
-            resultFit[0] = Math.pow(resultFit[0], 1 / ((double) this.m_P));
+            resultFit[0] = Math.pow(resultFit[0], 1 / ((double) this.p));
         } else {
             // Tchebycheff metric
             resultFit[0] = Double.NEGATIVE_INFINITY;
-            for (int i = 0; (i < this.m_Reference.getNumRows()) && (i < tmpFit.length); i++) {
-                resultFit[0] += Math.max(Math.abs(tmpFit[i] - this.m_Reference.getValue(i, 0)), resultFit[0]);
+            for (int i = 0; (i < this.reference.getNumRows()) && (i < tmpFit.length); i++) {
+                resultFit[0] += Math.max(Math.abs(tmpFit[i] - this.reference.getValue(i, 0)), resultFit[0]);
             }
         }
 
@@ -96,11 +92,11 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
         for (int i = 0; i < newWeights.length; i++) {
             newWeights[i] = 0.0;
         }
-        for (int i = 0; (i < this.m_Reference.getNumRows()) && (i < newWeights.length); i++) {
-            newWeights[i] = this.m_Reference.getValue(i, 0);
+        for (int i = 0; (i < this.reference.getNumRows()) && (i < newWeights.length); i++) {
+            newWeights[i] = this.reference.getValue(i, 0);
         }
 
-        this.m_Reference.setDoubleArray(newWeights);
+        this.reference.setDoubleArray(newWeights);
     }
 
     /**
@@ -111,11 +107,11 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
     @Override
     public String getStringRepresentation() {
         String result = "Lp Metric\n";
-        result += " P           = " + this.m_P + "\n";
+        result += " P           = " + this.p + "\n";
         result += " Ref.Fitness = (";
-        for (int i = 0; i < m_Reference.getNumRows(); i++) {
-            result += m_Reference.getValue(i, 0);
-            if (i < (m_Reference.getNumRows() - 1)) {
+        for (int i = 0; i < reference.getNumRows(); i++) {
+            result += reference.getValue(i, 0);
+            if (i < (reference.getNumRows() - 1)) {
                 result += "; ";
             }
         }
@@ -152,11 +148,11 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
      * @param reference The reference vector.
      */
     public void setReference(PropertyDoubleArray reference) {
-        this.m_Reference = reference;
+        this.reference = reference;
     }
 
     public PropertyDoubleArray getReference() {
-        return this.m_Reference;
+        return this.reference;
     }
 
     public String referenceTipText() {
@@ -169,11 +165,11 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
      * @param p
      */
     public void setP(int p) {
-        this.m_P = Math.max(1, p);
+        this.p = Math.max(1, p);
     }
 
     public int getP() {
-        return this.m_P;
+        return this.p;
     }
 
     public String pTipText() {

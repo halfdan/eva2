@@ -36,7 +36,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
      */
     private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
     /**
-     * The FilePath that is to be edited
+     * The filePath that is to be edited
      */
     private PropertyMutationMixer mutatorsWithWeights;
 
@@ -394,7 +394,6 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
      * @param a The action listener.
      */
     public void addOkListener(ActionListener a) {
-        //m_OKButton.addActionListener(a);
     }
 
     /**
@@ -403,7 +402,6 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
      * @param a The action listener
      */
     public void removeOkListener(ActionListener a) {
-        //m_OKButton.removeActionListener(a);
     }
 
     /**
@@ -514,7 +512,6 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
                 i = list.length;
             }
         }
-        //this.m_OptimizationTargets.setSelectedTargets(list);
         this.updateCenterComponent(evt); // Let our panel update before guys downstream
         propertyChangeSupport.firePropertyChange("", mutatorsWithWeights, mutatorsWithWeights);
     }

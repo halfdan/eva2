@@ -12,25 +12,20 @@ import java.util.ArrayList;
  * for EP.
  * In case of multiple fitness values the selection
  * critria is selected randomly for each selection event.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.04.2003
- * Time: 16:17:26
- * To change this template use Options | File Templates.
  */
 public class SelectEPTournaments implements InterfaceSelection, java.io.Serializable {
 
-    private int m_TournamentSize = 4;
-    private int m_Tournaments = 10;
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
-    private int[][] m_Victories;
+    private int tournamentSize = 4;
+    private int tournaments = 10;
+    private boolean obeyDebsConstViolationPrinciple = true;
+    private int[][] victories;
 
     public SelectEPTournaments() {
     }
 
     public SelectEPTournaments(SelectEPTournaments a) {
-        this.m_TournamentSize = a.m_TournamentSize;
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.tournamentSize = a.tournamentSize;
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -52,23 +47,23 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
         int rand;
         AbstractEAIndividual tmpIndy;
 
-        this.m_Victories = new int[population.size()][population.getBestEAIndividual().getFitness().length];
-        for (int i = 0; i < this.m_Victories.length; i++) {
-            for (int j = 0; j < this.m_Victories[i].length; j++) {
-                this.m_Victories[i][j] = 0;
+        this.victories = new int[population.size()][population.getBestEAIndividual().getFitness().length];
+        for (int i = 0; i < this.victories.length; i++) {
+            for (int j = 0; j < this.victories[i].length; j++) {
+                this.victories[i][j] = 0;
             }
         }
         for (int i = 0; i < population.size(); i++) {
-            for (int j = 0; j < this.m_Tournaments; j++) {
+            for (int j = 0; j < this.tournaments; j++) {
                 for (int k = 0; k < best.length; k++) {
                     best[k] = i;
                 }
                 // perform tournament
-                for (int k = 0; k < this.m_TournamentSize; k++) {
+                for (int k = 0; k < this.tournamentSize; k++) {
                     rand = RNG.randomInt(0, population.size() - 1);
                     tmpIndy = ((AbstractEAIndividual) population.get(rand));
                     for (int l = 0; l < best.length; l++) {
-                        if (this.m_ObeyDebsConstViolationPrinciple) {
+                        if (this.obeyDebsConstViolationPrinciple) {
                             if ((!tmpIndy.violatesConstraint()) && (tmpIndy.getFitness(l) < ((AbstractEAIndividual) population.get(best[l])).getFitness(l))) {
                                 best[l] = rand;
                             }
@@ -81,7 +76,7 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
                 }
                 // assign victories
                 for (int k = 0; k < best.length; k++) {
-                    this.m_Victories[best[k]][k]++;
+                    this.victories[best[k]][k]++;
                 }
             }
         }
@@ -147,9 +142,9 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
                     break;
                 }
             }
-            if ((!member) && (this.m_Victories[i][crit] > mostVictories)) {
+            if ((!member) && (this.victories[i][crit] > mostVictories)) {
                 index = i;
-                mostVictories = this.m_Victories[i][crit];
+                mostVictories = this.victories[i][crit];
             }
         }
         if (index >= 0) {
@@ -204,11 +199,11 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
     }
 
     public int getTournamentSize() {
-        return m_TournamentSize;
+        return tournamentSize;
     }
 
     public void setTournamentSize(int g) {
-        m_TournamentSize = g;
+        tournamentSize = g;
     }
 
     /**
@@ -219,11 +214,11 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
     }
 
     public int getTournaments() {
-        return m_Tournaments;
+        return tournaments;
     }
 
     public void setTournaments(int g) {
-        m_Tournaments = g;
+        tournaments = g;
     }
 
     /**
@@ -234,11 +229,11 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

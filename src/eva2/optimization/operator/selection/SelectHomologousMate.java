@@ -8,23 +8,18 @@ import eva2.optimization.population.Population;
 /**
  * An experimental implementation for mating restriction.
  * Possibly defunct.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 06.08.2003
- * Time: 19:05:24
- * To change this template use Options | File Templates.
  */
 public class SelectHomologousMate extends SelectTournament implements java.io.Serializable {
 
-    private double m_MatingRadius = 0.1;
-    private InterfaceDistanceMetric m_Metric = new ObjectiveSpaceMetric();
+    private double matingRadius = 0.1;
+    private InterfaceDistanceMetric metric = new ObjectiveSpaceMetric();
 
     public SelectHomologousMate() {
     }
 
     public SelectHomologousMate(SelectHomologousMate a) {
-        this.m_MatingRadius = a.m_MatingRadius;
-        this.m_Metric = (InterfaceDistanceMetric) a.m_Metric.clone();
+        this.matingRadius = a.matingRadius;
+        this.metric = (InterfaceDistanceMetric) a.metric.clone();
     }
 
     @Override
@@ -60,7 +55,7 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
         // first select all possible partners for daddy
         // to be honest daddy himself is not omitted....
         for (int i = 0; i < availablePartners.size(); i++) {
-            if (this.m_Metric.distance(dad, (AbstractEAIndividual) availablePartners.get(i)) < this.m_MatingRadius) {
+            if (this.metric.distance(dad, (AbstractEAIndividual) availablePartners.get(i)) < this.matingRadius) {
                 possibleMates.add(availablePartners.get(i));
             }
         }
@@ -102,11 +97,11 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
      * @return The current optimizing method
      */
     public double getMatingRadius() {
-        return this.m_MatingRadius;
+        return this.matingRadius;
     }
 
     public void setMatingRadius(double b) {
-        this.m_MatingRadius = b;
+        this.matingRadius = b;
     }
 
     public String matingRadiusTipText() {
@@ -119,11 +114,11 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
      * @param Metric
      */
     public void setMetric(InterfaceDistanceMetric Metric) {
-        this.m_Metric = Metric;
+        this.metric = Metric;
     }
 
     public InterfaceDistanceMetric getMetric() {
-        return this.m_Metric;
+        return this.metric;
     }
 
     public String metricTipText() {

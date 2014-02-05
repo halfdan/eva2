@@ -7,17 +7,12 @@ import eva2.optimization.population.Population;
 
 /**
  * This crowding method replaces the most similar individual from a random group if better.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.07.2005
- * Time: 15:25:15
- * To change this template use File | Settings | File Templates.
  */
 public class ReplacementCrowding implements InterfaceReplacement, java.io.Serializable {
 
     PhenotypeMetric metric = new PhenotypeMetric();
     SelectRandom random = new SelectRandom();
-    int m_C = 5;
+    int C = 5;
 
     public ReplacementCrowding() {
 
@@ -26,7 +21,7 @@ public class ReplacementCrowding implements InterfaceReplacement, java.io.Serial
     public ReplacementCrowding(ReplacementCrowding b) {
         this.metric = new PhenotypeMetric();
         this.random = new SelectRandom();
-        this.m_C = b.m_C;
+        this.C = b.C;
     }
 
     public ReplacementCrowding(int C) {
@@ -54,7 +49,7 @@ public class ReplacementCrowding implements InterfaceReplacement, java.io.Serial
         int index = 0;
 
         double distance = Double.POSITIVE_INFINITY, tmpD;
-        Population tmp = random.selectFrom(pop, this.m_C);
+        Population tmp = random.selectFrom(pop, this.C);
         for (int i = 0; i < tmp.size(); i++) {
             tmpD = this.metric.distance(indy, (AbstractEAIndividual) tmp.get(i));
             if (tmpD < distance) {
@@ -95,11 +90,11 @@ public class ReplacementCrowding implements InterfaceReplacement, java.io.Serial
      * @param c
      */
     public void setC(int c) {
-        this.m_C = c;
+        this.C = c;
     }
 
     public int getC() {
-        return this.m_C;
+        return this.C;
     }
 
     public String cTipText() {

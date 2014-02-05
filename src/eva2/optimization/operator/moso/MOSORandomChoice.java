@@ -5,21 +5,17 @@ import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 17:56:39
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOSORandomChoice implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private int m_OutputDimension = 2;
+    private int outputDimension = 2;
 
     public MOSORandomChoice() {
     }
 
     public MOSORandomChoice(MOSORandomChoice b) {
-        this.m_OutputDimension = b.m_OutputDimension;
+        this.outputDimension = b.outputDimension;
     }
 
     @Override
@@ -68,7 +64,7 @@ public class MOSORandomChoice implements InterfaceMOSOConverter, java.io.Seriali
      */
     @Override
     public void setOutputDimension(int dim) {
-        this.m_OutputDimension = dim;
+        this.outputDimension = dim;
         // i think as far as i got not solution for the (n>2) dimensional case
         // i could simply ignore this....
     }

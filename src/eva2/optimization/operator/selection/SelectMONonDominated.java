@@ -8,21 +8,16 @@ import eva2.tools.math.RNG;
  * This multi-objective selection method preferrs non-dominated
  * individuals over dominated ones. Actually, this fails in case
  * all individuals are Pareto optimal.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 28.07.2003
- * Time: 14:17:53
- * To change this template use Options | File Templates.
  */
 public class SelectMONonDominated implements InterfaceSelection, java.io.Serializable {
 
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectMONonDominated() {
     }
 
     public SelectMONonDominated(SelectMONonDominated a) {
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -57,7 +52,7 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
         Population result = new Population();
         int index = RNG.randomInt(0, population.size() - 1);
 
-        if (this.m_ObeyDebsConstViolationPrinciple) {
+        if (this.obeyDebsConstViolationPrinciple) {
             boolean feasible = false;
             for (int i = 0; i < population.size(); i++) {
                 if (((AbstractEAIndividual) population.get(i)).getConstraintViolation() == 0) {
@@ -120,7 +115,7 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
      * @return True if the individual is dominating
      */
     public boolean isDominant(AbstractEAIndividual indy, Population pop) {
-        if (this.m_ObeyDebsConstViolationPrinciple) {
+        if (this.obeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {
                 if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual) pop.get(i)).isDominatingDebConstraintsEqual(indy))) {
                     return false;
@@ -165,11 +160,11 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

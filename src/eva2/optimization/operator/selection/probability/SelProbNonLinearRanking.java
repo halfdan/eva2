@@ -6,25 +6,20 @@ import eva2.optimization.population.Population;
 /**
  * A non-linear ranking, which is difficult to tune to
  * the given optimization problem i guess.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.06.2004
- * Time: 11:57:55
- * To change this template use File | Settings | File Templates.
  */
 public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.Serializable {
 
-    private double m_C = 0.04;
+    private double c = 0.04;
 
     public SelProbNonLinearRanking() {
     }
 
     public SelProbNonLinearRanking(double theC) {
-        this.m_C = theC;
+        this.c = theC;
     }
 
     public SelProbNonLinearRanking(SelProbNonLinearRanking a) {
-        this.m_C = a.m_C;
+        this.c = a.c;
     }
 
     @Override
@@ -98,7 +93,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                     // set the selection propability
                     sum = 0;
                     for (int i = 0; i < data.length; i++) {
-                        result[i] = this.m_C * Math.pow(1 - this.m_C, i);
+                        result[i] = this.c * Math.pow(1 - this.c, i);
                         sum += result[i];
                     }
                     for (int i = 0; i < data.length; i++) {
@@ -137,7 +132,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                 // set the selection propability
                 sum = 0;
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = this.m_C * Math.pow(1 - this.m_C, i);
+                    result[i] = this.c * Math.pow(1 - this.c, i);
                     sum += result[i];
                 }
                 for (int i = 0; i < data.length; i++) {
@@ -178,7 +173,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                 // set the selection propability
                 sum = 0;
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = this.m_C * Math.pow(1 - this.m_C, i);
+                    result[i] = this.c * Math.pow(1 - this.c, i);
                     sum += result[i];
                 }
                 for (int i = 0; i < data.length; i++) {
@@ -220,11 +215,11 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
         if (x > 1) {
             x = 1;
         }
-        this.m_C = x;
+        this.c = x;
     }
 
     public double getC() {
-        return m_C;
+        return c;
     }
 
     public String cTipText() {

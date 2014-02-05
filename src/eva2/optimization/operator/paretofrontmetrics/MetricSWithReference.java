@@ -14,41 +14,36 @@ import java.util.ArrayList;
 /**
  * S-Metric calculates the hyper-volume covered between the current solutions and a reference point.
  * But here the difference to a given hybervolume is to be minimized.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 28.06.2005
- * Time: 10:58:33
- * To change this template use File | Settings | File Templates.
  */
 public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io.Serializable {
-    private double[][] m_ObjectiveSpaceRange;
-    private PropertyFilePath m_InputFilePath = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
-    private String[] m_Titles;
-    private double[][] m_Reference;
-    private double m_ReferenceSMetric = -1;
+    private double[][] objectiveSpaceRange;
+    private PropertyFilePath inputFilePath = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
+    private String[] titles;
+    private double[][] reference;
+    private double referenceSMetric = -1;
 
     public MetricSWithReference() {
         this.loadReferenceData();
     }
 
     public MetricSWithReference(MetricSWithReference b) {
-        if (b.m_ObjectiveSpaceRange != null) {
-            this.m_ObjectiveSpaceRange = new double[b.m_ObjectiveSpaceRange.length][2];
-            for (int i = 0; i < this.m_ObjectiveSpaceRange.length; i++) {
-                this.m_ObjectiveSpaceRange[i][0] = b.m_ObjectiveSpaceRange[i][0];
-                this.m_ObjectiveSpaceRange[i][1] = b.m_ObjectiveSpaceRange[i][1];
+        if (b.objectiveSpaceRange != null) {
+            this.objectiveSpaceRange = new double[b.objectiveSpaceRange.length][2];
+            for (int i = 0; i < this.objectiveSpaceRange.length; i++) {
+                this.objectiveSpaceRange[i][0] = b.objectiveSpaceRange[i][0];
+                this.objectiveSpaceRange[i][1] = b.objectiveSpaceRange[i][1];
             }
         }
-        this.m_InputFilePath = b.m_InputFilePath;
-        if (b.m_Titles != null) {
-            this.m_Titles = new String[b.m_Titles.length];
-            System.arraycopy(b.m_Titles, 0, this.m_Titles, 0, this.m_Titles.length);
+        this.inputFilePath = b.inputFilePath;
+        if (b.titles != null) {
+            this.titles = new String[b.titles.length];
+            System.arraycopy(b.titles, 0, this.titles, 0, this.titles.length);
         }
-        if (b.m_Reference != null) {
-            this.m_Reference = new double[b.m_Reference.length][];
-            for (int i = 0; i < this.m_Reference.length; i++) {
-                this.m_Reference[i] = new double[b.m_Reference[i].length];
-                System.arraycopy(b.m_Reference[i], 0, this.m_Reference[i], 0, this.m_Reference[i].length);
+        if (b.reference != null) {
+            this.reference = new double[b.reference.length][];
+            for (int i = 0; i < this.reference.length; i++) {
+                this.reference[i] = new double[b.reference[i].length];
+                System.arraycopy(b.reference[i], 0, this.reference[i], 0, this.reference[i].length);
             }
         }
     }
@@ -71,23 +66,23 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
     }
 
     public void setObjectiveSpaceRange(double[][] range) {
-        this.m_ObjectiveSpaceRange = range;
+        this.objectiveSpaceRange = range;
     }
 
     /**
      * This method loads the reference data
      */
     private void loadReferenceData() {
-        String[] tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
+        String[] tmpS, lines = FileTools.loadStringsFromFile(this.inputFilePath.getCompleteFilePath());
         if (lines == null) {
-            System.out.println("Failed to read " + this.m_InputFilePath.getCompleteFilePath());
+            System.out.println("Failed to read " + this.inputFilePath.getCompleteFilePath());
         }
         lines[0].trim();
-        this.m_Titles = lines[0].split("\t");
+        this.titles = lines[0].split("\t");
         ArrayList tmpA = new ArrayList();
         double[] tmpD;
         for (int i = 1; i < lines.length; i++) {
-            tmpD = new double[this.m_Titles.length];
+            tmpD = new double[this.titles.length];
             lines[i].trim();
             tmpS = lines[i].split("\t");
             for (int j = 0; (j < tmpD.length) && (j < tmpS.length); j++) {
@@ -95,11 +90,11 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
             }
             tmpA.add(tmpD);
         }
-        this.m_Reference = new double[tmpA.size()][];
+        this.reference = new double[tmpA.size()][];
         for (int i = 0; i < tmpA.size(); i++) {
-            this.m_Reference[i] = (double[]) tmpA.get(i);
+            this.reference[i] = (double[]) tmpA.get(i);
         }
-        this.m_ReferenceSMetric = -1;
+        this.referenceSMetric = -1;
     }
 
     /**
@@ -108,21 +103,21 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
      */
     @Override
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
-        this.m_ObjectiveSpaceRange = problem.getObjectiveSpaceRange();
-        double smetric = this.calculateSMetric(pop, this.m_ObjectiveSpaceRange, this.m_ObjectiveSpaceRange.length);
-        if (this.m_ReferenceSMetric < 0) {
+        this.objectiveSpaceRange = problem.getObjectiveSpaceRange();
+        double smetric = this.calculateSMetric(pop, this.objectiveSpaceRange, this.objectiveSpaceRange.length);
+        if (this.referenceSMetric < 0) {
             Population tmpPop = new Population();
             AbstractEAIndividual tmpIndy;
-            tmpPop.setTargetSize(this.m_Reference.length);
+            tmpPop.setTargetSize(this.reference.length);
             tmpPop.clear();
-            for (int i = 0; i < this.m_Reference.length; i++) {
+            for (int i = 0; i < this.reference.length; i++) {
                 tmpIndy = new ESIndividualDoubleData();
-                tmpIndy.setFitness(this.m_Reference[i]);
+                tmpIndy.setFitness(this.reference[i]);
                 tmpPop.addIndividual(tmpIndy);
             }
-            this.m_ReferenceSMetric = this.calculateSMetric(tmpPop, this.m_ObjectiveSpaceRange, this.m_ObjectiveSpaceRange.length);
+            this.referenceSMetric = this.calculateSMetric(tmpPop, this.objectiveSpaceRange, this.objectiveSpaceRange.length);
         }
-        return (smetric - this.m_ReferenceSMetric);
+        return (smetric - this.referenceSMetric);
     }
 
     /**
@@ -288,12 +283,12 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
      * @param b File path.
      */
     public void setInputFilePath(PropertyFilePath b) {
-        this.m_InputFilePath = b;
+        this.inputFilePath = b;
         this.loadReferenceData();
     }
 
     public PropertyFilePath getInputFilePath() {
-        return this.m_InputFilePath;
+        return this.inputFilePath;
     }
 
     public String inputFilePathTipText() {

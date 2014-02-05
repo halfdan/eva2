@@ -5,34 +5,30 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 05.03.2004
- * Time: 14:53:47
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private PropertyEpsilonThreshold m_EpsilonThreshold = null;
+    private PropertyEpsilonThreshold epsilonThreshold = null;
 
     public MOSOEpsilonThreshold() {
-        this.m_EpsilonThreshold = new PropertyEpsilonThreshold();
-        this.m_EpsilonThreshold.m_OptimizeObjective = 0;
+        this.epsilonThreshold = new PropertyEpsilonThreshold();
+        this.epsilonThreshold.optimizeObjective = 0;
         double[] tmpD = new double[2];
         for (int i = 0; i < tmpD.length; i++) {
             tmpD[i] = 0.0;
         }
-        this.m_EpsilonThreshold.m_TargetValue = tmpD;
+        this.epsilonThreshold.targetValue = tmpD;
         tmpD = new double[2];
         for (int i = 0; i < tmpD.length; i++) {
             tmpD[i] = 1.0;
         }
-        this.m_EpsilonThreshold.m_Punishment = tmpD;
+        this.epsilonThreshold.punishment = tmpD;
     }
 
     public MOSOEpsilonThreshold(MOSOEpsilonThreshold b) {
-        if (b.m_EpsilonThreshold != null) {
-            this.m_EpsilonThreshold = (PropertyEpsilonThreshold) b.m_EpsilonThreshold.clone();
+        if (b.epsilonThreshold != null) {
+            this.epsilonThreshold = (PropertyEpsilonThreshold) b.epsilonThreshold.clone();
         }
     }
 
@@ -77,16 +73,16 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
                 System.out.println("Fitness is Infinite");
             }
         }
-        resultFit[0] = tmpFit[this.m_EpsilonThreshold.m_OptimizeObjective];
+        resultFit[0] = tmpFit[this.epsilonThreshold.optimizeObjective];
 
-//        System.out.println("Optimize: " + this.m_EpsilonThreshold.m_OptimizeObjective);
+//        System.out.println("Optimize: " + this.epsilonThreshold.optimizeObjective);
 //        for (int i = 0; i < tmpFit.length; i++) {
-//            System.out.println("Target: " + this.m_EpsilonThreshold.m_TargetValue[i] + " Punish: " + this.m_EpsilonThreshold.m_Punishment[i]);
+//            System.out.println("Target: " + this.epsilonThreshold.targetValue[i] + " Punish: " + this.epsilonThreshold.punishment[i]);
 //        }
 
-        for (int i = 0; i < this.m_EpsilonThreshold.m_Punishment.length; i++) {
-            if (i != this.m_EpsilonThreshold.m_OptimizeObjective) {
-                resultFit[0] += this.m_EpsilonThreshold.m_Punishment[i] * Math.max(0, tmpFit[i] - this.m_EpsilonThreshold.m_TargetValue[i]);
+        for (int i = 0; i < this.epsilonThreshold.punishment.length; i++) {
+            if (i != this.epsilonThreshold.optimizeObjective) {
+                resultFit[0] += this.epsilonThreshold.punishment[i] * Math.max(0, tmpFit[i] - this.epsilonThreshold.targetValue[i]);
             }
         }
         tmpFit = (double[]) indy.getData("MOFitness");
@@ -117,16 +113,16 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
             newPunish[i] = 1;
             newTarget[i] = 0;
         }
-        for (int i = 0; (i < this.m_EpsilonThreshold.m_Punishment.length) && (i < newTarget.length); i++) {
-            newPunish[i] = this.m_EpsilonThreshold.m_Punishment[i];
-            newTarget[i] = this.m_EpsilonThreshold.m_TargetValue[i];
+        for (int i = 0; (i < this.epsilonThreshold.punishment.length) && (i < newTarget.length); i++) {
+            newPunish[i] = this.epsilonThreshold.punishment[i];
+            newTarget[i] = this.epsilonThreshold.targetValue[i];
         }
-        if (this.m_EpsilonThreshold.m_OptimizeObjective >= dim) {
-            this.m_EpsilonThreshold.m_OptimizeObjective = dim - 1;
+        if (this.epsilonThreshold.optimizeObjective >= dim) {
+            this.epsilonThreshold.optimizeObjective = dim - 1;
         }
 
-        this.m_EpsilonThreshold.m_Punishment = newPunish;
-        this.m_EpsilonThreshold.m_TargetValue = newTarget;
+        this.epsilonThreshold.punishment = newPunish;
+        this.epsilonThreshold.targetValue = newTarget;
     }
 
     /**
@@ -169,11 +165,11 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
      * @param weights The Epsilon Threshhold for the fitness sum.
      */
     public void setEpsilonThreshhold(PropertyEpsilonThreshold weights) {
-        this.m_EpsilonThreshold = weights;
+        this.epsilonThreshold = weights;
     }
 
     public PropertyEpsilonThreshold getEpsilonThreshhold() {
-        return this.m_EpsilonThreshold;
+        return this.epsilonThreshold;
     }
 
     public String epsilonThreshholdTipText() {

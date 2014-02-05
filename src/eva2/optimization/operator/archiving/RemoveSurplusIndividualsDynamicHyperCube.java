@@ -10,11 +10,6 @@ import eva2.tools.math.RNG;
  * space. But i guess currently you can't toggel that. But here
  * the hybercubes are dynamic, e.g. theey are recalculated after
  * an individual is removed.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 13.05.2004
- * Time: 14:36:54
- * To change this template use File | Settings | File Templates.
  */
 public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemoveSurplusIndividuals, java.io.Serializable {
 

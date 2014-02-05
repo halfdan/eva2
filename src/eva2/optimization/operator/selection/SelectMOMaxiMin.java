@@ -7,25 +7,20 @@ import eva2.optimization.population.Population;
 /**
  * A multi-objective selection criterion based on the maximin
  * method.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 09.08.2004
- * Time: 18:24:24
- * To change this template use File | Settings | File Templates.
  */
 public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable {
 
-    private MOSOMaxiMin m_MaxiMin = new MOSOMaxiMin();
-    private InterfaceSelection m_Selection = new SelectBestIndividuals();
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private MOSOMaxiMin maxiMin = new MOSOMaxiMin();
+    private InterfaceSelection selection = new SelectBestIndividuals();
+    private boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectMOMaxiMin() {
     }
 
     public SelectMOMaxiMin(SelectMOMaxiMin a) {
-        this.m_MaxiMin = new MOSOMaxiMin();
-        this.m_Selection = (InterfaceSelection) a.m_Selection.clone();
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.maxiMin = new MOSOMaxiMin();
+        this.selection = (InterfaceSelection) a.selection.clone();
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -61,10 +56,10 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
         double[] tmpD;
         // Now calculate the MaxiMin Criterium
 
-        this.m_MaxiMin.convertMultiObjective2SingleObjective(tmpPop);
-        this.m_Selection.setObeyDebsConstViolationPrinciple(this.m_ObeyDebsConstViolationPrinciple);
-        this.m_Selection.prepareSelection(tmpPop);
-        result = this.m_Selection.selectFrom(tmpPop, size);
+        this.maxiMin.convertMultiObjective2SingleObjective(tmpPop);
+        this.selection.setObeyDebsConstViolationPrinciple(this.obeyDebsConstViolationPrinciple);
+        this.selection.prepareSelection(tmpPop);
+        result = this.selection.selectFrom(tmpPop, size);
 
         // now unconvert from SO to MO
         for (int i = 0; i < result.size(); i++) {
@@ -115,11 +110,11 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
      * @param pop The selection method used.
      */
     public void setSelectionMethod(InterfaceSelection pop) {
-        this.m_Selection = pop;
+        this.selection = pop;
     }
 
     public InterfaceSelection getSelectionMethod() {
-        return this.m_Selection;
+        return this.selection;
     }
 
     public String selectionMethodTipText() {
@@ -134,11 +129,11 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

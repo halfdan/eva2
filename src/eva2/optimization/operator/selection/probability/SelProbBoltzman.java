@@ -7,25 +7,20 @@ import eva2.optimization.population.Population;
  * Boltzman selection, actually it is no a selection method
  * but a scaling method, but it is very good, because it is
  * invariant to any linear transition function.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 16:59:49
- * To change this template use File | Settings | File Templates.
  */
 public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializable {
 
-    private double m_Q = 1.0;
+    private double q = 1.0;
 
     public SelProbBoltzman() {
     }
 
     public SelProbBoltzman(double q) {
-        m_Q = q;
+        this.q = q;
     }
 
     public SelProbBoltzman(SelProbBoltzman a) {
-        this.m_Q = a.m_Q;
+        this.q = a.q;
     }
 
     @Override
@@ -88,9 +83,9 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                     sum = 0;
                     for (int i = 0; i < data.length; i++) {
                         if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
-                            result[i] = Math.exp((this.m_Q * -data[i][x]) / dev);
+                            result[i] = Math.exp((this.q * -data[i][x]) / dev);
                         } else {
-                            result[i] = Math.exp((this.m_Q * -worst) / dev);
+                            result[i] = Math.exp((this.q * -worst) / dev);
                         }
                         sum += result[i];
                     }
@@ -145,7 +140,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                 }
                 sum = 0;
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = Math.exp((this.m_Q * -((AbstractEAIndividual) population.get(i)).getConstraintViolation()) / dev);
+                    result[i] = Math.exp((this.q * -((AbstractEAIndividual) population.get(i)).getConstraintViolation()) / dev);
                     sum += result[i];
                 }
 
@@ -196,7 +191,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                 }
                 sum = 0;
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = Math.exp((this.m_Q * -data[i][x]) / dev);
+                    result[i] = Math.exp((this.q * -data[i][x]) / dev);
                     sum += result[i];
                 }
 
@@ -257,11 +252,11 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
      * @return The new selection pressure q.
      */
     public double getQ() {
-        return this.m_Q;
+        return this.q;
     }
 
     public void setQ(double b) {
-        this.m_Q = Math.abs(b);
+        this.q = Math.abs(b);
     }
 
     public String qTipText() {

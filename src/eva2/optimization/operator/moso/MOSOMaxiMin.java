@@ -1,27 +1,21 @@
 package eva2.optimization.operator.moso;
 
-import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 06.08.2004
- * Time: 15:30:52
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private int m_OutputDimension = 2;
-    transient protected Plot m_Plot = null;
+    private int outputDimension = 2;
 
     public MOSOMaxiMin() {
     }
 
     public MOSOMaxiMin(MOSOMaxiMin b) {
-        this.m_OutputDimension = b.m_OutputDimension;
+        this.outputDimension = b.outputDimension;
     }
 
     @Override
@@ -64,8 +58,6 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
                     result[i] = Math.max(result[i], tmpResult);
                 }
             }
-            // result[i] is now negative and big for good individuals
-            //result[i] = Math.exp(this.m_ScalingFactor * result[i]);
             // write the result to the individuals
             tmpIndy = (AbstractEAIndividual) pop.get(i);
             tmpFit = tmpIndy.getFitness();
@@ -74,32 +66,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
             resultFit[0] = result[i];
             tmpIndy.setFitness(resultFit);
         }
-        ////////////////////////////////////////////////////////////////////////////////////
-//        if (false) {
-//            this.plot = new eva2.gui.plot.Plot("Debug MaxiMin", "Y1", "Y2");
-//            this.plot.setUnconnectedPoint(0, 0, 11);
-//            this.plot.setUnconnectedPoint(1.2, 2.0, 11);
-//            double[][] trueFitness, moFitness;
-//            GraphPointSet   mySet = new GraphPointSet(10, this.plot.getFunctionArea());
-//            DPoint          myPoint;
-//            double          tmp1, tmp2;
-//            Chart2DDPointIconText tmp;
-//            trueFitness = new double[pop.size()][];
-//            moFitness   = new double[pop.size()][];
-//            for (int i = 0; i < pop.size(); i++) {
-//                trueFitness[i]  = ((AbstractEAIndividual)pop.get(i)).getFitness();
-//                moFitness[i]    = (double[])((AbstractEAIndividual)pop.get(i)).getData("MOFitness");
-//            }
-//            mySet.setConnectedMode(false);
-//            for (int i = 0; i < trueFitness.length; i++) {
-//                myPoint = new DPoint(moFitness[i][0], moFitness[i][1]);
-//                tmp1 = Math.round(trueFitness[i][0] *100)/100.0;
-//                tmp = new Chart2DDPointIconText(""+tmp1);
-//                tmp.setIcon(new Chart2DDPointIconCircle());
-//                myPoint.setIcon(tmp);
-//                mySet.addDPoint(myPoint);
-//            }
-//        }
+
     }
 
     /**
@@ -128,7 +95,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
      */
     @Override
     public void setOutputDimension(int dim) {
-        this.m_OutputDimension = dim;
+        this.outputDimension = dim;
     }
 
     /**
@@ -141,10 +108,6 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -164,17 +127,4 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
     public static String globalInfo() {
         return "This method calculate the maximum of minimum distance over all criterias over all individuals.";
     }
-//    /** This method allows you to choose the ScalingFactor for
-//     * the exp() function
-//     * @param goals     The scaling factor.
-//     */
-//    public void setScalingFactor(double goals) {
-//        this.m_ScalingFactor = goals;
-//    }
-//    public double getScalingFactor() {
-//        return this.m_ScalingFactor;
-//    }
-//    public String scalingFactorTipText() {
-//        return "Choose the scaling factor for the exp() function.";
-//    }
 }

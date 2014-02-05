@@ -5,24 +5,20 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 05.03.2004
- * Time: 10:48:39
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private PropertyDoubleArray m_Weights = null;
+    private PropertyDoubleArray weights = null;
 
     public MOSOWeightedFitness() {
         double[][] tmpD = new double[2][1];
         for (int i = 0; i < tmpD.length; i++) {
             tmpD[i][0] = 1.0;
         }
-        this.m_Weights = new PropertyDoubleArray(tmpD);
-        for (int i = 0; i < this.m_Weights.getNumRows(); i++) {
-            this.m_Weights.normalizeColumns();
+        this.weights = new PropertyDoubleArray(tmpD);
+        for (int i = 0; i < this.weights.getNumRows(); i++) {
+            this.weights.normalizeColumns();
         }
     }
 
@@ -32,8 +28,8 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
     }
 
     public MOSOWeightedFitness(MOSOWeightedFitness b) {
-        if (b.m_Weights != null) {
-            this.m_Weights = (PropertyDoubleArray) b.m_Weights;
+        if (b.weights != null) {
+            this.weights = (PropertyDoubleArray) b.weights;
         }
     }
 
@@ -70,17 +66,17 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
 
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
-        for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < tmpFit.length); i++) {
-            resultFit[0] += tmpFit[i] * this.m_Weights.getValue(i, 0);
+        for (int i = 0; (i < this.weights.getNumRows()) && (i < tmpFit.length); i++) {
+            resultFit[0] += tmpFit[i] * this.weights.getValue(i, 0);
         }
         indy.setFitness(resultFit);
     }
 
     private void checkingWeights() {
         String s = "Using Weights: {";
-        for (int i = 0; i < this.m_Weights.getNumRows(); i++) {
-            s += this.m_Weights.getValue(i, 0);
-            if (i < this.m_Weights.getNumRows() - 1) {
+        for (int i = 0; i < this.weights.getNumRows(); i++) {
+            s += this.weights.getValue(i, 0);
+            if (i < this.weights.getNumRows() - 1) {
                 s += "; ";
             }
         }
@@ -101,11 +97,11 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
         for (int i = 0; i < newWeights.length; i++) {
             newWeights[i] = 1;
         }
-        for (int i = 0; (i < this.m_Weights.getNumRows()) && (i < newWeights.length); i++) {
-            newWeights[i] = this.m_Weights.getValue(i, 0);
+        for (int i = 0; (i < this.weights.getNumRows()) && (i < newWeights.length); i++) {
+            newWeights[i] = this.weights.getValue(i, 0);
         }
 
-        this.m_Weights.setDoubleArray(newWeights);
+        this.weights.setDoubleArray(newWeights);
     }
 
     /**
@@ -149,11 +145,11 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
      * @param weights The weights for the fitness sum.
      */
     public void setWeights(PropertyDoubleArray weights) {
-        this.m_Weights = weights;
+        this.weights = weights;
     }
 
     public PropertyDoubleArray getWeights() {
-        return this.m_Weights;
+        return this.weights;
     }
 
     public String weightsTipText() {

@@ -4,11 +4,6 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 
 /**
  * Implements no migration as reference.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 16.09.2004
- * Time: 16:12:05
- * To change this template use File | Settings | File Templates.
  */
 public class SOMONoMigration implements InterfaceMigration, java.io.Serializable {
 

@@ -6,11 +6,6 @@ import eva2.tools.math.RNG;
 /**
  * This information retrieval method simply add the retrieved solutions
  * to the current population.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.03.2004
- * Time: 15:01:45
- * To change this template use File | Settings | File Templates.
  */
 public class InformationRetrievalReplacing implements InterfaceInformationRetrieval, java.io.Serializable {
 
