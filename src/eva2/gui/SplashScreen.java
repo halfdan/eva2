@@ -1,16 +1,5 @@
 package eva2.gui;
 
-/*
- * Title: EvA2
- * Description: The main client class of the EvA framework.
- * Copyright: Copyright (c) 2008
- * Company: University of Tuebingen, Computer
- * Architecture 
- * 
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version: $Revision: 322 $ $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007)$
- * $Author: mkron $  
- */
 
 import eva2.tools.BasicResourceLoader;
 

@@ -11,7 +11,7 @@ public class PropertyWeightedLPTchebycheff implements java.io.Serializable {
 
     public double[] idealValue;
     public double[] weights;
-    public int m_P = 0;
+    public int p = 0;
 
     public PropertyWeightedLPTchebycheff() {
     }
@@ -25,7 +25,7 @@ public class PropertyWeightedLPTchebycheff implements java.io.Serializable {
             this.weights = new double[e.weights.length];
             System.arraycopy(e.weights, 0, this.weights, 0, this.weights.length);
         }
-        this.m_P = e.m_P;
+        this.p = e.p;
     }
 
     @Override

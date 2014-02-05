@@ -17,8 +17,8 @@ import java.util.logging.Logger;
 public class GenericObjectEditor implements PropertyEditor {
 
     private static final Logger logger = Logger.getLogger(GenericObjectEditor.class.getName());
-    private Object m_Object;
-    private Object m_Backup;
+    private Object object;
+    private Object backupObject;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private Class<?> classType;
     private OptimizationEditorPanel editorComponent;
@@ -322,13 +322,13 @@ public class GenericObjectEditor implements PropertyEditor {
         // This should really call equals() for comparison.
         boolean trueChange = (c != getValue());
 
-        m_Backup = m_Object;
-        m_Object = c;
+        backupObject = object;
+        object = c;
 
         if (editorComponent != null) {
             editorComponent.updateChildPropertySheet();
             if (trueChange) {
-                propertyChangeSupport.firePropertyChange("", m_Backup, m_Object);
+                propertyChangeSupport.firePropertyChange("", backupObject, object);
             }
         }
     }
@@ -340,7 +340,7 @@ public class GenericObjectEditor implements PropertyEditor {
      */
     @Override
     public Object getValue() {
-        return m_Object;
+        return object;
     }
 
     /**
@@ -352,7 +352,7 @@ public class GenericObjectEditor implements PropertyEditor {
      */
     @Override
     public String getJavaInitializationString() {
-        return "new " + m_Object.getClass().getName() + "()";
+        return "new " + object.getClass().getName() + "()";
     }
 
     /**
@@ -373,12 +373,12 @@ public class GenericObjectEditor implements PropertyEditor {
      */
     @Override
     public void paintValue(Graphics gfx, Rectangle box) {
-        if (isEnabled && m_Object != null) {
+        if (isEnabled && object != null) {
             int getNameMethod = -1;
             MethodDescriptor[] methods;
             String rep = "";
             try {
-                BeanInfo beanInfo = Introspector.getBeanInfo(m_Object.getClass());
+                BeanInfo beanInfo = Introspector.getBeanInfo(object.getClass());
                 methods = beanInfo.getMethodDescriptors();
                 for (int i = 0; i < methods.length; i++) {
                     if (methods[i].getName().equalsIgnoreCase("getName")) {
@@ -391,13 +391,13 @@ public class GenericObjectEditor implements PropertyEditor {
             }
             if (getNameMethod >= 0) {
                 try {
-                    rep = (String) methods[getNameMethod].getMethod().invoke(m_Object, (Object[]) null);
+                    rep = (String) methods[getNameMethod].getMethod().invoke(object, (Object[]) null);
                 } catch (java.lang.IllegalAccessException e1) {
                 } catch (java.lang.reflect.InvocationTargetException e2) {
                 }
             }
             if (rep.length() <= 0) {
-                rep = m_Object.getClass().getName();
+                rep = object.getClass().getName();
                 int dotPos = rep.lastIndexOf('.');
                 if (dotPos != -1) {
                     rep = rep.substring(dotPos + 1);
@@ -458,7 +458,7 @@ public class GenericObjectEditor implements PropertyEditor {
     @Override
     public Component getCustomEditor() {
         if (editorComponent == null) {
-            editorComponent = new OptimizationEditorPanel(m_Object, m_Backup, propertyChangeSupport, this);
+            editorComponent = new OptimizationEditorPanel(object, backupObject, propertyChangeSupport, this);
         }
         return editorComponent;
     }
@@ -468,7 +468,7 @@ public class GenericObjectEditor implements PropertyEditor {
      */
     public void disableOKCancel() {
         if (editorComponent == null) {
-            editorComponent = new OptimizationEditorPanel(m_Object, m_Backup,
+            editorComponent = new OptimizationEditorPanel(object, backupObject,
                     propertyChangeSupport, this);
         }
         editorComponent.setEnabledOkCancelButtons(false);

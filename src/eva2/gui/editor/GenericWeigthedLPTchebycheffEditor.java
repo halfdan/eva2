@@ -13,34 +13,30 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.07.2005
- * Time: 10:32:43
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GenericWeigthedLPTchebycheffEditor extends JPanel implements PropertyEditor {
 
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
     /**
      * The label for when we can't edit that type
      */
-    private JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
+    private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
     /**
-     * The FilePath that is to be edited
+     * The filePath that is to be edited
      */
-    private PropertyWeightedLPTchebycheff m_WLPT;
+    private PropertyWeightedLPTchebycheff propertyWeightedLPTchebycheff;
 
     /**
      * The gaphix stuff
      */
-    private JPanel m_CustomEditor, m_DataPanel, m_ButtonPanel, m_TargetPanel;
-    private JTextField[] m_IdealTextField, m_WeightTextField;
-    private JTextField m_PValue;
-    private JButton m_OKButton;
+    private JPanel customEditor, dataPanel, buttonPanel, targetPanel;
+    private JTextField[] idealTextField, weightTextField;
+    private JTextField pvalueTextField;
+    private JButton okButton;
 
     public GenericWeigthedLPTchebycheffEditor() {
         // compiled code
@@ -50,39 +46,39 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      * This method will init the CustomEditor Panel
      */
     private void initCustomEditor() {
-        this.m_CustomEditor = new JPanel();
-        this.m_CustomEditor.setLayout(new BorderLayout());
+        this.customEditor = new JPanel();
+        this.customEditor.setLayout(new BorderLayout());
 
         // target panel
-        this.m_TargetPanel = new JPanel();
-        this.m_TargetPanel.setLayout(new GridLayout(1, 2));
-        this.m_TargetPanel.add(new JLabel("Choose P:"));
-        this.m_PValue = new JTextField("" + this.m_WLPT.m_P);
-        this.m_TargetPanel.add(this.m_PValue);
-        this.m_PValue.addKeyListener(this.readDoubleAction);
-        this.m_CustomEditor.add(this.m_TargetPanel, BorderLayout.NORTH);
+        this.targetPanel = new JPanel();
+        this.targetPanel.setLayout(new GridLayout(1, 2));
+        this.targetPanel.add(new JLabel("Choose P:"));
+        this.pvalueTextField = new JTextField("" + this.propertyWeightedLPTchebycheff.p);
+        this.targetPanel.add(this.pvalueTextField);
+        this.pvalueTextField.addKeyListener(this.readDoubleAction);
+        this.customEditor.add(this.targetPanel, BorderLayout.NORTH);
 
         // init data panel
-        this.m_DataPanel = new JPanel();
+        this.dataPanel = new JPanel();
         this.updateDataPanel();
-        this.m_CustomEditor.add(this.m_DataPanel, BorderLayout.CENTER);
+        this.customEditor.add(this.dataPanel, BorderLayout.CENTER);
 
         // init button panel
-        this.m_ButtonPanel = new JPanel();
-        this.m_OKButton = new JButton("OK");
-        this.m_OKButton.setEnabled(true);
-        this.m_OKButton.addActionListener(new ActionListener() {
+        this.buttonPanel = new JPanel();
+        this.okButton = new JButton("OK");
+        this.okButton.setEnabled(true);
+        this.okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //backupObject = copyObject(object);
-                if ((m_CustomEditor.getTopLevelAncestor() != null) && (m_CustomEditor.getTopLevelAncestor() instanceof Window)) {
-                    Window w = (Window) m_CustomEditor.getTopLevelAncestor();
+                if ((customEditor.getTopLevelAncestor() != null) && (customEditor.getTopLevelAncestor() instanceof Window)) {
+                    Window w = (Window) customEditor.getTopLevelAncestor();
                     w.dispose();
                 }
             }
         });
-        this.m_ButtonPanel.add(this.m_OKButton);
-        this.m_CustomEditor.add(this.m_ButtonPanel, BorderLayout.SOUTH);
+        this.buttonPanel.add(this.okButton);
+        this.customEditor.add(this.buttonPanel, BorderLayout.SOUTH);
         this.updateEditor();
     }
 
@@ -101,8 +97,8 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
         @Override
         public void keyReleased(KeyEvent event) {
             try {
-                int d = new Integer(m_PValue.getText()).intValue();
-                m_WLPT.m_P = d;
+                int d = new Integer(pvalueTextField.getText()).intValue();
+                propertyWeightedLPTchebycheff.p = d;
             } catch (Exception e) {
 
             }
@@ -123,29 +119,29 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
 
         @Override
         public void keyReleased(KeyEvent event) {
-            double[] tmpT = m_WLPT.idealValue;
-            double[] tmpP = m_WLPT.weights;
+            double[] tmpT = propertyWeightedLPTchebycheff.idealValue;
+            double[] tmpP = propertyWeightedLPTchebycheff.weights;
 
             for (int i = 0; i < tmpT.length; i++) {
 
                 try {
                     double d = 0;
-                    d = new Double(m_IdealTextField[i].getText()).doubleValue();
+                    d = new Double(idealTextField[i].getText()).doubleValue();
                     tmpT[i] = d;
                 } catch (Exception e) {
 
                 }
                 try {
                     double d = 0;
-                    d = new Double(m_WeightTextField[i].getText()).doubleValue();
+                    d = new Double(weightTextField[i].getText()).doubleValue();
                     tmpP[i] = d;
                 } catch (Exception e) {
 
                 }
             }
 
-            m_WLPT.idealValue = tmpT;
-            m_WLPT.weights = tmpP;
+            propertyWeightedLPTchebycheff.idealValue = tmpT;
+            propertyWeightedLPTchebycheff.weights = tmpP;
         }
     };
 
@@ -153,10 +149,10 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      * The object may have changed update the editor.
      */
     private void updateEditor() {
-        if (this.m_CustomEditor != null) {
+        if (this.customEditor != null) {
             this.updateDataPanel();
-            this.m_CustomEditor.validate();
-            this.m_CustomEditor.repaint();
+            this.customEditor.validate();
+            this.customEditor.repaint();
         }
     }
 
@@ -164,29 +160,29 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      * This method updates the data panel
      */
     private void updateDataPanel() {
-        double[] tmpT = this.m_WLPT.idealValue;
-        double[] tmpP = this.m_WLPT.weights;
-        int obj = this.m_WLPT.m_P;
+        double[] tmpT = this.propertyWeightedLPTchebycheff.idealValue;
+        double[] tmpP = this.propertyWeightedLPTchebycheff.weights;
+        int obj = this.propertyWeightedLPTchebycheff.p;
 
-        this.m_PValue.setText("" + obj);
-        this.m_DataPanel.removeAll();
-        this.m_DataPanel.setLayout(new GridLayout(tmpT.length + 1, 3));
-        this.m_DataPanel.add(new JLabel());
-        this.m_DataPanel.add(new JLabel("Ideal Value"));
-        this.m_DataPanel.add(new JLabel("Weights"));
-        this.m_IdealTextField = new JTextField[tmpT.length];
-        this.m_WeightTextField = new JTextField[tmpT.length];
+        this.pvalueTextField.setText("" + obj);
+        this.dataPanel.removeAll();
+        this.dataPanel.setLayout(new GridLayout(tmpT.length + 1, 3));
+        this.dataPanel.add(new JLabel());
+        this.dataPanel.add(new JLabel("Ideal Value"));
+        this.dataPanel.add(new JLabel("Weights"));
+        this.idealTextField = new JTextField[tmpT.length];
+        this.weightTextField = new JTextField[tmpT.length];
         for (int i = 0; i < tmpT.length; i++) {
             JLabel label = new JLabel("Objective " + i + ": ");
-            this.m_DataPanel.add(label);
-            this.m_IdealTextField[i] = new JTextField();
-            this.m_IdealTextField[i].setText("" + tmpT[i]);
-            this.m_IdealTextField[i].addKeyListener(this.readDoubleArrayAction);
-            this.m_DataPanel.add(this.m_IdealTextField[i]);
-            this.m_WeightTextField[i] = new JTextField();
-            this.m_WeightTextField[i].setText("" + tmpP[i]);
-            this.m_WeightTextField[i].addKeyListener(this.readDoubleArrayAction);
-            this.m_DataPanel.add(this.m_WeightTextField[i]);
+            this.dataPanel.add(label);
+            this.idealTextField[i] = new JTextField();
+            this.idealTextField[i].setText("" + tmpT[i]);
+            this.idealTextField[i].addKeyListener(this.readDoubleArrayAction);
+            this.dataPanel.add(this.idealTextField[i]);
+            this.weightTextField[i] = new JTextField();
+            this.weightTextField[i].setText("" + tmpP[i]);
+            this.weightTextField[i].addKeyListener(this.readDoubleArrayAction);
+            this.dataPanel.add(this.weightTextField[i]);
         }
     }
 
@@ -199,7 +195,7 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
     @Override
     public void setValue(Object o) {
         if (o instanceof PropertyWeightedLPTchebycheff) {
-            this.m_WLPT = (PropertyWeightedLPTchebycheff) o;
+            this.propertyWeightedLPTchebycheff = (PropertyWeightedLPTchebycheff) o;
             this.updateEditor();
         }
     }
@@ -211,7 +207,7 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      */
     @Override
     public Object getValue() {
-        return this.m_WLPT;
+        return this.propertyWeightedLPTchebycheff;
     }
 
     @Override
@@ -245,18 +241,18 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (support == null) {
+            support = new PropertyChangeSupport(this);
         }
-        m_Support.addPropertyChangeListener(l);
+        support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (support == null) {
+            support = new PropertyChangeSupport(this);
         }
-        m_Support.removePropertyChangeListener(l);
+        support.removePropertyChangeListener(l);
     }
 
     /**
@@ -265,7 +261,7 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      * @param a The action listener.
      */
     public void addOkListener(ActionListener a) {
-        m_OKButton.addActionListener(a);
+        okButton.addActionListener(a);
     }
 
     /**
@@ -274,7 +270,7 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      * @param a The action listener
      */
     public void removeOkListener(ActionListener a) {
-        m_OKButton.removeActionListener(a);
+        okButton.removeActionListener(a);
     }
 
     /**
@@ -318,9 +314,9 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      */
     @Override
     public Component getCustomEditor() {
-        if (this.m_CustomEditor == null) {
+        if (this.customEditor == null) {
             this.initCustomEditor();
         }
-        return m_CustomEditor;
+        return customEditor;
     }
 }

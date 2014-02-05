@@ -1,13 +1,6 @@
 package eva2.gui.editor;
 /*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 194 $
- *            $Date: 2007-10-23 13:43:24 +0200 (Tue, 23 Oct 2007) $
- *            $Author: mkron $
+ *
  */
 
 import eva2.gui.PropertySheetPanelStat;
@@ -22,31 +15,31 @@ import java.beans.PropertyEditor;
 
 public class StatisticsEditor implements PropertyEditor {
 
-    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
-    private PropertySheetPanelStat m_StatPanel;
-    private JScrollPane m_ScrollPane;
-    private JPanel m_Panel;
-    private GenericStatistics m_Value;
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    private PropertySheetPanelStat statPanel;
+    private JScrollPane scrollPane;
+    private JPanel panel;
+    private GenericStatistics statistics;
 
     /**
      *
      */
     public StatisticsEditor() {
         super();
-        m_StatPanel = new PropertySheetPanelStat();
-        m_StatPanel.addPropertyChangeListener(
+        statPanel = new PropertySheetPanelStat();
+        statPanel.addPropertyChangeListener(
                 new PropertyChangeListener() {
 
                     @Override
                     public void propertyChange(PropertyChangeEvent evt) {
-                        m_Support.firePropertyChange("", null, null);
+                        propertyChangeSupport.firePropertyChange("", null, null);
                     }
                 });
-        m_ScrollPane = new JScrollPane(m_StatPanel);
-        m_Panel = new JPanel();
-        m_Panel.setLayout(new BorderLayout());
+        scrollPane = new JScrollPane(statPanel);
+        panel = new JPanel();
+        panel.setLayout(new BorderLayout());
 
-        m_Panel.add(m_ScrollPane, BorderLayout.CENTER);
+        panel.add(scrollPane, BorderLayout.CENTER);
 
     }
 
@@ -56,10 +49,10 @@ public class StatisticsEditor implements PropertyEditor {
     @Override
     public void setValue(Object value) {
         if (value instanceof GenericStatistics) {
-            m_Value = (GenericStatistics) value;
-            m_StatPanel.setTarget(m_Value.getPropertyNames(), m_Value.getState());
+            statistics = (GenericStatistics) value;
+            statPanel.setTarget(statistics.getPropertyNames(), statistics.getState());
         }
-        m_Support.firePropertyChange("", null, null);
+        propertyChangeSupport.firePropertyChange("", null, null);
     }
 
     /**
@@ -68,8 +61,8 @@ public class StatisticsEditor implements PropertyEditor {
     @Override
     public Object getValue() {
         System.out.println("getValue !!!!!!!!!!!!");
-        m_Value.setState(m_StatPanel.getState());
-        return m_Value;
+        statistics.setState(statPanel.getState());
+        return statistics;
     }
 
     /**
@@ -136,22 +129,22 @@ public class StatisticsEditor implements PropertyEditor {
      */
     @Override
     public Component getCustomEditor() {
-        return m_Panel;
+        return panel;
     }
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (m_Support == null) {
-            m_Support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        m_Support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 }

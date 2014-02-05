@@ -29,9 +29,9 @@ public class GenericObjectListSelectionEditor extends AbstractListSelectionEdito
     @Override
     protected boolean actionOnSelect() {
         boolean changed = false;
-        for (int i = 0; i < this.m_BlackCheck.length; i++) {
-            if (objList.isSelected(i) != this.m_BlackCheck[i].isSelected()) {
-                objList.setSelectionForElement(i, this.m_BlackCheck[i].isSelected());
+        for (int i = 0; i < this.blackCheck.length; i++) {
+            if (objList.isSelected(i) != this.blackCheck[i].isSelected()) {
+                objList.setSelectionForElement(i, this.blackCheck[i].isSelected());
                 changed = true;
             }
         }

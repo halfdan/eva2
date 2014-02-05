@@ -3,41 +3,37 @@ package eva2.gui;
 import eva2.optimization.problems.InterfaceOptimizationObjective;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.01.2005
- * Time: 13:35:24
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PropertyOptimizationObjectivesWithParam implements java.io.Serializable {
 
-    public InterfaceOptimizationObjective[] m_AvailableObjectives;
-    public InterfaceOptimizationObjective[] m_SelectedObjectives;
-    public double[] m_Weights;
-    public String m_DescriptiveString = "No Description given.";
-    public String m_WeightsLabel = "-";
-    public boolean m_NormalizationEnabled = true;
+    public InterfaceOptimizationObjective[] availableObjectives;
+    public InterfaceOptimizationObjective[] selectedObjectives;
+    public double[] weights;
+    public String descriptiveString = "No Description given.";
+    public String weightsLabel = "-";
+    public boolean normalizationEnabled = true;
 
     public PropertyOptimizationObjectivesWithParam(InterfaceOptimizationObjective[] d) {
-        this.m_AvailableObjectives = d;
-        this.m_SelectedObjectives = null;
+        this.availableObjectives = d;
+        this.selectedObjectives = null;
     }
 
     public PropertyOptimizationObjectivesWithParam(PropertyOptimizationObjectivesWithParam d) {
-        this.m_DescriptiveString = d.m_DescriptiveString;
-        this.m_WeightsLabel = d.m_WeightsLabel;
-        this.m_NormalizationEnabled = d.m_NormalizationEnabled;
-        this.m_AvailableObjectives = new InterfaceOptimizationObjective[d.m_AvailableObjectives.length];
-        for (int i = 0; i < this.m_AvailableObjectives.length; i++) {
-            this.m_AvailableObjectives[i] = (InterfaceOptimizationObjective) d.m_AvailableObjectives[i].clone();
+        this.descriptiveString = d.descriptiveString;
+        this.weightsLabel = d.weightsLabel;
+        this.normalizationEnabled = d.normalizationEnabled;
+        this.availableObjectives = new InterfaceOptimizationObjective[d.availableObjectives.length];
+        for (int i = 0; i < this.availableObjectives.length; i++) {
+            this.availableObjectives[i] = (InterfaceOptimizationObjective) d.availableObjectives[i].clone();
         }
-        this.m_SelectedObjectives = new InterfaceOptimizationObjective[d.m_SelectedObjectives.length];
-        for (int i = 0; i < this.m_SelectedObjectives.length; i++) {
-            this.m_SelectedObjectives[i] = (InterfaceOptimizationObjective) d.m_SelectedObjectives[i].clone();
+        this.selectedObjectives = new InterfaceOptimizationObjective[d.selectedObjectives.length];
+        for (int i = 0; i < this.selectedObjectives.length; i++) {
+            this.selectedObjectives[i] = (InterfaceOptimizationObjective) d.selectedObjectives[i].clone();
         }
-        if (d.m_Weights != null) {
-            this.m_Weights = new double[d.m_Weights.length];
-            System.arraycopy(d.m_Weights, 0, this.m_Weights, 0, this.m_Weights.length);
+        if (d.weights != null) {
+            this.weights = new double[d.weights.length];
+            System.arraycopy(d.weights, 0, this.weights, 0, this.weights.length);
         }
     }
 
@@ -52,32 +48,32 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @param d The InterfaceOptimizationTarget[]
      */
     public void setSelectedTargets(InterfaceOptimizationObjective[] d) {
-        this.m_SelectedObjectives = d;
+        this.selectedObjectives = d;
 
-        if (this.m_Weights == null) {
-            this.m_Weights = new double[d.length];
-            for (int i = 0; i < this.m_Weights.length; i++) {
-                this.m_Weights[i] = 1.0;
+        if (this.weights == null) {
+            this.weights = new double[d.length];
+            for (int i = 0; i < this.weights.length; i++) {
+                this.weights[i] = 1.0;
             }
             return;
         }
 
-        if (d.length == this.m_Weights.length) {
+        if (d.length == this.weights.length) {
             return;
         }
 
-        if (d.length > this.m_Weights.length) {
+        if (d.length > this.weights.length) {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < this.m_Weights.length; i++) {
-                newWeights[i] = this.m_Weights[i];
+            for (int i = 0; i < this.weights.length; i++) {
+                newWeights[i] = this.weights[i];
             }
-            this.m_Weights = newWeights;
+            this.weights = newWeights;
         } else {
             double[] newWeights = new double[d.length];
             for (int i = 0; i < d.length; i++) {
-                newWeights[i] = this.m_Weights[i];
+                newWeights[i] = this.weights[i];
             }
-            this.m_Weights = newWeights;
+            this.weights = newWeights;
         }
     }
 
@@ -87,7 +83,7 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @return The InterfaceOptimizationTarget[].
      */
     public InterfaceOptimizationObjective[] getSelectedTargets() {
-        return this.m_SelectedObjectives;
+        return this.selectedObjectives;
     }
 
     /**
@@ -96,7 +92,7 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @return The InterfaceOptimizationTarget[].
      */
     public InterfaceOptimizationObjective[] getAvailableTargets() {
-        return this.m_AvailableObjectives;
+        return this.availableObjectives;
     }
 
     /**
@@ -105,11 +101,11 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @return the weights
      */
     public double[] getWeights() {
-        return this.m_Weights;
+        return this.weights;
     }
 
     public void setWeights(double[] d) {
-        this.m_Weights = d;
+        this.weights = d;
     }
 
     /**
@@ -118,11 +114,11 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @return the string
      */
     public String getDescriptiveString() {
-        return this.m_DescriptiveString;
+        return this.descriptiveString;
     }
 
     public void setDescriptiveString(String d) {
-        this.m_DescriptiveString = d;
+        this.descriptiveString = d;
     }
 
     /**
@@ -131,11 +127,11 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @return the string
      */
     public String getWeigthsLabel() {
-        return this.m_WeightsLabel;
+        return this.weightsLabel;
     }
 
     public void setWeightsLabel(String d) {
-        this.m_WeightsLabel = d;
+        this.weightsLabel = d;
     }
 
     /**
@@ -144,11 +140,11 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @return the string
      */
     public boolean isNormalizationEnabled() {
-        return this.m_NormalizationEnabled;
+        return this.normalizationEnabled;
     }
 
     public void enableNormalization(boolean d) {
-        this.m_NormalizationEnabled = d;
+        this.normalizationEnabled = d;
     }
 
     /**
@@ -157,22 +153,22 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @param index The index of the target to be removed.
      */
     public void removeTarget(int index) {
-        if ((index < 0) || (index >= this.m_SelectedObjectives.length)) {
+        if ((index < 0) || (index >= this.selectedObjectives.length)) {
             return;
         }
 
-        InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.m_SelectedObjectives.length - 1];
-        double[] newWeights = new double[this.m_Weights.length - 1];
+        InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.selectedObjectives.length - 1];
+        double[] newWeights = new double[this.weights.length - 1];
         int j = 0;
-        for (int i = 0; i < this.m_SelectedObjectives.length; i++) {
+        for (int i = 0; i < this.selectedObjectives.length; i++) {
             if (index != i) {
-                newList[j] = this.m_SelectedObjectives[i];
-                newWeights[j] = this.m_Weights[i];
+                newList[j] = this.selectedObjectives[i];
+                newWeights[j] = this.weights[i];
                 j++;
             }
         }
-        this.m_SelectedObjectives = newList;
-        this.m_Weights = newWeights;
+        this.selectedObjectives = newList;
+        this.weights = newWeights;
     }
 
     /**
@@ -181,15 +177,15 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
      * @param optTarget
      */
     public void addTarget(InterfaceOptimizationObjective optTarget) {
-        InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.m_SelectedObjectives.length + 1];
-        double[] newWeights = new double[this.m_Weights.length + 1];
-        for (int i = 0; i < this.m_SelectedObjectives.length; i++) {
-            newList[i] = this.m_SelectedObjectives[i];
-            newWeights[i] = this.m_Weights[i];
+        InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.selectedObjectives.length + 1];
+        double[] newWeights = new double[this.weights.length + 1];
+        for (int i = 0; i < this.selectedObjectives.length; i++) {
+            newList[i] = this.selectedObjectives[i];
+            newWeights[i] = this.weights[i];
         }
-        newList[this.m_SelectedObjectives.length] = optTarget;
-        newWeights[this.m_SelectedObjectives.length] = 1.0;
-        this.m_SelectedObjectives = newList;
-        this.m_Weights = newWeights;
+        newList[this.selectedObjectives.length] = optTarget;
+        newWeights[this.selectedObjectives.length] = 1.0;
+        this.selectedObjectives = newList;
+        this.weights = newWeights;
     }
 }

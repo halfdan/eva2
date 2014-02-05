@@ -405,7 +405,6 @@ public class BeanInspector {
             //System.out.println("name = "+name );
             //System.out.println("type = "+type.getName() );
             Object args[] = {};
-            //System.out.println("m_Target"+m_Target.toString());
             try {
                 Object value = getter.invoke(obj, args);
                 System.out.println("Inspecting name = " + name);
@@ -945,11 +944,11 @@ public class BeanInspector {
             e.printStackTrace();
             return false;
         }
-        PropertyDescriptor[] m_Properties = bi.getPropertyDescriptors();
+        PropertyDescriptor[] properties = bi.getPropertyDescriptors();
         Method getter = null;
-        for (int i = 0; i < m_Properties.length; i++) {
-            if (m_Properties[i].getDisplayName().equals(mem)) {
-                getter = m_Properties[i].getReadMethod();
+        for (int i = 0; i < properties.length; i++) {
+            if (properties[i].getDisplayName().equals(mem)) {
+                getter = properties[i].getReadMethod();
                 break;
             }
         }
@@ -984,17 +983,17 @@ public class BeanInspector {
             e.printStackTrace();
             return false;
         }
-        PropertyDescriptor[] m_Properties = bi.getPropertyDescriptors();
+        PropertyDescriptor[] properties = bi.getPropertyDescriptors();
 //		Method getter = null;
         Method setter = null;
         Class<?> type = null;
 //		System.err.println("looking at " + toString(obj));
-        for (int i = 0; i < m_Properties.length; i++) {
-            if (m_Properties[i].getDisplayName().equals(mem)) {
-//				System.err.println("looking at " + m_Properties[i].getDisplayName());
-//				getter  = m_Properties[i].getReadMethod();
-                setter = m_Properties[i].getWriteMethod();
-                type = m_Properties[i].getPropertyType();
+        for (int i = 0; i < properties.length; i++) {
+            if (properties[i].getDisplayName().equals(mem)) {
+//				System.err.println("looking at " + properties[i].getDisplayName());
+//				getter  = properties[i].getReadMethod();
+                setter = properties[i].getWriteMethod();
+                type = properties[i].getPropertyType();
                 break;
             }
         }

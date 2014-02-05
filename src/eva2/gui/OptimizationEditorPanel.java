@@ -81,19 +81,19 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      *
      */
     public OptimizationEditorPanel(Object target, Object backup, PropertyChangeSupport support, GenericObjectEditor goe, boolean withCancel) {
-        Object m_Object = target;
+        Object object = target;
         backupObject = backup;
         propChangeSupport = support;
         genericObjectEditor = goe;
 
         try {
-            if (!(Proxy.isProxyClass(m_Object.getClass()))) {
-                backupObject = copyObject(m_Object);
+            if (!(Proxy.isProxyClass(object.getClass()))) {
+                backupObject = copyObject(object);
             }
         } catch (OutOfMemoryError err) {
             backupObject = null;
             System.gc();
-            System.err.println("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + m_Object + ")");
+            System.err.println("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + object + ")");
         }
         comboBoxModel = new DefaultComboBoxModel(new String[0]);
         objectChooser = new JComboBox(comboBoxModel);
@@ -161,7 +161,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
             @Override
             public void actionPerformed(final ActionEvent event) {
                 if (backupObject != null) {
-                    // TODO m_goe.setObject(object);
                     genericObjectEditor.setValue(copyObject(backupObject));
                     updateClassType();
                     updateChooser();

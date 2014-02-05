@@ -3,17 +3,13 @@ package eva2.gui;
 import eva2.tools.ReflectPackage;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 28.08.2003
- * Time: 11:10:28
- * To change this template use Options | File Templates.
+ *
  */
 public class PropertyFilePath implements java.io.Serializable {
 
-    public String FileName = "";
-    public String FilePath = "";
-    public String FileExtension = "";
+    public String fileName = "";
+    public String filePath = "";
+    public String fileExtension = "";
 
     /**
      * Constructor setting the absolute path. F
@@ -25,9 +21,9 @@ public class PropertyFilePath implements java.io.Serializable {
     }
 
     public PropertyFilePath(PropertyFilePath d) {
-        this.FileName = d.FileName;
-        this.FilePath = d.FilePath;
-        this.FileExtension = d.FileExtension;
+        this.fileName = d.fileName;
+        this.filePath = d.filePath;
+        this.fileExtension = d.fileExtension;
     }
 
     /**
@@ -79,18 +75,18 @@ public class PropertyFilePath implements java.io.Serializable {
             if (trace) {
                 System.out.println("File.Separator: " + filesep);
             }
-            this.FileName = s.substring(s.lastIndexOf(filesep) + 1);
-            this.FileExtension = this.FileName.substring(this.FileName.lastIndexOf("."));
-            this.FilePath = s.substring(0, s.lastIndexOf(filesep) + 1);
+            this.fileName = s.substring(s.lastIndexOf(filesep) + 1);
+            this.fileExtension = this.fileName.substring(this.fileName.lastIndexOf("."));
+            this.filePath = s.substring(0, s.lastIndexOf(filesep) + 1);
 
             if (trace) {
-                System.out.println("FilePath: " + this.FilePath);
+                System.out.println("filePath: " + this.filePath);
             }
             if (trace) {
-                System.out.println("Filename: " + this.FileName);
+                System.out.println("Filename: " + this.fileName);
             }
             if (trace) {
-                System.out.println("Fileext.: " + this.FileExtension);
+                System.out.println("Fileext.: " + this.fileExtension);
             }
         } catch (Exception e) {
             this.setCompleteFilePath(old);
@@ -104,6 +100,6 @@ public class PropertyFilePath implements java.io.Serializable {
      * @return The complete filename with path.
      */
     public String getCompleteFilePath() {
-        return this.FilePath + this.FileName;
+        return this.filePath + this.fileName;
     }
 }

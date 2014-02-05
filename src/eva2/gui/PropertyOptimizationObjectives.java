@@ -3,29 +3,25 @@ package eva2.gui;
 import eva2.optimization.problems.InterfaceOptimizationObjective;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 14.01.2005
- * Time: 17:11:31
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PropertyOptimizationObjectives implements java.io.Serializable {
-    public InterfaceOptimizationObjective[] m_AvailableObjectives;
-    public InterfaceOptimizationObjective[] m_SelectedObjectives;
+    public InterfaceOptimizationObjective[] availableObjectives;
+    public InterfaceOptimizationObjective[] selectedObjectives;
 
     public PropertyOptimizationObjectives(InterfaceOptimizationObjective[] d) {
-        this.m_AvailableObjectives = d;
-        this.m_SelectedObjectives = null;
+        this.availableObjectives = d;
+        this.selectedObjectives = null;
     }
 
     public PropertyOptimizationObjectives(PropertyOptimizationObjectives d) {
-        this.m_AvailableObjectives = new InterfaceOptimizationObjective[d.m_AvailableObjectives.length];
-        for (int i = 0; i < this.m_AvailableObjectives.length; i++) {
-            this.m_AvailableObjectives[i] = (InterfaceOptimizationObjective) d.m_AvailableObjectives[i].clone();
+        this.availableObjectives = new InterfaceOptimizationObjective[d.availableObjectives.length];
+        for (int i = 0; i < this.availableObjectives.length; i++) {
+            this.availableObjectives[i] = (InterfaceOptimizationObjective) d.availableObjectives[i].clone();
         }
-        this.m_SelectedObjectives = new InterfaceOptimizationObjective[d.m_SelectedObjectives.length];
-        for (int i = 0; i < this.m_SelectedObjectives.length; i++) {
-            this.m_SelectedObjectives[i] = (InterfaceOptimizationObjective) d.m_SelectedObjectives[i].clone();
+        this.selectedObjectives = new InterfaceOptimizationObjective[d.selectedObjectives.length];
+        for (int i = 0; i < this.selectedObjectives.length; i++) {
+            this.selectedObjectives[i] = (InterfaceOptimizationObjective) d.selectedObjectives[i].clone();
         }
     }
 
@@ -40,7 +36,7 @@ public class PropertyOptimizationObjectives implements java.io.Serializable {
      * @param d The InterfaceOptimizationTarget[]
      */
     public void setSelectedTargets(InterfaceOptimizationObjective[] d) {
-        this.m_SelectedObjectives = d;
+        this.selectedObjectives = d;
     }
 
     /**
@@ -49,7 +45,7 @@ public class PropertyOptimizationObjectives implements java.io.Serializable {
      * @return The InterfaceOptimizationTarget[].
      */
     public InterfaceOptimizationObjective[] getSelectedTargets() {
-        return this.m_SelectedObjectives;
+        return this.selectedObjectives;
     }
 
     /**
@@ -58,7 +54,7 @@ public class PropertyOptimizationObjectives implements java.io.Serializable {
      * @return The InterfaceOptimizationTarget[].
      */
     public InterfaceOptimizationObjective[] getAvailableTargets() {
-        return this.m_AvailableObjectives;
+        return this.availableObjectives;
     }
 
     /**
@@ -67,19 +63,19 @@ public class PropertyOptimizationObjectives implements java.io.Serializable {
      * @param index The index of the target to be removed.
      */
     public void removeTarget(int index) {
-        if ((index < 0) || (index >= this.m_SelectedObjectives.length)) {
+        if ((index < 0) || (index >= this.selectedObjectives.length)) {
             return;
         }
 
-        InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.m_SelectedObjectives.length - 1];
+        InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.selectedObjectives.length - 1];
         int j = 0;
-        for (int i = 0; i < this.m_SelectedObjectives.length; i++) {
+        for (int i = 0; i < this.selectedObjectives.length; i++) {
             if (index != i) {
-                newList[j] = this.m_SelectedObjectives[i];
+                newList[j] = this.selectedObjectives[i];
                 j++;
             }
         }
-        this.m_SelectedObjectives = newList;
+        this.selectedObjectives = newList;
     }
 
     /**
@@ -88,11 +84,11 @@ public class PropertyOptimizationObjectives implements java.io.Serializable {
      * @param optTarget
      */
     public void addTarget(InterfaceOptimizationObjective optTarget) {
-        InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.m_SelectedObjectives.length + 1];
-        for (int i = 0; i < this.m_SelectedObjectives.length; i++) {
-            newList[i] = this.m_SelectedObjectives[i];
+        InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.selectedObjectives.length + 1];
+        for (int i = 0; i < this.selectedObjectives.length; i++) {
+            newList[i] = this.selectedObjectives[i];
         }
-        newList[this.m_SelectedObjectives.length] = optTarget;
-        this.m_SelectedObjectives = newList;
+        newList[this.selectedObjectives.length] = optTarget;
+        this.selectedObjectives = newList;
     }
 }

@@ -11,15 +11,8 @@ import java.beans.PropertyEditor;
 
 
 /**
- * <p>Title: EvA2</p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2003</p>
- * <p>Company: </p>
  *
- * @author not attributable
- * @version 1.0
  */
-
 public class MultiLineStringEditor implements PropertyEditor {
     protected MultiLineString value;  // The value we will be editing.
 

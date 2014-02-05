@@ -4,8 +4,8 @@ package eva2.gui;
  * A property for a double array. May be of dimensions m times n.
  */
 public class PropertyDoubleArray implements java.io.Serializable {
-    private double[][] m_DoubleArray;
-    private int m_numCols = 1;
+    private double[][] doubleArray;
+    private int numCols = 1;
 
     public PropertyDoubleArray(double[] d) {
         setDoubleArray(d);
@@ -16,9 +16,9 @@ public class PropertyDoubleArray implements java.io.Serializable {
     }
 
     public PropertyDoubleArray(PropertyDoubleArray d) {
-        this.m_DoubleArray = d.m_DoubleArray.clone();
-        this.m_numCols = d.m_numCols;
-//        System.arraycopy(d.m_DoubleArray, 0, this.m_DoubleArray, 0, this.m_DoubleArray.length);
+        this.doubleArray = d.doubleArray.clone();
+        this.numCols = d.numCols;
+//        System.arraycopy(d.doubleArray, 0, this.doubleArray, 0, this.doubleArray.length);
     }
 
     /**
@@ -31,15 +31,15 @@ public class PropertyDoubleArray implements java.io.Serializable {
      */
     public PropertyDoubleArray(int rows, int cols, double... d) {
         if (rows > 0 && cols > 0) {
-            this.m_DoubleArray = new double[rows][cols];
+            this.doubleArray = new double[rows][cols];
         } else {
-            this.m_DoubleArray = null;
+            this.doubleArray = null;
         }
-        this.m_numCols = cols;
+        this.numCols = cols;
         int index = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                m_DoubleArray[i][j] = d[index];
+                doubleArray[i][j] = d[index];
                 index++;
                 if (index >= d.length) {
                     index = 0;
@@ -59,11 +59,11 @@ public class PropertyDoubleArray implements java.io.Serializable {
      * @param d The double[]
      */
     public void setDoubleArray(double[] d) {
-        this.m_DoubleArray = new double[d.length][1];
+        this.doubleArray = new double[d.length][1];
         for (int i = 0; i < d.length; i++) {
-            m_DoubleArray[i][0] = d[i];
+            doubleArray[i][0] = d[i];
         }
-        m_numCols = 1;
+        numCols = 1;
     }
 
     /**
@@ -72,11 +72,11 @@ public class PropertyDoubleArray implements java.io.Serializable {
      * @param d The double[]
      */
     public void setDoubleArray(double[][] d) {
-        this.m_DoubleArray = d;
+        this.doubleArray = d;
         if (d.length > 0) {
-            m_numCols = d[0].length;
+            numCols = d[0].length;
         } else {
-            m_numCols = 1;
+            numCols = 1;
         }
     }
 
@@ -84,7 +84,7 @@ public class PropertyDoubleArray implements java.io.Serializable {
      * @return the double array itself (no clone)
      */
     public double[][] getDoubleArrayShallow() {
-        return this.m_DoubleArray;
+        return this.doubleArray;
     }
 
     /**
@@ -93,40 +93,40 @@ public class PropertyDoubleArray implements java.io.Serializable {
      * @return a column as a vector (in copy)
      */
     public double[] getDoubleColumnAsVector(int col) {
-        if (col >= m_numCols) {
-            throw new IllegalArgumentException("Error, invalid column selected, " + col + " of " + m_numCols);
+        if (col >= numCols) {
+            throw new IllegalArgumentException("Error, invalid column selected, " + col + " of " + numCols);
         }
-        double[] ret = new double[m_DoubleArray.length];
+        double[] ret = new double[doubleArray.length];
         for (int i = 0; i < ret.length; i++) {
-            ret[i] = m_DoubleArray[i][col];
+            ret[i] = doubleArray[i][col];
         }
         return ret;
     }
 
     public int getNumCols() {
-        return m_numCols;
+        return numCols;
     }
 
     public int getNumRows() {
-        return m_DoubleArray.length;
+        return doubleArray.length;
     }
 
     public double getValue(int i, int j) {
         if (i < 0 || j < 0 || (i >= getNumRows()) || (j >= getNumCols())) {
             throw new IllegalArgumentException("Error, invalid access to double array: " + i + "," + j + " within " + getNumRows() + "," + getNumCols());
         }
-        return m_DoubleArray[i][j];
+        return doubleArray[i][j];
     }
 
     public void adaptRowCount(int k) {
-        if (k != m_DoubleArray.length) {
-            double[][] newDD = new double[k][m_numCols];
+        if (k != doubleArray.length) {
+            double[][] newDD = new double[k][numCols];
             for (int i = 0; i < k; i++) {
-                for (int j = 0; j < m_numCols; j++) {
-                    if (i < m_DoubleArray.length) {
-                        newDD[i][j] = m_DoubleArray[i][j];
+                for (int j = 0; j < numCols; j++) {
+                    if (i < doubleArray.length) {
+                        newDD[i][j] = doubleArray[i][j];
                     } else {
-                        newDD[i][j] = m_DoubleArray[m_DoubleArray.length - 1][j];
+                        newDD[i][j] = doubleArray[doubleArray.length - 1][j];
                     }
                 }
             }
@@ -145,7 +145,7 @@ public class PropertyDoubleArray implements java.io.Serializable {
                 inc = 1;
             }
             for (int j = 0; j < getNumCols(); j++) {
-                newDD[i][j] = m_DoubleArray[i + inc][j];
+                newDD[i][j] = doubleArray[i + inc][j];
             }
         }
         setDoubleArray(newDD);
@@ -165,7 +165,7 @@ public class PropertyDoubleArray implements java.io.Serializable {
 
         for (int i = 0; i < getNumRows(); i++) {
             for (int j = 0; j < getNumCols(); j++) {
-                newDD[i][j] = m_DoubleArray[i][j];
+                newDD[i][j] = doubleArray[i][j];
             }
         }
         if (k >= 0) {
@@ -188,11 +188,11 @@ public class PropertyDoubleArray implements java.io.Serializable {
         for (int j = 0; j < getNumCols(); j++) {
             colSum = 0;
             for (int i = 0; i < getNumRows(); i++) {
-                colSum += m_DoubleArray[i][j];
+                colSum += doubleArray[i][j];
             }
             if (colSum != 0) {
                 for (int i = 0; i < getNumRows(); i++) {
-                    m_DoubleArray[i][j] /= colSum;
+                    doubleArray[i][j] /= colSum;
                 }
             }
         }
@@ -210,15 +210,15 @@ public class PropertyDoubleArray implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return BeanInspector.toString(m_DoubleArray);
+        return BeanInspector.toString(doubleArray);
     }
 
 //    /** This method will allow you to set the value of the double array
 //     * @param d     The double[]
 //     */
 //    public void setDoubleArray(double[] d) {
-//        this.m_DoubleArray = new double[d.length][1];
-//        for (int i=0; i<d.length; i++) m_DoubleArray[i][0] = d[i];
+//        this.doubleArray = new double[d.length][1];
+//        for (int i=0; i<d.length; i++) doubleArray[i][0] = d[i];
 //    }
 //
 //    /** This method will return the complete name of the file
@@ -226,6 +226,6 @@ public class PropertyDoubleArray implements java.io.Serializable {
 //     * @return The complete filename with path.
 //     */
 //    public double[] getDoubleArray() {
-//        return this.m_DoubleArray;
+//        return this.doubleArray;
 //    }
 }
