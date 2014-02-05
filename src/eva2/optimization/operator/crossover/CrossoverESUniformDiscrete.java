@@ -7,21 +7,17 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 02.12.2003
- * Time: 14:14:52
- * To change this template use Options | File Templates.
+ *
  */
 public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverESUniformDiscrete() {
 
     }
 
     public CrossoverESUniformDiscrete(CrossoverESUniformDiscrete c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -113,7 +109,7 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

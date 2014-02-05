@@ -7,23 +7,19 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 25.07.2003
- * Time: 15:32:33
- * To change this template use Options | File Templates.
+ *
  */
 public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
-    private int m_NumberOfCrossovers = 3;
+    private InterfaceOptimizationProblem optimizationProblem;
+    private int numberOfCrossovers = 3;
 
     public CrossoverESNPointDiscrete() {
 
     }
 
     public CrossoverESNPointDiscrete(CrossoverESNPointDiscrete mutator) {
-        this.m_OptimizationProblem = mutator.m_OptimizationProblem;
-        this.m_NumberOfCrossovers = mutator.m_NumberOfCrossovers;
+        this.optimizationProblem = mutator.optimizationProblem;
+        this.numberOfCrossovers = mutator.numberOfCrossovers;
     }
 
     /**
@@ -59,7 +55,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
         if ((indy1 instanceof InterfaceESIndividual) && (partners.get(0) instanceof InterfaceESIndividual)) {
             int length = ((InterfaceESIndividual) result[0]).getDGenotype().length;
             int mixer = RNG.randomInt(0, partners.size());
-            int[] crossoverPoints = new int[this.m_NumberOfCrossovers];
+            int[] crossoverPoints = new int[this.numberOfCrossovers];
             parents = new double[partners.size() + 1][];
             children = new double[partners.size() + 1][];
             for (int i = 0; i < result.length; i++) {
@@ -68,11 +64,11 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
                 System.arraycopy(((InterfaceESIndividual) result[i]).getDGenotype(), 0, parents[i], 0, parents[i].length);
                 System.arraycopy(((InterfaceESIndividual) result[i]).getDGenotype(), 0, children[i], 0, parents[i].length);
             }
-            for (int i = 0; i < this.m_NumberOfCrossovers; i++) {
+            for (int i = 0; i < this.numberOfCrossovers; i++) {
                 crossoverPoints[i] = RNG.randomInt(0, length - 1);
             }
             for (int i = 0; i < length; i++) {
-                for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
+                for (int j = 0; j < this.numberOfCrossovers; j++) {
                     if (i == crossoverPoints[j]) {
                         mixer++;
                     }
@@ -105,7 +101,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESNPointDiscrete) {
             CrossoverESNPointDiscrete cross = (CrossoverESNPointDiscrete) crossover;
-            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) {
+            if (this.numberOfCrossovers != cross.numberOfCrossovers) {
                 return false;
             }
             return true;
@@ -125,7 +121,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override
@@ -165,11 +161,11 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
         if (crossovers < 0) {
             crossovers = 0;
         }
-        this.m_NumberOfCrossovers = crossovers;
+        this.numberOfCrossovers = crossovers;
     }
 
     public int getNumberOfCrossovers() {
-        return this.m_NumberOfCrossovers;
+        return this.numberOfCrossovers;
     }
 
     public String numberOfCrossoversTipText() {

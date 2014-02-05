@@ -8,16 +8,11 @@ import eva2.optimization.population.Population;
 /**
  * The fitness modifier are defunct and are to be moved to
  * the selection operators...
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 17:46:22
- * To change this template use File | Settings | File Templates.
  */
 public class FitnessSharing implements java.io.Serializable, InterfaceFitnessModifier {
 
-    private double m_SharingDistance = 0.05;
-    private InterfaceDistanceMetric m_Metric = new PhenotypeMetric();
+    private double sharingDistance = 0.05;
+    private InterfaceDistanceMetric distanceMetric = new PhenotypeMetric();
 
     /**
      * This method allows you to modify the fitness of the individuals
@@ -56,8 +51,8 @@ public class FitnessSharing implements java.io.Serializable, InterfaceFitnessMod
                 tmpIndy = (AbstractEAIndividual) population.get(i);
                 fitnessSharing = 0;
                 for (int j = 0; j < population.size(); j++) {
-                    if (this.m_SharingDistance < this.m_Metric.distance(tmpIndy, (AbstractEAIndividual) population.get(j))) {
-                        fitnessSharing += 1 - (this.m_Metric.distance(tmpIndy, (AbstractEAIndividual) population.get(j)) / this.m_SharingDistance);
+                    if (this.sharingDistance < this.distanceMetric.distance(tmpIndy, (AbstractEAIndividual) population.get(j))) {
+                        fitnessSharing += 1 - (this.distanceMetric.distance(tmpIndy, (AbstractEAIndividual) population.get(j)) / this.sharingDistance);
                     }
                 }
                 result[i] /= fitnessSharing;
@@ -87,11 +82,11 @@ public class FitnessSharing implements java.io.Serializable, InterfaceFitnessMod
      * @param SharingDistance
      */
     public void setSharingDistance(double SharingDistance) {
-        this.m_SharingDistance = SharingDistance;
+        this.sharingDistance = SharingDistance;
     }
 
     public double getSharingDistance() {
-        return this.m_SharingDistance;
+        return this.sharingDistance;
     }
 
     public String sharingDistanceTipText() {
@@ -104,11 +99,11 @@ public class FitnessSharing implements java.io.Serializable, InterfaceFitnessMod
      * @param Metric
      */
     public void setMetric(InterfaceDistanceMetric Metric) {
-        this.m_Metric = Metric;
+        this.distanceMetric = Metric;
     }
 
     public InterfaceDistanceMetric getMetric() {
-        return this.m_Metric;
+        return this.distanceMetric;
     }
 
     public String metricTipText() {

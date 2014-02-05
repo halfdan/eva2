@@ -5,14 +5,10 @@ import eva2.optimization.population.Population;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 25.03.2003
- * Time: 11:18:54
- * To change this template use Options | File Templates.
+ *
  */
 public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     /**
      * A constructor.
@@ -79,7 +75,7 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

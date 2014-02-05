@@ -17,14 +17,14 @@ import java.util.BitSet;
  * To change this template use Options | File Templates.
  */
 public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverGAUniform() {
 
     }
 
     public CrossoverGAUniform(CrossoverGAUniform c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -118,7 +118,7 @@ public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

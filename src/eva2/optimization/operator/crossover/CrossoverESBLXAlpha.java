@@ -15,16 +15,16 @@ import eva2.tools.math.RNG;
  */
 public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializable {
 
-    private InterfaceOptimizationProblem m_OptimizationProblem;
-    private double m_Alpha = 0.5;
+    private InterfaceOptimizationProblem optimizationProblem;
+    private double alpha = 0.5;
 
     public CrossoverESBLXAlpha() {
 
     }
 
     public CrossoverESBLXAlpha(CrossoverESBLXAlpha c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
-        this.m_Alpha = c.m_Alpha;
+        this.optimizationProblem = c.optimizationProblem;
+        this.alpha = c.alpha;
     }
 
     /**
@@ -78,7 +78,7 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
             double I = 0;
             for (int i = 0; i < children.length; i++) {
                 for (int j = 0; j < children[i].length; j++) {
-                    I = (extremeValues[j][1] - extremeValues[j][0]) * this.m_Alpha;
+                    I = (extremeValues[j][1] - extremeValues[j][0]) * this.alpha;
                     children[i][j] = RNG.randomDouble(extremeValues[j][0] - I, extremeValues[j][1] + I);
                 }
             }
@@ -105,7 +105,7 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESBLXAlpha) {
             CrossoverESBLXAlpha cross = (CrossoverESBLXAlpha) crossover;
-            if (this.m_Alpha != cross.m_Alpha) {
+            if (this.alpha != cross.alpha) {
                 return false;
             }
             return true;
@@ -125,7 +125,7 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override
@@ -165,11 +165,11 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
         if (a < 0) {
             a = 0;
         }
-        this.m_Alpha = a;
+        this.alpha = a;
     }
 
     public double getAlpha() {
-        return this.m_Alpha;
+        return this.alpha;
     }
 
     public String alphaTipText() {

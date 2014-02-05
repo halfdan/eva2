@@ -11,20 +11,17 @@ import java.util.BitSet;
 
 /**
  * This operator performs one-point crossover.
- * <p/>
- * Created by IntelliJ IDEA. User: streiche Date: 03.04.2003 Time: 10:34:17 To
- * change this template use Options | File Templates.
  */
 public class CrossoverGADefault implements InterfaceCrossover,
         java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverGADefault() {
 
     }
 
     public CrossoverGADefault(CrossoverGADefault c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -127,7 +124,7 @@ public class CrossoverGADefault implements InterfaceCrossover,
     @Override
     public void init(AbstractEAIndividual individual,
                      InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

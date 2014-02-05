@@ -6,38 +6,33 @@ import eva2.optimization.individuals.InterfaceDataTypeDouble;
 /**
  * This area constraint for parallelization is based on
  * the class type an individual belongs to.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 03.10.2004
- * Time: 15:07:36
- * To change this template use File | Settings | File Templates.
  */
 public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.io.Serializable {
 
-    private double[] m_Class;
-    private double[][] m_OtherClasses;
-    private boolean m_UsePhenotype = false;
+    private double[] classes;
+    private double[][] otherClasses;
+    private boolean usePhenotype = false;
 
     public ConstBelongsToDifferentClass() {
     }
 
     public ConstBelongsToDifferentClass(double[] m, double[][] b, boolean p) {
-        this.m_Class = m;
-        this.m_OtherClasses = b;
-        this.m_UsePhenotype = p;
+        this.classes = m;
+        this.otherClasses = b;
+        this.usePhenotype = p;
     }
 
     public ConstBelongsToDifferentClass(ConstBelongsToDifferentClass a) {
-        this.m_UsePhenotype = a.m_UsePhenotype;
-        if (a.m_Class != null) {
-            this.m_Class = new double[a.m_Class.length];
-            System.arraycopy(a.m_Class, 0, this.m_Class, 0, a.m_Class.length);
+        this.usePhenotype = a.usePhenotype;
+        if (a.classes != null) {
+            this.classes = new double[a.classes.length];
+            System.arraycopy(a.classes, 0, this.classes, 0, a.classes.length);
         }
-        if (a.m_OtherClasses != null) {
-            this.m_OtherClasses = new double[a.m_OtherClasses.length][];
-            for (int i = 0; i < a.m_OtherClasses.length; i++) {
-                this.m_OtherClasses[i] = new double[a.m_OtherClasses[i].length];
-                System.arraycopy(a.m_OtherClasses[i], 0, this.m_OtherClasses[i], 0, a.m_OtherClasses[i].length);
+        if (a.otherClasses != null) {
+            this.otherClasses = new double[a.otherClasses.length][];
+            for (int i = 0; i < a.otherClasses.length; i++) {
+                this.otherClasses[i] = new double[a.otherClasses[i].length];
+                System.arraycopy(a.otherClasses[i], 0, this.otherClasses[i], 0, a.otherClasses[i].length);
             }
         }
     }
@@ -57,14 +52,14 @@ public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.i
     @Override
     public boolean isValid(AbstractEAIndividual indy) {
         double[] data;
-        if (this.m_UsePhenotype && (indy instanceof InterfaceDataTypeDouble)) {
+        if (this.usePhenotype && (indy instanceof InterfaceDataTypeDouble)) {
             data = ((InterfaceDataTypeDouble) indy).getDoubleData();
         } else {
             data = ((AbstractEAIndividual) indy).getFitness();
         }
-        double distanceToMyClass = this.distance(data, this.m_Class);
-        for (int i = 0; i < this.m_OtherClasses.length; i++) {
-            if (distanceToMyClass > this.distance(data, this.m_OtherClasses[i])) {
+        double distanceToMyClass = this.distance(data, this.classes);
+        for (int i = 0; i < this.otherClasses.length; i++) {
+            if (distanceToMyClass > this.distance(data, this.otherClasses[i])) {
                 return false;
             }
         }

@@ -16,14 +16,14 @@ import eva2.tools.math.RNG;
  */
 public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializable {
 
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverGIUniform() {
 
     }
 
     public CrossoverGIUniform(CrossoverGIUniform c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -117,7 +117,7 @@ public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

@@ -8,15 +8,10 @@ import eva2.optimization.population.Population;
 /**
  * The fitness modifier are defunct and are to be moved to
  * the selection operators...
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 17:51:45
- * To change this template use File | Settings | File Templates.
  */
 public class FitnessAdaptiveClustering implements java.io.Serializable, InterfaceFitnessModifier {
 
-    private InterfaceClustering m_ClusteringAlgorithm = new ClusteringDensityBased();
+    private InterfaceClustering clusteringAlgorithm = new ClusteringDensityBased();
 
     /**
      * This method allows you to modify the fitness of the individuals
@@ -49,9 +44,9 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
                 // also note that if all individual achieve equal fitness the sum will be zero
                 result[i] = data[i][x] - min + 0.1;
             }
-            this.m_ClusteringAlgorithm.initClustering(population);
+            this.clusteringAlgorithm.initClustering(population);
             // Now search for clusters
-            Population[] ClusterResult = this.m_ClusteringAlgorithm.cluster(population, population);
+            Population[] ClusterResult = this.clusteringAlgorithm.cluster(population, population);
             Population cluster;
             for (int i = 1; i < ClusterResult.length; i++) {
                 cluster = ClusterResult[i];
@@ -85,11 +80,11 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
      * @return The current clustering method
      */
     public InterfaceClustering getClusteringAlgorithm() {
-        return this.m_ClusteringAlgorithm;
+        return this.clusteringAlgorithm;
     }
 
     public void setClusteringAlgorithm(InterfaceClustering b) {
-        this.m_ClusteringAlgorithm = b;
+        this.clusteringAlgorithm = b;
     }
 
     public String clusteringAlgorithmTipText() {

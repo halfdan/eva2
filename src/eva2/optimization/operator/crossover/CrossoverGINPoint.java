@@ -14,16 +14,16 @@ import eva2.tools.math.RNG;
  * To change this template use File | Settings | File Templates.
  */
 public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
-    private int m_NumberOfCrossovers = 3;
+    private InterfaceOptimizationProblem optimizationProblem;
+    private int numberOfCrossovers = 3;
 
     public CrossoverGINPoint() {
 
     }
 
     public CrossoverGINPoint(CrossoverGINPoint mutator) {
-        this.m_OptimizationProblem = mutator.m_OptimizationProblem;
-        this.m_NumberOfCrossovers = mutator.m_NumberOfCrossovers;
+        this.optimizationProblem = mutator.optimizationProblem;
+        this.numberOfCrossovers = mutator.numberOfCrossovers;
     }
 
     /**
@@ -58,7 +58,7 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
         if ((indy1 instanceof InterfaceGIIndividual) && (partners.get(0) instanceof InterfaceGIIndividual)) {
             int length = ((InterfaceGIIndividual) indy1).getGenotypeLength();
             int mixer = RNG.randomInt(0, partners.size());
-            int[] crossoverPoints = new int[this.m_NumberOfCrossovers];
+            int[] crossoverPoints = new int[this.numberOfCrossovers];
             int[][][] tmpInts = new int[2][partners.size() + 1][];
 
             tmpInts[0][0] = ((InterfaceGIIndividual) indy1).getIGenotype();
@@ -70,12 +70,12 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
                 length = Math.max(length, ((InterfaceGIIndividual) partners.get(i)).getGenotypeLength());
             }
 
-            for (int i = 0; i < this.m_NumberOfCrossovers; i++) {
+            for (int i = 0; i < this.numberOfCrossovers; i++) {
                 crossoverPoints[i] = RNG.randomInt(0, length - 1);
                 //System.out.println("crpoint: "+crossoverPoints[i]);
             }
             for (int i = 0; i < length; i++) {
-                for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
+                for (int j = 0; j < this.numberOfCrossovers; j++) {
                     if (i == crossoverPoints[j]) {
                         mixer++;
                     }
@@ -110,7 +110,7 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGINPoint) {
             CrossoverGINPoint cross = (CrossoverGINPoint) crossover;
-            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) {
+            if (this.numberOfCrossovers != cross.numberOfCrossovers) {
                 return false;
             }
             return true;
@@ -130,7 +130,7 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override
@@ -170,11 +170,11 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
         if (crossovers < 0) {
             crossovers = 0;
         }
-        this.m_NumberOfCrossovers = crossovers;
+        this.numberOfCrossovers = crossovers;
     }
 
     public int getNumberOfCrossovers() {
-        return this.m_NumberOfCrossovers;
+        return this.numberOfCrossovers;
     }
 
     public String numberOfCrossoversTipText() {

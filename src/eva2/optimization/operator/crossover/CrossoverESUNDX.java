@@ -37,18 +37,18 @@ import java.util.ArrayList;
  */
 public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable {
 
-    private InterfaceOptimizationProblem m_OptimizationProblem;
-    private double m_Eta = 0.2;
-    private double m_Zeta = 0.2;
+    private InterfaceOptimizationProblem optimizationProblem;
+    private double eta = 0.2;
+    private double zeta = 0.2;
 
     public CrossoverESUNDX() {
 
     }
 
     public CrossoverESUNDX(CrossoverESUNDX c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
-        this.m_Eta = c.m_Eta;
-        this.m_Zeta = c.m_Zeta;
+        this.optimizationProblem = c.optimizationProblem;
+        this.eta = c.eta;
+        this.zeta = c.zeta;
     }
 
     /**
@@ -109,13 +109,13 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
                 // then the given coordinates
                 for (int j = 0; j < givenCoordinates.size(); j++) {
                     tmpD = (double[]) givenCoordinates.get(j);
-                    w = RNG.gaussianDouble(this.m_Zeta);
+                    w = RNG.gaussianDouble(this.zeta);
                     children[i] = Mathematics.vvAdd(children[i], Mathematics.svMult(w, tmpD));
                 }
                 // now the missing stuff
                 for (int j = 0; j < missingCorrdinates.size(); j++) {
                     tmpD = (double[]) missingCorrdinates.get(j);
-                    w = RNG.gaussianDouble(this.m_Eta);
+                    w = RNG.gaussianDouble(this.eta);
                     children[i] = Mathematics.vvAdd(children[i], Mathematics.svMult(w, tmpD));
                 }
             }
@@ -219,7 +219,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     public static void main(String[] args) {
@@ -288,8 +288,8 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
             plot.setUnconnectedPoint(2, 2, 0);
         }
         CrossoverESUNDX cross = new CrossoverESUNDX();
-        cross.m_Eta = 0.2;
-        cross.m_Zeta = 0.2;
+        cross.eta = 0.2;
+        cross.zeta = 0.2;
         AbstractEAIndividual[] offsprings;
         for (int i = 0; i < 500; i++) {
             offsprings = cross.mate(indy1, pop);
@@ -335,11 +335,11 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         if (a < 0) {
             a = 0;
         }
-        this.m_Eta = a;
+        this.eta = a;
     }
 
     public double getEta() {
-        return this.m_Eta;
+        return this.eta;
     }
 
     public String etaTipText() {
@@ -350,11 +350,11 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         if (a < 0) {
             a = 0;
         }
-        this.m_Zeta = a;
+        this.zeta = a;
     }
 
     public double getZeta() {
-        return this.m_Zeta;
+        return this.zeta;
     }
 
     public String zetaTipText() {

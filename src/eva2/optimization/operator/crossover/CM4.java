@@ -15,14 +15,14 @@ import java.util.BitSet;
  * @author Alex
  */
 public class CM4 implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CM4() {
 
     }
 
     public CM4(CM4 c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class CM4 implements InterfaceCrossover, java.io.Serializable {
     @Override
     public void init(AbstractEAIndividual individual,
                      InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

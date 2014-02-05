@@ -20,8 +20,7 @@ import java.util.BitSet;
  * @author mkron, streiche
  */
 public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializable {
-    //    private InterfaceOptimizationProblem    m_OptimizationProblem;
-    private int m_NumberOfCrossovers = 3;
+    private int numberOfCrossovers = 3;
     private static boolean TRACE = false;
 
     public CrossoverGAGINPoint() {
@@ -34,8 +33,7 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
     }
 
     public CrossoverGAGINPoint(CrossoverGAGINPoint mutator) {
-//        this.m_OptimizationProblem    = mutator.m_OptimizationProblem;
-        this.m_NumberOfCrossovers = mutator.m_NumberOfCrossovers;
+        this.numberOfCrossovers = mutator.numberOfCrossovers;
     }
 
     /**
@@ -89,12 +87,12 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
                 System.out.println("Before CO: " + BeanInspector.toString(newGenotypes));
             }
             int mixer = RNG.randomInt(0, partners.size()); // partner index with which to exchange genes
-            int[] crossoverPoints = getCrossoverPoints(length, m_NumberOfCrossovers);
+            int[] crossoverPoints = getCrossoverPoints(length, numberOfCrossovers);
             if (TRACE) {
                 System.out.println("CO points: " + BeanInspector.toString(crossoverPoints));
             }
             for (int i = 0; i < length; i++) { // loop positions
-                for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
+                for (int j = 0; j < this.numberOfCrossovers; j++) {
                     if (i == crossoverPoints[j]) {
                         mixer++;
                     } // possibly switch partner to exchange with
@@ -182,10 +180,10 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
 //                length = Math.max(length, ((InterfaceGAIndividual)partners.get(i)).getGenotypeLength());
 //            }
 //
-//            crossoverPoints=getCrossoverPoints(length, m_NumberOfCrossovers);
+//            crossoverPoints=getCrossoverPoints(length, numberOfCrossovers);
 //
 //            for (int i = 0; i < length; i++) {
-//                for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
+//                for (int j = 0; j < this.numberOfCrossovers; j++) {
 //                    if (i == crossoverPoints[j]) mixer++;
 //                }
 //                for (int j = 0; j < tmpBitSet[0].length; j++) {
@@ -230,7 +228,7 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGAGINPoint) {
             CrossoverGAGINPoint cross = (CrossoverGAGINPoint) crossover;
-            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) {
+            if (this.numberOfCrossovers != cross.numberOfCrossovers) {
                 return false;
             }
             return true;
@@ -250,7 +248,7 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-//        this.m_OptimizationProblem = opt;
+//        this.optimizationProblem = opt;
     }
 
     @Override
@@ -290,11 +288,11 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
         if (crossovers < 0) {
             crossovers = 0;
         }
-        this.m_NumberOfCrossovers = crossovers;
+        this.numberOfCrossovers = crossovers;
     }
 
     public int getNumberOfCrossovers() {
-        return this.m_NumberOfCrossovers;
+        return this.numberOfCrossovers;
     }
 
     public String numberOfCrossoversTipText() {

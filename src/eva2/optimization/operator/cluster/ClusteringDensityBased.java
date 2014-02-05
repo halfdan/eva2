@@ -12,20 +12,15 @@ import java.util.ArrayList;
 /**
  * The DBSCAN method. As far as I recall this is an hierachical
  * clustering method like the single-link method.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.04.2003
- * Time: 15:17:53
- * To change this template use Options | File Templates.
  */
 public class ClusteringDensityBased implements InterfaceClusteringDistanceParam, InterfaceClusteringMetricBased, java.io.Serializable {
 
-    private InterfaceDistanceMetric m_Metric = new PhenotypeMetric();
-    private double m_ClusterDistance = 0.1;
-    private int m_MinimumGroupSize = 3;
-    private boolean[][] ConnectionMatrix;
-    private boolean[] Clustered;
-    private boolean m_TestConvergingSpeciesOnBestOnly = true;
+    private InterfaceDistanceMetric metric = new PhenotypeMetric();
+    private double clusterDistance = 0.1;
+    private int minimumGroupSize = 3;
+    private boolean[][] connectionMatrix;
+    private boolean[] clustered;
+    private boolean testConvergingSpeciesOnBestOnly = true;
 
     public ClusteringDensityBased() {
     }
@@ -36,7 +31,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      * @param sigma the minimum cluster distance
      */
     public ClusteringDensityBased(double sigma) {
-        m_ClusterDistance = sigma;
+        clusterDistance = sigma;
     }
 
     /**
@@ -45,8 +40,8 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      * @param sigma the minimum cluster distance
      */
     public ClusteringDensityBased(double sigma, int minGSize) {
-        m_ClusterDistance = sigma;
-        m_MinimumGroupSize = minGSize;
+        clusterDistance = sigma;
+        minimumGroupSize = minGSize;
     }
 
     /**
@@ -55,36 +50,36 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      * @param sigma the minimum cluster distance
      */
     public ClusteringDensityBased(double sigma, int minGSize, InterfaceDistanceMetric metric) {
-        m_ClusterDistance = sigma;
-        m_MinimumGroupSize = minGSize;
-        m_Metric = metric;
+        clusterDistance = sigma;
+        minimumGroupSize = minGSize;
+        this.metric = metric;
     }
 
     public ClusteringDensityBased(ClusteringDensityBased a) {
-        if (a.m_Metric != null) {
-            this.m_Metric = (InterfaceDistanceMetric) a.m_Metric.clone();
+        if (a.metric != null) {
+            this.metric = (InterfaceDistanceMetric) a.metric.clone();
         }
-        this.m_TestConvergingSpeciesOnBestOnly = a.m_TestConvergingSpeciesOnBestOnly;
-        this.m_ClusterDistance = a.m_ClusterDistance;
-        this.m_MinimumGroupSize = a.m_MinimumGroupSize;
-        if (a.Clustered != null) {
-            this.Clustered = new boolean[a.Clustered.length];
-            for (int i = 0; i < this.Clustered.length; i++) {
-                if (a.Clustered[i]) {
-                    this.Clustered[i] = true;
+        this.testConvergingSpeciesOnBestOnly = a.testConvergingSpeciesOnBestOnly;
+        this.clusterDistance = a.clusterDistance;
+        this.minimumGroupSize = a.minimumGroupSize;
+        if (a.clustered != null) {
+            this.clustered = new boolean[a.clustered.length];
+            for (int i = 0; i < this.clustered.length; i++) {
+                if (a.clustered[i]) {
+                    this.clustered[i] = true;
                 } else {
-                    this.Clustered[i] = false;
+                    this.clustered[i] = false;
                 }
             }
         }
-        if (a.ConnectionMatrix != null) {
-            this.ConnectionMatrix = new boolean[a.ConnectionMatrix.length][a.ConnectionMatrix[0].length];
-            for (int i = 0; i < this.ConnectionMatrix.length; i++) {
-                for (int j = 0; j < this.ConnectionMatrix[i].length; j++) {
-                    if (a.ConnectionMatrix[i][j]) {
-                        this.ConnectionMatrix[i][j] = true;
+        if (a.connectionMatrix != null) {
+            this.connectionMatrix = new boolean[a.connectionMatrix.length][a.connectionMatrix[0].length];
+            for (int i = 0; i < this.connectionMatrix.length; i++) {
+                for (int j = 0; j < this.connectionMatrix[i].length; j++) {
+                    if (a.connectionMatrix[i][j]) {
+                        this.connectionMatrix[i][j] = true;
                     } else {
-                        this.ConnectionMatrix[i][j] = false;
+                        this.connectionMatrix[i][j] = false;
                     }
                 }
             }
@@ -104,8 +99,8 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
 
     @Override
     public Population[] cluster(Population pop, Population referencePop) {
-        ConnectionMatrix = new boolean[pop.size()][pop.size()];
-        Clustered = new boolean[pop.size()];
+        connectionMatrix = new boolean[pop.size()][pop.size()];
+        clustered = new boolean[pop.size()];
         AbstractEAIndividual tmpIndy1, tmpIndy2;
         Population PopulationOfUnclustered, Cluster, template;
         ArrayList<Population> ClusteredPopulations = new ArrayList<Population>();
@@ -118,32 +113,32 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
         // Build the connection Matrix
         for (int i = 0; i < pop.size(); i++) {
             tmpIndy1 = (AbstractEAIndividual) pop.get(i);
-            ConnectionMatrix[i][i] = true;
+            connectionMatrix[i][i] = true;
             for (int j = i + 1; j < pop.size(); j++) {
                 tmpIndy2 = (AbstractEAIndividual) pop.get(j);
                 if (tmpIndy1 == null || (tmpIndy2 == null)) {
                     System.err.println("Warning: Individual should not be null (ClusteringDensityBased)!");
                 }
-                if ((tmpIndy1 != null) && (tmpIndy2 != null) && (this.m_Metric.distance(tmpIndy1, tmpIndy2) < this.m_ClusterDistance)) {
-                    ConnectionMatrix[i][j] = true;
-                    ConnectionMatrix[j][i] = true;
+                if ((tmpIndy1 != null) && (tmpIndy2 != null) && (this.metric.distance(tmpIndy1, tmpIndy2) < this.clusterDistance)) {
+                    connectionMatrix[i][j] = true;
+                    connectionMatrix[j][i] = true;
                 } else {
-                    ConnectionMatrix[i][j] = false;
-                    ConnectionMatrix[j][i] = false;
+                    connectionMatrix[i][j] = false;
+                    connectionMatrix[j][i] = false;
                 }
             }
         }
 
-        for (int i = 0; i < Clustered.length; i++) {
-            Clustered[i] = false;
+        for (int i = 0; i < clustered.length; i++) {
+            clustered[i] = false;
         }
 
         // Now identify clusters within pop and add them to the result
-        for (int i = 0; i < ConnectionMatrix.length; i++) {
-            if (!Clustered[i]) {
+        for (int i = 0; i < connectionMatrix.length; i++) {
+            if (!clustered[i]) {
                 Cluster = (Population) template.clone();
                 this.addRowToPopulation(i, Cluster, pop);
-                if (Cluster.size() >= this.m_MinimumGroupSize) {
+                if (Cluster.size() >= this.minimumGroupSize) {
                     ClusteredPopulations.add(Cluster);
                 } else {
                     PopulationOfUnclustered.addPopulation(Cluster);
@@ -159,7 +154,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
     }
 
     /**
-     * This method adds all Connected and !Clustered Individuals form row index
+     * This method adds all Connected and !clustered Individuals form row index
      * to pop
      *
      * @param index   The index of the row that is to be computed.
@@ -167,11 +162,11 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      * @param source  The source which is to be clustered.
      */
     private void addRowToPopulation(int index, Population cluster, Population source) {
-        for (int i = 0; i < ConnectionMatrix[index].length; i++) {
-            if ((!Clustered[i]) && (ConnectionMatrix[index][i])) {
-                Clustered[i] = true;
-                ConnectionMatrix[index][i] = false;
-                ConnectionMatrix[i][index] = false;
+        for (int i = 0; i < connectionMatrix[index].length; i++) {
+            if ((!clustered[i]) && (connectionMatrix[index][i])) {
+                clustered[i] = true;
+                connectionMatrix[index][i] = false;
+                connectionMatrix[i][index] = false;
                 cluster.add(source.get(i));
                 this.addRowToPopulation(i, cluster, source);
             }
@@ -187,10 +182,10 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      */
     @Override
     public boolean mergingSpecies(Population species1, Population species2, Population referencePop) {
-        if (m_TestConvergingSpeciesOnBestOnly) {
-            double specDist = this.m_Metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual());
+        if (testConvergingSpeciesOnBestOnly) {
+            double specDist = this.metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual());
 //        	System.out.println("Dist between species is " + specDist);
-            return (specDist < this.m_ClusterDistance);
+            return (specDist < this.clusterDistance);
         } else {
             Population tmpPop = new Population(species1.size() + species2.size());
             tmpPop.addPopulation(species1);
@@ -209,8 +204,8 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
 //     * @return True or False.
 //     */
 //    public boolean belongsToSpecies(AbstractEAIndividual indy, Population species, Population pop) {
-//        if (this.m_TestConvergingSpeciesOnBestOnly) {
-//            if (this.distanceMetric.distance(indy, species.getBestEAIndividual()) < this.m_ClusterDistance) return true;
+//        if (this.testConvergingSpeciesOnBestOnly) {
+//            if (this.distanceMetric.distance(indy, species.getBestEAIndividual()) < this.clusterDistance) return true;
 //            else return false;
 //        } else {
 //            Population tmpPop = (Population)species.clone();
@@ -238,8 +233,8 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
             double minDist = -1;
             res[l] = -1;
             for (int spI = 0; spI < species.length; spI++) {  // O(species.length^2)
-                Pair<Integer, Double> iDist = Population.getClosestFarthestIndy(loners.getEAIndividual(l), species[spI], m_Metric, true);
-                if (iDist.tail() < m_ClusterDistance) { // its close enough to be added
+                Pair<Integer, Double> iDist = Population.getClosestFarthestIndy(loners.getEAIndividual(l), species[spI], metric, true);
+                if (iDist.tail() < clusterDistance) { // its close enough to be added
                     // set SP ID only if its the closest species which is still below cluster distance
                     if (minDist < 0 || (iDist.tail() < minDist)) {
                         res[l] = spI;
@@ -278,12 +273,12 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      */
     @Override
     public InterfaceDistanceMetric getMetric() {
-        return this.m_Metric;
+        return this.metric;
     }
 
     @Override
     public void setMetric(InterfaceDistanceMetric m) {
-        this.m_Metric = m;
+        this.metric = m;
     }
 
     public String metricTipText() {
@@ -296,14 +291,14 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      * @return The currently used minimal group size.
      */
     public int getMinimumGroupSize() {
-        return this.m_MinimumGroupSize;
+        return this.minimumGroupSize;
     }
 
     public void setMinimumGroupSize(int m) {
         if (m < 1) {
             m = 1;
         }
-        this.m_MinimumGroupSize = m;
+        this.minimumGroupSize = m;
     }
 
     public String minimumGroupSizeTipText() {
@@ -317,7 +312,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
 
     @Override
     public double getClustDistParam() {
-        return this.m_ClusterDistance;
+        return this.clusterDistance;
     }
 
     @Override
@@ -325,7 +320,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
         if (m < 0) {
             m = 0;
         }
-        this.m_ClusterDistance = m;
+        this.clusterDistance = m;
     }
 
     public String clustDistTipText() {
@@ -348,7 +343,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
 //            plot.plotArea.addDElement(popRep);
 //            //System.out.println("Adding" + i + " : ("+tmpIndy1.getDoubleData()[0]+"/"+tmpIndy1.getDoubleData()[1]+")");
 //            for (int j = i; j < pop.size(); j++) {
-//                if (ConnectionMatrix[i][j]) {
+//                if (connectionMatrix[i][j]) {
 //                    popRep = new DPointSet();
 //                    popRep.setConnected(true);
 //                    tmpIndy1 = (InterfaceDataTypeDouble)pop.get(i);

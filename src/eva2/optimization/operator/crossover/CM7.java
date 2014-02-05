@@ -14,7 +14,7 @@ import java.util.BitSet;
  * @author Alex
  */
 public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceEvaluatingCrossoverOperator {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
     private int evaluations = 0;
 
     public CM7() {
@@ -22,7 +22,7 @@ public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceE
     }
 
     public CM7(CM7 c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
         this.evaluations = c.evaluations;
     }
 
@@ -51,7 +51,7 @@ public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceE
                     different++;
                     data.flip(i);
                     ((InterfaceDataTypeBinary) indy1).setBinaryGenotype(data);
-                    this.m_OptimizationProblem.evaluate(indy1);
+                    this.optimizationProblem.evaluate(indy1);
                     this.evaluations++;
                     if (indy1.getFitness(0) < min) {
                         foundBetter = true;
@@ -75,7 +75,7 @@ public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceE
     @Override
     public void init(AbstractEAIndividual individual,
                      InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override
