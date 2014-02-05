@@ -37,8 +37,8 @@ public class AdaptiveCrossoverEAMixer extends CrossoverEAMixer implements Interf
      * @param mutators
      */
     public AdaptiveCrossoverEAMixer(InterfaceCrossover... crossovers) {
-        this.m_Crossers = new PropertyCrossoverMixer(crossovers);
-        this.m_Crossers.m_SelectedTargets = m_Crossers.m_AvailableTargets.clone();
+        this.crossoverMixer = new PropertyCrossoverMixer(crossovers);
+        this.crossoverMixer.selectedTargets = crossoverMixer.availableTargets.clone();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class AdaptiveCrossoverEAMixer extends CrossoverEAMixer implements Interf
     }
 
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt, Population pop, double fit) {
-        InterfaceCrossover[] mutators = this.m_Crossers.getSelectedCrossers();
+        InterfaceCrossover[] mutators = this.crossoverMixer.getSelectedCrossers();
         for (int i = 0; i < mutators.length; i++) {
             mutators[i].init(individual, opt);
         }
@@ -81,7 +81,7 @@ public class AdaptiveCrossoverEAMixer extends CrossoverEAMixer implements Interf
     }
 
     public void update(AbstractEAIndividual individual, InterfaceOptimizationProblem opt, Population pop, double fit) {
-        InterfaceCrossover[] mutators = this.m_Crossers.getSelectedCrossers();
+        InterfaceCrossover[] mutators = this.crossoverMixer.getSelectedCrossers();
         for (int i = 0; i < mutators.length; i++) {
             mutators[i].init(individual, opt);
         }

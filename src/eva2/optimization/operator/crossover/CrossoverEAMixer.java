@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluatingCrossoverOperator, java.io.Serializable {
     public static final String CROSSOVER_EA_MIXER_OPERATOR_KEY = "CrossoverEAMixerOperatorKey";
 
-    protected PropertyCrossoverMixer m_Crossers;
+    protected PropertyCrossoverMixer crossoverMixer;
     protected boolean useSelfAdaption = false;
     protected double tau1 = 0.15;
     protected double lowerLimitChance = 0.05;
@@ -51,18 +51,18 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
                 System.out.println("Illegal access exception for " + (String) crossers.get(i));
             }
         }
-        this.m_Crossers = new PropertyCrossoverMixer(tmpList);
+        this.crossoverMixer = new PropertyCrossoverMixer(tmpList);
         tmpList = new InterfaceCrossover[2];
         tmpList[0] = new CrossoverESArithmetical();
         tmpList[1] = new CrossoverESSBX();
-        this.m_Crossers.setSelectedCrossers(tmpList);
-        this.m_Crossers.normalizeWeights();
-        this.m_Crossers.setDescriptiveString("Combining alternative mutation operators, please norm the weights!");
-        this.m_Crossers.setWeightsLabel("Weights");
+        this.crossoverMixer.setSelectedCrossers(tmpList);
+        this.crossoverMixer.normalizeWeights();
+        this.crossoverMixer.setDescriptiveString("Combining alternative mutation operators, please norm the weights!");
+        this.crossoverMixer.setWeightsLabel("Weights");
     }
 
     public CrossoverEAMixer(CrossoverEAMixer mutator) {
-        this.m_Crossers = (PropertyCrossoverMixer) mutator.m_Crossers.clone();
+        this.crossoverMixer = (PropertyCrossoverMixer) mutator.crossoverMixer.clone();
         this.useSelfAdaption = mutator.useSelfAdaption;
         this.tau1 = mutator.tau1;
         this.lowerLimitChance = mutator.lowerLimitChance;
@@ -103,7 +103,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        InterfaceCrossover[] crossers = this.m_Crossers.getSelectedCrossers();
+        InterfaceCrossover[] crossers = this.crossoverMixer.getSelectedCrossers();
         for (int i = 0; i < crossers.length; i++) {
             crossers[i].init(individual, opt);
         }
@@ -118,8 +118,8 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      */
     @Override
     public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners) {
-        this.m_Crossers.normalizeWeights();
-        double[] probs = this.m_Crossers.getWeights();
+        this.crossoverMixer.normalizeWeights();
+        double[] probs = this.crossoverMixer.getWeights();
         if (this.useSelfAdaption) {
             for (int i = 0; i < probs.length; i++) {
                 probs[i] *= Math.exp(this.tau1 * RNG.gaussianDouble(1));
@@ -130,10 +130,10 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
                     probs[i] = 1;
                 }
             }
-            this.m_Crossers.normalizeWeights();
+            this.crossoverMixer.normalizeWeights();
         }
 
-        InterfaceCrossover[] crossover = this.m_Crossers.getSelectedCrossers();
+        InterfaceCrossover[] crossover = this.crossoverMixer.getSelectedCrossers();
         double pointer = RNG.randomFloat(0, 1);
         double dum = probs[0];
         lastOperatorIndex = 0;
@@ -197,11 +197,11 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
      * @param d The crossover operators.
      */
     public void setCrossovers(PropertyCrossoverMixer d) {
-        this.m_Crossers = d;
+        this.crossoverMixer = d;
     }
 
     public PropertyCrossoverMixer getCrossovers() {
-        return this.m_Crossers;
+        return this.crossoverMixer;
     }
 
     public String CrossoversTipText() {
@@ -268,7 +268,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
     @Override
     public int getEvaluations() {
         int numEvals = 0;
-        InterfaceCrossover[] crossers = this.m_Crossers.getSelectedCrossers();
+        InterfaceCrossover[] crossers = this.crossoverMixer.getSelectedCrossers();
         for (int i = 0; i < crossers.length; i++) {
             if (crossers[i] instanceof InterfaceEvaluatingCrossoverOperator) {
                 numEvals += ((InterfaceEvaluatingCrossoverOperator) crossers[i]).getEvaluations();
@@ -279,7 +279,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
 
     @Override
     public void resetEvaluations() {
-        InterfaceCrossover[] crossers = this.m_Crossers.getSelectedCrossers();
+        InterfaceCrossover[] crossers = this.crossoverMixer.getSelectedCrossers();
         for (int i = 0; i < crossers.length; i++) {
             if (crossers[i] instanceof InterfaceEvaluatingCrossoverOperator) {
                 ((InterfaceEvaluatingCrossoverOperator) crossers[i]).resetEvaluations();

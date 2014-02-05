@@ -11,22 +11,16 @@ import eva2.tools.math.RNG;
  * namely c[i]=Sum_j (r_i * p_ji)
  * where r_i are uniform random numbers normed to the sum of one and
  * p_ji is the i-th component of parent j.
- * <p/>
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 25.07.2003
- * Time: 16:14:54
- * To change this template use Options | File Templates.
  */
 public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Serializable {
 
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverESArithmetical() {
     }
 
     public CrossoverESArithmetical(CrossoverESArithmetical c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -126,7 +120,7 @@ public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Seri
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

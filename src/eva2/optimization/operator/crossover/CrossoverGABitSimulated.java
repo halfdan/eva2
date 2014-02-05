@@ -10,21 +10,17 @@ import eva2.tools.math.RNG;
 import java.util.BitSet;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 03.04.2003
- * Time: 15:03:55
- * To change this template use Options | File Templates.
+ *
  */
 public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverGABitSimulated() {
 
     }
 
     public CrossoverGABitSimulated(CrossoverGABitSimulated c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -124,7 +120,7 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

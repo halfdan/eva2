@@ -8,22 +8,17 @@ import eva2.tools.math.RNG;
 
 /**
  * One-point crossover on integer individuals.
- * <p/>
- * User: mkron, streiche
- * Date: 18.05.2005
- * Time: 17:10:28
- * To change this template use File | Settings | File Templates.
  */
 public class CrossoverGIDefault implements InterfaceCrossover, java.io.Serializable {
 
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverGIDefault() {
 
     }
 
     public CrossoverGIDefault(CrossoverGIDefault c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -125,7 +120,7 @@ public class CrossoverGIDefault implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

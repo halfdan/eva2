@@ -21,7 +21,7 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
      *
      */
     private static final long serialVersionUID = 8900427365914281930L;
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
     private boolean maintainMaxDepth = true;
     private static final boolean TRACE = false;
 
@@ -30,7 +30,7 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
 
     public CrossoverGPDefault(CrossoverGPDefault c) {
         this.maintainMaxDepth = c.maintainMaxDepth;
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -157,7 +157,7 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

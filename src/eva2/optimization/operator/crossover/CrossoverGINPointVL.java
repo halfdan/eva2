@@ -16,16 +16,16 @@ import java.util.BitSet;
  * To change this template use File | Settings | File Templates.
  */
 public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
-    private int m_NumberOfCrossovers = 3;
+    private InterfaceOptimizationProblem optimizationProblem;
+    private int numberOfCrossovers = 3;
 
     public CrossoverGINPointVL() {
 
     }
 
     public CrossoverGINPointVL(CrossoverGINPointVL mutator) {
-        this.m_OptimizationProblem = mutator.m_OptimizationProblem;
-        this.m_NumberOfCrossovers = mutator.m_NumberOfCrossovers;
+        this.optimizationProblem = mutator.optimizationProblem;
+        this.numberOfCrossovers = mutator.numberOfCrossovers;
     }
 
     /**
@@ -60,7 +60,7 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
         if ((indy1 instanceof InterfaceGIIndividual) && (partners.get(0) instanceof InterfaceGIIndividual)) {
             int[] length = new int[partners.size() + 1];
             int mixer = RNG.randomInt(0, partners.size());
-            int[][] crossoverPoints = new int[length.length][this.m_NumberOfCrossovers];
+            int[][] crossoverPoints = new int[length.length][this.numberOfCrossovers];
             int[][] parents = new int[partners.size() + 1][];
             int[][] offsprings = new int[partners.size() + 1][];
 
@@ -76,14 +76,14 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
             for (int i = 0; i < offsprings.length; i++) {
                 index = 0;
                 tmpLen = 0;
-                for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
+                for (int j = 0; j < this.numberOfCrossovers; j++) {
                     tmpLen += fragments[(i + j) % fragments.length][index].length;
                     index++;
                 }
                 offsprings[i] = new int[tmpLen];
                 index = 0;
                 tmpLen = 0;
-                for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
+                for (int j = 0; j < this.numberOfCrossovers; j++) {
                     System.arraycopy(fragments[(i + j) % fragments.length][index], 0, offsprings[i], tmpLen, fragments[(i + j) % fragments.length][index].length);
                     tmpLen += fragments[(i + j) % fragments.length][index].length;
                     index++;
@@ -108,19 +108,19 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
      * This method will return n fragments from the int arrays
      */
     private int[][][] getNFragmentsFrom(int[][] parents) {
-        int[][][] result = new int[parents.length][this.m_NumberOfCrossovers][];
+        int[][][] result = new int[parents.length][this.numberOfCrossovers][];
 
         for (int i = 0; i < parents.length; i++) {
             // for each parents get n fragments
-            if (this.m_NumberOfCrossovers + 2 > parents[i].length) {
-                for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
+            if (this.numberOfCrossovers + 2 > parents[i].length) {
+                for (int j = 0; j < this.numberOfCrossovers; j++) {
                     result[i][j] = new int[parents[i].length];
                     System.arraycopy(parents[i], 0, result[i][j], 0, parents[i].length);
                 }
             } else {
                 int[] crossoverpoints = this.getCrossoverPoints(parents[i].length);
                 int lastPoint = 0;
-                for (int j = 0; j < this.m_NumberOfCrossovers; j++) {
+                for (int j = 0; j < this.numberOfCrossovers; j++) {
                     result[i][j] = new int[crossoverpoints[j] - lastPoint];
                     System.arraycopy(parents[i], lastPoint, result[i][j], 0, crossoverpoints[j] - lastPoint);
                     lastPoint = crossoverpoints[j];
@@ -138,10 +138,10 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
      * @return int[] the list of crossover points
      */
     private int[] getCrossoverPoints(int length) {
-        int[] result = new int[this.m_NumberOfCrossovers];
+        int[] result = new int[this.numberOfCrossovers];
         BitSet bitset = new BitSet(length);
 
-        while (bitset.cardinality() < this.m_NumberOfCrossovers) {
+        while (bitset.cardinality() < this.numberOfCrossovers) {
             bitset.set(RNG.randomInt(1, length - 2));
         }
         int index = 0;
@@ -165,7 +165,7 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGINPointVL) {
             CrossoverGINPointVL cross = (CrossoverGINPointVL) crossover;
-            if (this.m_NumberOfCrossovers != cross.m_NumberOfCrossovers) {
+            if (this.numberOfCrossovers != cross.numberOfCrossovers) {
                 return false;
             }
             return true;
@@ -185,7 +185,7 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override
@@ -225,11 +225,11 @@ public class CrossoverGINPointVL implements InterfaceCrossover, java.io.Serializ
         if (crossovers < 0) {
             crossovers = 0;
         }
-        this.m_NumberOfCrossovers = crossovers;
+        this.numberOfCrossovers = crossovers;
     }
 
     public int getNumberOfCrossovers() {
-        return this.m_NumberOfCrossovers;
+        return this.numberOfCrossovers;
     }
 
     public String numberOfCrossoversTipText() {

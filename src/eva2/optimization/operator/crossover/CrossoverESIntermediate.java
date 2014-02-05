@@ -13,14 +13,14 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
  * To change this template use Options | File Templates.
  */
 public class CrossoverESIntermediate implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverESIntermediate() {
 
     }
 
     public CrossoverESIntermediate(CrossoverESIntermediate c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -112,7 +112,7 @@ public class CrossoverESIntermediate implements InterfaceCrossover, java.io.Seri
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

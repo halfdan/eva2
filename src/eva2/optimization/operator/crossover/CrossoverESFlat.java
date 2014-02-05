@@ -14,22 +14,16 @@ import eva2.tools.math.RNG;
  * <p/>
  * where c[i] is the i-th child component and p_ij is the i-th component
  * of parent j.
- * <p/>
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 02.12.2003
- * Time: 14:01:31
- * To change this template use Options | File Templates.
  */
 public class CrossoverESFlat implements InterfaceCrossover, java.io.Serializable {
-    private InterfaceOptimizationProblem m_OptimizationProblem;
+    private InterfaceOptimizationProblem optimizationProblem;
 
     public CrossoverESFlat() {
 
     }
 
     public CrossoverESFlat(CrossoverESFlat c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
+        this.optimizationProblem = c.optimizationProblem;
     }
 
     /**
@@ -125,7 +119,7 @@ public class CrossoverESFlat implements InterfaceCrossover, java.io.Serializable
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     @Override

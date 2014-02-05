@@ -11,24 +11,20 @@ import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 09.02.2005
- * Time: 14:27:22
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable {
 
-    private InterfaceOptimizationProblem m_OptimizationProblem;
-    private double m_Epsilon = 1.2;
+    private InterfaceOptimizationProblem optimizationProblem;
+    private double epsilon = 1.2;
 
     public CrossoverESSPX() {
 
     }
 
     public CrossoverESSPX(CrossoverESSPX c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
-        this.m_Epsilon = c.m_Epsilon;
+        this.optimizationProblem = c.optimizationProblem;
+        this.epsilon = c.epsilon;
     }
 
     /**
@@ -77,7 +73,7 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
 
             // calculate the Y vectors
             for (int i = 0; i < parents.length; i++) {
-                Y[i] = Mathematics.vvAdd(g, Mathematics.svMult(this.m_Epsilon, Mathematics.vvSub(parents[i], g)));
+                Y[i] = Mathematics.vvAdd(g, Mathematics.svMult(this.epsilon, Mathematics.vvSub(parents[i], g)));
             }
 
             // now for each child the C vectors and the result
@@ -135,7 +131,7 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     public static void main(String[] args) {
@@ -204,7 +200,7 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
             plot.setUnconnectedPoint(2, 2, 0);
         }
         CrossoverESSPX cross = new CrossoverESSPX();
-        cross.m_Epsilon = 1.2;
+        cross.epsilon = 1.2;
         AbstractEAIndividual[] offsprings;
         for (int i = 0; i < 500; i++) {
             offsprings = cross.mate(indy1, pop);
@@ -250,11 +246,11 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
         if (a < 0) {
             a = 0;
         }
-        this.m_Epsilon = a;
+        this.epsilon = a;
     }
 
     public double getEpsilon() {
-        return this.m_Epsilon;
+        return this.epsilon;
     }
 
     public String epsilonTipText() {

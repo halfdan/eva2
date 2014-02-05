@@ -10,28 +10,24 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.02.2004
- * Time: 17:49:16
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable {
 
-    private InterfaceOptimizationProblem m_OptimizationProblem;
-    private double m_Eta = 0.2;
+    private InterfaceOptimizationProblem optimizationProblem;
+    private double eta = 0.2;
 
     public CrossoverESSBX() {
 
     }
 
     public CrossoverESSBX(double eta) {
-        m_Eta = eta;
+        this.eta = eta;
     }
 
     public CrossoverESSBX(CrossoverESSBX c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
-        this.m_Eta = c.m_Eta;
+        this.optimizationProblem = c.optimizationProblem;
+        this.eta = c.eta;
     }
 
     /**
@@ -77,9 +73,9 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
             for (int i = 0; i < children[0].length; i++) {
                 u = RNG.randomDouble(0, 1);
                 if (u <= 0.5) {
-                    beta = Math.pow((2 * u), 1 / (this.m_Eta + 1));
+                    beta = Math.pow((2 * u), 1 / (this.eta + 1));
                 } else {
-                    beta = Math.pow((0.5 / (1 - u)), 1 / (this.m_Eta + 1));
+                    beta = Math.pow((0.5 / (1 - u)), 1 / (this.eta + 1));
                 }
                 children[0][i] = 0.5 * ((1 + beta) * parents[0][i] + (1 - beta) * parents[1][i]);
                 children[1][i] = 0.5 * ((1 - beta) * parents[0][i] + (1 + beta) * parents[1][i]);
@@ -107,7 +103,7 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESSBX) {
             CrossoverESSBX cross = (CrossoverESSBX) crossover;
-            if (this.m_Eta != cross.m_Eta) {
+            if (this.eta != cross.eta) {
                 return false;
             }
             return true;
@@ -127,7 +123,7 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     public static void main(String[] args) {
@@ -182,7 +178,7 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
         plot.setUnconnectedPoint(2, 2, 0);
 
         CrossoverESSBX cross = new CrossoverESSBX();
-        cross.m_Eta = 0.2;
+        cross.eta = 0.2;
         AbstractEAIndividual[] offsprings;
         for (int i = 0; i < 5000; i++) {
             offsprings = cross.mate(indy1, pop);
@@ -232,11 +228,11 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
         if (a < 0) {
             a = 0;
         }
-        this.m_Eta = a;
+        this.eta = a;
     }
 
     public double getEta() {
-        return this.m_Eta;
+        return this.eta;
     }
 
     public String etaTipText() {

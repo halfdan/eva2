@@ -14,26 +14,22 @@ import eva2.tools.math.RNG;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 09.02.2005
- * Time: 11:17:17
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable {
 
-    private InterfaceOptimizationProblem m_OptimizationProblem;
-    private double m_Eta = 0.2;
-    private double m_Zeta = 0.2;
+    private InterfaceOptimizationProblem optimizationProblem;
+    private double eta = 0.2;
+    private double zeta = 0.2;
 
     public CrossoverESPCX() {
 
     }
 
     public CrossoverESPCX(CrossoverESPCX c) {
-        this.m_OptimizationProblem = c.m_OptimizationProblem;
-        this.m_Eta = c.m_Eta;
-        this.m_Zeta = c.m_Zeta;
+        this.optimizationProblem = c.optimizationProblem;
+        this.eta = c.eta;
+        this.zeta = c.zeta;
     }
 
     /**
@@ -106,12 +102,12 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
                 // first the parent and the d
                 for (int j = 0; j < parents[i].length; j++) {
                     children[i][j] = parents[i][j];
-                    children[i][j] += RNG.gaussianDouble(this.m_Zeta) * tmpD[j];
+                    children[i][j] += RNG.gaussianDouble(this.zeta) * tmpD[j];
                 }
                 // then the other parents
                 for (int j = 1; j < subSpace.size(); j++) {
                     tmpD = (double[]) subSpace.get(j);
-                    w = RNG.gaussianDouble(this.m_Zeta);
+                    w = RNG.gaussianDouble(this.zeta);
                     children[i] = Mathematics.vvAdd(children[i], Mathematics.svMult(w, tmpD));
                 }
             }
@@ -217,7 +213,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        this.m_OptimizationProblem = opt;
+        this.optimizationProblem = opt;
     }
 
     public static void main(String[] args) {
@@ -286,8 +282,8 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
             plot.setUnconnectedPoint(2, 2, 0);
         }
         CrossoverESPCX cross = new CrossoverESPCX();
-        cross.m_Eta = 0.2;
-        cross.m_Zeta = 0.2;
+        cross.eta = 0.2;
+        cross.zeta = 0.2;
         AbstractEAIndividual[] offsprings;
         for (int i = 0; i < 1; i++) {
             offsprings = cross.mate(indy1, pop);
@@ -333,11 +329,11 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         if (a < 0) {
             a = 0;
         }
-        this.m_Eta = a;
+        this.eta = a;
     }
 
     public double getEta() {
-        return this.m_Eta;
+        return this.eta;
     }
 
     public String etaTipText() {
@@ -348,11 +344,11 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         if (a < 0) {
             a = 0;
         }
-        this.m_Zeta = a;
+        this.zeta = a;
     }
 
     public double getZeta() {
-        return this.m_Zeta;
+        return this.zeta;
     }
 
     public String zetaTipText() {
