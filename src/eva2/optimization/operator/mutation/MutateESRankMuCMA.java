@@ -511,7 +511,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
         params.mC = (params.mC.plus(params.mC.transpose()).times(0.5)); // MAKE C SYMMETRIC
 
         EigenvalueDecomposition helper;
-//		this.m_Counter      = 0;
+//		this.counter      = 0;
         helper = new EigenvalueDecomposition(params.mC);
         params.mB = helper.getV(); // Return the eigenvector matrix
         params.eigenvalues = helper.getRealEigenvalues();

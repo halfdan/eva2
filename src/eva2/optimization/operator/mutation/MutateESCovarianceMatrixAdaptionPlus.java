@@ -9,12 +9,12 @@ import eva2.tools.math.Jama.Matrix;
 public class MutateESCovarianceMatrixAdaptionPlus extends
         MutateESCovarianceMatrixAdaption implements InterfaceMutation,
         InterfaceAdaptOperatorGenerational {
-    protected double m_psuccess;
-    protected double m_cp;
-    protected double m_psuccesstarget = 0.44;
-    protected double m_stepd;
-    protected double m_pthresh;
-    protected int m_lambda = 1;
+    protected double psuccess;
+    protected double cp;
+    protected double psuccesstarget = 0.44;
+    protected double stepd;
+    protected double pthresh;
+    protected int lambda = 1;
 
     public MutateESCovarianceMatrixAdaptionPlus() {
         super();
@@ -23,12 +23,12 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
     public MutateESCovarianceMatrixAdaptionPlus(
             MutateESCovarianceMatrixAdaptionPlus mutator) {
         super(mutator);
-        m_psuccess = mutator.m_psuccess;
-        m_cp = mutator.m_cp;
-        m_psuccesstarget = mutator.m_psuccesstarget;
-        m_lambda = mutator.m_lambda;
-        m_pthresh = mutator.m_pthresh;
-        m_stepd = mutator.m_stepd;
+        psuccess = mutator.psuccess;
+        cp = mutator.cp;
+        psuccesstarget = mutator.psuccesstarget;
+        lambda = mutator.lambda;
+        pthresh = mutator.pthresh;
+        stepd = mutator.stepd;
     }
 
     /**
@@ -55,14 +55,14 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
             return;
         }
         super.init(individual, opt);
-        m_psuccesstarget = 1.0 / (5 + Math.sqrt(m_lambda) / 2);
-        m_psuccess = m_psuccesstarget;
-        m_stepd = 1.0 + m_D / (2.0 * m_lambda);
-        m_cp = m_psuccesstarget * m_lambda / (2 + m_psuccesstarget * m_lambda);
-        m_c = 2.0 / (2.0 + m_D);
-        this.cov = 2.0 / (6.0 + Math.pow(m_D, 2)); // ATTN: differs from the
+        psuccesstarget = 1.0 / (5 + Math.sqrt(lambda) / 2);
+        psuccess = psuccesstarget;
+        stepd = 1.0 + D / (2.0 * lambda);
+        cp = psuccesstarget * lambda / (2 + psuccesstarget * lambda);
+        c = 2.0 / (2.0 + D);
+        this.cov = 2.0 / (6.0 + Math.pow(D, 2)); // ATTN: differs from the
         // standard CMA-ES
-        m_pthresh = 0.44;
+        pthresh = 0.44;
 
     }
 
@@ -82,8 +82,8 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
      */
     public void updateCovariance(AbstractEAIndividual child,
                                  AbstractEAIndividual parent) {
-        double[] step = new double[m_D];
-        for (int i = 0; i < m_D; i++) {
+        double[] step = new double[D];
+        for (int i = 0; i < D; i++) {
             step[i] = ((InterfaceESIndividual) parent).getDGenotype()[i]
                     - ((InterfaceESIndividual) child).getDGenotype()[i];
         }
@@ -91,8 +91,8 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
     }
 
     public void updateCovariance() {
-        double[] step = new double[m_D];
-        for (int i = 0; i < m_D; i++) {
+        double[] step = new double[D];
+        for (int i = 0; i < D; i++) {
             step[i] = Bz[i];
         }
         updateCovariance(step);
@@ -102,23 +102,23 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
      * @param step
      */
     public void updateCovariance(double[] step) {
-        for (int i = 0; i < m_D; i++) {
-            if (m_psuccess < m_pthresh) {
-                m_PathS[i] = (1.0 - m_c) * m_PathS[i]
-                        + Math.sqrt(m_c * (2.0 - m_c)) * (step[i])
-                        / m_SigmaGlobal;
+        for (int i = 0; i < D; i++) {
+            if (psuccess < pthresh) {
+                pathS[i] = (1.0 - c) * pathS[i]
+                        + Math.sqrt(c * (2.0 - c)) * (step[i])
+                        / sigmaGlobal;
             } else {
-                m_PathS[i] = (1.0 - m_c) * m_PathS[i];
+                pathS[i] = (1.0 - c) * pathS[i];
             }
 
         }
-        if (m_psuccess < m_pthresh) {
-            m_C = m_C.multi((1.0 - cov));
-            m_C.plusEquals(Matrix.outer(m_PathS, m_PathS).multi(cov));
+        if (psuccess < pthresh) {
+            C = C.multi((1.0 - cov));
+            C.plusEquals(Matrix.outer(pathS, pathS).multi(cov));
         } else {
-            m_C = m_C.multi((1.0 - cov)).plus(
-                    (Matrix.outer(m_PathS, m_PathS).plus(
-                            m_C.multi(m_c * (2.0 - m_c))).multi(cov)));
+            C = C.multi((1.0 - cov)).plus(
+                    (Matrix.outer(pathS, pathS).plus(
+                            C.multi(c * (2.0 - c))).multi(cov)));
         }
     }
 
@@ -127,11 +127,11 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
     }
 
     public int getLambda() {
-        return m_lambda;
+        return lambda;
     }
 
     public void setLambda(int mLambda) {
-        m_lambda = mLambda;
+        lambda = mLambda;
     }
 
     @Override
@@ -203,13 +203,13 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
     }
 
     public double getPSuccess() {
-        return m_psuccess;
+        return psuccess;
     }
 
     public void updateStepSize(double psuccess) {
-        this.m_psuccess = (1 - m_cp) * m_psuccess + m_cp * psuccess;
-        m_SigmaGlobal *= Math.exp(1 / m_stepd * (m_psuccess - m_psuccesstarget)
-                / (1 - m_psuccesstarget));
+        this.psuccess = (1 - cp) * this.psuccess + cp * psuccess;
+        sigmaGlobal *= Math.exp(1 / stepd * (this.psuccess - psuccesstarget)
+                / (1 - psuccesstarget));
     }
 
     @Override

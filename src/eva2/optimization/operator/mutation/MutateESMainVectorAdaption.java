@@ -205,10 +205,10 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
 //        boolean constraint = false;
 //        int counter = 0;
 //        while (constraint == false) {
-//            for (int i = 0; i < x.length; i++) x[i] = x[i] + m_SigmaScalar * (m_Z[i] + Z1 * w_v * m_main_v[i]);
+//            for (int i = 0; i < x.length; i++) x[i] = x[i] + m_SigmaScalar * (Z[i] + Z1 * w_v * m_main_v[i]);
 //            constraint = true;
 //            if (counter++ > 30)  break;
-//            if (m_CheckConstraints == true) {
+//            if (checkConstraints == true) {
 //                for (int i = 0; i < x.length; i++) {
 //                    if (x[i] < range[i][0]) x[i] = range[i][0];
 //                    if (x[i] > range[i][1]) x[i] = range[i][1];

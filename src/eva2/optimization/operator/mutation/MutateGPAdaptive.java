@@ -16,20 +16,20 @@ import eva2.tools.math.RNG;
  * To change this template use Options | File Templates.
  */
 public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable {
-    protected double m_MutationStep = 1;
-    protected double m_Tau1 = 0.15;
-    protected double m_Tau2 = 0.15;
-    protected double m_LowerLimitStepSize = 0.0000005;
+    protected double mutationStep = 1;
+    protected double tau1 = 0.15;
+    protected double tau2 = 0.15;
+    protected double lowerLimitStepSize = 0.0000005;
 
     public MutateGPAdaptive() {
 
     }
 
     public MutateGPAdaptive(MutateGPAdaptive mutator) {
-        this.m_MutationStep = mutator.m_MutationStep;
-        this.m_Tau1 = mutator.m_Tau1;
-        this.m_Tau2 = mutator.m_Tau2;
-        this.m_LowerLimitStepSize = mutator.m_LowerLimitStepSize;
+        this.mutationStep = mutator.mutationStep;
+        this.tau1 = mutator.tau1;
+        this.tau2 = mutator.tau2;
+        this.lowerLimitStepSize = mutator.lowerLimitStepSize;
     }
 
     /**
@@ -52,16 +52,16 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGPAdaptive) {
             MutateGPAdaptive mut = (MutateGPAdaptive) mutator;
-            if (this.m_MutationStep != mut.m_MutationStep) {
+            if (this.mutationStep != mut.mutationStep) {
                 return false;
             }
-            if (this.m_Tau1 != mut.m_Tau1) {
+            if (this.tau1 != mut.tau1) {
                 return false;
             }
-            if (this.m_Tau2 != mut.m_Tau2) {
+            if (this.tau2 != mut.tau2) {
                 return false;
             }
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+            if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
                 return false;
             }
             return true;
@@ -91,14 +91,14 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
     public void mutate(AbstractEAIndividual individual) {
         //System.out.println("Before Mutate: " +((GAIndividual)individual).getSolutionRepresentationFor());
         if (individual instanceof InterfaceGPIndividual) {
-            this.m_MutationStep *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1) + this.m_Tau2 * RNG.gaussianDouble(1));
-            if (this.m_MutationStep < this.m_LowerLimitStepSize) {
-                this.m_MutationStep = this.m_LowerLimitStepSize;
+            this.mutationStep *= Math.exp(this.tau1 * RNG.gaussianDouble(1) + this.tau2 * RNG.gaussianDouble(1));
+            if (this.mutationStep < this.lowerLimitStepSize) {
+                this.mutationStep = this.lowerLimitStepSize;
             }
-            if (this.m_MutationStep > 1) {
-                this.m_MutationStep = 1;
+            if (this.mutationStep > 1) {
+                this.mutationStep = 1;
             }
-            if (RNG.flipCoin(this.m_MutationStep)) {
+            if (RNG.flipCoin(this.mutationStep)) {
                 ((IndividualInterface) individual).defaultMutate();
             }
         }
@@ -157,13 +157,13 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
      */
     public void setMutationStep(double d) {
         if (d < 0) {
-            d = this.m_LowerLimitStepSize;
+            d = this.lowerLimitStepSize;
         }
-        this.m_MutationStep = d;
+        this.mutationStep = d;
     }
 
     public double getMutationStepSize() {
-        return this.m_MutationStep;
+        return this.mutationStep;
     }
 
     public String mutationStepSizeTipText() {
@@ -179,11 +179,11 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
         if (d < 0) {
             d = 0;
         }
-        this.m_LowerLimitStepSize = d;
+        this.lowerLimitStepSize = d;
     }
 
     public double getLowerLimitStepSize() {
-        return this.m_LowerLimitStepSize;
+        return this.lowerLimitStepSize;
     }
 
     public String lowerLimitStepSizeTipText() {
@@ -199,11 +199,11 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
         if (d < 0) {
             d = 0;
         }
-        this.m_Tau1 = d;
+        this.tau1 = d;
     }
 
     public double getTau1() {
-        return this.m_Tau1;
+        return this.tau1;
     }
 
     public String tau1TipText() {
@@ -219,11 +219,11 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
         if (d < 0) {
             d = 0;
         }
-        this.m_Tau2 = d;
+        this.tau2 = d;
     }
 
     public double getTau2() {
-        return this.m_Tau2;
+        return this.tau2;
     }
 
     public String tau2TipText() {

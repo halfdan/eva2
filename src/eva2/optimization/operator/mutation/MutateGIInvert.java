@@ -15,14 +15,14 @@ import eva2.tools.math.RNG;
  */
 public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
 
-    int m_MaxLengthOfInvert = 2;
+    int maxLengthOfInvert = 2;
 
     public MutateGIInvert() {
 
     }
 
     public MutateGIInvert(MutateGIInvert mutator) {
-        this.m_MaxLengthOfInvert = mutator.m_MaxLengthOfInvert;
+        this.maxLengthOfInvert = mutator.maxLengthOfInvert;
     }
 
     /**
@@ -45,7 +45,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGIInvert) {
             MutateGIInvert mut = (MutateGIInvert) mutator;
-            if (this.m_MaxLengthOfInvert != mut.m_MaxLengthOfInvert) {
+            if (this.maxLengthOfInvert != mut.maxLengthOfInvert) {
                 return false;
             }
             return true;
@@ -77,7 +77,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
             int[] x = ((InterfaceGIIndividual) individual).getIGenotype();
             int range, center, index = 0;
             //this.pintInt("Before ", x);
-            range = RNG.randomInt(1, this.m_MaxLengthOfInvert);
+            range = RNG.randomInt(1, this.maxLengthOfInvert);
             if (2 * range >= x.length) {
                 return;
             }
@@ -154,11 +154,11 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
      * @param n The max length of invert
      */
     public void setMaxLengthOfInvert(int n) {
-        this.m_MaxLengthOfInvert = n;
+        this.maxLengthOfInvert = n;
     }
 
     public int getMaxLengthOfInvert() {
-        return this.m_MaxLengthOfInvert;
+        return this.maxLengthOfInvert;
     }
 
     public String maxLengthOfInvertTipText() {

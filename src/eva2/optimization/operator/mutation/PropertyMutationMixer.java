@@ -9,42 +9,42 @@ package eva2.optimization.operator.mutation;
  */
 public class PropertyMutationMixer implements java.io.Serializable {
 
-    public InterfaceMutation[] m_AvailableTargets;
-    public InterfaceMutation[] m_SelectedTargets;
-    public double[] m_Weights;
-    public String m_DescriptiveString = "No Description given.";
-    public String m_WeightsLabel = "-";
-    public boolean m_NormalizationEnabled = true;
+    public InterfaceMutation[] availableTargets;
+    public InterfaceMutation[] selectedTargets;
+    public double[] weights;
+    public String descriptiveString = "No Description given.";
+    public String weightsLabel = "-";
+    public boolean normalizationEnabled = true;
 
     public PropertyMutationMixer(InterfaceMutation[] d, boolean selectAllOrNone) {
-        this.m_Weights = new double[d.length];
+        this.weights = new double[d.length];
         for (int i = 0; i < d.length; i++) {
-            this.m_Weights[i] = 1 / ((double) d.length);
+            this.weights[i] = 1 / ((double) d.length);
         }
-        this.m_AvailableTargets = d;
+        this.availableTargets = d;
         if (selectAllOrNone) {
-            this.m_SelectedTargets = d.clone();
+            this.selectedTargets = d.clone();
         } else {
-            this.m_SelectedTargets = null;
+            this.selectedTargets = null;
         }
     }
 
     public PropertyMutationMixer(PropertyMutationMixer d) {
-        this.m_DescriptiveString = d.m_DescriptiveString;
-        this.m_WeightsLabel = d.m_WeightsLabel;
-        this.m_NormalizationEnabled = d.m_NormalizationEnabled;
-        this.m_AvailableTargets = new InterfaceMutation[d.m_AvailableTargets.length];
-        for (int i = 0; i < this.m_AvailableTargets.length; i++) {
-            //this.m_AvailableTargets[i]  = (InterfaceMutation)d.m_AvailableTargets[i].clone();
-            this.m_AvailableTargets[i] = d.m_AvailableTargets[i];
+        this.descriptiveString = d.descriptiveString;
+        this.weightsLabel = d.weightsLabel;
+        this.normalizationEnabled = d.normalizationEnabled;
+        this.availableTargets = new InterfaceMutation[d.availableTargets.length];
+        for (int i = 0; i < this.availableTargets.length; i++) {
+            //this.availableTargets[i]  = (InterfaceMutation)d.availableTargets[i].clone();
+            this.availableTargets[i] = d.availableTargets[i];
         }
-        this.m_SelectedTargets = new InterfaceMutation[d.m_SelectedTargets.length];
-        for (int i = 0; i < this.m_SelectedTargets.length; i++) {
-            this.m_SelectedTargets[i] = (InterfaceMutation) d.m_SelectedTargets[i].clone();
+        this.selectedTargets = new InterfaceMutation[d.selectedTargets.length];
+        for (int i = 0; i < this.selectedTargets.length; i++) {
+            this.selectedTargets[i] = (InterfaceMutation) d.selectedTargets[i].clone();
         }
-        if (d.m_Weights != null) {
-            this.m_Weights = new double[d.m_Weights.length];
-            System.arraycopy(d.m_Weights, 0, this.m_Weights, 0, this.m_Weights.length);
+        if (d.weights != null) {
+            this.weights = new double[d.weights.length];
+            System.arraycopy(d.weights, 0, this.weights, 0, this.weights.length);
         }
     }
 
@@ -59,32 +59,32 @@ public class PropertyMutationMixer implements java.io.Serializable {
      * @param d The InterfaceOptimizationTarget[]
      */
     public void setSelectedMutators(InterfaceMutation[] d) {
-        this.m_SelectedTargets = d;
+        this.selectedTargets = d;
 
-        if (this.m_Weights == null) {
-            this.m_Weights = new double[d.length];
-            for (int i = 0; i < this.m_Weights.length; i++) {
-                this.m_Weights[i] = 1 / ((double) d.length);
+        if (this.weights == null) {
+            this.weights = new double[d.length];
+            for (int i = 0; i < this.weights.length; i++) {
+                this.weights[i] = 1 / ((double) d.length);
             }
             return;
         }
 
-        if (d.length == this.m_Weights.length) {
+        if (d.length == this.weights.length) {
             return;
         }
 
-        if (d.length > this.m_Weights.length) {
+        if (d.length > this.weights.length) {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < this.m_Weights.length; i++) {
-                newWeights[i] = this.m_Weights[i];
+            for (int i = 0; i < this.weights.length; i++) {
+                newWeights[i] = this.weights[i];
             }
-            this.m_Weights = newWeights;
+            this.weights = newWeights;
         } else {
             double[] newWeights = new double[d.length];
             for (int i = 0; i < d.length; i++) {
-                newWeights[i] = this.m_Weights[i];
+                newWeights[i] = this.weights[i];
             }
-            this.m_Weights = newWeights;
+            this.weights = newWeights;
         }
     }
 
@@ -94,7 +94,7 @@ public class PropertyMutationMixer implements java.io.Serializable {
      * @return The InterfaceOptimizationTarget[].
      */
     public InterfaceMutation[] getSelectedMutators() {
-        return this.m_SelectedTargets;
+        return this.selectedTargets;
     }
 
     /**
@@ -103,7 +103,7 @@ public class PropertyMutationMixer implements java.io.Serializable {
      * @return The InterfaceOptimizationTarget[].
      */
     public InterfaceMutation[] getAvailableMutators() {
-        return this.m_AvailableTargets;
+        return this.availableTargets;
     }
 
     /**
@@ -112,13 +112,13 @@ public class PropertyMutationMixer implements java.io.Serializable {
      * @return the weights
      */
     public double[] getWeights() {
-        return this.m_Weights;
+        return this.weights;
     }
 
     public void setWeights(double[] d) {
-        this.m_Weights = d;
-        for (int i = 0; i < this.m_Weights.length; i++) {
-            this.m_Weights[i] = Math.abs(this.m_Weights[i]);
+        this.weights = d;
+        for (int i = 0; i < this.weights.length; i++) {
+            this.weights[i] = Math.abs(this.weights[i]);
         }
     }
 
@@ -128,11 +128,11 @@ public class PropertyMutationMixer implements java.io.Serializable {
      * @return the string
      */
     public String getDescriptiveString() {
-        return this.m_DescriptiveString;
+        return this.descriptiveString;
     }
 
     public void setDescriptiveString(String d) {
-        this.m_DescriptiveString = d;
+        this.descriptiveString = d;
     }
 
     /**
@@ -141,21 +141,21 @@ public class PropertyMutationMixer implements java.io.Serializable {
      * @return the string
      */
     public String getWeigthsLabel() {
-        return this.m_WeightsLabel;
+        return this.weightsLabel;
     }
 
     public void setWeightsLabel(String d) {
-        this.m_WeightsLabel = d;
+        this.weightsLabel = d;
     }
 
     public void normalizeWeights() {
         double sum = 0;
-        for (int i = 0; i < this.m_Weights.length; i++) {
-            sum += this.m_Weights[i];
+        for (int i = 0; i < this.weights.length; i++) {
+            sum += this.weights[i];
         }
         if (sum > 0) {
-            for (int i = 0; i < this.m_Weights.length; i++) {
-                this.m_Weights[i] /= sum;
+            for (int i = 0; i < this.weights.length; i++) {
+                this.weights[i] /= sum;
             }
         }
     }
@@ -166,22 +166,22 @@ public class PropertyMutationMixer implements java.io.Serializable {
      * @param index The index of the target to be removed.
      */
     public void removeMutator(int index) {
-        if ((index < 0) || (index >= this.m_SelectedTargets.length)) {
+        if ((index < 0) || (index >= this.selectedTargets.length)) {
             return;
         }
 
-        InterfaceMutation[] newList = new InterfaceMutation[this.m_SelectedTargets.length - 1];
-        double[] newWeights = new double[this.m_Weights.length - 1];
+        InterfaceMutation[] newList = new InterfaceMutation[this.selectedTargets.length - 1];
+        double[] newWeights = new double[this.weights.length - 1];
         int j = 0;
-        for (int i = 0; i < this.m_SelectedTargets.length; i++) {
+        for (int i = 0; i < this.selectedTargets.length; i++) {
             if (index != i) {
-                newList[j] = this.m_SelectedTargets[i];
-                newWeights[j] = this.m_Weights[i];
+                newList[j] = this.selectedTargets[i];
+                newWeights[j] = this.weights[i];
                 j++;
             }
         }
-        this.m_SelectedTargets = newList;
-        this.m_Weights = newWeights;
+        this.selectedTargets = newList;
+        this.weights = newWeights;
     }
 
     /**
@@ -190,15 +190,15 @@ public class PropertyMutationMixer implements java.io.Serializable {
      * @param optTarget
      */
     public void addMutator(InterfaceMutation optTarget) {
-        InterfaceMutation[] newList = new InterfaceMutation[this.m_SelectedTargets.length + 1];
-        double[] newWeights = new double[this.m_Weights.length + 1];
-        for (int i = 0; i < this.m_SelectedTargets.length; i++) {
-            newList[i] = this.m_SelectedTargets[i];
-            newWeights[i] = this.m_Weights[i];
+        InterfaceMutation[] newList = new InterfaceMutation[this.selectedTargets.length + 1];
+        double[] newWeights = new double[this.weights.length + 1];
+        for (int i = 0; i < this.selectedTargets.length; i++) {
+            newList[i] = this.selectedTargets[i];
+            newWeights[i] = this.weights[i];
         }
-        newList[this.m_SelectedTargets.length] = optTarget;
-        newWeights[this.m_SelectedTargets.length] = 1.0;
-        this.m_SelectedTargets = newList;
-        this.m_Weights = newWeights;
+        newList[this.selectedTargets.length] = optTarget;
+        newWeights[this.selectedTargets.length] = 1.0;
+        this.selectedTargets = newList;
+        this.weights = newWeights;
     }
 }

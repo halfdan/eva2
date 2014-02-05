@@ -15,14 +15,14 @@ import eva2.tools.math.RNG;
  */
 public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializable {
 
-    int m_MaxLengthOfInsDel = 2;
+    int maxLengthOfInsDel = 2;
 
     public MutateGIInsertDelete() {
 
     }
 
     public MutateGIInsertDelete(MutateGIInsertDelete mutator) {
-        this.m_MaxLengthOfInsDel = mutator.m_MaxLengthOfInsDel;
+        this.maxLengthOfInsDel = mutator.maxLengthOfInsDel;
     }
 
     /**
@@ -45,7 +45,7 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGIInsertDelete) {
             MutateGIInsertDelete mut = (MutateGIInsertDelete) mutator;
-            if (this.m_MaxLengthOfInsDel != mut.m_MaxLengthOfInsDel) {
+            if (this.maxLengthOfInsDel != mut.maxLengthOfInsDel) {
                 return false;
             }
             return true;
@@ -92,7 +92,7 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
             int[][] newRange;
             int length, position;
             //this.pintInt("Before ", x);
-            length = RNG.randomInt(1, this.m_MaxLengthOfInsDel);
+            length = RNG.randomInt(1, this.maxLengthOfInsDel);
             boolean insert = RNG.flipCoin(0.5);
             if ((!insert) && (length >= x.length - 1)) {
                 insert = true;
@@ -184,11 +184,11 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
      * @param n The max length of invert
      */
     public void setMaxLengthOfInsDel(int n) {
-        this.m_MaxLengthOfInsDel = n;
+        this.maxLengthOfInsDel = n;
     }
 
     public int getMaxLengthOfInsDel() {
-        return this.m_MaxLengthOfInsDel;
+        return this.maxLengthOfInsDel;
     }
 
     public String maxLengthOfInsDelTipText() {

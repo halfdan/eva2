@@ -31,7 +31,7 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
         this.m_NormalizationEnabled = d.m_NormalizationEnabled;
         this.m_AvailableTargets = new InterfaceCrossover[d.m_AvailableTargets.length];
         for (int i = 0; i < this.m_AvailableTargets.length; i++) {
-            //this.m_AvailableTargets[i]  = (InterfaceMutation)d.m_AvailableTargets[i].clone();
+            //this.availableTargets[i]  = (InterfaceMutation)d.availableTargets[i].clone();
             this.m_AvailableTargets[i] = d.m_AvailableTargets[i];
         }
         this.m_SelectedTargets = new InterfaceCrossover[d.m_SelectedTargets.length];
