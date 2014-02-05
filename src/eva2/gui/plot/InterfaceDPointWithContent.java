@@ -4,11 +4,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.problems.InterfaceOptimizationProblem;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.09.2005
- * Time: 10:16:18
- * To change this template use File | Settings | File Templates.
+ *
  */
 public interface InterfaceDPointWithContent {
     public void setEAIndividual(AbstractEAIndividual indy);

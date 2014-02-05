@@ -29,7 +29,7 @@ public class Plot implements PlotInterface, Serializable {
      */
     private static final long serialVersionUID = -9027101244918249825L;
     private JFileChooser fileChooser;
-    private JPanel m_ButtonPanel;
+    private JPanel buttonPanel;
     private String plotName;
     private String xAxisText;
     private String yAxisText;
@@ -193,14 +193,14 @@ public class Plot implements PlotInterface, Serializable {
         byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
 //			internalFrame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 
-        m_ButtonPanel = new JPanel();
+        buttonPanel = new JPanel();
         plotArea = new FunctionArea(xAxisText, yAxisText);
-        m_ButtonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
-        installButtons(m_ButtonPanel);
+        installButtons(buttonPanel);
 
         // getContentPane().smultetLayout( new GridLayout(1, 4) );
-        internalFrame.add(m_ButtonPanel, BorderLayout.PAGE_END);
+        internalFrame.add(buttonPanel, BorderLayout.PAGE_END);
         internalFrame.add(plotArea, BorderLayout.CENTER); // north was not so
         // nice
         internalFrame.addInternalFrameListener(new InternalFrameAdapter() {

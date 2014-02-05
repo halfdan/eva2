@@ -88,7 +88,6 @@ public class StatisticsEditor implements PropertyEditor {
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
-        //String rep = EVAHELP.cutClassName(m_ElementClass.getName());
         gfx.drawString("StatisticeEditor", 2, fm.getHeight() + vpad - 3);
     }
 

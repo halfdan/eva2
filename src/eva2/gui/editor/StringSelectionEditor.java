@@ -46,7 +46,6 @@ public class StringSelectionEditor extends AbstractListSelectionEditor {
     protected boolean setObject(Object o) {
         if (o instanceof StringSelection) {
             strs = (StringSelection) o;
-//            m_AreaObject.addPropertyChangeListener(this);
             return true;
         } else {
             return false;

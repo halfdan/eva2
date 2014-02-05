@@ -329,7 +329,6 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
      * @param a The action listener.
      */
     public void addOkListener(ActionListener a) {
-        //m_OKButton.addActionListener(a);
     }
 
     /**
@@ -338,7 +337,6 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
      * @param a The action listener
      */
     public void removeOkListener(ActionListener a) {
-        //m_OKButton.removeActionListener(a);
     }
 
     /**
@@ -453,7 +451,6 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
                 this.targets[i] = this.editors[i].view;
             }
         }
-        //this.m_OptimizationTargets.setSelectedTargets(list);
         this.updateCenterComponent(evt); // Let our panel update before guys downstream
         propertyChangeSupport.firePropertyChange("", optimizationObjectives, optimizationObjectives);
     }

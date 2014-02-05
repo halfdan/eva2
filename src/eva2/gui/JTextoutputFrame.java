@@ -128,7 +128,6 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
             textArea.setText(null);
         } else if (src == saveItem) {
             FileTools.saveObjectWithFileChooser(frame, textArea.getText());
-//			File outfile = FileTools.writeString("TextOutput.txt", m_TextArea.getText());
         } else {
             System.err.println("Unknown popup component (JTextoutputFrame)!");
         }

@@ -2,15 +2,8 @@ package eva2.gui.plot;
 
 import java.io.Serializable;
 
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 322 $
- *            $Date: 2007-12-11 17:24:07 +0100 (Tue, 11 Dec 2007) $
- *            $Author: mkron $
+/**
+ *
  */
 public class Graph implements Serializable {
 
@@ -26,7 +19,7 @@ public class Graph implements Serializable {
         this.plotter = plotter;
         graphLabel = x;
         if (plotter == null) {
-            System.out.println("In constructor m_Plotter == null");
+            System.out.println("In constructor plotter == null");
         }
         plotter.setInfoString(graphLabel, info, (float) 1.0);
     }

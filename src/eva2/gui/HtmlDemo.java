@@ -1,14 +1,4 @@
 package eva2.gui;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 199 $
- *            $Date: 2007-10-23 16:58:12 +0200 (Tue, 23 Oct 2007) $
- *            $Author: mkron $
- */
 
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
@@ -27,21 +17,21 @@ import java.net.URL;
  *
  */
 public class HtmlDemo {
-    private JEditorPane m_html;
-    private String m_name;
+    private JEditorPane htmlEditorPane;
+    private String name;
 
     /**
      *
      */
     public HtmlDemo(String name) {
-        m_name = name;
+        this.name = name;
     }
 
     /**
      *
      */
     public JEditorPane getPane() {
-        return m_html;
+        return htmlEditorPane;
     }
 
     /**
@@ -53,7 +43,7 @@ public class HtmlDemo {
     }
 
     public boolean resourceExists() {
-        URL url = ClassLoader.getSystemResource("html/" + m_name);
+        URL url = ClassLoader.getSystemResource("html/" + name);
         return (url != null);
     }
 
@@ -68,17 +58,17 @@ public class HtmlDemo {
     public void show() {
         try {
             URL url = null;
-            url = this.getClass().getClassLoader().getSystemResource("html/" + m_name);
+            url = this.getClass().getClassLoader().getSystemResource("html/" + name);
 
             try {
-                m_html = new JEditorPane(url);
+                htmlEditorPane = new JEditorPane(url);
             } catch (java.io.IOException ioe) {
                 url = this.getClass().getClassLoader().getSystemResource("html/Default.html");
-                m_html = new JEditorPane(url);
+                htmlEditorPane = new JEditorPane(url);
             }
-            //m_html = new JEditorPane(htmlDescription);
-            m_html.setEditable(false);
-            m_html.addHyperlinkListener(createHyperLinkListener());
+            //htmlEditorPane = new JEditorPane(htmlDescription);
+            htmlEditorPane.setEditable(false);
+            htmlEditorPane.addHyperlinkListener(createHyperLinkListener());
 
         } catch (MalformedURLException e) {
             System.out.println("Malformed URL: " + e);
@@ -88,13 +78,13 @@ public class HtmlDemo {
             e.printStackTrace();
             return;
         }
-        JFrame frame = new JFrame(m_name);
+        JFrame frame = new JFrame(name);
         BasicResourceLoader loader = BasicResourceLoader.instance();
         byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
         frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
         JScrollPane scroller = new JScrollPane();
         JViewport vp = scroller.getViewport();
-        vp.add(m_html);
+        vp.add(htmlEditorPane);
         scroller.setPreferredSize(new Dimension(600, 500));
         frame.getContentPane().add(scroller, BorderLayout.CENTER);
         frame.pack();
@@ -110,11 +100,11 @@ public class HtmlDemo {
             public void hyperlinkUpdate(HyperlinkEvent e) {
                 if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                     if (e instanceof HTMLFrameHyperlinkEvent) {
-                        ((HTMLDocument) m_html.getDocument()).processHTMLFrameHyperlinkEvent(
+                        ((HTMLDocument) htmlEditorPane.getDocument()).processHTMLFrameHyperlinkEvent(
                                 (HTMLFrameHyperlinkEvent) e);
                     } else {
                         try {
-                            m_html.setPage(e.getURL());
+                            htmlEditorPane.setPage(e.getURL());
                         } catch (IOException ioe) {
                             System.out.println("IOE: " + ioe);
                         }

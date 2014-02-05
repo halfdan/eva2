@@ -7,7 +7,7 @@ import java.io.File;
  *
  */
 public abstract class JDocFrame extends JInternalFrame {
-    private File m_file;
+    private File file;
     private String titleStr;
     protected boolean changed = false;
 
@@ -24,14 +24,14 @@ public abstract class JDocFrame extends JInternalFrame {
      */
     public JDocFrame(File file) {
         this(file.getName());
-        m_file = file;
+        this.file = file;
     }
 
     /**
      *
      */
     public File getFile() {
-        return m_file;
+        return file;
     }
 
     /**
@@ -45,8 +45,8 @@ public abstract class JDocFrame extends JInternalFrame {
      *
      */
     public void save() {
-        if (m_file != null) {
-            save(m_file);
+        if (file != null) {
+            save(file);
         }
     }
 
@@ -54,8 +54,8 @@ public abstract class JDocFrame extends JInternalFrame {
      *
      */
     public void save(File f) {
-        if (!f.equals(m_file)) {
-            m_file = f;
+        if (!f.equals(file)) {
+            file = f;
             titleStr = f.getName();
         }
         setChangedImpl(false);

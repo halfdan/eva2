@@ -925,7 +925,6 @@ public class FunctionArea extends DArea implements Serializable {
      * @return
      */
     public DPointSet printPoints(int i) {
-        // for (int i = 0; i < m_PointSetContainer.size();i++) {
         System.out.println("");
         System.out.println("GraphPointSet No " + i);
 
@@ -958,9 +957,6 @@ public class FunctionArea extends DArea implements Serializable {
         DFunction scF = getYScale();
         if (scF instanceof Exp) {
             ((Exp) scF).updateMinValue(y);
-        }
-        if (!checkLogValidYValue(x, y, graphLabel)) {
-            // if (m_log) toggleLog();
         }
         getGraphPointSet(graphLabel).addDPoint(x, y);
     }
@@ -1020,9 +1016,6 @@ public class FunctionArea extends DArea implements Serializable {
         DFunction scF = getYScale();
         if (scF instanceof Exp) {
             ((Exp) scF).updateMinValue(y);
-        }
-        if (!checkLogValidYValue(x, y, GraphLabel)) {
-            // if (m_log) toggleLog();
         }
         this.getGraphPointSet(GraphLabel).addDPoint(x, y);
         this.getGraphPointSet(GraphLabel).setConnectedMode(false);
@@ -1100,7 +1093,6 @@ public class FunctionArea extends DArea implements Serializable {
      *
      */
     public void toggleLog() {
-        // System.out.println("ToggleLog log was: "+m_log);
         boolean setMinPos = false;
         if (!log && !checkLoggable()) {
             System.err.println("Warning: toggling logarithmics scale with values <= 0! Some points will not be displayed.");
