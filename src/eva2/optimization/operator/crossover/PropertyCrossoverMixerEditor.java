@@ -38,7 +38,7 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
      */
     private JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
     /**
-     * The FilePath that is to be edited
+     * The filePath that is to be edited
      */
     private PropertyCrossoverMixer m_CrossoversWithWeights;
 

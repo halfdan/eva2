@@ -7,29 +7,23 @@ import eva2.tools.math.RNG;
 
 /**
  * Random selection typically used for ES as mating selection.
- * <p/>
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.03.2003
- * Time: 11:36:00
- * To change this template use Options | File Templates.
  */
 public class SelectRandom implements InterfaceSelection, java.io.Serializable {
 
-    private boolean m_ObeyDebsConstViolationPrinciple = false;
+    private boolean obeyDebsConstViolationPrinciple = false;
     private boolean withReplacement = true;
 
     public SelectRandom() {
     }
 
     public SelectRandom(SelectRandom a) {
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
         this.withReplacement = a.withReplacement;
     }
 
     public SelectRandom(boolean withRepl) {
         withReplacement = withRepl;
-        if (m_ObeyDebsConstViolationPrinciple) {
+        if (obeyDebsConstViolationPrinciple) {
             System.err.println("Error, replacement selection not supported for constrained selection (SelectRandom)");
         }
     }
@@ -64,7 +58,7 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
         result.setTargetSize(size);
-        if (this.m_ObeyDebsConstViolationPrinciple) {
+        if (this.obeyDebsConstViolationPrinciple) {
             int index = 0, rand;
             while (result.size() < size) {
                 rand = RNG.randomInt(0, population.size() - 1);
@@ -141,11 +135,11 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

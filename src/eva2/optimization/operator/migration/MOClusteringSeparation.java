@@ -24,20 +24,15 @@ import java.io.IOException;
  * scheme, this method rearanges the populations and may
  * impose area constraints on the subpopulations. This method
  * is suited for K-means only.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.09.2004
- * Time: 17:24:44
- * To change this template use File | Settings | File Templates.
  */
 public class MOClusteringSeparation implements InterfaceMigration, java.io.Serializable {
 
     public boolean debug = false;
-    private ClusteringKMeans m_KMeans = new ClusteringKMeans();
-    private ArchivingNSGAII m_NSGAII = new ArchivingNSGAII();
-    private boolean m_UseConstraints = true;
-    private boolean m_ReuseC = false;
-    private InterfaceSelection m_Selection = new SelectRandom();
+    private ClusteringKMeans kMeans = new ClusteringKMeans();
+    private ArchivingNSGAII NSGAII = new ArchivingNSGAII();
+    private boolean useConstraints = true;
+    private boolean reuseC = false;
+    private InterfaceSelection selection = new SelectRandom();
 
     public MOClusteringSeparation() {
 
@@ -45,15 +40,15 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 
     public MOClusteringSeparation(MOClusteringSeparation b) {
         this.debug = b.debug;
-        this.m_UseConstraints = b.m_UseConstraints;
-        if (b.m_KMeans != null) {
-            this.m_KMeans = (ClusteringKMeans) b.m_KMeans.clone();
+        this.useConstraints = b.useConstraints;
+        if (b.kMeans != null) {
+            this.kMeans = (ClusteringKMeans) b.kMeans.clone();
         }
-        if (b.m_NSGAII != null) {
-            this.m_NSGAII = (ArchivingNSGAII) b.m_NSGAII.clone();
+        if (b.NSGAII != null) {
+            this.NSGAII = (ArchivingNSGAII) b.NSGAII.clone();
         }
-        if (b.m_Selection != null) {
-            this.m_Selection = (InterfaceSelection) b.m_Selection.clone();
+        if (b.selection != null) {
+            this.selection = (InterfaceSelection) b.selection.clone();
         }
     }
 
@@ -72,8 +67,8 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
     @Override
     public void initMigration(InterfaceOptimizer[] islands) {
         // pff at a later stage i could initialize a topology here
-        if (this.m_ReuseC) {
-            this.m_KMeans.resetC();
+        if (this.reuseC) {
+            this.kMeans.resetC();
         }
     }
 
@@ -131,7 +126,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 //        }
 
         // Now lets cluster this stuff
-        Population[] archives = this.m_NSGAII.getNonDominatedSortedFronts(collector);
+        Population[] archives = this.NSGAII.getNonDominatedSortedFronts(collector);
         Population toCluster = new Population();
         int currentFront = 0;
         toCluster.addPopulation(archives[currentFront]);
@@ -141,10 +136,10 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
         }
 
         // first set the K to the K-Means
-        this.m_KMeans.setK(islands.length);
-        this.m_KMeans.cluster(toCluster, (Population) null);
-        double[][] c = this.m_KMeans.getC();
-        newIPOP = this.m_KMeans.cluster(collector, c);
+        this.kMeans.setK(islands.length);
+        this.kMeans.cluster(toCluster, (Population) null);
+        double[][] c = this.kMeans.getC();
+        newIPOP = this.kMeans.cluster(collector, c);
 
         if (this.debug) {
             Plot plot;
@@ -178,7 +173,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
             }
         }
 
-        if (this.m_UseConstraints) {
+        if (this.useConstraints) {
             // i should set the constraints to the optimizers
             InterfaceOptimizationProblem prob;
             for (int i = 0; i < islands.length; i++) {
@@ -197,7 +192,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
                         myOtherClass[j] = c[index];
                         index++;
                     }
-                    ConstBelongsToDifferentClass b = new ConstBelongsToDifferentClass(myClass, myOtherClass, this.m_KMeans.getUseSearchSpace());
+                    ConstBelongsToDifferentClass b = new ConstBelongsToDifferentClass(myClass, myOtherClass, this.kMeans.getUseSearchSpace());
                     ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.add(b);
 //                    if (this.debug) {
 //                        String out = "";
@@ -211,7 +206,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 //                            }
 //                            out += "}";
 //                        }
-//                        if (this.m_KMeans.getUsePhenotype()) out += "\n Using phenotype.";
+//                        if (this.kMeans.getUsePhenotype()) out += "\n Using phenotype.";
 //                        else out += "\n Using objective space.";
 //                        System.out.println(""+out);
 //                    }
@@ -226,7 +221,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
             oldIPOP[i].addPopulation(newIPOP[i]);
             // todo remove this for nice pictures
             if (!oldIPOP[i].targetSizeReached()) {
-                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getTargetSize() - oldIPOP[i].size()));
+                oldIPOP[i].addPopulation(this.selection.selectFrom(memory, oldIPOP[i].getTargetSize() - oldIPOP[i].size()));
             }
             if (this.debug) {
                 System.out.println("Setting " + i + " to population size " + oldIPOP[i].size());
@@ -277,7 +272,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
 //            islands[i].init();
 //        }
 //
-//        cluster.m_KMeans.setUseSearchSpace(true);
+//        cluster.kMeans.setUseSearchSpace(true);
 //
 //        for (int i = 0; i < 20; i++) {
 //            for (int j = 0; j < islands.length; j++) {
@@ -383,11 +378,11 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
      * @return The clustering algorithm method
      */
     public ClusteringKMeans getKMeans() {
-        return this.m_KMeans;
+        return this.kMeans;
     }
 
     public void setKMeans(ClusteringKMeans b) {
-        this.m_KMeans = b;
+        this.kMeans = b;
     }
 
     public String kMeansTipText() {
@@ -402,11 +397,11 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
      * @return The modus of constraints.
      */
     public boolean getUseConstraints() {
-        return this.m_UseConstraints;
+        return this.useConstraints;
     }
 
     public void setUseConstraints(boolean b) {
-        this.m_UseConstraints = b;
+        this.useConstraints = b;
     }
 
     public String useConstraintsTipText() {
@@ -419,13 +414,13 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
      * @return The distance type to use.
      */
     public boolean getReuseC() {
-        this.m_ReuseC = this.m_KMeans.getReuseC();
-        return this.m_ReuseC;
+        this.reuseC = this.kMeans.getReuseC();
+        return this.reuseC;
     }
 
     public void setReuseC(boolean m) {
-        this.m_ReuseC = m;
-        this.m_KMeans.setReuseC(this.m_ReuseC);
+        this.reuseC = m;
+        this.kMeans.setReuseC(this.reuseC);
     }
 
     public String reuseCTipText() {

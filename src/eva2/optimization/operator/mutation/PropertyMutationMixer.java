@@ -1,11 +1,7 @@
 package eva2.optimization.operator.mutation;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 20.05.2005
- * Time: 13:54:25
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PropertyMutationMixer implements java.io.Serializable {
 

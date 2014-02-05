@@ -61,7 +61,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
             newArr = new OptimizationJob[curArr.length + 1];
             newSelection = new boolean[newArr.length];
             System.arraycopy(curArr, 0, newArr, 0, curArr.length);
-            System.arraycopy(m_Selection, 0, newSelection, 0, curArr.length);
+            System.arraycopy(selections, 0, newSelection, 0, curArr.length);
         } else {
             newArr = new OptimizationJob[1];
             newSelection = new boolean[1];

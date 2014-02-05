@@ -15,35 +15,30 @@ import java.util.ArrayList;
  * The error ratio metric only suited for small discrete
  * Pareto fronts, since it calculates the intersection between
  * the reference and the current solution.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.06.2005
- * Time: 17:22:23
- * To change this template use File | Settings | File Templates.
  */
 public class MetricErrorRatio implements eva2.optimization.operator.paretofrontmetrics.InterfaceParetoFrontMetric, java.io.Serializable {
-    private PropertyFilePath m_InputFilePath = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
-    private double m_Epsilon = 0.0001;
-    private String[] m_Titles;
-    private double[][] m_Reference;
+    private PropertyFilePath inputFilePath = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
+    private double epsilon = 0.0001;
+    private String[] titles;
+    private double[][] reference;
 
     public MetricErrorRatio() {
         this.loadReferenceData();
     }
 
     public MetricErrorRatio(MetricErrorRatio b) {
-        this.m_Epsilon = b.m_Epsilon;
-        if (b.m_Titles != null) {
-            this.m_Titles = new String[b.m_Titles.length];
-            for (int i = 0; i < this.m_Titles.length; i++) {
-                this.m_Titles[i] = b.m_Titles[i];
+        this.epsilon = b.epsilon;
+        if (b.titles != null) {
+            this.titles = new String[b.titles.length];
+            for (int i = 0; i < this.titles.length; i++) {
+                this.titles[i] = b.titles[i];
             }
         }
-        if (b.m_Reference != null) {
-            this.m_Reference = new double[b.m_Reference.length][b.m_Reference[0].length];
-            for (int i = 0; i < this.m_Reference.length; i++) {
-                for (int j = 0; j < this.m_Reference[i].length; j++) {
-                    this.m_Reference[i][j] = b.m_Reference[i][j];
+        if (b.reference != null) {
+            this.reference = new double[b.reference.length][b.reference[0].length];
+            for (int i = 0; i < this.reference.length; i++) {
+                for (int j = 0; j < this.reference[i].length; j++) {
+                    this.reference[i][j] = b.reference[i][j];
                 }
             }
         }
@@ -70,16 +65,16 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
      * This method loads the reference data
      */
     private void loadReferenceData() {
-        String[] tmpS, lines = FileTools.loadStringsFromFile(this.m_InputFilePath.getCompleteFilePath());
+        String[] tmpS, lines = FileTools.loadStringsFromFile(this.inputFilePath.getCompleteFilePath());
         if (lines == null) {
-            System.out.println("Failed to read " + this.m_InputFilePath.getCompleteFilePath());
+            System.out.println("Failed to read " + this.inputFilePath.getCompleteFilePath());
         }
         lines[0].trim();
-        this.m_Titles = lines[0].split("\t");
+        this.titles = lines[0].split("\t");
         ArrayList tmpA = new ArrayList();
         double[] tmpD;
         for (int i = 1; i < lines.length; i++) {
-            tmpD = new double[this.m_Titles.length];
+            tmpD = new double[this.titles.length];
             lines[i].trim();
             tmpS = lines[i].split("\t");
             for (int j = 0; (j < tmpD.length) && (j < tmpS.length); j++) {
@@ -87,9 +82,9 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
             }
             tmpA.add(tmpD);
         }
-        this.m_Reference = new double[tmpA.size()][];
+        this.reference = new double[tmpA.size()][];
         for (int i = 0; i < tmpA.size(); i++) {
-            this.m_Reference[i] = (double[]) tmpA.get(i);
+            this.reference[i] = (double[]) tmpA.get(i);
         }
     }
 
@@ -106,9 +101,9 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
         if (pop.getArchive() != null) {
             tmpPPO.addPopulation(pop.getArchive());
         }
-        if (this.m_Reference == null) {
+        if (this.reference == null) {
             this.loadReferenceData();
-            if (this.m_Reference == null) {
+            if (this.reference == null) {
                 System.out.println("No reference data!");
                 return 0;
             }
@@ -132,12 +127,12 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
     private boolean inReference(AbstractEAIndividual indy) {
         double[] fitness = indy.getFitness();
         double result = 0;
-        for (int i = 0; i < this.m_Reference.length; i++) {
+        for (int i = 0; i < this.reference.length; i++) {
             result = 0;
-            for (int j = 0; (j < fitness.length) && (j < this.m_Reference[i].length); j++) {
-                result += Math.pow((fitness[j] - this.m_Reference[i][j]), 2);
+            for (int j = 0; (j < fitness.length) && (j < this.reference[i].length); j++) {
+                result += Math.pow((fitness[j] - this.reference[i][j]), 2);
             }
-            if (Math.sqrt(result) < this.m_Epsilon) {
+            if (Math.sqrt(result) < this.epsilon) {
                 return true;
             }
         }
@@ -172,12 +167,12 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
      * @param b File path.
      */
     public void setInputFilePath(PropertyFilePath b) {
-        this.m_InputFilePath = b;
+        this.inputFilePath = b;
         this.loadReferenceData();
     }
 
     public PropertyFilePath getInputFilePath() {
-        return this.m_InputFilePath;
+        return this.inputFilePath;
     }
 
     public String inputFilePathTipText() {
@@ -190,11 +185,11 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
      * @param d The upper border.
      */
     public void setEpsilon(double d) {
-        this.m_Epsilon = d;
+        this.epsilon = d;
     }
 
     public double getEpsilon() {
-        return this.m_Epsilon;
+        return this.epsilon;
     }
 
     public String epsilonTipText() {

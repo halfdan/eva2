@@ -13,27 +13,22 @@ import java.util.Hashtable;
 /**
  * The multi-objective PESA II selection criteria based on an n-dimensional
  * grid using a squeezing factor.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.08.2004
- * Time: 10:55:24
- * To change this template use File | Settings | File Templates.
  */
 public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable {
 
-    ArchivingPESAII m_PESAII = new ArchivingPESAII();
-    int[] m_Squeeze;
-    int m_TournamentSize = 2;
-    ArrayList m_GridBoxes;
-    boolean m_ObeyDebsConstViolationPrinciple = true;
+    ArchivingPESAII PESAII = new ArchivingPESAII();
+    int[] squeeze;
+    int tournamentSize = 2;
+    ArrayList gridBoxes;
+    boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectMOPESAII() {
     }
 
     public SelectMOPESAII(SelectMOPESAII a) {
-        this.m_PESAII = new ArchivingPESAII();
-        this.m_TournamentSize = a.m_TournamentSize;
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.PESAII = new ArchivingPESAII();
+        this.tournamentSize = a.tournamentSize;
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -51,7 +46,7 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
      */
     @Override
     public void prepareSelection(Population population) {
-        this.m_Squeeze = this.m_PESAII.calculateSqueezeFactor(population);
+        this.squeeze = this.PESAII.calculateSqueezeFactor(population);
         Hashtable tmpGridBoxes = new Hashtable();
         ArrayList tmp;
         AbstractEAIndividual tmpIndy;
@@ -75,10 +70,10 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
             tmp.add(tmpIndy);
         }
         // now build the arraylist from the Hashtable
-        this.m_GridBoxes = new ArrayList();
+        this.gridBoxes = new ArrayList();
         Enumeration myEnum = tmpGridBoxes.elements();
         while (myEnum.hasMoreElements()) {
-            this.m_GridBoxes.add(myEnum.nextElement());
+            this.gridBoxes.add(myEnum.nextElement());
         }
     }
 
@@ -112,8 +107,8 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
         int winner, tmp;
 
         try {
-            box1 = (ArrayList) this.m_GridBoxes.get(RNG.randomInt(0, this.m_GridBoxes.size() - 1));
-            box2 = (ArrayList) this.m_GridBoxes.get(RNG.randomInt(0, this.m_GridBoxes.size() - 1));
+            box1 = (ArrayList) this.gridBoxes.get(RNG.randomInt(0, this.gridBoxes.size() - 1));
+            box2 = (ArrayList) this.gridBoxes.get(RNG.randomInt(0, this.gridBoxes.size() - 1));
             if (((Integer) ((AbstractEAIndividual) box1.get(0)).getData("SqueezeFactor")).intValue()
                     < ((Integer) ((AbstractEAIndividual) box2.get(0)).getData("SqueezeFactor")).intValue()) {
                 resultIndy = (AbstractEAIndividual) (box1.get(RNG.randomInt(0, box1.size() - 1)));
@@ -169,11 +164,11 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

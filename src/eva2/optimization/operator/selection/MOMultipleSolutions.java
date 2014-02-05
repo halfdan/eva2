@@ -3,41 +3,37 @@ package eva2.optimization.operator.selection;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.02.2005
- * Time: 11:31:58
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOMultipleSolutions {
 
-    public int m_ParetoOptimalSolutions;
-    private ArrayList m_Solutions = new ArrayList();
-    public int m_Iterations;
-    public int m_SizeDominantSolutions = 0;
+    public int paretoOptimalSolutions;
+    private ArrayList solutions = new ArrayList();
+    public int iterations;
+    public int sizeDominantSolutions = 0;
 
     public void add(double[] fit, double[] w) {
-        this.m_Solutions.add(new MOSolution(fit, w));
+        this.solutions.add(new MOSolution(fit, w));
     }
 
     public void add(MOSolution p) {
-        this.m_Solutions.add(p);
+        this.solutions.add(p);
     }
 
     public MOSolution get(int i) {
-        return (MOSolution) this.m_Solutions.get(i);
+        return (MOSolution) this.solutions.get(i);
     }
 
     public Object remove(int i) {
-        return this.m_Solutions.remove(i);
+        return this.solutions.remove(i);
     }
 
     public int size() {
-        return this.m_Solutions.size();
+        return this.solutions.size();
     }
 
     public void reset() {
-        this.m_SizeDominantSolutions = 0;
+        this.sizeDominantSolutions = 0;
     }
 
     public void testDominance(MOMultipleSolutions malta) {

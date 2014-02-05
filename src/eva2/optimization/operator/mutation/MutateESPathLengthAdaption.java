@@ -15,33 +15,33 @@ import eva2.tools.math.RNG;
  */
 public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Serializable {
 
-    private int m_dim;
-    private double[] m_randZ;
-    private double[] m_Path;
-    private double m_SigmaGlobal = 1.0;
-    private double m_c;
-    private boolean m_UsePath = true;
+    private int dim;
+    private double[] randZ;
+    private double[] path;
+    private double sigmaGlobal = 1.0;
+    private double c;
+    private boolean usePath = true;
     private double dampening = 1;
     private double expectedPathLen = -1;
-    private double m_cu;
+    private double cu;
 
     public MutateESPathLengthAdaption() {
 
     }
 
     public MutateESPathLengthAdaption(MutateESPathLengthAdaption mutator) {
-        this.m_UsePath = true;
-        this.m_dim = mutator.m_dim;
-        this.m_SigmaGlobal = mutator.m_SigmaGlobal;
-        this.m_c = mutator.m_c;
+        this.usePath = true;
+        this.dim = mutator.dim;
+        this.sigmaGlobal = mutator.sigmaGlobal;
+        this.c = mutator.c;
         this.dampening = mutator.dampening;
         this.expectedPathLen = mutator.expectedPathLen;
-        this.m_cu = mutator.m_cu;
-        if (mutator.m_randZ != null) {
-            this.m_randZ = (double[]) mutator.m_randZ.clone();
+        this.cu = mutator.cu;
+        if (mutator.randZ != null) {
+            this.randZ = (double[]) mutator.randZ.clone();
         }
-        if (mutator.m_Path != null) {
-            this.m_Path = (double[]) mutator.m_Path.clone();
+        if (mutator.path != null) {
+            this.path = (double[]) mutator.path.clone();
         }
     }
 
@@ -66,25 +66,25 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
         if (mutator instanceof MutateESPathLengthAdaption) {
             MutateESPathLengthAdaption mut = (MutateESPathLengthAdaption) mutator;
             // i assume if the C Matrix is equal then the mutation operators are equal
-            if (this.m_dim != mut.m_dim) {
+            if (this.dim != mut.dim) {
                 return false;
             }
-            if (this.m_SigmaGlobal != mut.m_SigmaGlobal) {
+            if (this.sigmaGlobal != mut.sigmaGlobal) {
                 return false;
             }
-            if (this.m_c != mut.m_c) {
+            if (this.c != mut.c) {
                 return false;
             }
-            if ((this.m_randZ != null) && (mut.m_randZ != null)) {
-                for (int i = 0; i < this.m_randZ.length; i++) {
-                    if (this.m_randZ[i] != mut.m_randZ[i]) {
+            if ((this.randZ != null) && (mut.randZ != null)) {
+                for (int i = 0; i < this.randZ.length; i++) {
+                    if (this.randZ[i] != mut.randZ[i]) {
                         return false;
                     }
                 }
             }
-            if ((this.m_Path != null) && (mut.m_Path != null)) {
-                for (int i = 0; i < this.m_Path.length; i++) {
-                    if (this.m_Path[i] != mut.m_Path[i]) {
+            if ((this.path != null) && (mut.path != null)) {
+                for (int i = 0; i < this.path.length; i++) {
+                    if (this.path[i] != mut.path[i]) {
                         return false;
                     }
                 }
@@ -108,25 +108,25 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
         }
         double[] x = ((InterfaceESIndividual) individual).getDGenotype();
         double[][] ranges = ((InterfaceESIndividual) individual).getDoubleRange();
-        this.m_dim = x.length;
-//        if (this.m_UsePath) this.c = Math.sqrt(1.0 / (double) this.m_dim);
+        this.dim = x.length;
+//        if (this.usePath) this.c = Math.sqrt(1.0 / (double) this.dim);
 
-        this.m_randZ = new double[this.m_dim];
-        this.m_Path = new double[this.m_dim];
-        for (int i = 0; i < this.m_dim; i++) {
-            this.m_randZ[i] = RNG.gaussianDouble(1.0);
-//            this.m_Path[i]=1;
+        this.randZ = new double[this.dim];
+        this.path = new double[this.dim];
+        for (int i = 0; i < this.dim; i++) {
+            this.randZ[i] = RNG.gaussianDouble(1.0);
+//            this.path[i]=1;
         }
 
-        if (this.m_UsePath) {
-            this.m_c = 4. / (m_dim + 4);
+        if (this.usePath) {
+            this.c = 4. / (dim + 4);
         } else {
-            this.m_c = 1.0;
+            this.c = 1.0;
         }
 
-        expectedPathLen = Math.sqrt(m_dim) * (1 - (1. / (4 * m_dim)) + (1. / (21 * m_dim * m_dim)));
-        dampening = (1. / m_c) + 1;
-        m_cu = Math.sqrt(m_c * (2.0 - m_c));
+        expectedPathLen = Math.sqrt(dim) * (1 - (1. / (4 * dim)) + (1. / (21 * dim * dim)));
+        dampening = (1. / c) + 1;
+        cu = Math.sqrt(c * (2.0 - c));
 
         mutateX(x, ranges, true);
     }
@@ -167,8 +167,8 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
     }
 
     private void calculateNewStep() {
-        for (int i = 0; i < m_dim; i++) {
-            m_randZ[i] = RNG.gaussianDouble(1.0);
+        for (int i = 0; i < dim; i++) {
+            randZ[i] = RNG.gaussianDouble(1.0);
         }
     }
 
@@ -185,22 +185,22 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
     }
 
     private void adaptStrategy() {
-        // remember the path taken. m_randZ is at this time the last step before selection.
-        for (int i = 0; i < m_dim; i++) {
-            m_Path[i] = (1.0 - m_c) * m_Path[i] + m_cu * m_randZ[i];
+        // remember the path taken. randZ is at this time the last step before selection.
+        for (int i = 0; i < dim; i++) {
+            path[i] = (1.0 - c) * path[i] + cu * randZ[i];
         }
-        double pathLen = Mathematics.norm(m_Path);
+        double pathLen = Mathematics.norm(path);
 
-//        double expectedPathLen = Math.sqrt(((double)m_dim)+0.5);
-//        double kappa_d          = ((double)m_dim)/4.0+1.0;
+//        double expectedPathLen = Math.sqrt(((double)dim)+0.5);
+//        double kappa_d          = ((double)dim)/4.0+1.0;
 
         double exp = (pathLen - expectedPathLen) / (dampening * expectedPathLen);
-        m_SigmaGlobal *= Math.exp(exp);
+        sigmaGlobal *= Math.exp(exp);
     }
 
     private void mutateX(double[] x, double[][] range, boolean checkRange) {
         for (int i = 0; i < x.length; i++) {
-            x[i] += m_SigmaGlobal * m_randZ[i];
+            x[i] += sigmaGlobal * randZ[i];
         }
         if (checkRange) {
             checkRange(x, range);
@@ -243,10 +243,10 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
 //     * @param bit     The new representation for the inner constants.
 //      */
 //    public void setUsePath(boolean bit) {
-//        this.m_UsePath = bit;
+//        this.usePath = bit;
 //    }
 //    public boolean getUsePath() {
-//        return this.m_UsePath;
+//        return this.usePath;
 //    }
 //    public String usePathTipText() {
 //        return "Use path.";
@@ -258,11 +258,11 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
      * @param d The initial sigma value.
      */
     public void setSigmaGlobal(double d) {
-        this.m_SigmaGlobal = d;
+        this.sigmaGlobal = d;
     }
 
     public double getSigmaGlobal() {
-        return this.m_SigmaGlobal;
+        return this.sigmaGlobal;
     }
 
     public String initSigmaGlobalTipText() {

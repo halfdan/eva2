@@ -26,19 +26,19 @@ import java.util.Arrays;
  */
 public class ClusteringXMeans implements InterfaceClustering, java.io.Serializable {
 
-    public int m_MaxK = 5;
-    public double[][] m_C;
-    public boolean m_UseSearchSpace = false;
-    public boolean m_Debug = false;
+    public int maxK = 5;
+    public double[][] C;
+    public boolean useSearchSpace = false;
+    public boolean debug = false;
 
     public ClusteringXMeans() {
 
     }
 
     public ClusteringXMeans(ClusteringXMeans a) {
-        this.m_Debug = a.m_Debug;
-        this.m_MaxK = a.m_MaxK;
-        this.m_UseSearchSpace = a.m_UseSearchSpace;
+        this.debug = a.debug;
+        this.maxK = a.maxK;
+        this.useSearchSpace = a.useSearchSpace;
     }
 
     /**
@@ -64,8 +64,8 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
     @Override
     public Population[] cluster(Population pop, Population referencePop) {
         ClusteringKMeans kmeans = new ClusteringKMeans();
-        Population[][] tmpResults = new Population[this.m_MaxK][];
-        double[][][] tmpC = new double[this.m_MaxK][][];
+        Population[][] tmpResults = new Population[this.maxK][];
+        double[][][] tmpC = new double[this.maxK][][];
         double[][] data = this.extractClusterDataFrom(pop);
 
         // the first result is the unclustered population
@@ -74,8 +74,8 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         tmpC[0] = new double[1][];
         tmpC[0][0] = this.calculateMean(data);
         // the other solutions are kmeans results
-        for (int i = 1; i < this.m_MaxK; i++) {
-            kmeans.setUseSearchSpace(this.m_UseSearchSpace);
+        for (int i = 1; i < this.maxK; i++) {
+            kmeans.setUseSearchSpace(this.useSearchSpace);
             kmeans.setK(i + 1);
             tmpResults[i] = kmeans.cluster(pop, (Population) null);
             tmpC[i] = kmeans.getC();
@@ -86,7 +86,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         int index = 0;
         for (int i = 0; i < tmpResults.length; i++) {
             tmpBIC = this.calculateBIC(tmpResults[i], tmpC[i]);
-            if (this.m_Debug) {
+            if (this.debug) {
                 Plot plot;
                 double[] tmpD = new double[2], x;
                 tmpD[0] = 0;
@@ -129,7 +129,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         }
         System.out.println("XMeans results in " + (index + 1) + " clusters.");
         Population[] result = tmpResults[index];
-        this.m_C = tmpC[index];
+        this.C = tmpC[index];
 
         return result;
     }
@@ -225,7 +225,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         // let's fetch the raw data either the double
         // phenotype or the coordinates in objective space
         // @todo: i case of repair i would need to set the phenotype!
-        if (this.m_UseSearchSpace && (pop.get(0) instanceof InterfaceDataTypeDouble)) {
+        if (this.useSearchSpace && (pop.get(0) instanceof InterfaceDataTypeDouble)) {
             for (int i = 0; i < pop.size(); i++) {
                 data[i] = ((InterfaceDataTypeDouble) pop.get(i)).getDoubleData();
             }
@@ -274,7 +274,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
      * @return The centroids
      */
     public double[][] getC() {
-        return this.m_C;
+        return this.C;
     }
 
     /**
@@ -310,7 +310,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
     public static void main(String[] args) {
         ClusteringXMeans ckm = new ClusteringXMeans();
         ckm.setUseSearchSpace(true);
-        ckm.m_Debug = true;
+        ckm.debug = true;
         Population pop = new Population();
         pop.setTargetSize(100);
         F1Problem f1 = new F1Problem();
@@ -393,14 +393,14 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
      * @return The current number of clusters to find.
      */
     public int getMaxK() {
-        return this.m_MaxK;
+        return this.maxK;
     }
 
     public void setMaxK(int m) {
         if (m < 1) {
             m = 1;
         }
-        this.m_MaxK = m;
+        this.maxK = m;
     }
 
     public String maxKTipText() {
@@ -414,11 +414,11 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
      * @return The distance type to use.
      */
     public boolean getUseSearchSpace() {
-        return this.m_UseSearchSpace;
+        return this.useSearchSpace;
     }
 
     public void setUseSearchSpace(boolean m) {
-        this.m_UseSearchSpace = m;
+        this.useSearchSpace = m;
     }
 
     public String useSearchSpaceTipText() {

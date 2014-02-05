@@ -7,24 +7,20 @@ import eva2.optimization.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.09.2004
- * Time: 17:05:23
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MutateESPolynomial implements InterfaceMutation, java.io.Serializable {
-    private double m_Eta = 0.2;
+    private double eta = 0.2;
 
     public MutateESPolynomial() {
     }
 
     public MutateESPolynomial(MutateESPolynomial mutator) {
-        this.m_Eta = mutator.m_Eta;
+        this.eta = mutator.eta;
     }
 
     public MutateESPolynomial(double eta) {
-        m_Eta = eta;
+        this.eta = eta;
     }
 
     /**
@@ -47,7 +43,7 @@ public class MutateESPolynomial implements InterfaceMutation, java.io.Serializab
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESPolynomial) {
             MutateESPolynomial mut = (MutateESPolynomial) mutator;
-            if (this.m_Eta != mut.m_Eta) {
+            if (this.eta != mut.eta) {
                 return false;
             }
             return true;
@@ -84,9 +80,9 @@ public class MutateESPolynomial implements InterfaceMutation, java.io.Serializab
                 double r = RNG.randomDouble();
                 double delta = 0;
                 if (r < 0.5) {
-                    delta = Math.pow((2 * r), (1 / (m_Eta + 1))) - 1;
+                    delta = Math.pow((2 * r), (1 / (eta + 1))) - 1;
                 } else {
-                    delta = 1 - Math.pow((2 * (1 - r)), (1 / (m_Eta + 1)));
+                    delta = 1 - Math.pow((2 * (1 - r)), (1 / (eta + 1)));
                 }
 
                 x[i] += delta;
@@ -158,11 +154,11 @@ public class MutateESPolynomial implements InterfaceMutation, java.io.Serializab
         if (a < 0) {
             a = 0;
         }
-        this.m_Eta = a;
+        this.eta = a;
     }
 
     public double getEta() {
-        return this.m_Eta;
+        return this.eta;
     }
 
     public String etaTipText() {

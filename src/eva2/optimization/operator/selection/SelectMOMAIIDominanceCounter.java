@@ -7,23 +7,18 @@ import eva2.optimization.population.Population;
  * Experimental selection mechanism for MOMA II where
  * a single individual is a whole set of Pareto optimal
  * solution. Currently defunct.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.02.2005
- * Time: 16:51:52
- * To change this template use File | Settings | File Templates.
  */
 public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io.Serializable {
 
-    private InterfaceSelection m_Selection = new SelectBestIndividuals();
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private InterfaceSelection selection = new SelectBestIndividuals();
+    private boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectMOMAIIDominanceCounter() {
     }
 
     public SelectMOMAIIDominanceCounter(SelectMOMAIIDominanceCounter a) {
-        this.m_Selection = (InterfaceSelection) a.m_Selection.clone();
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.selection = (InterfaceSelection) a.selection.clone();
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -80,7 +75,7 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
                         domCount++;
                     }
                 }
-                malta.m_SizeDominantSolutions = domCount;
+                malta.sizeDominantSolutions = domCount;
                 double[] fitness = new double[1];
                 fitness[0] = 1 / ((double) (domCount + 1));
                 tmpIndy1.setFitness(fitness);
@@ -103,7 +98,7 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
      */
     @Override
     public Population selectFrom(Population population, int size) {
-        return this.m_Selection.selectFrom(population, size);
+        return this.selection.selectFrom(population, size);
     }
 
     /**
@@ -147,11 +142,11 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
      * @param pop The selection method used.
      */
     public void setSelectionMethod(InterfaceSelection pop) {
-        this.m_Selection = pop;
+        this.selection = pop;
     }
 
     public InterfaceSelection getSelectionMethod() {
-        return this.m_Selection;
+        return this.selection;
     }
 
     public String selectionMethodTipText() {
@@ -166,11 +161,11 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

@@ -12,27 +12,21 @@ import java.util.BitSet;
 /**
  * The mutation probability is adapted using a parameter tau and stored in the individual.
  * Better mutation probabilities are selected indirectly as they produce better offspring.
- * <p/>
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.05.2003
- * Time: 19:52:16
- * To change this template use Options | File Templates.
  */
 public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable {
 
-    protected double m_MutationStep = 1;
-    protected double m_Tau1 = 0.15;
-    protected double m_LowerLimitStepSize = 0.0000005;
+    protected double mutationStep = 1;
+    protected double tau1 = 0.15;
+    protected double lowerLimitStepSize = 0.0000005;
 
     public MutateGAAdaptive() {
 
     }
 
     public MutateGAAdaptive(MutateGAAdaptive mutator) {
-        this.m_MutationStep = mutator.m_MutationStep;
-        this.m_Tau1 = mutator.m_Tau1;
-        this.m_LowerLimitStepSize = mutator.m_LowerLimitStepSize;
+        this.mutationStep = mutator.mutationStep;
+        this.tau1 = mutator.tau1;
+        this.lowerLimitStepSize = mutator.lowerLimitStepSize;
     }
 
     /**
@@ -55,13 +49,13 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGAAdaptive) {
             MutateGAAdaptive mut = (MutateGAAdaptive) mutator;
-            if (this.m_MutationStep != mut.m_MutationStep) {
+            if (this.mutationStep != mut.mutationStep) {
                 return false;
             }
-            if (this.m_Tau1 != mut.m_Tau1) {
+            if (this.tau1 != mut.tau1) {
                 return false;
             }
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+            if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
                 return false;
             }
             return true;
@@ -92,12 +86,12 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
         //System.out.println("Before Mutate: " +((GAIndividual)individual).getSolutionRepresentationFor());
         if (individual instanceof InterfaceGAIndividual) {
             BitSet tmpBitSet = ((InterfaceGAIndividual) individual).getBGenotype();
-            this.m_MutationStep *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
-            if (this.m_MutationStep < this.m_LowerLimitStepSize) {
-                this.m_MutationStep = this.m_LowerLimitStepSize;
+            this.mutationStep *= Math.exp(this.tau1 * RNG.gaussianDouble(1));
+            if (this.mutationStep < this.lowerLimitStepSize) {
+                this.mutationStep = this.lowerLimitStepSize;
             }
             for (int i = 0; i < ((InterfaceGAIndividual) individual).getGenotypeLength(); i++) {
-                if (RNG.flipCoin(this.m_MutationStep / ((InterfaceGAIndividual) individual).getGenotypeLength())) {
+                if (RNG.flipCoin(this.mutationStep / ((InterfaceGAIndividual) individual).getGenotypeLength())) {
                     tmpBitSet.flip(i);
                 }
             }
@@ -158,13 +152,13 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
      */
     public void setMutationStep(double d) {
         if (d < 0) {
-            d = this.m_LowerLimitStepSize;
+            d = this.lowerLimitStepSize;
         }
-        this.m_MutationStep = d;
+        this.mutationStep = d;
     }
 
     public double getMutationStepSize() {
-        return this.m_MutationStep;
+        return this.mutationStep;
     }
 
     public String mutationStepSizeTipText() {
@@ -180,11 +174,11 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
         if (d < 0) {
             d = 0;
         }
-        this.m_LowerLimitStepSize = d;
+        this.lowerLimitStepSize = d;
     }
 
     public double getLowerLimitStepSize() {
-        return this.m_LowerLimitStepSize;
+        return this.lowerLimitStepSize;
     }
 
     public String lowerLimitStepSizeTipText() {
@@ -200,11 +194,11 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
         if (d < 0) {
             d = 0;
         }
-        this.m_Tau1 = d;
+        this.tau1 = d;
     }
 
     public double getTau1() {
-        return this.m_Tau1;
+        return this.tau1;
     }
 
     public String tau1TipText() {

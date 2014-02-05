@@ -5,27 +5,18 @@ import eva2.optimization.population.Population;
 
 /**
  * Success rule implementation.
- * <p/>
- * User: streiche
- * Date: 10.05.2005
- * Time: 14:11:49
- * To change this template use File | Settings | File Templates.
  */
 public class MutateESSuccessRule extends MutateESFixedStepSize implements InterfaceMutation, InterfaceAdaptOperatorGenerational, java.io.Serializable {
-    // it would be quite nice to make this variable static, but in that case
-    // no one could runs n independent ES runs in parallel anymore *sigh*
-    // protected static double mutationStepSize    = 0.2;
-//    protected double        mutationStepSize    = 0.2; // now in base class
-    protected double m_SuccessRate = 0.2;
-    protected double m_Alpha = 1.2;
+    protected double successRate = 0.2;
+    protected double alpha = 1.2;
 
     public MutateESSuccessRule() {
     }
 
     public MutateESSuccessRule(MutateESSuccessRule mutator) {
         super(mutator);
-        this.m_SuccessRate = mutator.m_SuccessRate;
-        this.m_Alpha = mutator.m_Alpha;
+        this.successRate = mutator.successRate;
+        this.alpha = mutator.alpha;
     }
 
     /**
@@ -48,13 +39,13 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESSuccessRule) {
             MutateESSuccessRule mut = (MutateESSuccessRule) mutator;
-            if (this.m_Sigma != mut.m_Sigma) {
+            if (this.sigma != mut.sigma) {
                 return false;
             }
-            if (this.m_SuccessRate != mut.m_SuccessRate) {
+            if (this.successRate != mut.successRate) {
                 return false;
             }
-            if (this.m_Alpha != mut.m_Alpha) {
+            if (this.alpha != mut.alpha) {
                 return false;
             }
             return true;
@@ -78,14 +69,14 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
      * This method increases the mutation step size.
      */
     public void increaseMutationStepSize() {
-        this.m_Sigma *= this.m_Alpha;
+        this.sigma *= this.alpha;
     }
 
     /**
      * This method decrease the mutation step size.
      */
     public void decreaseMutationStepSize() {
-        this.m_Sigma /= this.m_Alpha;
+        this.sigma /= this.alpha;
     }
 
 /**********************************************************************************************************************
@@ -127,11 +118,11 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
         if (d > 1) {
             d = 1;
         }
-        this.m_SuccessRate = d;
+        this.successRate = d;
     }
 
     public double getSuccessRate() {
-        return this.m_SuccessRate;
+        return this.successRate;
     }
 
     public String successRateTipText() {
@@ -147,11 +138,11 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
         if (d < 1) {
             d = 1;
         }
-        this.m_Alpha = d;
+        this.alpha = d;
     }
 
     public double getAlpha() {
-        return this.m_Alpha;
+        return this.alpha;
     }
 
     public String alphaTipText() {

@@ -249,41 +249,6 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
     }
 
     protected void evaluateNewObjectX(double[] x, double[][] range) {
-//        if (Double.isNaN((x[0]))) System.out.println("treffer in cma "+ x[0]);
-//        if (Double.isNaN((c.get(0,0)))) System.out.println("treffer in cma");
-//        for (int i=0;i<N;i++)   {   // evaluate new random values
-//            Z[i] = RNG.gaussianDouble(1.0);
-//        }
-//        c = (c.plus(c.transpose()).times(0.5)); // MAKE C SYMMETRIC
-//        EigenvalueDecomposition helper = new EigenvalueDecomposition(c);
-//        B = helper.getV();
-//        double [] Eigenvalues = helper.getRealEigenvalues();
-//        double[]    tmpD = new double[x.length];
-//        boolean constraint = false;
-//        while (constraint == false) {
-//
-//            for (int i=0;i<N;i++) {
-//                Bz[i] = 0;
-//                for (int j=0;j<N;j++) {
-//                    Bz[i] = Bz[i] + Math.sqrt(Math.abs(Eigenvalues[j])) * B.get(i,j)*Z[j];
-//                }
-//                tmpD[i]=x[i]+m_SigmaScalar*Bz[i]; // here is the new value
-//            }
-//            constraint = true;
-//            if (this.checkConstraints) {
-//                for (int i=0;i<N;i++) {
-//                    if ((tmpD[i]<range[i][0]) || (tmpD[i]>range[i][1])) constraint = false;
-//                }
-//                if (!constraint) this.m_SigmaScalar = this.m_SigmaScalar/2;
-//                if (this.m_SigmaScalar < 1.e-20) {
-//                    this.m_SigmaScalar = 1.e-10;
-//                    return;
-//                }
-//            }
-//        }
-//        for (int i = 0; i < N; i++) x[i] = tmpD[i];
-        // conservation of mutation direction:
-        //double[] oldZ = (double[]) this.Z.clone();
         double[] oldX = (double[]) x.clone();
 
         for (int i = 0; i < this.D; i++) {

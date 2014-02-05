@@ -14,17 +14,17 @@ import eva2.tools.math.RNG;
  * To change this template use File | Settings | File Templates.
  */
 public class MutateESFixedStepSize implements InterfaceMutation, java.io.Serializable {
-    protected double m_Sigma = 0.005;
+    protected double sigma = 0.005;
 
     public MutateESFixedStepSize() {
     }
 
     public MutateESFixedStepSize(MutateESFixedStepSize mutator) {
-        this.m_Sigma = mutator.m_Sigma;
+        this.sigma = mutator.sigma;
     }
 
     public MutateESFixedStepSize(double sigma) {
-        m_Sigma = sigma;
+        this.sigma = sigma;
     }
 
     /**
@@ -47,7 +47,7 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESFixedStepSize) {
             MutateESFixedStepSize mut = (MutateESFixedStepSize) mutator;
-            if (this.m_Sigma != mut.m_Sigma) {
+            if (this.sigma != mut.sigma) {
                 return false;
             }
             return true;
@@ -80,7 +80,7 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
             double[] x = ((InterfaceESIndividual) individual).getDGenotype();
             double[][] range = ((InterfaceESIndividual) individual).getDoubleRange();
             for (int i = 0; i < x.length; i++) {
-                x[i] += ((range[i][1] - range[i][0]) / 2) * RNG.gaussianDouble(this.m_Sigma);
+                x[i] += ((range[i][1] - range[i][0]) / 2) * RNG.gaussianDouble(this.sigma);
                 if (range[i][0] > x[i]) {
                     x[i] = range[i][0];
                 }
@@ -148,11 +148,11 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
         if (d < 0) {
             d = 0;
         }
-        this.m_Sigma = d;
+        this.sigma = d;
     }
 
     public double getSigma() {
-        return this.m_Sigma;
+        return this.sigma;
     }
 
     public String sigmaTipText() {

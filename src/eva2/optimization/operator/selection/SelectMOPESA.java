@@ -7,26 +7,21 @@ import eva2.tools.math.RNG;
 
 /**
  * The multi-objective PESA selection method.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.08.2004
- * Time: 10:56:47
- * To change this template use File | Settings | File Templates.
  */
 public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
 
-    ArchivingPESAII m_PESAII = new ArchivingPESAII();
-    int[] m_Squeeze;
-    int m_TournamentSize = 2;
-    boolean m_ObeyDebsConstViolationPrinciple = true;
+    ArchivingPESAII PESAII = new ArchivingPESAII();
+    int[] squeeze;
+    int tournamentSize = 2;
+    boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectMOPESA() {
     }
 
     public SelectMOPESA(SelectMOPESA a) {
-        this.m_PESAII = new ArchivingPESAII();
-        this.m_TournamentSize = a.m_TournamentSize;
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.PESAII = new ArchivingPESAII();
+        this.tournamentSize = a.tournamentSize;
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -44,7 +39,7 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
      */
     @Override
     public void prepareSelection(Population population) {
-        this.m_Squeeze = this.m_PESAII.calculateSqueezeFactor(population);
+        this.squeeze = this.PESAII.calculateSqueezeFactor(population);
     }
 
     /**
@@ -77,9 +72,9 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
 
         try {
             winner = RNG.randomInt(0, population.size() - 1);
-            for (int i = 1; i < this.m_TournamentSize; i++) {
+            for (int i = 1; i < this.tournamentSize; i++) {
                 tmp = RNG.randomInt(0, population.size() - 1);
-                if (this.m_Squeeze[tmp] < this.m_Squeeze[winner]) {
+                if (this.squeeze[tmp] < this.squeeze[winner]) {
                     winner = tmp;
                 }
             }
@@ -133,11 +128,11 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
     }
 
     public int getTournamentSize() {
-        return m_TournamentSize;
+        return tournamentSize;
     }
 
     public void setTournamentSize(int g) {
-        m_TournamentSize = g;
+        tournamentSize = g;
     }
 
     /**
@@ -148,11 +143,11 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

@@ -79,31 +79,6 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
 //		this.condImprovementOrChange.setSelectedTag(o.condImprovementOrChange.getSelectedTagID());
     }
 
-//	public void hideHideable() {
-//		setConvergenceCondition(getConvergenceCondition());
-//	}
-
-//	public PopulationMeasureTerminator() {
-//		pMetric = new PhenotypeMetric();
-//	}
-//
-//	public PopulationMeasureTerminator(double thresh, int stagnPeriod, boolean bFitCallBased, boolean bAbsolute) {
-//		pMetric = new PhenotypeMetric();
-//		convThresh = thresh;
-//		this.m_stagTime = stagnPeriod;
-//		if (bFitCallBased) stagnationMeasure.setSelectedTag("Fitness calls");
-//		else stagnationMeasure.setSelectedTag("Generations");
-//		if (bAbsolute) convergenceCondition.setSelectedTag("Absolute");
-//		else convergenceCondition.setSelectedTag("Relative");
-//	}
-//
-//	public PopulationMeasureTerminator(PopulationMeasureTerminator other) {
-//		pMetric = new PhenotypeMetric();
-//		convThresh = other.convThresh;
-//		this.m_stagTime = other.m_stagTime;
-//		stagnationMeasure.setSelectedTag(other.getStagnationMeasure().getSelectedTagID());
-//		convergenceCondition.setSelectedTag(other.getConvergenceCondition().getSelectedTagID());
-//	}
 
     public static String globalInfo() {
         return "Stop if a convergence criterion has been met.";
@@ -290,10 +265,8 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      */
     private boolean stagnationTimeHasPassed(PopulationInterface pop) {
         if (stagnationMeasure == StagnationTypeEnum.fitnessCallBased) { // by fitness calls
-//			System.out.println("stagnationTimeHasPassed returns " + ((pop.getFunctionCalls() - popFitCalls) >= m_stagTime) + " after " + (pop.getFunctionCalls() - popFitCalls));
             return (pop.getFunctionCalls() - oldPopFitCalls) >= stagTime;
         } else {// by generation
-//			System.out.println("stagnationTimeHasPassed returns " + ((pop.getFunctionCalls() - popGens) >= m_stagTime) + " after " + (pop.getFunctionCalls() - popGens));
             return (pop.getGeneration() - oldPopGens) >= stagTime;
         }
     }

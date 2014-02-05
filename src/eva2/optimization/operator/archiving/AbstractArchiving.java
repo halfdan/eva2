@@ -12,14 +12,9 @@ import eva2.tools.chart2d.DPointIcon;
  * This is an abstract archiving strategy giving default implementation of determining
  * dominance, inserting individuals in exsisting Pareto front (removing now dominated solutions)
  * and some plot methods typically used for debugging.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.08.2003
- * Time: 17:00:44
- * To change this template use Options | File Templates.
  */
 public abstract class AbstractArchiving implements InterfaceArchiving, java.io.Serializable {
-    transient protected Plot m_Plot = null;
+    transient protected Plot plot = null;
     protected int p = 0;
     public boolean obeyDebsConstViolationPrinciple = true;
 

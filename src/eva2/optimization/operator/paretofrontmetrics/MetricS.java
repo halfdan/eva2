@@ -9,15 +9,10 @@ import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 
 /**
  * S-Metric calculates the hyper-volume covered between the current solutions and a reference point.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.06.2005
- * Time: 14:28:24
- * To change this template use File | Settings | File Templates.
  */
 public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable {
 
-    private double[][] m_ObjectiveSpaceRange;
+    private double[][] objectiveSpaceRange;
     private static boolean TRACE = false;
 
     public MetricS() {
@@ -25,11 +20,11 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
     }
 
     public MetricS(MetricS b) {
-        if (b.m_ObjectiveSpaceRange != null) {
-            this.m_ObjectiveSpaceRange = new double[b.m_ObjectiveSpaceRange.length][2];
-            for (int i = 0; i < this.m_ObjectiveSpaceRange.length; i++) {
-                this.m_ObjectiveSpaceRange[i][0] = b.m_ObjectiveSpaceRange[i][0];
-                this.m_ObjectiveSpaceRange[i][1] = b.m_ObjectiveSpaceRange[i][1];
+        if (b.objectiveSpaceRange != null) {
+            this.objectiveSpaceRange = new double[b.objectiveSpaceRange.length][2];
+            for (int i = 0; i < this.objectiveSpaceRange.length; i++) {
+                this.objectiveSpaceRange[i][0] = b.objectiveSpaceRange[i][0];
+                this.objectiveSpaceRange[i][1] = b.objectiveSpaceRange[i][1];
             }
         }
     }
@@ -45,7 +40,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
     }
 
     public void setObjectiveSpaceRange(double[][] range) {
-        this.m_ObjectiveSpaceRange = range;
+        this.objectiveSpaceRange = range;
     }
 
     /**
@@ -61,14 +56,14 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
      */
     @Override
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
-        this.m_ObjectiveSpaceRange = problem.getObjectiveSpaceRange();
+        this.objectiveSpaceRange = problem.getObjectiveSpaceRange();
         if (TRACE) {
-            System.out.println("Border: " + BeanInspector.toString(m_ObjectiveSpaceRange));
+            System.out.println("Border: " + BeanInspector.toString(objectiveSpaceRange));
         }
-        double smetric = this.calculateSMetric(pop, this.m_ObjectiveSpaceRange, this.m_ObjectiveSpaceRange.length);
+        double smetric = this.calculateSMetric(pop, this.objectiveSpaceRange, this.objectiveSpaceRange.length);
         double reference = 1;
-        for (int i = 0; i < this.m_ObjectiveSpaceRange.length; i++) {
-            reference *= (this.m_ObjectiveSpaceRange[i][1] - this.m_ObjectiveSpaceRange[i][0]);
+        for (int i = 0; i < this.objectiveSpaceRange.length; i++) {
+            reference *= (this.objectiveSpaceRange[i][1] - this.objectiveSpaceRange[i][0]);
         }
         //System.out.println("SMetric: "+smetric +" Reference: " + reference);
         double res = ((Math.abs(smetric) / Math.abs(reference)) * 100);
@@ -82,10 +77,10 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
 //     * an achieved Pareto-Front
 //     */
 //    public double calculateMetricOn(Population pop) {
-//        double smetric = this.calculateSMetric(pop, this.m_ObjectiveSpaceRange, this.m_ObjectiveSpaceRange.length);
+//        double smetric = this.calculateSMetric(pop, this.objectiveSpaceRange, this.objectiveSpaceRange.length);
 //        double reference = 1;
-//        for (int i = 0; i < this.m_ObjectiveSpaceRange.length; i++) {
-//            reference *= (this.m_ObjectiveSpaceRange[i][1] - this.m_ObjectiveSpaceRange[i][0]);
+//        for (int i = 0; i < this.objectiveSpaceRange.length; i++) {
+//            reference *= (this.objectiveSpaceRange[i][1] - this.objectiveSpaceRange[i][0]);
 //        }
 //        //System.out.println("SMetric: "+smetric +" Reference: " + reference);
 //        return ((Math.abs(smetric)/Math.abs(reference))*100);

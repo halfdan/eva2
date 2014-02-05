@@ -12,26 +12,21 @@ import eva2.tools.chart2d.DPoint;
 /**
  * The SPEA II selection criteria using strength and raw fitness to determine
  * good individuals.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 31.03.2004
- * Time: 17:54:54
- * To change this template use File | Settings | File Templates.
  */
 public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable {
 
-    private InterfaceSelection m_EnvironmentSelection = new SelectTournament();
-    private ArchivingSPEAII m_SPEAII = new ArchivingSPEAII();
-    private double[] m_SPEAFitness;
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private InterfaceSelection environmentSelection = new SelectTournament();
+    private ArchivingSPEAII SPEAII = new ArchivingSPEAII();
+    private double[] SPEAFitness;
+    private boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectMOSPEAII() {
     }
 
     public SelectMOSPEAII(SelectMOSPEAII a) {
-        this.m_SPEAII = new ArchivingSPEAII();
-        this.m_EnvironmentSelection = (InterfaceSelection) a.m_EnvironmentSelection.clone();
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.SPEAII = new ArchivingSPEAII();
+        this.environmentSelection = (InterfaceSelection) a.environmentSelection.clone();
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -49,7 +44,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
      */
     @Override
     public void prepareSelection(Population population) {
-        m_SPEAFitness = this.m_SPEAII.calculateSPEA(population);
+        SPEAFitness = this.SPEAII.calculateSPEA(population);
     }
 
     /**
@@ -69,12 +64,12 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
         for (int i = 0; i < population.size(); i++) {
             orgFit[i] = ((AbstractEAIndividual) population.get(i)).getFitness();
             newFit = new double[1];
-            newFit[0] = this.m_SPEAFitness[i];
+            newFit[0] = this.SPEAFitness[i];
             ((AbstractEAIndividual) population.get(i)).setFitness(newFit);
         }
 
         // then select
-        Population result = this.m_EnvironmentSelection.selectFrom(population, size);
+        Population result = this.environmentSelection.selectFrom(population, size);
 
         // finally replace the fitness with the original
         for (int i = 0; i < population.size(); i++) {
@@ -97,7 +92,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
             mySet.setConnectedMode(false);
             for (int i = 0; i < orgFit.length; i++) {
                 myPoint = new DPoint(orgFit[i][0], orgFit[i][1]);
-                tmp1 = Math.round(m_SPEAFitness[i] * 100) / (double) 100;
+                tmp1 = Math.round(SPEAFitness[i] * 100) / (double) 100;
                 tmp = new Chart2DDPointIconText("" + tmp1);
                 tmp.setIcon(new Chart2DDPointIconCircle());
                 myPoint.setIcon(tmp);
@@ -155,11 +150,11 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
      * @param selection
      */
     public void setEnvironmentSelection(InterfaceSelection selection) {
-        this.m_EnvironmentSelection = selection;
+        this.environmentSelection = selection;
     }
 
     public InterfaceSelection getEnvironmentSelection() {
-        return this.m_EnvironmentSelection;
+        return this.environmentSelection;
     }
 
     public String environmentSelectionTipText() {
@@ -174,11 +169,11 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

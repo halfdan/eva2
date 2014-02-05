@@ -5,27 +5,23 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 05.03.2004
- * Time: 15:49:16
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private PropertyDoubleArray m_Goals = null;
+    private PropertyDoubleArray goals = null;
 
     public MOSOGoalProgramming() {
         double[] tmpD = new double[2];
         for (int i = 0; i < tmpD.length; i++) {
             tmpD[i] = 0.0;
         }
-        this.m_Goals = new PropertyDoubleArray(tmpD);
+        this.goals = new PropertyDoubleArray(tmpD);
     }
 
     public MOSOGoalProgramming(MOSOGoalProgramming b) {
-        if (b.m_Goals != null) {
-            this.m_Goals = (PropertyDoubleArray) b.m_Goals;
+        if (b.goals != null) {
+            this.goals = (PropertyDoubleArray) b.goals;
         }
     }
 
@@ -63,8 +59,8 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
         resultFit[0] = 0;
-        for (int i = 0; (i < this.m_Goals.getNumRows()) && (i < tmpFit.length); i++) {
-            resultFit[0] += tmpFit[i] - this.m_Goals.getValue(i, 0);
+        for (int i = 0; (i < this.goals.getNumRows()) && (i < tmpFit.length); i++) {
+            resultFit[0] += tmpFit[i] - this.goals.getValue(i, 0);
         }
         indy.setFitness(resultFit);
     }
@@ -83,11 +79,11 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
         for (int i = 0; i < newWeights.length; i++) {
             newWeights[i] = 0.0;
         }
-        for (int i = 0; (i < this.m_Goals.getNumRows()) && (i < newWeights.length); i++) {
-            newWeights[i] = this.m_Goals.getValue(i, 0);
+        for (int i = 0; (i < this.goals.getNumRows()) && (i < newWeights.length); i++) {
+            newWeights[i] = this.goals.getValue(i, 0);
         }
 
-        this.m_Goals.setDoubleArray(newWeights);
+        this.goals.setDoubleArray(newWeights);
     }
 
     /**
@@ -130,11 +126,11 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
      * @param goals The weights for the fitness sum.
      */
     public void setGoals(PropertyDoubleArray goals) {
-        this.m_Goals = goals;
+        this.goals = goals;
     }
 
     public PropertyDoubleArray getGoals() {
-        return this.m_Goals;
+        return this.goals;
     }
 
     public String goalsTipText() {

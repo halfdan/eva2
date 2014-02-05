@@ -8,15 +8,10 @@ import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
 /**
  * Overall Non-Dom. Vector Generation calculates simply the number of
  * non-dominated solutions in the current soltuion set.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.06.2005
- * Time: 14:27:44
- * To change this template use File | Settings | File Templates.
  */
 public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMetric, java.io.Serializable {
 
-    private ArchivingAllDominating m_Dom = new ArchivingAllDominating();
+    private ArchivingAllDominating dominating = new ArchivingAllDominating();
 
     public MetricOverallNonDominatedVectors() {
 
@@ -55,8 +50,8 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
             tmpPPO.addPopulation(pop.getArchive());
         }
         for (int i = 0; i < tmpPPO.size(); i++) {
-            if (this.m_Dom.isDominant((AbstractEAIndividual) tmpPPO.get(i), tmpPop)) {
-                this.m_Dom.addIndividualToArchive((AbstractEAIndividual) tmpPPO.get(i), tmpPop);
+            if (this.dominating.isDominant((AbstractEAIndividual) tmpPPO.get(i), tmpPop)) {
+                this.dominating.addIndividualToArchive((AbstractEAIndividual) tmpPPO.get(i), tmpPop);
             }
         }
         return tmpPop.size();

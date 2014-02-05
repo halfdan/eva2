@@ -7,11 +7,6 @@ import eva2.optimization.population.Population;
 /**
  * This simple strategy simply archives all Pareto optimal solutions. This method is
  * very prone to OutOfMemory errors!
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 28.07.2003
- * Time: 14:40:43
- * To change this template use Options | File Templates.
  */
 public class ArchivingAllDominating extends AbstractArchiving implements java.io.Serializable {
 

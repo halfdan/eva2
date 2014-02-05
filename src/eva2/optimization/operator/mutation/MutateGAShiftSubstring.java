@@ -17,16 +17,16 @@ import java.util.BitSet;
  */
 public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serializable {
 
-    private int m_subStringLength = 0;
-    private int m_shiftDistance = 0;
+    private int subStringLength = 0;
+    private int shiftDistance = 0;
 
     public MutateGAShiftSubstring() {
 
     }
 
     public MutateGAShiftSubstring(MutateGAShiftSubstring mutator) {
-        this.m_subStringLength = mutator.m_subStringLength;
-        this.m_shiftDistance = mutator.m_shiftDistance;
+        this.subStringLength = mutator.subStringLength;
+        this.shiftDistance = mutator.shiftDistance;
     }
 
     /**
@@ -49,10 +49,10 @@ public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serial
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGAShiftSubstring) {
             MutateGAShiftSubstring mut = (MutateGAShiftSubstring) mutator;
-            if (this.m_subStringLength != mut.m_subStringLength) {
+            if (this.subStringLength != mut.subStringLength) {
                 return false;
             }
-            if (this.m_shiftDistance != mut.m_shiftDistance) {
+            if (this.shiftDistance != mut.shiftDistance) {
                 return false;
             }
             return true;
@@ -106,21 +106,21 @@ public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serial
     }
 
     private int selectShiftDist(int len) {
-        if (m_shiftDistance <= 0) {
+        if (shiftDistance <= 0) {
             return RNG.randomInt(len);
         } else {
-            return m_shiftDistance;
+            return shiftDistance;
         }
     }
 
     private int[] selectSubstring(BitSet tmpBitSet, int len) {
         int[] str = new int[2];
-        if (m_subStringLength <= 0) {
+        if (subStringLength <= 0) {
             str[0] = RNG.randomInt(len); // TODO check for collision? Not a problem in higher dims...
             str[1] = RNG.randomInt(len);
         } else {
             str[0] = RNG.randomInt(len);
-            str[1] = m_subStringLength + str[0] - 1; // this may be larger than len, but its modulo-ed away in mutate
+            str[1] = subStringLength + str[0] - 1; // this may be larger than len, but its modulo-ed away in mutate
         }
         return str;
     }
@@ -171,11 +171,11 @@ public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serial
     }
 
     public int getSubStringLength() {
-        return m_subStringLength;
+        return subStringLength;
     }
 
     public void setSubStringLength(int stringLength) {
-        m_subStringLength = stringLength;
+        subStringLength = stringLength;
     }
 
     public String subStringLengthTipText() {
@@ -183,11 +183,11 @@ public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serial
     }
 
     public int getShiftDistance() {
-        return m_shiftDistance;
+        return shiftDistance;
     }
 
     public void setShiftDistance(int distance) {
-        m_shiftDistance = distance;
+        shiftDistance = distance;
     }
 
     public String shiftDistanceTipText() {

@@ -5,22 +5,18 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.03.2004
- * Time: 13:44:55
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private int m_OutputDimension = 2;
+    private int outputDimension = 2;
 
     public MOSOUtilityFunction() {
     }
 
     public MOSOUtilityFunction(MOSOUtilityFunction b) {
         System.out.println("Warning no source!");
-        this.m_OutputDimension = b.m_OutputDimension;
+        this.outputDimension = b.outputDimension;
     }
 
     @Override
@@ -79,7 +75,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
      */
     @Override
     public void setOutputDimension(int dim) {
-        this.m_OutputDimension = dim;
+        this.outputDimension = dim;
     }
 
     /**
@@ -92,9 +88,6 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
         return this.getName() + "\n";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -115,17 +108,4 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
         return "This method allows you to progamm an individual utility function.";
     }
 
-//    /** This method allows you to edit the source for the MOSOUtilityFunction
-//     * and therefore alter the utility function itself!
-//     * @param newSource     The new source code for the ultility function
-//     */
-//    public void setSource (Source newSource) {
-//        m_Source = newSource;
-//    }
-//    public Source getSource() {
-//        return m_Source;
-//    }
-//    public String sourceTipText() {
-//        return "Edit the source code for the utility function, but limit editing to the convertSingleIndividual() method.";
-//    }
 }

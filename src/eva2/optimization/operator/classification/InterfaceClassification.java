@@ -9,7 +9,7 @@ package eva2.optimization.operator.classification;
  * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceClassification {
-    /**
+    /**          x
      * This method allows you to make a deep clone of
      * the object
      *

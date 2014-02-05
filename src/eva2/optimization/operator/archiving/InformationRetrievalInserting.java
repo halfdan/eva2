@@ -6,11 +6,6 @@ import eva2.optimization.population.Population;
  * This information retrieval inserts the retrieved
  * solutions, by removing random individuals from the
  * population.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.03.2004
- * Time: 14:55:18
- * To change this template use File | Settings | File Templates.
  */
 public class InformationRetrievalInserting implements InterfaceInformationRetrieval, java.io.Serializable {
 

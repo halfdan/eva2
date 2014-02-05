@@ -10,22 +10,17 @@ import java.util.ArrayList;
 /**
  * Select the best individuals.
  * In case of multiple fitness values the selection
- * critria is selected randomly for each selection event.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.05.2003
- * Time: 19:34:16
- * To change this template use Options | File Templates.
+ * criteria is selected randomly for each selection event.
  */
 public class SelectBestIndividuals implements InterfaceSelection, java.io.Serializable {
 
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectBestIndividuals() {
     }
 
     public SelectBestIndividuals(SelectBestIndividuals a) {
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -95,7 +90,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
         boolean member;
         AbstractEAIndividual indy;
 
-        if (this.m_ObeyDebsConstViolationPrinciple) {
+        if (this.obeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {
                 indy = (AbstractEAIndividual) pop.get(i);
                 // check if indy is tabu
@@ -203,11 +198,11 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

@@ -8,27 +8,22 @@ import eva2.tools.math.RNG;
 /**
  * The infamous NSGA-II selection scheme for multi-objective
  * optimization based on Pareto ranks and hybergrids.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.03.2004
- * Time: 17:22:40
- * To change this template use File | Settings | File Templates.
  */
 public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.io.Serializable {
 
-    private int m_TournamentSize = 4;
-    private ArchivingNSGAII m_NSGAII = new ArchivingNSGAII();
-    private Population[] m_Fronts;
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private int tournamentSize = 4;
+    private ArchivingNSGAII NSGAII = new ArchivingNSGAII();
+    private Population[] fronts;
+    private boolean obeyDebsConstViolationPrinciple = true;
 
 
     public SelectMONSGAIICrowedTournament() {
     }
 
     public SelectMONSGAIICrowedTournament(SelectMONSGAIICrowedTournament a) {
-        this.m_TournamentSize = a.m_TournamentSize;
-        this.m_NSGAII = new ArchivingNSGAII();
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.tournamentSize = a.tournamentSize;
+        this.NSGAII = new ArchivingNSGAII();
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -46,8 +41,8 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
      */
     @Override
     public void prepareSelection(Population population) {
-        this.m_Fronts = this.m_NSGAII.getNonDominatedSortedFronts(population);
-        this.m_NSGAII.calculateCrowdingDistance(this.m_Fronts);
+        this.fronts = this.NSGAII.getNonDominatedSortedFronts(population);
+        this.NSGAII.calculateCrowdingDistance(this.fronts);
     }
 
     /**
@@ -82,7 +77,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
         double curCrowdingDistance, tmpCrowdingDistance;
 
         try {
-            for (int i = 0; i < this.m_TournamentSize; i++) {
+            for (int i = 0; i < this.tournamentSize; i++) {
                 tmpIndy = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size() - 1));
                 tmpL = ((Integer) tmpIndy.getData("ParetoLevel")).intValue();
                 if (tmpL < smallestLevel) {
@@ -187,11 +182,11 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
     }
 
     public int getTournamentSize() {
-        return m_TournamentSize;
+        return tournamentSize;
     }
 
     public void setTournamentSize(int g) {
-        m_TournamentSize = g;
+        tournamentSize = g;
     }
 
     /**
@@ -202,11 +197,11 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

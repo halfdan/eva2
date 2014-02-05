@@ -13,21 +13,21 @@ import eva2.optimization.population.Population;
  */
 public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Serializable {
 
-    private PropertyEpsilonConstraint m_EpsilonConstraint = null;
+    private PropertyEpsilonConstraint epsilonConstraint = null;
 
     public MOSOEpsilonConstraint() {
-        this.m_EpsilonConstraint = new PropertyEpsilonConstraint();
-        this.m_EpsilonConstraint.m_OptimizeObjective = 0;
+        this.epsilonConstraint = new PropertyEpsilonConstraint();
+        this.epsilonConstraint.optimizeObjective = 0;
         double[] tmpD = new double[2];
         for (int i = 0; i < tmpD.length; i++) {
             tmpD[i] = 0.0;
         }
-        this.m_EpsilonConstraint.m_TargetValue = tmpD;
+        this.epsilonConstraint.targetValue = tmpD;
     }
 
     public MOSOEpsilonConstraint(MOSOEpsilonConstraint b) {
-        if (b.m_EpsilonConstraint != null) {
-            this.m_EpsilonConstraint = (PropertyEpsilonConstraint) b.m_EpsilonConstraint.clone();
+        if (b.epsilonConstraint != null) {
+            this.epsilonConstraint = (PropertyEpsilonConstraint) b.epsilonConstraint.clone();
         }
     }
 
@@ -64,10 +64,10 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
 
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
-        resultFit[0] = tmpFit[this.m_EpsilonConstraint.m_OptimizeObjective];
-        for (int i = 0; i < this.m_EpsilonConstraint.m_TargetValue.length; i++) {
-            if (i != this.m_EpsilonConstraint.m_OptimizeObjective) {
-                indy.addConstraintViolation(Math.max(0, tmpFit[i] - this.m_EpsilonConstraint.m_TargetValue[i]));
+        resultFit[0] = tmpFit[this.epsilonConstraint.optimizeObjective];
+        for (int i = 0; i < this.epsilonConstraint.targetValue.length; i++) {
+            if (i != this.epsilonConstraint.optimizeObjective) {
+                indy.addConstraintViolation(Math.max(0, tmpFit[i] - this.epsilonConstraint.targetValue[i]));
             }
         }
         indy.setFitness(resultFit);
@@ -87,14 +87,14 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
         for (int i = 0; i < newTarget.length; i++) {
             newTarget[i] = 0;
         }
-        for (int i = 0; (i < this.m_EpsilonConstraint.m_TargetValue.length) && (i < newTarget.length); i++) {
-            newTarget[i] = this.m_EpsilonConstraint.m_TargetValue[i];
+        for (int i = 0; (i < this.epsilonConstraint.targetValue.length) && (i < newTarget.length); i++) {
+            newTarget[i] = this.epsilonConstraint.targetValue[i];
         }
-        if (this.m_EpsilonConstraint.m_OptimizeObjective >= dim) {
-            this.m_EpsilonConstraint.m_OptimizeObjective = dim - 1;
+        if (this.epsilonConstraint.optimizeObjective >= dim) {
+            this.epsilonConstraint.optimizeObjective = dim - 1;
         }
 
-        this.m_EpsilonConstraint.m_TargetValue = newTarget;
+        this.epsilonConstraint.targetValue = newTarget;
     }
 
     /**
@@ -137,11 +137,11 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
      * @param weights The Epsilon Threshhold for the fitness sum.
      */
     public void setEpsilonThreshhold(PropertyEpsilonConstraint weights) {
-        this.m_EpsilonConstraint = weights;
+        this.epsilonConstraint = weights;
     }
 
     public PropertyEpsilonConstraint getEpsilonThreshhold() {
-        return this.m_EpsilonConstraint;
+        return this.epsilonConstraint;
     }
 
     public String epsilonThreshholdTipText() {

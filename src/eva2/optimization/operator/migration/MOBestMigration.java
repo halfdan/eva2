@@ -8,16 +8,11 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 /**
  * Migration based on a Multi-criterial selection mechanism
  * migrating the n best individuals between all populations.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.09.2004
- * Time: 15:41:15
- * To change this template use File | Settings | File Templates.
  */
 public class MOBestMigration implements InterfaceMigration, java.io.Serializable {
 
-    private InterfaceSelection m_Selection = new SelectMOMaxiMin();
-    int m_N = 5;
+    private InterfaceSelection selection = new SelectMOMaxiMin();
+    int n = 5;
 
     /**
      * The ever present clone method
@@ -67,9 +62,9 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
             comSet = oldIPOP;
 
             // todo: Here i could implement multiple selection and replacement schemes
-            newIPOP[i].removeNIndividuals(comSet.length * this.m_N);
+            newIPOP[i].removeNIndividuals(comSet.length * this.n);
             for (int j = 0; j < comSet.length; j++) {
-                selected = this.m_Selection.selectFrom(comSet[j], this.m_N);
+                selected = this.selection.selectFrom(comSet[j], this.n);
                 newIPOP[i].addPopulation((Population) selected.clone());
             }
         }
@@ -107,11 +102,11 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
      * @return The selection method
      */
     public InterfaceSelection getSelection() {
-        return this.m_Selection;
+        return this.selection;
     }
 
     public void setSelection(InterfaceSelection b) {
-        this.m_Selection = b;
+        this.selection = b;
     }
 
     public String selectionTipText() {
@@ -125,14 +120,14 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
      * @return The current number of individuals to migrate
      */
     public int getN() {
-        return this.m_N;
+        return this.n;
     }
 
     public void setN(int b) {
         if (b < 1) {
             b = 1;
         }
-        this.m_N = b;
+        this.n = b;
     }
 
     public String nTipText() {

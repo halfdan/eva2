@@ -24,35 +24,30 @@ import java.io.IOException;
  * This method implements the clustering based subdivision
  * scheme suited to identify uni- and multi-modal search spaces
  * under development and currently defunct.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.06.2005
- * Time: 10:38:26
- * To change this template use File | Settings | File Templates.
  */
 public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializable {
 
-    public boolean m_Debug = false;
-    private ClusteringXMeans m_XMeans = new ClusteringXMeans();
-    private ArchivingNSGAII m_NSGAII = new ArchivingNSGAII();
-    private boolean m_UseConstraints = true;
-    private InterfaceSelection m_Selection = new SelectRandom();
+    public boolean debug = false;
+    private ClusteringXMeans xMeans = new ClusteringXMeans();
+    private ArchivingNSGAII NSGAII = new ArchivingNSGAII();
+    private boolean useConstraints = true;
+    private InterfaceSelection selection = new SelectRandom();
 
     public MOXMeansSeparation() {
 
     }
 
     public MOXMeansSeparation(MOXMeansSeparation b) {
-        this.m_Debug = b.m_Debug;
-        this.m_UseConstraints = b.m_UseConstraints;
-        if (b.m_XMeans != null) {
-            this.m_XMeans = (ClusteringXMeans) b.m_XMeans.clone();
+        this.debug = b.debug;
+        this.useConstraints = b.useConstraints;
+        if (b.xMeans != null) {
+            this.xMeans = (ClusteringXMeans) b.xMeans.clone();
         }
-        if (b.m_NSGAII != null) {
-            this.m_NSGAII = (ArchivingNSGAII) b.m_NSGAII.clone();
+        if (b.NSGAII != null) {
+            this.NSGAII = (ArchivingNSGAII) b.NSGAII.clone();
         }
-        if (b.m_Selection != null) {
-            this.m_Selection = (InterfaceSelection) b.m_Selection.clone();
+        if (b.selection != null) {
+            this.selection = (InterfaceSelection) b.selection.clone();
         }
     }
 
@@ -94,7 +89,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
         // collect the populations
         for (int i = 0; i < islands.length; i++) {
             oldIPOP[i] = islands[i].getPopulation();
-            if (this.m_Debug) {
+            if (this.debug) {
                 System.out.println("Got population from " + i + " of size " + oldIPOP[i].size());
             }
             collector.addPopulation((Population) oldIPOP[i].clone());
@@ -128,7 +123,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 //        }
 
         // Now lets cluster this stuff
-        Population[] archives = this.m_NSGAII.getNonDominatedSortedFronts(collector);
+        Population[] archives = this.NSGAII.getNonDominatedSortedFronts(collector);
         Population toCluster = new Population();
         int currentFront = 0;
         toCluster.addPopulation(archives[currentFront]);
@@ -138,16 +133,16 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
         }
 
         // first set the K to the K-Means
-        this.m_XMeans.setMaxK(islands.length);
-        this.m_XMeans.cluster(toCluster, (Population) null);
-        double[][] c = this.m_XMeans.getC();
+        this.xMeans.setMaxK(islands.length);
+        this.xMeans.cluster(toCluster, (Population) null);
+        double[][] c = this.xMeans.getC();
         //@todo Hier muss ich mal denk machen und weniger click...
-        newIPOP = this.m_XMeans.cluster(collector, c);
+        newIPOP = this.xMeans.cluster(collector, c);
         for (int i = 0; i < islands.length; i++) {
             islands[i].getPopulation().clear();
             islands[i].getPopulation().setTargetSize(0);
         }
-        if (this.m_Debug) {
+        if (this.debug) {
             Plot plot;
             double[] tmpD = new double[2];
             tmpD[0] = 0;
@@ -179,7 +174,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
             }
         }
 
-        if ((this.m_UseConstraints) && (c.length > 1)) {
+        if ((this.useConstraints) && (c.length > 1)) {
             // i should set the constraints to the optimizers
             InterfaceOptimizationProblem prob;
 
@@ -199,7 +194,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
                         myOtherClass[j] = c[index];
                         index++;
                     }
-                    ConstBelongsToDifferentClass b = new ConstBelongsToDifferentClass(myClass, myOtherClass, this.m_XMeans.getUseSearchSpace());
+                    ConstBelongsToDifferentClass b = new ConstBelongsToDifferentClass(myClass, myOtherClass, this.xMeans.getUseSearchSpace());
                     ((AbstractMultiObjectiveOptimizationProblem) prob).areaConst4Parallelization.add(b);
 //                    if (this.debug) {
 //                        String out = "";
@@ -213,7 +208,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 //                            }
 //                            out += "}";
 //                        }
-//                        if (this.m_XMeans.getUsePhenotype()) out += "\n Using phenotype.";
+//                        if (this.xMeans.getUsePhenotype()) out += "\n Using phenotype.";
 //                        else out += "\n Using objective space.";
 //                        System.out.println(""+out);
 //                    }
@@ -229,9 +224,9 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
             oldIPOP[i].addPopulation(newIPOP[i]);
             // todo remove this for nice pictures
             if (!oldIPOP[i].targetSizeReached()) {
-                oldIPOP[i].addPopulation(this.m_Selection.selectFrom(memory, oldIPOP[i].getFreeSlots()));
+                oldIPOP[i].addPopulation(this.selection.selectFrom(memory, oldIPOP[i].getFreeSlots()));
             }
-            if (this.m_Debug) {
+            if (this.debug) {
                 System.out.println("Setting " + i + " to population size " + oldIPOP[i].size());
             }
             islands[i].setPopulation(oldIPOP[i]);
@@ -281,7 +276,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 //            islands[i].init();
 //        }
 //
-//        cluster.m_XMeans.setUseSearchSpace(true);
+//        cluster.xMeans.setUseSearchSpace(true);
 //
 //        for (int i = 0; i < 20; i++) {
 //            for (int j = 0; j < islands.length; j++) {
@@ -387,11 +382,11 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
      * @return The clustering algorithm method
      */
     public ClusteringXMeans getXMeans() {
-        return this.m_XMeans;
+        return this.xMeans;
     }
 
     public void setXMeans(ClusteringXMeans b) {
-        this.m_XMeans = b;
+        this.xMeans = b;
     }
 
     public String xMeansTipText() {
@@ -406,11 +401,11 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
      * @return The modus of constraints.
      */
     public boolean getUseConstraints() {
-        return this.m_UseConstraints;
+        return this.useConstraints;
     }
 
     public void setUseConstraints(boolean b) {
-        this.m_UseConstraints = b;
+        this.useConstraints = b;
     }
 
     public String useConstraintsTipText() {

@@ -5,25 +5,20 @@ import eva2.optimization.population.Population;
 
 /**
  * A simple sum with a scaling factor.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 16:57:51
- * To change this template use File | Settings | File Templates.
  */
 public class SelProbStandardScaling extends AbstractSelProb implements java.io.Serializable {
 
-    private double m_Q = 0;
+    private double Q = 0;
 
     public SelProbStandardScaling() {
     }
 
     public SelProbStandardScaling(double q) {
-        m_Q = q;
+        Q = q;
     }
 
     public SelProbStandardScaling(SelProbStandardScaling a) {
-        this.m_Q = a.m_Q;
+        this.Q = a.Q;
     }
 
     @Override
@@ -89,7 +84,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                     }
 
                     for (int i = 0; i < data.length; i++) {
-                        result[i] = ((result[i] - min) / delta) + this.m_Q;
+                        result[i] = ((result[i] - min) / delta) + this.Q;
                         sum += result[i];
                     }
 
@@ -119,7 +114,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                 }
 
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = ((result[i] - min) / delta) + this.m_Q;
+                    result[i] = ((result[i] - min) / delta) + this.Q;
                     sum += result[i];
                 }
                 for (int i = 0; i < population.size(); i++) {
@@ -150,7 +145,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                 }
 
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = ((result[i] - min) / delta) + this.m_Q;
+                    result[i] = ((result[i] - min) / delta) + this.Q;
                     sum += result[i];
                 }
 
@@ -188,11 +183,11 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
      * @return The new selection pressure q.
      */
     public double getQ() {
-        return this.m_Q;
+        return this.Q;
     }
 
     public void setQ(double b) {
-        this.m_Q = Math.abs(b);
+        this.Q = Math.abs(b);
     }
 
     public String qTipText() {

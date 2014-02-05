@@ -4,24 +4,19 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 
 /**
- * Simple method to selecet all.
+ * Simple method to select all.
  * In case of multiple fitness values the selection
  * criteria is selected randomly for each selection event. pff
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 31.03.2004
- * Time: 15:08:53
- * To change this template use File | Settings | File Templates.
  */
 public class SelectAll implements InterfaceSelection, java.io.Serializable {
 
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectAll() {
     }
 
     public SelectAll(SelectAll a) {
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -55,7 +50,7 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
     public Population selectFrom(Population population, int size) {
         Population result = new Population();
         result.setTargetSize(size);
-        if (this.m_ObeyDebsConstViolationPrinciple) {
+        if (this.obeyDebsConstViolationPrinciple) {
             int index = 0;
             while (result.size() < size) {
                 if (!((AbstractEAIndividual) population.get(index % population.size())).violatesConstraint()) {
@@ -121,11 +116,11 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

@@ -9,15 +9,10 @@ import eva2.tools.math.RNG;
  * Select best individual multiple times if necessary.
  * In case of multiple fitness values the selection
  * critria is selected randomly for each selection event.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.03.2003
- * Time: 16:17:10
- * To change this template use Options | File Templates.
  */
 public class SelectBestSingle implements InterfaceSelection, java.io.Serializable {
 
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private boolean obeyDebsConstViolationPrinciple = true;
     private boolean excludeSelfAsPartner = true; // try to avoid selecting as a mating partner the individual itself
 
     public SelectBestSingle() {
@@ -28,7 +23,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
     }
 
     public SelectBestSingle(SelectBestSingle a) {
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -69,7 +64,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
         } // trivial
         critSize = ((AbstractEAIndividual) population.get(0)).getFitness().length;
         result.setTargetSize(size);
-        if (this.m_ObeyDebsConstViolationPrinciple) {
+        if (this.obeyDebsConstViolationPrinciple) {
             for (int i = 0; i < size; i++) {
                 currentCriteria = RNG.randomInt(0, critSize - 1);
                 currentBestValue = Double.POSITIVE_INFINITY;
@@ -161,11 +156,11 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
      */
     @Override
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {

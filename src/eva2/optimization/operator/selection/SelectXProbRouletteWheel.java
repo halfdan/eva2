@@ -205,47 +205,47 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
 
 class TreeElement implements java.io.Serializable {
     public double separator = 0;
-    public int m_Index = -1;
-    public TreeElement m_Left = null, m_Right = null;
+    public int index = -1;
+    public TreeElement leftElement = null, rightElement = null;
 
     public TreeElement(double[][] d, int list, int low, int high) {
         //System.out.println("Calling Low/high: "+low+"/"+high);
         if (low == high) {
             // end reached
             //System.out.println("This: "+low);
-            this.m_Index = low;
+            this.index = low;
         } else {
             if (low == high - 1) {
                 //System.out.println("This: "+high);
-                this.m_Index = high;
+                this.index = high;
             } else {
                 int midPoint = (int) ((high + low) / 2);
                 this.separator = d[midPoint - 1][list];
                 //System.out.println("Branching: "+midPoint + " : " + this.separator);
-                this.m_Left = new TreeElement(d, list, low, midPoint);
-                this.m_Right = new TreeElement(d, list, midPoint, high);
+                this.leftElement = new TreeElement(d, list, low, midPoint);
+                this.rightElement = new TreeElement(d, list, midPoint, high);
             }
         }
     }
 
     public int getIndexFor(double d) {
-        if (this.m_Index >= 0) {
-            return this.m_Index - 1;
+        if (this.index >= 0) {
+            return this.index - 1;
         } else {
             if (d < this.separator) {
-                return this.m_Left.getIndexFor(d);
+                return this.leftElement.getIndexFor(d);
             } else {
-                return this.m_Right.getIndexFor(d);
+                return this.rightElement.getIndexFor(d);
             }
         }
     }
 
     @Override
     public String toString() {
-        if (this.m_Index >= 0) {
-            return "Ind:" + this.m_Index;
+        if (this.index >= 0) {
+            return "Ind:" + this.index;
         } else {
-            return "{" + this.m_Left.toString() + "} X<" + this.separator + " {" + this.m_Right.toString() + "}";
+            return "{" + this.leftElement.toString() + "} X<" + this.separator + " {" + this.rightElement.toString() + "}";
         }
     }
 }

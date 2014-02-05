@@ -20,17 +20,17 @@ import eva2.tools.chart2d.DPointIcon;
  */
 public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializable {
 
-    private MOSOMaxiMin m_MaxiMin = new MOSOMaxiMin();
-    private InterfaceSelection m_Selection = new SelectBestIndividuals();
-    private boolean m_ObeyDebsConstViolationPrinciple = true;
+    private MOSOMaxiMin maxiMin = new MOSOMaxiMin();
+    private InterfaceSelection selection = new SelectBestIndividuals();
+    private boolean obeyDebsConstViolationPrinciple = true;
 
     public ArchivingMaxiMin() {
     }
 
     public ArchivingMaxiMin(ArchivingMaxiMin a) {
-        this.m_MaxiMin = new MOSOMaxiMin();
-        this.m_Selection = (InterfaceSelection) a.m_Selection.clone();
-        this.m_ObeyDebsConstViolationPrinciple = a.m_ObeyDebsConstViolationPrinciple;
+        this.maxiMin = new MOSOMaxiMin();
+        this.selection = (InterfaceSelection) a.selection.clone();
+        this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
     }
 
     @Override
@@ -60,10 +60,10 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
         tmpPop.removeRedundantIndiesUsingFitness();
 
         // Now calculate the MaxiMin Criterium
-        this.m_MaxiMin.convertMultiObjective2SingleObjective(tmpPop);
-        this.m_Selection.setObeyDebsConstViolationPrinciple(this.m_ObeyDebsConstViolationPrinciple);
-        this.m_Selection.prepareSelection(tmpPop);
-        archive = this.m_Selection.selectFrom(tmpPop, pop.getArchive().getTargetSize());
+        this.maxiMin.convertMultiObjective2SingleObjective(tmpPop);
+        this.selection.setObeyDebsConstViolationPrinciple(this.obeyDebsConstViolationPrinciple);
+        this.selection.prepareSelection(tmpPop);
+        archive = this.selection.selectFrom(tmpPop, pop.getArchive().getTargetSize());
         archive.setTargetSize(pop.getArchive().getTargetSize());
 
         // now unconvert from SO to MO
@@ -113,11 +113,11 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
      * @param pop The selection method used.
      */
     public void setSelectionMethod(InterfaceSelection pop) {
-        this.m_Selection = pop;
+        this.selection = pop;
     }
 
     public InterfaceSelection getSelectionMethod() {
-        return this.m_Selection;
+        return this.selection;
     }
 
     public String selectionMethodTipText() {
@@ -131,11 +131,11 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
      * @param b The new state
      */
     public void setObeyDebsConstViolationPrinciple(boolean b) {
-        this.m_ObeyDebsConstViolationPrinciple = b;
+        this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
-        return this.m_ObeyDebsConstViolationPrinciple;
+        return this.obeyDebsConstViolationPrinciple;
     }
 
     public String obeyDebsConstViolationPrincipleToolTip() {
@@ -144,15 +144,15 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
 }
 //extends AbstractArchiving implements java.io.Serializable {
 //
-//    private MOSOMaxiMin             m_MaxiMin   = new MOSOMaxiMin();
-//    private InterfaceSelection      m_Selection = new SelectBestIndividuals();
+//    private MOSOMaxiMin             maxiMin   = new MOSOMaxiMin();
+//    private InterfaceSelection      selections = new SelectBestIndividuals();
 //
 //    public ArchivingMaxiMin() {
 //    }
 //
 //    public ArchivingMaxiMin(ArchivingMaxiMin a) {
-//        this.m_MaxiMin      = new MOSOMaxiMin();
-//        this.m_Selection    = (InterfaceSelection)a.m_Selection.clone();
+//        this.maxiMin      = new MOSOMaxiMin();
+//        this.selections    = (InterfaceSelection)a.selections.clone();
 //    }
 //
 //    public Object clone() {
@@ -176,9 +176,9 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
 //        tmpPop.removeDoubleInstancesUsingFitness();
 //
 //        // Now calculate the MaxiMin Criterium
-//        this.m_MaxiMin.convertMultiObjective2SingleObjective(tmpPop);
-//        this.m_Selection.prepareSelection(tmpPop);
-//        archive = this.m_Selection.selectFrom(tmpPop, pop.getArchive().getPopulationSize());
+//        this.maxiMin.convertMultiObjective2SingleObjective(tmpPop);
+//        this.selections.prepareSelection(tmpPop);
+//        archive = this.selections.selectFrom(tmpPop, pop.getArchive().getPopulationSize());
 //        archive.setPopulationSize(pop.getArchive().getPopulationSize());
 //
 //        // now unconvert from SO to MO
@@ -219,10 +219,10 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
 //     * @param pop     The selection method used.
 //     */
 //    public void setSelectionMethod(InterfaceSelection pop) {
-//        this.m_Selection = pop;
+//        this.selections = pop;
 //    }
 //    public InterfaceSelection getSelectionMethod() {
-//        return this.m_Selection;
+//        return this.selections;
 //    }
 //    public String selectionMethodTipText() {
 //        return "Choose the selection method (single-criteria ones please).";
