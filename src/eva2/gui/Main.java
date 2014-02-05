@@ -811,7 +811,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             newModuleAdapter = comAdapter.getModuleAdapter(selectedModule, optimizationParameters, withGUI ? null : "EvA2");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error loading module.", e);
-            EVAERROR.EXIT("Error while m_ComAdapter.GetModuleAdapter Host: " + e.getMessage());
+            EVAERROR.EXIT("Error while comAdapter.GetModuleAdapter Host: " + e.getMessage());
         }
         if (newModuleAdapter == null) {
             // When launching a Java Web Start application, baseDir will always be null!

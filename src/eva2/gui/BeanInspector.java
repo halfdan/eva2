@@ -70,10 +70,8 @@ public class BeanInspector {
                 continue;
             }
             System.out.println("getter_1 = " + getter_1.getName() + " getter_2 = " + getter_2.getName());
-            //System.out.println("type = "+type.getName() );
             Object args_1[] = {};
             Object args_2[] = {};
-            //System.out.println("m_Target"+m_Target.toString());
             try {
                 Object value_1 = getter_1.invoke(obj1, args_1);
                 Object value_2 = getter_2.invoke(obj2, args_2);
@@ -340,7 +338,6 @@ public class BeanInspector {
             //System.out.println("name = "+name );
             //System.out.println("type = "+type.getName() );
             Object args[] = {};
-            //System.out.println("m_obj"+m_obj.toString());
 
             try {
                 nameArray[i] = name;

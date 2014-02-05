@@ -1,14 +1,4 @@
 package eva2.gui;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 284 $
- *            $Date: 2007-11-27 14:37:05 +0100 (Tue, 27 Nov 2007) $
- *            $Author: mkron $
- */
 
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.modules.ModuleAdapter;
@@ -29,7 +19,7 @@ import java.util.logging.Logger;
 public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Serializable, PanelMaker {
 
     private static final Logger LOGGER = Logger.getLogger(EvAModuleButtonPanelMaker.class.getName());
-    private String m_Name = "undefined";
+    private String name = "undefined";
     private ModuleAdapter moduleAdapter;
     private boolean runningState;
     private JButton runButton;
@@ -44,7 +34,7 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
      *
      */
     public EvAModuleButtonPanelMaker(ModuleAdapter adapter, boolean state) {
-        m_Name = "GENERAL";
+        name = "GENERAL";
         runningState = state;
         moduleAdapter = adapter;
     }
@@ -197,7 +187,7 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
      *
      */
     public String getName() {
-        return m_Name;
+        return name;
     }
 
     /**

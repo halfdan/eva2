@@ -74,7 +74,7 @@ public class DataViewer implements DataViewerInterface {
  */
 class ViewContainer extends ArrayList {
 
-    private DataViewer m_actualPlot;
+    private DataViewer actualPlot;
 
     /**
      *
@@ -100,17 +100,17 @@ class ViewContainer extends ArrayList {
      *
      */
     public DataViewer getPlot(String name) {
-        if (m_actualPlot != null) {
-            if (m_actualPlot.getName().equals(name)) {
-                return m_actualPlot;
+        if (actualPlot != null) {
+            if (actualPlot.getName().equals(name)) {
+                return actualPlot;
             }
         }
         DataViewer temp = null;
         for (int i = 0; i < size(); i++) {
             temp = (DataViewer) (get(i));
             if (name.equals(temp.getName())) {
-                m_actualPlot = temp;
-                return m_actualPlot;
+                actualPlot = temp;
+                return actualPlot;
             }
         }
         return null;

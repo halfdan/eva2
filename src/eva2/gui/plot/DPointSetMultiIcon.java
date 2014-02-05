@@ -72,7 +72,7 @@ public class DPointSetMultiIcon extends DComponent {
     protected boolean connectedMI;
     protected DPointIcon iconMI = null;
     protected DPointSetMultiIcon.JumpManager jumperMI = new DPointSetMultiIcon.JumpManager();
-    protected ArrayList<DPointIcon> m_IconsMI = new ArrayList<DPointIcon>();
+    protected ArrayList<DPointIcon> iconsMI = new ArrayList<DPointIcon>();
     protected Stroke strokeMI = new BasicStroke();
     protected DIntDoubleMap xMI;
 
@@ -114,7 +114,7 @@ public class DPointSetMultiIcon extends DComponent {
     public void addDPoint(DPoint p) {
         xMI.addImage(p.x);
         yMI.addImage(p.y);
-        m_IconsMI.add(p.getIcon());
+        iconsMI.add(p.getIcon());
         rectangle.insert(p);
         repaint();
     }
@@ -151,7 +151,7 @@ public class DPointSetMultiIcon extends DComponent {
     }
 
     public ArrayList<DPointIcon> getIconsMI() {
-        return this.m_IconsMI;
+        return this.iconsMI;
     }
 
     /**
@@ -167,7 +167,7 @@ public class DPointSetMultiIcon extends DComponent {
         } else {
             DPoint result = new DPoint(xMI.getImage(minIndex),
                     yMI.getImage(minIndex));
-            result.setIcon((DPointIcon) this.m_IconsMI.get(minIndex));
+            result.setIcon((DPointIcon) this.iconsMI.get(minIndex));
 
             return result;
         }
@@ -253,10 +253,10 @@ public class DPointSetMultiIcon extends DComponent {
                             }
                         }
 
-                        if ((i < this.m_IconsMI.size()) && (this.m_IconsMI.get(i) != null)) {
+                        if ((i < this.iconsMI.size()) && (this.iconsMI.get(i) != null)) {
                             g.setStroke(new BasicStroke());
                             g.translate(p2.x, p2.y);
-                            ((DPointIcon) this.m_IconsMI.get(i)).paint(g);
+                            ((DPointIcon) this.iconsMI.get(i)).paint(g);
                             g.translate(-p2.x, -p2.y);
                             g.setStroke(strokeMI);
                         } else {
@@ -277,17 +277,17 @@ public class DPointSetMultiIcon extends DComponent {
 
                 //for (int i = 0; i < size; i++)
                 // @todo Streiche: Mal wieder eine index out of bounds exception, dass ist einfach mist...
-                for (int i = 0; i < this.m_IconsMI.size(); i++) {
+                for (int i = 0; i < this.iconsMI.size(); i++) {
                     try {
                         p = m.getPoint(xMI.getImage(i), yMI.getImage(i));
 
                         if (p == null) {
                             continue;
                         }
-                        if (this.m_IconsMI.get(i) != null) {
+                        if (this.iconsMI.get(i) != null) {
                             g.setStroke(new BasicStroke());
                             g.translate(p.x, p.y);
-                            ((DPointIcon) this.m_IconsMI.get(i)).paint(g);
+                            ((DPointIcon) this.iconsMI.get(i)).paint(g);
                             g.translate(-p.x, -p.y);
                             g.setStroke(strokeMI);
                         } else {
@@ -372,7 +372,7 @@ public class DPointSetMultiIcon extends DComponent {
         rectangle.insert(p);
         xMI.setImage(index, p.x);
         yMI.setImage(index, p.y);
-        m_IconsMI.set(index, p.getIcon());
+        iconsMI.set(index, p.getIcon());
         restore();
         repaint();
     }
