@@ -19,39 +19,39 @@ import eva2.tools.math.RNG;
 
 public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java.io.Serializable {
 
-    protected int m_D;
-    protected double[] m_Z;
-    protected double m_SigmaGlobal = 1;
-    protected double m_InitSigmaScalar = -1;
-    protected double m_c;
+    protected int D;
+    protected double[] Z;
+    protected double sigmaGlobal = 1;
+    protected double initSigmaScalar = -1;
+    protected double c;
     protected double cu;
     protected double cov;
     protected double Beta;
     protected double[] s_N;
-    protected double[] m_PathS;
+    protected double[] pathS;
     protected double[] Bz;
     protected double xi_dach;
-    protected Matrix m_C;
+    protected Matrix C;
     protected Matrix B;
-    protected boolean m_CheckConstraints = false;
-    protected int m_constraintMaxTries = 50;
-    protected int m_Counter;
-    protected int m_frequency = 1;
-    protected double[] m_Eigenvalues;
+    protected boolean checkConstraints = false;
+    protected int constraintMaxTries = 50;
+    protected int counter;
+    protected int frequency = 1;
+    protected double[] eigenValues;
 
     public MutateESCovarianceMatrixAdaption() {
 
     }
 
     public MutateESCovarianceMatrixAdaption(MutateESCovarianceMatrixAdaption mutator) {
-        this.m_Counter = mutator.m_Counter;
-        this.m_frequency = mutator.m_frequency;
-        this.m_InitSigmaScalar = mutator.m_InitSigmaScalar;
-        this.m_constraintMaxTries = mutator.m_constraintMaxTries;
-        this.m_CheckConstraints = mutator.m_CheckConstraints;
-        this.m_D = mutator.m_D;
-        this.m_SigmaGlobal = mutator.m_SigmaGlobal;
-        this.m_c = mutator.m_c;
+        this.counter = mutator.counter;
+        this.frequency = mutator.frequency;
+        this.initSigmaScalar = mutator.initSigmaScalar;
+        this.constraintMaxTries = mutator.constraintMaxTries;
+        this.checkConstraints = mutator.checkConstraints;
+        this.D = mutator.D;
+        this.sigmaGlobal = mutator.sigmaGlobal;
+        this.c = mutator.c;
         this.cu = mutator.cu;
         this.cov = mutator.cov;
         this.Beta = mutator.Beta;
@@ -59,23 +59,23 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         if (mutator.s_N != null) {
             this.s_N = (double[]) mutator.s_N.clone();
         }
-        if (mutator.m_PathS != null) {
-            this.m_PathS = (double[]) mutator.m_PathS.clone();
+        if (mutator.pathS != null) {
+            this.pathS = (double[]) mutator.pathS.clone();
         }
         if (mutator.Bz != null) {
             this.Bz = (double[]) mutator.Bz.clone();
         }
-        if (mutator.m_C != null) {
-            this.m_C = (Matrix) mutator.m_C.clone();
+        if (mutator.C != null) {
+            this.C = (Matrix) mutator.C.clone();
         }
         if (mutator.B != null) {
             this.B = (Matrix) mutator.B.clone();
         }
-        if (mutator.m_Z != null) {
-            this.m_Z = (double[]) mutator.m_Z.clone();
+        if (mutator.Z != null) {
+            this.Z = (double[]) mutator.Z.clone();
         }
-        if (mutator.m_Eigenvalues != null) {
-            this.m_Eigenvalues = (double[]) mutator.m_Eigenvalues.clone();
+        if (mutator.eigenValues != null) {
+            this.eigenValues = (double[]) mutator.eigenValues.clone();
         }
     }
 
@@ -113,11 +113,11 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
             MutateESCovarianceMatrixAdaption mut = (MutateESCovarianceMatrixAdaption) mutator;
             // i assume if the C Matrix is equal then the mutation operators are equal
             try {
-                if (this.m_C == mut.m_C) {
+                if (this.C == mut.C) {
                     return true;
                 }
-                double[][] c1 = this.m_C.getArray();
-                double[][] c2 = mut.m_C.getArray();
+                double[][] c1 = this.C.getArray();
+                double[][] c2 = mut.C.getArray();
                 if (c1 == c2) {
                     return true;
                 }
@@ -151,32 +151,32 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         double[] x = ((InterfaceESIndividual) individual).getDGenotype();
         double[][] ranges = ((InterfaceESIndividual) individual).getDoubleRange();
 
-        this.m_Counter = this.m_frequency;
-        if (m_InitSigmaScalar > 0) {
-            this.m_SigmaGlobal = this.m_InitSigmaScalar;
+        this.counter = this.frequency;
+        if (initSigmaScalar > 0) {
+            this.sigmaGlobal = this.initSigmaScalar;
         } else {
             double avgRange = Mathematics.getAvgRange(ranges);
-            this.m_SigmaGlobal = 0.25 * avgRange;
+            this.sigmaGlobal = 0.25 * avgRange;
         }
-        System.out.println("Init sigma: " + m_SigmaGlobal);
-        this.m_D = x.length;
-        this.m_C = Matrix.identity(this.m_D, this.m_D);
-        EigenvalueDecomposition helper = new EigenvalueDecomposition(this.m_C);
+        System.out.println("Init sigma: " + sigmaGlobal);
+        this.D = x.length;
+        this.C = Matrix.identity(this.D, this.D);
+        EigenvalueDecomposition helper = new EigenvalueDecomposition(this.C);
         this.B = helper.getV();
-        this.m_c = Math.sqrt(1.0 / (double) this.m_D);
-        this.cu = Math.sqrt((2.0 - this.m_c) / this.m_c);
-        this.Beta = this.m_c;
-        this.cov = 2.0 / ((double) this.m_D * (double) this.m_D);
-        this.m_Z = new double[this.m_D];
-        this.s_N = new double[this.m_D];
-        this.Bz = new double[this.m_D];
-        this.m_PathS = new double[this.m_D];
-        for (int i = 0; i < this.m_D; i++) {
+        this.c = Math.sqrt(1.0 / (double) this.D);
+        this.cu = Math.sqrt((2.0 - this.c) / this.c);
+        this.Beta = this.c;
+        this.cov = 2.0 / ((double) this.D * (double) this.D);
+        this.Z = new double[this.D];
+        this.s_N = new double[this.D];
+        this.Bz = new double[this.D];
+        this.pathS = new double[this.D];
+        for (int i = 0; i < this.D; i++) {
             this.s_N[i] = 0;
             this.Bz[i] = 0;
-            this.m_PathS[i] = 0;
+            this.pathS[i] = 0;
         }
-        this.xi_dach = Math.sqrt(this.m_D - 0.5);
+        this.xi_dach = Math.sqrt(this.D - 0.5);
         evaluateNewObjectX(x, ranges);
     }
 
@@ -223,36 +223,36 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         double Cij;
         double Bz_d;
         double pathLen = 0.0;
-        for (int i = 0; i < this.m_D; i++) {
-            this.s_N[i] = (1.0 - this.m_c) * this.s_N[i] + this.m_c * this.cu * this.Bz[i];
+        for (int i = 0; i < this.D; i++) {
+            this.s_N[i] = (1.0 - this.c) * this.s_N[i] + this.c * this.cu * this.Bz[i];
         }
 //        System.out.println("C bef:\n" + c.toString());
         // ADAPT COVARIANCE
-        for (int i = 0; i < this.m_D; i++) {
-            for (int j = i; j < this.m_D; j++) {
-                Cij = (1.0 - this.cov) * this.m_C.get(i, j) + this.cov * this.s_N[i] * this.s_N[j];
-                this.m_C.set(i, j, Cij);
-                this.m_C.set(j, i, Cij);
+        for (int i = 0; i < this.D; i++) {
+            for (int j = i; j < this.D; j++) {
+                Cij = (1.0 - this.cov) * this.C.get(i, j) + this.cov * this.s_N[i] * this.s_N[j];
+                this.C.set(i, j, Cij);
+                this.C.set(j, i, Cij);
             }
         }
 //        System.out.println("C aft:\n" + c.toString());
         // ADAPT GLOBAL STEPSIZE
-        for (int i = 0; i < this.m_D; i++) {
+        for (int i = 0; i < this.D; i++) {
             Bz_d = 0.0;
-            for (int j = 0; j < this.m_D; j++) {
-                Bz_d += this.B.get(i, j) * this.m_Z[j];
+            for (int j = 0; j < this.D; j++) {
+                Bz_d += this.B.get(i, j) * this.Z[j];
             }
-            this.m_PathS[i] = (1.0 - this.m_c) * this.m_PathS[i] + this.m_c * this.cu * Bz_d;
-            pathLen += this.m_PathS[i] * this.m_PathS[i];
+            this.pathS[i] = (1.0 - this.c) * this.pathS[i] + this.c * this.cu * Bz_d;
+            pathLen += this.pathS[i] * this.pathS[i];
         }
-        this.m_SigmaGlobal *= Math.exp(this.Beta * this.m_c * (Math.sqrt(pathLen) - this.xi_dach));
+        this.sigmaGlobal *= Math.exp(this.Beta * this.c * (Math.sqrt(pathLen) - this.xi_dach));
     }
 
     protected void evaluateNewObjectX(double[] x, double[][] range) {
 //        if (Double.isNaN((x[0]))) System.out.println("treffer in cma "+ x[0]);
 //        if (Double.isNaN((c.get(0,0)))) System.out.println("treffer in cma");
 //        for (int i=0;i<N;i++)   {   // evaluate new random values
-//            m_Z[i] = RNG.gaussianDouble(1.0);
+//            Z[i] = RNG.gaussianDouble(1.0);
 //        }
 //        c = (c.plus(c.transpose()).times(0.5)); // MAKE C SYMMETRIC
 //        EigenvalueDecomposition helper = new EigenvalueDecomposition(c);
@@ -265,12 +265,12 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
 //            for (int i=0;i<N;i++) {
 //                Bz[i] = 0;
 //                for (int j=0;j<N;j++) {
-//                    Bz[i] = Bz[i] + Math.sqrt(Math.abs(Eigenvalues[j])) * B.get(i,j)*m_Z[j];
+//                    Bz[i] = Bz[i] + Math.sqrt(Math.abs(Eigenvalues[j])) * B.get(i,j)*Z[j];
 //                }
 //                tmpD[i]=x[i]+m_SigmaScalar*Bz[i]; // here is the new value
 //            }
 //            constraint = true;
-//            if (this.m_CheckConstraints) {
+//            if (this.checkConstraints) {
 //                for (int i=0;i<N;i++) {
 //                    if ((tmpD[i]<range[i][0]) || (tmpD[i]>range[i][1])) constraint = false;
 //                }
@@ -283,42 +283,42 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
 //        }
 //        for (int i = 0; i < N; i++) x[i] = tmpD[i];
         // conservation of mutation direction:
-        //double[] oldZ = (double[]) this.m_Z.clone();
+        //double[] oldZ = (double[]) this.Z.clone();
         double[] oldX = (double[]) x.clone();
 
-        for (int i = 0; i < this.m_D; i++) {
-            this.m_Z[i] = RNG.gaussianDouble(1.0);
+        for (int i = 0; i < this.D; i++) {
+            this.Z[i] = RNG.gaussianDouble(1.0);
         }
 
-        this.m_C = (this.m_C.plus(this.m_C.transpose()).times(0.5)); // MAKE C SYMMETRIC
-        this.m_Counter++;
-        if (this.m_Counter >= this.m_frequency) {
+        this.C = (this.C.plus(this.C.transpose()).times(0.5)); // MAKE C SYMMETRIC
+        this.counter++;
+        if (this.counter >= this.frequency) {
             EigenvalueDecomposition helper;
-            this.m_Counter = 0;
-            helper = new EigenvalueDecomposition(this.m_C);
+            this.counter = 0;
+            helper = new EigenvalueDecomposition(this.C);
             this.B = helper.getV();
-            this.m_Eigenvalues = helper.getRealEigenvalues();
+            this.eigenValues = helper.getRealEigenvalues();
 
         }
         boolean isNewPosFeasible = false;
         int counter = 0;
-        while (!isNewPosFeasible && counter < this.m_constraintMaxTries) {
-            for (int i = 0; i < this.m_D; i++) {
+        while (!isNewPosFeasible && counter < this.constraintMaxTries) {
+            for (int i = 0; i < this.D; i++) {
                 this.Bz[i] = 0;
-                for (int j = 0; j < this.m_D; j++) {
-                    this.Bz[i] += Math.sqrt(Math.abs(this.m_Eigenvalues[j])) * this.B.get(i, j) * this.m_Z[j];
+                for (int j = 0; j < this.D; j++) {
+                    this.Bz[i] += Math.sqrt(Math.abs(this.eigenValues[j])) * this.B.get(i, j) * this.Z[j];
                 }
-                x[i] += this.m_SigmaGlobal * this.Bz[i]; // here is the new value
+                x[i] += this.sigmaGlobal * this.Bz[i]; // here is the new value
             }
             isNewPosFeasible = true;
-            if (this.m_CheckConstraints == true) {
-                for (int i = 0; i < m_D; i++) {
+            if (this.checkConstraints == true) {
+                for (int i = 0; i < D; i++) {
                     if (x[i] < range[i][0] || x[i] > range[i][1]) {
                         // undo the step and try new Z
-                        for (int j = 0; j < this.m_D; j++) {
-                            x[j] = oldX[j] - this.m_SigmaGlobal * this.Bz[j];
+                        for (int j = 0; j < this.D; j++) {
+                            x[j] = oldX[j] - this.sigmaGlobal * this.Bz[j];
                         }
-                        this.m_SigmaGlobal *= 0.5;
+                        this.sigmaGlobal *= 0.5;
                         isNewPosFeasible = false;
                         counter++;
                         break;
@@ -331,7 +331,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
 //        	if (counter > 15) System.out.println(BeanInspector.toString(x));
 //        	else System.out.println();
         }
-        if (this.m_CheckConstraints && !isNewPosFeasible) { // use force
+        if (this.checkConstraints && !isNewPosFeasible) { // use force
             Mathematics.projectToRange(x, range);
 //        	System.err.println("PROJECTING BY FORCE");
         }
@@ -375,11 +375,11 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
      * @param bit The new representation for the inner constants.
      */
     public void setCheckConstraints(boolean bit) {
-        this.m_CheckConstraints = bit;
+        this.checkConstraints = bit;
     }
 
     public boolean getCheckConstraints() {
-        return this.m_CheckConstraints;
+        return this.checkConstraints;
     }
 
     public String checkConstraintsTipText() {
@@ -392,11 +392,11 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
      * @param d The initial sigma value.
      */
     public void setInitSigmaScalar(double d) {
-        this.m_InitSigmaScalar = d;
+        this.initSigmaScalar = d;
     }
 
     public double getInitSigmaScalar() {
-        return this.m_InitSigmaScalar;
+        return this.initSigmaScalar;
     }
 
     public String initSigmaScalarTipText() {

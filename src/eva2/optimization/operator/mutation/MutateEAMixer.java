@@ -10,18 +10,14 @@ import java.util.ArrayList;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 20.05.2005
- * Time: 13:53:46
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
 
-    private PropertyMutationMixer m_Mutators;
-    private boolean m_UseSelfAdaption = false;
-    protected double m_Tau1 = 0.15;
-    protected double m_LowerLimitChance = 0.05;
+    private PropertyMutationMixer mutationMixer;
+    private boolean useSelfAdaption = false;
+    protected double tau1 = 0.15;
+    protected double lowerLimitChance = 0.05;
 
     public MutateEAMixer() {
         InterfaceMutation[] tmpList;
@@ -41,14 +37,14 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
                 System.out.println("Illegal access exception for " + (String) mutators.get(i));
             }
         }
-        this.m_Mutators = new PropertyMutationMixer(tmpList, false);
+        this.mutationMixer = new PropertyMutationMixer(tmpList, false);
         tmpList = new InterfaceMutation[2];
         tmpList[0] = new MutateGINominal();
         tmpList[1] = new MutateGIOrdinal();
-        this.m_Mutators.setSelectedMutators(tmpList);
-        this.m_Mutators.normalizeWeights();
-        this.m_Mutators.setDescriptiveString("Combining alternative mutation operators, please norm the weights!");
-        this.m_Mutators.setWeightsLabel("Weigths");
+        this.mutationMixer.setSelectedMutators(tmpList);
+        this.mutationMixer.normalizeWeights();
+        this.mutationMixer.setDescriptiveString("Combining alternative mutation operators, please norm the weights!");
+        this.mutationMixer.setWeightsLabel("Weigths");
 
     }
 
@@ -58,7 +54,7 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
      * @param mutators
      */
     public MutateEAMixer(InterfaceMutation... mutators) {
-        this.m_Mutators = new PropertyMutationMixer(mutators, true);
+        this.mutationMixer = new PropertyMutationMixer(mutators, true);
     }
 
     public MutateEAMixer(InterfaceMutation m1, InterfaceMutation m2) {
@@ -70,10 +66,10 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
     }
 
     public MutateEAMixer(MutateEAMixer mutator) {
-        this.m_Mutators = (PropertyMutationMixer) mutator.m_Mutators.clone();
-        this.m_UseSelfAdaption = mutator.m_UseSelfAdaption;
-        this.m_Tau1 = mutator.m_Tau1;
-        this.m_LowerLimitChance = mutator.m_LowerLimitChance;
+        this.mutationMixer = (PropertyMutationMixer) mutator.mutationMixer.clone();
+        this.useSelfAdaption = mutator.useSelfAdaption;
+        this.tau1 = mutator.tau1;
+        this.lowerLimitChance = mutator.lowerLimitChance;
     }
 
     /**
@@ -111,7 +107,7 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        InterfaceMutation[] mutators = this.m_Mutators.getSelectedMutators();
+        InterfaceMutation[] mutators = this.mutationMixer.getSelectedMutators();
         for (int i = 0; i < mutators.length; i++) {
             mutators[i].init(individual, opt);
         }
@@ -125,22 +121,22 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
      */
     @Override
     public void mutate(AbstractEAIndividual individual) {
-        this.m_Mutators.normalizeWeights();
-        double[] probs = this.m_Mutators.getWeights();
-        if (this.m_UseSelfAdaption) {
+        this.mutationMixer.normalizeWeights();
+        double[] probs = this.mutationMixer.getWeights();
+        if (this.useSelfAdaption) {
             for (int i = 0; i < probs.length; i++) {
-                probs[i] *= Math.exp(this.m_Tau1 * RNG.gaussianDouble(1));
-                if (probs[i] <= this.m_LowerLimitChance) {
-                    probs[i] = this.m_LowerLimitChance;
+                probs[i] *= Math.exp(this.tau1 * RNG.gaussianDouble(1));
+                if (probs[i] <= this.lowerLimitChance) {
+                    probs[i] = this.lowerLimitChance;
                 }
                 if (probs[i] >= 1) {
                     probs[i] = 1;
                 }
             }
-            this.m_Mutators.normalizeWeights();
+            this.mutationMixer.normalizeWeights();
         }
 
-        InterfaceMutation[] mutators = this.m_Mutators.getSelectedMutators();
+        InterfaceMutation[] mutators = this.mutationMixer.getSelectedMutators();
         double pointer = RNG.randomFloat(0, 1);
         double dum = probs[0];
         int index = 0;
@@ -168,8 +164,8 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
      */
     @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
-        for (int i = 0; i < this.m_Mutators.getSelectedMutators().length; i++) {
-            this.m_Mutators.getSelectedMutators()[i].crossoverOnStrategyParameters(indy1, partners);
+        for (int i = 0; i < this.mutationMixer.getSelectedMutators().length; i++) {
+            this.mutationMixer.getSelectedMutators()[i].crossoverOnStrategyParameters(indy1, partners);
         }
     }
 
@@ -212,11 +208,11 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
      * @param d The mutation operators.
      */
     public void setMutators(PropertyMutationMixer d) {
-        this.m_Mutators = d;
+        this.mutationMixer = d;
     }
 
     public PropertyMutationMixer getMutators() {
-        return this.m_Mutators;
+        return this.mutationMixer;
     }
 
     public String mutatorsTipText() {
@@ -229,11 +225,11 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
      * @param d The mutation operator.
      */
     public void setUseSelfAdaption(boolean d) {
-        this.m_UseSelfAdaption = d;
+        this.useSelfAdaption = d;
     }
 
     public boolean getUseSelfAdaption() {
-        return this.m_UseSelfAdaption;
+        return this.useSelfAdaption;
     }
 
     public String useSelfAdaptionTipText() {
@@ -249,11 +245,11 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
         if (d < 0) {
             d = 0;
         }
-        this.m_LowerLimitChance = d;
+        this.lowerLimitChance = d;
     }
 
     public double getLowerLimitChance() {
-        return this.m_LowerLimitChance;
+        return this.lowerLimitChance;
     }
 
     public String lowerLimitChanceTipText() {
@@ -269,11 +265,11 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
         if (d < 0) {
             d = 0;
         }
-        this.m_Tau1 = d;
+        this.tau1 = d;
     }
 
     public double getTau1() {
-        return this.m_Tau1;
+        return this.tau1;
     }
 
     public String tau1TipText() {

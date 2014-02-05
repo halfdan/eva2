@@ -15,16 +15,16 @@ import eva2.tools.math.RNG;
  */
 public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable {
 
-    double m_StepSize = 0.1;
-    int m_NumberOfMutations = 2;
+    double stepSize = 0.1;
+    int numberOfMutations = 2;
 
     public MutateGIOrdinal() {
 
     }
 
     public MutateGIOrdinal(MutateGIOrdinal mutator) {
-        this.m_StepSize = mutator.m_StepSize;
-        this.m_NumberOfMutations = mutator.m_NumberOfMutations;
+        this.stepSize = mutator.stepSize;
+        this.numberOfMutations = mutator.numberOfMutations;
     }
 
     /**
@@ -47,10 +47,10 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGIOrdinal) {
             MutateGIOrdinal mut = (MutateGIOrdinal) mutator;
-            if (this.m_StepSize != mut.m_StepSize) {
+            if (this.stepSize != mut.stepSize) {
                 return false;
             }
-            if (this.m_NumberOfMutations != mut.m_NumberOfMutations) {
+            if (this.numberOfMutations != mut.numberOfMutations) {
                 return false;
             }
             return true;
@@ -83,9 +83,9 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
             int[][] range = ((InterfaceGIIndividual) individual).getIntRange();
             int mutInd, mut;
             double mutate;
-            for (int k = 0; k < this.m_NumberOfMutations; k++) {
+            for (int k = 0; k < this.numberOfMutations; k++) {
                 mutInd = RNG.randomInt(0, x.length - 1);
-                mutate = RNG.gaussianDouble(this.m_StepSize);
+                mutate = RNG.gaussianDouble(this.stepSize);
                 mutate *= (range[mutInd][1] - range[mutInd][1]);
                 mut = (int) Math.round(mutate);
                 if (mut == 0) {
@@ -158,11 +158,11 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
      * @param n The step size
      */
     public void setStepSize(double n) {
-        this.m_StepSize = n;
+        this.stepSize = n;
     }
 
     public double getStepSize() {
-        return this.m_StepSize;
+        return this.stepSize;
     }
 
     public String stepSizeTipText() {
@@ -175,11 +175,11 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
      * @param n The number of mutations
      */
     public void setNumberOfMutations(int n) {
-        this.m_NumberOfMutations = n;
+        this.numberOfMutations = n;
     }
 
     public int getNumberOfMutations() {
-        return this.m_NumberOfMutations;
+        return this.numberOfMutations;
     }
 
     public String numberOfMutationsTipText() {

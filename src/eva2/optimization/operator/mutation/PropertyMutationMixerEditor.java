@@ -30,73 +30,73 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport m_Support = new PropertyChangeSupport(this);
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     /**
      * The label for when we can't edit that type
      */
-    private JLabel m_Label = new JLabel("Can't edit", SwingConstants.CENTER);
+    private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
     /**
      * The FilePath that is to be edited
      */
-    private PropertyMutationMixer m_MutatorsWithWeights;
+    private PropertyMutationMixer mutatorsWithWeights;
 
     /**
      * The gaphix stuff
      */
-    private JComponent m_Editor;
-    private JPanel m_TargetList;
-    private JTextField[] m_Weights;
-    private JComponent[] m_Targets;
-    private JButton[] m_Delete;
-    private JScrollPane m_ScrollTargets;
-    private GeneralOptimizationEditorProperty[] m_Editors;
-    private GeneralGEOFaker m_Component;
-    private PropertyChangeListener m_self;
+    private JComponent editorComponent;
+    private JPanel targetListPanel;
+    private JTextField[] weights;
+    private JComponent[] targets;
+    private JButton[] deleteButtons;
+    private JScrollPane scrolltargetPanel;
+    private GeneralOptimizationEditorProperty[] editors;
+    private GeneralGEOFaker component;
+    private PropertyChangeListener self;
 
     public PropertyMutationMixerEditor() {
-        m_self = this;
+        self = this;
     }
 
     /**
      * This method will init the CustomEditor Panel
      */
     private void initCustomEditor() {
-        m_self = this;
-        this.m_Editor = new JPanel();
-        this.m_Editor.setPreferredSize(new Dimension(450, 200));
-        this.m_Editor.setMinimumSize(new Dimension(450, 200));
+        self = this;
+        this.editorComponent = new JPanel();
+        this.editorComponent.setPreferredSize(new Dimension(450, 200));
+        this.editorComponent.setMinimumSize(new Dimension(450, 200));
 
         // init the editors
-        InterfaceMutation[] list = this.m_MutatorsWithWeights.getSelectedMutators();
-        this.m_Editors = new GeneralOptimizationEditorProperty[list.length];
+        InterfaceMutation[] list = this.mutatorsWithWeights.getSelectedMutators();
+        this.editors = new GeneralOptimizationEditorProperty[list.length];
         for (int i = 0; i < list.length; i++) {
-            this.m_Editors[i] = new GeneralOptimizationEditorProperty();
-            this.m_Editors[i].name = list[i].getStringRepresentation();
+            this.editors[i] = new GeneralOptimizationEditorProperty();
+            this.editors[i].name = list[i].getStringRepresentation();
             try {
-                this.m_Editors[i].value = list[i];
-                this.m_Editors[i].editor = PropertyEditorProvider.findEditor(this.m_Editors[i].value.getClass());
-                if (this.m_Editors[i].editor == null) {
-                    this.m_Editors[i].editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
+                this.editors[i].value = list[i];
+                this.editors[i].editor = PropertyEditorProvider.findEditor(this.editors[i].value.getClass());
+                if (this.editors[i].editor == null) {
+                    this.editors[i].editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
                 }
-                if (this.m_Editors[i].editor instanceof GenericObjectEditor) {
-                    ((GenericObjectEditor) this.m_Editors[i].editor).setClassType(InterfaceMutation.class);
+                if (this.editors[i].editor instanceof GenericObjectEditor) {
+                    ((GenericObjectEditor) this.editors[i].editor).setClassType(InterfaceMutation.class);
                 }
-                this.m_Editors[i].editor.setValue(this.m_Editors[i].value);
-                this.m_Editors[i].editor.addPropertyChangeListener(this);
-                AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                if (this.m_Editors[i].view != null) {
-                    this.m_Editors[i].view.repaint();
+                this.editors[i].editor.setValue(this.editors[i].value);
+                this.editors[i].editor.addPropertyChangeListener(this);
+                AbstractObjectEditor.findViewFor(this.editors[i]);
+                if (this.editors[i].view != null) {
+                    this.editors[i].view.repaint();
                 }
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
             }
         }
-        this.m_TargetList = new JPanel();
+        this.targetListPanel = new JPanel();
         this.updateTargetList();
-        this.m_ScrollTargets = new JScrollPane(this.m_TargetList);
+        this.scrolltargetPanel = new JScrollPane(this.targetListPanel);
 
-        this.m_Editor.setLayout(new BorderLayout());
-        this.m_Editor.add(this.m_ScrollTargets, BorderLayout.CENTER);
+        this.editorComponent.setLayout(new BorderLayout());
+        this.editorComponent.add(this.scrolltargetPanel, BorderLayout.CENTER);
 
         // The Button Panel
         JPanel buttonPanel = new JPanel();
@@ -109,7 +109,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
         buttonPanel.add(normButton);
         buttonPanel.add(addButton);
 
-        this.m_Editor.add(buttonPanel, BorderLayout.SOUTH);
+        this.editorComponent.add(buttonPanel, BorderLayout.SOUTH);
 
         // Some description would be nice
         JTextArea jt = new JTextArea();
@@ -117,7 +117,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
         jt.setEditable(false);
         jt.setLineWrap(true);
         jt.setWrapStyleWord(true);
-        jt.setText(this.m_MutatorsWithWeights.getDescriptiveString());
+        jt.setText(this.mutatorsWithWeights.getDescriptiveString());
         jt.setBackground(getBackground());
         JPanel jp = new JPanel();
         jp.setBorder(BorderFactory.createCompoundBorder(
@@ -134,7 +134,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
         jp.add(p2, BorderLayout.EAST);
         GridBagConstraints gbConstraints = new GridBagConstraints();
 
-        this.m_Editor.add(jp, BorderLayout.NORTH);
+        this.editorComponent.add(jp, BorderLayout.NORTH);
 
         this.updateEditor();
     }
@@ -145,15 +145,15 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     private void updateTargetList() {
         BasicResourceLoader loader = BasicResourceLoader.instance();
         byte[] bytes;
-        InterfaceMutation[] list = this.m_MutatorsWithWeights.getSelectedMutators();
-        double[] weights = this.m_MutatorsWithWeights.getWeights();
+        InterfaceMutation[] list = this.mutatorsWithWeights.getSelectedMutators();
+        double[] weights = this.mutatorsWithWeights.getWeights();
 
-        this.m_TargetList.removeAll();
-        this.m_TargetList.setLayout(new GridBagLayout());
+        this.targetListPanel.removeAll();
+        this.targetListPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        this.m_Weights = new JTextField[list.length];
-        this.m_Targets = new JComponent[list.length];
-        this.m_Delete = new JButton[list.length];
+        this.weights = new JTextField[list.length];
+        this.targets = new JComponent[list.length];
+        this.deleteButtons = new JButton[list.length];
         String[] cups = new String[8];
         for (int i = 0; i < cups.length; i++) {
             cups[i] = "" + (i + 1);
@@ -163,52 +163,52 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 0;
         gbc.weightx = 2;
-        this.m_TargetList.add(new JLabel(this.m_MutatorsWithWeights.getWeigthsLabel()), gbc);
+        this.targetListPanel.add(new JLabel(this.mutatorsWithWeights.getWeigthsLabel()), gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridx = 1;
         gbc.weightx = 10;
-        this.m_TargetList.add(new JLabel("Target"), gbc);
+        this.targetListPanel.add(new JLabel("Target"), gbc);
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.REMAINDER;
         gbc.gridx = 2;
         gbc.weightx = 1;
-        this.m_TargetList.add(new JLabel("Remove"), gbc);
+        this.targetListPanel.add(new JLabel("Remove"), gbc);
         for (int i = 0; i < list.length; i++) {
             // the weight
             gbc.anchor = GridBagConstraints.WEST;
             gbc.fill = GridBagConstraints.BOTH;
             gbc.gridx = 0;
             gbc.weightx = 2;
-            this.m_Weights[i] = new JTextField("" + weights[i]);
-            this.m_Weights[i].addKeyListener(this.readDoubleArrayAction);
-            this.m_TargetList.add(this.m_Weights[i], gbc);
+            this.weights[i] = new JTextField("" + weights[i]);
+            this.weights[i].addKeyListener(this.readDoubleArrayAction);
+            this.targetListPanel.add(this.weights[i], gbc);
             // the status indicator
             gbc.anchor = GridBagConstraints.WEST;
             gbc.fill = GridBagConstraints.BOTH;
             gbc.gridx = 1;
             gbc.weightx = 10;
-            this.m_Targets[i] = this.m_Editors[i].view;
-            this.m_TargetList.add(this.m_Targets[i], gbc);
+            this.targets[i] = this.editors[i].view;
+            this.targetListPanel.add(this.targets[i], gbc);
             // The delete button
             gbc.anchor = GridBagConstraints.WEST;
             gbc.fill = GridBagConstraints.REMAINDER;
             gbc.gridx = 2;
             gbc.weightx = 1;
             bytes = loader.getBytesFromResourceLocation("images/Sub24.gif", true);
-            this.m_Delete[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
-            this.m_Delete[i].addActionListener(deleteTarget);
-            this.m_TargetList.add(this.m_Delete[i], gbc);
+            this.deleteButtons[i] = new JButton("", new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes)));
+            this.deleteButtons[i].addActionListener(deleteTarget);
+            this.targetListPanel.add(this.deleteButtons[i], gbc);
         }
-        this.m_TargetList.repaint();
-        this.m_TargetList.validate();
-        if (this.m_ScrollTargets != null) {
-            this.m_ScrollTargets.validate();
-            this.m_ScrollTargets.repaint();
+        this.targetListPanel.repaint();
+        this.targetListPanel.validate();
+        if (this.scrolltargetPanel != null) {
+            this.scrolltargetPanel.validate();
+            this.scrolltargetPanel.repaint();
         }
-        if (this.m_Editor != null) {
-            this.m_Editor.validate();
-            this.m_Editor.repaint();
+        if (this.editorComponent != null) {
+            this.editorComponent.validate();
+            this.editorComponent.repaint();
         }
     }
 
@@ -228,13 +228,13 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     ActionListener addTarget = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_MutatorsWithWeights.addMutator((InterfaceMutation) m_MutatorsWithWeights.getAvailableMutators()[0].clone());
-            int l = m_MutatorsWithWeights.getSelectedMutators().length;
+            mutatorsWithWeights.addMutator((InterfaceMutation) mutatorsWithWeights.getAvailableMutators()[0].clone());
+            int l = mutatorsWithWeights.getSelectedMutators().length;
             GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l];
-            for (int i = 0; i < m_Editors.length; i++) {
-                newEdit[i] = m_Editors[i];
+            for (int i = 0; i < editors.length; i++) {
+                newEdit[i] = editors[i];
             }
-            InterfaceMutation[] list = m_MutatorsWithWeights.getSelectedMutators();
+            InterfaceMutation[] list = mutatorsWithWeights.getSelectedMutators();
             l--;
             newEdit[l] = new GeneralOptimizationEditorProperty();
             newEdit[l].name = list[l].getStringRepresentation();
@@ -248,7 +248,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
                     ((GenericObjectEditor) newEdit[l].editor).setClassType(InterfaceMutation.class);
                 }
                 newEdit[l].editor.setValue(newEdit[l].value);
-                newEdit[l].editor.addPropertyChangeListener(m_self);
+                newEdit[l].editor.addPropertyChangeListener(self);
                 AbstractObjectEditor.findViewFor(newEdit[l]);
                 if (newEdit[l].view != null) {
                     newEdit[l].view.repaint();
@@ -256,7 +256,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
             } catch (Exception e) {
                 System.out.println("Darn can't read the value...");
             }
-            m_Editors = newEdit;
+            editors = newEdit;
             updateTargetList();
         }
     };
@@ -267,17 +267,17 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     ActionListener deleteTarget = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            int l = m_MutatorsWithWeights.getSelectedMutators().length, j = 0;
+            int l = mutatorsWithWeights.getSelectedMutators().length, j = 0;
             GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l - 1];
-            for (int i = 0; i < m_Delete.length; i++) {
-                if (event.getSource().equals(m_Delete[i])) {
-                    m_MutatorsWithWeights.removeMutator(i);
+            for (int i = 0; i < deleteButtons.length; i++) {
+                if (event.getSource().equals(deleteButtons[i])) {
+                    mutatorsWithWeights.removeMutator(i);
                 } else {
-                    newEdit[j] = m_Editors[i];
+                    newEdit[j] = editors[i];
                     j++;
                 }
             }
-            m_Editors = newEdit;
+            editors = newEdit;
             updateTargetList();
         }
     };
@@ -288,7 +288,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     ActionListener normalizeWeights = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            m_MutatorsWithWeights.normalizeWeights();
+            mutatorsWithWeights.normalizeWeights();
             updateTargetList();
         }
     };
@@ -307,18 +307,18 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
 
         @Override
         public void keyReleased(KeyEvent event) {
-            double[] newW = m_MutatorsWithWeights.getWeights();
+            double[] newW = mutatorsWithWeights.getWeights();
 
             for (int i = 0; i < newW.length; i++) {
                 try {
                     double d = 0;
-                    d = new Double(m_Weights[i].getText()).doubleValue();
+                    d = new Double(weights[i].getText()).doubleValue();
                     newW[i] = d;
                 } catch (Exception e) {
                 }
             }
 
-            m_MutatorsWithWeights.setWeights(newW);
+            mutatorsWithWeights.setWeights(newW);
         }
     };
 
@@ -326,13 +326,13 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
      * The object may have changed update the editor.
      */
     private void updateEditor() {
-        if (this.m_Editor != null) {
-            this.m_TargetList.validate();
-            this.m_TargetList.repaint();
-            this.m_ScrollTargets.validate();
-            this.m_ScrollTargets.repaint();
-            this.m_Editor.validate();
-            this.m_Editor.repaint();
+        if (this.editorComponent != null) {
+            this.targetListPanel.validate();
+            this.targetListPanel.repaint();
+            this.scrolltargetPanel.validate();
+            this.scrolltargetPanel.repaint();
+            this.editorComponent.validate();
+            this.editorComponent.repaint();
         }
     }
 
@@ -344,7 +344,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     @Override
     public void setValue(Object o) {
         if (o instanceof PropertyMutationMixer) {
-            this.m_MutatorsWithWeights = (PropertyMutationMixer) o;
+            this.mutatorsWithWeights = (PropertyMutationMixer) o;
             this.updateEditor();
         }
     }
@@ -356,7 +356,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
      */
     @Override
     public Object getValue() {
-        return this.m_MutatorsWithWeights;
+        return this.mutatorsWithWeights;
     }
 
     @Override
@@ -447,11 +447,11 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
      */
     @Override
     public Component getCustomEditor() {
-        if (this.m_Component == null) {
+        if (this.component == null) {
             this.initCustomEditor();
-            this.m_Component = new GeneralGEOFaker((PropertyEditor) this, (JPanel) this.m_Editor);
+            this.component = new GeneralGEOFaker((PropertyEditor) this, (JPanel) this.editorComponent);
         }
-        return this.m_Component;
+        return this.component;
     }
 
     /**
@@ -469,12 +469,12 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        m_Support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        m_Support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 
     /**
@@ -487,35 +487,35 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     public void propertyChange(PropertyChangeEvent evt) {
         Object newVal = evt.getNewValue();
         Object oldVal = evt.getOldValue();
-        InterfaceMutation[] list = this.m_MutatorsWithWeights.getSelectedMutators();
+        InterfaceMutation[] list = this.mutatorsWithWeights.getSelectedMutators();
         for (int i = 0; i < list.length; i++) {
             if (oldVal.equals(list[i])) {
                 list[i] = (InterfaceMutation) newVal;
-                this.m_Editors[i].name = list[i].getStringRepresentation();
+                this.editors[i].name = list[i].getStringRepresentation();
                 try {
-                    this.m_Editors[i].value = list[i];
-                    this.m_Editors[i].editor = PropertyEditorProvider.findEditor(this.m_Editors[i].value.getClass());
-                    if (this.m_Editors[i].editor == null) {
-                        this.m_Editors[i].editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
+                    this.editors[i].value = list[i];
+                    this.editors[i].editor = PropertyEditorProvider.findEditor(this.editors[i].value.getClass());
+                    if (this.editors[i].editor == null) {
+                        this.editors[i].editor = PropertyEditorProvider.findEditor(InterfaceMutation.class);
                     }
-                    if (this.m_Editors[i].editor instanceof GenericObjectEditor) {
-                        ((GenericObjectEditor) this.m_Editors[i].editor).setClassType(InterfaceMutation.class);
+                    if (this.editors[i].editor instanceof GenericObjectEditor) {
+                        ((GenericObjectEditor) this.editors[i].editor).setClassType(InterfaceMutation.class);
                     }
-                    this.m_Editors[i].editor.setValue(this.m_Editors[i].value);
-                    this.m_Editors[i].editor.addPropertyChangeListener(this);
-                    AbstractObjectEditor.findViewFor(this.m_Editors[i]);
-                    if (this.m_Editors[i].view != null) {
-                        this.m_Editors[i].view.repaint();
+                    this.editors[i].editor.setValue(this.editors[i].value);
+                    this.editors[i].editor.addPropertyChangeListener(this);
+                    AbstractObjectEditor.findViewFor(this.editors[i]);
+                    if (this.editors[i].view != null) {
+                        this.editors[i].view.repaint();
                     }
                 } catch (Exception e) {
                     System.out.println("Darn can't read the value...");
                 }
-                this.m_Targets[i] = this.m_Editors[i].view;
+                this.targets[i] = this.editors[i].view;
                 i = list.length;
             }
         }
         //this.m_OptimizationTargets.setSelectedTargets(list);
         this.updateCenterComponent(evt); // Let our panel update before guys downstream
-        m_Support.firePropertyChange("", m_MutatorsWithWeights, m_MutatorsWithWeights);
+        propertyChangeSupport.firePropertyChange("", mutatorsWithWeights, mutatorsWithWeights);
     }
 }

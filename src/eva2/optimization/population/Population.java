@@ -80,7 +80,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /**
      * Best n Individuals in the history.
      */
-    private transient LinkedList<AbstractEAIndividual> m_History = new LinkedList<AbstractEAIndividual>();
+    private transient LinkedList<AbstractEAIndividual> historyList = new LinkedList<AbstractEAIndividual>();
 
     /**
      * Remember when the last sorted queue was prepared.
@@ -190,8 +190,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         if (population.populationArchive != null) {
             this.populationArchive = (Population) population.populationArchive.clone();
         }
-        if (population.m_History != null) {
-            this.m_History = (LinkedList<AbstractEAIndividual>) population.m_History.clone();
+        if (population.historyList != null) {
+            this.historyList = (LinkedList<AbstractEAIndividual>) population.historyList.clone();
         }
         if (population.additionalPopData != null) {
             this.additionalPopData = (HashMap<String, Object>) additionalPopData.clone();
@@ -364,7 +364,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * been inited by a problem
      */
     public void init() {
-        this.m_History = new LinkedList<AbstractEAIndividual>();
+        this.historyList = new LinkedList<AbstractEAIndividual>();
         this.generationCount = 0;
         this.functionCallCount = 0;
         double[] popSeed = null;
@@ -453,7 +453,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     /**
      * This method inits the population. Function and generation counters are
-     * reset and m_Size default Individuals are created and initialized by the
+     * reset and size default Individuals are created and initialized by the
      * GAIndividual default init() method.
      */
     public void defaultInit(AbstractEAIndividual template) {
@@ -591,18 +591,18 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     public int getHistoryLength() {
         if (historyMaxLen != 0) {
-            return m_History.size();
+            return historyList.size();
         } else {
             return 0;
         }
     }
 
     public LinkedList<AbstractEAIndividual> getHistory() {
-        return m_History;
+        return historyList;
     }
 
     public void SetHistory(LinkedList<AbstractEAIndividual> theHist) {
-        m_History = theHist;
+        historyList = theHist;
     }
 
     /**
@@ -709,11 +709,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public void incrGeneration() {
         if (isUsingHistory() && (this.size() >= 1)) {
-            if (historyMaxLen > 0 && (m_History.size() >= historyMaxLen)) {
+            if (historyMaxLen > 0 && (historyList.size() >= historyMaxLen)) {
                 // oldest one must be replaced.. should be the one in front
-                m_History.removeFirst();
+                historyList.removeFirst();
             }
-            this.m_History.add((AbstractEAIndividual) this.getBestEAIndividual().clone());
+            this.historyList.add((AbstractEAIndividual) this.getBestEAIndividual().clone());
         }
         for (int i = 0; i < size(); i++) {
             ((AbstractEAIndividual) get(i)).incrAge();
@@ -2508,8 +2508,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
 
     public void clearHistory() {
-        if (m_History != null) {
-            m_History.clear();
+        if (historyList != null) {
+            historyList.clear();
         }
     }
 

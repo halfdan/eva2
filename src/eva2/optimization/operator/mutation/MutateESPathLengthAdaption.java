@@ -109,7 +109,7 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
         double[] x = ((InterfaceESIndividual) individual).getDGenotype();
         double[][] ranges = ((InterfaceESIndividual) individual).getDoubleRange();
         this.m_dim = x.length;
-//        if (this.m_UsePath) this.m_c = Math.sqrt(1.0 / (double) this.m_dim);
+//        if (this.m_UsePath) this.c = Math.sqrt(1.0 / (double) this.m_dim);
 
         this.m_randZ = new double[this.m_dim];
         this.m_Path = new double[this.m_dim];

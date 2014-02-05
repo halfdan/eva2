@@ -680,7 +680,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         if (this.populationChangedEventListeners == null) {
-            this.populationChangedEventListeners = new Vector<InterfacePopulationChangedEventListener>();
+            this.populationChangedEventListeners = new Vector<>();
         }
         this.populationChangedEventListeners.add(ea);
     }
@@ -689,7 +689,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
         if (populationChangedEventListeners != null && populationChangedEventListeners.removeElement(ea)) {
-
             return true;
         } else {
             return false;

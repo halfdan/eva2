@@ -23,12 +23,12 @@ import java.util.ArrayList;
  * between successive mutation steps.
  */
 public class MutateESCorrVector implements InterfaceMutation, java.io.Serializable {
-    protected double m_scalingDev = 0.05;
-    protected double m_initialVelocity = 0.02;
-    protected double m_LowerLimitStepSize = 0.0000001;
-    protected double m_UpperLimitStepSize = 0.5;
-    protected double m_rotationDev = 15.;
-    protected boolean m_checkConstraints = true;
+    protected double scalingDev = 0.05;
+    protected double initialVelocity = 0.02;
+    protected double lowerLimitStepSize = 0.0000001;
+    protected double upperLimitStepSize = 0.5;
+    protected double rotationDev = 15.;
+    protected boolean checkConstraints = true;
     public static final String vectorKey = "MutateESCorrVectorVector";
     public static final boolean TRACE = false;
 
@@ -51,10 +51,10 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     }
 
     public MutateESCorrVector(MutateESCorrVector mutator) {
-        this.m_scalingDev = mutator.m_scalingDev;
-        this.m_initialVelocity = mutator.m_initialVelocity;
-        this.m_LowerLimitStepSize = mutator.m_LowerLimitStepSize;
-        this.m_rotationDev = mutator.m_rotationDev;
+        this.scalingDev = mutator.scalingDev;
+        this.initialVelocity = mutator.initialVelocity;
+        this.lowerLimitStepSize = mutator.lowerLimitStepSize;
+        this.rotationDev = mutator.rotationDev;
     }
 
     /**
@@ -77,13 +77,13 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESCorrVector) {
             MutateESCorrVector mut = (MutateESCorrVector) mutator;
-            if (this.m_scalingDev != mut.m_scalingDev) {
+            if (this.scalingDev != mut.scalingDev) {
                 return false;
             }
-            if (this.m_initialVelocity != m_initialVelocity) {
+            if (this.initialVelocity != initialVelocity) {
                 return false;
             }
-            if (this.m_LowerLimitStepSize != mut.m_LowerLimitStepSize) {
+            if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
                 return false;
             }
             return true;
@@ -100,7 +100,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      */
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        double[] initVelocity = calcInitialVel(m_initialVelocity, ((InterfaceESIndividual) individual).getDoubleRange());
+        double[] initVelocity = calcInitialVel(initialVelocity, ((InterfaceESIndividual) individual).getDoubleRange());
         individual.putData(vectorKey, initVelocity);
     }
 
@@ -139,22 +139,22 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
             double[] vel = (double[]) individual.getData(vectorKey);
 
             // mutate the velocity vector and write it back
-            if ((m_scalingDev > 0) || (m_rotationDev > 0)) {
+            if ((scalingDev > 0) || (rotationDev > 0)) {
 //            	for (int i = 0; i < vel.length; i++) {
 //            		vel[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.mutationStepSize);
 //            	}
-                double rotateRad = m_rotationDev * (Math.PI / 360.) * RNG.gaussianDouble(1.);
+                double rotateRad = rotationDev * (Math.PI / 360.) * RNG.gaussianDouble(1.);
                 // rotate with a gaussian distribution of deviation rotationDeg
                 Mathematics.rotateAllAxes(vel, rotateRad, false); // rotate
-                double rScale = Math.exp(RNG.gaussianDouble(m_scalingDev));
+                double rScale = Math.exp(RNG.gaussianDouble(scalingDev));
 
-                if ((m_LowerLimitStepSize > 0) || (m_UpperLimitStepSize > 0)) {
+                if ((lowerLimitStepSize > 0) || (upperLimitStepSize > 0)) {
                     double stepLen = Mathematics.norm(vel);
-                    if (m_LowerLimitStepSize > 0) {
-                        rScale = Math.max(rScale, m_LowerLimitStepSize / stepLen);
+                    if (lowerLimitStepSize > 0) {
+                        rScale = Math.max(rScale, lowerLimitStepSize / stepLen);
                     }
-                    if (m_UpperLimitStepSize > 0) {
-                        rScale = Math.min(rScale, m_UpperLimitStepSize / stepLen);
+                    if (upperLimitStepSize > 0) {
+                        rScale = Math.min(rScale, upperLimitStepSize / stepLen);
                     }
                 }
 
@@ -173,7 +173,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
             Mathematics.vvAdd(genes, vel, genes);
 
             // check the range
-            if (m_checkConstraints) {
+            if (checkConstraints) {
                 Mathematics.projectToRange(genes, range);
             }
 
@@ -195,11 +195,11 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
         ArrayList<Double> tmpList = new ArrayList<Double>();
         if (indy1.getMutationOperator() instanceof MutateESCorrVector) {
-            tmpList.add(new Double(((MutateESCorrVector) indy1.getMutationOperator()).m_scalingDev));
+            tmpList.add(new Double(((MutateESCorrVector) indy1.getMutationOperator()).scalingDev));
         }
         for (int i = 0; i < partners.size(); i++) {
             if (((AbstractEAIndividual) partners.get(i)).getMutationOperator() instanceof MutateESCorrVector) {
-                tmpList.add(new Double(((MutateESCorrVector) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).m_scalingDev));
+                tmpList.add(new Double(((MutateESCorrVector) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).scalingDev));
             }
         }
         double[] list = new double[tmpList.size()];
@@ -210,7 +210,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
             return;
         }
         // discreete mutation for step size
-        this.m_scalingDev = list[RNG.randomInt(0, list.length - 1)];
+        this.scalingDev = list[RNG.randomInt(0, list.length - 1)];
     }
 
     /**
@@ -252,11 +252,11 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      * @param d The mutation operator.
      */
     public void setScalingDev(double d) {
-        this.m_scalingDev = d;
+        this.scalingDev = d;
     }
 
     public double getScalingDev() {
-        return this.m_scalingDev;
+        return this.scalingDev;
     }
 
     public String scalingDevTipText() {
@@ -272,11 +272,11 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
         if (d < 0) {
             d = 0;
         }
-        this.m_LowerLimitStepSize = d;
+        this.lowerLimitStepSize = d;
     }
 
     public double getLowerLimitStepSize() {
-        return this.m_LowerLimitStepSize;
+        return this.lowerLimitStepSize;
     }
 
     public String lowerLimitStepSizeTipText() {
@@ -284,11 +284,11 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     }
 
     public double getRotationDev() {
-        return m_rotationDev;
+        return rotationDev;
     }
 
     public void setRotationDev(double rotationDeg) {
-        this.m_rotationDev = rotationDeg;
+        this.rotationDev = rotationDeg;
     }
 
     public String rotationDevTipText() {
@@ -296,19 +296,19 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     }
 
     public double getInitialVelocity() {
-        return m_initialVelocity;
+        return initialVelocity;
     }
 
     public void setInitialVelocity(double velocity) {
-        m_initialVelocity = velocity;
+        initialVelocity = velocity;
     }
 
     public double getUpperLimitStepSize() {
-        return m_UpperLimitStepSize;
+        return upperLimitStepSize;
     }
 
     public void setUpperLimitStepSize(double upperLimitStepSize) {
-        m_UpperLimitStepSize = upperLimitStepSize;
+        this.upperLimitStepSize = upperLimitStepSize;
     }
 
     public String upperLimitStepSizeTipText() {

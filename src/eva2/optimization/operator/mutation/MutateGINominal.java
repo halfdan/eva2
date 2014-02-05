@@ -15,14 +15,14 @@ import eva2.tools.math.RNG;
  */
 public class MutateGINominal implements InterfaceMutation, java.io.Serializable {
 
-    int m_NumberOfMutations = 2;
+    int numberOfMutations = 2;
 
     public MutateGINominal() {
 
     }
 
     public MutateGINominal(MutateGINominal mutator) {
-        this.m_NumberOfMutations = mutator.m_NumberOfMutations;
+        this.numberOfMutations = mutator.numberOfMutations;
     }
 
     /**
@@ -45,7 +45,7 @@ public class MutateGINominal implements InterfaceMutation, java.io.Serializable 
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGINominal) {
             MutateGINominal mut = (MutateGINominal) mutator;
-            if (this.m_NumberOfMutations != mut.m_NumberOfMutations) {
+            if (this.numberOfMutations != mut.numberOfMutations) {
                 return false;
             }
             return true;
@@ -77,7 +77,7 @@ public class MutateGINominal implements InterfaceMutation, java.io.Serializable 
             int[] x = ((InterfaceGIIndividual) individual).getIGenotype();
             int[][] range = ((InterfaceGIIndividual) individual).getIntRange();
             int mutInd = 0;
-            for (int k = 0; k < this.m_NumberOfMutations; k++) {
+            for (int k = 0; k < this.numberOfMutations; k++) {
                 try {
                     mutInd = RNG.randomInt(0, x.length - 1);
                 } catch (java.lang.ArithmeticException e) {
@@ -140,11 +140,11 @@ public class MutateGINominal implements InterfaceMutation, java.io.Serializable 
      * @param n The number of mutations
      */
     public void setNumberOfMutations(int n) {
-        this.m_NumberOfMutations = n;
+        this.numberOfMutations = n;
     }
 
     public int getNumberOfMutations() {
-        return this.m_NumberOfMutations;
+        return this.numberOfMutations;
     }
 
     public String numberOfMutationsTipText() {

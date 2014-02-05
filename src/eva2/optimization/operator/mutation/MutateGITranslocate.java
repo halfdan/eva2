@@ -16,8 +16,8 @@ import eva2.tools.math.RNG;
  */
 public class MutateGITranslocate implements InterfaceMutation, java.io.Serializable {
 
-    int m_MaxLengthOfTranslocate = 4;
-    int m_maxTransLocDistance = -1;
+    int maxLengthOfTranslocate = 4;
+    int maxTransLocDistance = -1;
 
     public MutateGITranslocate() {
     }
@@ -34,7 +34,7 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
     }
 
     public MutateGITranslocate(MutateGITranslocate mutator) {
-        this.m_MaxLengthOfTranslocate = mutator.m_MaxLengthOfTranslocate;
+        this.maxLengthOfTranslocate = mutator.maxLengthOfTranslocate;
     }
 
     /**
@@ -57,7 +57,7 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGITranslocate) {
             MutateGITranslocate mut = (MutateGITranslocate) mutator;
-            if (this.m_MaxLengthOfTranslocate != mut.m_MaxLengthOfTranslocate) {
+            if (this.maxLengthOfTranslocate != mut.maxLengthOfTranslocate) {
                 return false;
             }
             return true;
@@ -88,16 +88,16 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
         if (individual instanceof InterfaceGIIndividual) {
             int[] x = ((InterfaceGIIndividual) individual).getIGenotype();
             int from, to, length;
-            length = RNG.randomInt(1, this.m_MaxLengthOfTranslocate);
+            length = RNG.randomInt(1, this.maxLengthOfTranslocate);
             if (x.length < length + 2) {
                 return;
             }
             from = RNG.randomInt(0, x.length - 1 - length);
-            if (m_maxTransLocDistance <= 0) {
+            if (maxTransLocDistance <= 0) {
                 to = RNG.randomInt(0, x.length - 1 - length);
             } else {
-                int minTo = Math.max(0, from - m_maxTransLocDistance);
-                int maxTo = Math.min(x.length - 1 - length, from + m_maxTransLocDistance);
+                int minTo = Math.max(0, from - maxTransLocDistance);
+                int maxTo = Math.min(x.length - 1 - length, from + maxTransLocDistance);
 //    			System.out.println("min/max-to: " + minTo + ", " + maxTo);
                 to = RNG.randomInt(minTo, maxTo);
 //    			System.out.println("to is " + to);
@@ -198,11 +198,11 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
      * @param n The max length of invert
      */
     public void setMaxLengthOfTranslocate(int n) {
-        this.m_MaxLengthOfTranslocate = n;
+        this.maxLengthOfTranslocate = n;
     }
 
     public int getMaxLengthOfTranslocate() {
-        return this.m_MaxLengthOfTranslocate;
+        return this.maxLengthOfTranslocate;
     }
 
     public String maxLengthOfTranslocateTipText() {
@@ -215,11 +215,11 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
      * @param n The max length of invert
      */
     public void setMaxTranslocationDist(int n) {
-        this.m_maxTransLocDistance = n;
+        this.maxTransLocDistance = n;
     }
 
     public int getMaxTranslocationDist() {
-        return this.m_maxTransLocDistance;
+        return this.maxTransLocDistance;
     }
 
     public String maxTranslocationDistTipText() {
