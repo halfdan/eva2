@@ -107,7 +107,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     private transient EvolutionStrategies[] peakOpts = null;
     Population population = new Population();
     private InterfaceOptimizationProblem problem;
-    private transient InterfacePopulationChangedEventListener m_Listener;
+    private transient InterfacePopulationChangedEventListener populationChangedEventListener;
     private String identifier = "Niching-ES";
     private transient TopoPlot plot = null;
     private transient Population randomNewIndies = null;
@@ -788,8 +788,8 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
      * Something has changed
      */
     protected void firePropertyChangedEvent(String name) {
-        if (this.m_Listener != null) {
-            this.m_Listener.registerPopulationStateChanged(this, name);
+        if (this.populationChangedEventListener != null) {
+            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -1024,14 +1024,14 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     @Override
     public void addPopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        m_Listener = ea;
+        populationChangedEventListener = ea;
     }
 
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (ea.equals(m_Listener)) {
-            m_Listener = null;
+        if (ea.equals(populationChangedEventListener)) {
+            populationChangedEventListener = null;
             return true;
         } else {
             return false;

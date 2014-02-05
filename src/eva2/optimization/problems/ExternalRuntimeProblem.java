@@ -214,9 +214,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         double[] fit = evaluate(x);
         individual.setFitness(fit);
 
-//        if (this.m_UseTestConstraint) {
-//            if (x[0] < 1) individual.addConstraintViolation(1-x[0]);
-//        }
         if ((this.bestIndividuum == null) || (this.bestIndividuum.getFitness(0) > individual.getFitness(0))) {
             this.bestIndividuum = (AbstractEAIndividual) individual.clone();
         }

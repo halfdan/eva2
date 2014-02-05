@@ -119,8 +119,6 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         AbstractEAIndividual tmpIndy;
 
         result.clear();
-//        this.m_NormationOperator.computeSelectionProbability(this.population, "Fitness");
-        //System.out.println("Population:"+this.population.getSolutionRepresentationFor());
         this.populationSelectionOperator.prepareSelection(this.population);
         this.recombSelectionOperator.prepareSelection(this.population);
         parents = this.populationSelectionOperator.selectFrom(this.population, this.population.getTargetSize());
@@ -224,7 +222,6 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
                 }
             }
             nextGeneration.addPopulation(this.population);
-//            this.m_NormationOperator.computeSelectionProbability(nextGeneration, "Fitness");
             this.populationSelectionOperator.prepareSelection(this.population);
             tmp = this.populationSelectionOperator.selectFrom(nextGeneration, this.population.getTargetSize());
             nextGeneration.clear();
@@ -341,18 +338,6 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         return new SolutionSet(getPopulation());
     }
 
-//    /** This method will set the normation method that is to be used.
-//     * @param normation
-//     */
-//    public void setNormationMethod (InterfaceNormation normation) {
-//        this.m_NormationOperator = normation;
-//    }
-//    public InterfaceNormation getNormationMethod () {
-//        return this.m_NormationOperator;
-//    }
-//    public String normationMethodTipText() {
-//        return "Select the normation method.";
-//    }
 
     /**
      * Enable/disable elitism.

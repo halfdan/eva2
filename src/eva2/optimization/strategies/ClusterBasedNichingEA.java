@@ -596,36 +596,18 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 if (best == null) {
                     best = (AbstractEAIndividual) curSpecies.getBestEAIndividual().getClone();
                 }
-//                	if (useDistraction) { // Add distractor!
-//                		if (distraction == null) distraction = new Distraction(distrDefaultStrength, Distraction.METH_BEST);
-//                		distraction.addDistractorFrom(curSpecies);
-//                		System.out.println("** Adding distractor! " + BeanInspector.toString(distraction.getDistractionCenter(curSpecies, distraction.getDistractionMethod().getSelectedTagID())));
-//                	}
                 int toReinit = 0;
-                if (true) { //if (m_UseArchive) {
+                if (true) {
                     populationArchive.add(best);
 //                    	System.out.println((""+ population.getFunctionCalls() + " " + (BeanInspector.toString(best.getDoublePosition())).replaceAll(";|\\[|\\]", "")));
                     species.remove(i);  // remove the converged Species
                     toReinit = curSpecies.size();
                 }
-//                	else {
-//                    	// reset the converged species to inactivity size = 1        
-//                    	toReinit=curSpecies.size()-1;
-//                    	deactivateSpecies(curSpecies, best, null);
-//                    }
                 // those will not be optimized anymore, so we dont need to doom them, but can directly add them to undiff!
                 undifferentiatedPopulation.addPopulation(initializeIndividuals(toReinit));
                 undifferentiatedPopulation.incrFunctionCallsBy(toReinit);
 
-//                    if (this.debug) {
-//                        System.out.println("Undiff.Size: " + this.undifferentiatedPopulation.size() +"/"+this.undifferentiatedPopulation.getPopulationSize());
-//                        System.out.println("Diff.Size  : " + ((Population)this.species.get(i)).size() +"/"+((Population)this.species.get(i)).getPopulationSize());
-//                    }
-//                    if (this.debug) System.out.println("--------------------------End converged");
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
             } else {
-                // actually optimize D_i
-//                    this.capMutationRate(curSpecies, 0.05);
                 curSpecies.putData(InterfaceSpeciesAware.populationTagKey, InterfaceSpeciesAware.localPopTag);
                 Population optimizedSpec = optimizeSpecies(curSpecies, true);
                 this.species.set(i, optimizedSpec);
@@ -998,35 +980,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         }
     }
 
-//    /**
-//     * Return true if the given population is considered active.
-//     *  
-//     * @param pop	a population
-//     * @return true, if pop is considered an active population, else false
-//     */
-//    protected boolean isActive(Population pop) {
-//    	return (pop.size() >= m_actSpecSize);
-//    }
-//    /**
-//     * Deactivate a given species by removing all individuals and inserting
-//     * only the given survivor, sets the population size to one.
-//     * 
-//     * @param spec
-//     */
-//    protected void deactivateSpecies(Population spec, AbstractEAIndividual survivor, Population collectDoomed) {
-//    	if (!spec.remove(survivor)) System.err.println("WARNING: removing survivor failed in CBN.deactivateSpecies!");;
-//    	if (collectDoomed!=null) collectDoomed.addPopulation(spec);
-//    	spec.clear();
-//    	spec.add(survivor);
-//    	spec.setPopulationSize(1);
-//    }
-//    public int countActiveSpec() {
-//    	int k = 0;
-//    	for (int i=0; i<species.size(); i++) {
-//    		if (isActive(species.get(i))) k++;
-//    	}
-//    	return k;
-//    }
 
     /**
      * This method allows an optimizer to register a change in the optimizer.
@@ -1172,19 +1125,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         return new SolutionSet(getPopulation(), sols);
     }
 
-//    /** Clearing removes all but the best individuals from an identified species.
-//     * @return The current status of this flag
-//     */
-//    public boolean getApplyClearing() {
-//        return this.m_UseClearing;
-//    }
-//    public void setApplyClearing(boolean b){
-//        this.m_UseClearing = b;
-//    }
-//    public String applyClearingTipText() {
-//        return "Clearing removes all but the best individuals from an identified species.";
-//    }
-
     /**
      * This method allows you to set/get the switch that toggles the use of
      * species convergence.
@@ -1259,15 +1199,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         return "The cluster algorithm on which the species merging is based.";
     }
 
-//    public void setUseArchive(boolean v) {
-//    	m_UseArchive = v;
-//    }
-//    public boolean isUseArchive() {
-//    	return m_UseArchive;
-//    }
-//    public String useArchiveTipText() {
-//    	return "Toggle usage of an archive where converged species are saved and the individuals reinitialized.";
-//    }
 
     /**
      * Determines how often species differentation/convergence is performed.

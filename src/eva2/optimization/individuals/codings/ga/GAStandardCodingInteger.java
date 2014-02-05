@@ -24,24 +24,22 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
      */
     @Override
     public int decodeValue(BitSet refBitSet, int[] range, int[] locus, boolean correction) {
-        int u_max, u_min, m_max, m_min;
-        int m_start, m_length, counter = 0;
+        int u_max, u_min;
+        int start, mLength;
         long tmpV;
         BitSet tmpBitSet;
         String output = "";
 
         u_min = range[0];
         u_max = range[1];
-        m_start = locus[0];
-        m_length = locus[1];
-        m_max = (int) Math.pow(2, m_length) - 1;
-        m_min = 0;
-        tmpBitSet = new BitSet(m_length);
+        start = locus[0];
+        mLength = locus[1];
+        tmpBitSet = new BitSet(mLength);
         tmpV = 0;
-        for (int i = 0; i < m_length; i++) {
-            if (refBitSet.get(m_start + m_length - 1 - i)) {
+        for (int i = 0; i < mLength; i++) {
+            if (refBitSet.get(start + mLength - 1 - i)) {
                 tmpV += Math.pow(2, i);
-                tmpBitSet.set(m_length - 1 - i);
+                tmpBitSet.set(mLength - 1 - i);
                 output += "1";
             } else {
                 output += "0";
@@ -49,10 +47,10 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
         }
         //System.out.println(tmpV);
         tmpV += u_min;
-        //System.out.println("Korregiere: " + tmpV + " " + u_min + " " + u_max + " " + output);
+        //System.out.println("Korrigiere: " + tmpV + " " + u_min + " " + u_max + " " + output);
         if (tmpV > u_max) {
             // this value is invalid
-            //System.out.print("Korregiere: " + tmpV + " > " + u_max);
+            //System.out.print("Korrigiere: " + tmpV + " > " + u_max);
             if (correction) {
                 // a new value within the bounds is generated
                 tmpV = RNG.randomInt(u_min, u_max);
@@ -63,7 +61,6 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
                 //System.out.println("zu max: " + tmpV);
             }
         }
-        //System.out.println("INT Value decoded : " + (int)tmpV + " " + this.printBitSet(tmpBitSet, m_length));
         return (int) tmpV;
     }
 
@@ -79,26 +76,26 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
      */
     @Override
     public void codeValue(int value, int[] range, BitSet refBitSet, int[] locus) {
-        int u_max, u_min, m_max, m_min;
-        int m_start, m_length, counter = 0;
+        int uMax, uMin, mMax, mMin;
+        int start, length, counter = 0;
         long tmpV;
         BitSet tmpBitSet;
 
-        u_min = range[0];
-        u_max = range[1];
-        m_start = locus[0];
-        m_length = locus[1];
-        m_max = (int) Math.pow(2, m_length) - 1;
-        m_min = 0;
-        tmpV = value - u_min;
-        long tmpOut = tmpV;// damit ist tmpV im range m_Min m_Max
-        if (tmpV > m_max) {
-            tmpV = m_max;
+        uMin = range[0];
+        uMax = range[1];
+        start = locus[0];
+        length = locus[1];
+        mMax = (int) Math.pow(2, length) - 1;
+        mMin = 0;
+        tmpV = value - uMin;
+        long tmpOut = tmpV;// damit ist tmpV im range mMin mMax
+        if (tmpV > mMax) {
+            tmpV = mMax;
         }
-        if (tmpV < m_min) {
-            tmpV = m_min;
+        if (tmpV < mMin) {
+            tmpV = mMin;
         }
-        tmpBitSet = new BitSet(m_length);
+        tmpBitSet = new BitSet(length);
         while (tmpV >= 1) {
             //System.out.println(tmpV);
             if ((tmpV % 2) == 1) {
@@ -113,23 +110,21 @@ public class GAStandardCodingInteger implements InterfaceGAIntegerCoding, java.i
             tmpV /= 2;
             // with this method the least significant bit will be at the lowest position
         }
-        //System.out.println("tmpV " + tmpOut + " Range("+m_min+";"+m_max+") "+m_length+" "+this.printBitSet(tmpBitSet,m_length));
-        // Das sieht bis hierher richtig toll aus, nur jetzt wirds scheisse m_Length war im Arsch
-        for (int i = 0; i < m_length; i++) {
+        // Das sieht bis hierher richtig toll aus, nur jetzt wirds scheisse length war im Arsch
+        for (int i = 0; i < length; i++) {
             if (tmpBitSet.get(i)) {
-                refBitSet.set(m_start + m_length - 1 - i);
+                refBitSet.set(start + length - 1 - i);
             } else {
-                refBitSet.clear(m_start + m_length - 1 - i);
+                refBitSet.clear(start + length - 1 - i);
             }
         }
-        for (int i = 0; i < m_length; i++) {
-            if (refBitSet.get(m_start + m_length - 1 - i)) {
-                tmpBitSet.set(m_length - 1 - i);
+        for (int i = 0; i < length; i++) {
+            if (refBitSet.get(start + length - 1 - i)) {
+                tmpBitSet.set(length - 1 - i);
             } else {
-                tmpBitSet.clear(m_start + m_length - 1 - i);
+                tmpBitSet.clear(start + length - 1 - i);
             }
         }
-        //System.out.println("INT Value coded : " + value + " " + this.printBitSet(tmpBitSet, m_length));
     }
 
     /**

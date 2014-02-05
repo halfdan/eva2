@@ -21,8 +21,6 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
      */
     private static final long serialVersionUID = 7945150208043416139L;
     Population indiesToPaint = new Population();
-    //	private double[]                    m_BestVariables;
-//    private double                      m_BestFitness;
     private int theHeight, theWidth;
     FLensProblem lensProblem;
 
@@ -64,25 +62,11 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
             System.out.println(" G == null!?");
             return;
         }
-        // Create a buffered image in which to draw
-//        try {
-//            this.theHeight   = (int)g.getClipBounds().getHeight();
-//            this.theWidth    = (int)g.getClipBounds().getWidth();
-//            this.m_CenterX  = (int)g.getClipBounds().getCenterX();
-//            this.m_CenterY  = (int)g.getClipBounds().getCenterY();
-//        } catch (java.lang.NullPointerException npe) {
-//            //System.out.println("Try fail...");
-//        }
         // This might cure the eternal display problems: just ignore clipping and leave it up to swing
         Dimension winDim = getSize();
         theHeight = winDim.height;
         theWidth = winDim.width;
-//        m_CenterX = theWidth/2;
-//        m_CenterY = theHeight/2;
 
-//        if (this.theHeight == 0) this.theHeight = 250;
-//        if (this.theWidth == 0) this.theWidth = 350;
-//        System.out.println(" h w cx cy "  + theHeight + " " + theWidth + " " + m_CenterX + " " + m_CenterY );
         bufferedImage = new BufferedImage(this.theWidth, this.theHeight, BufferedImage.TYPE_INT_RGB);
         // Create a graphics contents on the buffered image
         Graphics2D g2D = bufferedImage.createGraphics();
@@ -176,7 +160,6 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 //			this.paint(this.getGraphics());
         } else {
             InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) pop.getBestIndividual();
-            //this.m_BestFitness      = ((AbstractEAIndividual)best).getFitness(0);
             if (indiesToPaint.size() == 0 || ((AbstractEAIndividual) best).isDominant(indiesToPaint.getBestIndividual())) {
                 if (indiesToPaint.size() == 1) {
                     indiesToPaint.set(0, best);
@@ -376,12 +359,6 @@ public class FLensProblem extends AbstractOptimizationProblem
         for (int i = 0; i < tmpFit.length; i++) {
             fitness += Math.pow(tmpFit[i], 2);
         }
-
-//        // Computation of fitness. Uses an approximation for very thin lenses.
-//        // The fitness is the sum over all segments of the deviation from the center
-//        // of focus of a beam running through a segment.
-//         for (int i = 1; i < x.length; i++)
-//            fitness = fitness + Math.pow(radius - m_SegmentHight / 2 - m_SegmentHight * (i - 1) -  focalLength / m_SegmentHight * (epsilon - 1) * (x[i] - x[i-1]),2);
 
         // Here the thickness of the middle segment of the lens	is added to the fitness
         // to permit the optimization to reduce the overall thickness of the lens
