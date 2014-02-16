@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  *
  */
-@Description("Schwefel's Function.")
+@Description("Schwefel's 1.2 Function.")
 public class F5Problem extends AbstractProblemDoubleOffset implements Serializable {
     final static double f5range = 65.536;
 
@@ -59,7 +59,7 @@ public class F5Problem extends AbstractProblemDoubleOffset implements Serializab
     public String getStringRepresentationForProblem() {
         String result = "";
 
-        result += "F5 Schwefel's Function:\n";
+        result += "F5 Schwefel's 1.2 Function:\n";
         result += "This problem is unimodal.\n";
         result += "Parameters:\n";
         result += "Dimension   : " + this.problemDimension + "\n";
@@ -77,6 +77,6 @@ public class F5Problem extends AbstractProblemDoubleOffset implements Serializab
      */
     @Override
     public String getName() {
-        return "F5 Problem";
+        return "F5-Problem";
     }
 }

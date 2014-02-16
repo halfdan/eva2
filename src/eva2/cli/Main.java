@@ -13,9 +13,8 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateDefault;
 import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectXProbRouletteWheel;
-import eva2.optimization.operator.terminators.CombinedTerminator;
-import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.population.Population;
+import eva2.optimization.problems.AbstractProblemDouble;
 import eva2.optimization.problems.AbstractProblemDoubleOffset;
 import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.optimization.strategies.InterfaceOptimizer;
@@ -67,6 +66,12 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     private JsonArray optimizationRuns;
     private JsonArray generationsArray;
 
+    private double[] fBias = { -4.5000000e+002, -4.5000000e+002, -4.5000000e+002, -4.5000000e+002, -3.1000000e+002,
+            3.9000000e+002, -1.8000000e+002, -1.4000000e+002, -3.3000000e+002, -3.3000000e+002,  9.0000000e+001,
+            -4.6000000e+002, -1.3000000e+002, -3.0000000e+002,  1.2000000e+002,  1.2000000e+002,  1.2000000e+002,
+            1.0000000e+001,  1.0000000e+001,  1.0000000e+001,  3.6000000e+002,  3.6000000e+002,  3.6000000e+002,
+            2.6000000e+002,  2.6000000e+002};
+
     /**
      * Creates a set of default options used in all optimizations.
      *
@@ -92,6 +97,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
         opt.addOption("mutator", true, "Mutator Operator");
         opt.addOption("crossover", true, "Crossover Operator");
+        opt.addOption("selection", true, "Selection Operator");
 
         opt.addOption(OptionBuilder
                 .withLongOpt("help")
@@ -428,7 +434,6 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
         switch(optimizerName) {
             case "DifferentialEvolution": {
-                System.out.println("DE");
                 opt.addOption("F", true, "Differential Weight");
                 opt.addOption("CR", true, "Crossover Rate");
                 opt.addOption("DEType", true, "DE Type ()");
@@ -465,7 +470,6 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 break;
             }
             case "GeneticAlgorithm": {
-                System.out.println("Genetic Algorithm");
                 double pm = 0.01, pc = 0.5;
                 opt.addOption("pm", true, "Mutation Probability");
                 opt.addOption("pc", true, "Crossover Probability");
@@ -594,6 +598,32 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+
+        setCECDefaults(this.problem);
+    }
+
+    private void setCECDefaults(AbstractProblemDouble problem) {
+        switch(problem.getName()) {
+            case "F1-Problem": // F1: Shifted Sphere
+                this.problem.setDefaultRange(100);
+                this.problem.setYOffset(fBias[0]);
+                break;
+            case "F2-Problem": // F6: Shifted Rosenbrock's Function
+                this.problem.setDefaultRange(100);
+                this.problem.setYOffset(fBias[5]);
+                break;
+            case "F5-Problem": // F2: Schwefel's 1.2
+                this.problem.setDefaultRange(100);
+                this.problem.setYOffset(fBias[1]);
+                break;
+            case "F6-Problem": // F9: Shifted Rastrigin's Function
+                this.problem.setDefaultRange(5);
+                this.problem.setYOffset(fBias[8]);
+                break;
+            default:
+                LOGGER.info("No CEC'05 default parameters for this problem found.");
+                break;
+        }
     }
 
     /**
@@ -603,8 +633,8 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     private void runOptimization() {
         for(int i = 0; i < this.numberOfRuns; i++) {
             // Terminate after 10000 function evaluations OR after reaching a fitness < 0.1
-            OptimizerFactory.setEvaluationTerminator(50000);
-            OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.00001}), CombinedTerminator.OR);
+            OptimizerFactory.setEvaluationTerminator(500000);
+            //OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.00001}), CombinedTerminator.OR);
 
             LOGGER.log(Level.INFO, "Running {0}", optimizer.getName());
 
