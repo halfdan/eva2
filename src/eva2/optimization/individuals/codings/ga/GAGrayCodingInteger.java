@@ -31,11 +31,6 @@ public class GAGrayCodingInteger implements InterfaceGAIntegerCoding, java.io.Se
         tmpLocus[1] = locus[1];
         tmpBitSet = new BitSet(tmpLocus.length);
 
-//        for (int i = 0; i < tmpLocus.length; i++) {
-//            tmpB = (tmpB ^ refBitSet.get(locus[1] + i));
-//            if (tmpB) tmpBitSet.set(i);
-//            else tmpBitSet.clear(i);
-//        }
         for (int i = 0; i < tmpLocus[1]; i++) {
             tmpB = refBitSet.get(locus[0]);
             for (int j = 1; j <= i; j++) {
