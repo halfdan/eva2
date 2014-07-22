@@ -57,9 +57,6 @@ public abstract class AbstractSynchronousOptimizationProblem extends
     @Override
     protected void changeProblemAt(double problemTime) {
         incProblemTime(shiftPerChange);
-        if (TRACE) {
-            System.out.println("problem shiftet at " + problemTime + " per " + shiftPerChange);
-        }
         evalsSinceChange = 0.;
     }
 
@@ -79,9 +76,6 @@ public abstract class AbstractSynchronousOptimizationProblem extends
      */
     protected void setConstantProblemEvals(double constEvals) {
         constantProblemEvals = constEvals;
-        if (TRACE) {
-            System.out.println("setConstantProblemEvals: " + constEvals);
-        }
     }
 
     /* (non-Javadoc)
