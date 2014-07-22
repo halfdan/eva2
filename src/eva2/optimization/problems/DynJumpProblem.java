@@ -53,10 +53,6 @@ public class DynJumpProblem extends AbstractDynTransProblem {
     protected void changeProblemAt(double problemTime) {
         super.changeProblemAt(problemTime);
         makeTranslation();
-        /* prooving results */
-        if (TRACE) {
-            writeFile();
-        }
         ++changeCounter;
     }
 
@@ -109,13 +105,6 @@ public class DynJumpProblem extends AbstractDynTransProblem {
             }
 			/* Update previousMovement */
             previousMovement[i] = shift[i];
-        }
-        if (TRACE) {
-            System.out.print("Jumped to ");
-            for (int i = 0; i < getProblemDimension(); i++) {
-                System.out.print(" " + translation[i]);
-            }
-            System.out.println();
         }
     }
 

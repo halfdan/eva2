@@ -18,8 +18,6 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     protected int instanceNumber;
     protected String adapterName;
     protected InterfaceProcessor processor;
-    protected String hostName = "not defined";
-    protected boolean hasConnection = true;
     protected ModuleAdapter remoteModuleAdapter = null;
     private List<OptimizationStateListener> optimizationStateListeners;
 
@@ -45,14 +43,6 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     @Override
     public void startOptimization() {
         processor.startOptimization();
-    }
-
-    /**
-     * Restart optimization on processor.
-     */
-    @Override
-    public void restartOptimization() {
-        processor.restartOptimization();
     }
 
     /**
@@ -104,11 +94,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     }
 
     public boolean isOptRunning() {
-        if ((processor != null) && (processor instanceof Processor)) {
-            return ((Processor) processor).isOptimizationRunning();
-        } else {
-            return false;
-        }
+        return (processor != null) && (processor instanceof Processor) && ((Processor) processor).isOptimizationRunning();
     }
 
     /**
@@ -118,25 +104,6 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     public void addOptimizationStateListener(OptimizationStateListener remoteListener) {
         optimizationStateListeners.add(remoteListener);
     }
-
-    /**
-     *
-     */
-    @Override
-    public void setConnection(boolean flag) {
-        hasConnection = flag;
-    }
-
-    /**
-     * Returns whether the module has a connection.
-     *
-     * @return true if the adapter has a connection.
-     */
-    @Override
-    public boolean hasConnection() {
-        return hasConnection;
-    }
-
     /**
      *
      */
