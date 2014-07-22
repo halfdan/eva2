@@ -1,4 +1,4 @@
-package simpleprobs;
+package eva2.optimization.problems.simple;
 
 import java.util.BitSet;
 

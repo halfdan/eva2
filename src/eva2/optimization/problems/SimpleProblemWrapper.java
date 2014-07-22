@@ -8,10 +8,10 @@ import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
-import simpleprobs.InterfaceSimpleProblem;
-import simpleprobs.SimpleF1;
-import simpleprobs.SimpleProblemBinary;
-import simpleprobs.SimpleProblemDouble;
+import eva2.optimization.problems.simple.InterfaceSimpleProblem;
+import eva2.optimization.problems.simple.SimpleF1;
+import eva2.optimization.problems.simple.SimpleProblemBinary;
+import eva2.optimization.problems.simple.SimpleProblemDouble;
 
 import java.util.BitSet;
 
