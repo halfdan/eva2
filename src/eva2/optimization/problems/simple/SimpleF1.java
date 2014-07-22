@@ -1,4 +1,4 @@
-package simpleprobs;
+package eva2.optimization.problems.simple;
 
 
 public class SimpleF1 extends SimpleProblemDouble {

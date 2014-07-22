@@ -1,10 +1,8 @@
-package simpleprobs;
+package eva2.optimization.problems.simple;
 
 /**
  * A simple interface to easily include new optimization problems in Java into the
  * EvA framework.
- *
- * @author mkron
  */
 
 public interface InterfaceSimpleProblem<T> {
