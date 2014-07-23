@@ -1,6 +1,6 @@
 package eva2.optimization.strategies.tribes;
 
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.Tribes;
 import eva2.tools.math.RNG;
 

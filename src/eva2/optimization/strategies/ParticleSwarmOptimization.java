@@ -16,7 +16,7 @@ import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
-import eva2.optimization.problems.*;
+import eva2.problems.*;
 import eva2.tools.SelectedTag;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointSet;

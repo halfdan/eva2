@@ -1,6 +1,6 @@
 package eva2.optimization.individuals.codings.gp;
 
-import eva2.optimization.problems.InterfaceProgramProblem;
+import eva2.problems.InterfaceProgramProblem;
 
 /**
  * The node allows the program to give an output or to perform an action

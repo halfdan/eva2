@@ -3,7 +3,7 @@ package eva2.optimization.mocco;
 
 import eva2.gui.JParaPanel;
 import eva2.optimization.go.MOCCOStandalone;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 
 import javax.swing.*;
 import java.awt.*;

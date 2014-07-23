@@ -2,7 +2,7 @@ package eva2.optimization.mocco;
 
 import eva2.gui.JParaPanel;
 import eva2.optimization.go.MOCCOStandalone;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.ReflectPackage;
 
 import javax.swing.*;
@@ -53,7 +53,7 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
 
         Class[] altern = null;
         try {
-            altern = ReflectPackage.getAssignableClassesInPackage("eva2.optimization.problems", Class.forName("eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem"), true, true);
+            altern = ReflectPackage.getAssignableClassesInPackage("eva2.problems", Class.forName("eva2.problems.InterfaceMultiObjectiveDeNovoProblem"), true, true);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

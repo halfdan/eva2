@@ -12,7 +12,7 @@ import eva2.optimization.operator.terminators.PopulationMeasureTerminator.Stagna
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
-import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.util.annotation.Description;
 
 import java.util.Arrays;
@@ -396,7 +396,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 
     /*
      * (non-Javadoc)
-     * @see eva2.optimization.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
+     * @see eva2.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
      */
     @Override
     public String[] getAdditionalDataHeader() {
@@ -405,7 +405,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 
     /*
      * (non-Javadoc)
-     * @see eva2.optimization.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
+     * @see eva2.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
      */
     @Override
     public String[] getAdditionalDataInfo() {
@@ -414,7 +414,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
 
     /*
      * (non-Javadoc)
-     * @see eva2.optimization.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.optimization.PopulationInterface)
+     * @see eva2.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.optimization.PopulationInterface)
      */
     @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {

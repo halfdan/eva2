@@ -7,7 +7,7 @@ import eva2.optimization.individuals.codings.gp.InterfaceProgram;
 import eva2.optimization.operator.crossover.CrossoverGPDefault;
 import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateDefault;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;

@@ -2,7 +2,7 @@ package eva2.optimization.operator.terminators;
 
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.SelectedTag;
 import eva2.util.annotation.Description;
 

@@ -3,8 +3,8 @@ package eva2.optimization.operator.terminators;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.problems.InterfaceMultimodalProblemKnown;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceMultimodalProblemKnown;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 
 import java.io.Serializable;

@@ -1,7 +1,7 @@
 package eva2.optimization.stat;
 
 import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -8,7 +8,7 @@ import eva2.optimization.operator.terminators.PhenotypeConvergenceTerminator;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.ChangeTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
-import eva2.optimization.problems.F1Problem;
+import eva2.problems.F1Problem;
 
 public class TerminatorExample {
 

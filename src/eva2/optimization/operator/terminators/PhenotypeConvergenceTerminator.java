@@ -3,7 +3,7 @@ package eva2.optimization.operator.terminators;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 
 public class PhenotypeConvergenceTerminator extends PopulationMeasureTerminator implements InterfaceTerminator {
     AbstractEAIndividual oldIndy = null;

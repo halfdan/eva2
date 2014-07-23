@@ -5,7 +5,7 @@ import eva2.gui.InterfaceSelectablePointIcon;
 import eva2.gui.plot.InterfaceDPointWithContent;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefSolutionListener;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 
 import javax.swing.*;
 import java.awt.*;

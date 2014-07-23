@@ -5,7 +5,7 @@ import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.F1Problem;
+import eva2.problems.F1Problem;
 import eva2.optimization.strategies.EvolutionaryProgramming;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.Serializer;

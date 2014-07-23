@@ -22,7 +22,7 @@ import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
-import eva2.optimization.problems.*;
+import eva2.problems.*;
 import eva2.tools.EVAERROR;
 import eva2.tools.chart2d.*;
 import eva2.tools.math.Mathematics;
