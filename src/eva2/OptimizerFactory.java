@@ -27,7 +27,7 @@ import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.PBILPopulation;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.AbstractOptimizationProblem;
+import eva2.problems.AbstractOptimizationProblem;
 import eva2.optimization.stat.InterfaceStatistics;
 import eva2.optimization.strategies.*;
 import eva2.tools.math.RNG;

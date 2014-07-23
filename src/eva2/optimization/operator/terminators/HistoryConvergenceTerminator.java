@@ -6,7 +6,7 @@ import eva2.optimization.operator.distancemetric.ObjectiveSpaceMetric;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 
 import java.io.Serializable;
 import java.util.List;

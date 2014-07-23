@@ -1,7 +1,7 @@
 package eva2.examples;
 
 import eva2.OptimizerFactory;
-import eva2.optimization.problems.F1Problem;
+import eva2.problems.F1Problem;
 
 public class TestingF1PSO {
 

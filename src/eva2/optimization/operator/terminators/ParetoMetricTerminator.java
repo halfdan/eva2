@@ -5,8 +5,8 @@ import eva2.optimization.operator.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.optimization.operator.paretofrontmetrics.MetricS;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 
 import java.io.Serializable;

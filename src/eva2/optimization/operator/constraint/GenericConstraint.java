@@ -1,7 +1,7 @@
 package eva2.optimization.operator.constraint;
 
 import eva2.optimization.individuals.codings.gp.AbstractGPNode;
-import eva2.optimization.problems.GPFunctionProblem;
+import eva2.problems.GPFunctionProblem;
 import eva2.tools.EVAERROR;
 
 import java.io.Serializable;

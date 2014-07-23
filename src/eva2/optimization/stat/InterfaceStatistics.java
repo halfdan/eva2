@@ -3,7 +3,7 @@ package eva2.optimization.stat;
 import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.strategies.InterfaceOptimizer;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package eva2.gui.plot;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 
 /**
  *

@@ -7,9 +7,9 @@ import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
-import eva2.optimization.problems.AbstractOptimizationProblem;
-import eva2.optimization.problems.AbstractProblemDouble;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.AbstractOptimizationProblem;
+import eva2.problems.AbstractProblemDouble;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.util.annotation.Description;
 

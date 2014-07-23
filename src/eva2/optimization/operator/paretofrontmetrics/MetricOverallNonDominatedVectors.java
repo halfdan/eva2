@@ -3,7 +3,7 @@ package eva2.optimization.operator.paretofrontmetrics;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 
 /**
  * Overall Non-Dom. Vector Generation calculates simply the number of

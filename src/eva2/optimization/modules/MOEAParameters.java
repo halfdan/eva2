@@ -5,7 +5,7 @@ import eva2.optimization.operator.archiving.InterfaceArchiving;
 import eva2.optimization.operator.archiving.InterfaceInformationRetrieval;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.TF1Problem;
+import eva2.problems.TF1Problem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.MultiObjectiveEA;
 import eva2.tools.Serializer;

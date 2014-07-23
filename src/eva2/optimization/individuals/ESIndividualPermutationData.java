@@ -3,8 +3,8 @@ package eva2.optimization.individuals;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
 import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateESGlobal;
-import eva2.optimization.problems.InterfaceHasInitRange;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceHasInitRange;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 
