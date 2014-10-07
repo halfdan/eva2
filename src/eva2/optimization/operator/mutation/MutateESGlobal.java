@@ -5,8 +5,8 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 import java.util.ArrayList;
@@ -283,7 +283,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
 
     /*
      * (non-Javadoc)
-     * @see eva2.optimization.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
+     * @see eva2.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataHeader()
      */
     @Override
     public String[] getAdditionalDataHeader() {
@@ -292,7 +292,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
 
     /*
      * (non-Javadoc)
-     * @see eva2.optimization.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
+     * @see eva2.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataInfo()
      */
     @Override
     public String[] getAdditionalDataInfo() {
@@ -301,7 +301,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
 
     /*
      * (non-Javadoc)
-     * @see eva2.optimization.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.optimization.PopulationInterface)
+     * @see eva2.problems.InterfaceAdditionalPopulationInformer#getAdditionalDataValue(eva2.optimization.PopulationInterface)
      */
     @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {

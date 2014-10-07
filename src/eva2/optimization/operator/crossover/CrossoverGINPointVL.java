@@ -3,7 +3,7 @@ package eva2.optimization.operator.crossover;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 import java.util.BitSet;

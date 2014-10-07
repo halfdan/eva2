@@ -1,6 +1,6 @@
 package eva2.optimization.go;
 
-import eva2.optimization.problems.InterfaceAdditionalPopulationInformer;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
 
 import java.util.List;
 

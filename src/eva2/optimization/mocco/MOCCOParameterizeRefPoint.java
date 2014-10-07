@@ -7,7 +7,7 @@ import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.operator.migration.SOBestMigration;
 import eva2.optimization.operator.moso.MOSOLpMetric;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.strategies.IslandModelEA;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralOptimizationEditorProperty;

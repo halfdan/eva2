@@ -11,10 +11,10 @@ import eva2.optimization.operator.selection.replacement.ReplacementNondominatedS
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.optimization.problems.AbstractOptimizationProblem;
-import eva2.optimization.problems.F1Problem;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.AbstractOptimizationProblem;
+import eva2.problems.F1Problem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;

@@ -3,7 +3,7 @@ package eva2.optimization.operator.crossover;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.mutation.InterfaceAdaptOperatorGenerational;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 
 /**
  * A modified version of the CrossoverEAMixer that adapts the weights with which the crossover-methods are chosen

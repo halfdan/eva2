@@ -1,7 +1,7 @@
 package eva2.optimization.operator.paretofrontmetrics;
 
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 
 /**
  * Interface for general Pareto front methods.

@@ -63,7 +63,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
     //	if not null, the module is loaded automatically and no other can be selected
     private String useDefaultModule = null;    //"Genetic_Optimization";
-    private boolean localMode = false;
+
 
     // measuring optimization runtime
     private long startTime = 0;
@@ -275,7 +275,7 @@ public class Main extends JFrame implements OptimizationStateListener {
     }
 
     private void preloadClasses() {
-        ClassPreloader cp = new ClassPreloader("eva2.optimization.strategies.InterfaceOptimizer", "eva2.optimization.problems.InterfaceOptimizationProblem", "eva2.optimization.operator.terminators.InterfaceTerminator");
+        ClassPreloader cp = new ClassPreloader("eva2.optimization.strategies.InterfaceOptimizer", "eva2.problems.InterfaceOptimizationProblem", "eva2.optimization.operator.terminators.InterfaceTerminator");
         new Thread(cp).start();
     }
 
@@ -471,8 +471,8 @@ public class Main extends JFrame implements OptimizationStateListener {
                 }
             });
 
-            LOGGER.log(Level.INFO, "Working directory is: {0}", System.getProperty("user.dir"));
-            LOGGER.log(Level.INFO, "Class path is: {0}", System.getProperty("java.class.path", "."));
+            LOGGER.log(Level.FINE, "Working directory is: {0}", System.getProperty("user.dir"));
+            LOGGER.log(Level.FINE, "Class path is: {0}", System.getProperty("java.class.path", "."));
 
             if (!(configurationPane.isVisible())) {
                 configurationPane.setVisible(true);
@@ -529,7 +529,7 @@ public class Main extends JFrame implements OptimizationStateListener {
     public static void main(String[] args) {
         // Properties for Mac OS X support.
         if ((System.getProperty("mrj.version") != null)
-                || (System.getProperty("os.name").toLowerCase().indexOf("mac") != -1)) {
+                || (System.getProperty("os.name").toLowerCase().contains("mac"))) {
             /*
              * Note: the xDock name property must be set before parsing
              * command-line arguments! See above!
@@ -545,13 +545,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             System.setProperty("com.apple.mrj.application.live-resize", "true");
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (InstantiationException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (UnsupportedLookAndFeelException e) {
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         } else {
@@ -689,7 +683,7 @@ public class Main extends JFrame implements OptimizationStateListener {
         };
 
         actQuit = new ExtAction("&Quit", "Quit EvA2 workbench",
-                KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK)) {
+                KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK)) {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
@@ -698,7 +692,7 @@ public class Main extends JFrame implements OptimizationStateListener {
         };
 
         actPreferences = new ExtAction("&Preferences", "Show preferences dialog",
-                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK)) {
+                KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK)) {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
@@ -740,16 +734,6 @@ public class Main extends JFrame implements OptimizationStateListener {
     private void buildMenu() {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
-        JExtMenu menuModule = new JExtMenu("&Module");
-        //menuModule.add(actModuleLoad);
-
-        JExtMenu menuSelHosts = new JExtMenu("&Select Hosts");
-        //menuSelHosts.setToolTipText("Select a host for the server application");
-        //menuSelHosts.add(actHost);
-        //menuSelHosts.add(actAvailableHost);
-        //menuSelHosts.addSeparator();
-        //menuSelHosts.add(actKillHost);
-        //menuSelHosts.add(actKillAllHosts);
 
         JExtMenu menuHelp = new JExtMenu("&Help");
         menuHelp.add(actHelp);
@@ -762,10 +746,6 @@ public class Main extends JFrame implements OptimizationStateListener {
         //menuOptions.add(menuSelHosts);
         menuOptions.addSeparator();
         menuOptions.add(actQuit);
-        // this is accessible if no default module is given
-        //if (showLoadModules) {
-        //    menuBar.add(menuModule);
-        //}
 
         menuBar.add(menuOptions);
         menuBar.add(((JExtDesktopPane) desktopPane).getWindowMenu());
@@ -830,7 +810,6 @@ public class Main extends JFrame implements OptimizationStateListener {
                 return;
             }
         } else {
-            newModuleAdapter.setConnection(!localMode);
             newModuleAdapter.addOptimizationStateListener(this);
             try {
                 if (withGUI) {

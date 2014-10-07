@@ -1,6 +1,6 @@
 package eva2.optimization.individuals.codings.gp;
 
-import eva2.optimization.problems.InterfaceProgramProblem;
+import eva2.problems.InterfaceProgramProblem;
 
 /**
  * This node executes all three arguments.

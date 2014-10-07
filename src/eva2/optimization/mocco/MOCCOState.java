@@ -5,10 +5,10 @@ import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
-import eva2.optimization.problems.InterfaceOptimizationObjective;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.InterfaceMultiObjectiveDeNovoProblem;
+import eva2.problems.InterfaceOptimizationObjective;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.MultiObjectiveEA;
 

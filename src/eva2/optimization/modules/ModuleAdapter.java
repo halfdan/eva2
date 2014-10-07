@@ -30,8 +30,6 @@ public interface ModuleAdapter extends OptimizationStateListener {
      */
     OptimizationJob scheduleJob();
 
-    void restartOptimization();
-
     void stopOptimization();
 
     /**
@@ -49,8 +47,4 @@ public interface ModuleAdapter extends OptimizationStateListener {
     boolean startPostProcessing();
 
     void addOptimizationStateListener(OptimizationStateListener x);
-
-    void setConnection(boolean flag);
-
-    boolean hasConnection();
 }

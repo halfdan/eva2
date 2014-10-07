@@ -3,8 +3,8 @@ package eva2.optimization.mocco;
 
 import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefPointListener;
-import eva2.optimization.problems.InterfaceMultiObjectiveDeNovoProblem;
-import eva2.optimization.problems.InterfaceOptimizationObjective;
+import eva2.problems.InterfaceMultiObjectiveDeNovoProblem;
+import eva2.problems.InterfaceOptimizationObjective;
 
 import javax.swing.*;
 import java.awt.*;

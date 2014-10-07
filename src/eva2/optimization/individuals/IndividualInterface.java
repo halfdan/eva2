@@ -1,6 +1,6 @@
 package eva2.optimization.individuals;
 
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 
 /**
  * Minimal interface for an EA individual.

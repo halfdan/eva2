@@ -5,7 +5,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 
 /**
  * S-Metric calculates the hyper-volume covered between the current solutions and a reference point.

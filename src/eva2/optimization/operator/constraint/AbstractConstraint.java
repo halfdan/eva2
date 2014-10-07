@@ -3,7 +3,7 @@ package eva2.optimization.operator.constraint;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.paramcontrol.*;
-import eva2.optimization.problems.AbstractProblemDouble;
+import eva2.problems.AbstractProblemDouble;
 import eva2.tools.EVAERROR;
 
 import java.io.Serializable;

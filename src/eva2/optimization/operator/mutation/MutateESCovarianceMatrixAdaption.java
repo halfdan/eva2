@@ -3,7 +3,7 @@ package eva2.optimization.operator.mutation;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Jama.EigenvalueDecomposition;
 import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.Mathematics;

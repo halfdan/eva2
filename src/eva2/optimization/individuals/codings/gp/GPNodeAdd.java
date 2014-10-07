@@ -1,7 +1,7 @@
 package eva2.optimization.individuals.codings.gp;
 
 
-import eva2.optimization.problems.InterfaceProgramProblem;
+import eva2.problems.InterfaceProgramProblem;
 
 /**
  * A simple add node with two arguments.

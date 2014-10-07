@@ -8,7 +8,7 @@ import eva2.optimization.individuals.AbstractEAIndividualComparator;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;

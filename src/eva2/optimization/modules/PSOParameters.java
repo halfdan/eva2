@@ -6,7 +6,7 @@ import eva2.optimization.enums.PSOTopologyEnum;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.F1Problem;
+import eva2.problems.F1Problem;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.ParticleSwarmOptimization;
 import eva2.tools.SelectedTag;
