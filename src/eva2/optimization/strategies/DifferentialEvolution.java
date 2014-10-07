@@ -47,7 +47,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private double differentialWeight = 0.8;
 
     @Parameter(name = "CR", description = "Crossover Rate")
-    private double crossoverRate = 0.6; // AKA CR
+    private double crossoverRate = 0.6;
 
     @Parameter(name = "Lambda", description = "Enhance greediness through amplification of the differential vector to the best individual for DE2.")
     private double lambda = 0.6;
@@ -74,11 +74,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         DEType = DETypeEnum.DE2_CurrentToBest;
     }
 
-    public DifferentialEvolution(int popSize, DETypeEnum type, double f, double k, double lambda, double mt) {
+    public DifferentialEvolution(int popSize, DETypeEnum type, double f, double cr, double lambda, double mt) {
         population = new Population(popSize);
         DEType = type;
         differentialWeight = f;
-        crossoverRate = k;
+        crossoverRate = cr;
         this.lambda = lambda;
         this.mt = mt;
     }
@@ -136,8 +136,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             this.evaluatePopulation(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
-//        if (reset) this.population.init();
-//        else children = new Population(population.size());
     }
 
     /**
@@ -570,7 +568,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                     ReplacementCrowding repl = new ReplacementCrowding();
                     repl.insertIndividual(indy, population, null);
                 } else {
-//					index   = RNG.randomInt(0, this.population.size()-1);
                     if (!compareToParent) {
                         parentIndex = RNG.randomInt(0, this.population.size() - 1);
                     }
@@ -984,7 +981,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     }
 
     /**
-     * @param maximumAge the maximumAge to set
      */
     public void setReEvaluate(boolean reEvaluate) {
         this.reEvaluate = reEvaluate;
