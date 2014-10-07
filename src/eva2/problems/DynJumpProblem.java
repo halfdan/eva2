@@ -1,4 +1,4 @@
-package eva2.optimization.problems;
+package eva2.problems;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.strategies.InterfaceOptimizer;
@@ -13,7 +13,7 @@ import java.io.Writer;
  * with the given frequency.
  */
 @Description("A real valued problem jumping dynamically.")
-public class DynJumpProblem extends AbstractDynTransProblem {
+public class DynJumpProblem extends eva2.problems.AbstractDynTransProblem {
 
     private static final long serialVersionUID = 2693154860448970283L;
 

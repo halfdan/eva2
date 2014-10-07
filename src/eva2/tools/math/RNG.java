@@ -4,7 +4,7 @@ import eva2.tools.EVAERROR;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * Random number generator used across all optimizations
@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class RNG {
 
-    private static Random random;
+    private static SecureRandom random;
     private static long randomSeed;
 
     /**
@@ -20,7 +20,8 @@ public class RNG {
      */
     static {
         randomSeed = System.currentTimeMillis();
-        random = new Random(randomSeed);
+        random = new SecureRandom();
+        random.setSeed(randomSeed);
     }
 
     /**
@@ -32,7 +33,8 @@ public class RNG {
         if (randomSeed == 0) {
             setRandomSeed();
         } else {
-            random = new Random(randomSeed);
+            random = new SecureRandom();
+            random.setSeed(randomSeed);
         }
     }
 
@@ -49,13 +51,14 @@ public class RNG {
      */
     public static void setRandomSeed() {
         randomSeed = System.currentTimeMillis();
-        random = new Random(randomSeed);
+        random = new SecureRandom();
+        random.setSeed(randomSeed);
     }
 
     /**
      *
      */
-    public static void setRandom(Random baseRandom) {
+    public static void setRandom(SecureRandom baseRandom) {
         random = baseRandom;
     }
 
@@ -138,7 +141,7 @@ public class RNG {
      * @param hi Upper bound.
      * @return int
      */
-    public static int randomInt(Random rand, int lo, int hi) {
+    public static int randomInt(SecureRandom rand, int lo, int hi) {
         if (hi < lo) {
             System.err.println("Invalid boundary values! Returning zero.");
             return -1;
@@ -193,7 +196,7 @@ public class RNG {
         return (hi - lo) * random.nextDouble() + lo;
     }
 
-    public static double randomDouble(Random rand, double lo, double hi) {
+    public static double randomDouble(SecureRandom rand, double lo, double hi) {
         return (hi - lo) * rand.nextDouble() + lo;
     }
 
@@ -234,13 +237,9 @@ public class RNG {
             result[i] = RNG.randomDouble(lower, upper);
         }
         return result;
-        //	    double[] xin = new double[size];
-        //	    for (int i=0;i<size;i++)
-        //	      xin[i] = (hi-lo)*random.nextDouble()+lo;
-        //	    return xin;
     }
 
-    public static double[] randomDoubleArray(Random rand, double lower, double upper, int size) {
+    public static double[] randomDoubleArray(SecureRandom rand, double lower, double upper, int size) {
         double[] result = new double[size];
         for (int i = 0; i < result.length; i++) {
             result[i] = RNG.randomDouble(rand, lower, upper);
@@ -276,7 +275,7 @@ public class RNG {
         return result;
     }
 
-    public static int[] randomIntArray(Random rand, int lower, int upper, int size) {
+    public static int[] randomIntArray(SecureRandom rand, int lower, int upper, int size) {
         int[] result = new int[size];
         for (int i = 0; i < result.length; i++) {
             result[i] = RNG.randomInt(rand, lower, upper);
