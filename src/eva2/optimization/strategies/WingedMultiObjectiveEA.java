@@ -7,9 +7,9 @@ import eva2.optimization.operator.moso.MOSOWeightedFitness;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.optimization.problems.FM0Problem;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.FM0Problem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 
 /**

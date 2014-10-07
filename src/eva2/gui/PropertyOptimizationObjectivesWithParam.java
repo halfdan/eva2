@@ -1,6 +1,6 @@
 package eva2.gui;
 
-import eva2.optimization.problems.InterfaceOptimizationObjective;
+import eva2.problems.InterfaceOptimizationObjective;
 
 /**
  *

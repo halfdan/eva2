@@ -5,7 +5,7 @@ import eva2.gui.PropertyFilePath;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.tools.FileTools;
 
 import java.util.ArrayList;

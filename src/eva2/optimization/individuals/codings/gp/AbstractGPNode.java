@@ -3,8 +3,8 @@ package eva2.optimization.individuals.codings.gp;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.problems.GPFunctionProblem;
-import eva2.optimization.problems.InterfaceProgramProblem;
+import eva2.problems.GPFunctionProblem;
+import eva2.problems.InterfaceProgramProblem;
 import eva2.tools.Pair;
 import eva2.tools.ReflectPackage;
 import eva2.tools.math.Mathematics;

@@ -3,7 +3,7 @@ package eva2.optimization.operator.initialization;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.optimization.individuals.InterfaceGIIndividual;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
 

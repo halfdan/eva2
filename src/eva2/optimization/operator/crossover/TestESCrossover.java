@@ -7,8 +7,8 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.F1Problem;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.F1Problem;
+import eva2.problems.InterfaceOptimizationProblem;
 
 import javax.swing.*;
 import java.awt.*;

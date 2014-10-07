@@ -3,7 +3,7 @@ package eva2.optimization.operator.mutation;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 
 /**
  * Created by IntelliJ IDEA.

@@ -14,8 +14,8 @@ import eva2.optimization.operator.mutation.MutateDefault;
 import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectXProbRouletteWheel;
 import eva2.optimization.population.Population;
-import eva2.optimization.problems.AbstractProblemDouble;
-import eva2.optimization.problems.AbstractProblemDoubleOffset;
+import eva2.problems.AbstractProblemDouble;
+import eva2.problems.AbstractProblemDoubleOffset;
 import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import org.apache.commons.cli.*;
@@ -172,7 +172,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
     public static Map<String, Class<? extends AbstractProblemDoubleOffset>> createProblemList() {
         Map<String, Class<? extends AbstractProblemDoubleOffset>> problemList = new TreeMap<String, Class<? extends AbstractProblemDoubleOffset>>();
-        Reflections reflections = new Reflections("eva2.optimization.problems");
+        Reflections reflections = new Reflections("eva2.problems");
         Set<Class<? extends AbstractProblemDoubleOffset>> problems = reflections.getSubTypesOf(AbstractProblemDoubleOffset.class);
         for (Class<? extends AbstractProblemDoubleOffset> problem : problems) {
             // We only want instantiable classes

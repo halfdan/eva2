@@ -5,7 +5,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.postprocess.PostProcessParams;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
-import eva2.optimization.problems.FM0Problem;
+import eva2.problems.FM0Problem;
 
 import java.util.List;
 

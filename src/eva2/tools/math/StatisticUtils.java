@@ -1,6 +1,6 @@
 package eva2.tools.math;
 
-import eva2.optimization.problems.AbstractProblemDouble;
+import eva2.problems.AbstractProblemDouble;
 import eva2.tools.math.Jama.Matrix;
 
 import java.util.ArrayList;

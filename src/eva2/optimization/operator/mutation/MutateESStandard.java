@@ -6,7 +6,7 @@ package eva2.optimization.operator.mutation;
 //import eva2.optimization.individuals.InterfaceDataTypeDouble;
 //import eva2.optimization.individuals.InterfaceESIndividual;
 //import eva2.optimization.populations.Population;
-//import eva2.optimization.problems.InterfaceOptimizationProblem;
+//import eva2.problems.InterfaceOptimizationProblem;
 //import eva2.tools.math.RNG;
 //
 ///**

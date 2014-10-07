@@ -5,7 +5,7 @@ import eva2.optimization.operator.crossover.CrossoverGAGINPoint;
 import eva2.optimization.operator.crossover.InterfaceCrossover;
 import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateGANBit;
-import eva2.optimization.problems.InterfaceOptimizationProblem;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 

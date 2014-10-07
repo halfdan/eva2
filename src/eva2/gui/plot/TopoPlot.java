@@ -1,7 +1,7 @@
 package eva2.gui.plot;
 
-import eva2.optimization.problems.Interface2DBorderProblem;
-import eva2.optimization.problems.InterfaceFirstOrderDerivableProblem;
+import eva2.problems.Interface2DBorderProblem;
+import eva2.problems.InterfaceFirstOrderDerivableProblem;
 import eva2.tools.chart2d.DRectangle;
 import eva2.tools.diagram.ColorBarCalculator;
 import eva2.tools.math.Mathematics;
