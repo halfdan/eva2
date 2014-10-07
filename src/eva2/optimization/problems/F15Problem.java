@@ -74,6 +74,6 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
 
     @Override
     public String getName() {
-        return "F15-Problem";
+        return "F15Problem";
     }
 }

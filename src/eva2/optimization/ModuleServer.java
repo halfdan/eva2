@@ -42,7 +42,7 @@ public class ModuleServer {
             /* Fetch the the super class for all modules */
             filterBy = Class.forName(EvAProps.getProperty("ModuleFilterClass"));
         } catch (Exception ex) {
-            System.err.println("Creating ModuleServer failed: couldnt load modules:" + ex.getMessage());
+            System.err.println("Creating ModuleServer failed: couldn't load modules:" + ex.getMessage());
             System.err.println("module path was " + modulePckg + ", is it valid?");
             System.err.println("filter class path was " + ((filterBy == null) ? "null" : filterBy.getName()));
         }
