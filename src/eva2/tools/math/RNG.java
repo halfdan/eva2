@@ -4,7 +4,7 @@ import eva2.tools.EVAERROR;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.security.SecureRandom;
+import java.util.Random;
 
 /**
  * Random number generator used across all optimizations
@@ -12,7 +12,7 @@ import java.security.SecureRandom;
  */
 public class RNG {
 
-    private static SecureRandom random;
+    private static Random random;
     private static long randomSeed;
 
     /**
@@ -20,7 +20,7 @@ public class RNG {
      */
     static {
         randomSeed = System.currentTimeMillis();
-        random = new SecureRandom();
+        random = new Random();
         random.setSeed(randomSeed);
     }
 
@@ -33,7 +33,7 @@ public class RNG {
         if (randomSeed == 0) {
             setRandomSeed();
         } else {
-            random = new SecureRandom();
+            random = new Random();
             random.setSeed(randomSeed);
         }
     }
@@ -51,14 +51,14 @@ public class RNG {
      */
     public static void setRandomSeed() {
         randomSeed = System.currentTimeMillis();
-        random = new SecureRandom();
+        random = new Random();
         random.setSeed(randomSeed);
     }
 
     /**
      *
      */
-    public static void setRandom(SecureRandom baseRandom) {
+    public static void setRandom(Random baseRandom) {
         random = baseRandom;
     }
 
@@ -141,7 +141,7 @@ public class RNG {
      * @param hi Upper bound.
      * @return int
      */
-    public static int randomInt(SecureRandom rand, int lo, int hi) {
+    public static int randomInt(Random rand, int lo, int hi) {
         if (hi < lo) {
             System.err.println("Invalid boundary values! Returning zero.");
             return -1;
@@ -196,7 +196,7 @@ public class RNG {
         return (hi - lo) * random.nextDouble() + lo;
     }
 
-    public static double randomDouble(SecureRandom rand, double lo, double hi) {
+    public static double randomDouble(Random rand, double lo, double hi) {
         return (hi - lo) * rand.nextDouble() + lo;
     }
 
@@ -239,7 +239,7 @@ public class RNG {
         return result;
     }
 
-    public static double[] randomDoubleArray(SecureRandom rand, double lower, double upper, int size) {
+    public static double[] randomDoubleArray(Random rand, double lower, double upper, int size) {
         double[] result = new double[size];
         for (int i = 0; i < result.length; i++) {
             result[i] = RNG.randomDouble(rand, lower, upper);
@@ -262,9 +262,9 @@ public class RNG {
      * Create a uniform random integer vector within the given bounds
      * (inclusive) in every dimension.
      *
-     * @param n
      * @param lower
      * @param upper
+     * @param size
      * @return
      */
     public static int[] randomIntArray(int lower, int upper, int size) {
@@ -275,7 +275,7 @@ public class RNG {
         return result;
     }
 
-    public static int[] randomIntArray(SecureRandom rand, int lower, int upper, int size) {
+    public static int[] randomIntArray(Random rand, int lower, int upper, int size) {
         int[] result = new int[size];
         for (int i = 0; i < result.length; i++) {
             result[i] = RNG.randomInt(rand, lower, upper);
@@ -448,7 +448,6 @@ public class RNG {
     /**
      * Create a normalized random vector with gaussian random double entries.
      *
-     * @param n
      * @return
      */
     public static double[] gaussianVector(double dev, double[] result,

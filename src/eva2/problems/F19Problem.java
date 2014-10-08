@@ -5,7 +5,7 @@ import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 
 import java.util.Arrays;
-import java.security.SecureRandom;
+import java.util.Random;
 
 /**
  * Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006,
@@ -40,7 +40,7 @@ public class F19Problem extends AbstractProblemDouble implements
     public void initializeProblem() {
         super.initializeProblem();
         // create static random data
-        SecureRandom rand = new SecureRandom();
+        Random rand = new Random();
         rand.setSeed(randSeed);
         alphas = RNG.randomDoubleArray(rand, -Math.PI, Math.PI, dim);
         A = RNG.randomIntArray(rand, -100, 100, dim * dim);
