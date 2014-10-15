@@ -155,25 +155,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         topology = topo;
     }
 
-    //	/**
-//	 * Constructor for most common parameters with constriction based approach and local search.
-//	 * 
-//	 * @param popSize swarm size
-//	 * @param p1 the value for phi1 
-//	 * @param p2 the value for phi1 
-//	 * @param topo type of the neighbourhood topology
-//	 * @param topoRange range of the neighbourhood topology
-//	 * @param lsEveryNGens interval of local search steps in generations
-//	 * @param stepsPerInd number of local search steps per individual
-//	 * @param candidateRatio ratio of population on which local search is performed
-//	 */
-//	public ParticleSwarmOptimization(int popSize, double p1, double p2, PSOTopologyEnum topo, int topoRange, int lsEveryNGens, int stepsPerInd, double candidateRatio) {
-//		this(popSize, p1, p2, topo, topoRange);
-//		setDoLocalSearch(true);
-//		localSearchGens=lsEveryNGens;
-//		lsStepsPerInd=stepsPerInd;
-//		lsCandidateRatio = candidateRatio;
-//	}
     @Override
     public Object clone() {
         return (Object) new ParticleSwarmOptimization(this);
@@ -539,9 +520,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         if (emaPeriods > 0) {
             traceEMA(population);
         }
-//		AbstractEAIndividual indy = population.getBestEAIndividual();
-        //System.out.println("best ind at " + indy.getStringRepresentation() + " , fit is " + indy.getFitness(0));
-        //try { Thread.sleep(10); } catch(Exception e) {}
     }
 
     public static void dumpPop(String prefix, Population pop) {
@@ -681,30 +659,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 this.plot.setConnectedPoint(curPosition[0], curPosition[1], index);
                 this.plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index);
             }
-
-//						plot = null;
-//						show();
-//						if (pop.getGeneration()%15 == 0) {
-//							this.plot.clearAll();
-//							plot.setUnconnectedPoint(-10, -10, 0);
-//							plot.setUnconnectedPoint(10, 10, 0);
-//						}
-
-//			if (index != 0) return;
-//			double[] bestPosition = (double[])bestIndividual.getData(partBestPosKey);
-//			double[] localBestPos = findNeighbourhoodOptimum(index, population);
-//			this.plot.setConnectedPoint(curPosition[0], curPosition[1], index+1);
-//			this.plot.setConnectedPoint(curPosition[0] + curVelocity[0], curPosition[1] + curVelocity[1], index+1);
-//			this.plot.setConnectedPoint(curPosition[0], curPosition[1], index+2);
-//			this.plot.setConnectedPoint(bestPosition[0], bestPosition[1], index+2);
-//			this.plot.setConnectedPoint(curPosition[0], curPosition[1], index+3);
-//			this.plot.setConnectedPoint(localBestPos[0], localBestPos[1], index+3);
-
-            //                this.plot.setConnectedPoint(curPosition[0], curPosition[1], index+1);
-            //                this.plot.setConnectedPoint(localBestPosition[0], localBestPosition[1], index+1);
-            //                this.plot.setConnectedPoint(curPosition[0], curPosition[1], index+1);
-            //                this.plot.setConnectedPoint(bestPosition[0], bestPosition[1], index+1);
-            //                this.plot.setUnconnectedPoint(curPosition[0], curPosition[1], 100*index+1);
         }
     }
 
@@ -720,7 +674,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             if (isIndividualToUpdate(indy)) {
                 updateIndProps(indy, indy);
                 indy.putData(lastSuccessKey, indy.getData(partVelKey));
-//				System.err.println("updated " + i + " - "+ getParticleInfo(indy));
             } else {
                 indy.putData(lastSuccessKey, null);
             }
@@ -733,9 +686,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param indy
      */
     protected void resetFitness(AbstractEAIndividual indy) {
-//		double[] fit = new double[1];
-//		fit[0] = 0;
-//		indy.SetFitness(fit);
         indy.resetFitness(0);
         indy.resetConstraintViolation();
     }
@@ -775,46 +725,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @return
      */
     protected double[] updateVelocity(int index, double[] lastVelocity, double[] personalBestPos, double[] curPosition, double[] neighbourBestPos, double[][] range) {
-//		for (int i = 0; i < lastVelocity.length; i++) {
-//			socCogn[i] = (personalBestPos[i]-curPosition[i]);
-//			neiDiff[i] = (neighbourBestPos[i]-curPosition[i]);
-//		}
-//		
-//		System.out.println("-- len bef " + vecLen(socCogn));
-//		rotateAllAxes(socCogn, .5, false);
-//		System.out.println("-- len aft " + vecLen(socCogn));
-//		rotateAllAxes(neiDiff, .5, false);
-//		// TODO!!!
-//		if (algType.getSelectedTag().getID()==1) chi=inertnessOrChi;
-//		else chi = 1.;
-//		
-//		double scaleCog = this.phi1*chi*RNG.randomDouble(0,1);
-//		double scaleNei = this.phi2*chi*RNG.randomDouble(0,1);
-//		
-//		
-//		for (int i=0; i<lastVelocity.length; i++) {
-//			curVelocity[i]  = this.inertnessOrChi * lastVelocity[i];
-//			curVelocity[i]  += scaleCog*socCogn[i];
-//			curVelocity[i]  += scaleNei*neiDiff[i];
-//		}
-
-//		for (int i = 0; i < lastVelocity.length; i++) {
-//			// the component from the old velocity
-//			curVelocity[i]  = this.inertnessOrChi * lastVelocity[i];
-//			if (algType.getSelectedTag().getID()==1) chi=inertnessOrChi;
-//			else chi = 1.;
-//			// the component from the cognition model
-//			//curVelocity[i]  += this.phi1*chi*RNG.randomDouble(0,1)*(personalBestPos[i]-curPosition[i]);
-//			double dir,diff;
-//			dir = (personalBestPos[i] < curPosition[i]) ? -1 : 1;
-//			diff = Math.abs((personalBestPos[i]-curPosition[i]));
-//			curVelocity[i]  += this.phi1*chi*.5*dir*Math.max(diff, .1);
-//			// the component from the social model
-//			//curVelocity[i]  += this.phi2*chi*RNG.randomDouble(0,1)*(neighbourBestPos[i]-curPosition[i]);
-//			dir = (neighbourBestPos[i]< curPosition[i]) ? -1 : 1;
-//			diff = Math.abs((neighbourBestPos[i]-curPosition[i]));
-//			curVelocity[i]  += this.phi2*chi*.5*dir*Math.max(diff, .1);
-//		}
         double[] accel, curVelocity = new double[lastVelocity.length];
 
         if (useAlternative) {
@@ -822,8 +732,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         } else {
             accel = getAcceleration(personalBestPos, neighbourBestPos, curPosition, range);
         }
-
-        //System.out.println("accel is " + getVecNorm(accel));
 
         for (int i = 0; i < lastVelocity.length; i++) {
             curVelocity[i] = this.inertnessOrChi * lastVelocity[i];
@@ -835,9 +743,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     protected double[] getAcceleration(double[] personalBestPos, double[] neighbourBestPos, double[] curPosition, double[][] range) {
         double[] accel = new double[curPosition.length];
         double chi;
-//		double r1, r2;
-//		r1=RNG.randomDouble(0,1);
-//		r2=RNG.randomDouble(0,1);
+
         for (int i = 0; i < personalBestPos.length; i++) {
             // the component from the old velocity
             accel[i] = 0;
@@ -857,7 +763,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     protected double[] getAccelerationAlternative(int index, double[] personalBestPos, double[] neighbourBestPos, double[] curPosition, double[][] range) {
         double[] accel = getAcceleration(personalBestPos, neighbourBestPos, curPosition, range);
         double[] successfulVel = getSuccessfulVel(index);
-//		double succW = 0.5;
         if (successfulVel != null) {
             Mathematics.vvAdd(accel, successfulVel, accel);
             Mathematics.svMult(0.5, accel, accel);
@@ -884,72 +789,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             }
         }
     }
-
-//	protected double[] getAccelerationAlternative(double[] personalBestPos, double[] neighbourBestPos, double[] curPosition, double[][] range) {
-//		double[] accel    = new double[curPosition.length];
-//		double chi;
-//
-//		if (algType.getSelectedTag().getID()==1) chi=inertnessOrChi;
-//		else chi = 1.;
-//
-//		boolean rotatedVect=false;
-//		if (rotatedVect) {
-//			Matrix cogVecB = new Matrix(curPosition.length, 1);
-//			Matrix socVecB = new Matrix(curPosition.length, 1);
-//			for (int i = 0; i < personalBestPos.length; i++) {
-//				cogVecB.set(i, 0, (personalBestPos[i]-curPosition[i]));
-//				socVecB.set(i, 0, (neighbourBestPos[i]-curPosition[i]));
-//			}
-//			Matrix cogRandB = getOrientedGaussianRandomVectorB(cogVecB, 5);
-//			Matrix socRandB = getOrientedGaussianRandomVectorB(socVecB, 5);
-//
-//			for (int i = 0; i < curPosition.length; i++) {
-//				// the component from the cognition model
-//				//			accel[i]  = this.phi1*chi*/*RNG.randomDouble(0,1)**/cogRand.getElement(i);
-//				accel[i]  = this.phi1*chi*/*RNG.randomDouble(0,1)**/cogRandB.get(i,0);
-//				// the component from the social model
-//				//			accel[i]  += this.phi2*chi*/*RNG.randomDouble(0,1)**/socRand.getElement(i);
-//				accel[i]  += this.phi2*chi*/*RNG.randomDouble(0,1)**/socRandB.get(i,0);
-//			}
-//			return accel;
-//		} else {
-//			double sPB = RNG.randomDouble();
-//			double sNB = 1.-sPB;
-//			double[] mean= personalBestPos.clone();
-//			Mathematics.svMult(sPB, mean);
-//			Mathematics.svvAddScaled(sNB, neighbourBestPos, mean, mean); // middle position
-//			double stddev = chi*EuclideanMetric.euclideanDistance(personalBestPos, neighbourBestPos)/3.; // std.dev is one third of the distance
-//			double[] gausRnd = getGaussianVector(mean, stddev);
-//			for (int i=0; i<accel.length; i++) {
-//				accel[i] = (gausRnd[i] - curPosition[i]); 
-//			}
-//			return accel;
-//		}
-//	}
-//	public static void main(String[] args) {
-//		ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
-//		GVector tmp, vec = new GVector(5);
-//		GVector vecSum = new GVector(5);
-//		vec.setElement(1,3);
-//		vec.setElement(2,3);
-//		
-//		int max=10000;
-//		for (int i=0; i<max; i++) {
-//			tmp = pso.getOrientedGaussianRandomVector(vec, 5.);
-//			System.out.print(tmp.toString());
-//			System.out.println(" " + tmp.norm());
-//			//vecSum.add(tmp);
-//		}
-//		
-//		for (int i=0; i<max; i++) {
-//			tmp = pso.getOrientedGaussianRandomVector(vec, 5.);
-//			System.out.print(tmp.toString());
-//			System.out.println(" " + tmp.norm());
-//			//vecSum.add(tmp);
-//		}
-//		//vecSum.normalize();
-//		//System.out.println(vec.toString() + " -> " + vecSum.toString());
-//	}
 
     /**
      * Return a random vector after a gaussian distribution oriented along dir,
@@ -1620,26 +1459,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         return links;
     }
 
-//	/**
-//	 * Randomly assign groups of size groupSize.
-//	 * 
-//	 * @param links
-//	 * @param groupSize
-//	 */
-//	private int[] regroupSwarm(Population pop, int groupSize) {
-//		int groupIndex, numGroups = pop.size() / groupSize; // truncated integer: last group is larger
-////		int hangover = pop.size()-(numGroups*groupSize); // Ueberhangmandate ... woanders zuteilen um einergruppen zu vermeiden
-//		
-//		int[] perm = RNG.randomPerm(pop.size());
-//		
-//		for (int k=0; k<perm.length; k++) {
-//			groupIndex=k/groupSize;
-//			if (groupIndex>=numGroups) groupIndex--; 
-//			pop.getEAIndividual(perm[k]).putData(dmsGroupIndexKey, groupIndex);
-//		}
-//		return perm;
-//	}
-
     /**
      * This method is simply for debugging.
      */
@@ -2083,13 +1902,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         return "if activated, the speed limit is enforced for the particles";
     }
 
-//	public int getEMAPeriods() {
-//	return emaPeriods;
-//	}
-//	public void setEMAPeriods(int emaP) {
-//	this.emaPeriods = emaP;
-//	}
-
     /**
      * @return the sleepTime
      */
@@ -2140,14 +1952,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         this.treeStruct = treeStruct;
     }
 
-    // This was for testing rotation operators
-//	public boolean isUseAlternative() {
-//		return useAlternative;
-//	}
-//
-//	public void setUseAlternative(boolean useAlternative) {
-//		this.useAlternative = useAlternative;
-//	}
     public boolean isWrapTopology() {
         return wrapTopology;
     }
@@ -2239,13 +2043,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         return "The number of generations after which new subswarms are randomly formed.";
     }
 
-    //	public boolean isDoLocalSearch() {
-//		return doLocalSearch;
-//	}
-//
-//	public void setDoLocalSearch(boolean doLocalSearch) {
-//		this.doLocalSearch = doLocalSearch;
-//	}
     @Override
     public String[] getAdditionalDataHeader() {
         if (emaPeriods > 0) {

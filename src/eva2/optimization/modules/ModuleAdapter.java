@@ -1,15 +1,4 @@
 package eva2.optimization.modules;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 272 $
- *            $Date: 2007-11-21 18:06:36 +0100 (Wed, 21 Nov 2007) $
- *            $Author: mkron $
- */
-
 import eva2.gui.EvATabbedFrameMaker;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.stat.OptimizationJob;
