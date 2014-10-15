@@ -6,13 +6,14 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyEditor;
+import java.util.logging.Logger;
 
 /**
  * A text property editor view. Updates the editor on key release and lost focus
  * events.
  */
 public class PropertyText extends JTextField {
-
+    private Logger LOGGER = Logger.getLogger(PropertyText.class.getName());
     private PropertyEditor propertyEditor;
 
     /**
@@ -47,10 +48,9 @@ public class PropertyText extends JTextField {
             String x = getText();
             if (!propertyEditor.getAsText().equals(x)) {
                 propertyEditor.setAsText(x);
-//				setText(editor.getAsText());
             }
         } catch (IllegalArgumentException ex) {
-//			System.err.println("Warning: Couldnt set value (PropertyText)");
+            LOGGER.finer(ex.getMessage());
         }
     }
 
