@@ -1021,10 +1021,12 @@ class PropertyTableModel extends DefaultTableModel implements TableModel {
 }
 
 class PropertyCellRenderer implements TableCellRenderer {
+    private Logger LOGGER = Logger.getLogger(PropertyCellRenderer.class.getName());
     JLabel empty = new JLabel();
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        LOGGER.log(Level.FINEST, "Cell Component: " + value.getClass());
         if (value == null) {
             return empty;
         } else if (value instanceof String) {
@@ -1047,11 +1049,13 @@ class PropertyCellRenderer implements TableCellRenderer {
 }
 
 class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
+    private Logger LOGGER = Logger.getLogger(PropertyCellEditor.class.getName());
     private JLabel empty = new JLabel();
     private Object value;
 
     @Override
     public JComponent getTableCellEditorComponent(JTable table, final Object value, boolean isSelected, int row, int column) {
+        LOGGER.log(Level.FINEST, "Editor Component: " + value.getClass());
         this.value = value;
         JComponent component;
         if (value == null) {
