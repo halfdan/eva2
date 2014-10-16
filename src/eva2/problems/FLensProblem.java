@@ -53,8 +53,6 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         int mag = 10;
         int centerLens, centerScreen, segment;
 
-//        lineStroke  = ds;
-//        pointStroke = new BasicStroke(ds.getLineWidth(), ds.getEndCap(), ds.getLineJoin(), ds.getMiterLimit() , new float[] {1, 4}, 0);
         dashStroke = new BasicStroke(ds.getLineWidth(), ds.getEndCap(), ds.getLineJoin(), ds.getMiterLimit(), new float[]{8, 8}, 0);
 
         super.paint(g);
@@ -85,7 +83,6 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         g2D.drawLine(centerLens, this.theHeight / 2 + (int) this.lensProblem.radius * 10, centerLens, this.theHeight / 2 - (int) this.lensProblem.radius * 10);
         g2D.drawLine(centerScreen, this.theHeight / 2 + (int) this.lensProblem.radius * 10 + 10, centerScreen, this.theHeight / 2 - (int) this.lensProblem.radius * 10 - 10);
         g2D.setStroke(ds);
-//        System.out.println("indies to paint: " + indiesToPaint.size());
         paintLens(lensProblem.problemDimension, theHeight, lensProblem.radius, mag, centerLens, centerScreen, segment, g2D);
         // Now put everything on the screen
         g.drawImage(bufferedImage, 0, 0, this);
@@ -127,12 +124,6 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
             g2D.drawLine(centerLens, currentXPos + segment / 2, centerScreen, height / 2 + (int) (dots[i - 1] * mag));
 
             currentXPos += segment;
-//            tmpShape = new Rectangle(currentPos-width/2, this.theHeight/2, width, (int)(variables[i]*10));
-//            g2D.setPaint(Color.red);
-//            g2D.fill(tmpShape);
-//            g2D.setPaint(Color.black);
-//            g2D.draw(tmpShape);
-//            g2D.drawLine(currentPos, this.theHeight/2+5, currentPos, this.theHeight/2-5);
         }
     }
 
@@ -144,7 +135,6 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
     @Override
     public void updateView(Population pop, boolean showAllIfPossible) {
         if (showAllIfPossible) {
-//			indiesToPaint=population;
             for (int i = 0; i < pop.size(); i++) {
                 MyLensViewer newView = new MyLensViewer(lensProblem);
 
@@ -157,7 +147,6 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
                 newFrame.pack();
                 newFrame.setVisible(true);
             }
-//			this.paint(this.getGraphics());
         } else {
             InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) pop.getBestIndividual();
             if (indiesToPaint.size() == 0 || ((AbstractEAIndividual) best).isDominant(indiesToPaint.getBestIndividual())) {
@@ -190,7 +179,6 @@ public class FLensProblem extends AbstractOptimizationProblem
     protected double xOffset = 0.0;
     protected double yOffset = 0.0;
     transient protected boolean show = false;
-    //protected int						sleepTime			= 0;
 
     transient private JFrame problemFrame;
     transient private MyLensViewer lensViewerPanel;

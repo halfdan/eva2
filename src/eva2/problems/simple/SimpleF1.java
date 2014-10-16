@@ -7,7 +7,7 @@ public class SimpleF1 extends SimpleProblemDouble {
     }
 
     @Override
-    public double[] eval(double[] x) {
+    public double[] evaluate(double[] x) {
         double res[] = new double[1];
         // this defines the dimension of the fitness vector, which should be always the same
 

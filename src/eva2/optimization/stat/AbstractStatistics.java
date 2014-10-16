@@ -1002,7 +1002,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
         if (firstPlot) {
             initPlots(null, null);
-//			if (doTextOutput()) printToTextListener(getOutputHeader(null, null)+'\n');
             firstPlot = false;
         }
         if ((iterationCounter == 0) && printHeaderByVerbosity()) {
