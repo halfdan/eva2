@@ -551,8 +551,8 @@ public class Main extends JFrame implements OptimizationStateListener {
         } else {
             /* Set Look and Feel */
             try {
-                //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
             } catch (Exception ex) {
                 LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
             }
@@ -560,11 +560,10 @@ public class Main extends JFrame implements OptimizationStateListener {
 
         /* Available command-line parameters */
         String[] keys = new String[]{
-                "--help", "--autorun", "--nosplash", "--nogui",
-                "--remotehost", "--params", "--treeView"
+                "--help", "--autorun", "--nosplash", "--nogui", "--params", "--treeView"
         };
         /* Number of arguments per parameter */
-        int[] arities = new int[]{0, 0, 0, 0, 1, 1, 0};
+        int[] arities = new int[]{0, 0, 0, 0, 1, 0};
         Object[] values = new Object[keys.length];
 
         Integer[] unknownArgs = StringTools.parseArguments(args, keys, arities, values, true);
@@ -590,8 +589,8 @@ public class Main extends JFrame implements OptimizationStateListener {
             boolean autorun = (values[1] != null);
             boolean nosplash = (values[2] != null);
             boolean nogui = (values[3] != null);
-            boolean treeView = (values[6] != null);
-            String paramsFile = StringTools.checkSingleStringArg(keys[5], values[5], arities[5] - 1);
+            boolean treeView = (values[5] != null);
+            String paramsFile = StringTools.checkSingleStringArg(keys[4], values[4], arities[4] - 1);
 
             new Main("", paramsFile, autorun, nosplash, nogui, treeView);
         }
@@ -626,7 +625,6 @@ public class Main extends JFrame implements OptimizationStateListener {
         // GUI update due to the changes made through the API
         evaClient.refreshMainPanels();
 
-
         return evaClient;
     }
 
@@ -655,7 +653,6 @@ public class Main extends JFrame implements OptimizationStateListener {
         sbuf.append("	--nogui: Deactivate GUI (makes most sense with autorun and params set)\n");
         sbuf.append("	--autorun: Start an optimization immediately and exit after execution\n");
         sbuf.append("	--params PARAMFILE: Load the (serialized) parameters file on start\n");
-        sbuf.append("	--remotehost HOSTNAME: Try to load a module from a (remote) server\n");
 
         return sbuf.toString();
     }
@@ -743,7 +740,6 @@ public class Main extends JFrame implements OptimizationStateListener {
 
         JExtMenu menuOptions = new JExtMenu("&Options");
         menuOptions.add(actPreferences);
-        //menuOptions.add(menuSelHosts);
         menuOptions.addSeparator();
         menuOptions.add(actQuit);
 
@@ -753,7 +749,7 @@ public class Main extends JFrame implements OptimizationStateListener {
     }
 
     /**
-     * Retrieve the GOParamters of a loaded module. Return null if no module is
+     * Retrieve the optimization parameters of a loaded module. Return null if no module is
      * loaded.
      *
      * @return

@@ -3,7 +3,6 @@ package eva2.optimization.modules;
 
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.go.InterfaceProcessor;
 
 import java.io.Serializable;
 import java.util.ArrayList;

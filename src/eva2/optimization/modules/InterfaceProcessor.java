@@ -1,4 +1,4 @@
-package eva2.optimization.go;
+package eva2.optimization.modules;
 
 import eva2.optimization.OptimizationStateListener;
 
