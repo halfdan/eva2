@@ -162,7 +162,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         if (log) {
             initLogFile();
         }
-        initMainSwarm(); // not really necessary if init is called before optimization but this way init doesnt change the parameters of a newly constructed object
+        initMainSwarm(); // not really necessary if initialize is called before optimization but this way initialize doesnt change the parameters of a newly constructed object
         initSubswarmOptimizerTemplate();
 
         hideHideable();
@@ -234,11 +234,11 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     /**
      * @tested ps sets the mainswarm according to the NichePSO Parameters,
-     * called via init()
+     * called via initialize()
      */
     protected void initMainSwarm() {
         // pass NichePSO parameter on to the mainswarmoptimzer
-        setMainSwarmSize(mainSwarmSize); // (particles are initialized later via init)
+        setMainSwarmSize(mainSwarmSize); // (particles are initialized later via initialize)
         getMainSwarm().setProblem(optimizationProblem);
         getMainSwarm().SetMaxAllowedSwarmRadius(maxAllowedSwarmRadius);
         getMainSwarm().getPopulation().setGeneration(0);
@@ -262,11 +262,11 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 
     /**
      * @tested inits the template used for creating subswarms this is only
-     * called in the ctor not via init() (would overwrite changes set from
+     * called in the ctor not via initialize() (would overwrite changes set from
      * outside for the next run)
      */
     protected void initSubswarmOptimizerTemplate() {
-        // pass on the parameters set via NichePSO (done in the analogous nichePSO-Setters as well -> no init() necessary)
+        // pass on the parameters set via NichePSO (done in the analogous nichePSO-Setters as well -> no initialize() necessary)
         getSubswarmOptimizerTemplate().setProblem(optimizationProblem);
         getSubswarmOptimizerTemplate().SetMaxAllowedSwarmRadius(maxAllowedSwarmRadius);
 
@@ -300,24 +300,24 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 
     /**
      * @tested junit, junit&, emp, ... (non-Javadoc)
-     * @see eva2.optimization.strategies.InterfaceOptimizer#init()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#initialize()
      */
     @Override
-    public void init() { // (called right before next optimize/mutltirun)
+    public void initialize() { // (called right before next optimize/mutltirun)
         // initialize main swarm
         initMainSwarm(); // MOE: auch bei multirun: m�gliche �nderungen an Gr��e, AlgoType, maxrad, delta etc. aus letzter Optimierung zur�cksetzen
-        // mainSwarm.init():
+        // mainSwarm.initialize():
         // - place all indys rndly in search space (depends on: mainSwarmSize, problem)
-        // - use rnd init velocity vector 
+        // - use rnd initialize velocity vector
         // - evaluate (depends on: problem)
-        // - init fit-archive,stddev, pbest, PBestImprovementsInARow
+        // - initialize fit-archive,stddev, pbest, PBestImprovementsInARow
         // - update mbestindividual, maxposdist
         // - set particleIndexCounter
-        getMainSwarm().init();
+        getMainSwarm().initialize();
 
         // initialize subswarms
         //initSubswarmOptimizerTemplate(); //only in ctor, would change parameters for the next multirun 
-        //subwarmOptimizerTemplate.init(); // dont init and evaluate individuals ! 
+        //subwarmOptimizerTemplate.initialize(); // dont initialize and evaluate individuals !
         SetSubSwarms(new Vector<ParticleSubSwarmOptimization>()); // dont want to use subswarms from old optimization run (especially not in multiruns)...
         indicesToReinit = null;
         // show in plot
@@ -332,13 +332,13 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * velocity vectors (if reset == false)
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
-        // initByPopulation(...):
+    public void initializeByPopulation(Population pop, boolean reset) {
+        // initializeByPopulation(...):
         // - use indys from pop 
-        // - use rnd init velocity vector 
+        // - use rnd initialize velocity vector
         // - evaluate (depends on: problem)
-        // - init fit-archive,stddev and pbest
-        getMainSwarm().initByPopulation(pop, reset);
+        // - initialize fit-archive,stddev and pbest
+        getMainSwarm().initializeByPopulation(pop, reset);
 
         initSubswarmOptimizerTemplate();
     }

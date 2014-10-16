@@ -99,7 +99,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 //		NichePSO.stdNPSO((ANPSO)this, (AbstractOptimizationProblem)this.problem, 0, 1000);
 
         /////////// from NichePSO
-//		super.initMainSwarm(); // not really necessary if init is called before optimization but this way init doesnt change the parameters of a newly constructed object
+//		super.initMainSwarm(); // not really necessary if initialize is called before optimization but this way initialize doesnt change the parameters of a newly constructed object
 //		super.initSubswarmOptimizerTemplate();
 //		setMergingStrategy(new StandardMergingStrategy(0.001));
 //		setAbsorptionStrategy(new StandardAbsorptionStrategy());
@@ -209,8 +209,8 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      * inits
      */
     @Override
-    public void init() { //  MOE: wird vor Optimierung / n�chstem multirun 1x aufgerufen
-        super.init();
+    public void initialize() { //  MOE: wird vor Optimierung / n�chstem multirun 1x aufgerufen
+        super.initialize();
         initMainSwarm();
         initSTo(0);
         initNicheGraph();
@@ -355,7 +355,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      * for at least two consecutive generations.
      */
     public void updateSMatrixAndNicheGraph() {
-        // init the niche graph (all particles as vertices, no edges):
+        // initialize the niche graph (all particles as vertices, no edges):
         initNicheGraph();
 
         // compute population statistic for parameter r:

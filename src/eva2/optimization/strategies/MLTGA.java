@@ -115,7 +115,7 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         defaultInit();
         this.problem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
@@ -146,9 +146,9 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         if (reset) {
-            init();
+            initialize();
         } else {
             defaultInit();
             this.population = pop;
@@ -356,7 +356,7 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
 
     public static void main(String[] args) {
         MLTGA ltga = new MLTGA();
-        ltga.init();
+        ltga.initialize();
         ltga.optimize();
         System.out.println(ltga.popSize);
         Population p = ltga.getPopulation();

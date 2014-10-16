@@ -55,7 +55,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
         tmpPop = null;
 //        this.calculateCrowdingDistance(fronts);
 
-        // Now init the new archive
+        // Now initialize the new archive
         Population archive = new Population();
         archive.setTargetSize(pop.getArchive().getTargetSize());
 

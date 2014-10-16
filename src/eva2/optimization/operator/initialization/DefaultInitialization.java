@@ -4,7 +4,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.problems.InterfaceOptimizationProblem;
 
 /**
- * A dummy initialization method which only calls the default init method of the individual.
+ * A dummy initialization method which only calls the default initialize method of the individual.
  *
  * @author mkron
  */

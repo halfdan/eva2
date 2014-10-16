@@ -184,7 +184,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     public abstract void evaluate(AbstractEAIndividual individual);
 
     /**
-     * The default initialization method. Clone the given template individual, calls its init method
+     * The default initialization method. Clone the given template individual, calls its initialize method
      * and add it to the population until the target size is reached. Earlier individuals are removed.
      *
      * @param population
@@ -200,7 +200,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
             tmpIndy.init(prob);
             population.add(tmpIndy);
         }
-        // population init must be last
+        // population initialize must be last
         // it set's fitcalls and generation to zero
         population.init();
     }

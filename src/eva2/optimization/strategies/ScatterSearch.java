@@ -118,13 +118,13 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         defaultInit();
         initRefSet(diversify());
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         defaultInit();
 
         initRefSet(diversify(pop));
@@ -907,7 +907,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         pop.setTargetSize(refSetSize);
         pop.init();
         problem.initializePopulation(pop);
-        ss.initByPopulation(pop, true);
+        ss.initializeByPopulation(pop, true);
 
         return OptimizerFactory.makeParams(ss, pop, problem, 0, term);
     }

@@ -132,7 +132,7 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
         ESIndividualDoubleData indy1, indy2, indy3;
         F1Problem prob = new F1Problem();
 
-        // init individual
+        // initialize individual
         indy1 = new ESIndividualDoubleData();
         double[][] range = new double[2][2];
         range[0][0] = -2.0;
@@ -141,16 +141,16 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
         range[1][1] = 2.0;
         indy1.setDoubleDataLength(2);
         indy1.setDoubleRange(range);
-        // init values
+        // initialize values
         indy2 = (ESIndividualDoubleData) indy1.clone();
         indy3 = (ESIndividualDoubleData) indy1.clone();
         if (false) {
-            // random init
+            // random initialize
             indy1.defaultInit(prob);
             indy2.defaultInit(prob);
             indy3.defaultInit(prob);
         } else {
-            // value init
+            // value initialize
             tmpD[0] = 0.5;
             tmpD[1] = -0.5;
             indy1.initByValue(tmpD, prob);

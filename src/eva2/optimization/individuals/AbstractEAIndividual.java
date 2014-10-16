@@ -76,7 +76,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public abstract Object clone();
 
     /**
-     * Set the init/mutation/crossover operator and probabilities to the given
+     * Set the initialize/mutation/crossover operator and probabilities to the given
      * values.
      *
      * @param initOp
@@ -107,7 +107,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
     /**
-     * Clone and init the mutation/crossover operator for the individual and
+     * Clone and initialize the mutation/crossover operator for the individual and
      * initialize the operators and probabilities to the given values.
      *
      * @param mutOp
@@ -313,7 +313,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
     /**
-     * This method will init the individual with a given value for the
+     * This method will initialize the individual with a given value for the
      * phenotype.
      *
      * @param obj The initial value for the phenotype

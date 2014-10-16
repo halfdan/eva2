@@ -57,14 +57,14 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     private static final String oldParamsKey = "gdaOldParamsDataKey";
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         this.setPopulation((Population) pop.clone());
         if (reset) {
             this.getPopulation().init();
             this.optimizationProblem.evaluate(this.getPopulation());
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
-        //System.out.println("initByPopulation() called");
+        //System.out.println("initializeByPopulation() called");
 //    indyhash = new Hashtable();
     }
 
@@ -105,8 +105,8 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     }
 
     @Override
-    public void init() {
-        //System.out.println("init() called ");
+    public void initialize() {
+        //System.out.println("initialize() called ");
 //    indyhash = new Hashtable();
         this.optimizationProblem.initializePopulation(this.population);
         this.optimizationProblem.evaluate(this.population);
@@ -120,7 +120,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     public void optimize() {
         //  System.out.println("opt. called");
         AbstractEAIndividual indy;
-//      if ((this.indyhash == null) || (this.indyhash.size() <1)) init();
+//      if ((this.indyhash == null) || (this.indyhash.size() <1)) initialize();
 
         for (int i = 0; i < this.population.size(); i++) {
             indy = ((AbstractEAIndividual) this.population.get(i));
@@ -388,7 +388,7 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
         GradientDescentAlgorithm program = new GradientDescentAlgorithm();
         InterfaceOptimizationProblem problem = new F1Problem();
         program.setProblem(problem);
-        program.init();
+        program.initialize();
         for (int i = 0; i < 100; i++) {
             program.optimize();
             System.out.println(program.getPopulation().getBestFitness()[0]);

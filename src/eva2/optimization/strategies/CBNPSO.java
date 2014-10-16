@@ -134,8 +134,8 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
     }
 
     @Override
-    public void init() {
-        super.init();
+    public void initialize() {
+        super.initialize();
         if (getProblem() instanceof InterfaceProblemDouble) {
             if (isForceUpperClustDist()) {
                 setUpperBoundClustDiff((InterfaceProblemDouble) getProblem());

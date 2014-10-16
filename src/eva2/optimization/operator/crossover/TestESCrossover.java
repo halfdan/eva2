@@ -44,7 +44,7 @@ public class TestESCrossover implements java.io.Serializable {
 
 
     private void initFrame() {
-        // init the main frame
+        // initialize the main frame
         this.frame = new JFrame();
         this.frame.setTitle("ES Crossover Tester");
         this.frame.setSize(300, 400);

@@ -60,7 +60,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         this.optimizationProblem.initializePopulation(this.population);
         if ((initialProbabilities != null) && (initialProbabilities.length == ((PBILPopulation) population).getProbabilityVector().length)) {
             ((PBILPopulation) population).setProbabilityVector(initialProbabilities);
@@ -74,13 +74,13 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     }
 
     /**
-     * This method will init the optimizer with a given population
+     * This method will initialize the optimizer with a given population
      *
      * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         if (!(pop.getEAIndividual(0) instanceof InterfaceGAIndividual)) {
             System.err.println("Error: PBIL only works with GAIndividuals!");
         }

@@ -154,7 +154,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     }
 
     @Override
-    public void init() {
+    public void initialize() {
 //    	setMu(initialMu);
         if (getMu() > initialLambda) {
             System.err.println("mu is " + getMu() + ", initial lambda was " + initialLambda);
@@ -165,7 +165,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
         checkPopulationConstraints();
         setForceOrigPopSize(false);
         getPopulation().setNotifyEvalInterval(Math.max(initialLambda, 100));
-        super.init();
+        super.initialize();
         bestList = new LinkedList<AbstractEAIndividual>();
         best = getPopulation().getBestEAIndividual();
         dim = AbstractEAIndividual.getDoublePositionShallow(getPopulation().getEAIndividual(0)).length;
@@ -284,7 +284,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
      */
     public void setInitialLambda(int l) {
         initialLambda = l;
-//		if (initialLambda < getMu()) setMu((initialLambda/2)+1); // do this on init
+//		if (initialLambda < getMu()) setMu((initialLambda/2)+1); // do this on initialize
     }
 
     public int getInitialLambda() {

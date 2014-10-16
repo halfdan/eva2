@@ -226,7 +226,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         int n = 2;
 
         //RNG.setseed(1);
-        // init individual
+        // initialize individual
         indy1 = new ESIndividualDoubleData();
         double[][] range = new double[n][2];
         for (int i = 0; i < range.length; i++) {
@@ -235,18 +235,18 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         }
         indy1.setDoubleDataLength(n);
         indy1.setDoubleRange(range);
-        // init values
+        // initialize values
         indy2 = (ESIndividualDoubleData) indy1.clone();
         indy3 = (ESIndividualDoubleData) indy1.clone();
         indy4 = (ESIndividualDoubleData) indy1.clone();
         if (false) {
-            // random init
+            // random initialize
             indy1.defaultInit(prob);
             indy2.defaultInit(prob);
             indy3.defaultInit(prob);
             indy4.defaultInit(prob);
         } else {
-            // value init
+            // value initialize
             tmpD[0] = 0;
             tmpD[1] = 1;
             indy1.initByValue(tmpD, prob);

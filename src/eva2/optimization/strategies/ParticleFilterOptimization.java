@@ -86,7 +86,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         //System.out.println("popsize is   " + population.size());
         //System.out.println("pops targ is " + population.getPopulationSize());
 
@@ -105,13 +105,13 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     }
 
     /**
-     * This method will init the optimizer with a given population
+     * This method will initialize the optimizer with a given population
      *
      * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         this.population = (Population) pop.clone();
         if (reset) {
             this.population.init();

@@ -163,7 +163,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
      */
 
     protected int initExplorerNb = 3; // Number of explorers at the very beginning
-    // use full range (0) or subspace (1) for init options 0 and 1
+    // use full range (0) or subspace (1) for initialize options 0 and 1
     protected int rangeInitType = 1;
     private boolean show = false;
     transient protected Plot plot = null;
@@ -211,14 +211,14 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     }
 
     @Override
-    public void init() {
-//		System.out.println("TRIBES.init()");
+    public void initialize() {
+//		System.out.println("TRIBES.initialize()");
         // Generate a swarm
         swarm = new TribesSwarm(this, range, initRange); // TODO initRange is hard coded equal to problem range
         //swarm.generateSwarm(initExplorerNb, initType, optimizationProblem);
 
         //   swarm.displaySwarm(swarm,out);
-        //  print("\n Best after init: "+swarm.Best.position.fitness,out);
+        //  print("\n Best after initialize: "+swarm.Best.position.fitness,out);
 
         iter = 0;
         adapt = 0;
@@ -245,7 +245,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
      * the individuals will be discarded.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         setPopulation(pop);
     }
 
@@ -442,7 +442,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
      * swarm(); evalF=swarm.generateSwarm(pb, initExplorerNb, pb.initType,
      * displayPb,evalF);
      *
-     * // swarm.displaySwarm(swarm,out); // print("\n Best after init:
+     * // swarm.displaySwarm(swarm,out); // print("\n Best after initialize:
      * "+swarm.Best.position.fitness,out);
      *
      * // Move the swarm as long as the stop criterion is false iter = 0; adapt
@@ -557,13 +557,13 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
             range = ((InterfaceDataTypeDouble) population.get(0)).getDoubleRange();
             setDimension(range.length);
         } else {
-            System.err.println("warning, TRIBES requires InterfaceESIndidivual instead of " + population.get(0).getClass() + ". Couldnt correctly init the problem range.");
+            System.err.println("warning, TRIBES requires InterfaceESIndidivual instead of " + population.get(0).getClass() + ". Couldnt correctly initialize the problem range.");
         }
     }
 
     private void setDimension(int length) {
         problemDim = length;
-        init();
+        initialize();
     }
 
     public int getProblemDim() {

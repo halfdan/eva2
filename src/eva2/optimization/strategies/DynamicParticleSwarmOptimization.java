@@ -332,14 +332,14 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     }
 
     /**
-     * This method will init the optimizer with a given population
+     * This method will initialize the optimizer with a given population
      *
      * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
-        super.initByPopulation(pop, reset);
+    public void initializeByPopulation(Population pop, boolean reset) {
+        super.initializeByPopulation(pop, reset);
         double quantumCount = 0.;
         // do what the usual function does plus announce quantum particles
         if (quantumRatio > 0.) {
@@ -464,8 +464,8 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     }
 
     @Override
-    public void init() {
-        super.init();
+    public void initialize() {
+        super.initialize();
         setEmaPeriods(15);
         if (doSpeedAdaptation) {
             setSpeedLimit(2 * getInitialVelocity());

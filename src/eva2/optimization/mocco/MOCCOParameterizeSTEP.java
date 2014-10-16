@@ -39,7 +39,7 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
     }
 
     /**
-     * This method will call the init method and will go to stall
+     * This method will call the initialize method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {

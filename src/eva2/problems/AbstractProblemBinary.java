@@ -70,7 +70,7 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 //	 * @param indy
 //	 */
 //    protected void initIndy(int k, AbstractEAIndividual indy) {
-//    	indy.init(this);
+//    	indy.initialize(this);
 //    }
 
     @Override

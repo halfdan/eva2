@@ -252,12 +252,12 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     }
 
     @Override
-    public void init() {
-        initByPopulation(population, true);
+    public void initialize() {
+        initializeByPopulation(population, true);
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         setPopulation(pop);
         pop.addPopulationChangedEventListener(this);
         if (reset) {
@@ -375,7 +375,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
         if (listener != null) {
             nms.addPopulationChangedEventListener(listener);
         }
-        nms.init();
+        nms.initialize();
 
         if (listener != null) {
             listener.registerPopulationStateChanged(nms.getPopulation(), "");
@@ -421,7 +421,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
         if (listener != null) {
             nms.addPopulationChangedEventListener(listener);
         }
-        nms.initByPopulation(initialPop, false);
+        nms.initializeByPopulation(initialPop, false);
         //nms.setPopulation(initialPop);
 
         return nms;

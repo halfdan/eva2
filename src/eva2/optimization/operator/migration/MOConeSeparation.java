@@ -643,7 +643,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
 //        for (int i = 0; i < islands.length; i++) {
 //            islands[i] = new MultiObjectiveEA();
 //            islands[i].SetProblem(problem);
-//            islands[i].init();
+//            islands[i].initialize();
 //        }
 //
 //        for (int i = 0; i < 20; i++) {

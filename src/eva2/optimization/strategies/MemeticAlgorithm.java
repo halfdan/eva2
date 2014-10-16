@@ -64,7 +64,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         this.setPopulation((Population) pop.clone());
         if (reset) {
             this.getPopulation().init();
@@ -74,10 +74,10 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         // counter = 0;
         this.globalOptimizer.setProblem(this.optimizationProblem);
-        this.globalOptimizer.init();
+        this.globalOptimizer.initialize();
         this.evaluatePopulation(this.globalOptimizer.getPopulation());
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
@@ -299,7 +299,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     public void setGlobalOptimizer(InterfaceOptimizer globalOptimizer) {
         this.globalOptimizer = globalOptimizer;
         this.globalOptimizer.setProblem(this.getProblem());
-        this.init();
+        this.initialize();
     }
 
     public InterfaceOptimizer getGlobalOptimizer() {

@@ -76,7 +76,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
      * @param range
      */
 //	public MatlabProblem(int dim, double[][] range) {
-//		init(dim, ProblemDataTypeEnum.typeDouble, range, null, defTestOut);
+//		initialize(dim, ProblemDataTypeEnum.typeDouble, range, null, defTestOut);
 //	}
 
     /**
@@ -95,7 +95,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
      * @param initRange
      */
 //	public MatlabProblem(int dim, double[][] range, double[][] initRange) {
-//		init(dim, ProblemDataTypeEnum.typeDouble, range, initRange, defTestOut);
+//		initialize(dim, ProblemDataTypeEnum.typeDouble, range, initRange, defTestOut);
 //	}
 
     /**
@@ -128,7 +128,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
                 if (template == null || !(template instanceof ESIndividualDoubleData)) {
                     template = new ESIndividualDoubleData();
                 }
-                if (getProblemDimension() > 0) { // avoid evil case setting dim to 0 during object init
+                if (getProblemDimension() > 0) { // avoid evil case setting dim to 0 during object initialize
                     ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(getProblemDimension());
                     ((InterfaceDataTypeDouble) this.template).setDoubleRange(range);
                 }

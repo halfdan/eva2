@@ -156,7 +156,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      */
     @Override
     public void initializeProblem() {
-        // nothing to init here
+        // nothing to initialize here
     }
 
     protected void initIndy(int k, AbstractEAIndividual indy) {

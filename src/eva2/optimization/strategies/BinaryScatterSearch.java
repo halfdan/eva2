@@ -207,14 +207,14 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         defaultInit();
         initRefSet(diversify());
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         defaultInit();
         initRefSet(diversify(pop));
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);

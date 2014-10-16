@@ -231,7 +231,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
  * InterfaceEAIndividual methods
  */
     /**
-     * This method will init the individual with a given value for the
+     * This method will initialize the individual with a given value for the
      * phenotype.
      *
      * @param obj The initial value for the phenotype
@@ -393,9 +393,9 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     }
 
     /**
-     * This method set/get the init Full Grow Ratio.
+     * This method set/get the initialize Full Grow Ratio.
      *
-     * @param b The new init Full Grow Ratio of the GP Tree.
+     * @param b The new initialize Full Grow Ratio of the GP Tree.
      */
     public void setInitFullGrowRatio(double b) {
         if (b < 0) {
@@ -412,13 +412,13 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     }
 
     public String initFullGrowRatioTipText() {
-        return "The ratio between the full and the grow init methods (1 uses only full initializing).";
+        return "The ratio between the full and the grow initialize methods (1 uses only full initializing).";
     }
 
     /**
-     * This method set/get the init depth.
+     * This method set/get the initialize depth.
      *
-     * @param b The new init Depth of the GP Tree.
+     * @param b The new initialize Depth of the GP Tree.
      */
     public void setInitDepth(int b) {
         if (b > this.maxAllowedDepth) {

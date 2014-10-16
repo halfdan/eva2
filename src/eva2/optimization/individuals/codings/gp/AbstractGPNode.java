@@ -501,14 +501,14 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     }
 
     /**
-     * This method will simply init the array of nodes
+     * This method will simply initialize the array of nodes
      */
     public void initNodeArray() {
         this.nodes = new AbstractGPNode[this.getArity()];
     }
 
     /**
-     * This method performs a full init but with max depth
+     * This method performs a full initialize but with max depth
      *
      * @param area  The allowed function area.
      * @param depth The absolute target depth.
@@ -528,7 +528,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     }
 
     /**
-     * This method performs a grow init but with max depth
+     * This method performs a grow initialize but with max depth
      *
      * @param area  The allowed function area.
      * @param depth The absolute target depth.

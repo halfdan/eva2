@@ -171,7 +171,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         if (plot != null) {
 //			plot.dispose();
             plot = null;
@@ -190,7 +190,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         if (bestIndividual == null) {
             bestIndividual = population.getBestEAIndividual();
         }
-        initByPopulation(null, false);
+        initializeByPopulation(null, false);
         externalInitialPop = false;
     }
 
@@ -202,7 +202,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      */
     public static void initIndividualDefaults(AbstractEAIndividual indy, double initialV) {
         double[] writeData;
-        // init velocity
+        // initialize velocity
         writeData = Mathematics.randomVector(((InterfaceDataTypeDouble) indy).getDoubleData().length, 1);
 
         //sum = Math.sqrt(sum);
@@ -220,12 +220,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param indy the individual to work on
      */
     protected static void initIndividualMemory(AbstractEAIndividual indy) {
-        // init best fitness
+        // initialize best fitness
         double[] tmpD = indy.getFitness();
         double[] writeData = new double[tmpD.length];
         System.arraycopy(tmpD, 0, writeData, 0, tmpD.length);
         indy.putData(partBestFitKey, writeData);
-        // init best position
+        // initialize best position
         tmpD = ((InterfaceDataTypeDouble) indy).getDoubleData();
         writeData = new double[tmpD.length];
         System.arraycopy(tmpD, 0, writeData, 0, tmpD.length);
@@ -416,14 +416,14 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     /**
-     * This method will init the optimizer with a given population or, if pop is
+     * This method will initialize the optimizer with a given population or, if pop is
      * null, initialize the current population as if it was new.
      *
      * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         if (pop != null) {
             this.population = (Population) pop.clone();
             externalInitialPop = true;
@@ -1575,7 +1575,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         this.population = pop;
         if (pop.size() != pop.getTargetSize()) { // new particle count!
             tracedVelocity = null;
-            initByPopulation(null, false);
+            initializeByPopulation(null, false);
         } else {
             for (int i = 0; i < pop.size(); i++) {
                 AbstractEAIndividual indy = pop.getEAIndividual(i);
@@ -1587,7 +1587,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                     indy.putData(indexKey, i);
                     indy.setIndividualIndex(i);
                     if (TRACE) {
-                        System.err.println("init indy " + i + " " + AbstractEAIndividual.getDefaultDataString(indy));
+                        System.err.println("initialize indy " + i + " " + AbstractEAIndividual.getDefaultDataString(indy));
                     }
                 }
             }

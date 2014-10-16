@@ -406,7 +406,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 createBinCardinality(this, true, seedCardinality.head(), seedCardinality.tail());
                 break;
         }
-        //System.out.println("After pop init: " + this.getStringRepresentation());
+        //System.out.println("After pop initialize: " + this.getStringRepresentation());
         firePropertyChangedEvent(Population.POPULATION_INITIALIZED);
     }
 
@@ -454,7 +454,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /**
      * This method inits the population. Function and generation counters are
      * reset and size default Individuals are created and initialized by the
-     * GAIndividual default init() method.
+     * GAIndividual default initialize() method.
      */
     public void defaultInit(AbstractEAIndividual template) {
         this.generationCount = 0;

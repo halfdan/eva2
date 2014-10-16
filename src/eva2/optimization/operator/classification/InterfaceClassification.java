@@ -18,7 +18,7 @@ public interface InterfaceClassification {
     public Object clone();
 
     /**
-     * This method will init the classificator
+     * This method will initialize the classificator
      *
      * @param space The double[n][d] space*
      * @param type  The classes [0,1,..]

@@ -42,7 +42,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
     }
 
     /**
-     * This method will call the init method and will go to stall
+     * This method will call the initialize method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {

@@ -20,7 +20,7 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
     public volatile boolean hasFinished = false;
 
     /**
-     * This method will call the init method and will go to stall
+     * This method will call the initialize method and will go to stall
      */
     @Override
     public abstract void initProcessElementParametrization();

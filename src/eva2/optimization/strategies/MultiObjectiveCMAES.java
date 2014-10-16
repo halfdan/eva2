@@ -175,8 +175,8 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * @see eva2.optimization.strategies.InterfaceOptimizer#init()
      */
     @Override
-    public void init() {
-        // initByPopulation(population, true);
+    public void initialize() {
+        // initializeByPopulation(population, true);
         this.population.setTargetSize(lambdaMO);
         this.optimizationProblem.initializePopulation(this.population);
         // children = new Population(population.size());
@@ -189,11 +189,11 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * (non-Javadoc)
      * 
      * @see
-     * eva2.optimization.strategies.InterfaceOptimizer#initByPopulation(eva2.server
+     * eva2.optimization.strategies.InterfaceOptimizer#initializeByPopulation(eva2.server
      * .go.populations.Population, boolean)
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         setPopulation(pop);
         if (reset) {
             optimizationProblem.initializePopulation(population);

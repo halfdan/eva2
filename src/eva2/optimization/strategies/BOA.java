@@ -212,7 +212,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         defaultInit();
         this.problem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
@@ -226,9 +226,9 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         if (reset) {
-            init();
+            initialize();
         } else {
             defaultInit();
             this.population = pop;
@@ -906,7 +906,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         pop.add(indy4);
         pop.add(indy5);
         BOA b = new BOA();
-        b.init();
+        b.initialize();
         b.optimize();
         b.optimize();
         b.optimize();

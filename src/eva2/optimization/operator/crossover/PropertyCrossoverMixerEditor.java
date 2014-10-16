@@ -56,7 +56,7 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
     }
 
     /**
-     * This method will init the CustomEditor Panel
+     * This method will initialize the CustomEditor Panel
      */
     private void initCustomEditor() {
         self = this;
@@ -64,7 +64,7 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
         this.editor.setPreferredSize(new Dimension(450, 200));
         this.editor.setMinimumSize(new Dimension(450, 200));
 
-        // init the editors
+        // initialize the editors
         InterfaceCrossover[] list = this.crossoverMixer.getSelectedCrossers();
         this.editors = new GeneralOptimizationEditorProperty[list.length];
         for (int i = 0; i < list.length; i++) {

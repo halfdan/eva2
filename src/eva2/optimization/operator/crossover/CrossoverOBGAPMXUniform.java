@@ -100,7 +100,7 @@ public class CrossoverOBGAPMXUniform implements InterfaceCrossover, java.io.Seri
 
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        // nothing to init!
+        // nothing to initialize!
     }
 
     @Override

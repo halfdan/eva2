@@ -58,7 +58,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     }
 
     /**
-     * This method will init the CustomEditor Panel
+     * This method will initialize the CustomEditor Panel
      */
     private void initCustomEditor() {
         self = this;
@@ -66,7 +66,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
         this.editorComponent.setPreferredSize(new Dimension(450, 200));
         this.editorComponent.setMinimumSize(new Dimension(450, 200));
 
-        // init the editors
+        // initialize the editors
         InterfaceMutation[] list = this.mutatorsWithWeights.getSelectedMutators();
         this.editors = new GeneralOptimizationEditorProperty[list.length];
         for (int i = 0; i < list.length; i++) {

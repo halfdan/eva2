@@ -39,7 +39,7 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
     }
 
     /**
-     * This method will init the CustomEditor Panel
+     * This method will initialize the CustomEditor Panel
      */
     private void initCustomEditor() {
         this.customEditor = new JPanel();

@@ -4,7 +4,7 @@ import eva2.gui.BeanInspector;
 import eva2.optimization.population.Population;
 
 /**
- * Convenience class. Besides the init() method, two more remain to be implemented:
+ * Convenience class. Besides the initialize() method, two more remain to be implemented:
  * the first one to retrieve an array of strings with the canonical names of the controlled parameters,
  * and the second one to produce an object array of the same length with the values to be assigned
  * at the iteration. If there is no iteration known, iteration counts will be set to -1.

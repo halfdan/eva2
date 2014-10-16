@@ -28,7 +28,7 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
     }
 
     /**
-     * This method will call the init method and will go to stall
+     * This method will call the initialize method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {
@@ -150,9 +150,9 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
             }
             if (mocco.state.populationHistory.length > 0) {
                 pop = mocco.state.getSelectedPopulations();
-                mocco.state.optimizer.initByPopulation(pop, false);
+                mocco.state.optimizer.initializeByPopulation(pop, false);
                 if (pop.size() == 0) {
-                    mocco.state.optimizer.init();
+                    mocco.state.optimizer.initialize();
                 }
             }
             hasFinished = true;

@@ -601,7 +601,7 @@ public class TribesSwarm implements java.io.Serializable {
         TribesExplorer expl = new TribesExplorer(range, masterTribe.getObjectiveFirstDim());
         expl.setDoubleRange(range);
 
-//    	System.out.println("generating expl, option " + option + ", init " + initType + ", from tribe " + fromTribe);
+//    	System.out.println("generating expl, option " + option + ", initialize " + initType + ", from tribe " + fromTribe);
 
         int d, dmax, dmod;
         int m;

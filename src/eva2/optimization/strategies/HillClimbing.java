@@ -45,14 +45,14 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
      * This method will initialize the HillClimber
      */
     @Override
-    public void init() {
+    public void initialize() {
         this.optimizationProblem.initializePopulation(this.population);
         this.optimizationProblem.evaluate(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         this.population = (Population) pop.clone();
         if (reset) {
             this.population.init();

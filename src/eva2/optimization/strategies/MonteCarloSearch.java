@@ -50,23 +50,23 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     }
 
     /**
-     * This method will init the MonteCarloSearch
+     * This method will initialize the MonteCarloSearch
      */
     @Override
-    public void init() {
+    public void initialize() {
         this.optimizationProblem.initializePopulation(this.population);
         this.optimizationProblem.evaluate(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
-     * This method will init the optimizer with a given population
+     * This method will initialize the optimizer with a given population
      *
      * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         this.population = (Population) pop.clone();
         if (reset) {
             this.population.init();
@@ -116,7 +116,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     }
 
     /**
-     * This method will init the HillClimber
+     * This method will initialize the HillClimber
      */
     public void defaultInit() {
         this.fitnessCallsNeeded = 0;
