@@ -8,7 +8,7 @@ public class SimpleB1 extends SimpleProblemBinary {
     }
 
     @Override
-    public double[] eval(BitSet b) {
+    public double[] evaluate(BitSet b) {
         double[] result = new double[1];
         int fitness = 0;
 

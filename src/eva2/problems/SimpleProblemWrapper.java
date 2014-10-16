@@ -54,7 +54,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
             x = new double[((InterfaceDataTypeDouble) individual).getDoubleData().length];
             System.arraycopy(((InterfaceDataTypeDouble) individual).getDoubleData(), 0, x, 0, x.length);
             // evaluate the vector
-            fitness = ((SimpleProblemDouble) simProb).eval(x);
+            fitness = ((SimpleProblemDouble) simProb).evaluate(x);
             // if indicated, add Gaussian noise
             if (noise != 0) {
                 RNG.addNoise(fitness, noise);
@@ -67,7 +67,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
 
             tmpBitSet = ((InterfaceDataTypeBinary) individual).getBinaryData();
             // evaluate the fitness
-            result = ((SimpleProblemBinary) simProb).eval(tmpBitSet);
+            result = ((SimpleProblemBinary) simProb).evaluate(tmpBitSet);
             // set the fitness
             individual.setFitness(result);
         } else {
