@@ -1,9 +1,4 @@
 package eva2.gui;
-/*
- * Title: EvA2 Description: Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher @version: $Revision: 272
- * $ $Date: 2007-11-21 18:06:36 +0100 (Wed, 21 Nov 2007) $ $Author: mkron $
- */
 
 import eva2.optimization.go.InterfaceNotifyOnInformers;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
@@ -18,8 +13,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * Produces the main EvA2 frame and a tool bar instance. TODO This class should be removed
- * alltogether.
+ * Produces the main EvA2 frame and a tool bar instance.
  */
 public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceNotifyOnInformers {
 

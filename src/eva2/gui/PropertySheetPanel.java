@@ -1014,11 +1014,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     }
 }
 
-class PropertyTableModel extends DefaultTableModel implements TableModel {
-
-
-}
-
 class PropertyCellRenderer implements TableCellRenderer {
     private Logger LOGGER = Logger.getLogger(PropertyCellRenderer.class.getName());
     JLabel empty = new JLabel();

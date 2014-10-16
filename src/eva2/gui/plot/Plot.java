@@ -55,7 +55,6 @@ public class Plot implements PlotInterface, Serializable {
      * @param PlotName
      * @param xname
      * @param yname
-     * @param init
      */
     public Plot(String PlotName, String xname, String yname) {
         this(PlotName, xname, yname, true);
@@ -191,7 +190,6 @@ public class Plot implements PlotInterface, Serializable {
         internalFrame = new JEFrame("Plot: " + plotName);
         BasicResourceLoader loader = BasicResourceLoader.instance();
         byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
-//			internalFrame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 
         buttonPanel = new JPanel();
         plotArea = new FunctionArea(xAxisText, yAxisText);
@@ -199,7 +197,6 @@ public class Plot implements PlotInterface, Serializable {
 
         installButtons(buttonPanel);
 
-        // getContentPane().smultetLayout( new GridLayout(1, 4) );
         internalFrame.add(buttonPanel, BorderLayout.PAGE_END);
         internalFrame.add(plotArea, BorderLayout.CENTER); // north was not so
         // nice

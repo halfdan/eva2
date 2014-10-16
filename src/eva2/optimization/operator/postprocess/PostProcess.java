@@ -1094,7 +1094,6 @@ public class PostProcess {
             double lowBnd = 0;
             int fitCrit = 0; // use first fitness criterion
             SolutionHistogram solHist = SolutionHistogram.createFitNormHistogram(outputPop, lowBnd, upBnd, 20, fitCrit);
-//			PostProcessInterim.outputResult((AbstractOptimizationProblem)goParams.getProblem(), outputPop, 0.01, System.out, 0, 2000, 20, goParams.getPostProcessSteps());
             if (outputPop.size() > 1) {
                 if (listener != null) {
                     listener.println("measures: " + BeanInspector.toString(outputPop.getPopulationMeasures()));
@@ -1122,20 +1121,12 @@ public class PostProcess {
                 if (listener != null) {
                     listener.println("Best after post process:" + " (first " + printK + " of " + outputPop.size() + ")");
                 }
-//						((outputPop.size()>nBestPop.size()) 
-//								? ( " (first " + nBestPop.size() + " of " + outputPop.size() + ")") : 
-//								  (" (" + nBestPop.size() + ")") ));
-                //////////// output some individual data
                 if (listener != null) {
                     for (int i = 0; i < printK; i++) {
                         listener.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
                     }
                 }
-//				for (int i=0; i<printK; i++) {
-//					System.out.println(AbstractEAIndividual.getDefaultStringRepresentation(nBestPop.getEAIndividual(i)));
-//				}
             }
-//			System.out.println(nBestPop);
             if (problem instanceof InterfaceHasSolutionViewer) {
                 InterfaceSolutionViewer viewer = ((InterfaceHasSolutionViewer) problem).getSolutionViewer();
                 if (viewer != null) {

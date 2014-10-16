@@ -242,6 +242,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 
     public void setEnabledOkCancelButtons(boolean enabled) {
         okayButton.setEnabled(enabled);
+        okayButton.setVisible(enabled);
         cancelButton.setEnabled(enabled);
     }
 
@@ -390,7 +391,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      * Updates the child property sheet, and creates if needed
      */
     public void updateChildPropertySheet() {
-        // Set the object as the target of the propertysheet
+        // Set the object as the target of the PropertySheet
         propertySheetPanel.setTarget(genericObjectEditor.getValue());
     }
 
@@ -406,7 +407,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 
         if ((e.getSource() == objectChooser) && (e.getStateChange() == ItemEvent.SELECTED)) {
             className = (String) objectChooser.getSelectedItem();
-            //className = classNameMap.get(className);
             try {
                 Object n = (Object) Class.forName(className).newInstance();
                 genericObjectEditor.setValue(n);
