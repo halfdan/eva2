@@ -829,7 +829,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      * Updates the propertysheet when a value has been changed (from outside the
      * propertysheet?).
      *
-     * @param evt a value of type 'PropertyChangeEvent'
      */
     synchronized boolean wasModified(int propIndex, Object value, boolean followDependencies) {
         if (!updateValue(propIndex, value)) {
@@ -1065,14 +1064,19 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
         } else if (value instanceof PropertyPanel) {
             component = new JPanel();
             component.setLayout(new GridBagLayout());
+            component.setOpaque(false);
             GridBagConstraints gbConstraints = new GridBagConstraints();
             gbConstraints.gridx = 0;
             gbConstraints.gridy = 0;
             gbConstraints.weightx = 1.0;
             gbConstraints.fill = GridBagConstraints.HORIZONTAL;
             component.add((PropertyPanel) value, gbConstraints);
-            JButton dialogButton = new JButton("...");
-            dialogButton.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, Color.LIGHT_GRAY));
+            final JButton dialogButton = new JButton("...");
+            dialogButton.setFocusPainted(false);
+            dialogButton.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            dialogButton.setBorderPainted(false);
+            //dialogButton.setContentAreaFilled(false);
+            dialogButton.setBackground(Color.LIGHT_GRAY);
             dialogButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(final ActionEvent event) {
@@ -1082,7 +1086,7 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
             });
             gbConstraints = new GridBagConstraints();
             gbConstraints.weighty = 1.0;
-            gbConstraints.fill = GridBagConstraints.VERTICAL;
+            gbConstraints.fill = GridBagConstraints.BOTH;
             gbConstraints.anchor = GridBagConstraints.LINE_END;
             gbConstraints.gridy = 0;
             gbConstraints.gridx = 1;

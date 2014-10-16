@@ -27,7 +27,6 @@ public class PropertyDialog extends JDialog {
     public PropertyDialog(PropertyEditor editor, String title, int x, int y) {
         super();
         setTitle(getFrameNameFromEditor(editor));
-        //super(getFrameNameFromEditor(editor)); // that was the long class name !!
         BasicResourceLoader loader = BasicResourceLoader.instance();
         byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
