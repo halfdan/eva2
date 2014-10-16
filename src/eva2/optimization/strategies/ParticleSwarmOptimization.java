@@ -1467,8 +1467,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) this.population.get(0);
             double[][] range = indy.getDoubleRange();
             this.plot = new Plot("PSO " + population.getGeneration(), "x1", "x2", range[0], range[1]);
-//			this.plot.setUnconnectedPoint(range[0][0], range[1][0], 0);
-//			this.plot.setUnconnectedPoint(range[0][1], range[1][1], 0);
         }
     }
 
@@ -1480,7 +1478,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         if (this.changeListener == null) {
-            this.changeListener = new Vector<InterfacePopulationChangedEventListener>();
+            this.changeListener = new Vector<>();
         }
         this.changeListener.add(ea);
     }

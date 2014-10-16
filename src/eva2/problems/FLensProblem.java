@@ -1,6 +1,7 @@
 package eva2.problems;
 
 
+import eva2.gui.JEFrame;
 import eva2.optimization.go.StandaloneOptimization;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
@@ -180,7 +181,7 @@ public class FLensProblem extends AbstractOptimizationProblem
     protected double yOffset = 0.0;
     transient protected boolean show = false;
 
-    transient private JFrame problemFrame;
+    transient private JEFrame problemFrame;
     transient private MyLensViewer lensViewerPanel;
     public double radius = 5;
     public double focalLength = 20;
@@ -223,12 +224,11 @@ public class FLensProblem extends AbstractOptimizationProblem
      */
     public void initProblemFrame() {
         if (this.problemFrame == null) {
-            this.problemFrame = new JFrame("Lens Problem Viewer");
+            this.problemFrame = new JEFrame("Lens Problem Viewer");
             this.lensViewerPanel = new MyLensViewer(this);
             this.problemFrame.getContentPane().add(this.lensViewerPanel);
             this.problemFrame.pack();
             this.problemFrame.setVisible(true);
-            //this.problemFrame.show();
         } else {
             this.lensViewerPanel.resetView();
         }
