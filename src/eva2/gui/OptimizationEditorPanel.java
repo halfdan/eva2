@@ -254,7 +254,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     protected Object copyObject(Object source) {
         Object result = null;
         try {
-//			System.out.println("Copying " + BeanInspector.toString(source));
             SerializedObject so = new SerializedObject(source);
             result = so.getObject();
             so = null;
@@ -393,11 +392,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     public void updateChildPropertySheet() {
         // Set the object as the target of the propertysheet
         propertySheetPanel.setTarget(genericObjectEditor.getValue());
-        // Adjust size of containing window if possible
-        if ((getTopLevelAncestor() != null)
-                && (getTopLevelAncestor() instanceof Window)) {
-            ((Window) getTopLevelAncestor()).pack();
-        }
     }
 
     /**
@@ -418,7 +412,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
                 genericObjectEditor.setValue(n);
                 // TODO ? setObject(n);
             } catch (Exception ex) {
-                System.err.println("Exeption in itemStateChanged " + ex.getMessage());
+                System.err.println("Exception in itemStateChanged " + ex.getMessage());
                 System.err.println("Classpath is " + System.getProperty("java.class.path"));
                 ex.printStackTrace();
                 objectChooser.hidePopup();
