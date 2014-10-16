@@ -31,10 +31,7 @@ public class PropertyPanel extends JPanel {
         propertyEditor = editor;
 
         textLabel = new JLabel();
-
         add(textLabel, gbConstraints);
-
-
     }
 
     public void showDialog(int initX, int initY) {
@@ -65,13 +62,14 @@ public class PropertyPanel extends JPanel {
      */
     @Override
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Insets i = textLabel.getInsets();
         Rectangle box = new Rectangle(i.left, i.top,
                 getSize().width - i.left - i.right,
                 getSize().height - i.top - i.bottom);
-        g.clearRect(i.left, i.top,
+        /*g.clearRect(i.left, i.top,
                 getSize().width - i.right - i.left,
-                getSize().height - i.bottom - i.top);
+                getSize().height - i.bottom - i.top);*/
         propertyEditor.paintValue(g, box);
     }
 

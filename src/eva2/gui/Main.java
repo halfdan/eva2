@@ -208,9 +208,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             }
         }
 
-
         this.comAdapter = EvAComAdapter.getInstance();
-
         splashScreenTime = 2500;
         SwingUtilities.invokeLater(initRunnable = new Runnable() {
 
@@ -560,7 +558,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
         /* Available command-line parameters */
         String[] keys = new String[]{
-                "--help", "--autorun", "--nosplash", "--nogui", "--params", "--treeView"
+            "--help", "--autorun", "--nosplash", "--nogui", "--params", "--treeView"
         };
         /* Number of arguments per parameter */
         int[] arities = new int[]{0, 0, 0, 0, 1, 0};
@@ -569,7 +567,7 @@ public class Main extends JFrame implements OptimizationStateListener {
         Integer[] unknownArgs = StringTools.parseArguments(args, keys, arities, values, true);
 
         if (unknownArgs.length > 0) {
-            System.err.println("Unrecognized command line options: ");
+            LOGGER.warning("Unrecognized command line options: ");
             for (Integer unknownArg : unknownArgs) {
                 System.err.println("   " + args[unknownArg]);
             }

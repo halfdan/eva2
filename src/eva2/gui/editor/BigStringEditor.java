@@ -31,45 +31,7 @@ public class BigStringEditor implements PropertyEditor {
             BigStringEditor editor = new BigStringEditor();
 
             PropertyDialog dialog = new PropertyDialog(editor, file, 50, 50);
-            //frame.setSize(200, 200);
-            dialog.addWindowListener(new WindowListener() {
 
-                @Override
-                public void windowOpened(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowClosing(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    isFinished = true;
-                }
-
-                @Override
-                public void windowIconified(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowDeiconified(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowActivated(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowDeactivated(WindowEvent e) {
-
-                }
-            }
-            );
             while (isFinished == false) {
                 try {
                     Thread.sleep(1000);

@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class GenericObjectEditor implements PropertyEditor {
 
-    private static final Logger logger = Logger.getLogger(GenericObjectEditor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GenericObjectEditor.class.getName());
     private Object object;
     private Object backupObject;
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -29,7 +29,7 @@ public class GenericObjectEditor implements PropertyEditor {
      * respectively
      */
     public static ArrayList<String> getClassesFromProperties(String className, ArrayList<Class<?>> instances) {
-        logger.log(Level.FINEST, "Requesting className: {0}", className);
+        LOGGER.log(Level.FINEST, "Requesting className: {0}", className);
 
         // Try to read the predefined classes from the props file.
         String typeOptions = EvAInfo.getProperty(className);
@@ -48,7 +48,7 @@ public class GenericObjectEditor implements PropertyEditor {
                     }
                     classes.add(current);
                 } catch (ClassNotFoundException ex) {
-                    logger.log(Level.WARNING,
+                    LOGGER.log(Level.WARNING,
                             String.format("Requesting className: %1$s, Couldn't load: %2%s", className, current), ex);
                 }
             }
@@ -71,7 +71,7 @@ public class GenericObjectEditor implements PropertyEditor {
         Class<?>[] classArray;
         classArray = ReflectPackage.getAssignableClasses(className, true, true);
         if (classArray == null) {
-            logger.log(Level.WARNING, String.format("No assignable classes found in property file or on classpath: %1$s for %2$s", EvAInfo.propertyFile, className));
+            LOGGER.log(Level.WARNING, String.format("No assignable classes found in property file or on classpath: %1$s for %2$s", EvAInfo.propertyFile, className));
             classes.add(className);
         } else {
             for (Class<?> clazz : classArray) {
@@ -80,7 +80,7 @@ public class GenericObjectEditor implements PropertyEditor {
                     // a field allowing a class to indicate it doesnt want to be displayed
                     Field f = clazz.getDeclaredField("hideFromGOE");
                     if (f.getBoolean(clazz) == true) {
-                        logger.log(Level.FINEST, "Class {0} wants to be hidden from GOE.", clazz);
+                        LOGGER.log(Level.FINEST, "Class {0} wants to be hidden from GOE.", clazz);
                         continue;
                     }
                 } catch (NoSuchFieldException e) {
@@ -88,11 +88,11 @@ public class GenericObjectEditor implements PropertyEditor {
                      * We are just logging this exception here. It is expected that most classes do
                      * not have this field.
                      */
-                    logger.log(Level.FINER, String.format("%1$s does not have a hideFromGOE field", clazz.toString()), e);
+                    LOGGER.log(Level.FINER, String.format("%1$s does not have a hideFromGOE field", clazz.toString()), e);
                 } catch (IllegalArgumentException e) {
-                    logger.log(Level.FINER, e.getMessage(), e);
+                    LOGGER.log(Level.FINER, e.getMessage(), e);
                 } catch (IllegalAccessException e) {
-                    logger.log(Level.FINER, e.getMessage(), e);
+                    LOGGER.log(Level.FINER, e.getMessage(), e);
                 }
 
 
@@ -105,7 +105,7 @@ public class GenericObjectEditor implements PropertyEditor {
                         }
                         classes.add(clazz.getName());
                     } catch (NoSuchMethodException e) {
-                        logger.log(Level.WARNING, String.format("GOE warning: Class %1$s has no default constructor", clazz.getName()), e);
+                        LOGGER.log(Level.WARNING, String.format("GOE warning: Class %1$s has no default constructor", clazz.getName()), e);
                     }
                 }
             }
@@ -138,7 +138,7 @@ public class GenericObjectEditor implements PropertyEditor {
             }
             return true;
         } catch (Exception e) {
-            logger.log(Level.WARNING, String.format("Couldn't set expert property for %1$s/%2$s", cls.getName(), property), e);
+            LOGGER.log(Level.WARNING, String.format("Couldn't set expert property for %1$s/%2$s", cls.getName(), property), e);
             return false;
         }
     }
@@ -168,10 +168,10 @@ public class GenericObjectEditor implements PropertyEditor {
                 }
             }
 
-            logger.log(Level.WARNING, "Property {0} not found", property);
+            LOGGER.log(Level.WARNING, "Property {0} not found", property);
             return false;
         } catch (IntrospectionException e) {
-            logger.log(Level.WARNING, String.format("Couldn't set hide property for %1$s/%2$s", cls.getName(), property), e);
+            LOGGER.log(Level.WARNING, String.format("Couldn't set hide property for %1$s/%2$s", cls.getName(), property), e);
             return false;
         }
     }
@@ -196,7 +196,7 @@ public class GenericObjectEditor implements PropertyEditor {
             }
             return orig;
         } catch (IntrospectionException e) {
-            logger.log(Level.WARNING, String.format("Couldn't hide all properties for %1$s/all", cls.getName()), e);
+            LOGGER.log(Level.WARNING, String.format("Couldn't hide all properties for %1$s/all", cls.getName()), e);
             return null;
         }
     }
@@ -207,7 +207,7 @@ public class GenericObjectEditor implements PropertyEditor {
             try {
                 bi = Introspector.getBeanInfo(cls);
             } catch (IntrospectionException e) {
-                logger.log(Level.WARNING, String.format("Error on introspection of %1$s", cls.getName()), e);
+                LOGGER.log(Level.WARNING, String.format("Error on introspection of %1$s", cls.getName()), e);
                 return;
             }
             PropertyDescriptor[] props = bi.getPropertyDescriptors();
@@ -266,7 +266,7 @@ public class GenericObjectEditor implements PropertyEditor {
      */
     public void setDefaultValue() {
         if (classType == null) {
-            logger.log(Level.WARNING, "No ClassType set up for GenericObjectEditor!");
+            LOGGER.log(Level.WARNING, "No ClassType set up for GenericObjectEditor!");
             return;
         }
 
@@ -292,7 +292,7 @@ public class GenericObjectEditor implements PropertyEditor {
     public void setValue(Object o) {
 
         if (o == null || classType == null) {
-            logger.log(Level.WARNING, "No ClassType set up for GenericObjectEditor!");
+            LOGGER.log(Level.WARNING, "No ClassType set up for GenericObjectEditor!");
             return;
         }
         if (!classType.isAssignableFrom(o.getClass())) {
@@ -383,10 +383,11 @@ public class GenericObjectEditor implements PropertyEditor {
                 for (int i = 0; i < methods.length; i++) {
                     if (methods[i].getName().equalsIgnoreCase("getName")) {
                         getNameMethod = i;
+                        break;
                     }
                 }
             } catch (IntrospectionException ex) {
-                System.err.println("PropertySheetPanel.setTarget(): Couldn't introspect");
+                LOGGER.log(Level.WARNING, "Could not introspect PropertySheetPanel", ex);
                 return;
             }
             if (getNameMethod >= 0) {

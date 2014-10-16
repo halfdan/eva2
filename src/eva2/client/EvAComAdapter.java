@@ -57,6 +57,7 @@ public class EvAComAdapter {
      * @return
      */
     public String[] getModuleNameList() {
+        System.exit(1);
         System.out.println("SAYYYYY WHAAAAAT?");
         String[] list = getLocalMainAdapter().getModuleNameList();
         LOGGER.info("List of modules available:");
