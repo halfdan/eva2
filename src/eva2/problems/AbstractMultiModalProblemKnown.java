@@ -61,7 +61,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
             tmpIndy.init(this);
             population.add(tmpIndy);
         }
-        // population init must be last
+        // population initialize must be last
         // it set's fitcalls and generation to zero
         population.init();
         if (listOfOptima == null) {

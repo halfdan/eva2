@@ -11,14 +11,7 @@ import eva2.problems.InterfaceOptimizationProblem;
  * to perform a population based search.
  */
 public interface InterfaceOptimizer {
-
-    /**
-     * This method will return deep clone of the optimizer
-     *
-     * @return The clone
-     */
     Object clone();
-
     /**
      * This method will return a naming String
      *
@@ -42,23 +35,23 @@ public interface InterfaceOptimizer {
     boolean removePopulationChangedEventListener(InterfacePopulationChangedEventListener ea);
 
     /**
-     * This method will init the optimizer
+     * This method will initialize the optimizer
      */
-    void init();
+    void initialize();
 
     /**
-     * This method will init the optimizer with a given population.
+     * This method will initialize the optimizer with a given population.
      *
      * @param pop   The initial population
      * @param reset If true the population is reinitialized and reevaluated.
      */
-    void initByPopulation(Population pop, boolean reset);
+    void initializeByPopulation(Population pop, boolean reset);
 
     /**
      * This method will optimize for a single iteration, after this step
      * the population should be as big as possible (ie. the size of lambda
      * and not mu) and all individual should be evaluated. This allows more
-     * usefull statistics on the population.
+     * useful statistics on the population.
      */
     void optimize();
 

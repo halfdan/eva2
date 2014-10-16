@@ -155,7 +155,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         if (undifferentiatedPopulation == null) {
             this.undifferentiatedPopulation = new Population(populationSize);
         } else {
@@ -166,14 +166,14 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         this.undifferentiatedPopulation.setUseHistory(true);
 
         this.optimizationProblem.initializePopulation(this.undifferentiatedPopulation);
-        this.optimizer.initByPopulation(undifferentiatedPopulation, true);
+        this.optimizer.initializeByPopulation(undifferentiatedPopulation, true);
         undifferentiatedPopulation = this.optimizer.getPopulation(); // some optimizers clone the given one.
         if (optimizer instanceof EvolutionStrategies) {
             EvolutionStrategies es = (EvolutionStrategies) optimizer;
             es.setLambda(getPopulationSize());
             es.setMu((int) (muLambdaRatio * (double) getPopulationSize()));
         }
-//        this.optimizer.init();
+//        this.optimizer.initialize();
         doomedPopulation = undifferentiatedPopulation.cloneWithoutInds();
         if (undifferentiatedPopulation.getFunctionCalls() != populationSize) {
             System.err.println("Whats that in CBN!?");
@@ -203,20 +203,20 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         if (evalPop) {
             this.evaluatePopulation(this.undifferentiatedPopulation);
         }
-        this.optimizer.initByPopulation(undifferentiatedPopulation, false);
+        this.optimizer.initializeByPopulation(undifferentiatedPopulation, false);
         this.undifferentiatedPopulation = optimizer.getPopulation(); // required for changes to the population by the optimizer
         population = undifferentiatedPopulation;
         this.firePropertyChangedEvent("FirstGenerationPerformed");
     }
 
     /**
-     * This method will init the optimizer with a given population
+     * This method will initialize the optimizer with a given population
      *
      * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         this.undifferentiatedPopulation = (Population) pop.clone();
         if (reset) {
             this.undifferentiatedPopulation.init();
@@ -460,7 +460,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
     private Population optimizeSpecies(Population species, boolean minorPlot) {
         optimizer.setPopulation(species);
-//    	optimizer.initByPopulation(species, false);
+//    	optimizer.initializeByPopulation(species, false);
         if (optimizer instanceof EvolutionStrategies) {
             EvolutionStrategies es = (EvolutionStrategies) optimizer;
             int mu = Math.max(1, (int) (muLambdaRatio * species.size()));

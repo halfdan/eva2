@@ -71,7 +71,7 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
     }
 
     /**
-     * This method allows you to init the mutation operator
+     * This method allows you to initialize the mutation operator
      *
      * @param individual The individual that will be mutated.
      * @param opt        The optimization problem.

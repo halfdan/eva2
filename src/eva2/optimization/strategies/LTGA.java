@@ -113,7 +113,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         this.defaultInit();
         this.problem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
@@ -144,9 +144,9 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         if (reset) {
-            this.init();
+            this.initialize();
         } else {
             defaultInit();
             this.population = pop;
@@ -375,7 +375,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
 
     public static void main(String[] args) {
         LTGA ltga = new LTGA();
-        ltga.init();
+        ltga.initialize();
         ltga.optimize();
         System.out.println(ltga.popSize);
         Population p = ltga.getPopulation();

@@ -41,7 +41,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
     }
 
     /**
-     * This method will call the init method and will go to stall
+     * This method will call the initialize method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {
@@ -250,7 +250,7 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
 //            }
             mocco.state.optimizer = islandModelEA;
             mocco.state.optimizer.setProblem(mocco.state.currentProblem);
-            islandModelEA.init();
+            islandModelEA.initialize();
             double[] tmpD;
             MOSOLpMetric[] tmpLPs = new MOSOLpMetric[perturbations];
             for (int i = 0; i < perturbations; i++) {

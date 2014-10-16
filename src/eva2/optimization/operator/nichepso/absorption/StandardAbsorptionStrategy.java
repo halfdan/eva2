@@ -16,7 +16,7 @@ public class StandardAbsorptionStrategy implements InterfaceAbsorptionStrategy, 
 
     /**
      * *******************************************************************************************************************
-     * ctors, init, clone
+     * ctors, initialize, clone
      */
     @Override
     public Object clone() {

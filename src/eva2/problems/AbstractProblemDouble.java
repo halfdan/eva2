@@ -73,7 +73,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
             template = new ESIndividualDoubleData();
         }
         if (getProblemDimension() > 0) { // avoid evil case setting dim to 0
-            // during object init
+            // during object initialize
             ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(getProblemDimension());
             ((InterfaceDataTypeDouble) this.template).setDoubleRange(makeRange());
         }

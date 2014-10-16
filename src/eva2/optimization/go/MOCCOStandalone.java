@@ -40,7 +40,7 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
     }
 
     /**
-     * This method will init the main MOCCO GUI
+     * This method will initialize the main MOCCO GUI
      * frame
      */
     public void initMOCCOFrame() {
@@ -56,7 +56,7 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
                 System.exit(0);
             }
         });
-        // init basic panel structure
+        // initialize basic panel structure
         this.mainPanel = new JPanel();
         this.parameterPanel = new JPanel();
         this.parameterPanel.setPreferredSize(new Dimension(500, 300));
@@ -467,7 +467,7 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
         this.state.currentProblem.evaluate(this.state.optimizer.getPopulation());
         this.state.optimizer.getPopulation().setFunctionCalls(0);
         if (this.state.optimizer.getPopulation().size() == 0) {
-            this.state.optimizer.init();
+            this.state.optimizer.initialize();
         }
         this.state.optimizer.addPopulationChangedEventListener(this);
         worker = new SwingWorker() {

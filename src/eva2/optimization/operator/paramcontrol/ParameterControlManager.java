@@ -71,7 +71,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
         for (ParamAdaption prm : singleAdapters) {
             prm.init(obj, initialPop, initialValues);
             // check if the prm itself has a ParameterControlManager:
-            tryRecursive(prm, "init", new Object[]{initialPop});
+            tryRecursive(prm, "initialize", new Object[]{initialPop});
         }
     }
 
@@ -80,7 +80,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
         if ((subManager = BeanInspector.callIfAvailable(prm, "getParamControl", null)) != null) {
             if (subManager instanceof ParameterControlManager) {
                 BeanInspector.callIfAvailable(subManager, method, args);
-//				((ParameterControlManager)subManager).init(prm, initialPop);
+//				((ParameterControlManager)subManager).initialize(prm, initialPop);
             }
         }
     }

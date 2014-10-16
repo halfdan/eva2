@@ -55,7 +55,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         if (this.optimizationProblem instanceof AbstractMultiObjectiveOptimizationProblem) {
             AbstractMultiObjectiveOptimizationProblem tmpProb = (AbstractMultiObjectiveOptimizationProblem) this.optimizationProblem;
             AbstractMultiObjectiveOptimizationProblem tmpP;
@@ -65,7 +65,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             double[] weights;
             // dim = tmpProb.getOutputDimension();
             this.multiObjectiveEA.setProblem((InterfaceOptimizationProblem) this.optimizationProblem.clone());
-            this.multiObjectiveEA.init();
+            this.multiObjectiveEA.initialize();
             this.singleObjectiveOptimizers = new InterfaceOptimizer[dim];
             for (int i = 0; i < dim; i++) {
                 tmpP = (AbstractMultiObjectiveOptimizationProblem) this.optimizationProblem.clone();
@@ -80,24 +80,24 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
                 tmpP.setMOSOConverter(tmpWF);
                 this.singleObjectiveOptimizers[i] = (InterfaceOptimizer) this.singleObjectiveEA.clone();
                 this.singleObjectiveOptimizers[i].setProblem(tmpP);
-                this.singleObjectiveOptimizers[i].init();
+                this.singleObjectiveOptimizers[i].initialize();
             }
         } else {
             this.singleObjectiveEA.setProblem(this.optimizationProblem);
-            this.singleObjectiveEA.init();
+            this.singleObjectiveEA.initialize();
         }
         this.communicate();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
-     * This method will init the optimizer with a given population
+     * This method will initialize the optimizer with a given population
      *
      * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         if (this.optimizationProblem instanceof AbstractMultiObjectiveOptimizationProblem) {
             AbstractMultiObjectiveOptimizationProblem tmpProb = (AbstractMultiObjectiveOptimizationProblem) this.optimizationProblem;
             AbstractMultiObjectiveOptimizationProblem tmpP;
@@ -107,7 +107,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             double[] weights;
             // dim = tmpProb.getOutputDimension();
             this.multiObjectiveEA.setProblem((InterfaceOptimizationProblem) this.optimizationProblem.clone());
-            this.multiObjectiveEA.initByPopulation(pop, reset);
+            this.multiObjectiveEA.initializeByPopulation(pop, reset);
             this.singleObjectiveOptimizers = new InterfaceOptimizer[dim];
             for (int i = 0; i < dim; i++) {
                 tmpP = (AbstractMultiObjectiveOptimizationProblem) this.optimizationProblem.clone();
@@ -122,11 +122,11 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
                 tmpP.setMOSOConverter(tmpWF);
                 this.singleObjectiveOptimizers[i] = (InterfaceOptimizer) this.singleObjectiveEA.clone();
                 this.singleObjectiveOptimizers[i].setProblem(tmpP);
-                this.singleObjectiveOptimizers[i].initByPopulation(pop, reset);
+                this.singleObjectiveOptimizers[i].initializeByPopulation(pop, reset);
             }
         } else {
             this.singleObjectiveEA.setProblem(this.optimizationProblem);
-            this.singleObjectiveEA.initByPopulation(pop, reset);
+            this.singleObjectiveEA.initializeByPopulation(pop, reset);
         }
         this.communicate();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);

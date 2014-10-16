@@ -103,7 +103,7 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
 
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
-        // nothing to init!
+        // nothing to initialize!
     }
 
     @Override

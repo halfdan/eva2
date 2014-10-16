@@ -171,7 +171,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     }
 
     /**
-     * This method init the enviroment panel if necessary.
+     * This method initialize the enviroment panel if necessary.
      */
     private void initEnvironmentPanel() {
         if (this.plot == null) {

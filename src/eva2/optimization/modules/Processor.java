@@ -242,7 +242,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             this.optimizationParameters.getTerminator().init(this.optimizationParameters.getProblem());
             maybeInitParamCtrl(optimizationParameters);
             if (this.createInitialPopulations) {
-                this.optimizationParameters.getOptimizer().init();
+                this.optimizationParameters.getOptimizer().initialize();
             }
 
             if (optimizationStateListener != null) {
@@ -321,8 +321,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     }
 
     private void maybeInitParamCtrl(InterfaceOptimizationParameters goParams) {
-        iterateParamCtrl(goParams.getOptimizer(), "init", new Object[]{goParams.getOptimizer(), goParams.getOptimizer().getPopulation()});
-        iterateParamCtrl(goParams.getProblem(), "init", new Object[]{goParams.getProblem(), goParams.getOptimizer().getPopulation()});
+        iterateParamCtrl(goParams.getOptimizer(), "initialize", new Object[]{goParams.getOptimizer(), goParams.getOptimizer().getPopulation()});
+        iterateParamCtrl(goParams.getProblem(), "initialize", new Object[]{goParams.getProblem(), goParams.getOptimizer().getPopulation()});
     }
 
     private void maybeFinishParamCtrl(InterfaceOptimizationParameters goParams) {

@@ -144,7 +144,7 @@ public class CbpsoFitnessThresholdBasedAdaption implements ParamAdaption, Generi
 
     /*
      * (non-Javadoc)
-     * @see eva2.optimization.operators.paramcontrol.ParamAdaption#init(java.lang.Object, eva2.optimization.populations.Population, java.lang.Object[])
+     * @see eva2.optimization.operators.paramcontrol.ParamAdaption#initialize(java.lang.Object, eva2.optimization.populations.Population, java.lang.Object[])
      */
     @Override
     public void init(Object obj, Population pop, Object[] initialValues) {

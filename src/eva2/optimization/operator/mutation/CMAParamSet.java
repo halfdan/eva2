@@ -111,13 +111,13 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
      * @return
      */
     public static CMAParamSet initCMAParams(CMAParamSet params, int mu, int lambda, double[] center, double[][] range, double initialSigma) {
-        // those are from init:
+        // those are from initialize:
         params.firstAdaptionDone = false;
         params.range = range;
 
         int dim = params.range.length;
-//		if (TRACE_1) System.out.println("WCMA init " + dim);
-//		if (TRACE_1) System.out.println("WCMA static init " + dim);
+//		if (TRACE_1) System.out.println("WCMA initialize " + dim);
+//		if (TRACE_1) System.out.println("WCMA static initialize " + dim);
         params.eigenvalues = new double[dim];
         Arrays.fill(params.eigenvalues, 1.);
         params.meanX = new double[dim];

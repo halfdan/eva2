@@ -111,7 +111,7 @@ public class OptimizerFactory {
         de.setCrossoverRate(CR);
         de.setLambda(lambda);
         de.addPopulationChangedEventListener(listener);
-        de.init();
+        de.initialize();
 
         if (listener != null) {
             listener.registerPopulationStateChanged(de.getPopulation(), "");
@@ -190,7 +190,7 @@ public class OptimizerFactory {
 //		theES.setPartnerSelection(selection);
         theES.setEnvironmentSelection(selection);
         theES.setProblem(problem);
-        theES.init();
+        theES.initialize();
 
         if (listener != null) {
             listener.registerPopulationStateChanged(theES.getPopulation(), "");
@@ -228,7 +228,7 @@ public class OptimizerFactory {
         ga.setParentSelection(select);
         ga.setPartnerSelection(select);
         ga.addPopulationChangedEventListener(listener);
-        ga.init();
+        ga.initialize();
 
         if (listener != null) {
             listener.registerPopulationStateChanged(ga.getPopulation(), "");
@@ -360,7 +360,7 @@ public class OptimizerFactory {
         hc.getPopulation().setTargetSize(popSize);
         hc.addPopulationChangedEventListener(listener);
         hc.setProblem(problem);
-        hc.init();
+        hc.initialize();
 
         if (listener != null) {
             listener.registerPopulationStateChanged(hc.getPopulation(), "");
@@ -389,7 +389,7 @@ public class OptimizerFactory {
         mc.getPopulation().setTargetSize(popsize);
         mc.addPopulationChangedEventListener(listener);
         mc.setProblem(problem);
-        mc.init();
+        mc.initialize();
 
         if (listener != null) {
             listener.registerPopulationStateChanged(mc.getPopulation(), "");
@@ -432,7 +432,7 @@ public class OptimizerFactory {
         pso.setTopology(selectedTopology);
         pso.setTopologyRange(topologyRange);
         pso.addPopulationChangedEventListener(listener);
-        pso.init();
+        pso.initialize();
 
         if (listener != null) {
             listener.registerPopulationStateChanged(pso.getPopulation(), "");
@@ -469,7 +469,7 @@ public class OptimizerFactory {
         sa.setProblem(problem);
         sa.getPopulation().setTargetSize(popsize);
         sa.addPopulationChangedEventListener(listener);
-        sa.init();
+        sa.initialize();
 
         if (listener != null) {
             listener.registerPopulationStateChanged(sa.getPopulation(), "");
@@ -479,7 +479,7 @@ public class OptimizerFactory {
     }
 
     /**
-     * Calling init here makes problems when using the Matlab interface.
+     * Calling initialize here makes problems when using the Matlab interface.
      *
      * @param learningRate
      * @param mutateSigma

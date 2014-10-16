@@ -80,11 +80,11 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
  */
     /**
      * @tested ps
-     * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#init()
+     * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#initialize()
      */
     @Override
-    public void init() {
-        super.init();
+    public void initialize() {
+        super.initialize();
 
         initIndividuals();
 
@@ -96,11 +96,11 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @tested ps
-     * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#initByPopulation(javaeva.server.oa.go.Populations.Population, boolean)
+     * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#initializeByPopulation(javaeva.server.oa.go.Populations.Population, boolean)
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
-        super.initByPopulation(pop, reset);
+    public void initializeByPopulation(Population pop, boolean reset) {
+        super.initializeByPopulation(pop, reset);
         initIndividuals();
 
         updateMBestIndividual();
@@ -140,7 +140,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      * and initially sets this value to infinity.
      */
     public static void initFitnessStdDevOf(AbstractEAIndividual indy) {
-        // init stddev to inf, dont want immediate convergence...
+        // initialize stddev to inf, dont want immediate convergence...
         indy.putData(NichePSO.stdDevKey, new Double(Double.POSITIVE_INFINITY));
     }
 
@@ -496,7 +496,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         ParticleSubSwarmOptimization tmpopt = new ParticleSubSwarmOptimization();
         tmpopt.setProblem(this.optimizationProblem);
         tmpopt.evaluatePopulation(tmp);
-        tmpopt.initByPopulation(tmp, false); // + size FCs
+        tmpopt.initializeByPopulation(tmp, false); // + size FCs
 
         if (particleIndices != null) { // use given indices
             for (int i = 0; i < tmpopt.getPopulation().size(); ++i) {

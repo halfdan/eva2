@@ -273,7 +273,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 //        for (int i = 0; i < islands.length; i++) {
 //            islands[i] = new MultiObjectiveEA();
 //            islands[i].SetProblem(problem);
-//            islands[i].init();
+//            islands[i].initialize();
 //        }
 //
 //        cluster.xMeans.setUseSearchSpace(true);

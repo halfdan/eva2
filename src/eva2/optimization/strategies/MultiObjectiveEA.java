@@ -65,21 +65,21 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
     }
 
     @Override
-    public void init() {
-        this.optimizer.init();
+    public void initialize() {
+        this.optimizer.initialize();
         this.archiver.addElementsToArchive(this.optimizer.getPopulation());
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
-     * This method will init the optimizer with a given population
+     * This method will initialize the optimizer with a given population
      *
      * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
-        this.optimizer.initByPopulation(pop, reset);
+    public void initializeByPopulation(Population pop, boolean reset) {
+        this.optimizer.initializeByPopulation(pop, reset);
         this.archiver.addElementsToArchive(this.optimizer.getPopulation());
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }

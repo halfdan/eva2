@@ -44,7 +44,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
     }
 
     /**
-     * This method allows you to init the metric loading data etc
+     * This method allows you to initialize the metric loading data etc
      */
     public void init() {
 

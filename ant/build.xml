@@ -612,7 +612,7 @@
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 	<!-- 
 	should not be necessary any more: each revision gets its own directory
-	<target name="backupWWW" depends="init">
+	<target name="backupWWW" depends="initialize">
 		<mkdir dir="${web.download.base}/old-${DSTAMP}-${TSTAMP}" />
 		<copy todir="${web.download.base}/old-${DSTAMP}-${TSTAMP}">
 	      <fileset dir="${web.download.versioned}">

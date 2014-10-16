@@ -96,7 +96,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
     }
 
     /**
-     * This method allows you to init the mutation operator
+     * This method allows you to initialize the mutation operator
      *
      * @param individual The individual that will be mutated.
      * @param opt        The optimization problem.
@@ -104,7 +104,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
     @Override
     public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         if (individual instanceof InterfaceESIndividual) {
-            // init the Sigmas
+            // initialize the Sigmas
             this.sigmas = new double[((InterfaceESIndividual) individual).getDGenotype().length];
             for (int i = 0; i < this.sigmas.length; i++) {
                 this.sigmas[i] = this.mutationStepSize;

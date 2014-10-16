@@ -55,7 +55,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
     }
 
     /**
-     * This method will init the CustomEditor Panel
+     * This method will initialize the CustomEditor Panel
      */
     private void initCustomEditor() {
         self = this;
@@ -63,7 +63,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
         this.editor.setPreferredSize(new Dimension(450, 200));
         this.editor.setMinimumSize(new Dimension(450, 200));
 
-        // init the editors
+        // initialize the editors
         InterfaceOptimizationObjective[] list = this.optimizationObjectivesWithWeights.getSelectedTargets();
         this.editors = new GeneralOptimizationEditorProperty[list.length];
         for (int i = 0; i < list.length; i++) {

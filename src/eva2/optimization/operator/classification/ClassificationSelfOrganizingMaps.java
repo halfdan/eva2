@@ -84,7 +84,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
     }
 
     /**
-     * This method will init the classificator
+     * This method will initialize the classificator
      *
      * @param space The double[n][d] space
      * @param type  The classes [0,1,..]
@@ -152,7 +152,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      */
     @Override
     public void train(double[][] space, int[] type) {
-        // first init the assignment to zero
+        // first initialize the assignment to zero
         for (int i = 0; i < this.SOM.length; i++) {
             for (int j = 0; j < this.SOM[0].length; j++) {
                 for (int k = 0; k < this.SOMClass[0][0].length; k++) {

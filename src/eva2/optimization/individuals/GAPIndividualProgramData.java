@@ -88,7 +88,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     }
 
     /**
-     * This method will init the individual with a given value for the
+     * This method will initialize the individual with a given value for the
      * phenotype.
      *
      * @param obj The initial value for the phenotype

@@ -93,7 +93,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
      */
     public void initFrame() {
         this.progressBar = new JProgressBar();
-        // init the main frame
+        // initialize the main frame
         this.mainFrame = new JFrame();
         this.mainFrame.setTitle("Genetic Optimizing");
         this.mainFrame.setSize(500, 400);
@@ -177,7 +177,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
     }
 
     /**
-     * This action listener, called by the "Run/Restart" button, will init the
+     * This action listener, called by the "Run/Restart" button, will initialize the
      * problem and start the computation.
      */
     ActionListener runListener = new ActionListener() {
@@ -364,13 +364,13 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 this.outputFile = null;
             }
 
-            // init problem 
+            // initialize problem
             this.optimizationParameters.getProblem().initializeProblem();
             this.optimizationParameters.getOptimizer().setProblem(this.optimizationParameters.getProblem());
             // int optimizer and population
-            //this.optimizationParameters.getOptimizer().init();
+            //this.optimizationParameters.getOptimizer().initialize();
 
-            // init the log data
+            // initialize the log data
             ArrayList tmpMultiRun = new ArrayList();
             this.performedRuns.add(tmpMultiRun);
 
@@ -397,12 +397,12 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                     this.optimizationParameters.getOptimizer().setPopulation(this.backupPopulation);
                     this.optimizationParameters.getOptimizer().getProblem().evaluate(this.optimizationParameters.getOptimizer().getPopulation());
                     this.optimizationParameters.getOptimizer().getProblem().evaluate(this.optimizationParameters.getOptimizer().getPopulation().getArchive());
-                    this.optimizationParameters.getOptimizer().initByPopulation(this.backupPopulation, false);
+                    this.optimizationParameters.getOptimizer().initializeByPopulation(this.backupPopulation, false);
                     this.optimizationParameters.getOptimizer().getPopulation().setFunctionCalls(0);
                     this.optimizationParameters.addPopulationChangedEventListener(this);
                 } else {
                     this.recentFunctionCalls = 0;
-                    this.optimizationParameters.getOptimizer().init();
+                    this.optimizationParameters.getOptimizer().initialize();
                 }
                 //while (this.optimizationParameters.getOptimizer().getPopulation().getFunctionCalls() < this.functionCalls) {
                 while (!this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getPopulation())) {

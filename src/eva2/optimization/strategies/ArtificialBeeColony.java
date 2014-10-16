@@ -46,12 +46,12 @@ public class ArtificialBeeColony implements InterfaceOptimizer {
     }
 
     @Override
-    public void init() {
+    public void initialize() {
 
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
 
     }
 

@@ -414,7 +414,7 @@ public class PostProcess {
             System.err.println("warning: population size and vector size dont match! (PostProcess::processWithHC)");
         }
         hc.setPopulation(pop);
-//		hc.initByPopulation(pop, false);
+//		hc.initializeByPopulation(pop, false);
         OptimizerRunnable ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), true);
 
         runPP(ppRunnable);
@@ -429,7 +429,7 @@ public class PostProcess {
         gda.setLocalMinStepSize(minStepSize);
         gda.setLocalMaxStepSize(maxStepSize);
         gda.setRecovery(false);
-        gda.initByPopulation(pop, false);
+        gda.initializeByPopulation(pop, false);
 
         int funCallsBefore = pop.getFunctionCalls();
         pop.setFunctionCalls(baseEvals);
@@ -464,7 +464,7 @@ public class PostProcess {
         NelderMeadSimplex nms = new NelderMeadSimplex();
         nms.setProblemAndPopSize(problem);
         nms.setGenerationCycle(5);
-        nms.initByPopulation(pop, false);
+        nms.initializeByPopulation(pop, false);
         int funCallsBefore = pop.getFunctionCalls();
         pop.setFunctionCalls(baseEvals);
 
@@ -504,7 +504,7 @@ public class PostProcess {
         for (int i = 0; i < pop.size(); i++) {
             pop.getEAIndividual(i).initCloneOperators(mutator, 1., new CrossoverESDefault(), 0., problem);
         }
-        es.initByPopulation(pop, false);
+        es.initializeByPopulation(pop, false);
 
         OptimizationParameters cmaParams = OptimizerFactory.makeParams(es, pop, problem, 0, term);
 

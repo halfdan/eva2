@@ -646,7 +646,7 @@ public class FunctionArea extends DArea implements Serializable {
                 maxSize = pointSetContainer.get(i).getConnectedPointSet().getSize();
             }
         }
-        if (maxSize > 0) { // if there is any data, init string array and set x
+        if (maxSize > 0) { // if there is any data, initialize string array and set x
             // value column
             s = new String[maxSize + 1];
             for (int j = 0; j <= maxSize; j++) {

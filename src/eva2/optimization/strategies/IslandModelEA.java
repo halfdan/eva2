@@ -72,7 +72,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         if (this.show) {
             if (this.plot == null) {
                 double[] tmpD = new double[2];
@@ -85,7 +85,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
 //        this.population = new Population();
         this.population.clear();
         this.population.init();
-        this.optimizer.init();
+        this.optimizer.initialize();
         this.optimizer.setProblem(this.optimizationProblem);
         this.optimizer.setPopulation((Population) population.clone());
         InterfacePopulationChangedEventListener myLocal = null;
@@ -95,7 +95,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             for (int i = 0; i < this.numLocalCPUs; i++) {
                 this.islands[i] = (InterfaceOptimizer) this.optimizer.clone();
                 this.islands[i].setIdentifier("" + i);
-                this.islands[i].init();
+                this.islands[i].initialize();
                 if (this.logLocalChanges) {
                     this.islands[i].addPopulationChangedEventListener(this);
                 }
@@ -111,7 +111,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
              for (int i = 0; i < nodesList.length; i++) {
              this.islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.optimizer, nodesList[i]);
              this.islands[i].setIdentifier(""+i);
-             this.islands[i].init();
+             this.islands[i].initialize();
              if (this.logLocalChanges) {
              this.islands[i].addPopulationChangedEventListener(myLocal);
              }
@@ -134,12 +134,12 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     }
 
     /**
-     * This method will init the optimizer with a given population
+     * This method will initialize the optimizer with a given population
      *
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population tpop, boolean reset) {
+    public void initializeByPopulation(Population tpop, boolean reset) {
         // TODO this is again evil copy&paste style
         if (this.show) {
             if (this.plot == null) {
@@ -155,7 +155,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.population.init();
             this.population.incrGeneration();
         }
-        this.optimizer.init();
+        this.optimizer.initialize();
         this.optimizer.setProblem(this.optimizationProblem);
         InterfacePopulationChangedEventListener myLocal = null;
         if (this.numLocalOnly) {
@@ -164,7 +164,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             for (int i = 0; i < this.numLocalCPUs; i++) {
                 this.islands[i] = (InterfaceOptimizer) this.optimizer.clone();
                 this.islands[i].setIdentifier("" + i);
-                this.islands[i].init();
+                this.islands[i].initialize();
                 if (this.logLocalChanges) {
                     this.islands[i].addPopulationChangedEventListener(this);
                 }
@@ -178,7 +178,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
              for (int i = 0; i < nodesList.length; i++) {
              this.islands[i] = (InterfaceOptimizer) RMIProxyRemoteThread.newInstance(this.optimizer, nodesList[i]);
              this.islands[i].setIdentifier(""+i);
-             this.islands[i].init();
+             this.islands[i].initialize();
              if (this.logLocalChanges) {
              this.islands[i].addPopulationChangedEventListener(myLocal);
              }
@@ -386,7 +386,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             ((F1Problem) imea.optimizationProblem).setEAIndividual(new ESIndividualDoubleData());
         }
         imea.migrationRate = 15;
-        imea.init();
+        imea.initialize();
         while (imea.getPopulation().getFunctionCalls() < 25000) {
             imea.optimize();
         }

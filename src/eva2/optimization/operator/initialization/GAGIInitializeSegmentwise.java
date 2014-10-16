@@ -95,10 +95,10 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
     }
 //	
 //	public static void main(String[] args) {
-//		GAGIInitializeSegmentwise init = new GAGIInitializeSegmentwise(5, new int[]{5,0}, 0.5);
+//		GAGIInitializeSegmentwise initialize = new GAGIInitializeSegmentwise(5, new int[]{5,0}, 0.5);
 //		GIIndividualIntegerData indy = new GIIndividualIntegerData();
-//		indy.setInitOperator(init);
-//		indy.init(null);
+//		indy.setInitOperator(initialize);
+//		indy.initialize(null);
 //		System.out.println(indy.getStringRepresentation());
 //	}
 
@@ -289,7 +289,7 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
 
     ////////
     public String getName() {
-        return "GA-GI segment-wise init";
+        return "GA-GI segment-wise initialize";
     }
 
     public static String globalInfo() {

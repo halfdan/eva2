@@ -137,7 +137,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
             EVAERROR.errorMsgOnce("Warning: invalid mu/lambda ratio! Setting mu to lambda/2 = " + mu + ", lambda = " + lambda);
         }
         CMAParamSet params;
-        if (oldGen.getGeneration() <= 1) { // init new param set. At gen < 1 we shouldnt be called, but better do it once too often
+        if (oldGen.getGeneration() <= 1) { // initialize new param set. At gen < 1 we shouldnt be called, but better do it once too often
             if (oldGen.hasData(cmaParamsKey)) {
                 params = CMAParamSet.initCMAParams((CMAParamSet) oldGen.getData(cmaParamsKey), mu, lambda, oldGen, getInitSigma(oldGen));
             } else {
@@ -259,7 +259,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
                 / params.d_sig);
         if (Double.isInfinite(sigFact)) {
             params.sigma *= 10.;
-        } // in larger search spaces sigma tends to explode after init.
+        } // in larger search spaces sigma tends to explode after initialize.
         else {
             params.sigma *= sigFact;
         }
@@ -574,12 +574,12 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
 //		firstAdaptionDone = false;
 //		range = ((InterfaceDataTypeDouble)individual).getDoubleRange();
 //		dim = range.length;
-//		if (TRACE_1) System.out.println("WCMA init " + dim);
+//		if (TRACE_1) System.out.println("WCMA initialize " + dim);
 //		c_c = (4./(dim+4));
 //		c_sig = Double.NaN; // mark as not yet initialized
 ////		c_u_sig = Double.NaN;
-//		d_sig = Double.NaN; // init in first adaption step!  
-//		if (TRACE_1) System.out.println("WCMA static init " + dim);
+//		d_sig = Double.NaN; // initialize in first adaption step!
+//		if (TRACE_1) System.out.println("WCMA static initialize " + dim);
 //		eigenvalues = new double[dim];
 //		Arrays.fill(eigenvalues, 1.);
 //		

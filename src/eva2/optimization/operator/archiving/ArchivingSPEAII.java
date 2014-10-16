@@ -61,7 +61,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 //            ((AbstractEAIndividual)tmpPop.get(i)).SetData("kthDistance", new Double(kthDistance[i]));
 //        }
 
-        // Now init the new archive
+        // Now initialize the new archive
         Population archive = new Population();
         archive.setTargetSize(pop.getArchive().getTargetSize());
 

@@ -96,7 +96,7 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
     }
 
     /**
-     * This method allows you to init the crossover operator
+     * This method allows you to initialize the crossover operator
      *
      * @param individual The individual that will be mutated.
      * @param opt        The optimization problem.

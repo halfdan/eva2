@@ -145,7 +145,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     /**
      * This method inits the Problem to log multiruns for the s-Metric it
      * is necessary to give the border to get reliable results.
-     * also it is necessary to init the local Pareto-Front and the
+     * also it is necessary to initialize the local Pareto-Front and the
      * problem frame (i'll provide a default implementation here.
      */
     @Override
@@ -297,7 +297,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     }
 
     /**
-     * This method will init the problem specific visualisation of the problem
+     * This method will initialize the problem specific visualisation of the problem
      */
     public void initProblemFrame() {
         double[] tmpD = new double[2];
@@ -307,7 +307,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             plot = new Plot("Multiobjective Optimization", "Y1", "Y2", tmpD, tmpD);
         }
 
-        // plot init stuff
+        // plot initialize stuff
         this.initAdditionalData(this.plot, 10);
     }
 

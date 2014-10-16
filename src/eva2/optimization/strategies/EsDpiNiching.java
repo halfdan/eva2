@@ -222,7 +222,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         convCount = 0; // reset number of converged species (found peaks)
         collisions = 0; // reset the number of collisions
         population = new Population((getExpectedPeaks() + getExplorerPeaks()) * lambdaPerPeak);
@@ -242,7 +242,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             peakOpts[i].setParentSelection(parentSel);
             peakOpts[i].setPartnerSelection(new SelectBestSingle(true));
             peakOpts[i].setProblem(problem);
-            peakOpts[i].init();
+            peakOpts[i].initialize();
             peakOpts[i].setLambda(lambdaPerPeak); // set lambda after initialization
             peakOpts[i].setForceOrigPopSize(false);
             peakOpts[i].checkPopulationConstraints();
@@ -1093,7 +1093,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     }
 
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
 //		int pSize = pop.size();
         this.population = (Population) pop.clone();
         if (reset) {

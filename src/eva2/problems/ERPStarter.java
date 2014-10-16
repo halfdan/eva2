@@ -127,7 +127,7 @@ public class ERPStarter {
     public static ExternalRuntimeProblem parseCSV(String fname, int isVariableColIndex, int lowerBoundIndex,
                                                   int upperBoundIndex, int initialPosColIndex, int initialPosBoxLenColIndex,
                                                   int isObjectiveColIndex, int fitWeightsColIndex) {
-        double defaultInitialBoxLenRatio = 0.05; // by default, the init range is 5% of the domain range in a component
+        double defaultInitialBoxLenRatio = 0.05; // by default, the initialize range is 5% of the domain range in a component
         // this assumes that data colums are as in the example csv
         // parse only columns with index 2-9. Note that these will be reindexed to 0,1,2,3
         int[] filterCols = new int[7];
@@ -160,7 +160,7 @@ public class ERPStarter {
         // produce an initial range around the seed position if available, otherwise use domain range
         double[][] initialRange = new double[filteredVars.length][2];
         for (int i = 0; i < filteredVars.length; i++) {
-            if (Mathematics.isFinite(initPos[i][0])) { // if the init pos is valid (non NaN)...
+            if (Mathematics.isFinite(initPos[i][0])) { // if the initialize pos is valid (non NaN)...
                 double dv = defaultInitialBoxLenRatio * (range[i][1] - range[i][0]); // default box length for initial interval
                 if (Mathematics.isFinite(initBoxLen[i][0])) {
                     dv = initBoxLen[i][0];

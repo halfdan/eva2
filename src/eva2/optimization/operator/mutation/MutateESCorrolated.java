@@ -106,7 +106,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
     }
 
     /**
-     * This method allows you to init the mutation operator
+     * This method allows you to initialize the mutation operator
      *
      * @param individual The individual that will be mutated.
      * @param opt        The optimization problem.
@@ -116,14 +116,14 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
         if (individual instanceof InterfaceESIndividual) {
             double[] x = ((InterfaceESIndividual) individual).getDGenotype();
             if (this.sigmas == null) {
-                // init the Sigmas
+                // initialize the Sigmas
                 this.sigmas = new double[x.length];
                 for (int i = 0; i < this.sigmas.length; i++) {
                     this.sigmas[i] = this.mutationStepSize;
                 }
             }
             if (this.alphas == null) {
-                // init the Alphas
+                // initialize the Alphas
                 this.alphas = new double[(x.length * (x.length - 1)) / 2];
                 for (int i = 0; i < this.alphas.length; i++) {
                     this.alphas[i] = 0.0;

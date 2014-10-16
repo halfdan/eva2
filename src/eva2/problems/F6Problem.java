@@ -163,7 +163,7 @@ public class F6Problem extends AbstractProblemDoubleOffset
     private void initLS() {
         localSearchOptimizer = new GradientDescentAlgorithm();
         localSearchOptimizer.setProblem(this);
-        localSearchOptimizer.init();
+        localSearchOptimizer.initialize();
     }
 
     @Override

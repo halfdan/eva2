@@ -59,7 +59,7 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
     }
 
     /**
-     * This method allows you to init the metric loading data etc
+     * This method allows you to initialize the metric loading data etc
      */
     public void init() {
         this.loadReferenceData();

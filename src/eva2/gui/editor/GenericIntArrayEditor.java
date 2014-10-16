@@ -42,7 +42,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     }
 
     /**
-     * This method will init the CustomEditor Panel
+     * This method will initialize the CustomEditor Panel
      */
     private void initCustomEditor() {
         this.customEditor = new JPanel();
@@ -50,12 +50,12 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
 
         this.customEditor.add(new JLabel("Current Int Array:"), BorderLayout.NORTH);
 
-        // init data panel
+        // initialize data panel
         this.dataPanel = new JPanel();
         this.updateDataPanel();
         this.customEditor.add(this.dataPanel, BorderLayout.CENTER);
 
-        // init button panel
+        // initialize button panel
         this.buttonPanel = new JPanel();
         this.okButton = new JButton("OK");
         this.okButton.setEnabled(true);

@@ -97,7 +97,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         checkPopulationConstraints();
         population.putData(esMuParam, getMu());
         population.putData(esLambdaParam, getLambda());
@@ -106,13 +106,13 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
 
     /**
-     * This method will init the optimizer with a given population
+     * This method will initialize the optimizer with a given population
      *
      * @param pop   The initial population
      * @param reset If true the population is reset.
      */
     @Override
-    public void initByPopulation(Population pop, boolean reset) {
+    public void initializeByPopulation(Population pop, boolean reset) {
         origPopSize = pop.getTargetSize();
         this.population = (Population) pop.clone();
         if (reset) {

@@ -36,7 +36,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
     }
 
     /**
-     * This method will call the init method and will go to stall
+     * This method will call the initialize method and will go to stall
      */
     @Override
     public void initProcessElementParametrization() {
@@ -242,7 +242,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
 //            }
             mocco.state.optimizer = islandModelEA;
             mocco.state.optimizer.setProblem(mocco.state.currentProblem);
-            islandModelEA.init();
+            islandModelEA.initialize();
             double[] tmpD;
             double sum = 0, l = 0, u = 1;
             MOSOWeightedLPTchebycheff[] tmpLPs = new MOSOWeightedLPTchebycheff[perturbations];

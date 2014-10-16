@@ -44,11 +44,11 @@ package eva2.optimization.operator.mutation;
 //        } else return false;
 //    }
 //
-//    /** This method allows you to init the mutation operator
+//    /** This method allows you to initialize the mutation operator
 //     * @param individual      The individual that will be mutated.
 //     * @param opt               The optimization problem.
 //     */
-//    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+//    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
 //
 //    }
 //
