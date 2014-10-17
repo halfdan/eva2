@@ -361,8 +361,6 @@ public class Main extends JFrame implements OptimizationStateListener {
             LoggingPanel logPanel = new LoggingPanel();
             logPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-
-            boolean showLoadModules = EvAInfo.propShowModules() != null;
             createActions();
 
             setSize(800, 600);
@@ -386,12 +384,13 @@ public class Main extends JFrame implements OptimizationStateListener {
             JSplitPane horizontalSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
             horizontalSplit.setTopComponent(desktopPanel);
             horizontalSplit.setBottomComponent(logPanel);
-            horizontalSplit.setDividerLocation(0.25);
             horizontalSplit.setDividerSize(8);
             horizontalSplit.setOneTouchExpandable(true);
             horizontalSplit.setResizeWeight(1.0);
             horizontalSplit.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
             horizontalSplit.setContinuousLayout(true);
+
+            horizontalSplit.setDividerLocation(0.25);
             /* Add horizontal split pane at 1,1 */
             gbConstraints.gridx = 1;
             gbConstraints.gridy = 1;
@@ -433,9 +432,8 @@ public class Main extends JFrame implements OptimizationStateListener {
             gbConstraints.fill = GridBagConstraints.HORIZONTAL;
             gbConstraints.anchor = GridBagConstraints.PAGE_END;
             add(statusBar, gbConstraints);
-
-            setVisible(true);
         }
+
         if (useDefaultModule != null) {
             /*
              * if optimizationParameters are not defined and a params file is defined
@@ -470,6 +468,8 @@ public class Main extends JFrame implements OptimizationStateListener {
             if (!(configurationPane.isVisible())) {
                 configurationPane.setVisible(true);
             }
+
+            setVisible(true);
 
             // if this message is omitted, the stupid scroll pane runs to
             // the end of the last line which is ugly for a long class path
