@@ -96,7 +96,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     }
 
     /**
-     * Updates the property sheet panel with a changed property and also passed
+     * Updates the property sheet panel with a changed property and also passes
      * the event along.
      *
      * @param evt a value of type 'PropertyChangeEvent'
@@ -169,6 +169,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         propertyTable.setDefaultRenderer(Object.class, new PropertyCellRenderer());
         propertyTable.setDefaultEditor(Object.class, new PropertyCellEditor());
         propertyTable.setRowHeight(20);
+        propertyTable.setDragEnabled(false);
         propertyTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         // Close any child windows at this point

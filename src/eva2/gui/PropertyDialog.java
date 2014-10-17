@@ -24,19 +24,19 @@ public class PropertyDialog extends JDialog {
     /**
      *
      */
-    public PropertyDialog(PropertyEditor editor, String title, int x, int y) {
-        super();
+    public PropertyDialog(Window parent, PropertyEditor editor, String title, int x, int y) {
+        super(parent, title, ModalityType.APPLICATION_MODAL);
         setTitle(getFrameNameFromEditor(editor));
         BasicResourceLoader loader = BasicResourceLoader.instance();
         byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         propertyEditor = editor;
         editorComponent = editor.getCustomEditor();
         add(editorComponent, BorderLayout.CENTER);
+
         pack();
         setLocation(x, y);
-        setVisible(true);
     }
 
     protected static String getFrameNameFromEditor(PropertyEditor editor) {

@@ -30,7 +30,7 @@ public class BigStringEditor implements PropertyEditor {
             isFinished = false;
             BigStringEditor editor = new BigStringEditor();
 
-            PropertyDialog dialog = new PropertyDialog(editor, file, 50, 50);
+            PropertyDialog dialog = new PropertyDialog(null, editor, file, 50, 50);
 
             while (isFinished == false) {
                 try {
