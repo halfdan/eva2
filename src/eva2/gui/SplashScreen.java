@@ -7,13 +7,23 @@ import javax.swing.*;
 import java.awt.*;
 
 
-class SplashScreen extends Frame {
+class SplashScreen extends JWindow {
 
     private static final long serialVersionUID = 1281793825850423095L;
     private String imgLocation;
 
     public SplashScreen(String imgLoc) {
         imgLocation = imgLoc;
+        BasicResourceLoader loader = BasicResourceLoader.instance();
+        byte[] bytes = loader.getBytesFromResourceLocation(imgLocation, true);
+        ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
+        JLabel splashLabel = new JLabel(ii);
+
+        this.add(splashLabel);
+        this.pack();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(screenSize.width / 2 - this.getSize().width / 2, screenSize.height / 2 - this.getSize().height / 2);
+        setAlwaysOnTop(true);
     }
 
     /**
@@ -26,16 +36,7 @@ class SplashScreen extends Frame {
      * dispatch thread.
      */
     public void splash() {
-        JWindow splashWindow = new JWindow(this);
-        BasicResourceLoader loader = BasicResourceLoader.instance();
-        byte[] bytes = loader.getBytesFromResourceLocation(imgLocation, true);
-        ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
-        JLabel splashLabel = new JLabel(ii);
 
-        splashWindow.add(splashLabel);
-        splashWindow.pack();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        splashWindow.setLocation(screenSize.width / 2 - splashWindow.getSize().width / 2, screenSize.height / 2 - splashWindow.getSize().height / 2);
-        splashWindow.setVisible(true);
+        this.setVisible(true);
     }
 }

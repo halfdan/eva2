@@ -332,7 +332,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             /* Create main frame with GridBagLayout */
             setTitle(EvAInfo.productName);
             setLayout(new GridBagLayout());
-            setMinimumSize(new Dimension(800, 600));
+            setMinimumSize(new Dimension(1024, 800));
 
             /* Creates the desktopPane for Plot/Text Output */
             desktopPane = new JExtDesktopPane();
@@ -358,13 +358,6 @@ public class Main extends JFrame implements OptimizationStateListener {
             // TODO: use setIconImages (for better support of multiple icons when changing programs etc.)
             setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
 
-            try {
-                Thread.sleep(200);
-            } catch (Exception e) {
-                System.out.println("Error" + e.getMessage());
-            }
-
-
             LoggingPanel logPanel = new LoggingPanel();
             logPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -373,6 +366,8 @@ public class Main extends JFrame implements OptimizationStateListener {
             createActions();
 
             setSize(800, 600);
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            setLocation((int) ((screenSize.width - this.getWidth()) / 2), (int) ((screenSize.height - this.getHeight()) / 2.5));
 
             /* Create a new ConfigurationPanel (left side) */
             configurationPane = new JPanel(new GridBagLayout());
@@ -474,15 +469,6 @@ public class Main extends JFrame implements OptimizationStateListener {
 
             if (!(configurationPane.isVisible())) {
                 configurationPane.setVisible(true);
-            }
-
-            if (!(this.isVisible())) {
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                this.setLocation((int) ((screenSize.width - this.getWidth()) / 2), (int) ((screenSize.height - this.getHeight()) / 2.5));
-                this.pack();
-                this.setSize(screenSize);
-                this.setVisible(true);
-                this.setVisible(true);
             }
 
             // if this message is omitted, the stupid scroll pane runs to
