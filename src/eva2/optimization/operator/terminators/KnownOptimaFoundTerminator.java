@@ -8,6 +8,8 @@ import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This terminator counts the number of found optima for a problem that
@@ -18,8 +20,9 @@ import java.io.Serializable;
  * @author mkron
  */
 public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializable {
-    InterfaceMultimodalProblemKnown mProblem = null;
-    int reqOptima = 1;
+    private Logger LOGGER = Logger.getLogger(KnownOptimaFoundTerminator.class.getName());
+    private InterfaceMultimodalProblemKnown mProblem = null;
+    private int reqOptima = 1;
     private String msg = "";
 
     public KnownOptimaFoundTerminator() {
@@ -31,10 +34,10 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
             if (prob instanceof InterfaceMultimodalProblemKnown) {
                 mProblem = (InterfaceMultimodalProblemKnown) prob;
             } else {
-                System.err.println("KnownOptimaFoundTerminator only works with InterfaceMultimodalProblemKnown instances!");
+                LOGGER.log(Level.WARNING, "KnownOptimaFoundTerminator only works with InterfaceMultimodalProblemKnown instances!");
             }
         } else {
-            System.err.println("KnownOptimaFoundTerminator wont work with null problem!");
+            LOGGER.log(Level.WARNING, "KnownOptimaFoundTerminator wont work with null problem!");
         }
         msg = "Not terminated.";
     }
