@@ -35,8 +35,9 @@ public class PropertyPanel extends JPanel {
     }
 
     public void showDialog(int initX, int initY) {
+        Window parent = (Window)this.getRootPane().getParent();
         if (propertyDialog == null) {
-            propertyDialog = new PropertyDialog(propertyEditor, EVAHELP.cutClassName(propertyEditor.getClass().getName()), initX, initY);
+            propertyDialog = new PropertyDialog(parent, propertyEditor, EVAHELP.cutClassName(propertyEditor.getClass().getName()), initX, initY);
             propertyDialog.setPreferredSize(new Dimension(500, 300));
             propertyDialog.setModal(true);
             propertyDialog.setVisible(true);
@@ -67,9 +68,9 @@ public class PropertyPanel extends JPanel {
         Rectangle box = new Rectangle(i.left, i.top,
                 getSize().width - i.left - i.right,
                 getSize().height - i.top - i.bottom);
-        /*g.clearRect(i.left, i.top,
+        g.clearRect(i.left, i.top,
                 getSize().width - i.right - i.left,
-                getSize().height - i.bottom - i.top);*/
+                getSize().height - i.bottom - i.top);
         propertyEditor.paintValue(g, box);
     }
 
