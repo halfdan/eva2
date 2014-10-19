@@ -47,7 +47,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     transient private int indCount = 0;
     transient private InterfacePopulationChangedEventListener populationChangedEventListener;
     transient Plot myPlot = null;
-    public static final boolean TRACE = false;
 
     public ParticleFilterOptimization() {
         if (withShow) {
@@ -167,9 +166,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
                 parents.add(immi);
             }
             parents.synchSize();
-            if (TRACE) {
-                System.out.println("Added " + i + " random individuals");
-            }
         }
 
         parents.setFunctionCalls(pop.getFunctionCalls());
@@ -249,13 +245,8 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
         // predict step
         predict(nextGeneration);
-        if (TRACE) {
-            System.out.println("Speed is  " + BeanInspector.toString(ParticleSwarmOptimization.getPopulationVelSpeed(population, 3, MutateESCorrVector.vectorKey, null, null)) + " popM " + BeanInspector.toString(population.getPopulationMeasures(new EuclideanMetric())));
-        }
 
         population = evaluatePopulation(nextGeneration);
-
-//        collectStatistics(population);
 
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 

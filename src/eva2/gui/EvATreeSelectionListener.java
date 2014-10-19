@@ -22,7 +22,6 @@ public class EvATreeSelectionListener implements TreeSelectionListener, Property
     private PropertyEditor goe = null;
     private EvATreeNode root = null;
     private JTree jtree = null;
-    public static final boolean TRACE = true;
 
     /**
      * Create a tree listener and hook it up in the editor to listen to parameter changes
@@ -47,17 +46,9 @@ public class EvATreeSelectionListener implements TreeSelectionListener, Property
 
     @Override
     public void valueChanged(TreeSelectionEvent e) {
-        if (TRACE) {
-            System.out.println("valueChanged to " + BeanInspector.toString(e.getPath()));
-        }
         TreePath tp = e.getPath();
-        if (TRACE) {
-            for (int i = tp.getPathCount() - 1; i >= 0; i--) {
-                System.out.println("* " + i + " " + tp.getPathComponent(i));
-            }
-        }
+
         EvATreeNode leafNode = (EvATreeNode) tp.getLastPathComponent();
-//		goe.setValue(leafNode.getUserObject());
         Component editComp = goe.getCustomEditor();
         if (editComp instanceof OptimizationEditorPanel) {
             // update the object in the main OptimizationEditorPanel
@@ -69,9 +60,6 @@ public class EvATreeSelectionListener implements TreeSelectionListener, Property
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (TRACE) {
-            System.out.println("EvATreeNode received change event " + evt);
-        }
         root.setObject(evt.getNewValue(), true);
         if (jtree != null) {
             jtree.setModel(new DefaultTreeModel(root));

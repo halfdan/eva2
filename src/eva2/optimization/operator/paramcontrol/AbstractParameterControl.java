@@ -16,7 +16,6 @@ import eva2.optimization.population.Population;
  */
 public abstract class AbstractParameterControl implements InterfaceParameterControl {
     public Object[] initialValues = null;
-    protected static boolean TRACE = false;
 
     public AbstractParameterControl() {
     }
@@ -57,10 +56,6 @@ public abstract class AbstractParameterControl implements InterfaceParameterCont
             if (!BeanInspector.setMem(obj, params[i], vals[i])) {
                 System.err.println("Error: failed to set parameter from parameter control " + this.getClass().getName());
                 System.err.println("  Tried to set name/val: " + params[i] + " / " + BeanInspector.toString(vals[i]));
-            } else {
-                if (TRACE) {
-                    System.out.println("Successfully set " + params[i] + " / " + BeanInspector.toString(vals[i]) + " at " + iteration);
-                }
             }
         }
     }

@@ -18,7 +18,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
     //	private transient GPFunctionProblem func = null;
     protected ConstraintRelationEnum relation = ConstraintRelationEnum.lessEqZero;
     protected ConstraintHandlingEnum handling = ConstraintHandlingEnum.specificTag;
-    protected static boolean TRACE = false;
+
     protected double equalityEpsilon = 0.0001; // threshold below which equality constraints are seen as satisfied
     private AbstractEAIndividual currentIndy = null;
 
@@ -31,11 +31,9 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
         relation = ConstraintRelationEnum.lessEqZero;
         penaltyFactor = 1.;
         paramCtrl = new ParameterControlManager(new NoParamAdaption());
-//		penaltyFactAdaption = new NoParamAdaption();		
     }
 
     public AbstractConstraint(AbstractConstraint o) {
-//		penaltyFactAdaption = (ParamAdaption)o.penaltyFactAdaption.clone();
         paramCtrl = new ParameterControlManager(o.paramCtrl);
         penaltyFactor = o.penaltyFactor;
         relation = o.relation;

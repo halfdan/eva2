@@ -30,7 +30,6 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     protected double rotationDev = 15.;
     protected boolean checkConstraints = true;
     public static final String vectorKey = "MutateESCorrVectorVector";
-    public static final boolean TRACE = false;
 
     public MutateESCorrVector() {
     }
@@ -128,7 +127,6 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      */
     @Override
     public void mutate(AbstractEAIndividual individual) {
-//        if (TRACE) System.out.println("Before Mutate: " + AbstractEAIndividual.getDefaultDataString(individual));
         if (individual instanceof InterfaceESIndividual) {
             double[] genes = ((InterfaceESIndividual) individual).getDGenotype();
             double[][] range = ((InterfaceESIndividual) individual).getDoubleRange();
@@ -137,9 +135,6 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
 
             // mutate the velocity vector and write it back
             if ((scalingDev > 0) || (rotationDev > 0)) {
-//            	for (int i = 0; i < vel.length; i++) {
-//            		vel[i] += ((range[i][1] -range[i][0])/2)*RNG.gaussianDouble(this.mutationStepSize);
-//            	}
                 double rotateRad = rotationDev * (Math.PI / 360.) * RNG.gaussianDouble(1.);
                 // rotate with a gaussian distribution of deviation rotationDeg
                 Mathematics.rotateAllAxes(vel, rotateRad, false); // rotate
@@ -158,12 +153,6 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
                 Mathematics.svMult(rScale, vel, vel); // mutate speed
 
                 individual.putData(vectorKey, vel);
-                if (TRACE) {
-                    System.out.println("rotated by " + rotateRad + ", scaled by " + rScale);
-                }
-                if (TRACE) {
-                    System.out.println("-- dir is  " + BeanInspector.toString(vel));
-                }
             }
 
             // add velocity to the individual
@@ -178,7 +167,6 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
             ((InterfaceESIndividual) individual).setDGenotype(genes);
 
         }
-//        if (TRACE) System.out.println("After Mutate:  " + AbstractEAIndividual.getDefaultDataString(individual));
     }
 
     /**
@@ -192,21 +180,21 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
         ArrayList<Double> tmpList = new ArrayList<Double>();
         if (indy1.getMutationOperator() instanceof MutateESCorrVector) {
-            tmpList.add(new Double(((MutateESCorrVector) indy1.getMutationOperator()).scalingDev));
+            tmpList.add(((MutateESCorrVector) indy1.getMutationOperator()).scalingDev);
         }
-        for (int i = 0; i < partners.size(); i++) {
-            if (((AbstractEAIndividual) partners.get(i)).getMutationOperator() instanceof MutateESCorrVector) {
-                tmpList.add(new Double(((MutateESCorrVector) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).scalingDev));
+        for (Object partner : partners) {
+            if (((AbstractEAIndividual) partner).getMutationOperator() instanceof MutateESCorrVector) {
+                tmpList.add(((MutateESCorrVector) ((AbstractEAIndividual) partner).getMutationOperator()).scalingDev);
             }
         }
         double[] list = new double[tmpList.size()];
         for (int i = 0; i < tmpList.size(); i++) {
-            list[i] = tmpList.get(i).doubleValue();
+            list[i] = tmpList.get(i);
         }
         if (list.length <= 1) {
             return;
         }
-        // discreete mutation for step size
+        // discrete mutation for step size
         this.scalingDev = list[RNG.randomInt(0, list.length - 1)];
     }
 

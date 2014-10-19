@@ -13,15 +13,14 @@ import java.util.BitSet;
 
 /**
  * The famous n-point crossover operator on a binary and integer genotype. Genotypes of
- * parent individuals are recombined by exchanging subsegments within randomly
- * selected points. Therefore, far-away allels (larger GA schemas) are more likely to be split
+ * parent individuals are recombined by exchanging sub-segments within randomly
+ * selected points. Therefore, far-away alleles (larger GA schemas) are more likely to be split
  * between individuals.
  *
  * @author mkron, streiche
  */
 public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializable {
     private int numberOfCrossovers = 3;
-    private static boolean TRACE = false;
 
     public CrossoverGAGINPoint() {
 
@@ -71,7 +70,6 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
 
         if (individual instanceof InterfaceGAIndividual || (individual instanceof InterfaceGIIndividual)) {
             int length = getGenotypeLength(individual);
-//            Object[][]  tmpGenotypes       = new Object[2][partners.size()+1];
             Object[] origGenotypes = new Object[partners.size() + 1];
             Object[] newGenotypes = new Object[partners.size() + 1];
 
@@ -83,14 +81,9 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
                 newGenotypes[i + 1] = getGenotype(result[i + 1]);
                 length = Math.max(length, getGenotypeLength(partners.getEAIndividual(i)));
             }
-            if (TRACE) {
-                System.out.println("Before CO: " + BeanInspector.toString(newGenotypes));
-            }
+
             int mixer = RNG.randomInt(0, partners.size()); // partner index with which to exchange genes
             int[] crossoverPoints = getCrossoverPoints(length, numberOfCrossovers);
-            if (TRACE) {
-                System.out.println("CO points: " + BeanInspector.toString(crossoverPoints));
-            }
             for (int i = 0; i < length; i++) { // loop positions
                 for (int j = 0; j < this.numberOfCrossovers; j++) {
                     if (i == crossoverPoints[j]) {
@@ -105,9 +98,6 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
 
             for (int i = 0; i < result.length; i++) {
                 writeBack(result[i], newGenotypes[i]);
-            }
-            if (TRACE) {
-                System.out.println("After CO: " + BeanInspector.toString(newGenotypes));
             }
         }
         return result;

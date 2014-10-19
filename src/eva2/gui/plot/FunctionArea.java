@@ -426,7 +426,6 @@ public class FunctionArea extends DArea implements Serializable {
                 minY = Math.min(minY, pSet.getMinYVal());
             }
         }
-        // if (TRACE) System.out.println("min is " + minY);
         return (minY > 0);
     }
 

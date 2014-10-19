@@ -43,8 +43,6 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
     private static final String initializedForKey = "initializedClustNearestBetterOnHash";
     private static final String initializedRefData = "initializedClustNearestBetterData";
 
-    private static boolean TRACE = false;
-
     public ClusteringNearestBetter() {
     }
 
@@ -216,9 +214,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
                 }
             }
             currentMeanDistance = createClusterTreeFromSortedPop(sorted);
-            if (TRACE) {
-                pop.putData(initializedForKey, pop.hashCode());
-            }
+
             pop.putData(initializedRefData, currentMeanDistance);
             return initializedRefData;
         } else {
@@ -247,10 +243,6 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
             }
         }
 
-        if (TRACE) {
-            System.out.println("Current pop measures: " + BeanInspector.toString(pop.getPopulationMeasures(metric)[0]));
-            System.out.println("Current threshold: " + currentDistThreshold());
-        }
         if (isAdaptiveThreshold()) { // test if there was a valid initialization step
             if (!getRefData(referenceSet, pop)) {
                 currentMeanDistance = createClusterTreeFromSortedPop(sorted);
@@ -304,13 +296,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
         }
         Double refDat = (Double) referenceSet.getData(initializedRefData);
         if (refDat != null) {
-            if (TRACE) { // check hash
-                Integer hash = (Integer) referenceSet.getData(initializedForKey);
-                if ((hash == null) || (hash != referenceSet.hashCode())) {
-                    System.err.println("Warning, missing initialization before clustering for ClusteringNearestBetter!");
-                    return false;
-                }
-            }
+
             currentMeanDistance = refDat.doubleValue();
             return true;
         } else {
@@ -362,14 +348,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
                     // so add it to the cluster, mark it, and proceed recursively.
                     currentClust.add(sorted.get(children[current].get(i)));
                     clustered[children[current].get(i)] = true;
-                    if (TRACE) {
-                        System.out.println("Assigned " + current);
-                    }
                     addChildren(children[current].get(i), clustered, sorted, currentClust);
-                } else {
-                    if (TRACE) {
-                        System.out.println("Not assigned " + current);
-                    }
                 }
             }
         } else {

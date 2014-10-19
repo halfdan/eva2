@@ -26,7 +26,6 @@ import java.util.concurrent.Semaphore;
  */
 public class MatlabEvalMediator {
     volatile Boolean requesting = false;
-    //	final static boolean TRACE = false;
     volatile private Boolean fin = false;
     volatile Object question = null;
     volatile double[] answer = null;

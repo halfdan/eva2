@@ -30,8 +30,6 @@ import java.util.BitSet;
  */
 @Description("A basic implementation of a Binary ScatterSearch")
 public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
-
-    private static boolean TRACE = false;
     transient private InterfacePopulationChangedEventListener populationChangedEventListener = null;
     private String identifier = "BinaryScatterSearch";
     private int MaxImpIter = 5;
@@ -236,17 +234,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
         int numToInit = this.poolSize - pop.size();
         if (numToInit > 0) {
             pop.addAll(generateG1((int) (numToInit * this.g1)));
-            if (TRACE) {
-                System.out.println("s1: " + pop.size());
-            }
+
             generateG2(pop, (int) (numToInit * this.g2));
-            if (TRACE) {
-                System.out.println("s2: " + pop.size());
-            }
             generateG3(pop, poolSize - pop.size());
-            if (TRACE) {
-                System.out.println("s3: " + pop.size());
-            }
         }
         return pop;
     }
@@ -272,8 +262,9 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * 000...000, then 010101...01, 101010...10, 001001001...001,
      * 110110110...110 and so on
      *
-     * @param pop the initial Population
-     * @return the new Population
+     * @param targetSize The size of the new Population
+     * @param template The template individual to use
+     * @return a new Population
      */
     public static Population generateG1Pop(int targetSize, AbstractEAIndividual template) {
         boolean method1 = true;
@@ -716,8 +707,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
             // generate a new Pool
             this.pool = new Population();
             ArrayList<Population> newSubsets = generateSubsets();
-            for (int i = 0; i < newSubsets.size(); i++) {
-                Population s = newSubsets.get(i);
+            for (Population s : newSubsets) {
                 AbstractEAIndividual x = combineSolution(s);
                 if (!contains((InterfaceDataTypeBinary) x, this.pool) && this.pool.size() <= this.poolSize) {
                     this.pool.add(x);

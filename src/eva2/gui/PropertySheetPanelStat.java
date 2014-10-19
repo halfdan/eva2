@@ -11,8 +11,6 @@ import java.io.Serializable;
  *
  */
 public class PropertySheetPanelStat extends JPanel implements Serializable {
-
-    public final static boolean TRACE = false;
     private Object[] values;
     private JCheckBoxFlag[] views;
     private JLabel[] labels;
@@ -37,8 +35,6 @@ public class PropertySheetPanelStat extends JPanel implements Serializable {
         GridBagLayout gbLayout = new GridBagLayout();
         setLayout(gbLayout);
         setVisible(false);
-
-        int rowHeight = 12;
 
         values = new Object[flag.length];
         views = new JCheckBoxFlag[flag.length];

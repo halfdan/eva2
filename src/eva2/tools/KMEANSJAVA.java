@@ -8,7 +8,6 @@ import java.util.Comparator;
  *
  */
 public class KMEANSJAVA {
-    static public boolean TRACE = false;
     protected double[][] c;
     protected int[] indices;
 
@@ -41,10 +40,6 @@ public class KMEANSJAVA {
      *
      */
     public KMEANSJAVA(double[][] samples, int K, int iterations) {
-        //System.out.print("in");
-        if (TRACE) {
-            System.out.println("K" + K);
-        }
         if (K > samples.length) {
             K = samples.length;
         }
@@ -72,11 +67,11 @@ public class KMEANSJAVA {
             for (int indexofc = 0; indexofc < c.length; indexofc++) {
                 double[] newcenter = new double[samples[0].length];
                 int treffer = 0;
-                for (int j = 0; j < indices.length; j++) { //System.out.println("j="+j);
-                    if (indices[j] == indexofc) {
+                for (int indice : indices) { //System.out.println("j="+j);
+                    if (indice == indexofc) {
                         treffer++;
                         for (int d = 0; d < newcenter.length; d++) {
-                            newcenter[d] += c[indices[j]][d];
+                            newcenter[d] += c[indice][d];
                             //newcenter[d] = newcenter[d] + samples[j][d];
                         }
                     }
@@ -88,7 +83,6 @@ public class KMEANSJAVA {
             }
             // determine the new centers
         }
-        //System.out.println("out");
     }
 
     /**
@@ -115,9 +109,9 @@ public class KMEANSJAVA {
             System.out.println("");
         }
         System.out.println("test");
-        for (int i = 0; i < test.length; i++) {
-            for (int j = 0; j < test[i].length; j++) {
-                System.out.print(test[i][j] + " ");
+        for (double[] aTest : test) {
+            for (int j = 0; j < aTest.length; j++) {
+                System.out.print(aTest[j] + " ");
             }
             System.out.println("");
         }

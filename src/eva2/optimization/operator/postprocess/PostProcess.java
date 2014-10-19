@@ -46,7 +46,6 @@ import java.util.Vector;
  */
 public class PostProcess {
     protected static InterfaceDistanceMetric metric = new PhenotypeMetric();
-    private static final boolean TRACE = false;
 
     // the default mutation step size for HC post processing
     private static double defaultMutationStepSize = 0.01;
@@ -175,17 +174,7 @@ public class PostProcess {
         result.setSameParams(pop);
         clustering.initClustering(pop);
         Population[] clusters = clustering.cluster(pop, null);
-        if (TRACE) {
-            System.out.println("found " + clusters.length + " clusters!");
-            int sum = 0;
-            for (int j = 0; j < clusters.length; j++) {
-                sum += clusters[j].size();
-                if (TRACE) {
-                    System.out.print(j + " w " + clusters[j].size() + ", ");
-                }
-            }
-            System.out.println("\nsum was " + sum);
-        }
+
         for (int j = 0; j < clusters.length; j++) {
             if (j == 0) { // cluster 0 contains non-assigned individuals
                 if (lonerMode == DISCARD_LONERS) {
@@ -580,9 +569,7 @@ public class PostProcess {
             case nelderMead:
                 double[][] range = ((InterfaceDataTypeDouble) candidates.getEAIndividual(index)).getDoubleRange();
                 double perturb = findNMSPerturb(candidates, index, relToAbsPerturb(maxRelativePerturbation, range));
-                if (TRACE) {
-                    System.out.println("perturb " + index + " is " + perturb);
-                }
+
                 subPop = NelderMeadSimplex.createNMSPopulation(candidates.getEAIndividual(index), absToRelPerturb(perturb, range), range, false);
         }
         return subPop;
@@ -636,9 +623,7 @@ public class PostProcess {
             return evalsDone;
         } else {
             int stepsPerCand = (steps - (candCnt * (dim - 1))) / candCnt;
-            if (TRACE) {
-                System.out.println("employing " + stepsPerCand + " steps per cand.");
-            }
+
             if (stepsPerCand < dim) {
                 System.err.println("Too few steps allowed in processSingleCandidates!");
                 System.err.println("Method: " + method + ", cands: " + candidates.size() + ", steps: " + steps);
@@ -689,9 +674,7 @@ public class PostProcess {
 
         if (term == null) {
             int stepsPerCand = 10 * (nmPops.get(0).size() - 1); // == 10*dim for NM
-            if (TRACE) {
-                System.out.println("employing " + stepsPerCand + " per candidate.");
-            }
+
             if (stepsPerCand < 1) {
                 System.err.println("Too few steps allowed!");
                 return 0;
@@ -959,18 +942,11 @@ public class PostProcess {
 
         double[] meanFit = clust.getMeanFitness();
 
-        if (TRACE) {
-            System.out.println("BEF: funcalls done: " + pop.getFunctionCalls() + ", now allowed: " + funCalls);
-        }
-
         int evalsDone = processSingleCandidates(method, clust, funCalls, sigmaCluster / 2., problem, mute);
 
         clust.setFunctionCalls(evalsBefore + evalsDone);
 
         double improvement = EuclideanMetric.euclideanDistance(meanFit, clust.getMeanFitness());
-        if (TRACE) {
-            System.out.println("improvement by " + improvement + " funcalls done: " + evalsDone);
-        }
         return new Pair<Population, Double>(clust, improvement);
     }
 
@@ -990,7 +966,6 @@ public class PostProcess {
             listener.println("max peak ratio is " + mmkProb.getMaximumPeakRatio(getFoundOptima(solutions, mmkProb.getRealOptima(), mmkProb.getDefaultAccuracy(), true)));
             if (mmkProb.fullListAvailable()) {
                 for (double epsilon = 0.1; epsilon > 0.00000001; epsilon /= 10.) {
-//	out.println("no optima found: " + ((InterfaceMultimodalProblemKnown)mmProb).getNumberOfFoundOptima(pop));
                     listener.println("found " + getFoundOptima(solutions, mmkProb.getRealOptima(), epsilon, true).size() + " for epsilon = " + epsilon + ", maxPeakRatio: " + mmkProb.getMaximumPeakRatio(solutions));
                 }
             }

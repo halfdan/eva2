@@ -19,29 +19,6 @@ public class EvAStatisticalEvaluation {
 
     public static EvAStatisticalEvaluationParams statsParams = new EvAStatisticalEvaluationParams();
 
-//	public static void evaluate(OptimizationJob[] jobList, int[] selectedIndices) {
-//		if (TRACE) System.out.println("Job list: " + BeanInspector.toString(jobList));
-//		JTextoutputFrame textout = new JTextoutputFrame("Statistics");
-//		textout.setShow(true);
-//		ArrayList<OptimizationJob> jobsToWorkWith = new ArrayList<OptimizationJob>();
-//		for (int i=0; i<jobList.length; i++) {
-//			// remove jobs which are not finished or not selected
-//			if (jobList[i]!=null && (Mathematics.contains(selectedIndices, i)) && (jobList[i].isFinishedAndComplete())) jobsToWorkWith.add(jobList[i]);
-//		}
-//		List<String> commonFields = getCommonFields(jobsToWorkWith);
-//		if (commonFields!=null && !commonFields.isEmpty()) for (String field : commonFields) {
-//			textout.println("Checking field " + field);
-//
-//			for (int i=0; i<jobsToWorkWith.size(); i++) {
-//				textout.print(jobsToWorkWith.get(i).getParams().getOptimizer().getName() + "\t");
-//				for (int j=0; j<jobsToWorkWith.size(); j++) {
-////					System.out.println("Comparing " + i + " with " + j);
-//					textout.print("\t" + compare(field, jobsToWorkWith.get(i), jobsToWorkWith.get(j)));
-//				}
-//				textout.println("");
-//			}
-//		}
-//	}
 
     public static void evaluate(InterfaceTextListener textout, OptimizationJob[] jobList, int[] selectedIndices,
                                 StatsOnSingleDataSetEnum[] singleStats,

@@ -62,10 +62,6 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
         if (constraintProgram == null) {
             System.err.println("Error: invalid expression: " + constraintString);
         }
-        if (TRACE) {
-            System.out.println("Compiled constraint " + constraintString);
-            System.out.println("Program: " + constraintProgram.getStringRepresentation());
-        }
     }
 
     /**
@@ -97,8 +93,6 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
                 } else {
                     return 0.;
                 }
-//		case linearLessEqZero:
-//			return getViolation(evalLinearConstr(indy));
         }
         EVAERROR.errorMsgOnce("Error: unknown relation for GenericConstraint!");
         return 0.;
@@ -111,9 +105,6 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
     public void setConstraintString(String constraintString) {
         this.constraintString = constraintString;
         constraintProgram = null;
-        if (TRACE) {
-            System.out.println(" NEW CONSTRAINT STRING SET! in " + this);
-        }
     }
 
     public String getName() {

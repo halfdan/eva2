@@ -27,7 +27,6 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
     private double startAct = 0.17;
     private double endAct = 0.01;
     private double deltaInertness = 0.1;
-    private static boolean TRACE = false;
     private boolean exponentialSchedule = true;
 
     private static String target = "inertnessOrChi";
@@ -71,9 +70,7 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 
     private double calcNewInertness(double currentInertness, double currentAct,
                                     double desiredActivity) {
-        if (TRACE) {
-            System.out.println("Activity was " + currentAct + ", desired: " + desiredActivity);
-        }
+
         if (currentAct < desiredActivity) { // increase inertness
             return Math.min(maxInert, currentInertness + deltaInertness);
         } else if (currentAct > desiredActivity) { // too high act, so decrease inertness

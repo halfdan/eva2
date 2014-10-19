@@ -91,7 +91,6 @@ import java.util.Formatter;
         + "in parallel, which are reclustered in each iteration based on the dynamic peak set.")
 public class EsDpiNiching implements InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer, InterfacePopulationChangedEventListener {
 
-    private static final boolean TRACE = false, TRACE_DEMES = false;
     private double nicheRadius = 0.3;
     private int expectedPeaks = 5;
     private int explorerPeaks = 0;
@@ -250,7 +249,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             population.incrFunctionCallsBy(peakOpts[i].getPopulation().getFunctionCalls());
         }
         // possibly reduce immigrants to produce a conforming number of initial evaluations (same number as in later iterations: numPeaks*muLambda+immigrants)
-//		int initialImmigrants = (fullNumPeaks()*lambdaPerPeak+getNumRndImmigrants())-(fullNumPeaks()*muPerPeak+getNumRndImmigrants());
         if (getNumRndImmigrants() > 0) {
             generateEvalImmigrants(getNumRndImmigrants());
         }
@@ -319,7 +317,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             }
             r = 0.5 * Math.sqrt(dim);
         }
-//		setNicheRadius(r*Math.pow(numExpectedPeaks, -1./(double)dim));
         return r * Math.pow(numExpectedOptima, -1. / (double) dim);
     }
 
@@ -347,8 +344,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     }
 
     private int increaseExpectedPeaksCriterion() {
-//		if ((getPopulation().getGeneration() % 5) == 0) return 1;
-//		else return 0;
         if (isDoNumPeakAdaption() && (archive.size() >= getExpectedPeaks())) {
             return (int) Math.max(((double) getExpectedPeaks()) * 1.2, 2.);
         } else {
@@ -374,9 +369,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         if (increaseExpectedPeaksCriterion() > 0) {
             addExpectedPeaks(increaseExpectedPeaksCriterion());
         }
-        if (TRACE) {
-            System.out.println("--- FULL POP SIZE: " + population.size() + " , funcalls: " + population.getFunctionCalls() + ", gen " + population.getGeneration());
-        }
         ClusteringDynPeakIdent dpiClustering = new ClusteringDynPeakIdent(getExpectedPeaks(), getLambdaPerPeak(), nicheRadius, true, metric);
         // perform dynamic peak identification resulting in the dynamic peak set dps
         dpiClustering.initClustering(population);
@@ -386,20 +378,12 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             peakPopSet[i].removePopulationChangedEventListener(this);
         }
         setGeneration(population.getGeneration(), peakPopSet);
-        if (TRACE_DEMES) {
-            printDemes("After clustering: ", peakPopSet);
-        }
 
         int curNumPeaks = peakPopSet.length - 1;
 
-//		boolean copyHashFromParents=true;
         // transfer population hash data along the peaks -> for each peak chose the original last population
         // and transfer the data to the new cluster
-//		if (copyHashFromParents) {
         copyDataFromParents(peakPopSet);
-//		} else {
-//			copyDataFromClosest(clusteredPeakPops);
-//		}
 
         int reqNewPeaks = 0;
         if (curNumPeaks < getExpectedPeaks()) {
@@ -427,10 +411,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         // add missing and explorer peaks as new random individuals (or old unclustered ones)
         peakPopSet = generateMissingSpecies(peakPopSet, getMuPerPeak(), reqNewPeaks, false);
 
-        if (TRACE_DEMES) {
-            printDemes("After expansion: ", peakPopSet);
-        }
-
         if (archive != null && (archive.size() > 0) && isReinitOnCollision()) {
             double origNicheRad = dpiClustering.getNicheRadius();
             dpiClustering.setNicheRadius(collisionDetNicheRadius);
@@ -443,28 +423,12 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                         // the new found species is actually better than the archived solution
                         archive.set(i, peakPopSet[assoc[i]].getBestEAIndividual().clone()); // replace archived indy
                     }
-                    if (TRACE) {
-                        System.out.println(" Converged on archived solution.. resetting peak pop " + assoc[i]);
-                    }
                     peakPopSet[assoc[i]] = initRandomPeakPop(getMuPerPeak());
                 }
             }
             dpiClustering.setNicheRadius(origNicheRad);
-            if (TRACE_DEMES) {
-                printDemes("After archivie-merge: ", peakPopSet);
-            }
         }
 
-        if (TRACE) {
-            for (int k = 0; k < peakPopSet.length - 1; k++) {
-                for (int j = k + 1; j < peakPopSet.length; j++) {
-                    Population cut = peakPopSet[k].setCut(peakPopSet[j]);
-                    if (cut.size() > 0) {
-                        System.err.println("duplicate inherited in EsDpiNiching! OK if explorer peaks exist that are not always reinited and " + j + ">" + getExpectedPeaks() + " and " + k + "==0.");
-                    }
-                }
-            }
-        }
         plot = null;
         // now generate the lambda offsprings
 //		nextGeneration = this.generateEvalChildren(dps); // create lambda new ones from mu parents
@@ -475,9 +439,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             if (curSpecies.size() == 1 && (!isAllowSingularPeakPops())) {
                 // Quoting SB05: "In case that the niche only contains one individual, the second parent will be the best indidivual of another niche."
                 AbstractEAIndividual bestOther = (AbstractEAIndividual) selectBestFromOtherSpecies(clustIndex, peakPopSet).clone();
-                if (TRACE) {
-                    System.out.println("Adding best from other species: " + bestOther);
-                }
                 curSpecies.add(bestOther);
             } else if (curSpecies.size() == 0) {
                 System.err.println("Warning, empty niche population in EsDpiNiching!");
@@ -497,19 +458,10 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             if (doDraw(population.getGeneration())) {
                 drawPeakPop("" + clustIndex, curSpecies);
             }
-            if (TRACE) {
-                System.out.println("Optimizing cluster index " + (clustIndex) + ", size " + curSpecies.size());
-            }
             peakOpts[clustIndex - 1].optimize(); // !!!!!!!! Actual optimization step
             optimizedSpecies = peakOpts[clustIndex - 1].getPopulation();
             optimizedSpecies.putData(origPeakIndyKey, curPeak);
             population.incrFunctionCallsBy(optimizedSpecies.size());
-//        	optimizedSpecies.incrGeneration(); // is already done in the .optimize() call above
-//        	optimizedSpecies.incrFunctionCallsBy(optimizedSpecies.size());
-            if (TRACE) {
-                System.out.println("  ..." + optimizedSpecies.size() + " more funcalls... ");
-            }
-
         }
 
         // we may have a problem if, by chance, all species have been deactivated simultaneously AND there are no unclustered !
@@ -518,21 +470,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             peakOpts[0].getPopulation().addPopulation(initRandomPeakPop(getMuPerPeak()));
         }
 
-        if (TRACE) {
-            for (int k = 0; k < peakPopSet.length - 1; k++) {
-                for (int j = k + 1; j < peakPopSet.length; j++) {
-                    Population cut = peakPopSet[k].setCut(peakPopSet[j]);
-                    if (cut.size() > 1) {
-                        // one may happen after a cluster had a size of one, since then another leader is added
-                        if (cut.size() == 2 && (peakPopSet[k].size() == 2) && (peakPopSet[j].size() == 2)) {
-                            // two may happen since they can be added reciprocally to each other
-                        } else {
-                            System.err.println("duplicate indy in EsDpiNiching. OK if explorer peaks exist that are not always reinited and " + j + ">" + getExpectedPeaks() + " and " + k + "==0.");
-                        }
-                    }
-                }
-            }
-        }
         if (doEtaPreselection) { // this basically replaces ES-environment selection
             // select the eta best from the offspring per peak population
             // fill up to muPerPeak by adding from the old peak population
@@ -545,9 +482,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                     System.err.println("Warning: fewer clusters than expected peaks in EsDpiNiching!");
                     offspring.clear(); // empty set to avoid duplicates!
                 } else {
-                    if (TRACE) {
-                        System.out.println("EtaPresel: from " + offspring.size() + " offspring selecting " + eta);
-                    }
                     Population selected = selBest.selectFrom(offspring, eta);
                     if (!selected.isSubSet(offspring)) {
                         System.err.println("fatal problem in EsDpiNiching!!!");
@@ -558,33 +492,16 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                     int delta = muPerPeak - eta;
                     if (delta > 0) {
                         Population filterPeakPop = peakPopSet[i + 1].filter(selected);
-                        if (TRACE) {
-                            System.out.println("Adding " + Math.min(delta, filterPeakPop.size()) + " from peak population.");
-                        }
                         // (few) duplicates may happen because parents are copied to another peak population
                         // if a cluster had a size of 1 AND parents may survive due to elitism.
                         selected.addPopulation(selBest.selectFrom(filterPeakPop, Math.min(delta, filterPeakPop.size())), false);
                         if (selected.size() < muPerPeak && (addLonersToPeaks)) {
                             delta = Math.min(muPerPeak - selected.size(), loners.size());
-                            if (TRACE) {
-                                System.out.println("filling up with lucky loners: " + delta);
-                            }
                             // fill up with loner indies
                             SelectRandom selRnd = new SelectRandom(false); // no duplicates wanted!
                             Population luckyLosers = selRnd.selectFrom(loners, delta);
                             selected.addPopulation(luckyLosers, true);
                             loners.removeMembers(luckyLosers, true);
-                            // fill up with random indies
-                            //        				Population randomNewIndies = new Population(lambdaPerPeak - selected.size());
-                            //        				problem.initializePopulation(randomNewIndies); // function calls??
-                            //        				selected.addAll(randomNewIndies);
-                        }
-                    }
-                    if (TRACE) {
-                        for (int k = 0; k < i; k++) {
-                            if (selected.setCut(peakOpts[k].getPopulation()).size() > 2) { //one may happen after a cluster had size one (see above) 
-                                System.err.println("Warning, nonempty set cut between " + k + " and " + i + " !");
-                            }
                         }
                     }
                     peakOpts[i].population.clear();
@@ -595,7 +512,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                 }
             }
         }
-//        System.out.println("Best of second peak: " + clusteredPeakPops[2].getBestEAIndividual());
+
         if (doDraw(population.getGeneration()) && archive != null) {
             for (int i = 0; i < this.archive.size(); i++) {
                 ClusterBasedNichingEA.plotIndy(plot, 'x', (InterfaceDataTypeDouble) archive.get(i));
@@ -605,7 +522,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             generateEvalImmigrants(getNumRndImmigrants());
         }
         collectPopulationIncGen(population, peakOpts, randomNewIndies);
-        //this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED); // moved this to registerPopulationStateChanged which is called from the population
     }
 
     private Population deactivateSpecies(int clustIndex, boolean resetRandomly) {
@@ -634,7 +550,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                 Population origPop = peakOpts[origEsPop].getPopulation();
                 clusteredPeakPops[i].copyHashData(origPop);
                 clusteredPeakPops[i].SetHistory(origPop.getHistory()); // copy the history for deactivation!
-//				System.out.println("Copied hash for peak " + clusteredPeakPops[i].getBestEAIndividual() + ", cluster " + i + " from " + origEsPop);
             } else { // ok in the first iteration of if the indy was a random immigrant
                 if (population.getGeneration() > 1 && (getNumRndImmigrants() == 0)) {
                     System.err.println("Error, empty original es pop ID!");
@@ -643,30 +558,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         }
     }
 
-    //	/**
-//	 * For each new cluster copy the additional data from the closest parent population.
-//	 *  
-//	 * @param clusteredPeakPops
-//	 */
-//	private void copyDataFromClosest(Population[] clusteredPeakPops) {
-//		Population centers = new Population(clusteredPeakPops.length);
-//		AbstractEAIndividual indy;
-//		// collect leaders
-//		for (int i=0; i<peakOpts.length; i++) {
-//			Population peakPop = peakOpts[i].getPopulation();
-//			indy = (AbstractEAIndividual) peakPop.getData(origPeakIndyKey);
-//			if (indy!=null) centers.add(indy);
-//			else centers.add(peakOpts[i].getPopulation().getCenterIndy());
-//		}
-//		for (int i=1; i<clusteredPeakPops.length; i++) {
-//			indy = clusteredPeakPops[i].getBestEAIndividual();
-//			Pair<Integer,Double> closestIdDist = Population.getClosestFarthestIndy(clusteredPeakPops[i].getBestEAIndividual(), centers, metric, true);
-//			Population closestPop = peakOpts[closestIdDist.head()].getPopulation();
-//			System.out.println("Closest to new peak " + indy.toString() + " is old pop " + closestPop.getData(origPeakIndyKey));
-//			System.out.println("   meanX was " + (MutateESRankMuCMA.getMeanXOfPop(closestPop)));
-//			clusteredPeakPops[i].copyHashData(closestPop);
-//		}
-//	}
     private void printDemes(String prefix, Population[] peakPops) {
         System.out.print(prefix + " demes: ");
         for (int i = 0; i < peakPops.length; i++) {
@@ -743,9 +634,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             for (int i = 0; i < origClusters.length; i++) {
                 newClusters[i] = origClusters[i];
             }
-            if (TRACE) {
-                System.out.println("Generated missing peak species...");
-            }
             return newClusters;
         }
     }
@@ -776,9 +664,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             problem.initializePopulation(randomNewIndies);
             problem.evaluate(randomNewIndies);
             population.incrFunctionCallsBy(cnt);
-            if (TRACE) {
-                System.out.println("evaluated immigrants: " + randomNewIndies.size());
-            }
         } else {
             randomNewIndies = null;
         }
@@ -801,9 +686,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         }
         if (rndIndex == i) {
             rndIndex++;
-        }
-        if (TRACE) {
-            System.out.println("selected spec index " + rndIndex);
         }
         return clusteredSpecies[rndIndex].getBestEAIndividual();
     }
@@ -828,7 +710,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                 }
                 ClusterBasedNichingEA.plotPopConnected(plot, npop);
                 plot.drawIndividual(1, 0, "", npop.getBestEAIndividual());
-//		plot.drawPopulation(prefix, npop);
             } catch (Exception e) {
                 plot = null;
             }
@@ -926,18 +807,13 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             // (few) duplicates may happen because parents are copied to another peak population
             // if a cluster had a size of 1 AND parents may survive due to elitism.
             pop.addPopulation(pi, false);
-//			if (i==0) pop.setGeneration(pi.getGeneration());
-//			else if (pop.getGeneration()!=pi.getGeneration()) System.err.println("Error, mismatching generation in collectPopulation");
         }
         if (immigrants != null) {
-            immigrants.putDataAllIndies(originalPeakPop, new Integer(-2));
+            immigrants.putDataAllIndies(originalPeakPop, -2);
             pop.addPopulation(immigrants, true);
         }
         pop.incrGeneration();
         pop.synchSize();
-        if (TRACE) {
-            System.out.println("Collected " + pop.size() + " indies in pop.");
-        }
     }
 
     /**

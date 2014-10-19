@@ -33,7 +33,6 @@ import java.util.BitSet;
 @Description("Interface problem class for optimization in Matlab, only usable from within Matlab")
 public class MatlabProblem extends AbstractOptimizationProblem implements InterfaceHasInitRange, InterfaceTextListener, Serializable {
     private static final long serialVersionUID = 4913310869887420815L;
-    public static boolean TRACE = false;
     transient OptimizerRunnable runnable = null;
     protected boolean allowSingleRunnable = true;
     private transient Population seedPopulation = null;
@@ -219,8 +218,6 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         log("### Data type is " + dataType);
 
         initTemplate();
-
-        setDebugOut(TRACE, defTestOut);
         log("Initial range is " + BeanInspector.toString(initialRange) + "\n");
     }
 
@@ -233,8 +230,6 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
      * @param fname
      */
     public void setDebugOut(boolean swtch, String fname) {
-        TRACE = swtch;
-//		System.err.println("setDebugOut: " +  swtch +" " + fname);
         if (!swtch && (dos != null)) {
             dos.close();
             dos = null;
@@ -243,7 +238,6 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
                 if (fname == null || (fname.length() == 0)) {
                     fname = defTestOut;
                 }
-//				System.err.println("Opening "+fname);
                 dos = new PrintStream(new FileOutputStream(fname));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
