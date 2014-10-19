@@ -1075,7 +1075,7 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
             dialogButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(final ActionEvent event) {
-                    ((PropertyPanel) value).showDialog(0, 0);
+                    ((PropertyPanel) value).showDialog();
                     fireEditingStopped();
                 }
             });

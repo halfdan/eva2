@@ -34,10 +34,10 @@ public class PropertyPanel extends JPanel {
         add(textLabel, gbConstraints);
     }
 
-    public void showDialog(int initX, int initY) {
+    public void showDialog() {
         Window parent = (Window)this.getRootPane().getParent();
         if (propertyDialog == null) {
-            propertyDialog = new PropertyDialog(parent, propertyEditor, EVAHELP.cutClassName(propertyEditor.getClass().getName()), initX, initY);
+            propertyDialog = new PropertyDialog(parent, propertyEditor, EVAHELP.cutClassName(propertyEditor.getClass().getName()));
             propertyDialog.setPreferredSize(new Dimension(500, 300));
             propertyDialog.setModal(true);
             propertyDialog.setVisible(true);

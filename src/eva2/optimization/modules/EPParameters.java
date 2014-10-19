@@ -17,13 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The class gives access to all EP parameters for the EvA
- * top level GUI.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.10.2004
- * Time: 13:49:09
- * To change this template use File | Settings | File Templates.
+ * 
  */
 public class EPParameters extends AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
 
