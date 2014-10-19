@@ -46,7 +46,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     protected InterfaceMutation mutationOperator = new NoMutation();
     protected InterfaceCrossover crossoverOperator = new NoCrossover();
     protected InterfaceInitialization initializationOperator = new DefaultInitialization();
-    protected HashMap<String, Object> dataHash = new HashMap<String, Object>();
+    protected HashMap<String, Object> dataHash = new HashMap<>();
     // introduced for the nichingPSO/ANPSO (M.Aschoff)
     private int individualIndex = -1;
 
@@ -156,9 +156,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             parentIDs = new Long[individual.parentIDs.length];
             System.arraycopy(individual.parentIDs, 0, parentIDs, 0, parentIDs.length);
             parentTree = new AbstractEAIndividual[individual.parentTree.length];
-            for (int i = 0; i < parentTree.length; i++) {
-                parentTree[i] = individual.parentTree[i];
-            }
+            System.arraycopy(individual.parentTree, 0, parentTree, 0, parentTree.length);
         }
     }
 
@@ -406,7 +404,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
     public String getHeritageTree(int depth) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(getIndyID());
         sb.append(" ");
         if ((depth > 0) && (parentTree != null)) {
@@ -596,9 +594,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             this.fitness[index] = fitness;
         } else {
             double[] tmpD = new double[index + 1];
-            for (int i = 0; i < this.fitness.length; i++) {
-                tmpD[i] = this.fitness[i];
-            }
+            System.arraycopy(this.fitness, 0, tmpD, 0, this.fitness.length);
             this.fitness = tmpD;
             this.fitness[index] = fitness;
         }
@@ -833,9 +829,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             this.selectionProbability[index] = sel;
         } else {
             double[] tmpD = new double[index + 1];
-            for (int i = 0; i < this.selectionProbability.length; i++) {
-                tmpD[i] = this.selectionProbability[i];
-            }
+            System.arraycopy(this.selectionProbability, 0, tmpD, 0, this.selectionProbability.length);
             this.selectionProbability = tmpD;
             this.selectionProbability[index] = sel;
         }

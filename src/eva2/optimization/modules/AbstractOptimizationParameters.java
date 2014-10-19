@@ -157,7 +157,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
     @Override
     public void addInformableInstance(InterfaceNotifyOnInformers o) {
         if (toInformAboutInformers == null) {
-            toInformAboutInformers = new LinkedList<InterfaceNotifyOnInformers>();
+            toInformAboutInformers = new LinkedList<>();
         }
         if (!toInformAboutInformers.contains(o)) {
             toInformAboutInformers.add(o);
@@ -193,7 +193,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
     }
 
     private List<InterfaceAdditionalPopulationInformer> getInformerList() {
-        LinkedList<InterfaceAdditionalPopulationInformer> ret = new LinkedList<InterfaceAdditionalPopulationInformer>();
+        LinkedList<InterfaceAdditionalPopulationInformer> ret = new LinkedList<>();
         if (problem instanceof InterfaceAdditionalPopulationInformer) {
             ret.add(problem);
         }

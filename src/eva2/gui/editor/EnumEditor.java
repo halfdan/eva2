@@ -92,4 +92,4 @@ public class EnumEditor extends PropertyEditorSupport {
     }
 }
 
-enum TestEnum {asdf, sdf, asdfa};
+enum TestEnum {asdf, sdf, asdfa}

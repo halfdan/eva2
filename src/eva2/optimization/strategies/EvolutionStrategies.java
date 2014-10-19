@@ -251,7 +251,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         if (this.changeListener == null) {
-            this.changeListener = new Vector<InterfacePopulationChangedEventListener>();
+            this.changeListener = new Vector<>();
         }
         this.changeListener.add(ea);
     }

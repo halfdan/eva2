@@ -228,9 +228,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
             optimizationObjectivesWithWeights.addTarget((InterfaceOptimizationObjective) optimizationObjectivesWithWeights.getAvailableTargets()[0].clone());
             int l = optimizationObjectivesWithWeights.getSelectedTargets().length;
             GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l];
-            for (int i = 0; i < editors.length; i++) {
-                newEdit[i] = editors[i];
-            }
+            System.arraycopy(editors, 0, newEdit, 0, editors.length);
             InterfaceOptimizationObjective[] list = optimizationObjectivesWithWeights.getSelectedTargets();
             l--;
             newEdit[l] = new GeneralOptimizationEditorProperty();
@@ -319,7 +317,7 @@ public class GenericOptimizationObjectivesWithParamEditor extends JPanel impleme
             for (int i = 0; i < newW.length; i++) {
                 try {
                     double d = 0;
-                    d = new Double(weights[i].getText()).doubleValue();
+                    d = Double.parseDouble(weights[i].getText());
                     newW[i] = d;
                 } catch (Exception e) {
                 }

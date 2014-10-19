@@ -157,7 +157,7 @@ public class BeanInspector {
         Class<?> type = obj.getClass();
 
         if (type.isArray()) { // handle the array case
-            StringBuffer sbuf = new StringBuffer();
+            StringBuilder sbuf = new StringBuilder();
             sbuf.append("[");
             if (!tight) {
                 sbuf.append(" ");
@@ -270,7 +270,7 @@ public class BeanInspector {
             if (indentDepth < 1) {
                 return "";
             } else {
-                StringBuffer sbuf = new StringBuffer(indentStr);
+                StringBuilder sbuf = new StringBuilder(indentStr);
                 for (int i = 2; i <= indentDepth; i++) {
                     sbuf.append(indentStr);
                 }
@@ -346,7 +346,7 @@ public class BeanInspector {
                 System.err.println("BeanTest ERROR +" + e.getMessage());
             }
         }
-        Pair<String[], Object[]> nameVals = new Pair<String[], Object[]>(nameArray, valArray);
+        Pair<String[], Object[]> nameVals = new Pair<>(nameArray, valArray);
         return nameVals;
     }
 
@@ -597,7 +597,7 @@ public class BeanInspector {
      * @return an info string about class and members of the given object
      */
     public static String getDescription(Object obj, boolean withValues) {
-        StringBuffer sbuf = new StringBuffer(getClassDescription(obj));
+        StringBuilder sbuf = new StringBuilder(getClassDescription(obj));
         sbuf.append("\n");
         String[] mems = getMemberDescriptions(obj, withValues);
         for (String str : mems) {
@@ -614,7 +614,7 @@ public class BeanInspector {
      * @return String information about the object's class
      */
     public static String getClassDescription(Object obj) {
-        StringBuffer infoBf = new StringBuffer("Type: ");
+        StringBuilder infoBf = new StringBuilder("Type: ");
         infoBf.append(obj.getClass().getName());
         infoBf.append("\t");
 
@@ -659,7 +659,7 @@ public class BeanInspector {
             return null;
         }
         PropertyDescriptor[] propertyDescriptors = bi.getPropertyDescriptors();
-        ArrayList<String> memberInfoList = new ArrayList<String>();
+        ArrayList<String> memberInfoList = new ArrayList<>();
 
         for (int i = 0; i < propertyDescriptors.length; i++) {
             if (propertyDescriptors[i].isExpert()) {
@@ -689,7 +689,7 @@ public class BeanInspector {
                     continue;
                 }
 
-                StringBuffer memberInfoBf = new StringBuffer(40);
+                StringBuilder memberInfoBf = new StringBuilder(40);
                 memberInfoBf.append("Member:\t");
                 memberInfoBf.append(name);
 

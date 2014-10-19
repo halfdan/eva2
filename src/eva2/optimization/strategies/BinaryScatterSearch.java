@@ -511,7 +511,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
             // delete the worst half of refSet
             this.refSet.removeMembers(this.refSet.getWorstNIndividuals(this.refSet.size() - this.refSetSize / 2, this.fitCrit), false);
             while (this.refSet.size() < this.refSetSize) {
-                ArrayList<Pair<Integer, Double>> list = new ArrayList<Pair<Integer, Double>>();
+                ArrayList<Pair<Integer, Double>> list = new ArrayList<>();
                 for (int i = 0; i < this.refSet.size(); i++) {
                     AbstractEAIndividual indy = this.refSet.getEAIndividual(i);
                     list.add(Population.getClosestFarthestIndy(indy, rest, new GenotypeMetricBitSet(), false));
@@ -547,7 +547,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * @return the ordered List
      */
     private ArrayList<Integer> order(ArrayList<Integer> list) {
-        ArrayList<Integer> result = new ArrayList<Integer>();
+        ArrayList<Integer> result = new ArrayList<>();
         for (Integer s : list) {
             boolean done = false;
             if (result.isEmpty()) {
@@ -576,7 +576,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     private AbstractEAIndividual improve(AbstractEAIndividual indy) {
         AbstractEAIndividual tmpIndy = (AbstractEAIndividual) indy.clone();
         BitSet data = ((InterfaceDataTypeBinary) tmpIndy).getBinaryData();
-        ArrayList<Integer> cl = new ArrayList<Integer>();
+        ArrayList<Integer> cl = new ArrayList<>();
         int localIter = 0;
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i)) {
@@ -638,7 +638,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * @return the List with all the combinations
      */
     public ArrayList<Population> generateSubsets() {
-        ArrayList<Population> result = new ArrayList<Population>();
+        ArrayList<Population> result = new ArrayList<>();
         for (int i = 0; i < this.refSet.size(); i++) {
             for (int j = i + 1; j < this.refSet.size(); j++) {
                 Population tmp = new Population();

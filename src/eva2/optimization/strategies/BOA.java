@@ -101,9 +101,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         this.scoringMethod = b.scoringMethod;
         this.edgeRate = new int[b.edgeRate.length][b.edgeRate.length];
         for (int i = 0; i < this.edgeRate.length; i++) {
-            for (int j = 0; j < this.edgeRate[i].length; j++) {
-                this.edgeRate[i][j] = b.edgeRate[i][j];
-            }
+            System.arraycopy(b.edgeRate[i], 0, this.edgeRate[i], 0, this.edgeRate[i].length);
         }
         this.scoringMethod = b.scoringMethod;
 //		this.printExtraOutput = b.printExtraOutput;
@@ -242,7 +240,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         this.network.initScoreArray(pop);
         double score = this.network.getNewScore(pop, -1);
         double score1 = score;
-        List<Pair<Integer, Integer>> bestNetworks = new LinkedList<Pair<Integer, Integer>>();
+        List<Pair<Integer, Integer>> bestNetworks = new LinkedList<>();
         while (improvement) {
             improvement = false;
             for (int i = 0; i < this.probDim; i++) {
@@ -263,7 +261,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
                                 if (tmpScore == score) {
                                     // add the edge to the list of possible new edges
                                     bestNetworks
-                                            .add(new Pair<Integer, Integer>(i,
+                                            .add(new Pair<>(i,
                                                     j));
                                     // if we have a better score
                                 } else {
@@ -271,7 +269,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
                                     bestNetworks.clear();
                                     // add the edge to the list fo possible new edges
                                     bestNetworks
-                                            .add(new Pair<Integer, Integer>(i,
+                                            .add(new Pair<>(i,
                                                     j));
                                     // adapt the score
                                     score = tmpScore;
@@ -369,7 +367,6 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     private void printEdgeRate() {
         String filename = this.netFolder + "/edgeRate.m";
         Writer w = null;
-        PrintWriter out = null;
         String message = "edgeRate" + this.scoringMethod + " = [";
         createDirectoryIfNeeded(this.netFolder);
         for (int i = 0; i < this.edgeRate.length; i++) {
@@ -384,14 +381,12 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
             }
         }
         message += "];";
-        try {
+        try (PrintWriter out = new PrintWriter(w)) {
             w = new FileWriter(filename);
-            out = new PrintWriter(w);
             out.write(message);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            out.close();
             try {
                 w.close();
             } catch (IOException e) {
@@ -403,17 +398,14 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     private void printNetworkToFile(String i) {
         String filename = this.netFolder + "/network_" + i + ".graphml";
         Writer w = null;
-        PrintWriter out = null;
         String message = this.network.generateYFilesCode();
         createDirectoryIfNeeded(this.netFolder);
-        try {
+        try (PrintWriter out = new PrintWriter(w)) {
             w = new FileWriter(filename);
-            out = new PrintWriter(w);
             out.write(message);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            out.close();
             try {
                 w.close();
             } catch (IOException e) {

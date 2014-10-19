@@ -28,7 +28,7 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
     private double currentFactor = 1.;
     private int genGap = 5;
 
-    LinkedList<Boolean> lastBestSatisfactionState = new LinkedList<Boolean>();
+    LinkedList<Boolean> lastBestSatisfactionState = new LinkedList<>();
 
 
     private static String target = "penaltyFactor";

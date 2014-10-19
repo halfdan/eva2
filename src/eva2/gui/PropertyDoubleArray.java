@@ -144,9 +144,7 @@ public class PropertyDoubleArray implements java.io.Serializable {
             if (i == k) {
                 inc = 1;
             }
-            for (int j = 0; j < getNumCols(); j++) {
-                newDD[i][j] = doubleArray[i + inc][j];
-            }
+            System.arraycopy(doubleArray[i + inc], 0, newDD[i], 0, getNumCols());
         }
         setDoubleArray(newDD);
     }
@@ -164,14 +162,10 @@ public class PropertyDoubleArray implements java.io.Serializable {
         double[][] newDD = new double[getNumRows() + 1][getNumCols()];
 
         for (int i = 0; i < getNumRows(); i++) {
-            for (int j = 0; j < getNumCols(); j++) {
-                newDD[i][j] = doubleArray[i][j];
-            }
+            System.arraycopy(doubleArray[i], 0, newDD[i], 0, getNumCols());
         }
         if (k >= 0) {
-            for (int j = 0; j < getNumCols(); j++) {
-                newDD[newDD.length - 1][j] = newDD[k][j];
-            }
+            System.arraycopy(newDD[k], 0, newDD[newDD.length - 1], 0, getNumCols());
         } else {
             for (int j = 0; j < getNumCols(); j++) {
                 newDD[newDD.length - 1][j] = 1.;

@@ -97,7 +97,7 @@ public class GraphPointSet {
     private DPointIcon icon;
     private String infoString = "Incomplete_Run";
     private boolean isStatisticsGraph = false;
-    private ArrayList<PointSet> pointSetContainer = new ArrayList<PointSet>();
+    private ArrayList<PointSet> pointSetContainer = new ArrayList<>();
 
     private float stroke = (float) 1.0;
 

@@ -1,6 +1,5 @@
 package eva2.optimization.strategies;
 
-import eva2.gui.BeanInspector;
 import eva2.gui.plot.Plot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.ESIndividualDoubleData;
@@ -435,7 +434,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         InterfaceOptimizer opt = (InterfaceOptimizer) source;
-        int sourceID = new Integer(opt.getIdentifier()).intValue();
+        int sourceID = Integer.parseInt(opt.getIdentifier());
         double cFCOpt = opt.getPopulation().getFunctionCalls();
         double plotValue = (this.optimizationProblem.getDoublePlotValue(opt.getPopulation())).doubleValue();
 

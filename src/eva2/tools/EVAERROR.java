@@ -52,7 +52,7 @@ public class EVAERROR {
      */
     public static void errorMsgOnce(String message) {
         if (errorMap == null) {
-            errorMap = new HashMap<String, Boolean>();
+            errorMap = new HashMap<>();
         }
 
         if (!errorMap.containsKey(message)) {

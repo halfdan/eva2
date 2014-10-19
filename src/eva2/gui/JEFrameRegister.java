@@ -29,7 +29,7 @@ public final class JEFrameRegister {
     private JDesktopPane desktopPane;
 
     private JEFrameRegister() {
-        this.frameList = new ArrayList<JEFrame>();
+        this.frameList = new ArrayList<>();
     }
 
     public static JEFrameRegister getInstance() {
@@ -81,8 +81,8 @@ public final class JEFrameRegister {
      * @return List of prefixes
      */
     public String[] getCommonPrefixes(final int prefLen) {
-        List<String> prefixes = new ArrayList<String>();
-        List<Integer> count = new ArrayList<Integer>();
+        List<String> prefixes = new ArrayList<>();
+        List<Integer> count = new ArrayList<>();
         for (int i = 0; i < frameList.size(); i++) {
             String title = frameList.get(i).getTitle();
             String titPref = title.substring(0, Math.min(prefLen, title.length()));

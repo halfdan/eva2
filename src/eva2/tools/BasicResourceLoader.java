@@ -128,7 +128,7 @@ public class BasicResourceLoader implements ResourceLoader {
                 sReader));
 
         String line;
-        ArrayList<String> lineData = new ArrayList<String>(100);
+        ArrayList<String> lineData = new ArrayList<>(100);
 
         int lineCnt = 0;
         try {

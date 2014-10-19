@@ -255,7 +255,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
 
         int h = newRefSet.size();
-        ArrayList<double[]> distVects = new ArrayList<double[]>();
+        ArrayList<double[]> distVects = new ArrayList<>();
         for (int i = 1; i < h; i++) {
             distVects.add(getDiffVect(newRefSet.getEAIndividual(0), newRefSet.getEAIndividual(i)));
         }
@@ -382,7 +382,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         Population hcPop = new Population(1);
         hcPop.add(cand);
         int stepsDone = PostProcess.processWithHC(hcPop, optimizationProblem, hcSteps);
-        return new Pair<AbstractEAIndividual, Integer>(hcPop.getEAIndividual(0), stepsDone);
+        return new Pair<>(hcPop.getEAIndividual(0), stepsDone);
     }
 
     private int getClosestIndy(AbstractEAIndividual indy, Population refSet) {

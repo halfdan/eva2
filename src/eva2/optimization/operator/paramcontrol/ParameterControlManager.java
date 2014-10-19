@@ -131,7 +131,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
      */
     public String[] getControlledParameters() {
         if (singleAdapters != null) {
-            Vector<String> names = new Vector<String>(singleAdapters.length);
+            Vector<String> names = new Vector<>(singleAdapters.length);
             for (ParamAdaption singleAdapter : singleAdapters) {
                 String prm = singleAdapter.getControlledParam();
                 if (prm != null) {
@@ -183,9 +183,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
             setSingleAdapters(new ParamAdaption[]{pa});
         } else {
             ParamAdaption[] newP = new ParamAdaption[singleAdapters.length + 1];
-            for (int i = 0; i < singleAdapters.length; i++) {
-                newP[i] = singleAdapters[i];
-            }
+            System.arraycopy(singleAdapters, 0, newP, 0, singleAdapters.length);
             newP[newP.length - 1] = pa;
             setSingleAdapters(newP);
         }
@@ -210,7 +208,7 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
     public static List<Object> listOfControllables(
             Object target) {
         Pair<String[], Object[]> propsNamesVals = BeanInspector.getPublicPropertiesOf(target, true, true);
-        ArrayList<Object> controllables = new ArrayList<Object>();
+        ArrayList<Object> controllables = new ArrayList<>();
 //		Object ownParamCtrl = BeanInspector.callIfAvailable(target, "getParameterControl", null); // if the target itself has a ParameterControlManager, add it to the list of controllables.
 //		if (ownParamCtrl!=null) controllables.add(ownParamCtrl);
         Object[] objs = propsNamesVals.tail;

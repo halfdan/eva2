@@ -3,7 +3,6 @@ package eva2.optimization.stat;
 import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.IndividualInterface;
-import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
@@ -110,13 +109,13 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         convergenceCnt = 0;
         optRunsPerformed = 0;
         iterationCounter = 0;
-        textListeners = new ArrayList<InterfaceTextListener>();
+        textListeners = new ArrayList<>();
     }
 
     @Override
     public void addDataListener(InterfaceStatisticsListener l) {
         if (dataListeners == null) {
-            dataListeners = new LinkedList<InterfaceStatisticsListener>();
+            dataListeners = new LinkedList<>();
         }
         if (l != null && !dataListeners.contains(l)) {
             dataListeners.add(l);
@@ -142,7 +141,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     private void fireDataListenersFinalize() {
         if (dataListeners != null) {
-            LinkedList<InterfaceStatisticsListener> toRemove = new LinkedList<InterfaceStatisticsListener>();
+            LinkedList<InterfaceStatisticsListener> toRemove = new LinkedList<>();
             for (InterfaceStatisticsListener l : dataListeners) {
                 boolean rm = l.notifyMultiRunFinished(currentStatHeader, finalObjectData);
                 if (rm) {
@@ -277,12 +276,12 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             bestFeasibleAllRuns = null;
 //			meanBestOfRunFitness = null;
 //			meanBestFeasibleFit = null;
-            runBestFeasibleList = new ArrayList<IndividualInterface>();
-            runBestFitList = new ArrayList<IndividualInterface>();
+            runBestFeasibleList = new ArrayList<>();
+            runBestFitList = new ArrayList<>();
 //			if (refineMultiRuns) meanCollection = new ArrayList<double[][]>();
 //			else meanCollection = null;
             if (refineMultiRuns) {
-                sumDataCollection = new ArrayList<Double[]>();
+                sumDataCollection = new ArrayList<>();
             } else {
                 sumDataCollection = null;
             }
@@ -393,7 +392,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             }
         }
         if (finalObjectData == null) {
-            finalObjectData = new ArrayList<Object[]>();
+            finalObjectData = new ArrayList<>();
         }
         finalObjectData.add(currentStatObjectData);
 
@@ -571,7 +570,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 //		String header = getOutputHeader(lastInformerList, bestPop);
         List<Object> vals = getOutputValues(lastInformerList, bestPop);
 
-        StringBuffer sbuf = new StringBuffer("Overall best statistical data: ");
+        StringBuilder sbuf = new StringBuilder("Overall best statistical data: ");
         sbuf.append(additionalFields);
         sbuf.append('\n');
         sbuf.append(StringTools.concatValues(vals, textFieldDelimiter));
@@ -610,7 +609,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     public static double[] calcMedianFit(List<IndividualInterface> list) {
-        ArrayList<double[]> dblAList = new ArrayList<double[]>(list.size());
+        ArrayList<double[]> dblAList = new ArrayList<>(list.size());
         for (int i = 0; i < list.size(); i++) {
             dblAList.add(list.get(i).getFitness());
         }
@@ -702,7 +701,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * @return
      */
     protected List<String> getOutputHeaderFieldNames(List<InterfaceAdditionalPopulationInformer> informerList) {
-        ArrayList<String> headlineFields = new ArrayList<String>(5);
+        ArrayList<String> headlineFields = new ArrayList<>(5);
         headlineFields.addAll(Arrays.asList(getSimpleOutputHeader()));
         if (informerList != null) {
             headlineFields.addAll(getAdditionalHeaderMetaInfo(informerList, null));
@@ -718,8 +717,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * @return
      */
     protected List<String> getOutputMetaInfo(List<InterfaceAdditionalPopulationInformer> informerList) {
-        ArrayList<String> infoStrings = new ArrayList<String>(5);
-        ArrayList<String> addStrings = new ArrayList<String>(5);
+        ArrayList<String> infoStrings = new ArrayList<>(5);
+        ArrayList<String> addStrings = new ArrayList<>(5);
         infoStrings.addAll(Arrays.asList(getSimpleOutputMetaInfo()));
         if (informerList != null) {
             getAdditionalHeaderMetaInfo(informerList, addStrings);
@@ -745,7 +744,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     protected String[] getSimpleOutputHeader() {
         // collect the full header by using the entries of the GraphSelectionEnum
         GraphSelectionEnum[] vals = GraphSelectionEnum.values();
-        ArrayList<String> headerEntries = new ArrayList<String>();
+        ArrayList<String> headerEntries = new ArrayList<>();
         headerEntries.add("FunctionCalls");
         for (GraphSelectionEnum val : vals) {
             if (isRequestedField(val)) {
@@ -765,7 +764,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      */
     protected String[] getSimpleOutputMetaInfo() {
         GraphSelectionEnum[] vals = GraphSelectionEnum.values();
-        ArrayList<String> headerInfo = new ArrayList<String>();
+        ArrayList<String> headerInfo = new ArrayList<>();
         headerInfo.add("The number of function evaluations");
         for (int i = 0; i < vals.length; i++) {
             if (isRequestedField(vals[i])) {
@@ -872,7 +871,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * @see #getOutputHeaderFieldNames(java.util.List) (List)
      */
     protected List<Object> getOutputValues(List<InterfaceAdditionalPopulationInformer> informerList, PopulationInterface pop) {
-        LinkedList<Object> values = new LinkedList<Object>();
+        LinkedList<Object> values = new LinkedList<>();
         values.addAll(Arrays.asList(getSimpleOutputValues()));
         if (informerList != null) {
             for (InterfaceAdditionalPopulationInformer informer : informerList) {
@@ -906,7 +905,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * @return
      */
     protected List<String> getAdditionalHeaderMetaInfo(List<InterfaceAdditionalPopulationInformer> informerList, List<String> metaInfo) {
-        LinkedList<String> headers = new LinkedList<String>();
+        LinkedList<String> headers = new LinkedList<>();
         if (metaInfo != null && (metaInfo.size() > 0)) {
             System.err.println("Warning, metaInfo list should be empty in AbstractStatistics.getAdditionalHeaderMetaInfo");
         }
@@ -949,7 +948,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         List<Object> statValues = getOutputValues(informerList, pop);
         String statValuesString = StringTools.concatValues(statValues, textFieldDelimiter);
 
-        return new Pair<String, Object[]>(statValuesString, statValues.toArray(new Object[statValues.size()]));
+        return new Pair<>(statValuesString, statValues.toArray(new Object[statValues.size()]));
     }
 
 //	/**

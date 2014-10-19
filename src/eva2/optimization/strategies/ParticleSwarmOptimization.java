@@ -248,9 +248,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             double[][] range = ((InterfaceDataTypeDouble) population.get(0)).getDoubleRange();
             if (tracedVelocity == null) {
                 tracedVelocity = new double[((InterfaceDataTypeDouble) population.get(0)).getDoubleData().length];
-                for (int i = 0; i < tracedVelocity.length; i++) {
-                    tracedVelocity[i] = curAvVelAndSpeed[i];
-                }
+                System.arraycopy(curAvVelAndSpeed, 0, tracedVelocity, 0, tracedVelocity.length);
             } else {
                 if (population.getGeneration() < emaPeriods) {// if less than emaPeriods have passed, use larger alpha
                     addMovingAverage(tracedVelocity, curAvVelAndSpeed, 2. / (population.getGeneration() + 1));
@@ -773,7 +771,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         if (true) {
             return (double[]) population.getEAIndividual(index).getData(lastSuccessKey);
         } else { // random one
-            ArrayList<Integer> successes = new ArrayList<Integer>();
+            ArrayList<Integer> successes = new ArrayList<>();
             for (int i = 0; i < this.population.size(); i++) {
                 double[] succVel = (double[]) population.getEAIndividual(i).getData(lastSuccessKey);
                 if (succVel != null) {
@@ -1329,7 +1327,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         if (topology == PSOTopologyEnum.multiSwarm) {
             // prepare multi swarm topology
             PhenotypeMetric metric = new PhenotypeMetric();
-            Vector<AbstractEAIndividual> leaders = new Vector<AbstractEAIndividual>(pop.size());
+            Vector<AbstractEAIndividual> leaders = new Vector<>(pop.size());
             int cur = 0;
             boolean found = false, superfluous = false;
             double dist;
@@ -1433,7 +1431,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
         int numGroups = pop.size() / groupSize; // truncated integer: last group is larger
         int[] perm = RNG.randomPerm(pop.size());
 
-        Vector<int[]> links = new Vector<int[]>(numGroups);
+        Vector<int[]> links = new Vector<>(numGroups);
         for (int i = 0; i < numGroups; i++) {
             if (i < numGroups - 1) {
                 links.add(new int[groupSize]);

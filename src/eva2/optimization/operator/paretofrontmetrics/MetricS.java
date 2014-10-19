@@ -1,6 +1,5 @@
 package eva2.optimization.operator.paretofrontmetrics;
 
-import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
@@ -102,14 +101,10 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
         double[] tmpF, redF;
         for (int i = 0; i < f.length; i++) {
             tmpF = ((AbstractEAIndividual) archive.get(i)).getFitness();
-            for (int j = 0; j < dim; j++) {
-                f[i][j] = tmpF[j];
-            }
+            System.arraycopy(tmpF, 0, f[i], 0, dim);
             if (smPop != null) {
                 redF = new double[tmpF.length - 1];
-                for (int j = 0; j < redF.length; j++) {
-                    redF[j] = tmpF[j];
-                }
+                System.arraycopy(tmpF, 0, redF, 0, redF.length);
                 tmpIndy = new ESIndividualDoubleData();
                 tmpIndy.setFitness(redF);
                 smPop.add(i, tmpIndy);
@@ -172,9 +167,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
                     tmpS = this.calculateSMetric(tmpPop, tmpBorder, dim - 1);
                     result += (f[tmpIndex][dim - 1] - lastValue[dim - 1]) * tmpS;
                 }
-                for (int j = 0; j < f[tmpIndex].length; j++) {
-                    lastValue[j] = f[tmpIndex][j];
-                }
+                System.arraycopy(f[tmpIndex], 0, lastValue, 0, f[tmpIndex].length);
             } else {
                 // no smallest found break
                 i = f.length + 1;

@@ -23,7 +23,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
     protected AbstractModuleAdapter() {
         instanceCounter++;
         instanceNumber = instanceCounter;
-        optimizationStateListeners = new ArrayList<OptimizationStateListener>();
+        optimizationStateListeners = new ArrayList<>();
     }
 
     /**

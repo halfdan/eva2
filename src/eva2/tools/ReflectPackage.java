@@ -127,7 +127,7 @@ public class ReflectPackage {
     }
 
     public static ArrayList<Class> filterAssignableClasses(ArrayList<Class> classes, Class<?> reqSuperCls) {
-        ArrayList<Class> assClasses = new ArrayList<Class>();
+        ArrayList<Class> assClasses = new ArrayList<>();
         for (Class aClass : classes) {
             if (reqSuperCls.isAssignableFrom(aClass)) {
                 assClasses.add(aClass);
@@ -322,7 +322,7 @@ public class ReflectPackage {
     public static ArrayList<String> getValidCPEntries() {
         String[] pathElements = getClassPathElements();
         File f;
-        ArrayList<String> valids = new ArrayList<String>(pathElements.length);
+        ArrayList<String> valids = new ArrayList<>(pathElements.length);
         for (String pathElement : pathElements) {
             f = new File(pathElement);
             if (f.exists() && f.canRead()) {
@@ -384,7 +384,7 @@ public class ReflectPackage {
         System.out.println("1: " + cld.getResource("/eva2/optimization"));
         System.out.println("2: " + cld.getResource("eva2/optimization"));
 
-        HashSet<String> h = new HashSet<String>(20);
+        HashSet<String> h = new HashSet<>(20);
 
         for (int i = 0; i < 20; i++) {
             h.add("String " + (i % 10));

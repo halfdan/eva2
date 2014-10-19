@@ -27,7 +27,7 @@ class Mnemonic {
      *
      */
     public void setString(String s) {
-        StringBuffer buf = new StringBuffer(s);
+        StringBuilder buf = new StringBuilder(s);
         for (int i = 0; i < buf.length(); i++) {
             if (buf.charAt(i) == '&') {
                 buf.deleteCharAt(i);

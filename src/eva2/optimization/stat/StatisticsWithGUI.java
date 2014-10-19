@@ -206,8 +206,8 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     public void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informer) {
         double[] specificData = pop.getSpecificData();
         int calls = pop.getFunctionCalls();
-        ArrayList<String[]> description = new ArrayList<String[]>();
-        ArrayList<String> temp = new ArrayList<String>();
+        ArrayList<String[]> description = new ArrayList<>();
+        ArrayList<String> temp = new ArrayList<>();
         String[] ss = pop.getSpecificDataNames();
         for (int i = 0; i < ss.length; i++) {
             if (ss[i].lastIndexOf("*") == -1) {
@@ -216,7 +216,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
                 String[] line = new String[temp.size()];
                 temp.toArray(line);
                 description.add(line);
-                temp = new ArrayList<String>();
+                temp = new ArrayList<>();
                 temp.add(ss[i]);
             }
         }

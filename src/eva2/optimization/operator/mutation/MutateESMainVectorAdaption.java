@@ -125,7 +125,6 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
             this.dN[i] = 0;
             this.mainV[i] = 0;
         }
-        ;
         this.xi_dach = Math.sqrt(this.N - 0.5);
         for (int i = 0; i < this.N; i++) {
             this.Z[i] = RNG.gaussianDouble(1.0);

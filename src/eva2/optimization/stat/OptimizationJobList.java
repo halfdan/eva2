@@ -243,7 +243,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
 
     public void addTextListener(InterfaceTextListener tListener) {
         if (listeners == null) {
-            listeners = new LinkedList<InterfaceTextListener>();
+            listeners = new LinkedList<>();
         }
         if (!listeners.contains(tListener)) {
             listeners.add(tListener);

@@ -49,7 +49,7 @@ public class GraphPointSetLegend {
      * @param appendIndex       if true, the string entries are enumerated according to the index
      */
     public GraphPointSetLegend(List<GraphPointSet> pointSetContainer, boolean appendIndex) {
-        legendEntries = new TreeSet<Pair<String, Color>>(comparator);
+        legendEntries = new TreeSet<>(comparator);
         for (int i = 0; i < pointSetContainer.size(); i++) {
             GraphPointSet pointset = pointSetContainer.get(i);
             if (pointset.getPointSet().getSize() > 0) {
@@ -59,7 +59,7 @@ public class GraphPointSetLegend {
                 } else {
                     entryStr = pointset.getInfoString();
                 }
-                legendEntries.add(new Pair<String, Color>(entryStr, pointset.getColor()));
+                legendEntries.add(new Pair<>(entryStr, pointset.getColor()));
             }
         }
     }

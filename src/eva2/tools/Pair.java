@@ -48,7 +48,7 @@ public class Pair<S, T> implements Serializable {
      */
     @Override
     public Pair<S, T> clone() {
-        return new Pair<S, T>(head, tail);
+        return new Pair<>(head, tail);
     }
 
     /*

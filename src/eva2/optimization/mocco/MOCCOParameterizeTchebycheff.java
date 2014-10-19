@@ -219,7 +219,7 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
         public void actionPerformed(ActionEvent event) {
             // first read the values
             try {
-                perturbations = new Integer(numPer.getText()).intValue();
+                perturbations = Integer.parseInt(numPer.getText());
             } catch (NumberFormatException e) {
                 System.out.println("Can't read k.");
             }
@@ -251,11 +251,11 @@ public class MOCCOParameterizeTchebycheff extends MOCCOPhase implements Interfac
                 sum = 0;
                 for (int j = 0; j < tmpD.length; j++) {
                     try {
-                        l = new Double(lowerLimit[j].getText()).doubleValue();
+                        l = Double.parseDouble(lowerLimit[j].getText());
                     } catch (NumberFormatException e) {
                     }
                     try {
-                        u = new Double(upperLimit[j].getText()).doubleValue();
+                        u = Double.parseDouble(upperLimit[j].getText());
                     } catch (NumberFormatException e) {
                     }
                     if (l < 0) {

@@ -59,6 +59,6 @@ public class BasicDataSet extends AbstractDataSet {
     }
 
     public String getAdditionalInformation(String parm1) {
-        return new String();
+        return "";
     }
 }

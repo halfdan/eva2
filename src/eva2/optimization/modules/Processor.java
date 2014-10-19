@@ -9,12 +9,10 @@ import eva2.optimization.operator.paramcontrol.ConstantParameters;
 import eva2.optimization.operator.paramcontrol.InterfaceParameterControl;
 import eva2.optimization.operator.postprocess.PostProcess;
 import eva2.optimization.operator.postprocess.PostProcessParams;
-import eva2.optimization.operator.postprocess.SolutionHistogram;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.GenerationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
-import eva2.optimization.population.PopulationInterface;
 import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.stat.InterfaceStatistics;
@@ -398,7 +396,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     }
 
     protected List<InterfaceAdditionalPopulationInformer> getInformerList() {
-        List<InterfaceAdditionalPopulationInformer> informerList = new ArrayList<InterfaceAdditionalPopulationInformer>(2);
+        List<InterfaceAdditionalPopulationInformer> informerList = new ArrayList<>(2);
         informerList.add(this.optimizationParameters.getProblem());
         if (this.optimizationParameters.getOptimizer() instanceof InterfaceAdditionalPopulationInformer) {
             informerList.add((InterfaceAdditionalPopulationInformer) this.optimizationParameters.getOptimizer());

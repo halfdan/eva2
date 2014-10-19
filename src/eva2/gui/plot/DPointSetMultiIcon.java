@@ -22,7 +22,7 @@ public class DPointSetMultiIcon extends DComponent {
      */
     class JumpManager {
         protected int index = -1;
-        protected ArrayList<Integer> jumps = new ArrayList<Integer>();
+        protected ArrayList<Integer> jumps = new ArrayList<>();
 
         public void addJump() {
             jumps.add(getSize());
@@ -72,7 +72,7 @@ public class DPointSetMultiIcon extends DComponent {
     protected boolean connectedMI;
     protected DPointIcon iconMI = null;
     protected DPointSetMultiIcon.JumpManager jumperMI = new DPointSetMultiIcon.JumpManager();
-    protected ArrayList<DPointIcon> iconsMI = new ArrayList<DPointIcon>();
+    protected ArrayList<DPointIcon> iconsMI = new ArrayList<>();
     protected Stroke strokeMI = new BasicStroke();
     protected DIntDoubleMap xMI;
 

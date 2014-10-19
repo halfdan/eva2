@@ -86,7 +86,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
             InterfacePopulationChangedEventListener ea) {
         if (ea != null) {
             if (populationChangedEventListeners == null) {
-                populationChangedEventListeners = new Vector<InterfacePopulationChangedEventListener>();
+                populationChangedEventListeners = new Vector<>();
             }
             if (!populationChangedEventListeners.contains(ea)) {
                 populationChangedEventListeners.add(ea);

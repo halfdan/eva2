@@ -59,13 +59,9 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
         this.mutationOperator = (InterfaceMutation) individual.mutationOperator.clone();
         this.mutationProbability = individual.mutationProbability;
         this.selectionProbability = new double[individual.selectionProbability.length];
-        for (int i = 0; i < this.selectionProbability.length; i++) {
-            this.selectionProbability[i] = individual.selectionProbability[i];
-        }
+        System.arraycopy(individual.selectionProbability, 0, this.selectionProbability, 0, this.selectionProbability.length);
         this.fitness = new double[individual.fitness.length];
-        for (int i = 0; i < this.fitness.length; i++) {
-            this.fitness[i] = individual.fitness[i];
-        }
+        System.arraycopy(individual.fitness, 0, this.fitness, 0, this.fitness.length);
         cloneAEAObjects(individual);
     }
 
@@ -184,9 +180,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     @Override
     public int[] getIntegerData() {
         this.phenotype = new int[this.initializationRange.length];
-        for (int i = 0; i < this.phenotype.length; i++) {
-            this.phenotype[i] = this.genotype[i];
-        }
+        System.arraycopy(this.genotype, 0, this.phenotype, 0, this.phenotype.length);
         return this.phenotype;
     }
 
@@ -221,9 +215,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     public void setIntGenotype(int[] doubleData) {
         this.setIntPhenotype(doubleData);
         this.genotype = new int[this.initializationRange.length];
-        for (int i = 0; i < doubleData.length; i++) {
-            this.genotype[i] = doubleData[i];
-        }
+        System.arraycopy(doubleData, 0, this.genotype, 0, doubleData.length);
     }
 
 /************************************************************************************

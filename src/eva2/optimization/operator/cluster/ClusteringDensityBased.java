@@ -64,16 +64,12 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
         this.minimumGroupSize = a.minimumGroupSize;
         if (a.clustered != null) {
             this.clustered = new boolean[a.clustered.length];
-            for (int i = 0; i < this.clustered.length; i++) {
-                this.clustered[i] = a.clustered[i];
-            }
+            System.arraycopy(a.clustered, 0, this.clustered, 0, this.clustered.length);
         }
         if (a.connectionMatrix != null) {
             this.connectionMatrix = new boolean[a.connectionMatrix.length][a.connectionMatrix[0].length];
             for (int i = 0; i < this.connectionMatrix.length; i++) {
-                for (int j = 0; j < this.connectionMatrix[i].length; j++) {
-                    this.connectionMatrix[i][j] = a.connectionMatrix[i][j];
-                }
+                System.arraycopy(a.connectionMatrix[i], 0, this.connectionMatrix[i], 0, this.connectionMatrix[i].length);
             }
         }
     }
@@ -95,7 +91,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
         clustered = new boolean[pop.size()];
         AbstractEAIndividual tmpIndy1, tmpIndy2;
         Population PopulationOfUnclustered, Cluster, template;
-        ArrayList<Population> ClusteredPopulations = new ArrayList<Population>();
+        ArrayList<Population> ClusteredPopulations = new ArrayList<>();
 
         template = (Population) pop.clone();
         template.clear();

@@ -1,6 +1,5 @@
 package eva2.optimization.operator.mutation;
 
-import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
@@ -178,7 +177,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      */
     @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
-        ArrayList<Double> tmpList = new ArrayList<Double>();
+        ArrayList<Double> tmpList = new ArrayList<>();
         if (indy1.getMutationOperator() instanceof MutateESCorrVector) {
             tmpList.add(((MutateESCorrVector) indy1.getMutationOperator()).scalingDev);
         }

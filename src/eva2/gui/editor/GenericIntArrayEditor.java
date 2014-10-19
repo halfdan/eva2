@@ -93,7 +93,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
             for (int i = 0; i < tmpD.length; i++) {
                 try {
                     int d = 0;
-                    d = new Integer(inputTextField[i].getText()).intValue();
+                    d = Integer.parseInt(inputTextField[i].getText());
                     tmpD[i] = d;
                 } catch (Exception e) {
 

@@ -45,9 +45,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
             this.SOM = new double[a.SOM.length][a.SOM[0].length][a.SOM[0][0].length];
             for (int i = 0; i < a.SOM.length; i++) {
                 for (int j = 0; j < a.SOM[0].length; j++) {
-                    for (int k = 0; k < a.SOM[0][0].length; k++) {
-                        this.SOM[i][j][k] = a.SOM[i][j][k];
-                    }
+                    System.arraycopy(a.SOM[i][j], 0, this.SOM[i][j], 0, a.SOM[0][0].length);
                 }
             }
         }
@@ -55,9 +53,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
             this.SOMClass = new int[a.SOMClass.length][a.SOMClass[0].length][a.SOMClass[0][0].length];
             for (int i = 0; i < a.SOMClass.length; i++) {
                 for (int j = 0; j < a.SOMClass[0].length; j++) {
-                    for (int k = 0; k < a.SOMClass[0][0].length; k++) {
-                        this.SOMClass[i][j][k] = a.SOMClass[i][j][k];
-                    }
+                    System.arraycopy(a.SOMClass[i][j], 0, this.SOMClass[i][j], 0, a.SOMClass[0][0].length);
                 }
             }
         }

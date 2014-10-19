@@ -53,9 +53,9 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
     @Override
     protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
         if (collectData) {
-            resultData = new ArrayList<ArrayList<Object[]>>(statisticsParameter.getMultiRuns());
+            resultData = new ArrayList<>(statisticsParameter.getMultiRuns());
             List<String> description = getOutputHeaderFieldNames(informerList);
-            resultHeaderStrings = new ArrayList<String>();
+            resultHeaderStrings = new ArrayList<>();
             for (String str : description) {
                 resultHeaderStrings.add(str);
             }

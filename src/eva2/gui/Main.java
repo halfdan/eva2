@@ -79,7 +79,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
     public void addOptimizationStateListener(OptimizationStateListener l) {
         if (superListenerList == null) {
-            superListenerList = new ArrayList<OptimizationStateListener>();
+            superListenerList = new ArrayList<>();
         }
         superListenerList.add(l);
     }

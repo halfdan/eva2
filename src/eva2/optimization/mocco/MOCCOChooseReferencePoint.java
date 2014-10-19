@@ -99,7 +99,7 @@ public class MOCCOChooseReferencePoint extends MOCCOPhase implements InterfacePr
         @Override
         public void actionPerformed(ActionEvent event) {
             for (int i = 0; i < textField.length; i++) {
-                mocco.view.referencePoint[i] = new Double(textField[i].getText()).doubleValue();
+                mocco.view.referencePoint[i] = Double.parseDouble(textField[i].getText());
             }
             mocco.view.problemChanged(false);
         }

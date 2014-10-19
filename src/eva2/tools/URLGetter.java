@@ -26,7 +26,7 @@ public class URLGetter {
                 "www-cache.informatik.uni-tuebingen.de");
         System.getProperties().put("proxyPort", "3128");
 
-        StringBuffer res = new StringBuffer();
+        StringBuilder res = new StringBuilder();
         try {
             URL url = new URL(urlstr);
             URLConnection conn = url.openConnection();

@@ -103,9 +103,7 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
             int[] tmp = new int[x.length];
             int[] without = new int[x.length - length];
             int[] insert = new int[length];
-            for (int i = 0; i < length; i++) {
-                insert[i] = x[i + from];
-            }
+            System.arraycopy(x, 0 + from, insert, 0, length);
             for (int i = 0; i < without.length; i++) {
                 if (i < from) {
                     without[i] = x[i];
@@ -113,15 +111,9 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
                     without[i] = x[i + length];
                 }
             }
-            for (int i = 0; i < to; i++) {
-                tmp[i] = without[i];
-            }
-            for (int i = to; i < to + length; i++) {
-                tmp[i] = insert[i - to];
-            }
-            for (int i = to + length; i < x.length; i++) {
-                tmp[i] = without[i - length];
-            }
+            System.arraycopy(without, 0, tmp, 0, to);
+            System.arraycopy(insert, to - to, tmp, to, to + length - to);
+            System.arraycopy(without, to + length - length, tmp, to + length, x.length - (to + length));
 //    		System.out.println(""+from+"/"+to+"/"+length);
 //    		this.printInt("After  ", tmp);
             ((InterfaceGIIndividual) individual).setIGenotype(tmp);

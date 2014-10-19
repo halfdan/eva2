@@ -18,9 +18,9 @@ public class GPArea implements java.io.Serializable {
      */
     private transient PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    private ArrayList<AbstractGPNode> completeList = new ArrayList<AbstractGPNode>();
-    private ArrayList<AbstractGPNode> reducedList = new ArrayList<AbstractGPNode>();
-    private ArrayList<Boolean> blackList = new ArrayList<Boolean>();
+    private ArrayList<AbstractGPNode> completeList = new ArrayList<>();
+    private ArrayList<AbstractGPNode> reducedList = new ArrayList<>();
+    private ArrayList<Boolean> blackList = new ArrayList<>();
 
     public GPArea() {
 
@@ -50,7 +50,7 @@ public class GPArea implements java.io.Serializable {
      */
     public void add2CompleteList(AbstractGPNode n) {
         this.completeList.add(n);
-        this.blackList.add(new Boolean(true));
+        this.blackList.add(Boolean.TRUE);
     }
 
     /**
@@ -61,7 +61,7 @@ public class GPArea implements java.io.Serializable {
      */
     public void add2CompleteList(AbstractGPNode n, boolean b) {
         this.completeList.add(n);
-        this.blackList.add(new Boolean(b));
+        this.blackList.add(Boolean.valueOf(b));
     }
 
     /**
@@ -89,7 +89,7 @@ public class GPArea implements java.io.Serializable {
      * @param b the boolean value
      */
     public void setBlackListElement(int i, boolean b) {
-        this.blackList.set(i, new Boolean(b));
+        this.blackList.set(i, Boolean.valueOf(b));
     }
 
     /**
@@ -124,7 +124,7 @@ public class GPArea implements java.io.Serializable {
      * This method compiles the Complete List to the allowed list using the BlackList
      */
     public void compileReducedList() {
-        this.reducedList = new ArrayList<AbstractGPNode>();
+        this.reducedList = new ArrayList<>();
         for (int i = 0; i < this.completeList.size(); i++) {
             if (this.blackList.get(i).booleanValue()) {
                 this.reducedList.add(this.completeList.get(i));
@@ -139,7 +139,7 @@ public class GPArea implements java.io.Serializable {
      * @param targetarity The target arity.
      */
     public AbstractGPNode getRandomNodeWithArity(int targetarity) {
-        ArrayList<AbstractGPNode> tmpArray = new ArrayList<AbstractGPNode>();
+        ArrayList<AbstractGPNode> tmpArray = new ArrayList<>();
         for (int i = 0; i < this.reducedList.size(); i++) {
             if (this.reducedList.get(i).getArity() == targetarity) {
                 tmpArray.add(this.reducedList.get(i));
@@ -167,7 +167,7 @@ public class GPArea implements java.io.Serializable {
      * This method will return a non terminal
      */
     public AbstractGPNode getRandomNonTerminal() {
-        ArrayList<AbstractGPNode> tmpArray = new ArrayList<AbstractGPNode>();
+        ArrayList<AbstractGPNode> tmpArray = new ArrayList<>();
         for (int i = 0; i < this.reducedList.size(); i++) {
             if (this.reducedList.get(i).getArity() > 0) {
                 tmpArray.add(this.reducedList.get(i));
@@ -185,9 +185,9 @@ public class GPArea implements java.io.Serializable {
     }
 
     public void clear() {
-        completeList = new ArrayList<AbstractGPNode>();
-        reducedList = new ArrayList<AbstractGPNode>();
-        blackList = new ArrayList<Boolean>();
+        completeList = new ArrayList<>();
+        reducedList = new ArrayList<>();
+        blackList = new ArrayList<>();
         propertyChangeSupport.firePropertyChange("GPArea", null, this);
     }
 

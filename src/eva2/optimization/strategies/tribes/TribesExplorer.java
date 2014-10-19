@@ -943,7 +943,7 @@ v[d] = cmin * v[d];
 
     @Override
     public String getStringRepresentation() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("TribesExplorer [");
         for (int i = 0; i < position.x.length; i++) {
             sb.append(position.x[i]);

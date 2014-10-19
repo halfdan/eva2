@@ -294,7 +294,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
      */
     @Override
     public String getStringRepresentation() {
-        StringBuffer sbuf = new StringBuffer("Clustering Hill Climbing");
+        StringBuilder sbuf = new StringBuilder("Clustering Hill Climbing");
         sbuf.append(", initial pop size: ");
         sbuf.append(getPopulation().getTargetSize());
         sbuf.append("Optimization Problem: ");

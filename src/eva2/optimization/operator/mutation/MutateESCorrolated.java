@@ -30,16 +30,12 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
     public MutateESCorrolated(MutateESCorrolated mutator) {
         if ((mutator.sigmas != null)) {
             this.sigmas = new double[mutator.sigmas.length];
-            for (int i = 0; i < this.sigmas.length; i++) {
-                this.sigmas[i] = mutator.sigmas[i];
-            }
+            System.arraycopy(mutator.sigmas, 0, this.sigmas, 0, this.sigmas.length);
 
         }
         if (mutator.alphas != null) {
             this.alphas = new double[mutator.alphas.length];
-            for (int i = 0; i < this.alphas.length; i++) {
-                this.alphas[i] = mutator.alphas[i];
-            }
+            System.arraycopy(mutator.alphas, 0, this.alphas, 0, this.alphas.length);
 
         }
 

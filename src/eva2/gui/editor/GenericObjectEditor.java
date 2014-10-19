@@ -38,7 +38,7 @@ public class GenericObjectEditor implements PropertyEditor {
             return getClassesFromClassPath(className, instances);
         } else {
             StringTokenizer st = new StringTokenizer(typeOptions, ", ");
-            ArrayList<String> classes = new ArrayList<String>();
+            ArrayList<String> classes = new ArrayList<>();
             while (st.hasMoreTokens()) {
                 String current = st.nextToken().trim();
                 try {
@@ -67,7 +67,7 @@ public class GenericObjectEditor implements PropertyEditor {
      * @see ReflectPackage.getAssignableClassesInPackage
      */
     public static ArrayList<String> getClassesFromClassPath(String className, ArrayList<Class<?>> instances) {
-        ArrayList<String> classes = new ArrayList<String>();
+        ArrayList<String> classes = new ArrayList<>();
         Class<?>[] classArray;
         classArray = ReflectPackage.getAssignableClasses(className, true, true);
         if (classArray == null) {
@@ -271,7 +271,7 @@ public class GenericObjectEditor implements PropertyEditor {
         }
 
         Vector<String> v = null;
-        v = new Vector<String>(getClassesFromProperties(classType.getName(), null));
+        v = new Vector<>(getClassesFromProperties(classType.getName(), null));
 
         try {
             if (v.size() > 0) {

@@ -134,7 +134,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
     @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
         if (crossoverType != MutateESCrossoverTypeEnum.none) {
-            ArrayList<Double> tmpList = new ArrayList<Double>();
+            ArrayList<Double> tmpList = new ArrayList<>();
             if (indy1.getMutationOperator() instanceof MutateESGlobal) {
                 tmpList.add(new Double(((MutateESGlobal) indy1.getMutationOperator()).mutationStepSize));
             }

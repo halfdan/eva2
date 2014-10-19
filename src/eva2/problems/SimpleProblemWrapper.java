@@ -264,7 +264,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
      */
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
-        StringBuffer sb = new StringBuffer(200);
+        StringBuilder sb = new StringBuilder(200);
         sb.append("A wrapped simple problem based on ");
         sb.append(simProb.getClass().getName());
         sb.append(", Dimension   : ");

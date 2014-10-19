@@ -36,8 +36,8 @@ public class DContainer extends DComponent implements DParent {
 
     public DContainer(int initial_capacity) {
         super();
-        elements = new Vector<DElement>(initial_capacity);
-        keys = new Vector<String>(initial_capacity);
+        elements = new Vector<>(initial_capacity);
+        keys = new Vector<>(initial_capacity);
     }
 
     @Override

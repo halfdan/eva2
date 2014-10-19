@@ -92,9 +92,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
             }
 
             double[][] nParents = new double[parents.length - 1][];
-            for (int i = 1; i < parents.length; i++) {
-                nParents[i - 1] = parents[i];
-            }
+            System.arraycopy(parents, 1, nParents, 0, parents.length - 1);
             double[] g = Mathematics.meanVect(nParents), tmpD;
             double w, v;
             ArrayList givenCoordinates = this.getGivenCoordinates(g, nParents);
@@ -103,9 +101,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
             // now determine the offsprings
             for (int i = 0; i < children.length; i++) {
                 // first the mean
-                for (int j = 0; j < g.length; j++) {
-                    children[i][j] = g[j];
-                }
+                System.arraycopy(g, 0, children[i], 0, g.length);
                 // then the given coordinates
                 for (int j = 0; j < givenCoordinates.size(); j++) {
                     tmpD = (double[]) givenCoordinates.get(j);

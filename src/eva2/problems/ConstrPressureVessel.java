@@ -30,7 +30,7 @@ public class ConstrPressureVessel extends AbstractProblemDouble {
     }
 
     public static AbstractConstraint[] makeDefaultConstraints() {
-        Vector<AbstractConstraint> constraints = new Vector<AbstractConstraint>();
+        Vector<AbstractConstraint> constraints = new Vector<>();
         constraints.add(new GenericConstraint("-(*(0.0193,x2),x0)", ConstraintRelationEnum.lessEqZero));
         constraints.add(new GenericConstraint("-(*(0.00954,x2),x1)", ConstraintRelationEnum.lessEqZero));
         constraints.add(new GenericConstraint("-(1296000, +(*(pi, *(pow2(x2),x3)),*(/(4,3),*(pi,pow3(x2))))))", ConstraintRelationEnum.lessEqZero));

@@ -23,7 +23,7 @@ public class EvAStatisticalEvaluation {
     public static void evaluate(InterfaceTextListener textout, OptimizationJob[] jobList, int[] selectedIndices,
                                 StatsOnSingleDataSetEnum[] singleStats,
                                 StatsOnTwoSampledDataEnum[] twoSampledStats) {
-        ArrayList<OptimizationJob> jobsToWorkWith = new ArrayList<OptimizationJob>();
+        ArrayList<OptimizationJob> jobsToWorkWith = new ArrayList<>();
         for (int i = 0; i < jobList.length; i++) {
             // remove jobs which are not finished or not selected
             if (jobList[i] != null && (Mathematics.contains(selectedIndices, i)) && (jobList[i].isFinishedAndComplete())) {
@@ -299,10 +299,10 @@ public class EvAStatisticalEvaluation {
      * @return
      */
     private static List<String> getCommonFields(List<OptimizationJob> jobList) {
-        List<String> lSoFar = null, tmpL = new LinkedList<String>();
+        List<String> lSoFar = null, tmpL = new LinkedList<>();
         for (OptimizationJob j : jobList) {
             if (lSoFar == null) {
-                lSoFar = new LinkedList<String>();
+                lSoFar = new LinkedList<>();
                 for (String f : j.getFieldHeaders()) {
                     lSoFar.add(f);
                 }
@@ -313,7 +313,7 @@ public class EvAStatisticalEvaluation {
                     }
                 }
                 lSoFar = tmpL;
-                tmpL = new LinkedList<String>();
+                tmpL = new LinkedList<>();
             }
         }
         return lSoFar;

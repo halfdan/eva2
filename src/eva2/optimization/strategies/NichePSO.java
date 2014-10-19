@@ -109,7 +109,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     protected transient String dirForCurrentExperiment = "unset";
     // the main swarm and the subswarms
     protected ParticleSubSwarmOptimization mainSwarm = new ParticleSubSwarmOptimization();
-    protected Vector<ParticleSubSwarmOptimization> subSwarms = new Vector<ParticleSubSwarmOptimization>();
+    protected Vector<ParticleSubSwarmOptimization> subSwarms = new Vector<>();
     protected ParticleSubSwarmOptimization subswarmOptimizerTemplate = new ParticleSubSwarmOptimization();
     // individuals to be reinitialized in the next iteration
     protected Vector<int[]> indicesToReinit = null;
@@ -412,21 +412,21 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         // reset flags etc for:
         // deactivation
         deactivationOccured = false;
-        deactivatedSwarm = new Vector<ParticleSubSwarmOptimization>();
+        deactivatedSwarm = new Vector<>();
 //		reinitedSwarm = new Vector<ParticleSubSwarmOptimization>();
         // merging
         mergingOccurd = false;
-        borg = new Vector<ParticleSubSwarmOptimization>();
-        others = new Vector<ParticleSubSwarmOptimization>();
-        borgbest = new Vector<AbstractEAIndividual>();
-        othersbest = new Vector<AbstractEAIndividual>();
+        borg = new Vector<>();
+        others = new Vector<>();
+        borgbest = new Vector<>();
+        othersbest = new Vector<>();
         // absorbtion
         absorbtionOccurd = false;
-        indytoabsorb = new Vector<AbstractEAIndividual>();
+        indytoabsorb = new Vector<>();
         // subswarmcreation
         creationOccurd = false;
-        indyconverged = new Vector<AbstractEAIndividual>();
-        convergedneighbor = new Vector<AbstractEAIndividual>();
+        indyconverged = new Vector<>();
+        convergedneighbor = new Vector<>();
     }
 
     /**
@@ -452,7 +452,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     public void scheduleNewParticlesToPopulation(int[] particleIndices) {
         if (particleIndices != null) {
             if (indicesToReinit == null) {
-                indicesToReinit = new Vector<int[]>();
+                indicesToReinit = new Vector<>();
             }
             indicesToReinit.add(particleIndices);
         }
@@ -471,7 +471,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
                 } else {
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
             }
@@ -479,9 +479,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             synchronized (topoPlot.getClass()) {
                 plotMainSwarm(false);
                 plotSubSwarms();
-                //plotAdditionalInfo();
-                //plotAllStdDevsInMainSwarm();
-                //plotBoundStdDevInMainSwarm(0.03);
             }
             if (savePlots) {
                 String gen = String.valueOf(getMainSwarm().getPopulation().getGeneration());
@@ -1482,7 +1479,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     public String getReport() {
-        String result = new String();
+        String result = "";
         result = "Generations: " + getPopulation().getGeneration();
         result += " FunctionCalls: " + getPopulation().getFunctionCalls();
         result += " MainSwarmSize: " + getMainSwarm().getPopulation().size();
@@ -1989,7 +1986,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         AbstractEAIndividual indy = getIndyByParticleIndex(new Integer(particleIndex));
 
         // collect Information to be printed
-        String text = new String();
+        String text = "";
         double[] vel = (double[]) indy.getData("velocity"); //beware: curVel -> newPos -> plot (not  curVel -> plot -> newPos)
         String xv = String.format("%6.2f", vel[0]);
         String yv = String.format("%6.2f", vel[1]);

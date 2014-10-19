@@ -217,12 +217,12 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         public void actionPerformed(ActionEvent event) {
             // first read the values
             try {
-                perturbations = new Integer(numPerTextField.getText()).intValue();
+                perturbations = Integer.parseInt(numPerTextField.getText());
             } catch (java.lang.NumberFormatException e) {
                 System.out.println("Can't read k.");
             }
             try {
-                perturbation = new Double(sizePerTextField.getText()).doubleValue();
+                perturbation = Double.parseDouble(sizePerTextField.getText());
             } catch (java.lang.NumberFormatException e) {
                 System.out.println("Can't read amount of perturbation.");
             }

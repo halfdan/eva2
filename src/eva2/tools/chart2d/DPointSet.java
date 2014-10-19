@@ -338,7 +338,7 @@ public class DPointSet extends DComponent {
      */
     class JumpManager {
 
-        protected ArrayList<Integer> jumps = new ArrayList<Integer>();
+        protected ArrayList<Integer> jumps = new ArrayList<>();
         protected int index = -1;
 
         public void addJump() {

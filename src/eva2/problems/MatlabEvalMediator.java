@@ -15,11 +15,11 @@ import java.util.concurrent.Semaphore;
  * However, the mediator object remains persistent, and the optimization thread keeps running
  * and waits for the mediator to signal that there is a result, which happens if Matlab calls setAnswer().
  * Then the optimizer thread resumes, while Matlab has to restart the mediator thread, so that it may
- * be informed about the next question, and so on. I havent checked how much performance is lost compared
- * to the earlier, asynchronous version, but it feels similar, a difference being that both cpu's
+ * be informed about the next question, and so on. I haven't checked how much performance is lost compared
+ * to the earlier, asynchronous version, but it feels similar, a difference being that both CPU's
  * are now at 100% load, which is because two threads are running (and always at least waiting actively).
  * Adding sleep time reduces CPU load a lot but reduces efficiency badly at the same time, probably because
- * theres so much going on. For cases where the evaluation function is very time-consuming, adding sleep time
+ * there's so much going on. For cases where the evaluation function is very time-consuming, adding sleep time
  * might be an option.
  *
  * @author mkron
@@ -174,15 +174,7 @@ public class MatlabEvalMediator {
     }
 
     private void logMPOrSysOut(String msg) {
-//		System.out.println("Hurz OR");
         logMP(msg);
-//		else System.out.println("MEM has no MP! " + msg);
-    }
-
-    private void logMPAndSysOut(String msg) {
-//		System.out.println("Hurz AND");
-//		logMP(msg + "\n");
-//		System.out.println(msg);
     }
 
     private void logMP(String msg) {
@@ -195,7 +187,6 @@ public class MatlabEvalMediator {
      * Cancel waiting in any case.
      */
     public void quit() {
-//		System.out.println("IN QUIT!");
         quit = true;
     }
 
@@ -224,15 +215,12 @@ public class MatlabEvalMediator {
      * @param y
      */
     public void setAnswer(double[] y) {
-//		logMPAndSysOut("Synch requesting B setAnswer " + getState());
         synchronized (requesting) {
-//			logMPAndSysOut("In Synch requesting B setAnswer " + getState());
             if (!requesting) {
                 String msg = "Error: not in requesting state when answer arrived!!";
                 System.err.println(msg);
                 logMP(msg);
             }
-//			System.err.println("answer is " + BeanInspector.toString(y)); 
             if (y == null) {
                 System.err.println("Error: Matlab function returned null array - this is bad.");
                 System.err.println("X-value was " + BeanInspector.toString(getQuestion()));
@@ -242,11 +230,9 @@ public class MatlabEvalMediator {
             requests.release();
             logMP("-- setAnswer: " + BeanInspector.toString(y) + ", req state is " + requesting + "\n");
         }
-//		logMPAndSysOut("Synch requesting B done " + getState());
     }
 
     void setFinished(boolean val) {
-//		logMPAndSysOut("Synch fin " + getState());
         synchronized (fin) {
             if (fin && val) {
                 String msg = "Error: already finished when setFinished(true) was called!";
@@ -256,7 +242,6 @@ public class MatlabEvalMediator {
             fin = val;
             logMPOrSysOut("MEM setFinished ok");
         }
-//		logMPAndSysOut("Synch fin done " + getState());
     }
 
     /**
@@ -269,22 +254,18 @@ public class MatlabEvalMediator {
     }
 
     void setSolution(Object sol) {
-//		System.err.println("setting obj Sol " + BeanInspector.toString(sol));
         optSolution = sol;
     }
 
     void setSolutionSet(double[][] solSet) {
-//		System.err.println("setting dbl SolSet " + ((solSet != null) ? solSet.length : 0));
         optSolSet = solSet;
     }
 
     void setSolutionSet(BitSet[] solSet) {
-//		System.err.println("setting bs SolSet " + ((solSet != null) ? solSet.length : 0));
         optSolSet = solSet;
     }
 
     void setSolutionSet(int[][] solSet) {
-//		System.err.println("setting int SolSet " + ((solSet != null) ? solSet.length : 0));
         optSolSet = solSet;
     }
 
@@ -294,7 +275,6 @@ public class MatlabEvalMediator {
      * @return
      */
     public Object getSolution() {
-//		System.err.println("getting Sol " + BeanInspector.toString(optSolution));
         return optSolution;
     }
 
@@ -304,7 +284,6 @@ public class MatlabEvalMediator {
      * @return
      */
     public Object getSolutionSet() {
-//		System.err.println("getting SolSet " + ((optSolSet != null) ? optSolSet.length : 0));
         return optSolSet;
     }
 }

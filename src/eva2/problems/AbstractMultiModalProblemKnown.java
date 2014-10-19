@@ -34,7 +34,6 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
         if (b.listOfOptima != null) {
             this.listOfOptima = (Population) b.listOfOptima.clone();
         }
-        ;
         this.globalOptimum = b.globalOptimum;
         this.epsilon = b.epsilon;
     }

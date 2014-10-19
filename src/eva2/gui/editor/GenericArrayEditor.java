@@ -57,13 +57,13 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     /**
      * list of additional buttons above the list
      */
-    private List<JButton> upperButtonList = new LinkedList<JButton>();
+    private List<JButton> upperButtonList = new LinkedList<>();
     /**
      * list of additional buttons below the list
      */
-    private List<JButton> lowerButtonList = new LinkedList<JButton>();
+    private List<JButton> lowerButtonList = new LinkedList<>();
     private JComponent additionalCenterComp = null;
-    private List<JMenuItem> popupItemList = new LinkedList<JMenuItem>();
+    private List<JMenuItem> popupItemList = new LinkedList<>();
     private JButton addButton = new JButton("Add");
     private JButton setButton = new JButton("Set");
     private JButton setAllButton = new JButton("Set all");
@@ -272,11 +272,11 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
         /**
          * Creates a cell rendering component.
          *
-         * @param JList   the list that will be rendered in
-         * @param Object  the cell value
-         * @param int     which element of the list to render
-         * @param boolean true if the cell is selected
-         * @param boolean true if the cell has the focus
+         * @param list          the list that will be rendered in
+         * @param value         the cell value
+         * @param index         which element of the list to render
+         * @param isSelected    true if the cell is selected
+         * @param cellHasFocus  true if the cell has the focus
          * @return the rendering component
          */
         @Override
@@ -417,6 +417,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                     JPanel combiUpperPanel = new JPanel(getButtonLayout(1, upperButtonList));
                     // ToDo Figure out how to now show this on Job Pane
                     combiUpperPanel.add(view);
+                    view.setVisible(withAddButton);
 
                     for (JButton but : upperButtonList) {
                         combiUpperPanel.add(but);
@@ -760,6 +761,10 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
 
     public void setWithAddButton(boolean withAddButton) {
         this.withAddButton = withAddButton;
+        // Hide/Show view based on whether we show the add button
+        if (this.view != null) {
+            this.view.setVisible(withAddButton);
+        }
     }
 
     public boolean isWithSetButton() {

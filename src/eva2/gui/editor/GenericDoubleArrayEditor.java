@@ -177,7 +177,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
                 for (int j = 0; j < tmpDD[0].length; j++) {
                     try {
                         double d = 0;
-                        d = new Double(inputTextFields[i][j].getText()).doubleValue();
+                        d = Double.parseDouble(inputTextFields[i][j].getText());
                         tmpDD[i][j] = d;
                     } catch (Exception e) {
                     }

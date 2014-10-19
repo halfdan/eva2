@@ -49,7 +49,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     private static final long serialVersionUID = -3143069327594708609L;
     private Population population = new Population();
     private transient Population populationArchive = new Population();
-    private ArrayList<Population> species = new ArrayList<Population>();
+    private ArrayList<Population> species = new ArrayList<>();
     private Population undifferentiatedPopulation = new Population();
     private transient Population doomedPopulation = new Population();
     private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
@@ -194,7 +194,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     private void initDefaults(boolean evalPop) {
         this.optimizer.addPopulationChangedEventListener(this);
         this.undifferentiatedPopulation.setTargetSize(this.populationSize);
-        this.species = new ArrayList<Population>();
+        this.species = new ArrayList<>();
         this.populationArchive = undifferentiatedPopulation.cloneWithoutInds();
 //    	if (useDistraction) distraction = new Distraction(distrDefaultStrength, Distraction.METH_BEST);
         convergedCnt = 0;
@@ -559,7 +559,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
 
             if (this.useSpeciesDifferentiation) {
                 Population[] clusters;
-                ArrayList<Population> newSpecies = new ArrayList<Population>();
+                ArrayList<Population> newSpecies = new ArrayList<>();
                 //cluster the undifferentiated population
                 clusters = this.caForSpeciesDifferentation.cluster(this.undifferentiatedPopulation, population);
                 for (int j = 1; j < clusters.length; j++) { // loop new clusters
@@ -614,7 +614,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
                 Population spec1, spec2;
                 // test if species are close to already archived solutions - deactivate them if so
                 assocSpec = caForSpeciesMerging.associateLoners(populationArchive, species.toArray(new Population[species.size()]), population);
-                PriorityQueue<Integer> specToRemove = new PriorityQueue<Integer>(5, Collections.reverseOrder()); // backwards sorted or DIE!
+                PriorityQueue<Integer> specToRemove = new PriorityQueue<>(5, Collections.reverseOrder()); // backwards sorted or DIE!
                 for (int i = populationArchive.size() - 1; i >= 0; i--) {
                     if (assocSpec[i] >= 0) {
                         AbstractEAIndividual aIndy = populationArchive.getEAIndividual(i);

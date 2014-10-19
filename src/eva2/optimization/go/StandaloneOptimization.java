@@ -557,7 +557,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
 
             // data to be stored in file
             double tmpd = 0;
-            StringBuffer tmpLine = new StringBuffer("");
+            StringBuilder tmpLine = new StringBuilder("");
             tmpLine.append(population.getFunctionCalls());
             tmpLine.append("\t");
             tmpLine.append(population.getBestEAIndividual().getFitness(0));

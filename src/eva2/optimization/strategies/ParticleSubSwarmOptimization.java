@@ -128,7 +128,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     public static void initFitnessArchiveOf(AbstractEAIndividual indy) {
-        Vector<Double> vec = new Vector<Double>();
+        Vector<Double> vec = new Vector<>();
         double scalarFitness = sum(indy.getFitness()); // if multiobjective, use the sum of all fitnessvalues (dont use the norm because fitnessvalues may be negative)
         vec.add(new Double(scalarFitness));
         indy.putData(NichePSO.fitArchiveKey, vec);
@@ -289,7 +289,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
             double scalarFitness = sum(indy.getFitness()); // if multiobjective, use the sum of all fitnessvalues (dont use the norm because fitnessvalues may be negative)
             Double fitness = new Double(scalarFitness);
 
-            Vector<Double> fitArchive_new = new Vector<Double>();
+            Vector<Double> fitArchive_new = new Vector<>();
             int end = fitArchive_old.size();
             int start = 0;
             if (end >= fitnessArchiveSize) {
@@ -502,7 +502,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
             for (int i = 0; i < tmpopt.getPopulation().size(); ++i) {
                 AbstractEAIndividual indy = tmpopt.getPopulation().getEAIndividual(i);
                 indy.setIndividualIndex(particleIndices[i]);//SetData("particleIndex", new Integer(particleIndices[i]));
-                indy.putData("newParticleFlag", new Boolean(true)); // for plotting
+                indy.putData("newParticleFlag", Boolean.TRUE); // for plotting
             }
         }
 

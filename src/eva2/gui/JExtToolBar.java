@@ -37,7 +37,7 @@ public class JExtToolBar extends JToolBar {
     }
 
     private String getKeyText(KeyStroke k) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         if (k != null) {
             int modifiers = k.getModifiers();

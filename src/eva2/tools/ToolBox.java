@@ -32,9 +32,7 @@ public final class ToolBox {
             ret[i] = fields[i].toString();
         }
 
-        for (int i = enumLen; i < ret.length; i++) {
-            ret[i] = additionals[i - enumLen];
-        }
+        System.arraycopy(additionals, enumLen - enumLen, ret, enumLen, ret.length - enumLen);
         return ret;
     }
 
@@ -89,7 +87,7 @@ public final class ToolBox {
      * @see BeanInspector.toString(Object)
      */
     public static Double[] parseDoubles(List<Object> l) {
-        ArrayList<Double> vals = new ArrayList<Double>();
+        ArrayList<Double> vals = new ArrayList<>();
         for (Object o : l) {
             vals.add(toDouble(o)); // null if unsuccessfull
         }
@@ -151,7 +149,7 @@ public final class ToolBox {
         if (i >= dat[0].length) {
             System.err.println("Error, invalid column index " + i + " for data array with " + dat[0].length + " columns!");
         }
-        ArrayList<double[]> matching = new ArrayList<double[]>(5);
+        ArrayList<double[]> matching = new ArrayList<>(5);
         for (double[] row : dat) {
             if (row[i] <= upper && row[i] >= lower) {
                 matching.add(row);

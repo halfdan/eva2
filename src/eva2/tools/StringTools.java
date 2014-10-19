@@ -126,7 +126,7 @@ public final class StringTools {
      * @return
      */
     public static Integer[] parseArguments(String[] args, String[] keys, int[] arities, Object[] values, boolean ignoreCase) {
-        LinkedList<Integer> unrecogs = new LinkedList<Integer>();
+        LinkedList<Integer> unrecogs = new LinkedList<>();
         //for (String string : argsArr) args.add(string); // create a linked list copy
         for (int i = 0; i < args.length; i++) { // loop all arguments
             boolean found = false;
@@ -190,7 +190,7 @@ public final class StringTools {
                 }
             }
         }
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<>();
         for (int i = 0; i < keys.length; i++) {
             map.put(keys[i], values[i]);
         }
@@ -410,7 +410,7 @@ public final class StringTools {
     public static String humaniseCamelCase(final String word) {
         Pattern pattern = Pattern.compile("([A-Z]|[a-z])[a-z]*");
 
-        List<String> tokens = new ArrayList<String>();
+        List<String> tokens = new ArrayList<>();
         Matcher matcher = pattern.matcher(word);
         String acronym = "";
         while (matcher.find()) {

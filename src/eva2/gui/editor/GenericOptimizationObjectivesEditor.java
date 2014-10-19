@@ -205,9 +205,7 @@ public class GenericOptimizationObjectivesEditor extends JPanel implements Prope
             optimizationObjectives.addTarget((InterfaceOptimizationObjective) optimizationObjectives.getAvailableTargets()[0].clone());
             int l = optimizationObjectives.getSelectedTargets().length;
             GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l];
-            for (int i = 0; i < editors.length; i++) {
-                newEdit[i] = editors[i];
-            }
+            System.arraycopy(editors, 0, newEdit, 0, editors.length);
             InterfaceOptimizationObjective[] list = optimizationObjectives.getSelectedTargets();
             l--;
             newEdit[l] = new GeneralOptimizationEditorProperty();

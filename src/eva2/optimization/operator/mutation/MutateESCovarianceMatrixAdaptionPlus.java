@@ -92,9 +92,7 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
 
     public void updateCovariance() {
         double[] step = new double[D];
-        for (int i = 0; i < D; i++) {
-            step[i] = Bz[i];
-        }
+        System.arraycopy(Bz, 0, step, 0, D);
         updateCovariance(step);
     }
 

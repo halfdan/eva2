@@ -56,7 +56,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     PopulationInitMethod initMethod = PopulationInitMethod.individualDefault;
     private double[] seedPos = new double[10];
-    private Pair<Integer, Integer> seedCardinality = new Pair<Integer, Integer>(5, 1);
+    private Pair<Integer, Integer> seedCardinality = new Pair<>(5, 1);
     private double aroundDist = 0.1;
 
     transient private ArrayList<InterfacePopulationChangedEventListener> listeners = null;
@@ -80,7 +80,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /**
      * Best n Individuals in the history.
      */
-    private transient LinkedList<AbstractEAIndividual> historyList = new LinkedList<AbstractEAIndividual>();
+    private transient LinkedList<AbstractEAIndividual> historyList = new LinkedList<>();
 
     /**
      * Remember when the last sorted queue was prepared.
@@ -150,7 +150,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         this(allSolutions.getCurrentPopulation().size() + allSolutions.getSolutions().size());
         LOGGER.log(Level.FINER, "New population has been created.");
         addPopulation(allSolutions.getCurrentPopulation(), false);
-        HashMap<Long, Integer> checkCols = new HashMap<Long, Integer>(size());
+        HashMap<Long, Integer> checkCols = new HashMap<>(size());
         for (int i = 0; i < size(); i++) {
             checkCols.put(getEAIndividual(i).getIndyID(), 1);
         }
@@ -173,7 +173,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public Population(int targetSize, int binCard, int binStdDev) {
         this(targetSize);
-        this.setSeedCardinality(new Pair<Integer, Integer>(binCard, binStdDev));
+        this.setSeedCardinality(new Pair<>(binCard, binStdDev));
         this.setInitMethod(PopulationInitMethod.binCardinality);
     }
 
@@ -231,7 +231,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             listeners = null;
         }
         if (population.additionalPopData != null) {
-            additionalPopData = new HashMap<String, Object>();
+            additionalPopData = new HashMap<>();
             Set<String> keys = additionalPopData.keySet();
             for (String key : keys) {
                 additionalPopData.put(key, population.additionalPopData.get(key));
@@ -302,7 +302,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     public void putData(String key, Object value) {
         if (additionalPopData == null) {
-            additionalPopData = new HashMap<String, Object>();
+            additionalPopData = new HashMap<>();
         }
         additionalPopData.put(key, value);
     }
@@ -364,7 +364,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * been inited by a problem
      */
     public void init() {
-        this.historyList = new LinkedList<AbstractEAIndividual>();
+        this.historyList = new LinkedList<>();
         this.generationCount = 0;
         this.functionCallCount = 0;
         double[] popSeed = null;
@@ -749,7 +749,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         if (ea != null) {
             if (listeners == null) {
-                listeners = new ArrayList<InterfacePopulationChangedEventListener>(3);
+                listeners = new ArrayList<>(3);
             }
             if (!listeners.contains(ea)) {
                 listeners.add(ea);
@@ -836,11 +836,11 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return
      */
     public List<Pair<Integer, Integer>> findSamePositions() {
-        ArrayList<Pair<Integer, Integer>> dupes = new ArrayList<Pair<Integer, Integer>>();
+        ArrayList<Pair<Integer, Integer>> dupes = new ArrayList<>();
         for (int i = 0; i < size() - 1; i++) {
             int nextIndex = indexByPosition(i + 1, getEAIndividual(i));
             if (nextIndex >= 0) {
-                dupes.add(new Pair<Integer, Integer>(i, nextIndex));
+                dupes.add(new Pair<>(i, nextIndex));
             }
         }
         return dupes;
@@ -1288,16 +1288,16 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     protected ArrayList<AbstractEAIndividual> sortBy(Comparator<Object> comp) {
         if (super.isEmpty()) {
-            return new ArrayList<AbstractEAIndividual>();
+            return new ArrayList<>();
         }
-        PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<AbstractEAIndividual>(super.size(), comp);
+        PriorityQueue<AbstractEAIndividual> sQueue = new PriorityQueue<>(super.size(), comp);
         for (int i = 0; i < super.size(); i++) {
             AbstractEAIndividual indy = getEAIndividual(i);
             if (indy != null) {
                 sQueue.add(indy);
             }
         }
-        ArrayList<AbstractEAIndividual> sArr = new ArrayList<AbstractEAIndividual>(this.size());
+        ArrayList<AbstractEAIndividual> sArr = new ArrayList<>(this.size());
         AbstractEAIndividual indy;
         while ((indy = sQueue.poll()) != null) {
             sArr.add(indy);
@@ -2040,7 +2040,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 sel = i;
             }
         }
-        return new Pair<Integer, Double>(sel, dist);
+        return new Pair<>(sel, dist);
     }
 
     /**
@@ -2067,7 +2067,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 }
             }
         }
-        return new Pair<Integer, Double>(sel, dist);
+        return new Pair<>(sel, dist);
     }
 
     /**
@@ -2205,7 +2205,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         PhenotypeMetric metric = new PhenotypeMetric();
         ArrayList<Double> distances = null;
         if (calcVariance) {
-            distances = new ArrayList<Double>(size());
+            distances = new ArrayList<>(size());
         }
         double sum = 0;
         double d = 0;

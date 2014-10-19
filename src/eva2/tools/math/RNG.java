@@ -115,7 +115,7 @@ public class RNG {
      * @return The permutation [0-length-1]
      */
     public static int[] randomPerm(int length) {
-        ArrayList<Integer> intList = new ArrayList<Integer>(length);
+        ArrayList<Integer> intList = new ArrayList<>(length);
         int[] result = new int[length];
         for (int i = 0; i < length; i++) {
             intList.add(new Integer(i));
