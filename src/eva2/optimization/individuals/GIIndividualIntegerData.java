@@ -328,8 +328,8 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         int[][] range = initializationRange;
-        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitRange() != null)) {
-            Object rng = ((InterfaceHasInitRange) prob).getInitRange();
+        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitializationRange() != null)) {
+            Object rng = ((InterfaceHasInitRange) prob).getInitializationRange();
             if (rng instanceof double[][]) {
                 double[][] dblRng = (double[][]) rng;
                 range = new int[dblRng.length][dblRng[0].length];

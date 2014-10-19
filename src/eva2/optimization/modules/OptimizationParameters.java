@@ -3,6 +3,7 @@ package eva2.optimization.modules;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
+import eva2.optimization.strategies.DifferentialEvolution;
 import eva2.problems.F1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.GeneticAlgorithm;
@@ -34,7 +35,7 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
      * @return
      */
     public static OptimizationParameters getInstance() {
-        return getInstance("OptimizationParameters.set", true);
+        return getInstance("OptimizationParameters.ser", true);
     }
 
     /**
@@ -60,7 +61,7 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
     }
 
     public OptimizationParameters() {
-        super(new GeneticAlgorithm(), new F1Problem(), new EvaluationTerminator(1000));
+        super(new DifferentialEvolution(), new F1Problem(), new EvaluationTerminator(5000));
     }
 
     public OptimizationParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {

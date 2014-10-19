@@ -16,5 +16,5 @@ public interface InterfaceHasInitRange {
      *
      * @return An initial search range or null in case it is equal to the global search range.
      */
-    public Object getInitRange();
+    public Object getInitializationRange();
 }

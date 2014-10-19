@@ -78,18 +78,18 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     @Override
     public EvATabbedFrameMaker getModuleFrame() {
         if (!(statisticsModule instanceof StatisticsWithGUI)) {
-            System.err.println("Error: Unable to create Frame when startet with noGUI option (GenericModuleAdapter)!");
+            System.err.println("Error: Unable to create Frame when started with noGUI option (GenericModuleAdapter)!");
             return null;
         }
         EvATabbedFrameMaker frmMkr = new EvATabbedFrameMaker();
 
         InterfaceStatisticsParameter Stat = statisticsModule.getStatisticsParameter();
-        EvAModuleButtonPanelMaker ButtonPanel = new EvAModuleButtonPanelMaker(remoteModuleAdapter, ((Processor) processor).isOptimizationRunning());
-        ButtonPanel.setHelperFilename(helperFilename);
-        frmMkr.addPanelMaker(ButtonPanel);
-        InterfaceOptimizationParameters goParams = ((Processor) processor).getGOParams();
+        EvAModuleButtonPanelMaker buttonPanel = new EvAModuleButtonPanelMaker(remoteModuleAdapter, ((Processor) processor).isOptimizationRunning());
+        buttonPanel.setHelperFilename(helperFilename);
+        frmMkr.addPanelMaker(buttonPanel);
+        InterfaceOptimizationParameters optimizationParameters = ((Processor) processor).getOptimizationParameterss();
 
-        frmMkr.addPanelMaker(paramPanel = new JParaPanel(goParams, goParams.getName()));
+        frmMkr.addPanelMaker(paramPanel = new JParaPanel(optimizationParameters, optimizationParameters.getName()));
 
         frmMkr.addPanelMaker(new JParaPanel(Stat, Stat.getName()));
 
@@ -102,7 +102,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
 
         frmMkr.addPanelMaker(jobPanel);
 
-        ((Processor) processor).getGOParams().addInformableInstance(frmMkr);
+        ((Processor) processor).getOptimizationParameterss().addInformableInstance(frmMkr);
         return frmMkr;
     }
 
@@ -133,7 +133,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
 
     @Override
     public OptimizationJob scheduleJob() {
-        OptimizationJob job = jobList.addJob(((Processor) processor).getGOParams(), (AbstractStatistics) (((Processor) processor).getStatistics()));
+        OptimizationJob job = jobList.addJob(((Processor) processor).getOptimizationParameterss(), (AbstractStatistics) (((Processor) processor).getStatistics()));
         jobPanel.getEditor().setValue(jobList);
         return job;
     }
