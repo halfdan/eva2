@@ -38,14 +38,4 @@ public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
     public GOModuleAdapter(String adapterName, InterfaceOptimizationParameters goParams, String noGuiLogFile) {
         super(adapterName, "", goParams, false, noGuiLogFile);
     }
-//  /**
-//   * Starts a statistics GUI and the GOProcessor thread with a given OptimizationParameters file.
-//   * 
-//   * @param AdapterName	the title of the ModulAdapter
-//   * @param Client	the client instance
-//   */
-//  public GOModuleAdapter(String adapterName, String serParamsFile, String noGuiLogFile, MainAdapterClient client) {
-//       //super(adapterName, "", client, OptimizationParameters.getInstance(serParamsFile, false), false);
-//       super(adapterName, "", client, OptimizationParameters.getInstance(serParamsFile, serParamsFile==null), false, noGuiLogFile);
-//   }
 }

@@ -609,7 +609,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
     }
 
     @Override
-    public Object getInitRange() {
+    public Object getInitializationRange() {
         log("retrieving initial range..., first entry: " + ((initialRange == null) ? "null" : BeanInspector.toString(initialRange[0])));
         return initialRange;
     }

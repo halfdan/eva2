@@ -791,7 +791,6 @@ public class Main extends JFrame implements OptimizationStateListener {
                 ReflectPackage.resetDynCP();
                 comAdapter.updateLocalMainAdapter();
                 loadSpecificModule(selectedModule, optimizationParameters); // end recursive call! handle with care!
-                return;
             }
         } else {
             newModuleAdapter.addOptimizationStateListener(this);

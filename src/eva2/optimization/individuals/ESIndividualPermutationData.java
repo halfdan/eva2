@@ -370,8 +370,8 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         double[][][] range = initializationRange;
-        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitRange() != null)) {
-            range = (double[][][]) ((InterfaceHasInitRange) prob).getInitRange();
+        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitializationRange() != null)) {
+            range = (double[][][]) ((InterfaceHasInitRange) prob).getInitializationRange();
         }
 
         for (int i = 0; i < this.genotype.length; i++) {

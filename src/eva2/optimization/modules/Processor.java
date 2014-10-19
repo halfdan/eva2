@@ -423,7 +423,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     /**
      * These methods allow you to get and set the Module Parameters.
      */
-    public InterfaceOptimizationParameters getGOParams() {
+    public InterfaceOptimizationParameters getOptimizationParameterss() {
         return optimizationParameters;
     }
 

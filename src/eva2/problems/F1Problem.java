@@ -106,7 +106,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      * If initialRangeRatio<1, produce a reduced initial range in the negative corner of the range.
      */
     @Override
-    public Object getInitRange() {
+    public Object getInitializationRange() {
         if (initialRangeRatio < 1.) {
             double[][] gR = makeRange();
             double[][] initR = makeRange();

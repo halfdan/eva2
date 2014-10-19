@@ -113,7 +113,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     @Override
     public void initialize() {
         this.optimizationProblem.initializePopulation(this.population);
-//        children = new Population(population.size());
         this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
@@ -754,11 +753,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     @Override
     public String getName() {
-        return "DE";
+        return "Differential Evolution";
     }
 
     /**
-     * Assuming that all optimizer will store their data in a population we will
+     * Assuming that all optimizers will store their data in a population we will
      * allow access to this population to query to current state of the
      * optimizer.
      *

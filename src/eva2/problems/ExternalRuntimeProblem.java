@@ -465,7 +465,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
 
     //	@Override
     @Override
-    public Object getInitRange() {
+    public Object getInitializationRange() {
         if (initializationRange == null) {
             if (range == null) {
                 System.err.println("Warning, neither range nor initRange has been set in ExternalRuntimeProblem!");

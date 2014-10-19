@@ -335,8 +335,8 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
         int[][] range = this.range;
-        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitRange() != null)) {
-            range = (int[][]) ((InterfaceHasInitRange) prob).getInitRange();
+        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitializationRange() != null)) {
+            range = (int[][]) ((InterfaceHasInitRange) prob).getInitializationRange();
         }
         for (int i = 0; i < this.genotype.length; i++) {
             this.genotype[i] = RNG.randomInt(range[i][0], range[i][1]);

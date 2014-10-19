@@ -37,11 +37,12 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
         name = "GENERAL";
         runningState = state;
         moduleAdapter = adapter;
+
+        toolBar = new JToolBar();
     }
 
     @Override
     public JToolBar makePanel() {
-        toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
         moduleAdapter.addOptimizationStateListener(this);

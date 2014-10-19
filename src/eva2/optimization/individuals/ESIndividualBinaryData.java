@@ -297,8 +297,8 @@ public class ESIndividualBinaryData extends AbstractEAIndividual implements Inte
 
     @Override
     public void defaultInit(InterfaceOptimizationProblem prob) {
-        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitRange() != null)) {
-            ESIndividualDoubleData.defaultInit(genotype, (double[][]) ((InterfaceHasInitRange) prob).getInitRange());
+        if ((prob != null) && (prob instanceof InterfaceHasInitRange) && (((InterfaceHasInitRange) prob).getInitializationRange() != null)) {
+            ESIndividualDoubleData.defaultInit(genotype, (double[][]) ((InterfaceHasInitRange) prob).getInitializationRange());
         } else {
             ESIndividualDoubleData.defaultInit(genotype, initializationRange);
         }
