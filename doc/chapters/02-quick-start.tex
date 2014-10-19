@@ -1,4 +1,4 @@
-\chapter{Quick Start\label{sec:Quick-Start}}
+eval(\chapter{Quick Start\label{sec:Quick-Start}}
 
 The following sections give a short introduction in the main aspects
 of using\noun{ EvA2}, explaining the possibilities accessible by the
@@ -17,7 +17,7 @@ from the \noun{EvA2} homepage%
 
 To start under GNU/Linux, you can just type:
 \begin{quotation}
-\texttt{\small \$ java -cp EvA2.jar eva2.client.EvAClient}{\small \par}
+\texttt{\small \$ java -cp EvA2.jar eva2.gui.Main}{\small \par}
 \end{quotation}
 Note that ``\texttt{\$}'' stands for the command prompt, which needs
 not to be typed. In the same or a similar way, you can start it on
@@ -307,7 +307,7 @@ you can just add them to the class path. For instance, to use the
 additional ``Probs'' package containing a larger set of benchmark
 problems, place them both in your working directory and type (GNU/Linux):
 \begin{quotation}
-\texttt{\small \$ java -cp EvA2.jar:EvA2Probs.jar eva2.client.EvAClient}{\small \par}
+\texttt{\small \$ java -cp EvA2.jar:EvA2Probs.jar eva2.gui.Main}{\small \par}
 \end{quotation}
 You should now be able to select from a larger set of optimization
 problems in the GUI. Note that different platforms use different characters
@@ -319,7 +319,7 @@ example:
 \texttt{\small \$ java -cp EvA2.jar:EvA2Probs.jar:/home/username/OwnClassDir
 \textbackslash{}}{\small \par}
 
-\texttt{\small eva2.client.EvAClient}{\small \par}
+\texttt{\small eva2.gui.Main}{\small \par}
 \end{quotation}
 Note that \noun{EvA2} will search all classpath entries for compatible
 classes, so you should only add those packages which are really required.

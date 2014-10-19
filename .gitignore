@@ -6,3 +6,11 @@ out/
 .classpath
 .idea
 EvA2.iml
+*.aux
+*.log
+*.out
+*.dvi
+*.bbl
+*.blg
+*.toc
+*.synctex.gz

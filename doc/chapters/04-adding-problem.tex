@@ -14,10 +14,10 @@ able to use the full ``Java-Power'' to implement a target function
 and optimize it in \noun{EvA2}. Just follow these steps:
 \begin{itemize}
 \item Create an empty class (let's say, \texttt{ExampleProblem}) and assign
-it to the package \texttt{simpleprobs}. Put it in a directory called
-``simpleprobs'' within your working directory.
-\item Have the class inherit from \texttt{simpleprobs.SimpleDoubleProblem}
-or, depending on which datatype you want to use, from \texttt{simple\-probs.Simple\-Binary\-Problem}.
+it to the package \texttt{eva2.problems.simple}. Put it in a directory called
+``eva2/problems/simple/'' within your working directory.
+\item Have the class inherit from \texttt{eva2.problems.simple.SimpleDoubleProblem}
+or, depending on which datatype you want to use, from \texttt{eva2.problems.simple.Simple\-Binary\-Problem}.
 Both base types can be used directly from the \noun{EvA2} jar-file
 (which of course needs to be on the java classpath - in Eclipse, for
 instance, add the \noun{EvA2} jar as ``External jar'' to the Java
@@ -28,9 +28,9 @@ of the solution space, i.e. the length of the \emph{x} vector or size
 of the \texttt{BitSet}, respectively. The problem dimension may be
 a variable defined in your class, but it must not change during an
 optimization run.
-\item Implement the method \texttt{public double{[}{]}} \texttt{eval(double{[}{]}
+\item Implement the method \texttt{public double{[}{]}} \texttt{evaluate(double{[}{]}
 x)} for double coded problems or \texttt{public} \texttt{double{[}{]}}
-\texttt{eval(BitSet} \texttt{bs)} for binary coded problems, whithin
+\texttt{evaluate(BitSet} \texttt{bs)} for binary coded problems, whithin
 your ExampleProblem, where the fitness of a potential solution is
 calculated.
 \item Start the \noun{EvA2} GUI. \emph{Make sure that your working directory
