@@ -47,8 +47,6 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
 
         moduleAdapter.addOptimizationStateListener(this);
 
-
-        //////////////////////////////////////////////////////////////
         runButton = ToolBoxGui.createIconifiedButton("images/Play24.gif", "Start", true);
         runButton.setToolTipText("Start the current optimization run.");
 
@@ -67,7 +65,6 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
 
         stopButton = ToolBoxGui.createIconifiedButton("images/Stop24.gif", "Stop", true);
         stopButton.setToolTipText("Stop the current optimization run.");
-        //stopButton.setBorderPainted(false);
         stopButton.addActionListener(new ActionListener() {
 
             @Override
