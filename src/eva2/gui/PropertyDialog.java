@@ -24,7 +24,7 @@ public class PropertyDialog extends JDialog {
     /**
      *
      */
-    public PropertyDialog(Window parent, PropertyEditor editor, String title, int x, int y) {
+    public PropertyDialog(Window parent, PropertyEditor editor, String title) {
         super(parent, title, ModalityType.APPLICATION_MODAL);
         setTitle(getFrameNameFromEditor(editor));
         BasicResourceLoader loader = BasicResourceLoader.instance();
@@ -36,7 +36,7 @@ public class PropertyDialog extends JDialog {
         add(editorComponent, BorderLayout.CENTER);
 
         pack();
-        setLocation(x, y);
+        setLocationRelativeTo(parent);
     }
 
     protected static String getFrameNameFromEditor(PropertyEditor editor) {

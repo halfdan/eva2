@@ -237,7 +237,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                     Object item = dlm.getElementAt(index);
                     list.ensureIndexIsVisible(index);
                     propPanel.getEditor().setValue(item);
-                    propPanel.showDialog(e.getXOnScreen(), e.getYOnScreen());
+                    propPanel.showDialog();
                     propPanel = null;
                 }
             }
