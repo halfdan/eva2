@@ -107,7 +107,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     @Override
     public Object clone() {
-        return (Object) new DifferentialEvolution(this);
+        return new DifferentialEvolution(this);
     }
 
     @Override
@@ -685,11 +685,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListeners != null && populationChangedEventListeners.removeElement(ea)) {
-            return true;
-        } else {
-            return false;
-        }
+        return populationChangedEventListeners != null && populationChangedEventListeners.removeElement(ea);
     }
 
     /**
@@ -717,7 +713,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
-        return (InterfaceOptimizationProblem) this.optimizationProblem;
+        return this.optimizationProblem;
     }
 
     /**

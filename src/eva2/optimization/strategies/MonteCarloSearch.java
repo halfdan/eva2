@@ -46,7 +46,7 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
 
     @Override
     public Object clone() {
-        return (Object) new MonteCarloSearch(this);
+        return new MonteCarloSearch(this);
     }
 
     /**

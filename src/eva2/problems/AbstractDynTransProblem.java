@@ -59,7 +59,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
     @Override
     public void evaluatePopulationEnd(Population population) {
         double delta = transLength(getCurrentProblemTime());
-        if (isExtraPlot() == true) {
+        if (isExtraPlot()) {
             if (myplot != null) {
                 //	myplot.addGraph(0, 1);
                 myplot.jump();

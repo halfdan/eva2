@@ -39,7 +39,7 @@ public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.i
 
     @Override
     public Object clone() {
-        return (Object) new ConstBelongsToDifferentClass(this);
+        return new ConstBelongsToDifferentClass(this);
     }
 
     /**
@@ -55,7 +55,7 @@ public class ConstBelongsToDifferentClass implements InterfaceConstraint, java.i
         if (this.usePhenotype && (indy instanceof InterfaceDataTypeDouble)) {
             data = ((InterfaceDataTypeDouble) indy).getDoubleData();
         } else {
-            data = ((AbstractEAIndividual) indy).getFitness();
+            data = indy.getFitness();
         }
         double distanceToMyClass = this.distance(data, this.classes);
         for (int i = 0; i < this.otherClasses.length; i++) {

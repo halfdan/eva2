@@ -93,11 +93,11 @@ public class GAParameters extends AbstractOptimizationParameters implements Inte
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((GeneticAlgorithm) this.optimizer).getPopulation();
+        return this.optimizer.getPopulation();
     }
 
     public void setPopulation(Population pop) {
-        ((GeneticAlgorithm) this.optimizer).setPopulation(pop);
+        this.optimizer.setPopulation(pop);
     }
 
     public String populationTipText() {

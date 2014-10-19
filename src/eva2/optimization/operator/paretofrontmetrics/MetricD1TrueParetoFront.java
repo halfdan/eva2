@@ -49,7 +49,7 @@ public class MetricD1TrueParetoFront implements eva2.optimization.operator.paret
      */
     @Override
     public Object clone() {
-        return (Object) new MetricD1TrueParetoFront(this);
+        return new MetricD1TrueParetoFront(this);
     }
 
     /**

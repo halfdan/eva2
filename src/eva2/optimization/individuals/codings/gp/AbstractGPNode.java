@@ -592,19 +592,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return True if MaxDepth is violated
      */
     public boolean isMaxDepthViolated(int maxDepth) {
-        if (maxDepth < this.getMaxDepth()) {
-            return true;
-        } else {
-            return false;
-        }
-//        if (depth > this.depth) return false;
-//        else {
-//            boolean result = true;
-//            for (int i = 0; i < this.nodes.length; i++) {
-//                result = result & this.nodes[i].isMaxDepthViolated(depth);
-//            }
-//            return result;
-//        }
+        return maxDepth < this.getMaxDepth();
     }
 
     /**

@@ -28,7 +28,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
 
     @Override
     public Object clone() {
-        return (Object) new ArchivingPESAII(this);
+        return new ArchivingPESAII(this);
     }
 
     /**

@@ -40,8 +40,7 @@ class MyFocusListener implements FocusListener {
         arrEditor.notifyFocusID(myID);
     }
 
-    ;
-};
+}
 
 
 /**

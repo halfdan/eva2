@@ -156,7 +156,7 @@ public class JTextEditorInternalFrame extends JDocFrame {
 
         Action[] actions = textArea.getActions();
         for (int i = 0; i < actions.length; i++) {
-            hashActions.put((String) actions[i].getValue(Action.NAME), actions[i]);
+            hashActions.put(actions[i].getValue(Action.NAME), actions[i]);
         }
 
         mnuEdit = new JExtMenu("&Bearbeiten");

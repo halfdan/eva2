@@ -30,7 +30,7 @@ public class ConstObjectivesInEqualityBiggerThanSurface implements InterfaceCons
 
     @Override
     public Object clone() {
-        return (Object) new ConstObjectivesInEqualityBiggerThanSurface(this);
+        return new ConstObjectivesInEqualityBiggerThanSurface(this);
     }
 
     /**

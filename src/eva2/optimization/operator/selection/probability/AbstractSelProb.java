@@ -96,7 +96,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
                     continue;
                 }
                 if (obj instanceof Double) {
-                    tmpList.add((Double) obj);
+                    tmpList.add(obj);
                     continue;
                 }
                 if (obj instanceof float[]) {
@@ -106,7 +106,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
                     continue;
                 }
                 if (obj instanceof Float) {
-                    tmpList.add((Float) obj);
+                    tmpList.add(obj);
                     continue;
                 }
                 if (obj instanceof long[]) {
@@ -116,7 +116,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
                     continue;
                 }
                 if (obj instanceof Long) {
-                    tmpList.add((Long) obj);
+                    tmpList.add(obj);
                     continue;
                 }
                 if (obj instanceof int[]) {
@@ -126,7 +126,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
                     continue;
                 }
                 if (obj instanceof Integer) {
-                    tmpList.add((Integer) obj);
+                    tmpList.add(obj);
                 }
             }
             // now we got a complete ArrayList

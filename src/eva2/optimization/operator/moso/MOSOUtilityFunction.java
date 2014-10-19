@@ -21,7 +21,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
 
     @Override
     public Object clone() {
-        return (Object) new MOSOUtilityFunction(this);
+        return new MOSOUtilityFunction(this);
     }
 
     /**

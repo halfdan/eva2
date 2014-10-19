@@ -77,11 +77,11 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     public ExternalRuntimeProblem(ExternalRuntimeProblem b) {
         //AbstractOptimizationProblem
         if (b.template != null) {
-            this.template = (AbstractEAIndividual) ((AbstractEAIndividual) b.template).clone();
+            this.template = (AbstractEAIndividual) b.template.clone();
         }
         //ExternalRuntimeProblem
         if (b.bestIndividuum != null) {
-            this.bestIndividuum = (AbstractEAIndividual) ((AbstractEAIndividual) b.bestIndividuum).clone();
+            this.bestIndividuum = (AbstractEAIndividual) b.bestIndividuum.clone();
         }
         this.problemDimension = b.problemDimension;
         this.command = b.command;
@@ -110,7 +110,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
      */
     @Override
     public Object clone() {
-        return (Object) new ExternalRuntimeProblem(this);
+        return new ExternalRuntimeProblem(this);
     }
 
     /**

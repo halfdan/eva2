@@ -89,7 +89,7 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
 
     @Override
     public Object clone() {
-        return (Object) new ClusteringHillClimbing(this);
+        return new ClusteringHillClimbing(this);
     }
 
     /**

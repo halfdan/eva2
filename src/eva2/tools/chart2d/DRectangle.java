@@ -99,10 +99,7 @@ public class DRectangle extends DComponent {
         if (p.x > x + width) {
             return false;
         }
-        if (p.y > y + height) {
-            return false;
-        }
-        return true;
+        return p.y <= y + height;
     }
 
     public double getHeight() {
@@ -161,11 +158,7 @@ public class DRectangle extends DComponent {
      * @return
      */
     private boolean contains(double ox, double oy) {
-        if ((ox < x) || (oy < y) || (ox > x + width) || (oy > y + height)) {
-            return false;
-        } else {
-            return true;
-        }
+        return !((ox < x) || (oy < y) || (ox > x + width) || (oy > y + height));
     }
 
     public boolean contains(DRectangle rect) {
@@ -178,10 +171,7 @@ public class DRectangle extends DComponent {
         if (!contains(rect.x, rect.y)) {
             return false;
         }
-        if (!contains(rect.x + rect.width, rect.y + rect.height)) {
-            return false;
-        }
-        return true;
+        return contains(rect.x + rect.width, rect.y + rect.height);
     }
 
     public boolean contains(double ox, double oy, double width, double heigth) {
@@ -194,10 +184,7 @@ public class DRectangle extends DComponent {
         if (!contains(ox, oy)) {
             return false;
         }
-        if (!contains(ox + width, oy + height)) {
-            return false;
-        }
-        return true;
+        return contains(ox + width, oy + height);
     }
 
     public DRectangle getIntersection(DRectangle r) {
@@ -340,10 +327,7 @@ public class DRectangle extends DComponent {
         if (r.width != width) {
             return false;
         }
-        if (r.height != height) {
-            return false;
-        }
-        return true;
+        return r.height == height;
     }
 
     public void setFillColor(Color fill_color) {

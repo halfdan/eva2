@@ -53,7 +53,7 @@ public class MutateGAGISwapBitsSegmentwise extends MutateGAGISwapBits implements
         int iMin = 0, iMax = genoLen - 1; // default bounds
         if (lastIndex >= 0) {
             // select same segment
-            iMin = segmentLength * ((int) (lastIndex / segmentLength));
+            iMin = segmentLength * lastIndex / segmentLength;
             iMax = iMin + segmentLength - 1;
             if (iMax >= genoLen) {
                 EVAERROR.errorMsgOnce("Warning, the last segment exceeds the genotype length (so it is not a multiple of the genotype length");

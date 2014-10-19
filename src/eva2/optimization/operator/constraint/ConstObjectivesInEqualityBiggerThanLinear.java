@@ -30,7 +30,7 @@ public class ConstObjectivesInEqualityBiggerThanLinear implements InterfaceConst
 
     @Override
     public Object clone() {
-        return (Object) new ConstObjectivesInEqualityBiggerThanLinear(this);
+        return new ConstObjectivesInEqualityBiggerThanLinear(this);
     }
 
     /**

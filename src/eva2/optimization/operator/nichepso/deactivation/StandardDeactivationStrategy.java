@@ -43,7 +43,7 @@ public class StandardDeactivationStrategy implements InterfaceDeactivationStrate
 
     @Override
     public Object clone() {
-        return (Object) new StandardDeactivationStrategy(this);
+        return new StandardDeactivationStrategy(this);
     }
 
     public String globalInfo() {

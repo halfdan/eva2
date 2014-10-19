@@ -126,7 +126,7 @@ public class GPArea implements java.io.Serializable {
     public void compileReducedList() {
         this.reducedList = new ArrayList<AbstractGPNode>();
         for (int i = 0; i < this.completeList.size(); i++) {
-            if (((Boolean) (this.blackList.get(i))).booleanValue()) {
+            if (this.blackList.get(i).booleanValue()) {
                 this.reducedList.add(this.completeList.get(i));
             }
         }
@@ -141,14 +141,14 @@ public class GPArea implements java.io.Serializable {
     public AbstractGPNode getRandomNodeWithArity(int targetarity) {
         ArrayList<AbstractGPNode> tmpArray = new ArrayList<AbstractGPNode>();
         for (int i = 0; i < this.reducedList.size(); i++) {
-            if (((AbstractGPNode) this.reducedList.get(i)).getArity() == targetarity) {
+            if (this.reducedList.get(i).getArity() == targetarity) {
                 tmpArray.add(this.reducedList.get(i));
             }
         }
         if (tmpArray.size() == 0) {
             return null;
         } else {
-            return (AbstractGPNode) tmpArray.get(RNG.randomInt(0, tmpArray.size() - 1));
+            return tmpArray.get(RNG.randomInt(0, tmpArray.size() - 1));
         }
     }
 
@@ -159,7 +159,7 @@ public class GPArea implements java.io.Serializable {
         if (this.reducedList.size() == 0) {
             return null;
         } else {
-            return (AbstractGPNode) this.reducedList.get(RNG.randomInt(0, this.reducedList.size() - 1));
+            return this.reducedList.get(RNG.randomInt(0, this.reducedList.size() - 1));
         }
     }
 
@@ -169,14 +169,14 @@ public class GPArea implements java.io.Serializable {
     public AbstractGPNode getRandomNonTerminal() {
         ArrayList<AbstractGPNode> tmpArray = new ArrayList<AbstractGPNode>();
         for (int i = 0; i < this.reducedList.size(); i++) {
-            if (((AbstractGPNode) this.reducedList.get(i)).getArity() > 0) {
+            if (this.reducedList.get(i).getArity() > 0) {
                 tmpArray.add(this.reducedList.get(i));
             }
         }
         if (tmpArray.size() == 0) {
             return null;
         } else {
-            return (AbstractGPNode) tmpArray.get(RNG.randomInt(0, tmpArray.size() - 1));
+            return tmpArray.get(RNG.randomInt(0, tmpArray.size() - 1));
         }
     }
 

@@ -21,7 +21,7 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
 
     @Override
     public Object clone() {
-        return (Object) new RemoveSurplusIndividualsDynamicHyperCube(this);
+        return new RemoveSurplusIndividualsDynamicHyperCube(this);
     }
 
     /**

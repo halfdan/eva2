@@ -23,7 +23,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
 
     @Override
     public Object clone() {
-        return (Object) new MOSODynamicallyWeightedFitness(this);
+        return new MOSODynamicallyWeightedFitness(this);
     }
 
     /**

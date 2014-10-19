@@ -21,13 +21,13 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
 
     public MOSOGoalProgramming(MOSOGoalProgramming b) {
         if (b.goals != null) {
-            this.goals = (PropertyDoubleArray) b.goals;
+            this.goals = b.goals;
         }
     }
 
     @Override
     public Object clone() {
-        return (Object) new MOSOGoalProgramming(this);
+        return new MOSOGoalProgramming(this);
     }
 
     /**

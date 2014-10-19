@@ -24,7 +24,7 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
      */
     @Override
     public Object clone() {
-        return (Object) new I1Problem(this);
+        return new I1Problem(this);
     }
 
     /**

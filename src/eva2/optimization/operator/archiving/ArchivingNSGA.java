@@ -20,7 +20,7 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
 
     @Override
     public Object clone() {
-        return (Object) new ArchivingNSGA(this);
+        return new ArchivingNSGA(this);
     }
 
     /**

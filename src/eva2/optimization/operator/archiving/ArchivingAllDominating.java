@@ -20,7 +20,7 @@ public class ArchivingAllDominating extends AbstractArchiving implements java.io
 
     @Override
     public Object clone() {
-        return (Object) new ArchivingAllDominating(this);
+        return new ArchivingAllDominating(this);
     }
 
     /**

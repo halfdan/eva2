@@ -40,5 +40,4 @@ public class TestingPlusCmaEs {
                 + AbstractEAIndividual.getDefaultDataString(bestIndy));
     }
 
-    ;
 }

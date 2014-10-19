@@ -102,11 +102,7 @@ public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Seri
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESArithmetical) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverESArithmetical;
     }
 
     /**

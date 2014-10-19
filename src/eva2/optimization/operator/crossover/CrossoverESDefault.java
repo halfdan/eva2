@@ -100,11 +100,7 @@ public class CrossoverESDefault implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESDefault) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverESDefault;
     }
 
     /**

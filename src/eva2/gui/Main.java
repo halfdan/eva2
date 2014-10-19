@@ -369,7 +369,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
             setSize(800, 600);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            setLocation((int) ((screenSize.width - this.getWidth()) / 2), (int) ((screenSize.height - this.getHeight()) / 2.5));
+            setLocation((screenSize.width - this.getWidth()) / 2, (int) ((screenSize.height - this.getHeight()) / 2.5));
 
             /* Create a new ConfigurationPanel (left side) */
             configurationPane = new JPanel(new GridBagLayout());

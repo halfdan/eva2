@@ -79,7 +79,7 @@ public class GenericObjectEditor implements PropertyEditor {
                 try {
                     // a field allowing a class to indicate it doesnt want to be displayed
                     Field f = clazz.getDeclaredField("hideFromGOE");
-                    if (f.getBoolean(clazz) == true) {
+                    if (f.getBoolean(clazz)) {
                         LOGGER.log(Level.FINEST, "Class {0} wants to be hidden from GOE.", clazz);
                         continue;
                     }
@@ -275,7 +275,7 @@ public class GenericObjectEditor implements PropertyEditor {
 
         try {
             if (v.size() > 0) {
-                setObject((Object) Class.forName((String) v.get(0)).newInstance());
+                setObject(Class.forName((String) v.get(0)).newInstance());
             }
         } catch (Exception ex) {
             System.err.println("Exception in setDefaultValue !!!" + ex.getMessage());

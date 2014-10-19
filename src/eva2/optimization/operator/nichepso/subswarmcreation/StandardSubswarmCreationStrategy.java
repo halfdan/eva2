@@ -29,7 +29,7 @@ public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreati
 
     @Override
     public Object clone() {
-        return (Object) new StandardSubswarmCreationStrategy(delta);
+        return new StandardSubswarmCreationStrategy(delta);
     }
 
     public String globalInfo() {

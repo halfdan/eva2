@@ -447,7 +447,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     public Component getCustomEditor() {
         if (this.component == null) {
             this.initCustomEditor();
-            this.component = new GeneralGEOFaker((PropertyEditor) this, (JPanel) this.editorComponent);
+            this.component = new GeneralGEOFaker(this, (JPanel) this.editorComponent);
         }
         return this.component;
     }

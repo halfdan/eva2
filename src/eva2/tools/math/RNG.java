@@ -336,7 +336,7 @@ public class RNG {
      */
     public static boolean flipCoin(double p) {
         // counter++;
-        return (randomDouble() < p ? true : false);
+        return (randomDouble() < p);
     }
 
     /**

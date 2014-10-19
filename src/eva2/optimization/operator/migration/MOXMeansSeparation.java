@@ -179,7 +179,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
             InterfaceOptimizationProblem prob;
 
             for (int i = 0; (i < islands.length) && (i < c.length); i++) {
-                prob = (InterfaceOptimizationProblem) islands[i].getProblem();
+                prob = islands[i].getProblem();
                 if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
                     // set the boundaries to perform the constrained
                     // domain principle introduced by Deb et al.

@@ -198,11 +198,11 @@ public class FLensProblem extends AbstractOptimizationProblem
     public FLensProblem(FLensProblem b) {
         //AbstractOptimizationProblem
         if (b.template != null) {
-            this.template = (AbstractEAIndividual) ((AbstractEAIndividual) b.template).clone();
+            this.template = (AbstractEAIndividual) b.template.clone();
         }
         //FLensProblem
         if (b.overallBest != null) {
-            this.overallBest = (AbstractEAIndividual) ((AbstractEAIndividual) b.overallBest).clone();
+            this.overallBest = (AbstractEAIndividual) b.overallBest.clone();
         }
         this.problemDimension = b.problemDimension;
         this.noise = b.noise;
@@ -216,7 +216,7 @@ public class FLensProblem extends AbstractOptimizationProblem
 
     @Override
     public Object clone() {
-        return (Object) new FLensProblem(this);
+        return new FLensProblem(this);
     }
 
     /**
@@ -351,7 +351,7 @@ public class FLensProblem extends AbstractOptimizationProblem
         // Here the thickness of the middle segment of the lens	is added to the fitness
         // to permit the optimization to reduce the overall thickness of the lens
         if (this.useMaterialConst) {
-            fitness += x[(int) (x.length / 2)];
+            fitness += x[(x.length / 2)];
         }
 
         ret[0] = fitness;

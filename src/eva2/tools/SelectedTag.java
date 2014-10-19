@@ -12,7 +12,7 @@ public class SelectedTag implements java.io.Serializable {
     @Override
     public Object clone() {
         SelectedTag result = new SelectedTag(this.selectedId, this.tags);
-        return (Object) result;
+        return result;
     }
 
     /**

@@ -28,7 +28,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
 
     @Override
     public Object clone() {
-        return (Object) new SelectBestSingle(this);
+        return new SelectBestSingle(this);
     }
 
     /**

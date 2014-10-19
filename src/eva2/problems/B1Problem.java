@@ -36,7 +36,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
      */
     @Override
     public Object clone() {
-        return (Object) new B1Problem(this);
+        return new B1Problem(this);
     }
 
     /**

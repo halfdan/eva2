@@ -52,7 +52,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
      */
     @Override
     public Object clone() {
-        return (Object) new F8Problem(this);
+        return new F8Problem(this);
     }
 
     /**

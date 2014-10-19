@@ -58,7 +58,7 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
      */
     @Override
     public Object clone() {
-        return (Object) new MetricErrorRatio(this);
+        return new MetricErrorRatio(this);
     }
 
     /**

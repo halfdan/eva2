@@ -365,7 +365,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
      * @param listener
      * @return An optimization procedure that performs nelder mead optimization.
      */
-    public static final NelderMeadSimplex createNelderMeadSimplex(AbstractOptimizationProblem problem,
+    public static NelderMeadSimplex createNelderMeadSimplex(AbstractOptimizationProblem problem,
                                                                   InterfacePopulationChangedEventListener listener) {
 
         problem.initializeProblem();
@@ -397,7 +397,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
      * @param listener
      * @return An optimization procedure that performs nelder mead optimization.
      */
-    public static final NelderMeadSimplex createNelderMeadSimplexLocal(AbstractOptimizationProblem problem,
+    public static NelderMeadSimplex createNelderMeadSimplexLocal(AbstractOptimizationProblem problem,
                                                                        AbstractEAIndividual candidate, double perturbationRatio,
                                                                        InterfacePopulationChangedEventListener listener) {
 

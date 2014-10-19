@@ -29,7 +29,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 
     @Override
     public Object clone() {
-        return (Object) new ArchivingSPEAII(this);
+        return new ArchivingSPEAII(this);
     }
 
     /**

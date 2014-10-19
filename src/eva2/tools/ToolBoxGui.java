@@ -39,7 +39,7 @@ public class ToolBoxGui {
      * @see JOptionPane
      */
     public static String getInputPaneInitialVal(Component parent, String title, String message, String initialVal, int msgType, int optType) {
-        JOptionPane jop = new JOptionPane(message, msgType, optType, (Icon) null);
+        JOptionPane jop = new JOptionPane(message, msgType, optType, null);
         jop.setWantsInput(true);
         // its a mess with these initial values
         jop.setInputValue(initialVal); // this I expected to work

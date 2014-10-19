@@ -37,7 +37,7 @@ public class GPNodeSub extends AbstractGPNode implements java.io.Serializable {
      */
     @Override
     public Object clone() {
-        return (Object) new GPNodeSub(this);
+        return new GPNodeSub(this);
     }
 
     /**

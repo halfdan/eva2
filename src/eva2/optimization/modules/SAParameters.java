@@ -83,11 +83,11 @@ public class SAParameters extends AbstractOptimizationParameters implements Seri
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((SimulatedAnnealing) this.optimizer).getPopulation();
+        return this.optimizer.getPopulation();
     }
 
     public void setPopulation(Population pop) {
-        ((SimulatedAnnealing) this.optimizer).setPopulation(pop);
+        this.optimizer.setPopulation(pop);
     }
 
     public String populationTipText() {

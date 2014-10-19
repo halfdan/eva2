@@ -70,10 +70,7 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
             if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
                 return false;
             }
-            if (this.upperLimitStepSize != mut.upperLimitStepSize) {
-                return false;
-            }
-            return true;
+            return this.upperLimitStepSize == mut.upperLimitStepSize;
         } else {
             return false;
         }

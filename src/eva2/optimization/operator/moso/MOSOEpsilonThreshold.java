@@ -34,7 +34,7 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
 
     @Override
     public Object clone() {
-        return (Object) new MOSOEpsilonThreshold(this);
+        return new MOSOEpsilonThreshold(this);
     }
 
     /**

@@ -101,11 +101,7 @@ public class CrossoverESFlat implements InterfaceCrossover, java.io.Serializable
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESFlat) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverESFlat;
     }
 
     /**

@@ -68,11 +68,7 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
             tmpFitness = ((AbstractEAIndividual) archive.get(i)).getFitness();
             try {
                 for (int j = 0; j < indyFitness.length; j++) {
-                    if (indyFitness[j] <= tmpFitness[j]) {
-                        isDominating &= true;
-                    } else {
-                        isDominating &= false;
-                    }
+                    isDominating &= indyFitness[j] <= tmpFitness[j];
                 }
             } catch (java.lang.ArrayIndexOutOfBoundsException e) {
                 //System.out.println("-------addIndividualToArchive-------("+indyFitness.length+"/"+tmpFitness.length+")");

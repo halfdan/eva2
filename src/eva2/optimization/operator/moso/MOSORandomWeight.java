@@ -21,7 +21,7 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
 
     @Override
     public Object clone() {
-        return (Object) new MOSORandomWeight(this);
+        return new MOSORandomWeight(this);
     }
 
     /**

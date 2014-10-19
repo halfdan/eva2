@@ -38,10 +38,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
     public boolean equals(Object obj) {
         if (obj instanceof GPNodeInput) {
             GPNodeInput node = (GPNodeInput) obj;
-            if (!this.identifier.equalsIgnoreCase(node.identifier)) {
-                return false;
-            }
-            return true;
+            return this.identifier.equalsIgnoreCase(node.identifier);
         } else {
             return false;
         }
@@ -64,7 +61,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
      */
     @Override
     public Object clone() {
-        return (Object) new GPNodeInput(this);
+        return new GPNodeInput(this);
     }
 
     /**

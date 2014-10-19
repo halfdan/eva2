@@ -51,7 +51,7 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
 
     @Override
     public Object clone() {
-        return (Object) new WingedMultiObjectiveEA(this);
+        return new WingedMultiObjectiveEA(this);
     }
 
     @Override

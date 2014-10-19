@@ -42,7 +42,7 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
 
     @Override
     public Object clone() {
-        return (Object) new EvolutionaryProgramming(this);
+        return new EvolutionaryProgramming(this);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class EvolutionaryProgramming implements InterfaceOptimizer, java.io.Seri
      * population of evaluated individuals.
      */
     private Population generateChildren() {
-        Population result = (Population) this.population.cloneWithoutInds();
+        Population result = this.population.cloneWithoutInds();
         AbstractEAIndividual mutant;
 
         result.clear();

@@ -37,7 +37,7 @@ public class GPNodeMult extends AbstractGPNode implements java.io.Serializable {
      */
     @Override
     public Object clone() {
-        return (Object) new GPNodeMult(this);
+        return new GPNodeMult(this);
     }
 
     /**

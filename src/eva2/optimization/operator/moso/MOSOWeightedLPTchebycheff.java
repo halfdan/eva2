@@ -34,7 +34,7 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
 
     @Override
     public Object clone() {
-        return (Object) new MOSOWeightedLPTchebycheff(this);
+        return new MOSOWeightedLPTchebycheff(this);
     }
 
     /**

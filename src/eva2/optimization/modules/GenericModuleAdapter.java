@@ -83,7 +83,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         }
         EvATabbedFrameMaker frmMkr = new EvATabbedFrameMaker();
 
-        InterfaceStatisticsParameter Stat = ((StatisticsWithGUI) statisticsModule).getStatisticsParameter();
+        InterfaceStatisticsParameter Stat = statisticsModule.getStatisticsParameter();
         EvAModuleButtonPanelMaker ButtonPanel = new EvAModuleButtonPanelMaker(remoteModuleAdapter, ((Processor) processor).isOptimizationRunning());
         ButtonPanel.setHelperFilename(helperFilename);
         frmMkr.addPanelMaker(ButtonPanel);
@@ -110,7 +110,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     public void performedStart(String infoString) {
         super.performedStart(infoString);
         OptimizationJob job = scheduleJob();
-        ((AbstractStatistics) (((Processor) processor).getStatistics())).addDataListener(job);
+        ((Processor) processor).getStatistics().addDataListener(job);
     }
 
     @Override

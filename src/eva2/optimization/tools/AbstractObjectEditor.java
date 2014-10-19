@@ -283,7 +283,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
 
                     result.editor.setValue(result.value);
                     result.editor.addPropertyChangeListener(this);
-                    this.findViewFor(result);
+                    AbstractObjectEditor.findViewFor(result);
                     if (result.view != null) {
                         result.view.repaint();
                     }

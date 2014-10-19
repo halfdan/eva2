@@ -1,17 +1,4 @@
 package eva2.gui;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 10 $
- *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
- *            $Author: streiche $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +22,6 @@ public class PropertySheetPanelStat extends JPanel implements Serializable {
      * Creates the property sheet panel.
      */
     public PropertySheetPanelStat() {
-        //    setBorder(BorderFactory.createLineBorder(Color.red));
         setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
     }
 
@@ -113,10 +99,10 @@ class JCheckBoxFlag extends JCheckBox {
 
             @Override
             public void itemStateChanged(ItemEvent evt) {
-                if (evt.getStateChange() == evt.SELECTED) {
+                if (evt.getStateChange() == ItemEvent.SELECTED) {
                     JCheckBoxFlag.this.flag = true;
                 }
-                if (evt.getStateChange() == evt.DESELECTED) {
+                if (evt.getStateChange() == ItemEvent.DESELECTED) {
                     JCheckBoxFlag.this.flag = false;
                 }
             }

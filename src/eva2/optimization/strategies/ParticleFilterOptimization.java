@@ -82,7 +82,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     @Override
     public Object clone() {
-        return (Object) new ParticleFilterOptimization(this);
+        return new ParticleFilterOptimization(this);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
             drawPop(pop, 0, false);
         }
         for (int i = 0; i < pop.getTargetSize(); i++) {
-            applyMotionModel((AbstractEAIndividual) ((AbstractEAIndividual) pop.get(i)), 0.);
+            applyMotionModel((AbstractEAIndividual) pop.get(i), 0.);
             indCount++;
         }
         if (withShow) {

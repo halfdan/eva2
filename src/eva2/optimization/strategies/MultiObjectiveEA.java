@@ -61,7 +61,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
 
     @Override
     public Object clone() {
-        return (Object) new MultiObjectiveEA(this);
+        return new MultiObjectiveEA(this);
     }
 
     @Override

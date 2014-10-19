@@ -41,7 +41,7 @@ public class FM0Problem extends AbstractMultiModalProblemKnown implements Interf
      */
     @Override
     public Object clone() {
-        return (Object) new FM0Problem(this);
+        return new FM0Problem(this);
     }
 
     /**

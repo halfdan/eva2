@@ -135,7 +135,7 @@ public class GenericStatistics implements Serializable {
     public void statechanged(Object target) {
         int len = 0;
         for (int i = 0; i < states.length; i++) {
-            if (states[i] == true) {
+            if (states[i]) {
                 len++;
             }
         }
@@ -155,7 +155,7 @@ public class GenericStatistics implements Serializable {
         int index = 0;
         for (int i = 0; i < fields.length; i++) {
             for (int n = 0; n < propertyNames.length; n++) {
-                if (this.states[n] == false) {
+                if (!this.states[n]) {
                     continue;
                 }
                 if (fields[i].getName().equals(propertyNames[n])) {

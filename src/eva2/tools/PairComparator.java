@@ -12,7 +12,7 @@ public class PairComparator implements Comparator<Pair<?, ?>> {
      * based on the tail.
      */
     public PairComparator(boolean useHd) {
-        useHead = useHead;
+        useHead = useHd;
     }
 
     /**
@@ -23,14 +23,14 @@ public class PairComparator implements Comparator<Pair<?, ?>> {
      */
     @Override
     public int compare(Pair<?, ?> o1, Pair<?, ?> o2) {
-        Pair<?, ?> p1 = (Pair<?, ?>) o1;
-        Pair<?, ?> p2 = (Pair<?, ?>) o2;
+        Pair<?, ?> p1 = o1;
+        Pair<?, ?> p2 = o2;
         double d1, d2;
         try {
             d1 = BeanInspector.toDouble(useHead ? p1.head() : p1.tail());
             d2 = BeanInspector.toDouble(useHead ? p2.head() : p2.tail());
         } catch (IllegalArgumentException e) {
-            System.err.println("Error, mismatching types, thus uncomparable Pairs: " + p1.toString() + " / " + p2.toString());
+            System.err.println("Error, mismatching types, thus non-comparable Pairs: " + p1.toString() + " / " + p2.toString());
             return 0;
         }
 

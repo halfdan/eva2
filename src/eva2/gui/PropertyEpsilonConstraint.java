@@ -25,6 +25,6 @@ public class PropertyEpsilonConstraint implements java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new PropertyEpsilonConstraint(this);
+        return new PropertyEpsilonConstraint(this);
     }
 }

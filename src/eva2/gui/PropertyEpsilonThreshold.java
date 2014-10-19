@@ -30,6 +30,6 @@ public class PropertyEpsilonThreshold implements java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new PropertyEpsilonThreshold(this);
+        return new PropertyEpsilonThreshold(this);
     }
 }

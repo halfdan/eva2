@@ -36,7 +36,7 @@ public class GPNodeExp extends AbstractGPNode implements java.io.Serializable {
      */
     @Override
     public Object clone() {
-        return (Object) new GPNodeExp(this);
+        return new GPNodeExp(this);
     }
 
     /**

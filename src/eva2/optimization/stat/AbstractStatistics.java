@@ -372,13 +372,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             }
         }
         if (printRunStoppedVerbosity()) {
-            printToTextListener(" Solution correlations (min,max,avg,med,var): " + BeanInspector.toString(((Population) lastSols).getCorrelations((Population) lastSols)) + "\n");
+            printToTextListener(" Solution correlations (min,max,avg,med,var): " + BeanInspector.toString(Population.getCorrelations((Population) lastSols)) + "\n");
         }
         if (bestOfRunFeasibleIndy != null) {
             runBestFeasibleList.add(bestOfRunFeasibleIndy);
-//			if (meanBestFeasibleFit==null) {
-//				meanBestFeasibleFit=bestRunFeasibleIndy.getFitness().clone();
-//			} else addSecond(meanBestFeasibleFit, bestRunFeasibleIndy.getFitness());
             if (printRunStoppedVerbosity()) {
                 if ((bestOfRunFeasibleIndy instanceof AbstractEAIndividual) && ((AbstractEAIndividual) bestOfRunFeasibleIndy).equalGenotypes((AbstractEAIndividual) bestOfRunIndy)) {
                     printToTextListener("* Run best feasible individual equals best individual.\n");
@@ -1096,7 +1093,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             if (curBestFeasible != null) { // a feasible ind. was found!
                 if (currentBestFeasibleFit == null) { // feasible indy found for the first time
                     numOfRunsFeasibleFound++;
-                    feasibleFoundAfter = ((Population) pop).getFunctionCalls();
+                    feasibleFoundAfter = pop.getFunctionCalls();
                     if (feasibleFoundAfterSum < 0) {
                         feasibleFoundAfterSum = 0.;
                     } // initial signaling value was -1.
@@ -1131,7 +1128,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
         if (lastIsShowFull || GraphSelectionEnum.doPlotAvgEucDist(lastFieldSelection)
                 || GraphSelectionEnum.doPlotMaxEucDist(lastFieldSelection)) {
-            double[] measures = ((Population) pop).getPopulationMeasures((InterfaceDistanceMetric) null);
+            double[] measures = ((Population) pop).getPopulationMeasures(null);
             if (measures != null) {
                 currentAvgEucDistInPop = measures[0];
                 currentMaxEucDistInPop = measures[2];
@@ -1140,7 +1137,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
         if (lastIsShowFull || GraphSelectionEnum.doPlotAvgPopMetricDist(lastFieldSelection)
                 || GraphSelectionEnum.doPlotMaxPopMetricDist(lastFieldSelection)) {
-            double[] measures = ((Population) pop).getPopulationMeasures();
+            double[] measures = pop.getPopulationMeasures();
             if (measures != null) {
                 currentAvgPopDistMetric = measures[0];
                 currentMaxPopDistMetric = measures[2];

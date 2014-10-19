@@ -38,7 +38,7 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
      */
     @Override
     public Object clone() {
-        return (Object) new GPNodeDiv(this);
+        return new GPNodeDiv(this);
     }
 
     /**

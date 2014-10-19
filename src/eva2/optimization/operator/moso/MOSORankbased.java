@@ -21,7 +21,7 @@ public class MOSORankbased implements InterfaceMOSOConverter, java.io.Serializab
 
     @Override
     public Object clone() {
-        return (Object) new MOSORankbased(this);
+        return new MOSORankbased(this);
     }
 
     /**

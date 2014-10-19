@@ -124,9 +124,9 @@ public class ImpactOfDimensionOnMOEAs {
                     }
                 }
                 if (j < x.length) {
-                    fitness[j] = 1 / ((double) fitness[j]) + x[j];
+                    fitness[j] = 1 / fitness[j] + x[j];
                 } else {
-                    fitness[j] = 1 / ((double) fitness[j]) + x[j % objectives] + x[(j + 1) % objectives];
+                    fitness[j] = 1 / fitness[j] + x[j % objectives] + x[(j + 1) % objectives];
                 }
             }
             ((AbstractEAIndividual) pop.get(i)).setFitness(fitness);

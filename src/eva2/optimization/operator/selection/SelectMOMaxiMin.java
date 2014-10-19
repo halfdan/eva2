@@ -25,7 +25,7 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
 
     @Override
     public Object clone() {
-        return (Object) new SelectMOMaxiMin(this);
+        return new SelectMOMaxiMin(this);
     }
 
     /**

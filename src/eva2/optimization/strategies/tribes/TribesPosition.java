@@ -859,10 +859,7 @@ public class TribesPosition implements java.io.Serializable {
             }
             return true;
         } else { // Total error approach
-            if (calcTotalError(f1) < calcTotalError(f2)) {
-                return true;
-            }
-            return false;
+            return calcTotalError(f1) < calcTotalError(f2);
         }
     }
 

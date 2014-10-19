@@ -20,6 +20,6 @@ public class GPNodeOne extends GPNodeConst implements java.io.Serializable {
      */
     @Override
     public Object clone() {
-        return (Object) new GPNodeOne(this);
+        return new GPNodeOne(this);
     }
 }

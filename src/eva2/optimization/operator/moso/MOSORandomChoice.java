@@ -20,7 +20,7 @@ public class MOSORandomChoice implements InterfaceMOSOConverter, java.io.Seriali
 
     @Override
     public Object clone() {
-        return (Object) new MOSORandomChoice(this);
+        return new MOSORandomChoice(this);
     }
 
     /**

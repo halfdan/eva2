@@ -95,11 +95,11 @@ public class EPParameters extends AbstractOptimizationParameters implements Inte
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((EvolutionaryProgramming) this.optimizer).getPopulation();
+        return this.optimizer.getPopulation();
     }
 
     public void setPopulation(Population pop) {
-        ((EvolutionaryProgramming) this.optimizer).setPopulation(pop);
+        this.optimizer.setPopulation(pop);
     }
 
     public String populationTipText() {

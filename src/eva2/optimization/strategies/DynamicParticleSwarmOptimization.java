@@ -80,7 +80,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 
     @Override
     public Object clone() {
-        return (Object) new DynamicParticleSwarmOptimization(this);
+        return new DynamicParticleSwarmOptimization(this);
     }
 
     /**
@@ -306,7 +306,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      */
     @Override
     protected double getSpeedLimit(int index) {
-        if (index >= ((double) (population.size() * highEnergyRatio))) {
+        if (index >= population.size() * highEnergyRatio) {
             return speedLimit;
         } else {
             if (highEnergyRaise == 0.) {

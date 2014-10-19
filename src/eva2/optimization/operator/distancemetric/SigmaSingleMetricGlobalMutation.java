@@ -26,7 +26,7 @@ public class SigmaSingleMetricGlobalMutation implements InterfaceDistanceMetric,
 
     @Override
     public Object clone() {
-        return (Object) new SigmaSingleMetricGlobalMutation(this);
+        return new SigmaSingleMetricGlobalMutation(this);
     }
 
     /**

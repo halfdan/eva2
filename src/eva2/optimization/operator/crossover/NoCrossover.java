@@ -57,11 +57,7 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof NoCrossover) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof NoCrossover;
     }
 
     /**

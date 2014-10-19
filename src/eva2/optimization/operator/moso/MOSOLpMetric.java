@@ -29,7 +29,7 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
 
     @Override
     public Object clone() {
-        return (Object) new MOSOLpMetric(this);
+        return new MOSOLpMetric(this);
     }
 
     /**

@@ -35,7 +35,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
 
     @Override
     public Object clone() {
-        return (Object) new ArchivingMaxiMin(this);
+        return new ArchivingMaxiMin(this);
     }
 
     /**

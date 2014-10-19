@@ -61,10 +61,7 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
             if (this.tau2 != mut.tau2) {
                 return false;
             }
-            if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
-                return false;
-            }
-            return true;
+            return this.lowerLimitStepSize == mut.lowerLimitStepSize;
         } else {
             return false;
         }
@@ -99,7 +96,7 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
                 this.mutationStep = 1;
             }
             if (RNG.flipCoin(this.mutationStep)) {
-                ((IndividualInterface) individual).defaultMutate();
+                individual.defaultMutate();
             }
         }
         //System.out.println("After Mutate:  " +((GAIndividual)individual).getSolutionRepresentationFor());

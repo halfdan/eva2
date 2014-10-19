@@ -156,7 +156,7 @@ public class TestESCrossover implements java.io.Serializable {
             tmpD = new double[2];
             tmpD[0] = -1;
             tmpD[1] = -1;
-            ((AbstractEAIndividual) tmpIndyEA).initByValue(tmpD, optimizationProblem);
+            tmpIndyEA.initByValue(tmpD, optimizationProblem);
             partners.addIndividual(tmpIndyEA);
 
             daddy = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
@@ -200,13 +200,13 @@ public class TestESCrossover implements java.io.Serializable {
             tmpD = new double[2];
             tmpD[0] = 0.1;
             tmpD[1] = -0.65;
-            ((AbstractEAIndividual) tmpIndyEA).initByValue(tmpD, optimizationProblem);
+            tmpIndyEA.initByValue(tmpD, optimizationProblem);
             partners.addIndividual(tmpIndyEA);
             tmpIndyEA = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
             tmpD = new double[2];
             tmpD[0] = -0.85;
             tmpD[1] = 0.3;
-            ((AbstractEAIndividual) tmpIndyEA).initByValue(tmpD, optimizationProblem);
+            tmpIndyEA.initByValue(tmpD, optimizationProblem);
             partners.addIndividual(tmpIndyEA);
 
             daddy = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();

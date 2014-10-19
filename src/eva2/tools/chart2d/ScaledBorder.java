@@ -468,11 +468,7 @@ public class ScaledBorder implements Border {
                 }
                 first = false;
             }
-            if (!suits) {
-                ok = false;
-            } else {
-                ok = true;
-            }
+            ok = suits;
         }
         if (src_dX < minimal_increment) {
             src_dX = minimal_increment;

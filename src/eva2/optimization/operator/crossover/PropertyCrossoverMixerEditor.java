@@ -445,7 +445,7 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
     public Component getCustomEditor() {
         if (this.component == null) {
             this.initCustomEditor();
-            this.component = new GeneralGEOFaker((PropertyEditor) this, (JPanel) this.editor);
+            this.component = new GeneralGEOFaker(this, (JPanel) this.editor);
         }
         return this.component;
     }

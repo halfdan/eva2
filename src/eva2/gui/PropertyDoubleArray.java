@@ -50,7 +50,7 @@ public class PropertyDoubleArray implements java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new PropertyDoubleArray(this);
+        return new PropertyDoubleArray(this);
     }
 
     /**

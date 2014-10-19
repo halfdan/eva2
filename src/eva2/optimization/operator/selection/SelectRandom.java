@@ -30,7 +30,7 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new SelectRandom(this);
+        return new SelectRandom(this);
     }
 
     /**

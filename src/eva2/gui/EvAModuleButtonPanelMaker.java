@@ -44,7 +44,7 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
         toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
-        moduleAdapter.addOptimizationStateListener((OptimizationStateListener) (this));
+        moduleAdapter.addOptimizationStateListener(this);
 
 
         //////////////////////////////////////////////////////////////
@@ -104,7 +104,6 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
 
         scheduleButton = ToolBoxGui.createIconifiedButton("images/Server24.gif", "Schedule", true);
         scheduleButton.setToolTipText("Schedule the currently configured optimization as a job.");
-        //scheduleButton.setBorderPainted(false);
         scheduleButton.addActionListener(new ActionListener() {
 
             @Override

@@ -36,7 +36,7 @@ public class NicheGraph implements java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new NicheGraph(this);
+        return new NicheGraph(this);
     }
 /**********************************************************************************************************************
  * vertices and edges

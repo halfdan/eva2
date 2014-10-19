@@ -43,16 +43,16 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
         this.Z1 = mutator.Z1;
         this.w_v = mutator.w_v;
         if (mutator.mainV != null) {
-            this.mainV = (double[]) mutator.mainV.clone();
+            this.mainV = mutator.mainV.clone();
         }
         if (mutator.Z != null) {
-            this.Z = (double[]) mutator.Z.clone();
+            this.Z = mutator.Z.clone();
         }
         if (mutator.sN != null) {
-            this.sN = (double[]) mutator.sN.clone();
+            this.sN = mutator.sN.clone();
         }
         if (mutator.dN != null) {
-            this.dN = (double[]) mutator.dN.clone();
+            this.dN = mutator.dN.clone();
         }
     }
 
@@ -212,7 +212,7 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
 //                }
 //            }
 //        }
-        double[] v = (double[]) this.mainV.clone();
+        double[] v = this.mainV.clone();
         double[] grad = new double[x.length];
         double vl = 0;
         double gradl = 0;

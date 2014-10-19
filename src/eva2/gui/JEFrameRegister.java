@@ -70,7 +70,7 @@ public final class JEFrameRegister {
     public void setFocusToNext(JEFrame jeFrame) {
         int idx = frameList.indexOf(jeFrame);
         idx = (idx + 1) % frameList.size();
-        JEFrame toset = ((JEFrame) frameList.get(idx));
+        JEFrame toset = frameList.get(idx);
         toset.toFront();
     }
 

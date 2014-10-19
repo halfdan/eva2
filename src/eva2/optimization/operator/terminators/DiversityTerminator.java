@@ -20,7 +20,6 @@ import java.io.Serializable;
 public class DiversityTerminator extends PopulationMeasureTerminator implements InterfaceTerminator, Serializable {
     public enum DiversityCriterion {averageDistance, minimumDistance, maximumDistance}
 
-    ;
     //	private double distanceLimit = 0.001;
     private InterfaceDistanceMetric metric = new PhenotypeMetric();
     // leave the string order for this SelectedTag! (analogy to Population.getPopulationMeasures)

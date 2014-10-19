@@ -21,7 +21,7 @@ public class InformationRetrievalNone implements InterfaceInformationRetrieval, 
 
     @Override
     public Object clone() {
-        return (Object) new InformationRetrievalNone(this);
+        return new InformationRetrievalNone(this);
     }
 
     /**

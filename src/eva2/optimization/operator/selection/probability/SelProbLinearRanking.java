@@ -26,7 +26,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
 
     @Override
     public Object clone() {
-        return (Object) new SelProbLinearRanking(this);
+        return new SelProbLinearRanking(this);
     }
 
     /**

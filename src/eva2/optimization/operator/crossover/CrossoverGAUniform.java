@@ -100,11 +100,7 @@ public class CrossoverGAUniform implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverGAUniform) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverGAUniform;
     }
 
     /**

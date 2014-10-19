@@ -1,13 +1,5 @@
 package eva2.gui;
 
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- */
-
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.stat.OptimizationJobList;
 
@@ -20,7 +12,6 @@ public class JParaPanel implements Serializable, PanelMaker {
 
     protected String name = "undefined";
     protected Object localParameter;
-    protected Object proxyParameter;
     protected PropertyEditor propertyEditor;
 
     /**
@@ -50,7 +41,7 @@ public class JParaPanel implements Serializable, PanelMaker {
         } else {
             propertyEditor = new GenericObjectEditor();
             ((GenericObjectEditor) (propertyEditor)).setClassType(localParameter.getClass());
-            ((GenericObjectEditor) (propertyEditor)).setValue(localParameter);
+            propertyEditor.setValue(localParameter);
             ((GenericObjectEditor) (propertyEditor)).disableOKCancel();
         }
 

@@ -17,7 +17,7 @@ public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new EuclideanMetric(this);
+        return new EuclideanMetric(this);
     }
 
     public EuclideanMetric(EuclideanMetric a) {

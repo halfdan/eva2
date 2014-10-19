@@ -57,7 +57,7 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
 
     @Override
     public Object clone() {
-        return (Object) new CHCAdaptiveSearchAlgorithm(this);
+        return new CHCAdaptiveSearchAlgorithm(this);
     }
 
     @Override

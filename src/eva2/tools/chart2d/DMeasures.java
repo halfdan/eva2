@@ -67,8 +67,8 @@ public class DMeasures implements Serializable {
         Point dp = new Point();
         Dimension dim = getInner();
         Insets insets = getInsets();
-        dp.x = (int) (dim.width * (x - rect.x) / (double) rect.width) + insets.left;
-        dp.y = (int) (dim.height * (1 - (y - rect.y) / (double) rect.height)) + insets.top;
+        dp.x = (int) (dim.width * (x - rect.x) / rect.width) + insets.left;
+        dp.y = (int) (dim.height * (1 - (y - rect.y) / rect.height)) + insets.top;
         return dp;
     }
 

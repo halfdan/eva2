@@ -49,7 +49,6 @@ public class TestingDArea {
         frame.pack();
         frame.validate();
         frame.setVisible(true);
-        frame.show();
     }
 
     public static void main(String[] args) {

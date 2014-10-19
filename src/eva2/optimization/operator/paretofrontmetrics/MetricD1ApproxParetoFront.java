@@ -48,7 +48,7 @@ public class MetricD1ApproxParetoFront implements eva2.optimization.operator.par
      */
     @Override
     public Object clone() {
-        return (Object) new MetricD1ApproxParetoFront(this);
+        return new MetricD1ApproxParetoFront(this);
     }
 
     /**

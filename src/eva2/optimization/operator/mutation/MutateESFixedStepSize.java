@@ -47,10 +47,7 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESFixedStepSize) {
             MutateESFixedStepSize mut = (MutateESFixedStepSize) mutator;
-            if (this.sigma != mut.sigma) {
-                return false;
-            }
-            return true;
+            return this.sigma == mut.sigma;
         } else {
             return false;
         }

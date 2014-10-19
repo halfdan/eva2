@@ -1,6 +1,5 @@
 package eva2.optimization.operator.cluster;
 
-import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.AbstractEAIndividualComparator;
 import eva2.optimization.individuals.IndividualDistanceComparator;
@@ -23,11 +22,8 @@ import java.util.ArrayList;
  * have a distance smaller than the niche radius to that peak.
  * The number of expected peaks (clusters) must be predefined.
  * Note that the returned number of clusters may be smaller than q.
- *
- * @author mkron
  */
 public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Serializable {
-    private static final boolean TRACE = false;
     private int numNiches;
     private double nicheRadius;
     private int maxNicheCount; // maximum number of individuals per peak
@@ -103,14 +99,9 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 
     @Override
     public Population[] cluster(Population pop, Population referenceSet) {
-//		boolean TRACE_METH=false;
-//		if (TRACE_METH) System.out.println("A1 " + System.currentTimeMillis());
         AbstractEAIndividualComparator eaComparator = new AbstractEAIndividualComparator(-1);
         Population sorted = pop.getSortedBestFirst(eaComparator);
-//		if (TRACE_METH) System.out.println("A2 " + System.currentTimeMillis());
         Population peaks = performDynPeakIdent(metric, sorted, numNiches, nicheRadius);
-//		System.out.println("peak measures: " + BeanInspector.toString(peaks.getPopulationMeasures()));
-//		if (TRACE_METH) System.out.println("A3 " + System.currentTimeMillis());
         Population[] clusters = new Population[peaks.size() + 1];
         for (int i = 0; i < clusters.length; i++) {
             clusters[i] = referenceSet.cloneWithoutInds();
@@ -118,9 +109,7 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
                 clusters[i].add(peaks.getEAIndividual(i - 1));
             } // add peaks to clusters!
         }
-//		if (TRACE_METH) System.out.println("A4 " + System.currentTimeMillis());
         Population rest = pop.filter(peaks);
-//		if (TRACE_METH) System.out.println("A4a " + System.currentTimeMillis());
         if (pop.getRedundancyCount() > 0) {
             // happens e.g. on the bounds of the domain
             System.err.println("warning, found redundant indies: " + pop.getRedundancyCount());
@@ -130,7 +119,6 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
             System.err.println("Warning, inconsistent filtering in ClusteringDynPeakIdent! Redundant: " + pop.getRedundancyCount());
         }
         int[] assoc = assignLeaders(rest, peaks);
-//		if (TRACE_METH) System.out.println("A5 " + System.currentTimeMillis());
 
         for (int i = 0; i < assoc.length; i++) {
             if (assoc[i] >= 0) { // it can be assigned to a peak
@@ -139,7 +127,6 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
                 clusters[0].add(rest.getEAIndividual(i));
             }
         }
-//		if (TRACE_METH) System.out.println("A6 " + System.currentTimeMillis());
         int cnt = clusters[0].size();
         for (int i = 1; i < clusters.length; i++) {
             cnt += clusters[i].size();
@@ -153,16 +140,14 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
         if (maxNicheCount > 0) { // check for too large species
             for (int i = 1; i < clusters.length; i++) {
                 if (clusters[i].size() > maxNicheCount) {
-//					Population overhead = clusters[i].getSortedNIndividuals(clusters[i].size()-maxNicheCount, false);
                     ArrayList<AbstractEAIndividual> overhd = clusters[i].getSorted(new IndividualDistanceComparator(peaks.getEAIndividual(i - 1), new EuclideanMetric(), true));
                     Population overhead = new Population();
-                    overhead.addAll(overhead.toTail(clusters[i].size() - maxNicheCount, overhd)); // add only the front maxNicheCount individuals
+                    overhead.addAll(Population.toTail(clusters[i].size() - maxNicheCount, overhd)); // add only the front maxNicheCount individuals
                     clusters[i].removeMembers(overhead, true);
                     clusters[0].addPopulation(overhead);
                 }
             }
         }
-//		if (TRACE_METH) System.out.println("-- " + System.currentTimeMillis());
         return clusters;
     }
 
@@ -192,22 +177,11 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
     public static Population performDynPeakIdent(InterfaceDistanceMetric metric, Population sortedPop, int q, double rho) {
         int i = 0;
         Population peaks = new Population(q);
-        if (TRACE) {
-            System.out.print("Adding peaks: ");
-        }
         while (i < sortedPop.size() && (peaks.size() < q)) {
             if ((peaks.size() == 0) || (!peaks.isWithinPopDist((AbstractEAIndividual) sortedPop.get(i), rho, metric))) {
                 peaks.add(sortedPop.get(i));
-                if (TRACE) {
-                    System.out.print(" " + sortedPop.getEAIndividual(i).getFitness(0));
-                }
             }
             i++;
-        }
-        if (TRACE) {
-            System.out.println("\nFound " + peaks.size() + " peaks, ");
-//			for (int k=0; k<peaks.size(); k++) System.out.println("  " + peaks.getEAIndividual(k));
-            System.out.println("Measures: " + BeanInspector.toString(peaks.getPopulationMeasures(metric)));
         }
         return peaks;
     }

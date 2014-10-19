@@ -461,13 +461,13 @@ public class BasicResourceLoader implements ResourceLoader {
 
             while ((ze = zis.getNextEntry()) != null) {
                 if (ze.getName().equals(internalArchivePath)) {
-                    b = new byte[(int) size];
+                    b = new byte[size];
 
                     int rb = 0;
                     int chunk = 0;
 
-                    while (((int) size - rb) > 0) {
-                        chunk = zis.read(b, rb, (int) size - rb);
+                    while ((size - rb) > 0) {
+                        chunk = zis.read(b, rb, size - rb);
 
                         if (chunk == -1) {
                             break;
@@ -535,8 +535,8 @@ public class BasicResourceLoader implements ResourceLoader {
         int chunk = 0;
 
         try {
-            while (((int) size - rb) > 0) {
-                chunk = bis.read(b, rb, (int) size - rb);
+            while ((size - rb) > 0) {
+                chunk = bis.read(b, rb, size - rb);
 
                 if (chunk == -1) {
                     break;
@@ -567,13 +567,13 @@ public class BasicResourceLoader implements ResourceLoader {
         BufferedInputStream bis = new BufferedInputStream(stream);
 
         try {
-            int size = (int) bis.available();
+            int size = bis.available();
             byte[] b = new byte[size];
             int rb = 0;
             int chunk = 0;
 
-            while (((int) size - rb) > 0) {
-                chunk = bis.read(b, rb, (int) size - rb);
+            while ((size - rb) > 0) {
+                chunk = bis.read(b, rb, size - rb);
 
                 if (chunk == -1) {
                     break;

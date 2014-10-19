@@ -67,11 +67,7 @@ public class CrossoverGADefault implements InterfaceCrossover,
             tmpBitSets[1] = ((InterfaceGAIndividual) result[1]).getBGenotype();
             for (int i = crossoverpoint; i < ((InterfaceGAIndividual) result[0])
                     .getGenotypeLength(); i++) {
-                if (tmpBitSets[0].get(i)) {
-                    tmpValue = true;
-                } else {
-                    tmpValue = false;
-                }
+                tmpValue = tmpBitSets[0].get(i);
                 if (tmpBitSets[1].get(i)) {
                     tmpBitSets[0].set(i);
                 } else {
@@ -105,11 +101,7 @@ public class CrossoverGADefault implements InterfaceCrossover,
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverGADefault) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverGADefault;
     }
 
     /**

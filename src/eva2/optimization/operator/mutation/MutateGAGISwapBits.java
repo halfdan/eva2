@@ -64,10 +64,7 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
             if (this.minNumMutations != mut.minNumMutations) {
                 return false;
             }
-            if (this.maxNumMutations != mut.maxNumMutations) {
-                return false;
-            }
-            return true;
+            return this.maxNumMutations == mut.maxNumMutations;
         } else {
             return false;
         }

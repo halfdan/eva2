@@ -7,7 +7,7 @@ public class DummySubswarmCreationStrategy implements InterfaceSubswarmCreationS
 
     @Override
     public Object clone() {
-        return (Object) new DummySubswarmCreationStrategy();
+        return new DummySubswarmCreationStrategy();
     }
 
     @Override

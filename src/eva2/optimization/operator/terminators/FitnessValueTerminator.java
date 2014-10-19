@@ -38,7 +38,7 @@ public class FitnessValueTerminator implements InterfaceTerminator,
      *
      */
     public FitnessValueTerminator(double[] v) {
-        fitnessValue = (double[]) v.clone();
+        fitnessValue = v.clone();
     }
 
     @Override

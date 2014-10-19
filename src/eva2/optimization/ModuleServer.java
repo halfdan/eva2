@@ -69,7 +69,7 @@ public class ModuleServer {
                 Method[] methods = module.getDeclaredMethods();
                 for (Method method : methods) {
                     if (method.getName().equals("getName")) {
-                        String name = (String) method.invoke((Object[]) null, (Object[]) null);
+                        String name = (String) method.invoke(null, (Object[]) null);
                         if (name != null) {
                             moduleNameList.add(name);
                         } else {
@@ -107,7 +107,7 @@ public class ModuleServer {
 
                 for (Method method : methods) {
                     if (method.getName().equals("getName")) {
-                        moduleName = (String) method.invoke((Object[]) null, (Object[]) null);
+                        moduleName = (String) method.invoke(null, (Object[]) null);
                     }
                 }
             } catch (Exception ex) {

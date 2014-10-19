@@ -57,16 +57,14 @@ public class HtmlDemo {
      */
     public void show() {
         try {
-            URL url = null;
-            url = this.getClass().getClassLoader().getSystemResource("html/" + name);
+            URL url = ClassLoader.getSystemResource("html/" + name);
 
             try {
                 htmlEditorPane = new JEditorPane(url);
             } catch (java.io.IOException ioe) {
-                url = this.getClass().getClassLoader().getSystemResource("html/Default.html");
+                url = ClassLoader.getSystemResource("html/Default.html");
                 htmlEditorPane = new JEditorPane(url);
             }
-            //htmlEditorPane = new JEditorPane(htmlDescription);
             htmlEditorPane.setEditable(false);
             htmlEditorPane.addHyperlinkListener(createHyperLinkListener());
 

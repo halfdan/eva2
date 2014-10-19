@@ -58,12 +58,12 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
         for (int i = 0; i < this.fitness.length; i++) {
             this.fitness[i] = individual.fitness[i];
         }
-        cloneAEAObjects((AbstractEAIndividual) individual);
+        cloneAEAObjects(individual);
     }
 
     @Override
     public Object clone() {
-        return (Object) new GAIndividualBinaryData(this);
+        return new GAIndividualBinaryData(this);
     }
 
     /**

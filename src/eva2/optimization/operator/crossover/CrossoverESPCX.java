@@ -181,10 +181,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         if (Double.isNaN(sum)) {
             return false;
         }
-        if (Math.abs(sum) < 0.000000000000000001) {
-            return false;
-        }
-        return true;
+        return Math.abs(sum) >= 0.000000000000000001;
     }
 
     /**
@@ -195,11 +192,7 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESUNDX) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverESUNDX;
     }
 
     /**

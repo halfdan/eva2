@@ -94,7 +94,7 @@ public class OptimizerFactory {
      * @param listener
      * @return An optimization algorithm that performs differential evolution.
      */
-    public static final DifferentialEvolution createDifferentialEvolution(
+    public static DifferentialEvolution createDifferentialEvolution(
             AbstractOptimizationProblem problem, int popsize, double f,
             double lambda, double CR,
             InterfacePopulationChangedEventListener listener) {
@@ -136,7 +136,7 @@ public class OptimizerFactory {
      * @param listener
      * @return An optimization algorithm that employs an evolution strategy.
      */
-    public static final EvolutionStrategies createEvolutionStrategy(int mu,
+    public static EvolutionStrategies createEvolutionStrategy(int mu,
                                                                     int lambda, boolean plus, InterfaceMutation mutationoperator,
                                                                     double pm, InterfaceCrossover crossoveroperator, double pc,
                                                                     InterfaceSelection selection, AbstractOptimizationProblem problem,
@@ -164,7 +164,7 @@ public class OptimizerFactory {
      * @param listener
      * @return An optimization algorithm that employs an IPOP-ES.
      */
-    public static final EvolutionStrategyIPOP createEvolutionStrategyIPOP(int mu,
+    public static EvolutionStrategyIPOP createEvolutionStrategyIPOP(int mu,
                                                                           int lambda, boolean plus, InterfaceMutation mutationoperator,
                                                                           double pm, InterfaceCrossover crossoveroperator, double pc, double incPopSizeFact, double stagThresh,
                                                                           AbstractOptimizationProblem problem, InterfacePopulationChangedEventListener listener) {
@@ -175,7 +175,7 @@ public class OptimizerFactory {
         return esIPOP;
     }
 
-    private static final EvolutionStrategies createES(EvolutionStrategies theES, InterfaceMutation mutationoperator,
+    private static EvolutionStrategies createES(EvolutionStrategies theES, InterfaceMutation mutationoperator,
                                                       double pm, InterfaceCrossover crossoveroperator, double pc,
                                                       InterfaceSelection selection, AbstractOptimizationProblem problem,
                                                       InterfacePopulationChangedEventListener listener) {
@@ -526,7 +526,7 @@ public class OptimizerFactory {
      *
      * @return the default number of fitness call done before termination
      */
-    public static final int getDefaultFitCalls() {
+    public static int getDefaultFitCalls() {
         return defaultFitCalls;
     }
 
@@ -1423,7 +1423,7 @@ public class OptimizerFactory {
             es.setForceOrigPopSize(false);
             ((EvolutionStrategyIPOP) es).setIncPopSizeFact(incLambdaFact);
             // Set CMA operator for mutation
-            AbstractEAIndividual indy = (AbstractEAIndividual) indyTemplate;
+            AbstractEAIndividual indy = indyTemplate;
             MutateESRankMuCMA cmaMut = new MutateESRankMuCMA();
             AbstractEAIndividual.setOperators(indy, cmaMut, 1., new CrossoverESDefault(), 0.);
         } else {

@@ -46,7 +46,7 @@ public class PropertyMutationMixer implements java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new PropertyMutationMixer(this);
+        return new PropertyMutationMixer(this);
     }
 
     /**

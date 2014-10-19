@@ -28,7 +28,7 @@ public class F14Problem extends AbstractProblemDoubleOffset implements Interface
      */
     @Override
     public Object clone() {
-        return (Object) new F14Problem(this);
+        return new F14Problem(this);
     }
 
     @Override

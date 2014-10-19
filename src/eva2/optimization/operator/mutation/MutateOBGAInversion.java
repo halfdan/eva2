@@ -43,11 +43,7 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
      */
     @Override
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateOBGAInversion) {
-            return true;
-        } else {
-            return false;
-        }
+        return mutator instanceof MutateOBGAInversion;
     }
 
     @Override
@@ -57,7 +53,7 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
 
     @Override
     public void mutate(AbstractEAIndividual individual) {
-        int[][] permnew = (int[][]) ((InterfaceOBGAIndividual) individual).getOBGenotype().clone();
+        int[][] permnew = ((InterfaceOBGAIndividual) individual).getOBGenotype().clone();
         int[][] perm = ((InterfaceDataTypePermutation) individual).getPermutationData();
         for (int p = 0; p < perm.length; p++) {
             int p1 = RNG.randomInt(0, perm[p].length - 1);

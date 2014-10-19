@@ -97,7 +97,7 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
             mocco.parameterPanel.removeAll();
             Object n = null;
             try {
-                n = (Object) Class.forName(className).newInstance();
+                n = Class.forName(className).newInstance();
             } catch (Exception ex) {
             }
             mocco.state.originalProblem = (InterfaceOptimizationProblem) n;

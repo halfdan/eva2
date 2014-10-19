@@ -43,7 +43,7 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
 
     @Override
     public Object clone() {
-        return (Object) new StandardMergingStrategy(this);
+        return new StandardMergingStrategy(this);
     }
 
 /**********************************************************************************************************************

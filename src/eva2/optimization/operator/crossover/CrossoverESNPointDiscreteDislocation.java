@@ -116,10 +116,7 @@ public class CrossoverESNPointDiscreteDislocation implements InterfaceCrossover,
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESNPointDiscreteDislocation) {
             CrossoverESNPointDiscreteDislocation cross = (CrossoverESNPointDiscreteDislocation) crossover;
-            if (this.numberOfCrossovers != cross.numberOfCrossovers) {
-                return false;
-            }
-            return true;
+            return this.numberOfCrossovers == cross.numberOfCrossovers;
         } else {
             return false;
         }

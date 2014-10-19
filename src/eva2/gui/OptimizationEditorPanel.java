@@ -376,7 +376,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
                  */ (genericObjectEditor.getValue().getClass().getName());
         boolean found = false;
         for (int i = 0; i < comboBoxModel.getSize(); i++) {
-            if (objectName.equals((String) comboBoxModel.getElementAt(i))) {
+            if (objectName.equals(comboBoxModel.getElementAt(i))) {
                 found = true;
                 break;
             }
@@ -408,7 +408,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         if ((e.getSource() == objectChooser) && (e.getStateChange() == ItemEvent.SELECTED)) {
             className = (String) objectChooser.getSelectedItem();
             try {
-                Object n = (Object) Class.forName(className).newInstance();
+                Object n = Class.forName(className).newInstance();
                 genericObjectEditor.setValue(n);
                 // TODO ? setObject(n);
             } catch (Exception ex) {

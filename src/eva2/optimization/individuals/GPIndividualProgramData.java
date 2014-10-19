@@ -75,12 +75,12 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         for (int i = 0; i < this.fitness.length; i++) {
             this.fitness[i] = individual.fitness[i];
         }
-        cloneAEAObjects((AbstractEAIndividual) individual);
+        cloneAEAObjects(individual);
     }
 
     @Override
     public Object clone() {
-        return (Object) new GPIndividualProgramData(this);
+        return new GPIndividualProgramData(this);
     }
 
     /**
@@ -328,11 +328,11 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
             } else {
                 AbstractGPNode parent = nodeToMutate.getParent();
                 if (checkMaxDepth && (nodeToMutate.getDepth() == maxAllowedDepth)) { // mutate with a constant
-                    AbstractGPNode newNode = (AbstractGPNode) (((AbstractGPNode) this.gpArea[i].getRandomNodeWithArity(0).clone()));
+                    AbstractGPNode newNode = ((AbstractGPNode) this.gpArea[i].getRandomNodeWithArity(0).clone());
                     newNode.setDepth(nodeToMutate.getDepth());
                     parent.setNode(newNode, nodeToMutate);
                 } else {
-                    AbstractGPNode newNode = (AbstractGPNode) (((AbstractGPNode) this.gpArea[i].getRandomNode().clone()));
+                    AbstractGPNode newNode = ((AbstractGPNode) this.gpArea[i].getRandomNode().clone());
                     newNode.setDepth(nodeToMutate.getDepth());
                     newNode.initGrow(this.gpArea[i], this.maxAllowedDepth);
                     parent.setNode(newNode, nodeToMutate);

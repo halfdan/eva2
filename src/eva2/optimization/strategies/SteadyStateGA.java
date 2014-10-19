@@ -46,7 +46,7 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new SteadyStateGA(this);
+        return new SteadyStateGA(this);
     }
 
     @Override

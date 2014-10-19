@@ -39,8 +39,6 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
     public ConstraintBasedAdaption() {
     }
 
-    ;
-
     public ConstraintBasedAdaption(
             ConstraintBasedAdaption o) {
         betaInc = o.betaInc;

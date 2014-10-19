@@ -219,7 +219,7 @@ class TreeElement implements java.io.Serializable {
                 //System.out.println("This: "+high);
                 this.index = high;
             } else {
-                int midPoint = (int) ((high + low) / 2);
+                int midPoint = (high + low) / 2;
                 this.separator = d[midPoint - 1][list];
                 //System.out.println("Branching: "+midPoint + " : " + this.separator);
                 this.leftElement = new TreeElement(d, list, low, midPoint);

@@ -40,12 +40,12 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
         for (int i = 0; i < this.fitness.length; i++) {
             this.fitness[i] = individual.fitness[i];
         }
-        cloneAEAObjects((AbstractEAIndividual) individual);
+        cloneAEAObjects(individual);
     }
 
     @Override
     public Object clone() {
-        return (Object) new GIOBGAIndividualIntegerPermutationData(this);
+        return new GIOBGAIndividualIntegerPermutationData(this);
     }
 
     /**

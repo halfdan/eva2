@@ -93,7 +93,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 
     @Override
     public Object clone() {
-        return (Object) new EvolutionStrategies(this);
+        return new EvolutionStrategies(this);
     }
 
     @Override
@@ -259,11 +259,7 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (changeListener != null && changeListener.removeElement(ea)) {
-            return true;
-        } else {
-            return false;
-        }
+        return changeListener != null && changeListener.removeElement(ea);
     }
 
     /**

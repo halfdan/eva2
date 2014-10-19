@@ -25,7 +25,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
 
     @Override
     public Object clone() {
-        return (Object) new SelProbBoltzman(this);
+        return new SelProbBoltzman(this);
     }
 
     /**

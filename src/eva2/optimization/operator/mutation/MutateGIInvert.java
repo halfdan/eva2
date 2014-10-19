@@ -45,10 +45,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGIInvert) {
             MutateGIInvert mut = (MutateGIInvert) mutator;
-            if (this.maxLengthOfInvert != mut.maxLengthOfInvert) {
-                return false;
-            }
-            return true;
+            return this.maxLengthOfInvert == mut.maxLengthOfInvert;
         } else {
             return false;
         }
@@ -81,7 +78,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
             if (2 * range >= x.length) {
                 return;
             }
-            center = RNG.randomInt(0 + range, x.length - 1 - range);
+            center = RNG.randomInt(range, x.length - 1 - range);
             //System.out.println("Range: " + range + " Center: " + center);
             int[] tmp = new int[x.length];
             System.arraycopy(x, 0, tmp, 0, x.length);

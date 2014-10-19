@@ -45,10 +45,7 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
             if (this.successRate != mut.successRate) {
                 return false;
             }
-            if (this.alpha != mut.alpha) {
-                return false;
-            }
-            return true;
+            return this.alpha == mut.alpha;
         } else {
             return false;
         }

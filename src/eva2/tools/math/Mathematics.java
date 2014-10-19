@@ -428,10 +428,7 @@ public class Mathematics {
      * @return true if the vector lies within the range, else false
      */
     public static boolean isInRange(double v, double lower, double upper) {
-        if (v < lower || (v > upper)) {
-            return false;
-        }
-        return true;
+        return !(v < lower || (v > upper));
     }
 
     /**
@@ -484,10 +481,7 @@ public class Mathematics {
         if (Double.isNaN(sum)) {
             return false;
         }
-        if (Math.abs(sum) < 0.000000000000000001) {
-            return false;
-        }
-        return true;
+        return Math.abs(sum) >= 0.000000000000000001;
     }
 
     /**
@@ -569,7 +563,7 @@ public class Mathematics {
     public static double median(double[] x, boolean cloneX) {
         double[] in;
         if (cloneX) {
-            in = (double[]) x.clone();
+            in = x.clone();
         } else {
             in = x;
         }

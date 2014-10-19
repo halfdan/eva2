@@ -200,13 +200,13 @@ public class PostProcess {
                 }
             }
             if (returnQuota >= 1) {
-                result.addAll((Collection<AbstractEAIndividual>) clusters[j]);
+                result.addAll(clusters[j]);
             } // easy case
             else {
                 int n = Math.max(1, (int) (returnQuota * clusters[j].size())); // return at least one per cluster!
                 switch (takeOverMode) {
                     case BEST_ONLY: // another easy case
-                        result.addAll((Collection<AbstractEAIndividual>) (clusters[j].getBestNIndividuals(n, -1)));
+                        result.addAll(clusters[j].getBestNIndividuals(n, -1));
                         break;
                     case BEST_RAND:
                         Population exclude = new Population();

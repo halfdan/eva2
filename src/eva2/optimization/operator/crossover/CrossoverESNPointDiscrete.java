@@ -101,10 +101,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESNPointDiscrete) {
             CrossoverESNPointDiscrete cross = (CrossoverESNPointDiscrete) crossover;
-            if (this.numberOfCrossovers != cross.numberOfCrossovers) {
-                return false;
-            }
-            return true;
+            return this.numberOfCrossovers == cross.numberOfCrossovers;
         } else {
             return false;
         }

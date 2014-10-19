@@ -303,8 +303,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                     // is called recursively.
                     if (controllerOrSubControllable instanceof InterfaceParameterControl) {
                         args[0] = instance;
-                        if (!((InterfaceParameterControl) controllerOrSubControllable instanceof ConstantParameters)) {
-                            BeanInspector.callIfAvailable((InterfaceParameterControl) controllerOrSubControllable, methodName, args);
+                        if (!(controllerOrSubControllable instanceof ConstantParameters)) {
+                            BeanInspector.callIfAvailable(controllerOrSubControllable, methodName, args);
                         }
                     } else {
                         args[0] = controllerOrSubControllable;
@@ -312,8 +312,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                     }
                 }
             } else if (paramCtrlReturn instanceof InterfaceParameterControl) {
-                if (!((InterfaceParameterControl) paramCtrlReturn instanceof ConstantParameters)) {
-                    BeanInspector.callIfAvailable((InterfaceParameterControl) paramCtrlReturn, methodName, args);
+                if (!(paramCtrlReturn instanceof ConstantParameters)) {
+                    BeanInspector.callIfAvailable(paramCtrlReturn, methodName, args);
                 }
             }
         }
@@ -384,7 +384,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public void registerPopulationStateChanged(Object source, String name) {
         if (name.equals(Population.NEXT_GENERATION_PERFORMED)) {
             statistics.createNextGenerationPerformed(
-                    (PopulationInterface) this.optimizationParameters.getOptimizer().getPopulation(),
+                    this.optimizationParameters.getOptimizer().getPopulation(),
                     this.optimizationParameters.getOptimizer(),
                     getInformerList());
             if (optimizationStateListener != null) {
@@ -474,7 +474,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             }
 
             PostProcess.checkAccuracy((AbstractOptimizationProblem) optimizationParameters.getProblem(), resultPop, ppp.getAccuracies(), ppp.getAccAssumeConv(),
-                    -1, ppp.getAccMaxEval(), (SolutionHistogram[]) null, true, listener);
+                    -1, ppp.getAccMaxEval(), null, true, listener);
 
             resultPop = PostProcess.postProcess(ppp, resultPop, (AbstractOptimizationProblem) optimizationParameters.getProblem(), listener);
             resultPopulation = resultPop;

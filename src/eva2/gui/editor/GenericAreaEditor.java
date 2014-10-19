@@ -27,13 +27,13 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
 
     @Override
     protected String getElementName(int i) {
-        AbstractGPNode an = (AbstractGPNode) areaObject.getCompleteList().get(i);
+        AbstractGPNode an = areaObject.getCompleteList().get(i);
         return an.getName();
     }
 
     @Override
     protected boolean isElementSelected(int i) {
-        return ((Boolean) areaObject.getBlackList().get(i)).booleanValue();
+        return areaObject.getBlackList().get(i).booleanValue();
     }
 
     @Override

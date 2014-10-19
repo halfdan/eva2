@@ -148,7 +148,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      */
     @Override
     public Object clone() {
-        return (Object) new BKnapsackProblem(this);
+        return new BKnapsackProblem(this);
     }
 
     /**

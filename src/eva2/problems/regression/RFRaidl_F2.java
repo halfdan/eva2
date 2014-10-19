@@ -19,7 +19,7 @@ public class RFRaidl_F2 implements InterfaceRegressionFunction, java.io.Serializ
 
     @Override
     public Object clone() {
-        return (Object) new RFRaidl_F2(this);
+        return new RFRaidl_F2(this);
     }
 
     /**

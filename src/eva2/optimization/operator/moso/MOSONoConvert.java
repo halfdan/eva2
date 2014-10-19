@@ -20,7 +20,7 @@ public class MOSONoConvert implements InterfaceMOSOConverter, java.io.Serializab
 
     @Override
     public Object clone() {
-        return (Object) new MOSONoConvert(this);
+        return new MOSONoConvert(this);
     }
 
     /**

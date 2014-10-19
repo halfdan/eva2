@@ -26,7 +26,7 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new SelectMOPESA(this);
+        return new SelectMOPESA(this);
     }
 
     /**

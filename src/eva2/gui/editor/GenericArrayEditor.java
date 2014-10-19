@@ -352,7 +352,6 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
             ListCellRenderer lcr = new DefaultListCellRenderer();
             if (editor != null) {
                 if (editor instanceof GenericObjectEditor) {
-//					((GenericObjectEditor) editor).getCustomEditor();
                     ((GenericObjectEditor) editor).setClassType(elementClass);
                 }
                 if (editor.isPaintable() && editor.supportsCustomEditor()) {
@@ -416,6 +415,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
 
                     // Upper Button Panel
                     JPanel combiUpperPanel = new JPanel(getButtonLayout(1, upperButtonList));
+                    // ToDo Figure out how to now show this on Job Pane
                     combiUpperPanel.add(view);
 
                     for (JButton but : upperButtonList) {
@@ -692,7 +692,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
             rep = listModel.getSize() + " of " + EVAHELP.cutClassName(elementClass.getName());
             Object maybeName = BeanInspector.callIfAvailable(listModel.get(0), "getName", new Object[]{});
             if (maybeName != null) {
-                rep = rep + " (" + (String) maybeName + "...)";
+                rep = rep + " (" + maybeName + "...)";
             }
         }
         gfx.drawString(rep, 2, fm.getHeight() + vpad - 3);

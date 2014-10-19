@@ -65,22 +65,14 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
         if (a.clustered != null) {
             this.clustered = new boolean[a.clustered.length];
             for (int i = 0; i < this.clustered.length; i++) {
-                if (a.clustered[i]) {
-                    this.clustered[i] = true;
-                } else {
-                    this.clustered[i] = false;
-                }
+                this.clustered[i] = a.clustered[i];
             }
         }
         if (a.connectionMatrix != null) {
             this.connectionMatrix = new boolean[a.connectionMatrix.length][a.connectionMatrix[0].length];
             for (int i = 0; i < this.connectionMatrix.length; i++) {
                 for (int j = 0; j < this.connectionMatrix[i].length; j++) {
-                    if (a.connectionMatrix[i][j]) {
-                        this.connectionMatrix[i][j] = true;
-                    } else {
-                        this.connectionMatrix[i][j] = false;
-                    }
+                    this.connectionMatrix[i][j] = a.connectionMatrix[i][j];
                 }
             }
         }
@@ -94,7 +86,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
      */
     @Override
     public Object clone() {
-        return (Object) new ClusteringDensityBased(this);
+        return new ClusteringDensityBased(this);
     }
 
     @Override

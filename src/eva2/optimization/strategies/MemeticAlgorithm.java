@@ -49,8 +49,8 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     public MemeticAlgorithm(MemeticAlgorithm a) {
         // this.population = (Population)a.population.clone();
         this.optimizationProblem = (InterfaceLocalSearchable) a.optimizationProblem.clone();
-        this.globalOptimizer = (InterfaceOptimizer) a.globalOptimizer;
-        this.selectorPlug = (InterfaceSelection) a.selectorPlug;
+        this.globalOptimizer = a.globalOptimizer;
+        this.selectorPlug = a.selectorPlug;
         this.identifier = a.identifier;
         this.localSearchSteps = a.localSearchSteps;
         this.subsetsize = a.subsetsize;

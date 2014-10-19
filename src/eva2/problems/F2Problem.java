@@ -31,7 +31,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
      */
     @Override
     public Object clone() {
-        return (Object) new F2Problem(this);
+        return new F2Problem(this);
     }
 
     /**
@@ -122,7 +122,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
     public double getLocalSearchStepFunctionCallEquivalent() {
         double cost = 1;
         if (this.localSearchOptimizer instanceof GradientDescentAlgorithm) {
-            cost = ((GradientDescentAlgorithm) localSearchOptimizer).getIterations();
+            cost = localSearchOptimizer.getIterations();
         }
         return cost;
     }

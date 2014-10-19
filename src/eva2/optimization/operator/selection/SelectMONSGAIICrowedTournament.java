@@ -28,7 +28,7 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
 
     @Override
     public Object clone() {
-        return (Object) new SelectMONSGAIICrowedTournament(this);
+        return new SelectMONSGAIICrowedTournament(this);
     }
 
     /**

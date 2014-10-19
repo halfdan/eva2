@@ -80,7 +80,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      */
     @Override
     public Object clone() {
-        return (Object) new ClassificationSelfOrganizingMaps(this);
+        return new ClassificationSelfOrganizingMaps(this);
     }
 
     /**
@@ -378,12 +378,6 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
             }
         }
         DPoint tmpP;
-//        for (int i = 0; i < data.length; i++) {
-//            tmpP = new DPoint(data[i][0], data[i][1]);
-//            tmpP.setIcon(new Chart2DDPointIconCross());
-//            tmpP.setColor(Color.RED);
-//            area.addDElement(tmpP);
-//        }
         for (int i = 0; i < data.length; i++) {
             tmpP = new DPoint((data[i][0] - this.range[0][2]) / (1 + this.range[0][3]), (data[i][1] - this.range[1][2]) / (1 + this.range[1][3]));
             tmpP.setIcon(new Chart2DDPointIconCross());
@@ -393,7 +387,7 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         panel.add(area, BorderLayout.CENTER);
         frame.getContentPane().add(panel);
         frame.validate();
-        frame.show();
+        frame.setVisible(true);
     }
 
     /**

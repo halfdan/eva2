@@ -26,15 +26,9 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
         Serializable {
     public enum ChangeTypeEnum {relativeChange, absoluteChange, absoluteValue}
 
-    ;
-
     public enum DirectionTypeEnum {decrease, bidirectional}
 
-    ;
-
     public enum StagnationTypeEnum {fitnessCallBased, generationBased}
-
-    ;
 
     protected static boolean TRACE = false;
     private double convThresh = 0.01; //, convThreshLower=0.02;

@@ -45,10 +45,7 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGIInsertDelete) {
             MutateGIInsertDelete mut = (MutateGIInsertDelete) mutator;
-            if (this.maxLengthOfInsDel != mut.maxLengthOfInsDel) {
-                return false;
-            }
-            return true;
+            return this.maxLengthOfInsDel == mut.maxLengthOfInsDel;
         } else {
             return false;
         }

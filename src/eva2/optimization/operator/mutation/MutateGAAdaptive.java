@@ -55,10 +55,7 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
             if (this.tau1 != mut.tau1) {
                 return false;
             }
-            if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
-                return false;
-            }
-            return true;
+            return this.lowerLimitStepSize == mut.lowerLimitStepSize;
         } else {
             return false;
         }
