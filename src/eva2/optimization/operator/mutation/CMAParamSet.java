@@ -116,8 +116,6 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
         params.range = range;
 
         int dim = params.range.length;
-//		if (TRACE_1) System.out.println("WCMA initialize " + dim);
-//		if (TRACE_1) System.out.println("WCMA static initialize " + dim);
         params.eigenvalues = new double[dim];
         Arrays.fill(params.eigenvalues, 1.);
         params.meanX = new double[dim];
@@ -219,9 +217,7 @@ class CMAParamSet implements InterfacePopulationChangedEventListener, Serializab
     public void registerPopulationStateChanged(Object source, String name) {
         if (name.equals(Population.POPULATION_INITIALIZED)) {
             Population pop = (Population) source;
-            if (MutateESRankMuCMA.TRACE_1) {
-                System.out.println("Event " + name + " arrived in CMAParamSet!!!");
-            }
+
             CMAParamSet params = (CMAParamSet) (pop.getData(MutateESRankMuCMA.cmaParamsKey));
             int mu;
             if (pop.hasData(EvolutionStrategies.esMuParam)) {

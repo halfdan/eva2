@@ -40,7 +40,6 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
 
     transient private InterfacePopulationChangedEventListener populationChangedEventListener;
-    public static final boolean TRACE = false;
     transient private String identifier = "";
     private Population population = new Population();
     private transient Population archive = new Population();
@@ -48,7 +47,6 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
     private int hcEvalCycle = 1000;
     private int initialPopSize = 100;
     private int loopCnt = 0;
-    //   	private int								baseEvalCnt = 0;
     private int notifyGuiEvery = 50;
     private double sigmaClust = 0.01;
     private double minImprovement = 0.000001;
@@ -198,9 +196,6 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
             evalsNow = hcEvalCycle;
         }
         do {
-            if (TRACE) {
-                System.out.println("evalCycle: " + hcEvalCycle + ", evals now: " + evalsNow);
-            }
             popD = PostProcess.clusterLocalSearch(localSearchMethod, population, (AbstractOptimizationProblem) optimizationProblem, sigmaClust, evalsNow, 0.5, mutator);
             //		(population, (AbstractOptimizationProblem)problem, sigmaClust, hcEvalCycle - (population.getFunctionCalls() % hcEvalCycle), 0.5);
             if (popD.head().getFunctionCalls() == funCallsBefore) {
@@ -210,21 +205,12 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         } while (popD.head().getFunctionCalls() == funCallsBefore);
         improvement = popD.tail();
         population = popD.head();
-        if (TRACE) {
-            System.out.println("num inds after clusterLS: " + population.size());
-        }
 
         popD.head().setGeneration(population.getGeneration() + 1);
 
         if (doReinitialization && (improvement < minImprovement)) {
-            if (TRACE) {
-                System.out.println("improvement below " + minImprovement);
-            }
             if ((localSearchMethod != PostProcessMethod.hillClimber) || (mutator.getSigma() < stepSizeThreshold)) { // reinit!
                 // is performed for nm and cma, and if hc has too low sigma
-                if (TRACE) {
-                    System.out.println("REINIT!!");
-                }
 
                 if (localSearchMethod == PostProcessMethod.hillClimber) {
                     mutator.setSigma(initialStepSize);
@@ -252,12 +238,8 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
                     System.err.println("Invalid case in ClusteringHillClimbing!");
                 }
                 mutator.setSigma(mutator.getSigma() * reduceFactor);
-                if (TRACE) {
-                    System.out.println("mutation stepsize reduced to " + mutator.getSigma());
-                }
             }
         }
-//		System.out.println("funcalls: " + evalCnt);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
 
     }
@@ -266,17 +248,10 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
     public void registerPopulationStateChanged(Object source, String name) {
         // The events of the interim hill climbing population will be caught here 
         if (name.compareTo(Population.FUN_CALL_INTERVAL_REACHED) == 0) {
-//			if ((((Population)source).size() % 50) > 0) {
-//				System.out.println("bla");
-//			}
             // set funcalls to real value
             population.setFunctionCalls(((Population) source).getFunctionCalls());
-//			System.out.println("FunCallIntervalReached at " + (((Population)source).getFunctionCalls()));
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
-        // do not react to NextGenerationPerformed
-        //else System.err.println("ERROR, event was " + name);
-
     }
 
     /**

@@ -34,9 +34,6 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
     private int subsetsize = 5;
     private int globalSearchIterations = 1;
     private boolean lamarckism = true;
-    // int counter = 0; !?
-    // int maxfunctioncalls = 1000; !?
-    private boolean TRACE = false;
     private String identifier = "";
     private InterfaceOptimizationProblem optimizationProblem = new F1Problem();
     private InterfaceOptimizer globalOptimizer = new GeneticAlgorithm();
@@ -94,20 +91,13 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
 
     @Override
     public void optimize() {
-
-        if (TRACE) {
-            System.out.println("global search");
-        }
         this.globalOptimizer.optimize();
 
         if ((globalSearchIterations > 0) && (((this.globalOptimizer.getPopulation().getGeneration() % this.globalSearchIterations) == 0))
                 && (this.localSearchSteps > 0)
                 && (this.optimizationProblem instanceof InterfaceLocalSearchable)) {
             // here the local search is performed
-            if (TRACE) {
-                System.out.println("Performing local search on " + subsetsize
-                        + " individuals.");
-            }
+
             Population gop = this.globalOptimizer.getPopulation();
             Population subset = selectorPlug.selectFrom(gop, subsetsize);
             Population subsetclone = new Population();
@@ -164,17 +154,9 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
             gop.setFunctionCalls(gop.getFunctionCalls()
                     + (int) Math.round(localSearchSteps * cost * subset.size()));
 
-            if (TRACE) {
-                System.out.println("Population size after local search:" + gop.size());
-            }
-
             this.setPopulation(gop);
         }
 
-        if (TRACE) {
-            System.out.println("function calls"
-                    + this.globalOptimizer.getPopulation().getFunctionCalls());
-        }
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -205,9 +187,6 @@ public class MemeticAlgorithm implements InterfaceOptimizer,
      */
     protected void firePropertyChangedEvent(String name) {
         if (this.populationChangedEventListener != null) {
-            if (TRACE) {
-                System.out.println("firePropertyChangedEvent MA");
-            }
             this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }

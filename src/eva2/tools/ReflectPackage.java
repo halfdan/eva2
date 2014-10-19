@@ -25,13 +25,9 @@ import java.util.jar.JarInputStream;
  * @author mkron
  */
 public class ReflectPackage {
-
-    final static boolean TRACE = false;
     static int missedJarsOnClassPath = 0;
     static boolean useFilteredClassPath = true;
-    //	static boolean usePathMap = true;
     static String[] dynCP = null;
-//	static HashMap<String, ArrayList<String>> pathMap = new HashMap<String, ArrayList<String>>();
 
     static class ClassComparator<T> implements Comparator<T> {
         @Override
@@ -59,26 +55,15 @@ public class ReflectPackage {
                 }
                 dir = path + "/" + pckgname.replace(".", "/");
 
-                if (TRACE) {
-                    System.out.println(".. opening " + path);
-                }
-
                 directory = new File(dir);
 
             } catch (NullPointerException x) {
-                if (TRACE) {
-                    System.err.println(directory.getPath() + " not found in " + path);
-                    System.err.println("directory " + (directory.exists() ? "exists" : "doesnt exist"));
-                }
                 return 0;
             }
             if (directory.exists()) {
                 // Get the list of the files contained in the package
                 return getClassesFromDirFltr(set, directory, pckgname, includeSubs, reqSuperCls);
             } else {
-                if (TRACE) {
-                    System.err.println(directory.getPath() + " doesnt exist in " + path + ", dir was " + dir);
-                }
                 return 0;
             }
         } catch (ClassNotFoundException e) {
@@ -88,21 +73,17 @@ public class ReflectPackage {
         }
     }
 
-//	public static ArrayList<Class> getClassesFromDir(File directory, String pckgname, boolean includeSubs) {
-//		return getClassesFromDirFltr(directory, pckgname, includeSubs, null);
-//	}
-
     public static int getClassesFromDirFltr(HashSet<Class> set, File directory, String pckgname, boolean includeSubs, Class<?> reqSuperCls) {
         int cntAdded = 0;
         if (directory.exists()) {
             // Get the list of the files contained in the package
             String[] files = directory.list();
-            for (int i = 0; i < files.length; i++) {
+            for (String file : files) {
                 // we are only interested in .class files
-                if (files[i].endsWith(".class")) {
+                if (file.endsWith(".class")) {
                     // removes the .class extension
                     try {
-                        Class<?> cls = Class.forName(pckgname + '.' + files[i].substring(0, files[i].length() - 6));
+                        Class<?> cls = Class.forName(pckgname + '.' + file.substring(0, file.length() - 6));
                         if (reqSuperCls != null) {
                             if (reqSuperCls.isAssignableFrom(cls)) {
                                 cntAdded += addClass(set, cls);
@@ -111,15 +92,15 @@ public class ReflectPackage {
                             cntAdded += addClass(set, cls);
                         }
                     } catch (Exception e) {
-                        System.err.println("ReflectPackage: Couldnt get Class from jar for " + pckgname + '.' + files[i] + ": " + e.getMessage());
+                        System.err.println("ReflectPackage: Couldnt get Class from jar for " + pckgname + '.' + file + ": " + e.getMessage());
                     } catch (Error e) {
-                        System.err.println("ReflectPackage: Couldnt get Class from jar for " + pckgname + '.' + files[i] + ": " + e.getMessage());
+                        System.err.println("ReflectPackage: Couldnt get Class from jar for " + pckgname + '.' + file + ": " + e.getMessage());
                     }
                 } else if (includeSubs) {
                     // do a recursive search over subdirs
-                    File subDir = new File(directory.getAbsolutePath() + File.separatorChar + files[i]);
+                    File subDir = new File(directory.getAbsolutePath() + File.separatorChar + file);
                     if (subDir.exists() && subDir.isDirectory()) {
-                        cntAdded += getClassesFromDirFltr(set, subDir, pckgname + "." + files[i], includeSubs, reqSuperCls);
+                        cntAdded += getClassesFromDirFltr(set, subDir, pckgname + "." + file, includeSubs, reqSuperCls);
                     }
                 }
             }
@@ -136,9 +117,6 @@ public class ReflectPackage {
     }
 
     private static int addClass(HashSet<Class> set, Class cls) {
-        if (TRACE) {
-            System.out.println("adding class " + cls.getName());
-        }
         if (set.contains(cls)) {
             System.err.println("warning, Class " + cls.getName() + " not added twice!");
             return 0;
@@ -150,12 +128,9 @@ public class ReflectPackage {
 
     public static ArrayList<Class> filterAssignableClasses(ArrayList<Class> classes, Class<?> reqSuperCls) {
         ArrayList<Class> assClasses = new ArrayList<Class>();
-        for (int i = 0; i < classes.size(); i++) {
-            if (reqSuperCls.isAssignableFrom(classes.get(i))) {
-                if (TRACE) {
-                    System.out.println(" taking over " + classes.get(i));
-                }
-                assClasses.add(classes.get(i));
+        for (Class aClass : classes) {
+            if (reqSuperCls.isAssignableFrom(aClass)) {
+                assClasses.add(aClass);
             }
         }
         return assClasses;
@@ -173,9 +148,6 @@ public class ReflectPackage {
         int cntAdded = 0;
 
         packageName = packageName.replaceAll("\\.", "/");
-        if (TRACE) {
-            System.out.println("Jar " + jarName + " looking for " + packageName);
-        }
         try {
             JarInputStream jarFile = new JarInputStream
                     (new FileInputStream(jarName));
@@ -183,7 +155,6 @@ public class ReflectPackage {
 
             while ((jarEntry = jarFile.getNextJarEntry()) != null) {
                 String jarEntryName = jarEntry.getName();
-//				if (TRACE) System.out.println("- " + jarEntry.getName());
                 if ((jarEntryName.startsWith(packageName)) &&
                         (jarEntryName.endsWith(".class"))) {
 //					subpackages are hit here as well!
@@ -203,25 +174,20 @@ public class ReflectPackage {
                             } else {
                                 cntAdded += addClass(set, cls);
                             }
-                        } catch (Exception e) {
-                            System.err.println("ReflectPackage: Couldnt get Class from jar for " + clsName + ": " + e.getMessage());
-                        } catch (Error e) {
-                            System.err.println("ReflectPackage: Couldnt get Class from jar for " + clsName + ": " + e.getMessage());
+                        } catch (Exception | Error e) {
+                            System.err.println("ReflectPackage: Couldn't get Class from jar for " + clsName + ": " + e.getMessage());
                         }
                     }
-
-//					classes.add (jarEntry.getName().replaceAll("/", "\\."));
                 }
             }
         } catch (IOException e) {
             missedJarsOnClassPath++;
             if (missedJarsOnClassPath == 0) {
-                System.err.println("Couldnt open jar from class path: " + e.getMessage());
+                System.err.println("Couldn't open jar from class path: " + e.getMessage());
                 System.err.println("Dirty class path?");
             } else if (missedJarsOnClassPath == 2) {
-                System.err.println("Couldnt open jar from class path more than once...");
+                System.err.println("Couldn't open jar from class path more than once...");
             }
-            //e.printStackTrace();
         }
         return cntAdded;
     }
@@ -230,13 +196,13 @@ public class ReflectPackage {
      * Collect all classes from a given package on the classpath. If includeSubs is true,
      * the sub-packages are listed as well.
      *
-     * @param pckg
-     * @param includeSubs
-     * @param bSort       sort alphanumerically by class name
+     * @param pkg           Package name
+     * @param includeSubs   Whether to include sub packages
+     * @param bSort         sort alphanumerically by class name
      * @return An ArrayList of Class objects contained in the package which may be empty if an error occurs.
      */
-    public static Class[] getAllClassesInPackage(String pckg, boolean includeSubs, boolean bSort) {
-        return getClassesInPackageFltr(new HashSet<Class>(), pckg, includeSubs, bSort, null);
+    public static Class[] getAllClassesInPackage(String pkg, boolean includeSubs, boolean bSort) {
+        return getClassesInPackageFltr(new HashSet<Class>(), pkg, includeSubs, bSort, null);
     }
 
     /**
@@ -244,14 +210,11 @@ public class ReflectPackage {
      * as superclass or superinterface. If includeSubs is true,
      * the sub-packages are listed as well.
      *
-     * @param pckg
+     * @param pkg
      * @return
-     * @see Class.assignableFromClass(Class cls)
      */
-    public static Class[] getClassesInPackageFltr(HashSet<Class> set, String pckg, boolean includeSubs, boolean bSort, Class reqSuperCls) {
-        String classPath = null;
+    public static Class[] getClassesInPackageFltr(HashSet<Class> set, String pkg, boolean includeSubs, boolean bSort, Class reqSuperCls) {
         if (!useFilteredClassPath || (dynCP == null)) {
-            classPath = System.getProperty("java.class.path", ".");
             if (useFilteredClassPath) {
                 try {
                     dynCP = getValidCPArray();
@@ -263,20 +226,11 @@ public class ReflectPackage {
             }
         }
 
-        if (TRACE) {
-            System.out.println("classpath is " + classPath);
-        }
-        for (int i = 0; i < dynCP.length; i++) {
-            if (TRACE) {
-                System.out.println("reading element " + dynCP[i]);
-            }
-            if (dynCP[i].endsWith(".jar")) {
-                getClassesFromJarFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
+        for (String aDynCP : dynCP) {
+            if (aDynCP.endsWith(".jar")) {
+                getClassesFromJarFltr(set, aDynCP, pkg, includeSubs, reqSuperCls);
             } else {
-                if (TRACE) {
-                    System.out.println("reading from files: " + dynCP[i] + " " + pckg);
-                }
-                getClassesFromFilesFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
+                getClassesFromFilesFltr(set, aDynCP, pkg, includeSubs, reqSuperCls);
             }
         }
         Object[] clsArr = set.toArray();
@@ -298,9 +252,6 @@ public class ReflectPackage {
     public static String getResourcePathFromCP(String res) {
         String[] cpEntries = getClassPathElements();
         URL url = ClassLoader.getSystemResource(res);
-        if (TRACE) {
-            System.out.println(res + ((url == null) ? " not" : " was") + " found by classloader.");
-        }
         if (url != null) {
             File f;
             try {
@@ -319,15 +270,9 @@ public class ReflectPackage {
             fNameSep = System.getProperty("file.separator") + res;
         }
 
-        for (int i = 0; i < cpEntries.length; i++) {
-            if (!cpEntries[i].endsWith(".jar")) { // its a fs directory (hopefully)
-                if (TRACE) {
-                    System.out.println("reading element " + cpEntries[i]);
-                }
-                f = new File(cpEntries[i] + fNameSep);
-                if (TRACE) {
-                    System.out.println(res + ((!f.exists()) ? " not" : " was") + " found in " + cpEntries[i]);
-                }
+        for (String cpEntry : cpEntries) {
+            if (!cpEntry.endsWith(".jar")) { // its a fs directory (hopefully)
+                f = new File(cpEntry + fNameSep);
                 if (f.exists()) {
                     return f.getAbsolutePath();
                 }
@@ -345,9 +290,6 @@ public class ReflectPackage {
     public static InputStream getResourceStreamFromCP(String res) {
 
         InputStream in = BasicResourceLoader.instance().getStreamFromResourceLocation(res);
-        if (TRACE) {
-            System.out.println(res + ((in == null) ? " not" : " was") + " found by classloader.");
-        }
         if (in != null) {
             return in;
         }
@@ -362,15 +304,9 @@ public class ReflectPackage {
             fNameSep = System.getProperty("file.separator") + res;
         }
 
-        for (int i = 0; i < cpEntries.length; i++) {
-            if (!cpEntries[i].endsWith(".jar")) { // its a fs directory (hopefully)
-                if (TRACE) {
-                    System.out.println("reading element " + cpEntries[i]);
-                }
-                f = new File(cpEntries[i] + fNameSep);
-                if (TRACE) {
-                    System.out.println(res + ((!f.exists()) ? " not" : " was") + " found in " + cpEntries[i]);
-                }
+        for (String cpEntry : cpEntries) {
+            if (!cpEntry.endsWith(".jar")) { // its a fs directory (hopefully)
+                f = new File(cpEntry + fNameSep);
                 if (f.exists()) {
                     try {
                         return new FileInputStream(f);
@@ -387,12 +323,10 @@ public class ReflectPackage {
         String[] pathElements = getClassPathElements();
         File f;
         ArrayList<String> valids = new ArrayList<String>(pathElements.length);
-        for (int i = 0; i < pathElements.length; i++) {
-//						System.err.println(pathElements[i]);
-            f = new File(pathElements[i]);
-//						if (f.canRead()) {valids.add(pathElements[i]);}
+        for (String pathElement : pathElements) {
+            f = new File(pathElement);
             if (f.exists() && f.canRead()) {
-                valids.add(pathElements[i]);
+                valids.add(pathElement);
             }
         }
         return valids;
@@ -400,7 +334,6 @@ public class ReflectPackage {
 
     public static String[] getValidCPArray() {
         ArrayList<String> valids = getValidCPEntries();
-//		vp = valids.toArray(dynCP); // this causes Matlab to crash meanly.
         String[] vp = new String[valids.size()];
         for (int i = 0; i < valids.size(); i++) {
             vp[i] = valids.get(i);
@@ -416,9 +349,6 @@ public class ReflectPackage {
      * @return
      */
     public static Class<?>[] getAssignableClassesInPackage(String pckg, Class reqSuperCls, boolean includeSubs, boolean bSort) {
-        if (TRACE) {
-            System.out.println("requesting classes assignable from " + reqSuperCls.getName());
-        }
         return getClassesInPackageFltr(new HashSet<Class>(), pckg, includeSubs, bSort, reqSuperCls);
     }
 
@@ -426,8 +356,9 @@ public class ReflectPackage {
      * Retrieve assignable classes of the given package from classpath given by full class and package String,
      * such as eva2.problems.AbstractOptimizationProblem.
      *
-     * @param pckg        String denoting the package
-     * @param reqSuperCls
+     * @param pckgClassName        String denoting the package
+     * @param includeSubs
+     * @param bSort
      * @return
      */
     public static Class<?>[] getAssignableClasses(String pckgClassName, boolean includeSubs, boolean bSort) {
@@ -450,13 +381,8 @@ public class ReflectPackage {
 
     public static void main(String[] args) {
         ClassLoader cld = Thread.currentThread().getContextClassLoader();
-        System.out.println("1: " + cld.getResource("/eva2/server"));
-        System.out.println("2: " + cld.getResource("eva2/server"));
-//		BasicResourceLoader rld = BasicResourceLoader.instance();
-//		byte[] b = rld.getBytesFromResourceLocation("images/Sub24.gif");
-//		System.out.println((b == null) ? "null" : b.toString());
-//		b = rld.getBytesFromResourceLocation("src/eva2/client/SplashScreen.java");
-//		System.out.println((b == null) ? "null" : b.toString());
+        System.out.println("1: " + cld.getResource("/eva2/optimization"));
+        System.out.println("2: " + cld.getResource("eva2/optimization"));
 
         HashSet<String> h = new HashSet<String>(20);
 
@@ -466,27 +392,10 @@ public class ReflectPackage {
         for (String string : h) {
             System.out.println("+ " + string);
         }
-
-//		String[] pathElements = getClassPathElements();
-//		for (int i=0; i<pathElements.length; i++) {
-//			System.out.print(i+" " + pathElements[i]);
-//			System.out.println(pathElements[i].endsWith(".jar") ? " is a jar" : " is a path");
-//			if (pathElements[i].endsWith(".jar")) {
-//				ArrayList al = getClassesFromJarFltr(pathElements[i], "eva2.server.model", false, null);
-//				for (int k=0; k<al.size(); k++) {
-//					//if (Class.forName("eva2.server.modules.ModuleAdapter").isAssignableFrom((Class)al.get(i))) 
-//						System.out.println((Class)al.get(k));
-//				}
-//			} else {
-//				
-//			}
-//		}
-
     }
 
     public static String[] getClassPathElements() {
         String classPath = System.getProperty("java.class.path", ".");
-//		System.out.println("classpath: " + classPath);
         return classPath.split(File.pathSeparator);
     }
 
@@ -495,7 +404,6 @@ public class ReflectPackage {
         Object bean = null;
         try {
             bean = server.getObjectInstance(new ObjectName("com.sun.management:type=HotSpotDiagnostic"));
-            //bean = server.queryMBeans(null, null);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -507,12 +415,6 @@ public class ReflectPackage {
         MBeanServer server = ManagementFactory.getPlatformMBeanServer();
         Object ret = null;
         try {
-//        	void setVMOption(String name, String value)
-            //-Xrunhprof:heap=dump,format=b
-//        	ret = server.invoke(new ObjectName("com.sun.management:type=HotSpotDiagnostic"), 
-//        			"setVMOption", new Object[]{"agentlib", "hprof=heap=dump,format=a"}, 
-//        			new String[] {"java.lang.String","java.lang.String"});
-//        	ret = server.invoke(new ObjectName("com.sun.management:type=HotSpotDiagnostic"), "getDiagnosticOptions", new Object[] {}, new String[] {});
             server.invoke(new ObjectName("com.sun.management:type=HotSpotDiagnostic"), "dumpHeap", new Object[]{file, live}, new String[]{"java.lang.String", "boolean"});
             //bean = server.queryMBeans(null, null);
         } catch (Exception e) {
@@ -544,7 +446,6 @@ public class ReflectPackage {
      * @param args            constructor arguments
      * @param paramValuePairs pairs of values to set using generic setter methods
      * @return
-     * @see BeanInspector.setMem(Object,String,Object)
      */
     public static Object instantiateWithParams(String clsName, Object[] args, List<Pair<String, Object>> paramValuePairs) {
         Object o = getInstance(clsName, args);
@@ -555,8 +456,6 @@ public class ReflectPackage {
                     if (!succ) {
                         System.err.println("Error, unable to set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
                         return null;
-                    } else if (TRACE) {
-                        System.out.println("Successfully set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
                     }
                 }
             }

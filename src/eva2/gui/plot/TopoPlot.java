@@ -25,12 +25,10 @@ public class TopoPlot extends Plot {
      */
     public TopoPlot(String PlotName, String xname, String yname) {
         super(PlotName, xname, yname, true);
-        //if (TRACE) System.out.println("Constructor TopoPlot "+PlotName);
     }
 
     public TopoPlot(String PlotName, String xname, String yname, double[] a, double[] b) {
         super(PlotName, xname, yname, a, b);
-        //if (TRACE) System.out.println("Constructor TopoPlot "+PlotName);
     }
 
     /**
@@ -98,17 +96,12 @@ public class TopoPlot extends Plot {
         double deltaY = sizeXY[1] / gridy;
         double maxDeriv = 0;
         double[] pos = new double[2];
-        boolean TRACEMETH = false;
-        //double fitRange = java.lang.Math.abs(problem.getMinFitness()-problem.getMaxFitness() );
         double fitRange = 0, max = -Double.MAX_VALUE, min = Double.MAX_VALUE, tmp;
         for (int x = 0; x < gridx; x++) {
             for (int y = 0; y < gridy; y++) {
                 pos[0] = border[0][0] + x * deltaX;
                 pos[1] = border[1][0] + y * deltaY;
                 tmp = (float) (problem.functionValue(pos));
-                if (TRACEMETH) {
-                    System.out.println(pos[0] + " " + pos[1] + " " + tmp);
-                }
                 if (tmp < min) {
                     min = tmp;
                 }

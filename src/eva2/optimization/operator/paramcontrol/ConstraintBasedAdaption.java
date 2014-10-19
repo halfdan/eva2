@@ -30,9 +30,6 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
 
     LinkedList<Boolean> lastBestSatisfactionState = new LinkedList<Boolean>();
 
-    //	private double endAct=0;
-//	private double deltaInertness = 0.1;
-    private static boolean TRACE = false;
 
     private static String target = "penaltyFactor";
 
@@ -44,8 +41,6 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
         betaInc = o.betaInc;
         betaDec = o.betaDec;
         genGap = o.genGap;
-//		endAct = o.endAct;
-//		deltaInertness = o.deltaInertness;
     }
 
     @Override
@@ -59,9 +54,6 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
         if (!(obj instanceof AbstractConstraint)) {
             System.err.println(this.getClass().getSimpleName() + " cant control " + obj.getClass().getSimpleName() + " ! ");
         } else {
-            if (TRACE) {
-                System.out.println("calc value at it " + iteration + " of " + maxIteration);
-            }
             if (lastBestSatisfactionState.size() == genGap) {
                 lastBestSatisfactionState.poll();
             }
@@ -79,9 +71,6 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
         } else if (curPen > maxPenalty) {
             currentFactor = maxPenalty / initialPenalty;
             curPen = maxPenalty;
-        }
-        if (TRACE && changed) {
-            System.out.println("NEW penalty: " + curPen);
         }
         return curPen;
     }
@@ -101,18 +90,10 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
             if (allValid) {
                 currentFactor *= betaDec;
                 changed = true;
-                if (TRACE) {
-                    System.out.println("all valid, new fact is " + currentFactor + " times " + initialPenalty);
-                }
             } else if (allInvalid) {
                 changed = true;
                 currentFactor *= betaInc;
-                if (TRACE) {
-                    System.out.println("all invalid, new fact is " + currentFactor + " times " + initialPenalty);
-                }
             }
-        } else if (TRACE) {
-            System.out.println("not yet looking at " + genGap + " individuals...");
         }
         return changed;
     }

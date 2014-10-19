@@ -10,11 +10,6 @@ import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 16:37:05
- * To change this template use Options | File Templates.
  */
 public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializable {
     /**
@@ -23,7 +18,6 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
     private static final long serialVersionUID = 8900427365914281930L;
     private InterfaceOptimizationProblem optimizationProblem;
     private boolean maintainMaxDepth = true;
-    private static final boolean TRACE = false;
 
     public CrossoverGPDefault() {
     }
@@ -60,11 +54,6 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
         for (int i = 0; i < partners.size(); i++) {
             result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
         }
-        if (TRACE) {
-            for (int i = 0; i < result.length; i++) {
-                System.out.println("Before Crossover: " + result[i].getStringRepresentation());
-            }
-        }
         if (partners.size() == 0) {
             return result;
         }
@@ -94,10 +83,6 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
                         selNodeOther = ((InterfaceGPIndividual) result[1]).getPGenotype()[t].getRandomLeaf();
                     }
                 }
-                if (TRACE) {
-                    System.out.println("Selected t " + selNodeThis.getStringRepresentation());
-                    System.out.println("Selected o " + selNodeOther.getStringRepresentation());
-                }
 
                 AbstractGPNode selNodeThisParent, selNodeOtherParent;
                 selNodeThisParent = selNodeThis.getParent();
@@ -119,20 +104,15 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
             }
         }
         //in case the crossover was successfull lets give the mutation operators a chance to mate the strategy parameters
-        for (int i = 0; i < result.length; i++) {
-            ((GPIndividualProgramData) result[i]).checkDepth();
-            result[i].getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
-        }
-        if (TRACE) {
-            for (int i = 0; i < result.length; i++) {
-                System.out.println("After Crossover: " + result[i].getStringRepresentation());
-            }
+        for (AbstractEAIndividual aResult : result) {
+            ((GPIndividualProgramData) aResult).checkDepth();
+            aResult.getMutationOperator().crossoverOnStrategyParameters(indy1, partners);
         }
         return result;
     }
 
     /**
-     * This method allows you to evaluate wether two crossover operators
+     * This method allows you to evaluate whether two crossover operators
      * are actually the same.
      *
      * @param crossover The other crossover operator

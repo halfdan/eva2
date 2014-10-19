@@ -27,7 +27,6 @@ import java.util.Vector;
 public class ParameterControlManager implements InterfaceParameterControl, Serializable {
     public Object[] initialValues = null;
     private ParamAdaption[] singleAdapters = new ParamAdaption[]{};
-    protected static boolean TRACE = false;
 
     public ParameterControlManager() {
     }
@@ -111,13 +110,6 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
             if (!BeanInspector.setMem(obj, params[i], vals[i])) {
                 System.err.println("Error: failed to set parameter from parameter control " + this.getClass().getName());
                 System.err.println("  Tried to set name/val: " + params[i] + " / " + BeanInspector.toString(vals[i]));
-            } else {
-                if (TRACE) {
-                    System.out.println("Successfully set " + params[i] + " / " + BeanInspector.toString(vals[i]) + " at " + iteration);
-                }
-//				if (!oldVal.equals(vals[i])) {
-//					if (obj instanceof InterfaceParamControllable) ((InterfaceParamControllable)obj).notifyParamChanged(params[i], oldVal, vals[i]);
-//				}
             }
         }
         Object[] args = new Object[]{null, pop, iteration, maxIteration};
@@ -140,8 +132,8 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
     public String[] getControlledParameters() {
         if (singleAdapters != null) {
             Vector<String> names = new Vector<String>(singleAdapters.length);
-            for (int i = 0; i < singleAdapters.length; i++) {
-                String prm = singleAdapters[i].getControlledParam();
+            for (ParamAdaption singleAdapter : singleAdapters) {
+                String prm = singleAdapter.getControlledParam();
                 if (prm != null) {
                     names.add(prm);
                 }

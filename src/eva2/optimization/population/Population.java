@@ -1853,24 +1853,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      *         an array of three
      */
     public double[] getPopulationMeasures(InterfaceDistanceMetric metric) {
-//    	Integer lastMeasuresModCount = (Integer)getData(lastPopMeasuresFlagKey);
-//    	if (lastMeasuresModCount!=null && (lastMeasuresModCount==modCount)) {
-//    		double[] measures = (double[])getData(lastPopMeasuresDatKey);
-//            if (TRACE ) {
-//            	double[] verify = calcPopulationMeasures(metric);
-//            	if (Mathematics.dist(measures, verify, 2)>1e-10) {
-//            		System.out.println(getStringRepresentation());
-//            		System.err.println("Warning, invalid measures!!!");
-//            		
-//            	}
-//            }
-//    		return measures;
-//    	} 
+
         double[] res = getPopulationMeasures(this, metric);
-//        putData(lastPopMeasuresFlagKey, new Integer(modCount));
-//        putData(lastPopMeasuresDatKey, res);
-//        System.out.println(getStringRepresentation());
-//        System.out.println("0-1-dist: " + BeanInspector.toString(metric.distance((AbstractEAIndividual)this.get(0), (AbstractEAIndividual)this.get(1))));
         return res;
     }
 

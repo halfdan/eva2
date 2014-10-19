@@ -261,7 +261,7 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                     InterfaceOptimizationObjective[] tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.moccoViewer.moccoStandalone.state.currentProblem).getProblemObjectives();
                     fitness = new double[tmpObj.length];
                     for (int k = 0; k < tmpObj.length; k++) {
-                        fitness[k] = ((Double) ((AbstractEAIndividual) pf.get(i)).getData(tmpObj[k].getIdentName())).doubleValue();
+                        fitness[k] = (Double) ((AbstractEAIndividual) pf.get(i)).getData(tmpObj[k].getIdentName());
                     }
                 }
                 point = new DPoint(fitness[indexX], fitness[indexY]);

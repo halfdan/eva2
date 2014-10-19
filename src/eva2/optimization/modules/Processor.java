@@ -192,8 +192,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             LOGGER.log(Level.SEVERE, errMsg, e);
             try {
                 JOptionPane.showMessageDialog(null, StringTools.wrapLine(errMsg, 60, 0.2), "Error in Optimization", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception ex) {
-            } catch (Error error) {
+            } catch (Exception | Error ex) {
             }
             //statistics.stopOptimizationPerformed(false);
             setOptimizationRunning(false); // normal finish

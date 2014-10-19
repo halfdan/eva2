@@ -22,15 +22,13 @@ import java.io.Serializable;
  *
  * @author mkron
  */
-public abstract class PopulationMeasureTerminator implements InterfaceTerminator,
-        Serializable {
+public abstract class PopulationMeasureTerminator implements InterfaceTerminator, Serializable {
     public enum ChangeTypeEnum {relativeChange, absoluteChange, absoluteValue}
 
     public enum DirectionTypeEnum {decrease, bidirectional}
 
     public enum StagnationTypeEnum {fitnessCallBased, generationBased}
 
-    protected static boolean TRACE = false;
     private double convThresh = 0.01; //, convThreshLower=0.02;
     private double oldMeasure = -1;
     private int stagTime = 1000;
@@ -96,9 +94,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
     @Override
     public boolean isTerminated(PopulationInterface pop) {
         if (!firstTime && isStillConverged(pop)) {
-            if (TRACE) {
-                System.out.println("Converged at " + pop.getGeneration() + "/" + pop.getFunctionCalls() + ", measure " + calcPopulationMeasure(pop));
-            }
+
             if (stagnationTimeHasPassed(pop)) {
                 // population hasnt changed much for max time, criterion is met
                 msg = getTerminationMessage();
@@ -226,18 +222,6 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
                 break;
         }
         ret = (measure <= allowedUpper) && (measure >= allowedLower);
-        // Old Version:
-//		if (isRelativeConvergence()) {
-//			double delta = oldMeasure*convThresh;
-//			if (doCheckImprovement()) ret = (measure >= (oldMeasure - delta));
-//			else ret = ((measure >= (oldMeasure-delta)) && (measure <= (oldMeasure+delta))); // check for rel. change which must be within +/- thresh
-//		} else { // check absolute values
-//			if (doCheckImprovement()) ret = (measure < oldMeasure+convThresh); // absolute improvement below fixed number
-//			else ret = ((measure < oldMeasure+convThresh) && (measure > oldMeasure-convThresh)); // absolute change within fixed range
-//		}
-        if (TRACE) {
-            System.out.println("isStillConverged returns " + ret + ", measure " + measure + ", old measure " + BeanInspector.toString(oldMeasure) + ", bounds: [" + allowedLower + " , " + allowedUpper + "]");
-        }
         return ret;
     }
 
@@ -276,16 +260,6 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
     public String convergenceThresholdTipText() {
         return "Ratio of improvement/change or absolute value of improvement/change to determine convergence.";
     }
-
-//	public void setConvergenceThresholdLower(double x) {
-//		convThreshLower = x;
-//	}
-//	public double getConvergenceThresholdLower() {
-//		return convThreshLower;
-//	}
-//	public String convergenceThresholdUpperTipText() {
-//		return "Lower threshold value in case of detecting absolute change, meaning the bounds [measure-convThresh,measure+convThresh] must be kept to assume convergence.";
-//	}
 
     public void setStagnationTime(int k) {
         stagTime = k;

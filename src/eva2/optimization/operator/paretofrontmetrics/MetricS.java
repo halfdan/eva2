@@ -13,7 +13,6 @@ import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable {
 
     private double[][] objectiveSpaceRange;
-    private static boolean TRACE = false;
 
     public MetricS() {
 
@@ -57,34 +56,16 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
     @Override
     public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem) {
         this.objectiveSpaceRange = problem.getObjectiveSpaceRange();
-        if (TRACE) {
-            System.out.println("Border: " + BeanInspector.toString(objectiveSpaceRange));
-        }
+
         double smetric = this.calculateSMetric(pop, this.objectiveSpaceRange, this.objectiveSpaceRange.length);
         double reference = 1;
-        for (int i = 0; i < this.objectiveSpaceRange.length; i++) {
-            reference *= (this.objectiveSpaceRange[i][1] - this.objectiveSpaceRange[i][0]);
+        for (double[] anObjectiveSpaceRange : this.objectiveSpaceRange) {
+            reference *= (anObjectiveSpaceRange[1] - anObjectiveSpaceRange[0]);
         }
         //System.out.println("SMetric: "+smetric +" Reference: " + reference);
         double res = ((Math.abs(smetric) / Math.abs(reference)) * 100);
-        if (TRACE) {
-            System.out.println("Res is " + res);
-        }
         return res;
     }
-
-//    /** This method gives a metric how to evaluate
-//     * an achieved Pareto-Front
-//     */
-//    public double calculateMetricOn(Population pop) {
-//        double smetric = this.calculateSMetric(pop, this.objectiveSpaceRange, this.objectiveSpaceRange.length);
-//        double reference = 1;
-//        for (int i = 0; i < this.objectiveSpaceRange.length; i++) {
-//            reference *= (this.objectiveSpaceRange[i][1] - this.objectiveSpaceRange[i][0]);
-//        }
-//        //System.out.println("SMetric: "+smetric +" Reference: " + reference);
-//        return ((Math.abs(smetric)/Math.abs(reference))*100);
-//    }
 
     /**
      * This method will calculate the s-metric from a double array of

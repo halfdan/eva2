@@ -103,7 +103,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     // parameter for exponential moving average
     private int emaPeriods = 0;
     // for debugging only
-    transient private static boolean TRACE = false;
     transient protected boolean show = false;
     transient protected Plot plot;
     private boolean externalInitialPop = false;
@@ -778,7 +777,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             for (int i = 0; i < this.population.size(); i++) {
                 double[] succVel = (double[]) population.getEAIndividual(i).getData(lastSuccessKey);
                 if (succVel != null) {
-                    successes.add(new Integer(i));
+                    successes.add(i);
                 }
             }
             if (successes.size() > 0) {
@@ -1250,15 +1249,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * Do some preparations in the beginning of the loop.
      */
     protected void startOptimize() {
-        if (TRACE) {
-            for (int i = 0; i < population.size(); i++) {
-                AbstractEAIndividual indy = population.getEAIndividual(i);
-                System.out.println(BeanInspector.toString(indy.getData(partTypeKey)));
-                System.out.println(BeanInspector.toString(indy.getData(partBestPosKey)));
-                System.out.println(BeanInspector.toString(indy.getData(partBestFitKey)));
-                System.out.println(BeanInspector.toString(indy.getData(partVelKey)));
-            }
-        }
         if (this.show) {
             this.show();
         }
@@ -1580,9 +1570,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                     initIndividualMemory(indy);
                     indy.putData(indexKey, i);
                     indy.setIndividualIndex(i);
-                    if (TRACE) {
-                        System.err.println("initialize indy " + i + " " + AbstractEAIndividual.getDefaultDataString(indy));
-                    }
                 }
             }
         }

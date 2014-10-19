@@ -29,15 +29,12 @@ public class DArea extends JComponent implements DParent, Printable {
     /**
      * the default minimal rectangle which is shown
      */
-    public static final DRectangle DEFAULT_MIN_RECT = new DRectangle(-1, -1, 2,
-            2);
+    public static final DRectangle DEFAULT_MIN_RECT = new DRectangle(-1, -1, 2, 2);
 
     /**
      *
      */
     private static final long serialVersionUID = 1461387400381365146L;
-
-    private static final boolean TRACE = false;
 
     private boolean auto_focus = false, auto_grid = false,
             grid_to_front = false;
@@ -358,9 +355,6 @@ public class DArea extends JComponent implements DParent, Printable {
      */
     @Override
     public void paint(Graphics g) {
-        if (TRACE) {
-            System.out.println("DArea.paint(Graphics)");
-        }
         if (auto_focus) {
             container.restore();
             visible_rect = (DRectangle) container.getRectangle().clone();
@@ -388,9 +382,6 @@ public class DArea extends JComponent implements DParent, Printable {
      * auto_grid option
      */
     private void paintGrid(DMeasures m) {
-        if (TRACE) {
-            System.out.println("DArea.paintGrid(DMeasures)");
-        }
         grid.rectangle = getDRectangle();
         if (auto_grid) {
             Border b = getBorder();
@@ -417,9 +408,6 @@ public class DArea extends JComponent implements DParent, Printable {
      * @param m  the measures of the area
      */
     private void paintGrid(ScaledBorder sb, DMeasures m) {
-        if (TRACE) {
-            System.out.println("DArea.paintGrid(ScaledBorder, DMeasures)");
-        }
         Dimension d = getSize();
         FontMetrics fm = m.getGraphics().getFontMetrics();
         grid.setDistances(sb.getSrcdX(fm, d), sb.getSrcdY(fm, d));
@@ -479,9 +467,6 @@ public class DArea extends JComponent implements DParent, Printable {
      */
     @Override
     public int print(Graphics g, PageFormat pf, int pi) {
-        if (TRACE) {
-            System.out.println("DArea.print(...)");
-        }
         if (pi > 0) {
             return Printable.NO_SUCH_PAGE;
         }
@@ -553,9 +538,6 @@ public class DArea extends JComponent implements DParent, Printable {
      */
     @Override
     public void repaint(DRectangle r) {
-        if (TRACE) {
-            System.out.println("DArea.repaint(DRectangle)" + r);
-        }
         if (r == null) {
             throw new IllegalArgumentException(
                     "Cannot repaint a null DRectangle");
@@ -580,9 +562,6 @@ public class DArea extends JComponent implements DParent, Printable {
     @Override
     public void restoreBorder() {
         dborder = container.getDBorder();
-        if (TRACE) {
-            System.out.println("DArea.restoreBorder -> " + dborder);
-        }
     }
 
     /**
@@ -659,9 +638,7 @@ public class DArea extends JComponent implements DParent, Printable {
      * @param aFlag visible or not
      */
     public void setGridVisible(boolean aFlag) {
-        if (TRACE) {
-            System.out.println("DArea.setGridVisisble: " + aFlag);
-        }
+
         grid.rectangle = getDRectangle();
         grid.setVisible(aFlag);
     }
@@ -784,9 +761,6 @@ public class DArea extends JComponent implements DParent, Printable {
      * @param rect the visible <code>DRectangle</code> in DArea coordinates
      */
     public void setVisibleRectangle(DRectangle rect) {
-        if (TRACE) {
-            System.out.println("DArea.setVisibleRectangle(DRectangle)");
-        }
         if (rect.isEmpty()) {
             throw new IllegalArgumentException(
                     "You should never try to set an empty rectangle\n"

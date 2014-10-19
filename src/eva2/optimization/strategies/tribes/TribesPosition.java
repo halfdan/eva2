@@ -11,7 +11,6 @@ public class TribesPosition implements java.io.Serializable {
      *
      */
     private static final long serialVersionUID = 1L;
-    private boolean TRACE = false;
     double x[];
     int[][] maxIsoLink = null;
     double[] fitness;
@@ -22,22 +21,6 @@ public class TribesPosition implements java.io.Serializable {
         x = new double[maxDimension];
         fitness = new double[1];// new double[maxFunctionNb]; // TODO
     }
-
-//    public TribesPosition clone(TribesPosition position, int fitnessSize) {
-//    	// TODO this method might better vanish
-//        int n;
-//        // Pour remplacer "implements Cloneable"
-//        TribesPosition Clone = new TribesPosition(x.length, fitness.length);
-//        Clone.Dimension = position.Dimension;
-//        System.arraycopy(position.x, 0, Clone.x, 0, position.Dimension);
-//        for (n = 0; n < fitnessSize; n++) {
-//            Clone.fitness[n] = position.fitness[n];
-//        }
-//
-//        Clone.totalError = position.totalError;
-//        Clone.isolation=position.isolation;
-//        return Clone;
-//    }
 
     @Override
     public TribesPosition clone() {
@@ -695,9 +678,6 @@ public class TribesPosition implements java.io.Serializable {
                  No need of a very precise solution
          */
 
-        if (TRACE) {
-            System.out.println("sunny start");
-        }
         // INITIALISATION
 
         for (n = 0; n < swarm.size; n++) {
@@ -835,9 +815,7 @@ public class TribesPosition implements java.io.Serializable {
              System.out.print(swarm.Best.position.x[d]+" ");
          */
         swarm.bestMem.getPos().isolation = swarm.bestMem.getPos().fitness[0];
-        if (TRACE) {
-            System.out.println("sunny end, ret " + swarm.bestMem.getPos().toString());
-        }
+
         return swarm.bestMem.getPos();
     }
 

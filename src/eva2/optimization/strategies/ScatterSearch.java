@@ -70,7 +70,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     private double nelderMeadInitPerturbation = 0.01;
     private double improvementEpsilon = 0.1; // minimal relative fitness improvement for a candidate to be taken over into the refset
     private double minDiversityEpsilon = 0.0001; // minimal phenotypic distance for a candidate to be taken over into the refset
-    private static boolean TRACE = false;
 
     public ScatterSearch() {
         GenericObjectEditor.setHideProperty(this.getClass(), "population", true);
@@ -137,14 +136,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
      */
     private void initRefSet(Population pop) {
         optimizationProblem.evaluate(pop);
-        if (TRACE) {
-            System.out.println("building ref set from pop with avg dist " + pop.getPopulationMeasures()[0]);
-        }
         refSet = getRefSetFitBased(new Population(refSetSize), pop);
         refSet.incrFunctionCallsBy(pop.size());
-        if (TRACE) {
-            System.out.println("ref set size " + refSet.size() + " avg dist " + refSet.getPopulationMeasures()[0]);
-        }
+
         refSet.addPopulationChangedEventListener(this);
         refSet.setNotifyEvalInterval(generationCycle);
     }
@@ -166,9 +160,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
             }
             probDim = (Integer) dim;
             range = ((InterfaceDataTypeDouble) template).getDoubleRange();
-            if (TRACE) {
-                System.out.println("Range is " + BeanInspector.toString(range));
-            }
         }
     }
 
@@ -228,27 +219,15 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         int funCallsStart = refSet.getFunctionCalls();
         do {
             if (combinations == null || combinations.size() == 0) {
-                if (TRACE) {
-                    System.out.println("Improvements: " + lastImprovementCount);
-                    System.out.println("---------- best: " + refSet.getBestEAIndividual().getFitness(0));
-                }
                 combinations = generateCombinations(refSet);
                 oldRefSet = (Population) refSet.clone();
                 lastImprovementCount = 0;
-            }
-            if (TRACE) {
-                System.out.println("No combinations: " + combinations.size());
             }
             if (combinations.size() > 0) {
                 updateRefSet(refSet, combinations, oldRefSet);
             }
         } while (refSet.getFunctionCalls() - funCallsStart < generationCycle);
         optimizationProblem.evaluatePopulationEnd(refSet);
-
-        if (TRACE) {
-            System.out.println("Improvements: " + lastImprovementCount);
-        }
-
     }
 
     private boolean isDoLocalSolver(AbstractEAIndividual cand, Population refSet) {
@@ -271,15 +250,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         Population diversifiedPop = diversify();
         int keep = refSetSize / 2;
         Population newRefSet = refSet.cloneWithoutInds();
-        if (TRACE) {
-            System.out.println("regen after " + refSet.getFunctionCalls() + ", best is " + refSet.getBestEAIndividual().getFitness(0));
-        }
 
         newRefSet.addAll(refSet.getBestNIndividuals(keep, fitCrit));
 
-        if (TRACE) {
-            System.out.println("keeping " + keep + " indies from former ref set, best is " + newRefSet.getBestEAIndividual().getFitness(0));
-        }
 
         int h = newRefSet.size();
         ArrayList<double[]> distVects = new ArrayList<double[]>();
@@ -364,10 +337,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         AbstractEAIndividual bestCand = candidates.getEAIndividual(bestIndex);
         AbstractEAIndividual worstRef = refSet.getWorstEAIndividual();
 
-        if (TRACE) {
-            System.out.println("best cand: " + bestCand.getFitness(0));
-        }
-
         if (isDoLocalSolver(bestCand, refSet)) {
             Pair<AbstractEAIndividual, Integer> lsRet = localSolver(bestCand, localSearchSteps);
             if ((Math.abs(lsRet.tail() - localSearchSteps) / localSearchSteps) > 0.05) {
@@ -375,33 +344,21 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
             }
             bestCand = lsRet.head();
             refSet.incrFunctionCallsBy(lsRet.tail());
-            if (TRACE) {
-                System.out.println("best cand after: " + bestCand.getFitness(0));
-            }
         }
 
         if (bestCand.isDominatingEqual(worstRef)) {
-            if (TRACE) {
-                System.out.println("cand is dominating worst ref!");
-            }
             if (diversityCriterionFulfilled(bestCand, refSet, oldRefSet)) {
-//				System.out.println("diversity criterion is fulfilled! replacing fit " + worstRef.getFitness(0));
                 int replIndex = refSet.indexOf(worstRef);
                 refSet.set(replIndex, bestCand);
                 lastImprovementCount++;
             } else if (bestCand.isDominating(refSet.getBestEAIndividual())) {
                 // exception: always accept best solution found so far
                 int closestIndex = getClosestIndy(bestCand, refSet);
-//				if (TRACE) System.out.println("replacing due to best fit");
                 refSet.set(closestIndex, bestCand);
                 lastImprovementCount++;
             }
-//			System.out.println("Improvements: " + lastImprovementCount);
             candidates.remove(bestIndex);
         } else {
-            if (TRACE) {
-                System.out.println("cand is too bad!");
-            }
             // if the best candidate is worse and no local search is performed, all following will be worse - at least in the uni-criterial case
             // so we can just clear the rest of the candidates
             if (!doLocalSearch && (bestCand.getFitness().length == 1)) {
@@ -422,7 +379,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
 
     private Pair<AbstractEAIndividual, Integer> localSolverHC(AbstractEAIndividual cand, int hcSteps) {
         // use HC for a start...
-//		double[] fitBefore = cand.getFitness();
         Population hcPop = new Population(1);
         hcPop.add(cand);
         int stepsDone = PostProcess.processWithHC(hcPop, optimizationProblem, hcSteps);
@@ -481,7 +437,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         for (int i = 0; i < half - 1; i++) { // better-better
             AbstractEAIndividual indy1 = refSorted.getEAIndividual(i);
             for (int j = i + 1; j < half; j++) {
-//				if (TRACE) System.out.println("combi T bb, " + i+ "/" + j);
                 AbstractEAIndividual indy2 = refSorted.getEAIndividual(j);
                 combs.add(combineTypeOne(indy1, indy2));
                 combs.add(combineTypeTwo(indy1, indy2));
@@ -493,7 +448,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         for (int i = 0; i < half; i++) { // better-worse
             AbstractEAIndividual indy1 = refSorted.getEAIndividual(i);
             for (int j = half; j < refSet.size(); j++) {
-//				if (TRACE) System.out.println("combi T bw, " + i+ "/" + j);
                 AbstractEAIndividual indy2 = refSorted.getEAIndividual(j);
                 combs.add(combineTypeOne(indy1, indy2));
                 combs.add(combineTypeTwo(indy1, indy2));
@@ -504,7 +458,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         for (int i = half; i < refSet.size() - 1; i++) { // worse-worse
             AbstractEAIndividual indy1 = refSorted.getEAIndividual(i);
             for (int j = i + 1; j < refSet.size(); j++) {
-//				if (TRACE) System.out.println("combi T ww, " + i+ "/" + j);
                 AbstractEAIndividual indy2 = refSorted.getEAIndividual(j);
                 combs.add(combineTypeTwo(indy1, indy2));
                 if (RNG.flipCoin(0.5)) {
@@ -513,10 +466,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
                     combs.add(combineTypeThree(indy1, indy2));
                 }
             }
-        }
-
-        if (TRACE) {
-            System.out.println("created combinations " + combs.size() + " best is " + combs.getBestEAIndividual().getFitness(0));
         }
         return combs;
     }
@@ -649,9 +598,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
             pop.add(createDiverseIndy(freq));
         }
         pop.setTargetSize(poolSize);
-        if (TRACE) {
-            System.out.println("created diverse pop size " + pop.size());
-        }
+
         return pop;
     }
 

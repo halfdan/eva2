@@ -523,12 +523,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         Population tmpPop = new Population(), newMainPop = new Population();
         Vector<Population> setOfSubswarms = new Vector<Population>();
         boolean reinitSuperfl = true;
-        boolean TRACEMTHD = false;
 
-        // ... and use the corresponding particles to create the subswarms
-        if (TRACEMTHD) {
-            System.out.println("---------");
-        }
         for (Set<String> connSet : connectedComps) {
             if (connSet.size() > 1) {// create niche
                 Population pop = new Population(connSet.size());
@@ -540,16 +535,9 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
                     }
                     pop.add(indy);
                 }
-                if (TRACEMTHD) {
-                    System.out.print(" subswarm size ssize " + pop.size());
-                }
                 if (maxInitialSubSwarmSize > 0 && (pop.size() > maxInitialSubSwarmSize)) {
-                    if (TRACEMTHD) {
-                        System.out.print(" removing " + (pop.size() - maxInitialSubSwarmSize));
-                    }
                     tmpPop = pop.getWorstNIndividuals(pop.size() - maxInitialSubSwarmSize, -1);
                     tmpPop.synchSize();
-//					Population testPop=(Population)pop.clone();
                     pop.removeMembers(tmpPop, true);
                     if (reinitSuperfl) {
                         for (int i = 0; i < tmpPop.size(); i++) {
@@ -565,9 +553,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
                     pop.synchSize();
                 }
                 setOfSubswarms.add(pop);
-                if (TRACEMTHD) {
-                    System.out.print("\nNew subswarm of size: " + pop.size());
-                }
             } else { // move particles corresponding to unconnected vertices to the mainswarm
                 Iterator<String> it = connSet.iterator();
                 Integer index = Integer.valueOf(it.next());
@@ -575,17 +560,10 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
                 newMainPop.add(indy);
             }
         }
-//		for (int i=0; i<setOfSubswarms.size(); i++) {
-//			if (!getMainSwarm().getPopulation().assertMembers(setOfSubswarms.get(i))) {
-//				System.err.println("Wrong subswarm " + i);
-//			}
-//		}
-        if (TRACEMTHD) {
-            System.out.println();
-        }
+
         newMainPop.synchSize();
-        for (int i = 0; i < setOfSubswarms.size(); i++) {
-            setOfSubswarms.get(i).synchSize();
+        for (Population setOfSubswarm : setOfSubswarms) {
+            setOfSubswarm.synchSize();
         }
         useAsSubSwarms(setOfSubswarms);
         useAsMainSwarm(newMainPop);
@@ -599,7 +577,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      */
     @Override
     public void optimize() {
-//		System.out.println(BeanInspector.toString(getMainSwarm()));
         // main swarm:
         if (getMainSwarm().getPopulation().size() == 0) {// || mainSwarm.getPopulation().size() == 1){
             if (isVerbose()) {
@@ -656,27 +633,24 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         if (isPlot()) {
             doPlot();
         }
-//		System.out.println();
-        /** end plotting *******************************************************************************/
 
         // reset flags etc for:
         // deactivation
         deactivationOccured = false;
-        deactivatedSwarm = new Vector<ParticleSubSwarmOptimization>();
-        //reinitedSwarm = new Vector<ParticleSubSwarmOptimization>();
+        deactivatedSwarm = new Vector<>();
         // merging
         mergingOccurd = false;
-        borg = new Vector<ParticleSubSwarmOptimization>();
-        others = new Vector<ParticleSubSwarmOptimization>();
-        borgbest = new Vector<AbstractEAIndividual>();
-        othersbest = new Vector<AbstractEAIndividual>();
+        borg = new Vector<>();
+        others = new Vector<>();
+        borgbest = new Vector<>();
+        othersbest = new Vector<>();
         // absorbtion
         absorbtionOccurd = false;
-        indytoabsorb = new Vector<AbstractEAIndividual>();
+        indytoabsorb = new Vector<>();
         // subswarmcreation
         creationOccurd = false;
-        indyconverged = new Vector<AbstractEAIndividual>();
-        convergedneighbor = new Vector<AbstractEAIndividual>();
+        indyconverged = new Vector<>();
+        convergedneighbor = new Vector<>();
         //clearing - deprecated
         //reinitoccurd = false;
 
@@ -751,21 +725,10 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
             currentsubswarm = (Population) getSubSwarms().get(i).getPopulation().clone();
             metapop.addPopulation(currentsubswarm);
         }
-        for (int i = 0; i < inactiveSubSwarms.size(); ++i) { // in the case of ANPSO
-            currentsubswarm = (Population) inactiveSubSwarms.get(i).getPopulation().clone();
+        for (ParticleSubSwarmOptimization inactiveSubSwarm : inactiveSubSwarms) { // in the case of ANPSO
+            currentsubswarm = (Population) inactiveSubSwarm.getPopulation().clone();
             metapop.addPopulation(currentsubswarm);
         }
-        // add the best pbest particle to the population
-//		if (metapop.size() != 0){
-//			AbstractEAIndividual hero = (AbstractEAIndividual)metapop.getEAIndividual(0).getData("PersonalBestKey");
-//			for (int i = 0; i < metapop.size(); ++i){
-//				AbstractEAIndividual currentPBest = (AbstractEAIndividual)metapop.getEAIndividual(i).getData("PersonalBestKey");
-//				if (currentPBest.isDominating(hero)){
-//					hero = currentPBest;
-//				}
-//			}
-//			metapop.add(hero);
-//		}
 
         // set correct number of generations
         metapop.setGeneration(getMainSwarm().getPopulation().getGeneration());
@@ -774,9 +737,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         int calls = getMainSwarm().getPopulation().getFunctionCalls();
         for (int i = 0; i < getSubSwarms().size(); ++i) {
             ParticleSubSwarmOptimization subswarm = getSubSwarms().get(i);
-            //	if (subswarm.isActive()){
             calls += subswarm.getPopulation().getFunctionCalls();
-            //	}
         }
         // calls from inactivated subswarms were transfered to the mainswarm, see useAsSubSwarms method
 
@@ -795,17 +756,13 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         int mainSize = 0;
         //if (includeMainSwarm) mainSize = getMainSwarm().getPopulation().size();
         Population elitePop = new Population(getSubSwarms().size() + inactiveSubSwarms.size() + mainSize);
-//		if (includeMainSwarm){
-//			for (int i = 0; i < mainSize; ++i){
-//				elite[i] = getMainSwarm().getPopulation().getEAIndividual(i);
-//			}
-//		}
+
         for (int i = 0; i < getSubSwarms().size(); ++i) {
             AbstractEAIndividual bestSS = getSubSwarms().get(i).getBestIndividual();
             elitePop.addIndividual((AbstractEAIndividual) getSubSwarms().get(i).bestIndividual.clone());
         }
-        for (int i = 0; i < inactiveSubSwarms.size(); ++i) {
-            elitePop.addIndividual((AbstractEAIndividual) inactiveSubSwarms.get(i).bestIndividual.clone());
+        for (ParticleSubSwarmOptimization inactiveSubSwarm : inactiveSubSwarms) {
+            elitePop.addIndividual((AbstractEAIndividual) inactiveSubSwarm.bestIndividual.clone());
         }
         return elitePop;
     }
@@ -821,7 +778,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         for (int i = 0; i < getSubSwarms().size() + inactiveSubSwarms.size(); ++i) {
             result += elite.getEAIndividual(i).getStringRepresentation() + "\n";
         }
-        //result += "\n";
         return result;
     }
 
@@ -863,15 +819,8 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
                 if (!currentsubswarm.isActive()) {
                     plotCircleForIndy((AbstractEAIndividual) best, "[I]");
                 } else {
-                    if (!getSubswarmOptimizerTemplate().isGcpso()) {
-                        //plotCircleForIndy((AbstractEAIndividual)best,getMaxStdDevFromSwarmAsString(currentsubswarm));
-                    }
                     if (getSubswarmOptimizerTemplate().isGcpso()) {
                         String rhoAsString = String.format("%6.3f", currentsubswarm.getRho());
-                        //plotCircleForIndy((AbstractEAIndividual)best,rhoAsString);
-                        if (currentsubswarm.gbestParticle != null) {
-                            //plotCircleForIndy((AbstractEAIndividual)currentsubswarm.gbestParticle,"gbest");
-                        }
                     }
                 }
 
@@ -920,12 +869,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
     public String getName() {
         return "ANPSO-" + getMainSwarmSize();
     }
-
-//
-//	public double getMinimalR() {
-//		return minimalR;
-//	}
-
 
     public void SetMinimalR(double minimalR) {
         this.minimalR = minimalR;

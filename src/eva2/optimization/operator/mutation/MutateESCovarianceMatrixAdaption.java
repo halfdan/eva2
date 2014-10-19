@@ -10,11 +10,6 @@ import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.05.2003
- * Time: 17:47:45
- * To change this template use Options | File Templates.
  */
 
 public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java.io.Serializable {

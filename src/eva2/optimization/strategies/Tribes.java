@@ -134,7 +134,6 @@ import java.util.List;
 @Description("TRIBES: a parameter free PSO implementation by Maurice Clerc.")
 public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
-    public static final boolean TRACE = false;
     protected String identifier = "TRIBES";
     transient private InterfacePopulationChangedEventListener listener = null;
     protected AbstractOptimizationProblem optimizationProblem;
@@ -322,16 +321,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
         }
         optimizationProblem.evaluatePopulationEnd(population);
 
-//		this.population.incrFunctionCallsby(evals);
         this.population.incrGeneration();
-        //this.firePropertyChangedEvent("NextGenerationPerformed");	// This is now done implicitely, as after every evaluation, addEvals is called
-
-        if (TRACE) {
-            System.out.println("loop finished after " + population.getFunctionCalls() + " evaluations");
-            //for (int i=0; i<population.size(); i++) System.out.println(" * "+((TribesExplorer)population.get(i)).getStringRepresentation());
-            System.out.println(" best: " + population.getBestEAIndividual().getStringRepresentation() + " - " + population.getBestEAIndividual().getFitness(0));
-            System.out.println("swarm contains " + swarm.numParticles() + " particles in iteration " + iter);
-        }
     }
 
     private void plotAll(Population pop) {

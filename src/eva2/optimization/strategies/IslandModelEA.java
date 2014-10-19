@@ -50,7 +50,6 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     transient private Plot plot = null;
     transient private String identifier = "";
     transient private InterfacePopulationChangedEventListener populationChangedEventListener;
-    transient private final boolean TRACE = false;
 
     public IslandModelEA() {
     }
@@ -203,14 +202,8 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         for (int i = 0; i < this.islands.length; i++) {
             if (this.islands[i].getPopulation().size() > 0) {
                 this.islands[i].optimize();
-                if (TRACE) {
-                    System.out.println(BeanInspector.toString(islands[i].getPopulation()));
-                }
             } else {
                 this.islands[i].getPopulation().incrGeneration();
-            }
-            if (TRACE) {
-                System.out.println("----");
             }
         }
         this.population.incrGeneration();

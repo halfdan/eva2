@@ -22,7 +22,6 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
     protected AbstractGPNode parentNode;
     protected AbstractGPNode[] nodes = new AbstractGPNode[0];
     protected int depth = 0;
-    private static final boolean TRACE = false;
 
     /**
      * This method allows you to clone the Nodes
@@ -132,9 +131,6 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
                 System.err.println("String has ambiguous prefix: " + str + " -- " + BeanInspector.toString(matchSet));
             } else { // exactly one match:
                 AbstractGPNode currentNode = (AbstractGPNode) matchSet.get(0).clone();
-                if (TRACE) {
-                    System.out.println("Found match: " + currentNode.getOpIdentifier() + "/" + currentNode.getArity());
-                }
                 int cutFront = currentNode.getOpIdentifier().length();
                 String restStr;
                 if (currentNode.getArity() == 0) {
@@ -162,9 +158,6 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
                             System.err.println("String was " + str);
                             e.printStackTrace();
                         }
-                    }
-                    if (TRACE) {
-                        System.out.println("read " + currentNode.getName() + ", rest: " + restStr);
                     }
                     return new Pair<AbstractGPNode, String>(currentNode, restStr);
                 }
