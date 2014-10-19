@@ -203,7 +203,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             try {
                 splashScreen.splash();
             } catch (HeadlessException e) {
-                System.err.println("Error: no xserver present - deactivating GUI.");
+                LOGGER.severe("Error: no xserver present - deactivating GUI.");
                 withGUI = false;
             }
         }
@@ -219,6 +219,8 @@ public class Main extends JFrame implements OptimizationStateListener {
                     init(hostName, paramsFile, goParams, parent); // this takes a bit
 
                     long wait = System.currentTimeMillis() - startTime;
+                    LOGGER.info("Loaded EvA2 in " + wait + "ms.");
+                    System.out.print(wait);
                     if (!autorun) {
                         if (!noSplash) {
                             try {
@@ -231,9 +233,9 @@ public class Main extends JFrame implements OptimizationStateListener {
                         }
                     } else {
                         if (!withGUI && (currentModuleAdapter instanceof GenericModuleAdapter)) {
-                            // do not save new parameters for an autorun without GUI - they werent changed manually anyways.
+                            // do not save new parameters for an autorun without GUI - they weren't changed manually anyways.
                             ((GenericModuleAdapter) currentModuleAdapter).getStatistics().setSaveParams(false);
-                            System.out.println("Autorun without GUI - not saving statistics parameters...");
+                            LOGGER.info("Autorun without GUI - not saving statistics parameters...");
                         }
                         if (withGUI) {
                             frameMaker.onUserStart();
@@ -316,6 +318,8 @@ public class Main extends JFrame implements OptimizationStateListener {
     private void init(String hostName, String paramsFile, InterfaceOptimizationParameters optimizationParameters, final Window parent) {
         useDefaultModule = EvAInfo.propDefaultModule();
         this.parentWindow = parent;
+
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         setUIFont(new javax.swing.plaf.FontUIResource(Font.SANS_SERIF, 0, 11));
 
@@ -837,8 +841,8 @@ public class Main extends JFrame implements OptimizationStateListener {
 
 
             } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error while newModulAdapter.getModulFrame(): " + e.getMessage(), e);
-                EVAERROR.EXIT("Error while newModulAdapter.getModulFrame(): " + e.getMessage());
+                LOGGER.log(Level.SEVERE, "Error while newModuleAdapter.getModuleFrame(): " + e.getMessage(), e);
+                EVAERROR.EXIT("Error while newModuleAdapter.getModuleFrame(): " + e.getMessage());
             }
 
             currentModuleAdapter = newModuleAdapter;
