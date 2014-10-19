@@ -96,6 +96,5 @@ public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPo
         newFrame.pack();
         newFrame.validate();
         newFrame.setVisible(true);
-        newFrame.show();
     }
 }

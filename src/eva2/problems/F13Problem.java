@@ -33,7 +33,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
      */
     @Override
     public Object clone() {
-        return (Object) new F13Problem(this);
+        return new F13Problem(this);
     }
 
     @Override

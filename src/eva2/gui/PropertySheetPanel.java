@@ -5,7 +5,6 @@ import eva2.tools.EVAHELP;
 import eva2.util.annotation.Description;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -1119,10 +1118,7 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
         int selectedColumn = sourceTable.getSelectedColumn();
         String columnName = sourceTable.getColumnName(selectedColumn);
         /* If the columnName equals Key it holds the keys */
-        if ("Key".equals(columnName)) {
-            return false;
-        }
-        return true;
+        return !"Key".equals(columnName);
     }
 
 

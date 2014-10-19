@@ -26,7 +26,7 @@ public class MovingAverage {
         size = Source.size;
         index = Source.index;
         average = Source.average;
-        array = (double[]) Source.array.clone();
+        array = Source.array.clone();
         overflow = Source.overflow;
     }
 

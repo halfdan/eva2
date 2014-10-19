@@ -81,11 +81,11 @@ public class PSOParameters extends AbstractOptimizationParameters implements Int
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((ParticleSwarmOptimization) this.optimizer).getPopulation();
+        return this.optimizer.getPopulation();
     }
 
     public void setPopulation(Population pop) {
-        ((ParticleSwarmOptimization) this.optimizer).setPopulation(pop);
+        this.optimizer.setPopulation(pop);
     }
 
     public String populationTipText() {

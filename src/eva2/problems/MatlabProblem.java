@@ -281,7 +281,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 
     public void log(String str) {
         if (dos != null) {
-            dos.print((String) str);
+            dos.print(str);
             dos.flush();
         }
     }
@@ -362,7 +362,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         } else {
             handler.setMatlabProblem(this);
             handler.setFinished(false);
-            runnable = OptimizerFactory.getOptRunnable(optType, (AbstractOptimizationProblem) this, outputFilePrefix);
+            runnable = OptimizerFactory.getOptRunnable(optType, this, outputFilePrefix);
             log("in MP optimize B\n");
             log("Setting text listener, verbo " + verbosityLevel + "\n");
             runnable.setTextListener(this);

@@ -40,7 +40,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     public TF1Problem(TF1Problem b) {
         //AbstractOptimizationProblem
         if (b.template != null) {
-            this.template = (AbstractEAIndividual) ((AbstractEAIndividual) b.template).clone();
+            this.template = (AbstractEAIndividual) b.template.clone();
         }
         //AbstractMultiObjectiveOptimizationProblem
         if (b.mosoConverter != null) {
@@ -81,7 +81,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
      */
     @Override
     public Object clone() {
-        return (Object) new TF1Problem(this);
+        return new TF1Problem(this);
     }
 
     /**

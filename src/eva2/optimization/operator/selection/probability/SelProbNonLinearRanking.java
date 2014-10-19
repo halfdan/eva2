@@ -24,7 +24,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
 
     @Override
     public Object clone() {
-        return (Object) new SelProbNonLinearRanking(this);
+        return new SelProbNonLinearRanking(this);
     }
 
     /**

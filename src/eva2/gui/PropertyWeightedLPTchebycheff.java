@@ -30,6 +30,6 @@ public class PropertyWeightedLPTchebycheff implements java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new PropertyWeightedLPTchebycheff(this);
+        return new PropertyWeightedLPTchebycheff(this);
     }
 }

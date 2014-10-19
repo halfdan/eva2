@@ -196,7 +196,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         population.clear();
 
         for (int i = 0; i < population.getTargetSize(); i++) {
-            tmpIndy = (AbstractEAIndividual) ((AbstractEAIndividual) template).clone();
+            tmpIndy = (AbstractEAIndividual) template.clone();
             tmpIndy.init(prob);
             population.add(tmpIndy);
         }
@@ -266,9 +266,9 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         if (o instanceof InterfaceAdditionalPopulationInformer) {
             switch (type) {
                 case 0: // header
-                    return ToolBox.appendArrays((String[]) dat, (String[]) ((InterfaceAdditionalPopulationInformer) o).getAdditionalDataHeader());
+                    return ToolBox.appendArrays((String[]) dat, ((InterfaceAdditionalPopulationInformer) o).getAdditionalDataHeader());
                 case 1: // info
-                    return ToolBox.appendArrays((String[]) dat, (String[]) ((InterfaceAdditionalPopulationInformer) o).getAdditionalDataInfo());
+                    return ToolBox.appendArrays((String[]) dat, ((InterfaceAdditionalPopulationInformer) o).getAdditionalDataInfo());
                 case 2: // value
                     return ToolBox.appendArrays(dat, ((InterfaceAdditionalPopulationInformer) o).getAdditionalDataValue(pop));
                 default:
@@ -321,7 +321,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
                 if (pop.size() > 100) { // for efficiency reasons...
                     maybeFiltered = maybeFiltered.filterByFitness(hist.getUpperBound(), fitCrit);
                 }
-                Population sols = PostProcess.clusterBestUpdateHistogram((Population) maybeFiltered, this, hist, fitCrit, getDefaultAccuracy());
+                Population sols = PostProcess.clusterBestUpdateHistogram(maybeFiltered, this, hist, fitCrit, getDefaultAccuracy());
             }
             vals = new Object[]{solStr, hist, hist.getScore()};
         } else {

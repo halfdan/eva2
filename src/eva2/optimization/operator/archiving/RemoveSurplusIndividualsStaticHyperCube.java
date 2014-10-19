@@ -21,7 +21,7 @@ public class RemoveSurplusIndividualsStaticHyperCube extends RemoveSurplusIndivi
 
     @Override
     public Object clone() {
-        return (Object) new RemoveSurplusIndividualsStaticHyperCube(this);
+        return new RemoveSurplusIndividualsStaticHyperCube(this);
     }
 
     /**

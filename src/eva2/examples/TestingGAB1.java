@@ -36,6 +36,5 @@ public class TestingGAB1 {
         System.out.println();
     }
 
-    ;
 }
 

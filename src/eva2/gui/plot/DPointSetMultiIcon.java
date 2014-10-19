@@ -167,7 +167,7 @@ public class DPointSetMultiIcon extends DComponent {
         } else {
             DPoint result = new DPoint(xMI.getImage(minIndex),
                     yMI.getImage(minIndex));
-            result.setIcon((DPointIcon) this.iconsMI.get(minIndex));
+            result.setIcon(this.iconsMI.get(minIndex));
 
             return result;
         }
@@ -256,7 +256,7 @@ public class DPointSetMultiIcon extends DComponent {
                         if ((i < this.iconsMI.size()) && (this.iconsMI.get(i) != null)) {
                             g.setStroke(new BasicStroke());
                             g.translate(p2.x, p2.y);
-                            ((DPointIcon) this.iconsMI.get(i)).paint(g);
+                            this.iconsMI.get(i).paint(g);
                             g.translate(-p2.x, -p2.y);
                             g.setStroke(strokeMI);
                         } else {
@@ -287,7 +287,7 @@ public class DPointSetMultiIcon extends DComponent {
                         if (this.iconsMI.get(i) != null) {
                             g.setStroke(new BasicStroke());
                             g.translate(p.x, p.y);
-                            ((DPointIcon) this.iconsMI.get(i)).paint(g);
+                            this.iconsMI.get(i).paint(g);
                             g.translate(-p.x, -p.y);
                             g.setStroke(strokeMI);
                         } else {

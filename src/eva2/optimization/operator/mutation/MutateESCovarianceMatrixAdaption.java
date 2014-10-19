@@ -57,13 +57,13 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
         this.Beta = mutator.Beta;
         this.xi_dach = mutator.xi_dach;
         if (mutator.s_N != null) {
-            this.s_N = (double[]) mutator.s_N.clone();
+            this.s_N = mutator.s_N.clone();
         }
         if (mutator.pathS != null) {
-            this.pathS = (double[]) mutator.pathS.clone();
+            this.pathS = mutator.pathS.clone();
         }
         if (mutator.Bz != null) {
-            this.Bz = (double[]) mutator.Bz.clone();
+            this.Bz = mutator.Bz.clone();
         }
         if (mutator.C != null) {
             this.C = (Matrix) mutator.C.clone();
@@ -72,10 +72,10 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
             this.B = (Matrix) mutator.B.clone();
         }
         if (mutator.Z != null) {
-            this.Z = (double[]) mutator.Z.clone();
+            this.Z = mutator.Z.clone();
         }
         if (mutator.eigenValues != null) {
-            this.eigenValues = (double[]) mutator.eigenValues.clone();
+            this.eigenValues = mutator.eigenValues.clone();
         }
     }
 
@@ -249,7 +249,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
     }
 
     protected void evaluateNewObjectX(double[] x, double[][] range) {
-        double[] oldX = (double[]) x.clone();
+        double[] oldX = x.clone();
 
         for (int i = 0; i < this.D; i++) {
             this.Z[i] = RNG.gaussianDouble(1.0);

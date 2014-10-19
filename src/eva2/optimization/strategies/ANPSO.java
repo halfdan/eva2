@@ -201,7 +201,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 
     @Override
     public Object clone() {
-        return (Object) new ANPSO(this);
+        return new ANPSO(this);
     }
 
     /**
@@ -801,11 +801,11 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 //			}
 //		}
         for (int i = 0; i < getSubSwarms().size(); ++i) {
-            AbstractEAIndividual bestSS = ((ParticleSubSwarmOptimization) getSubSwarms().get(i)).getBestIndividual();
-            elitePop.addIndividual((AbstractEAIndividual) ((ParticleSubSwarmOptimization) getSubSwarms().get(i)).bestIndividual.clone());
+            AbstractEAIndividual bestSS = getSubSwarms().get(i).getBestIndividual();
+            elitePop.addIndividual((AbstractEAIndividual) getSubSwarms().get(i).bestIndividual.clone());
         }
         for (int i = 0; i < inactiveSubSwarms.size(); ++i) {
-            elitePop.addIndividual((AbstractEAIndividual) ((ParticleSubSwarmOptimization) inactiveSubSwarms.get(i)).bestIndividual.clone());
+            elitePop.addIndividual((AbstractEAIndividual) inactiveSubSwarms.get(i).bestIndividual.clone());
         }
         return elitePop;
     }
@@ -846,7 +846,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
             // for all SubSwarms...
             for (int i = 0; i < this.getSubSwarms().size(); i++) {
                 ParticleSubSwarmOptimization currentsubswarm = this.getSubSwarms().get(i);
-                Population currentsubswarmpop = (Population) currentsubswarm.getPopulation();
+                Population currentsubswarmpop = currentsubswarm.getPopulation();
                 //InterfaceDataTypeDouble best = (InterfaceDataTypeDouble)currentsubswarmpop.getBestIndividual();
                 InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) currentsubswarm.bestIndividual;
                 DPointSet popRep = new DPointSet();
@@ -952,7 +952,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         return "sets the range of the neighborhood topology for the main swarm";
     }
 
-    public static final OptimizationParameters aNichePSO(AbstractOptimizationProblem problem, long randSeed, InterfaceTerminator term) {
+    public static OptimizationParameters aNichePSO(AbstractOptimizationProblem problem, long randSeed, InterfaceTerminator term) {
         ANPSO anpso = new ANPSO();
         anpso.setMainSwarmSize(75);
 
@@ -967,7 +967,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      * @param evalCnt
      * @return
      */
-    public static final OptimizationParameters stdANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static OptimizationParameters stdANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         ANPSO anpso = new ANPSO();
         NichePSO.stdNPSO(anpso, problem, randSeed, evalCnt);
 
@@ -986,7 +986,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         return OptimizerFactory.makeParams(anpso, anpso.getMainSwarmSize(), problem, randSeed, new EvaluationTerminator(evalCnt));
     }
 
-    public static final OptimizationParameters starANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static OptimizationParameters starANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         ANPSO anpso = new ANPSO();
         NichePSO.starNPSO(anpso, problem, randSeed, evalCnt);
 
@@ -1007,7 +1007,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         return OptimizerFactory.makeParams(anpso, anpso.getMainSwarmSize(), problem, randSeed, new EvaluationTerminator(evalCnt));
     }
 
-    public static final OptimizationParameters gmakANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static OptimizationParameters gmakANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         ANPSO anpso = new ANPSO();
         NichePSO.starNPSO(anpso, problem, randSeed, evalCnt);
 
@@ -1038,7 +1038,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      * @param evalCnt
      * @return
      */
-    public static final OptimizationParameters sgANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static OptimizationParameters sgANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         return starTopoANPSO(problem, randSeed, evalCnt, 1, 2);
     }
 
@@ -1052,7 +1052,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      * @param topologyRange
      * @return
      */
-    public static final OptimizationParameters starTopoANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt, int topology, int topologyRange) {
+    public static OptimizationParameters starTopoANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt, int topology, int topologyRange) {
         OptimizationParameters params = starANPSO(problem, randSeed, evalCnt);
         ((ANPSO) params.getOptimizer()).SetMainSwarmTopologyTag(topology);
         ((ANPSO) params.getOptimizer()).setMainSwarmTopologyRange(topologyRange);

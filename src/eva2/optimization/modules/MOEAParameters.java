@@ -76,11 +76,11 @@ public class MOEAParameters extends AbstractOptimizationParameters implements In
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((MultiObjectiveEA) this.optimizer).getPopulation();
+        return this.optimizer.getPopulation();
     }
 
     public void setPopulation(Population pop) {
-        ((MultiObjectiveEA) this.optimizer).setPopulation(pop);
+        this.optimizer.setPopulation(pop);
     }
 
     public String populationTipText() {
@@ -146,21 +146,21 @@ public class MOEAParameters extends AbstractOptimizationParameters implements In
      * @return The current optimizing method
      */
     public int getArchiveSize() {
-        Population archive = ((MultiObjectiveEA) this.optimizer).getPopulation().getArchive();
+        Population archive = this.optimizer.getPopulation().getArchive();
         if (archive == null) {
             archive = new Population();
-            ((MultiObjectiveEA) this.optimizer).getPopulation().SetArchive(archive);
+            this.optimizer.getPopulation().SetArchive(archive);
         }
         return ((MultiObjectiveEA) this.optimizer).getArchiveSize();
     }
 
     public void setArchiveSize(int b) {
-        Population archive = ((MultiObjectiveEA) this.optimizer).getPopulation().getArchive();
+        Population archive = this.optimizer.getPopulation().getArchive();
         if (archive == null) {
             archive = new Population();
-            ((MultiObjectiveEA) this.optimizer).getPopulation().SetArchive(archive);
+            this.optimizer.getPopulation().SetArchive(archive);
         }
-        ((MultiObjectiveEA) this.optimizer).getPopulation().getArchive().setTargetSize(b);
+        this.optimizer.getPopulation().getArchive().setTargetSize(b);
     }
 
     public String archiveSizeTipText() {

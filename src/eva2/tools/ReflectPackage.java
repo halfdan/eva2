@@ -189,11 +189,7 @@ public class ReflectPackage {
 //					subpackages are hit here as well!
                     if (!includeSubs) { // check if the class belongs to a subpackage
                         int lastDash = jarEntryName.lastIndexOf('/');
-                        if (lastDash > packageName.length() + 1) {
-                            isInSubPackage = true;
-                        } else {
-                            isInSubPackage = false;
-                        }
+                        isInSubPackage = lastDash > packageName.length() + 1;
                     }
                     if (includeSubs || !isInSubPackage) { // take the right ones
                         String clsName = jarEntryName.replace("/", ".");

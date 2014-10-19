@@ -38,7 +38,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new HillClimbing(this);
+        return new HillClimbing(this);
     }
 
     /**

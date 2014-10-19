@@ -33,7 +33,7 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
 
     @Override
     public Object clone() {
-        return (Object) new MOSOEpsilonConstraint(this);
+        return new MOSOEpsilonConstraint(this);
     }
 
     /**

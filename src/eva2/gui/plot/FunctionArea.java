@@ -122,7 +122,7 @@ public class FunctionArea extends DArea implements Serializable {
         if (isShowGraphToolTips()) {
             int gIndex = getNearestGraphIndex(event.getX(), event.getY());
             if (gIndex >= 0) {
-                DPoint pt = ((GraphPointSet) (pointSetContainer.get(gIndex))).getMedPoint();
+                DPoint pt = pointSetContainer.get(gIndex).getMedPoint();
                 Point pt2 = getDMeasures().getPoint(pt.x, pt.y);
                 pt2.x += (5 * (gIndex % 7)); // slight shift depending on index
                 // - easier distinction of very
@@ -395,7 +395,7 @@ public class FunctionArea extends DArea implements Serializable {
         if (index == -1) {
             return;
         }
-        int GraphLabel = ((GraphPointSet) (this.pointSetContainer.get(index))).getGraphLabel();
+        int GraphLabel = this.pointSetContainer.get(index).getGraphLabel();
         changeColorGraph(GraphLabel);
         updateLegend();
     }
@@ -406,7 +406,7 @@ public class FunctionArea extends DArea implements Serializable {
     public void recolorAllGraphsByIndex() {
         int index = 0;
         for (int i = 0; i < pointSetContainer.size(); i++) {
-            GraphPointSet gps = ((GraphPointSet) (this.pointSetContainer.get(i)));
+            GraphPointSet gps = this.pointSetContainer.get(i);
             if (gps.getPointCount() > 0) {
                 gps.setColorByIndex(index);
                 index++;
@@ -466,7 +466,7 @@ public class FunctionArea extends DArea implements Serializable {
     public void clearAll() {
         this.removeAllDElements();
         for (int i = 0; i < pointSetContainer.size(); i++) {
-            ((GraphPointSet) (pointSetContainer.get(i))).removeAllPoints();
+            pointSetContainer.get(i).removeAllPoints();
         }
         pointSetContainer.clear();
         if (getYScale() instanceof Exp) {
@@ -496,7 +496,7 @@ public class FunctionArea extends DArea implements Serializable {
         if (index == -1) {
             return;
         }
-        int GraphLabel = ((GraphPointSet) (this.pointSetContainer.get(index))).getGraphLabel();
+        int GraphLabel = this.pointSetContainer.get(index).getGraphLabel();
         clearGraph(GraphLabel);
         updateLegend();
     }
@@ -658,7 +658,7 @@ public class FunctionArea extends DArea implements Serializable {
         }
         for (int i = 0; i < pointSetContainer.size(); i++) {
             if (pointSetContainer.get(i) instanceof GraphPointSet) {
-                GraphPointSet set = (GraphPointSet) pointSetContainer.get(i);
+                GraphPointSet set = pointSetContainer.get(i);
                 DPointSet pset = set.getConnectedPointSet();
                 // add column names
                 s[0] = s[0] + " t " + cleanBlanks(set.getInfoString(), '_');
@@ -737,7 +737,7 @@ public class FunctionArea extends DArea implements Serializable {
         }
         int minindex = getNearestGraphIndex(x, y);
         if (minindex >= 0) {
-            return ((GraphPointSet) (pointSetContainer.get(minindex))).getInfoString();
+            return pointSetContainer.get(minindex).getInfoString();
         } else {
             return "none";
         }
@@ -750,7 +750,7 @@ public class FunctionArea extends DArea implements Serializable {
         }
 
         if (graphIndex >= 0 && (graphIndex < pointSetContainer.size())) {
-            return ((GraphPointSet) (pointSetContainer.get(graphIndex))).getInfoString();
+            return pointSetContainer.get(graphIndex).getInfoString();
         } else {
             return "none";
         }
@@ -771,7 +771,7 @@ public class FunctionArea extends DArea implements Serializable {
     private GraphPointSet getGraphPointSet(int GraphLabel) {
         for (int i = 0; i < pointSetContainer.size(); i++) {
             if (pointSetContainer.get(i) instanceof GraphPointSet) {
-                GraphPointSet xx = (GraphPointSet) (pointSetContainer.get(i));
+                GraphPointSet xx = pointSetContainer.get(i);
                 // System.out.println("looking at "+xx.getGraphLabel());
                 if (xx.getGraphLabel() == GraphLabel) {
                     // System.out.println("match!");
@@ -799,7 +799,7 @@ public class FunctionArea extends DArea implements Serializable {
         double dist = 0;
         for (int i = 0; i < pointSetContainer.size(); i++) {
             if (pointSetContainer.get(i) instanceof GraphPointSet) {
-                GraphPointSet pointset = (GraphPointSet) (pointSetContainer.get(i));
+                GraphPointSet pointset = pointSetContainer.get(i);
                 point2 = pointset.getNearestDPoint(point1);
                 if (point2 == null) {
                     continue;
@@ -883,7 +883,7 @@ public class FunctionArea extends DArea implements Serializable {
             return ret;
         }
         int minindex = getNearestGraphIndex(x, y);
-        ret = ((GraphPointSet) (pointSetContainer.get(minindex))).isStatisticsGraph();
+        ret = pointSetContainer.get(minindex).isStatisticsGraph();
         return ret;
     }
 
@@ -893,7 +893,7 @@ public class FunctionArea extends DArea implements Serializable {
      */
     public void jump() {
         for (int i = 0; i < pointSetContainer.size(); i++) {
-            ((GraphPointSet) (pointSetContainer.get(i))).jump();
+            pointSetContainer.get(i).jump();
         }
     }
 
@@ -914,7 +914,7 @@ public class FunctionArea extends DArea implements Serializable {
             System.out.println("");
             System.out.println("GraphPointSet No " + i);
 
-            ret[i] = ((GraphPointSet) pointSetContainer.get(i)).printPoints();
+            ret[i] = pointSetContainer.get(i).printPoints();
         }
         return ret;
 
@@ -928,7 +928,7 @@ public class FunctionArea extends DArea implements Serializable {
         System.out.println("");
         System.out.println("GraphPointSet No " + i);
 
-        return ((GraphPointSet) pointSetContainer.get(i)).printPoints();
+        return pointSetContainer.get(i).printPoints();
         // }
     }
 
@@ -942,7 +942,7 @@ public class FunctionArea extends DArea implements Serializable {
         if (index == -1 || point == null) {
             return;
         }
-        GraphPointSet pointset = (GraphPointSet) (this.pointSetContainer.get(index));
+        GraphPointSet pointset = this.pointSetContainer.get(index);
         pointset.removePoint(point);
     }
 
@@ -1080,7 +1080,7 @@ public class FunctionArea extends DArea implements Serializable {
         }
 
         if (graphIndex >= 0 && (graphIndex < pointSetContainer.size())) {
-            GraphPointSet gps = ((GraphPointSet) (pointSetContainer.get(graphIndex)));
+            GraphPointSet gps = pointSetContainer.get(graphIndex);
             gps.setInfoString(newName);
             updateLegend();
             return true;

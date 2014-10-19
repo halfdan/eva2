@@ -418,6 +418,6 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
      */
     @Override
     public Object[] getAdditionalDataValue(PopulationInterface pop) {
-        return new Object[]{(bestList == null) ? ((int) 0) : bestList.size(), (getMeanArchivedDist()), getLambda()};
+        return new Object[]{(bestList == null) ? 0 : bestList.size(), (getMeanArchivedDist()), getLambda()};
     }
 }

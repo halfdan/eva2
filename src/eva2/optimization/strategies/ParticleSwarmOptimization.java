@@ -157,7 +157,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
     @Override
     public Object clone() {
-        return (Object) new ParticleSwarmOptimization(this);
+        return new ParticleSwarmOptimization(this);
     }
 
     /**
@@ -967,8 +967,8 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                     k = getParentIndex(topologyRange, index, pop.size());
 //				compareAndSet(localBestFitness, localBestPosition, (AbstractEAIndividual)pop.get(k), useHistoric);
                     indy = (AbstractEAIndividual) pop.get(k);
-                    System.arraycopy((double[]) indy.getData(partBestFitKey), 0, localBestFitness, 0, localBestFitness.length);
-                    System.arraycopy((double[]) indy.getData(partBestPosKey), 0, localBestPosition, 0, localBestPosition.length);
+                    System.arraycopy(indy.getData(partBestFitKey), 0, localBestFitness, 0, localBestFitness.length);
+                    System.arraycopy(indy.getData(partBestPosKey), 0, localBestPosition, 0, localBestPosition.length);
 
                 }
                 break;
@@ -1486,11 +1486,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (changeListener != null && changeListener.removeElement(ea)) {
-            return true;
-        } else {
-            return false;
-        }
+        return changeListener != null && changeListener.removeElement(ea);
     }
 
     /**

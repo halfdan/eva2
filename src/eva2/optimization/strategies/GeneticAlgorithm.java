@@ -174,11 +174,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
     @Override
     public boolean removePopulationChangedEventListener(
             InterfacePopulationChangedEventListener ea) {
-        if (changeListener != null && changeListener.removeElement(ea)) {
-            return true;
-        } else {
-            return false;
-        }
+        return changeListener != null && changeListener.removeElement(ea);
     }
 
     /**

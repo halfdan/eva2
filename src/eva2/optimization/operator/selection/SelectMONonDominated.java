@@ -22,7 +22,7 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
 
     @Override
     public Object clone() {
-        return (Object) new SelectMONonDominated(this);
+        return new SelectMONonDominated(this);
     }
 
     /**

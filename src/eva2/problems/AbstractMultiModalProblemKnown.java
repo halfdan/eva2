@@ -32,7 +32,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
     protected void cloneObjects(AbstractMultiModalProblemKnown b) {
         super.cloneObjects(b);
         if (b.listOfOptima != null) {
-            this.listOfOptima = (Population) ((Population) b.listOfOptima).clone();
+            this.listOfOptima = (Population) b.listOfOptima.clone();
         }
         ;
         this.globalOptimum = b.globalOptimum;
@@ -57,7 +57,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
         ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.problemDimension);
         ((InterfaceDataTypeDouble) this.template).setDoubleRange(makeRange());
         for (int i = 0; i < population.getTargetSize(); i++) {
-            tmpIndy = (AbstractEAIndividual) ((AbstractEAIndividual) this.template).clone();
+            tmpIndy = (AbstractEAIndividual) this.template.clone();
             tmpIndy.init(this);
             population.add(tmpIndy);
         }
@@ -147,7 +147,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
      */
     protected void addOptimum(double[] point) {
         InterfaceDataTypeDouble tmpIndy;
-        tmpIndy = (InterfaceDataTypeDouble) ((AbstractEAIndividual) this.template).clone();
+        tmpIndy = (InterfaceDataTypeDouble) this.template.clone();
         tmpIndy.setDoubleGenotype(point);
         ((AbstractEAIndividual) tmpIndy).setFitness(evalUnnormalized(point));
         if (((AbstractEAIndividual) tmpIndy).getFitness(0) >= globalOptimum) {

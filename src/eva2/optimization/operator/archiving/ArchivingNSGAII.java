@@ -26,7 +26,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
 
     @Override
     public Object clone() {
-        return (Object) new ArchivingNSGAII(this);
+        return new ArchivingNSGAII(this);
     }
 
     /**

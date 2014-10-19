@@ -21,7 +21,7 @@ public class RemoveSurplusIndividualsSMetric implements InterfaceRemoveSurplusIn
 
     @Override
     public Object clone() {
-        return (Object) new RemoveSurplusIndividualsSMetric(this);
+        return new RemoveSurplusIndividualsSMetric(this);
     }
 
     /**

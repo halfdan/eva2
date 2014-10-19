@@ -46,7 +46,7 @@ public class ReplaceDeterministicCrowding implements InterfaceReplacement, java.
             }
         }
         if (indy.isDominatingDebConstraints((AbstractEAIndividual) sub.get(index))) {
-            if (pop.remove((AbstractEAIndividual) sub.get(index))) {
+            if (pop.remove(sub.get(index))) {
                 pop.addIndividual(indy);
             }
         }

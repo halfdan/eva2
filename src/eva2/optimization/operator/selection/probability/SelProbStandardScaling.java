@@ -23,7 +23,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
 
     @Override
     public Object clone() {
-        return (Object) new SelProbStandardScaling(this);
+        return new SelProbStandardScaling(this);
     }
 
     /**

@@ -47,7 +47,7 @@ public class MetricMaximumParetoFrontError implements eva2.optimization.operator
      */
     @Override
     public Object clone() {
-        return (Object) new MetricMaximumParetoFrontError(this);
+        return new MetricMaximumParetoFrontError(this);
     }
 
     /**

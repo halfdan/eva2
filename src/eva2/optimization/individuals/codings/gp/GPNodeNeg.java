@@ -37,7 +37,7 @@ public class GPNodeNeg extends AbstractGPNode implements java.io.Serializable {
      */
     @Override
     public Object clone() {
-        return (Object) new GPNodeNeg(this);
+        return new GPNodeNeg(this);
     }
 
     /**

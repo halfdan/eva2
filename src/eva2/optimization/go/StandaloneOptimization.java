@@ -308,7 +308,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 ((GAIndividualDoubleData) tmpIndy).setCrossoverOperator(new CrossoverGAGINPoint());
                 ((GAIndividualDoubleData) tmpIndy).setCrossoverProbability(1.0);
                 ((GAIndividualDoubleData) tmpIndy).setMutationProbability(1.0);
-                ((F1Problem) problem).setEAIndividual(tmpIndy);
+                problem.setEAIndividual(tmpIndy);
                 //((FGRNInferringProblem)this.problem).setStructreSkelInterval(1);
                 this.optimizationParameters.getOptimizer().setProblem(problem);
                 this.optimizationParameters.getOptimizer().addPopulationChangedEventListener(this);
@@ -324,7 +324,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 F1Problem problem = new F1Problem();
                 tmpIndy = new ESIndividualDoubleData();
                 ((AbstractEAIndividual) tmpIndy).setMutationOperator(new MutateESLocal());
-                ((F1Problem) problem).setEAIndividual(tmpIndy);
+                problem.setEAIndividual(tmpIndy);
                 //((FGRNInferringProblem)this.problem).setUseHEigenMatrix(true);
                 //((FGRNInferringProblem)this.problem).setUseOnlyPositiveNumbers(true);
                 this.optimizationParameters.getOptimizer().setProblem(problem);

@@ -29,13 +29,13 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
 
     public MOSOWeightedFitness(MOSOWeightedFitness b) {
         if (b.weights != null) {
-            this.weights = (PropertyDoubleArray) b.weights;
+            this.weights = b.weights;
         }
     }
 
     @Override
     public Object clone() {
-        return (Object) new MOSOWeightedFitness(this);
+        return new MOSOWeightedFitness(this);
     }
 
     /**

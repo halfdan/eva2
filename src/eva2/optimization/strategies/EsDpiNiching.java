@@ -482,7 +482,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             } else if (curSpecies.size() == 0) {
                 System.err.println("Warning, empty niche population in EsDpiNiching!");
             }
-            peakOpts[clustIndex - 1].setPop((Population) curSpecies); // -1 because clustering delivers first cluster at index 1
+            peakOpts[clustIndex - 1].setPop(curSpecies); // -1 because clustering delivers first cluster at index 1
 
             // check for deactivation of that niche
             if (getHaltingWindow() > 0) {

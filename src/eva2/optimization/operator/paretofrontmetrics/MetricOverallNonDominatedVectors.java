@@ -27,7 +27,7 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
      */
     @Override
     public Object clone() {
-        return (Object) new MetricOverallNonDominatedVectors(this);
+        return new MetricOverallNonDominatedVectors(this);
     }
 
     /**

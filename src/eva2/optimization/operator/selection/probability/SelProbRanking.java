@@ -22,7 +22,7 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
 
     @Override
     public Object clone() {
-        return (Object) new SelProbRanking(this);
+        return new SelProbRanking(this);
     }
 
     /**

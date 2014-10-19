@@ -23,7 +23,7 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
 
     @Override
     public Object clone() {
-        return (Object) new SelectMOMAIIDominanceCounter(this);
+        return new SelectMOMAIIDominanceCounter(this);
     }
 
     /**

@@ -110,10 +110,7 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverGINPoint) {
             CrossoverGINPoint cross = (CrossoverGINPoint) crossover;
-            if (this.numberOfCrossovers != cross.numberOfCrossovers) {
-                return false;
-            }
-            return true;
+            return this.numberOfCrossovers == cross.numberOfCrossovers;
         } else {
             return false;
         }

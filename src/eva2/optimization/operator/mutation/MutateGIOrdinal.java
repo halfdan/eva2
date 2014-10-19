@@ -50,10 +50,7 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
             if (this.stepSize != mut.stepSize) {
                 return false;
             }
-            if (this.numberOfMutations != mut.numberOfMutations) {
-                return false;
-            }
-            return true;
+            return this.numberOfMutations == mut.numberOfMutations;
         } else {
             return false;
         }
@@ -86,6 +83,7 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
             for (int k = 0; k < this.numberOfMutations; k++) {
                 mutInd = RNG.randomInt(0, x.length - 1);
                 mutate = RNG.gaussianDouble(this.stepSize);
+                // ToDo: WTF?
                 mutate *= (range[mutInd][1] - range[mutInd][1]);
                 mut = (int) Math.round(mutate);
                 if (mut == 0) {

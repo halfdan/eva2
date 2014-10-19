@@ -43,10 +43,7 @@ public class MutateESPolynomial implements InterfaceMutation, java.io.Serializab
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateESPolynomial) {
             MutateESPolynomial mut = (MutateESPolynomial) mutator;
-            if (this.eta != mut.eta) {
-                return false;
-            }
-            return true;
+            return this.eta == mut.eta;
         } else {
             return false;
         }

@@ -58,7 +58,7 @@ public class ReplacementCrowding implements InterfaceReplacement, java.io.Serial
             }
         }
         if (indy.isDominatingDebConstraints((AbstractEAIndividual) tmp.get(index))) {
-            if (pop.remove((AbstractEAIndividual) tmp.get(index))) {
+            if (pop.remove(tmp.get(index))) {
                 pop.addIndividual(indy);
             }
         }

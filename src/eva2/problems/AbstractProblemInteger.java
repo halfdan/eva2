@@ -32,7 +32,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
             template = (AbstractEAIndividual) o.template.clone();
         }
         if (o.bestIndividuum != null) {
-            bestIndividuum = (AbstractEAIndividual) ((AbstractEAIndividual) o.bestIndividuum).clone();
+            bestIndividuum = (AbstractEAIndividual) o.bestIndividuum.clone();
         }
         this.problemDimension = o.problemDimension;
     }
@@ -137,6 +137,6 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
      * @param indy The EAIndividual type
      */
     public void setIndividualTemplate(AbstractEAIndividual indy) {
-        this.template = (AbstractEAIndividual) indy;
+        this.template = indy;
     }
 }

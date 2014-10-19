@@ -52,8 +52,8 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
 
             for (int i = 0; i < ((InterfaceOBGAIndividual) result[0]).getOBGenotype().length; i++) {
 
-                int[] perm1 = (int[]) ((InterfaceOBGAIndividual) result[0]).getOBGenotype()[i].clone();
-                int[] perm2 = (int[]) ((InterfaceOBGAIndividual) result[1]).getOBGenotype()[i].clone();
+                int[] perm1 = ((InterfaceOBGAIndividual) result[0]).getOBGenotype()[i].clone();
+                int[] perm2 = ((InterfaceOBGAIndividual) result[1]).getOBGenotype()[i].clone();
                 int begin = RNG.randomInt(0, perm1.length - 2);
                 int end = RNG.randomInt(begin, perm1.length - 1);
                 for (int pos = begin; pos <= end; pos++) {

@@ -53,7 +53,7 @@ public class PropertyFilePath implements java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new PropertyFilePath(this);
+        return new PropertyFilePath(this);
     }
 
     /**

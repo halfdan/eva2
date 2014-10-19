@@ -102,11 +102,7 @@ public class CrossoverGABitSimulated implements InterfaceCrossover, java.io.Seri
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverGABitSimulated) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverGABitSimulated;
     }
 
     /**

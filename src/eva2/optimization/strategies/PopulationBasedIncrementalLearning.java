@@ -56,7 +56,7 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
 
     @Override
     public Object clone() {
-        return (Object) new PopulationBasedIncrementalLearning(this);
+        return new PopulationBasedIncrementalLearning(this);
     }
 
     @Override

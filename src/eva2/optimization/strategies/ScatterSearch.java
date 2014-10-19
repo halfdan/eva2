@@ -865,7 +865,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     /**
      * This method performs a scatter search runnable.
      */
-    public static final OptimizerRunnable createScatterSearch(
+    public static OptimizerRunnable createScatterSearch(
             int localSearchSteps, double localSearchFitnessFilter,
             double nmInitPerturb, boolean relativeFitCrit,
             int refSetSize,
@@ -880,12 +880,12 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         return rnbl;
     }
 
-    public static final OptimizationParameters standardSS(
+    public static OptimizationParameters standardSS(
             AbstractOptimizationProblem problem) {
         return specialSS(0, 0, 0.1, true, 10, problem, new EvaluationTerminator(10000));
     }
 
-    public static final OptimizationParameters specialSS(
+    public static OptimizationParameters specialSS(
             int localSearchSteps, double localSearchFitnessFilter,
             double nmInitPerturb, boolean relativeFitCrit,
             int refSetSize,

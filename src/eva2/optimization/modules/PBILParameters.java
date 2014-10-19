@@ -81,11 +81,11 @@ public class PBILParameters extends AbstractOptimizationParameters implements In
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((PopulationBasedIncrementalLearning) this.optimizer).getPopulation();
+        return this.optimizer.getPopulation();
     }
 
     public void setPopulation(Population pop) {
-        ((PopulationBasedIncrementalLearning) this.optimizer).setPopulation(pop);
+        this.optimizer.setPopulation(pop);
     }
 
     public String populationTipText() {

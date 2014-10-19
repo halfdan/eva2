@@ -825,11 +825,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 }
                 i++;
             }
-            if (size() == upTo) {
-                return true;
-            } else {
-                return false;
-            }
+            return size() == upTo;
         }
     }
 
@@ -1470,7 +1466,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public void removeRedundantIndies() {
         for (int i = 0; i < this.size(); i++) {
             for (int j = i + 1; j < this.size(); j++) {
-                if (((AbstractEAIndividual) this.get(i)).equals(this.get(j))) {
+                if (this.get(i).equals(this.get(j))) {
                     this.remove(j);
                     j--;
                 }
@@ -1683,7 +1679,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             EVAERROR.errorMsgOnce("Warning: tried to add null as individual, skipping add... (Population.add(IndividualInterface)), possibly multiple cases.");
             return false;
         } else {
-            return addIndividual((IndividualInterface) o);
+            return addIndividual(o);
         }
     }
 
@@ -1783,12 +1779,12 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     @Override
     public IndividualInterface getBestIndividual() {
-        return (IndividualInterface) this.getBestEAIndividual();
+        return this.getBestEAIndividual();
     }
 
     @Override
     public IndividualInterface getWorstIndividual() {
-        return (IndividualInterface) this.getWorstEAIndividual();
+        return this.getWorstEAIndividual();
     }
 
     @Override
@@ -1908,7 +1904,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                             d = PhenotypeMetric.dist(pop.get(i), pop.get(j));
                         }
                     } else {
-                        d = metric.distance((AbstractEAIndividual) pop.get(i), (AbstractEAIndividual) pop.get(j));
+                        d = metric.distance(pop.get(i), pop.get(j));
                     }
                 } catch (Exception e) {
                     EVAERROR.errorMsgOnce("Exception when calculating population measures ... possibly no double position available?");
@@ -2101,11 +2097,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public boolean isWithinPopDist(AbstractEAIndividual indy, double d, InterfaceDistanceMetric metric) {
         Pair<Integer, Double> closest = Population.getClosestFarthestIndy(indy, this, metric, true);
-        if (closest.tail() <= d) {
-            return true;
-        } else {
-            return false;
-        }
+        return closest.tail() <= d;
     }
 
     /**

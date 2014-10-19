@@ -144,7 +144,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
             }
         }
         if (statisticsParameter.getMultiRuns() > 1
-                && statisticsParameter.getUseStatPlot() == true) {
+                && statisticsParameter.getUseStatPlot()) {
             statGraph = new Graph[windowCount][];
             for (int i = 0; i < statGraph.length; i++) {
                 statGraph[i] = new Graph[graphCount];

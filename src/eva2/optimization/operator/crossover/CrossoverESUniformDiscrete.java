@@ -91,11 +91,7 @@ public class CrossoverESUniformDiscrete implements InterfaceCrossover, java.io.S
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESUniformDiscrete) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverESUniformDiscrete;
     }
 
     /**

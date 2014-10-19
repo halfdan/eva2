@@ -48,7 +48,7 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
 
     @Override
     public Object clone() {
-        return (Object) new SimulatedAnnealing(this);
+        return new SimulatedAnnealing(this);
     }
 
     /**

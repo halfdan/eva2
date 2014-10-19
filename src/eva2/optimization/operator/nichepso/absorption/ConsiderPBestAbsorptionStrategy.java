@@ -23,10 +23,7 @@ public class ConsiderPBestAbsorptionStrategy extends StandardAbsorptionStrategy 
         if (!super.shouldAbsorbParticleIntoSubswarm(indy, subswarm, mainswarm)) {
             return false;
         }
-        if (absorbtionConstraintViolation(indy, subswarm)) {
-            return false;
-        }
-        return true;
+        return !absorbtionConstraintViolation(indy, subswarm);
     }
 
     /**
@@ -38,9 +35,6 @@ public class ConsiderPBestAbsorptionStrategy extends StandardAbsorptionStrategy 
     private boolean absorbtionConstraintViolation(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm) {
         AbstractEAIndividual indysPBest = (AbstractEAIndividual) indy.getData("PersonalBestKey");
         AbstractEAIndividual subswarmsGBest = subswarm.getGBestIndividual();
-        if (indysPBest.isDominating(subswarmsGBest)) {
-            return true;
-        }
-        return false;
+        return indysPBest.isDominating(subswarmsGBest);
     }
 }

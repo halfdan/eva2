@@ -24,7 +24,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
 
     @Override
     public Object clone() {
-        return (Object) new PhenotypeMetric(this);
+        return new PhenotypeMetric(this);
     }
 
     private static int min(int a, int b, int c) {
@@ -176,7 +176,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
     public static double norm(AbstractEAIndividual indy) {
         double result = 0;
         if (indy instanceof InterfaceDataTypeBinary) {
-            BitSet bs = (BitSet) ((InterfaceDataTypeBinary) indy).getBinaryData();
+            BitSet bs = ((InterfaceDataTypeBinary) indy).getBinaryData();
             for (int i = 0; (i < ((InterfaceDataTypeBinary) indy).size()); i++) {
                 if (bs.get(i)) {
                     result += 1;

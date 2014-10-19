@@ -52,10 +52,7 @@ public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serial
             if (this.subStringLength != mut.subStringLength) {
                 return false;
             }
-            if (this.shiftDistance != mut.shiftDistance) {
-                return false;
-            }
-            return true;
+            return this.shiftDistance == mut.shiftDistance;
         } else {
             return false;
         }
@@ -94,7 +91,7 @@ public class MutateGAShiftSubstring implements InterfaceMutation, java.io.Serial
 //                System.out.println("Indices: " + (len+a-d+i)%len + "<-"  + (len+a+i)%len );
                 tmpBitSet.set((len + a - d + i) % len, tmpBitSet.get((len + a + i) % len));
             }
-            BitSet origBitSet = (BitSet) ((InterfaceGAIndividual) individual).getBGenotype();
+            BitSet origBitSet = ((InterfaceGAIndividual) individual).getBGenotype();
             for (int i = 0; i < d; i++) {
 //                System.out.println("Indices: " + (len+b-d+i+1)%len + "<-" + ((len+a-d+i)%len));
                 tmpBitSet.set((len + b - d + i + 1) % len, origBitSet.get((len + a - d + i) % len));

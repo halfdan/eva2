@@ -225,7 +225,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      */
     @Override
     public Object clone() {
-        return (Object) new NichePSO(this);
+        return new NichePSO(this);
     }
 
     /**
@@ -797,7 +797,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     public Population getPopulation() {
         boolean activeOnly = true; // true makes problems if all subswarms are deactivated at the same time!
         // construct a metapop with clones from the mainswarm and all subswarms
-        Population metapop = (Population) getMainSwarm().getPopulation().cloneWithoutInds();
+        Population metapop = getMainSwarm().getPopulation().cloneWithoutInds();
         metapop.ensureCapacity(getMainSwarmSize());
         metapop.addPopulation(getMainSwarm().getPopulation());
         int activeCnt = 0;
@@ -1829,7 +1829,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 
     protected void plotSwarmToMerge(ParticleSubSwarmOptimization swarm, int index) {
         InterfaceDataTypeDouble tmpIndy1;
-        Population swarmpop = (Population) swarm.getPopulation();
+        Population swarmpop = swarm.getPopulation();
         InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) swarm.bestIndividual;
         DPointSet popRep = new DPointSet();
 
@@ -1874,7 +1874,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
             // for all SubSwarms...
             for (int i = 0; i < this.getSubSwarms().size(); i++) {
                 ParticleSubSwarmOptimization currentsubswarm = this.getSubSwarms().get(i);
-                Population currentsubswarmpop = (Population) currentsubswarm.getPopulation();
+                Population currentsubswarmpop = currentsubswarm.getPopulation();
                 //InterfaceDataTypeDouble best = (InterfaceDataTypeDouble)currentsubswarmpop.getBestIndividual();
                 InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) currentsubswarm.bestIndividual;
                 DPointSet popRep = new DPointSet();
@@ -2094,7 +2094,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         return date;
     }
 
-    public static final OptimizationParameters nichePSO(AbstractOptimizationProblem problem, long randSeed, InterfaceTerminator term) {
+    public static OptimizationParameters nichePSO(AbstractOptimizationProblem problem, long randSeed, InterfaceTerminator term) {
         NichePSO npso = new NichePSO();
         npso.setMainSwarmSize(75);
 
@@ -2117,11 +2117,11 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @param evalCnt
      * @return
      */
-    public static final OptimizationParameters stdNPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static OptimizationParameters stdNPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         return stdNPSO(null, problem, randSeed, evalCnt);
     }
 
-    public static final OptimizationParameters starNPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static OptimizationParameters starNPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         return starNPSO(null, problem, randSeed, evalCnt);
     }
 
@@ -2137,7 +2137,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @return
      * @see #stdNPSO(AbstractOptimizationProblem, long, int)
      */
-    public static final OptimizationParameters stdNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static OptimizationParameters stdNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         if (npso == null) {
             npso = new NichePSO();
         }
@@ -2187,12 +2187,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @return
      * @see #stdNPSO(AbstractOptimizationProblem, long, int)
      */
-    public static final OptimizationParameters starNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
+    public static OptimizationParameters starNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         starNPSO(npso, evalCnt);
         return OptimizerFactory.makeParams(npso, npso.getMainSwarmSize(), problem, randSeed, new EvaluationTerminator(evalCnt));
     }
 
-    public static final NichePSO starNPSO(NichePSO npso, int evalCnt) {
+    public static NichePSO starNPSO(NichePSO npso, int evalCnt) {
         if (npso == null) {
             npso = new NichePSO();
         }

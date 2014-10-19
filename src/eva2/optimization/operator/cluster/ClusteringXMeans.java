@@ -49,7 +49,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
      */
     @Override
     public Object clone() {
-        return (Object) new ClusteringXMeans(this);
+        return new ClusteringXMeans(this);
     }
 
     /**

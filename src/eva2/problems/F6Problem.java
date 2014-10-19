@@ -39,7 +39,7 @@ public class F6Problem extends AbstractProblemDoubleOffset
      */
     @Override
     public Object clone() {
-        return (Object) new F6Problem(this);
+        return new F6Problem(this);
     }
 
     /**
@@ -170,7 +170,7 @@ public class F6Problem extends AbstractProblemDoubleOffset
     public double getLocalSearchStepFunctionCallEquivalent() {
         double cost = 1;
         if (this.localSearchOptimizer instanceof GradientDescentAlgorithm) {
-            cost = ((GradientDescentAlgorithm) localSearchOptimizer).getIterations();
+            cost = localSearchOptimizer.getIterations();
         }
         return cost;
     }

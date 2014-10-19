@@ -22,14 +22,14 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
             this.basicNormationMethod = (InterfaceSelectionProbability) a.basicNormationMethod.clone();
         }
         if (a.distanceMetric != null) {
-            this.distanceMetric = (InterfaceDistanceMetric) a.distanceMetric;
+            this.distanceMetric = a.distanceMetric;
         }
         this.sharingDistance = a.sharingDistance;
     }
 
     @Override
     public Object clone() {
-        return (Object) new SelProbFitnessSharing(this);
+        return new SelProbFitnessSharing(this);
     }
 
     /**

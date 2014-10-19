@@ -97,7 +97,7 @@ class PlotContainer extends ArrayList<GraphWindow> {
     public boolean containsName(String name) {
         GraphWindow temp;
         for (int i = 0; i < size(); i++) {
-            temp = (GraphWindow) (get(i));
+            temp = get(i);
             if (name.equals(temp.getName())) {
                 return true;
             }
@@ -123,7 +123,7 @@ class PlotContainer extends ArrayList<GraphWindow> {
         }
         GraphWindow temp;
         for (int i = 0; i < size(); i++) {
-            temp = (GraphWindow) (get(i));
+            temp = get(i);
             if (name.equals(temp.getName())) {
                 actualPlot = temp;
                 return actualPlot;

@@ -27,7 +27,7 @@ public class F4Problem extends AbstractProblemDoubleOffset implements Serializab
      */
     @Override
     public Object clone() {
-        return (Object) new F4Problem(this);
+        return new F4Problem(this);
     }
 
     /**

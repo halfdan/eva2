@@ -24,7 +24,7 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
      */
     @Override
     public Object clone() {
-        return (Object) new F3Problem(this);
+        return new F3Problem(this);
     }
 
     /**

@@ -21,7 +21,7 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new SelectAll(this);
+        return new SelectAll(this);
     }
 
     /**

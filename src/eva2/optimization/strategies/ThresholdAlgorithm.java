@@ -45,7 +45,7 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
 
     @Override
     public Object clone() {
-        return (Object) new ThresholdAlgorithm(this);
+        return new ThresholdAlgorithm(this);
     }
 
     /**

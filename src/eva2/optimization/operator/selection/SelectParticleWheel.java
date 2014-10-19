@@ -41,7 +41,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
 
     @Override
     public Object clone() {
-        return (Object) new SelectParticleWheel(this);
+        return new SelectParticleWheel(this);
     }
 
     @Override

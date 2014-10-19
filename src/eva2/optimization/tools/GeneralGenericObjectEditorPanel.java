@@ -143,7 +143,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
         setLayout(new BorderLayout());
         add(objectChooser, BorderLayout.NORTH);  // important
         propertyPanelWrapper.add(propertyPanel);
-        add((JComponent) propertyPanelWrapper, BorderLayout.CENTER);
+        add(propertyPanelWrapper, BorderLayout.CENTER);
 
         JPanel okcButs = new JPanel();
         okcButs.setBorder(BorderFactory.createEmptyBorder());
@@ -283,7 +283,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
         String objectName = /*EVAHELP.cutClassName*/ (this.objectEditor.getValue().getClass().getName());
         boolean found = false;
         for (int i = 0; i < objectNames.getSize(); i++) {
-            if (objectName.equals((String) objectNames.getElementAt(i))) {
+            if (objectName.equals(objectNames.getElementAt(i))) {
                 found = true;
                 break;
             }
@@ -322,7 +322,7 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
             className = (String) objectChooser.getSelectedItem();
             try {
                 System.out.println(className);
-                Object n = (Object) Class.forName(className).newInstance();
+                Object n = Class.forName(className).newInstance();
                 this.objectEditor.setValue(n);
             } catch (Exception ex) {
                 System.out.println("Exeption in itemStateChanged" + ex.getMessage());

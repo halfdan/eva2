@@ -55,8 +55,8 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
 
     private void addJob(OptimizationJob j, boolean selected) {
         OptimizationJob[] curArr = getObjects();
-        OptimizationJob[] newArr = null;
-        boolean[] newSelection = null;
+        OptimizationJob[] newArr;
+        boolean[] newSelection;
         if (curArr != null && curArr.length > 0) {
             newArr = new OptimizationJob[curArr.length + 1];
             newSelection = new boolean[newArr.length];
@@ -92,7 +92,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
      */
     public ArrayList<OptimizationJob> getSelectedJobs() {
         OptimizationJob[] selected = getSelectedObjects();
-        ArrayList<OptimizationJob> l = new ArrayList<OptimizationJob>();
+        ArrayList<OptimizationJob> l = new ArrayList<>();
         for (OptimizationJob j : selected) {
             if (j != null) {
                 l.add(j);
@@ -160,7 +160,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                EvAStatisticalEvaluation.evaluate((InterfaceTextListener) jobList, jobList.getObjects(), genericArrayEditor.getSelectedIndices(),
+                EvAStatisticalEvaluation.evaluate(jobList, jobList.getObjects(), genericArrayEditor.getSelectedIndices(),
                         (StatsOnSingleDataSetEnum[]) EvAStatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatsOnSingleDataSetEnum.values()),
                         (StatsOnTwoSampledDataEnum[]) EvAStatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatsOnTwoSampledDataEnum.values()));
             }

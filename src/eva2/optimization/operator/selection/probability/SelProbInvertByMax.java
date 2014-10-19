@@ -29,7 +29,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
 
     @Override
     public Object clone() {
-        return (Object) new SelProbInvertByMax(this);
+        return new SelProbInvertByMax(this);
     }
 
     /**

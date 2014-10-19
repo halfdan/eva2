@@ -25,7 +25,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
 
     @Override
     public Object clone() {
-        return (Object) new SelectBestIndividuals(this);
+        return new SelectBestIndividuals(this);
     }
 
     /**

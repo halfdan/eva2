@@ -36,7 +36,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
      */
     @Override
     public Object clone() {
-        return (Object) new MetricS(this);
+        return new MetricS(this);
     }
 
     public void setObjectiveSpaceRange(double[][] range) {

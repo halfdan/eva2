@@ -17,7 +17,7 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
 
     @Override
     public Object clone() {
-        return (Object) new InformationRetrievalReplacing(this);
+        return new InformationRetrievalReplacing(this);
     }
 
     /**

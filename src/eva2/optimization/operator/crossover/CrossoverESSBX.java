@@ -103,10 +103,7 @@ public class CrossoverESSBX implements InterfaceCrossover, java.io.Serializable 
     public boolean equals(Object crossover) {
         if (crossover instanceof CrossoverESSBX) {
             CrossoverESSBX cross = (CrossoverESSBX) crossover;
-            if (this.eta != cross.eta) {
-                return false;
-            }
-            return true;
+            return this.eta == cross.eta;
         } else {
             return false;
         }

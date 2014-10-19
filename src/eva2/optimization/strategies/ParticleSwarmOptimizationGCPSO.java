@@ -180,12 +180,12 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
         /**  numOfSuccesses,numOfFailures */
         // check if the gbestParticle improved over the last iteration
         if (gbestParticle == null) { // no previous gbest on first call available
-            AbstractEAIndividual gbestParticleCurrent = (AbstractEAIndividual) getPopulation().getEAIndividual(gbestParticleIndex);
+            AbstractEAIndividual gbestParticleCurrent = getPopulation().getEAIndividual(gbestParticleIndex);
             gbestParticle = (AbstractEAIndividual) gbestParticleCurrent.clone();
         }
         AbstractEAIndividual gbestParticleOld = gbestParticle;
         double[] gbestParticleFitnessOld = (double[]) gbestParticleOld.getData(partBestFitKey);
-        AbstractEAIndividual gbestParticleCurrent = (AbstractEAIndividual) getPopulation().getEAIndividual(gbestParticleIndex);
+        AbstractEAIndividual gbestParticleCurrent = getPopulation().getEAIndividual(gbestParticleIndex);
         double[] gbestParticleFitnessCurrent = (double[]) gbestParticleCurrent.getData(partBestFitKey);
 
 //		if (gbestParticleHasChanged && false){  // reset rho on change?

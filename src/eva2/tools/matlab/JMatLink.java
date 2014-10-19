@@ -1639,7 +1639,7 @@ public class JMatLink extends Thread {
 
             lockThreadB = true;
 
-            while (lockThreadB == true) {
+            while (lockThreadB) {
 
                 synchronized (this) {
 
@@ -1656,7 +1656,7 @@ public class JMatLink extends Thread {
 
             // System.out.println("JMatLink: thread awoke and passed lock");
 
-            if (destroyJMatLinkB == true) {
+            if (destroyJMatLinkB) {
                 break;
             }
 
@@ -1682,7 +1682,7 @@ public class JMatLink extends Thread {
 
         synchronized (this) {
 
-            while (lockEngineB == true) {
+            while (lockEngineB) {
 
                 try { // System.out.println("lockEngineLock locked");
 
@@ -1755,7 +1755,7 @@ public class JMatLink extends Thread {
 
         synchronized (this) {
 
-            while (lockWaitForValueB == true) {
+            while (lockWaitForValueB) {
 
                 try { // System.out.println("lockWaitForValue locked");
 

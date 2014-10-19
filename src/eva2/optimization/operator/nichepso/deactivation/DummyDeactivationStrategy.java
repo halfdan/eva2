@@ -9,7 +9,7 @@ public class DummyDeactivationStrategy implements InterfaceDeactivationStrategy,
 
     @Override
     public Object clone() {
-        return (Object) new DummyDeactivationStrategy();
+        return new DummyDeactivationStrategy();
     }
 
     @Override

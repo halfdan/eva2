@@ -284,7 +284,7 @@ public class MultirunRefiner {
         System.out.println(lineCnt + " lines parsed. " + numExp + " experiments with " + result.size() + " events each.");
 
         for (int i = 0; i < result.size(); i++) {
-            mean = ((double[]) (result.get(i)));
+            mean = result.get(i);
             for (int k = 0; k < mean.length; k++) {
                 mean[k] /= numExp;
             }
@@ -300,7 +300,7 @@ public class MultirunRefiner {
         StringBuffer sbuf = new StringBuffer("Event\tBest\tMean\tWorst\n");
 
         for (int i = 0; i < result.size(); i++) {
-            mean = ((double[]) (result.get(i)));
+            mean = result.get(i);
             sbuf.append(i + "\t" + mean[0] + "\t" + mean[1] + "\t" + mean[2] + "\n");
         }
         return sbuf.toString();

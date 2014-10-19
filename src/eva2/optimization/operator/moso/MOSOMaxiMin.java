@@ -20,7 +20,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
 
     @Override
     public Object clone() {
-        return (Object) new MOSOMaxiMin(this);
+        return new MOSOMaxiMin(this);
     }
 
     /**

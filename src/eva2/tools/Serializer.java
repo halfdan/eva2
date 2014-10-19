@@ -41,7 +41,7 @@ public class Serializer {
         try {
             Object objToStore = o;
             if (serializeInMem) {
-                objToStore = new SerializedObject((Object) o);
+                objToStore = new SerializedObject(o);
             }
             // I don't care!
         } catch (java.io.NotSerializableException ex) {
@@ -166,7 +166,7 @@ public class Serializer {
         Object serializedObject = null;
 
         try {
-            serializedObject = (Object) load(inputStream);
+            serializedObject = load(inputStream);
         } catch (InvalidClassException ex) {
             LOGGER.log(Level.WARNING, "Could not load object file.", ex);
         } catch (ClassNotFoundException ex) {

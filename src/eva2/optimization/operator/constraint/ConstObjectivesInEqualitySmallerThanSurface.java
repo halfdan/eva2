@@ -30,7 +30,7 @@ public class ConstObjectivesInEqualitySmallerThanSurface implements InterfaceCon
 
     @Override
     public Object clone() {
-        return (Object) new ConstObjectivesInEqualitySmallerThanSurface(this);
+        return new ConstObjectivesInEqualitySmallerThanSurface(this);
     }
 
     /**

@@ -47,10 +47,7 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
             if (this.numberOfMutations != mut.numberOfMutations) {
                 return false;
             }
-            if (this.maxInveredBits != mut.maxInveredBits) {
-                return false;
-            }
-            return true;
+            return this.maxInveredBits == mut.maxInveredBits;
         } else {
             return false;
         }
@@ -79,9 +76,7 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
             int[][] mutationIndices = new int[this.numberOfMutations][2];
             for (int i = 0; i < mutationIndices.length; i++) {
                 mutationIndices[i][0] = RNG.randomInt(0, ((InterfaceGAIndividual) individual).getGenotypeLength());
-                ;
                 mutationIndices[i][1] = RNG.randomInt(0, this.maxInveredBits);
-                ;
             }
             // ToDo: double instances of mutationIndices could be checked here... *sigh*
             for (int i = 0; i < mutationIndices.length; i++) {

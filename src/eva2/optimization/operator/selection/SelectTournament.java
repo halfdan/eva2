@@ -35,7 +35,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
 
     @Override
     public Object clone() {
-        return (Object) new SelectTournament(this);
+        return new SelectTournament(this);
     }
 
     /**

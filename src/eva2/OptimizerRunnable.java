@@ -278,7 +278,7 @@ public class OptimizerRunnable implements Runnable {
      * @param multis
      */
     public void setMultiRuns(int multis) {
-        ((AbstractStatistics) proc.getStatistics()).getStatisticsParameter().setMultiRuns(multis);
+        proc.getStatistics().getStatisticsParameter().setMultiRuns(multis);
     }
 
     /**
@@ -287,6 +287,6 @@ public class OptimizerRunnable implements Runnable {
      * @param addInfo
      */
     public void setOutputFullStatsToText(boolean addInfo) {
-        ((AbstractStatistics) proc.getStatistics()).getStatisticsParameter().setOutputAllFieldsAsText(addInfo);
+        proc.getStatistics().getStatisticsParameter().setOutputAllFieldsAsText(addInfo);
     }
 }

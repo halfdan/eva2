@@ -24,17 +24,17 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
         ArrayList<String> mutators = GenericObjectEditor.getClassesFromProperties(InterfaceMutation.class.getCanonicalName(), null);
         tmpList = new InterfaceMutation[mutators.size()];
         for (int i = 0; i < mutators.size(); i++) {
-            if (((String) mutators.get(i)).equals(this.getClass().getName())) {
+            if (mutators.get(i).equals(this.getClass().getName())) {
                 continue;
             }
             try {
                 tmpList[i] = (InterfaceMutation) Class.forName((String) mutators.get(i)).newInstance();
             } catch (java.lang.ClassNotFoundException e) {
-                System.out.println("Could not find class for " + (String) mutators.get(i));
+                System.out.println("Could not find class for " + mutators.get(i));
             } catch (java.lang.InstantiationException k) {
-                System.out.println("Instantiation exception for " + (String) mutators.get(i));
+                System.out.println("Instantiation exception for " + mutators.get(i));
             } catch (java.lang.IllegalAccessException a) {
-                System.out.println("Illegal access exception for " + (String) mutators.get(i));
+                System.out.println("Illegal access exception for " + mutators.get(i));
             }
         }
         this.mutationMixer = new PropertyMutationMixer(tmpList, false);

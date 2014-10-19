@@ -35,12 +35,8 @@ public class TXTFileFilter extends FileFilter {
             return true;
         }
         String fileName = file.getName();
-        if ((fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length()).equals("TXT")) ||
-                (fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length()).equals("txt"))) {
-            return true;
-        } else {
-            return false;
-        }
+        return (fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length()).equals("TXT")) ||
+                (fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length()).equals("txt"));
     }
 
     @Override

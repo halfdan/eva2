@@ -83,10 +83,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
             if (this.initialVelocity != initialVelocity) {
                 return false;
             }
-            if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
-                return false;
-            }
-            return true;
+            return this.lowerLimitStepSize == mut.lowerLimitStepSize;
         } else {
             return false;
         }
@@ -204,7 +201,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
         }
         double[] list = new double[tmpList.size()];
         for (int i = 0; i < tmpList.size(); i++) {
-            list[i] = ((Double) tmpList.get(i)).doubleValue();
+            list[i] = tmpList.get(i).doubleValue();
         }
         if (list.length <= 1) {
             return;

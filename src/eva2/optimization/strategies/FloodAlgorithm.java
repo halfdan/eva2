@@ -49,7 +49,7 @@ public class FloodAlgorithm implements InterfaceOptimizer, java.io.Serializable 
 
     @Override
     public Object clone() {
-        return (Object) new FloodAlgorithm(this);
+        return new FloodAlgorithm(this);
     }
 
     /**

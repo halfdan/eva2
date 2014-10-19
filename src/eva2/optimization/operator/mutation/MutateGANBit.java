@@ -42,10 +42,7 @@ public class MutateGANBit implements InterfaceMutation, java.io.Serializable {
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGANBit) {
             MutateGANBit mut = (MutateGANBit) mutator;
-            if (this.numberOfMutations != mut.numberOfMutations) {
-                return false;
-            }
-            return true;
+            return this.numberOfMutations == mut.numberOfMutations;
         } else {
             return false;
         }
@@ -76,7 +73,6 @@ public class MutateGANBit implements InterfaceMutation, java.io.Serializable {
             for (int i = 0; i < mutationIndices.length; i++) {
                 mutationIndices[i] = RNG.randomInt(0, ((InterfaceGAIndividual) individual).getGenotypeLength());
             }
-            ;
             // double instances of mutationIndices could be checked here... *sigh*
             for (int i = 0; i < mutationIndices.length; i++) {
                 tmpBitSet.flip(mutationIndices[i]);

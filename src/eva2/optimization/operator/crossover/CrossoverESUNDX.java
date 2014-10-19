@@ -201,11 +201,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESUNDX) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverESUNDX;
     }
 
     /**

@@ -27,7 +27,7 @@ public class StatisticUtils {
      * @param y2 double vector 2
      * @return the correlation coefficient
      */
-    public final static double correlation(double y1[], double y2[]) {
+    public static double correlation(double y1[], double y2[]) {
 
         int i;
         double av1 = 0.0, av2 = 0.0, y11 = 0.0, y22 = 0.0, y12 = 0.0, c;
@@ -124,7 +124,7 @@ public class StatisticUtils {
      *
      * @param a a double
      */
-    public static final double log2(double a) {
+    public static double log2(double a) {
 
         return Math.log(a) / log2;
     }
@@ -257,7 +257,7 @@ public class StatisticUtils {
      * @param c an integer value
      * @return c*log2(c) (but is careful to return 0 if c is 0)
      */
-    public static final double xlogx(int c) {
+    public static double xlogx(int c) {
 
         if (c == 0) {
             return 0.0;
@@ -271,7 +271,7 @@ public class StatisticUtils {
      * @param c an integer value
      * @return c*log2(c) (but is careful to return 0 if c is 0)
      */
-    public static final double xlogx(double c) {
+    public static double xlogx(double c) {
 
         if (c == 0) {
             return 0.0;
@@ -285,7 +285,7 @@ public class StatisticUtils {
      * @param a a double
      * @param b a double
      */
-    public static final boolean eq(double a, double b) {
+    public static boolean eq(double a, double b) {
 
         return (a - b < SMALL) && (b - a < SMALL);
     }
@@ -296,7 +296,7 @@ public class StatisticUtils {
      * @param a a double
      * @param b a double
      */
-    public static final boolean smOrEq(double a, double b) {
+    public static boolean smOrEq(double a, double b) {
 
         return (a - b < SMALL);
     }
@@ -307,7 +307,7 @@ public class StatisticUtils {
      * @param a a double
      * @param b a double
      */
-    public static final boolean grOrEq(double a, double b) {
+    public static boolean grOrEq(double a, double b) {
 
         return (b - a < SMALL);
     }
@@ -318,7 +318,7 @@ public class StatisticUtils {
      * @param a a double
      * @param b a double
      */
-    public static final boolean sm(double a, double b) {
+    public static boolean sm(double a, double b) {
 
         return (b - a > SMALL);
     }
@@ -329,7 +329,7 @@ public class StatisticUtils {
      * @param a a double
      * @param b a double
      */
-    public static final boolean gr(double a, double b) {
+    public static boolean gr(double a, double b) {
 
         return (a - b > SMALL);
     }
@@ -337,7 +337,7 @@ public class StatisticUtils {
     /**
      * returns root mean square error.
      */
-    public static final double rmsError(double array1[], double array2[]) {
+    public static double rmsError(double array1[], double array2[]) {
         if ((array1 == null) || (array2 == null)) {
             return -1.0;
         }

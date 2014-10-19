@@ -194,7 +194,7 @@ public class GraphPointSet {
         int[] index = new int[pointSetContainer.size()];
         int[] GraphSize = new int[pointSetContainer.size()];
         for (int i = 0; i < pointSetContainer.size(); i++) {
-            GraphSize[i] = ((PointSet) pointSetContainer.get(i)).getSize();
+            GraphSize[i] = pointSetContainer.get(i).getSize();
             if (GraphSize[i] <= 0) {
                 System.err.println("Warning: invalid graph size of "
                         + GraphSize[i] + " at " + i

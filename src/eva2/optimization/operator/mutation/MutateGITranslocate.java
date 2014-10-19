@@ -57,10 +57,7 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
     public boolean equals(Object mutator) {
         if (mutator instanceof MutateGITranslocate) {
             MutateGITranslocate mut = (MutateGITranslocate) mutator;
-            if (this.maxLengthOfTranslocate != mut.maxLengthOfTranslocate) {
-                return false;
-            }
-            return true;
+            return this.maxLengthOfTranslocate == mut.maxLengthOfTranslocate;
         } else {
             return false;
         }

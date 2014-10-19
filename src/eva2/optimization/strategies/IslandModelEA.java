@@ -68,7 +68,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
 
     @Override
     public Object clone() {
-        return (Object) new IslandModelEA(this);
+        return new IslandModelEA(this);
     }
 
     @Override
@@ -359,7 +359,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         if (false) {
             imea.optimizer = new MultiObjectiveEA();
             ((MultiObjectiveEA) imea.optimizer).setArchiveSize(25);
-            ((MultiObjectiveEA) imea.optimizer).getPopulation().setTargetSize(50);
+            imea.optimizer.getPopulation().setTargetSize(50);
             imea.optimizationProblem = new TF1Problem();
             ((TF1Problem) imea.optimizationProblem).setEAIndividual(new ESIndividualDoubleData());
 //            ((TF1Problem)imea.problem).setEAIndividual(new ESIndividualDoubleData());

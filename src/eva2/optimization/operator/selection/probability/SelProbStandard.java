@@ -18,7 +18,7 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
 
     @Override
     public Object clone() {
-        return (Object) new SelProbStandard(this);
+        return new SelProbStandard(this);
     }
 
     /**

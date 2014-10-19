@@ -32,11 +32,7 @@ public class NoMutation implements InterfaceMutation, java.io.Serializable {
      */
     @Override
     public boolean equals(Object mutator) {
-        if (mutator instanceof NoMutation) {
-            return true;
-        } else {
-            return false;
-        }
+        return mutator instanceof NoMutation;
     }
 
     /**

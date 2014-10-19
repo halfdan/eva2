@@ -44,11 +44,11 @@ public class CrossoverEAMixer implements InterfaceCrossover, InterfaceEvaluating
             try {
                 tmpList[i] = (InterfaceCrossover) Class.forName((String) crossers.get(i)).newInstance();
             } catch (java.lang.ClassNotFoundException e) {
-                System.out.println("Could not find class for " + (String) crossers.get(i));
+                System.out.println("Could not find class for " + crossers.get(i));
             } catch (java.lang.InstantiationException k) {
-                System.out.println("Instantiation exception for " + (String) crossers.get(i));
+                System.out.println("Instantiation exception for " + crossers.get(i));
             } catch (java.lang.IllegalAccessException a) {
-                System.out.println("Illegal access exception for " + (String) crossers.get(i));
+                System.out.println("Illegal access exception for " + crossers.get(i));
             }
         }
         this.crossoverMixer = new PropertyCrossoverMixer(tmpList);

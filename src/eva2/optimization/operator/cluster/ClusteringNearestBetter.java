@@ -99,7 +99,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
      */
     @Override
     public Object clone() {
-        return (Object) new ClusteringNearestBetter(this);
+        return new ClusteringNearestBetter(this);
     }
 
     /**

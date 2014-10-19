@@ -55,7 +55,7 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
      */
     @Override
     public Object clone() {
-        return (Object) new MetricSWithReference(this);
+        return new MetricSWithReference(this);
     }
 
     /**

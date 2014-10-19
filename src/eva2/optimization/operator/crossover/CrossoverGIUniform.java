@@ -99,11 +99,7 @@ public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializa
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverGIUniform) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverGIUniform;
     }
 
     /**

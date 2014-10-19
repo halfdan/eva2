@@ -34,7 +34,7 @@ public class BeanInspector {
             return false;
         }
         System.out.println("equalProperties: " + obj1.getClass().getName() + " " + obj2.getClass().getName());
-        if (obj1.getClass().getName().equals(obj2.getClass().getName()) == false) {
+        if (!obj1.getClass().getName().equals(obj2.getClass().getName())) {
             System.out.println("");
             return false;
         }
@@ -76,14 +76,14 @@ public class BeanInspector {
                 Object value_1 = getter_1.invoke(obj1, args_1);
                 Object value_2 = getter_2.invoke(obj2, args_2);
                 BeansInside = true;
-                if (BeanInspector.equalProperties(value_1, value_2) == false) {
+                if (!BeanInspector.equalProperties(value_1, value_2)) {
                     BeansEqual = false;
                 }
             } catch (Exception e) {
                 System.out.println(" BeanTest.equalProperties " + e.getMessage());
             }
         }
-        if (BeansInside == true) {
+        if (BeansInside) {
             return BeansEqual;
         }
         // here we have Integer or Double ...
@@ -154,7 +154,7 @@ public class BeanInspector {
         if (obj instanceof String) {
             return (String) obj;
         } // directly return a string object
-        Class<? extends Object> type = obj.getClass();
+        Class<?> type = obj.getClass();
 
         if (type.isArray()) { // handle the array case
             StringBuffer sbuf = new StringBuffer();
@@ -524,11 +524,7 @@ public class BeanInspector {
      */
     private static boolean isBoxableFrom(Class clz1, Class clz2) {
         Class box = getBoxedType(clz1);
-        if (box != null && (clz2.isAssignableFrom(box))) {
-            return true;
-        } else {
-            return false;
-        }
+        return box != null && (clz2.isAssignableFrom(box));
     }
 
     /**
@@ -852,11 +848,8 @@ public class BeanInspector {
         if (cls.isPrimitive()) {
             return true;
         }
-        if ((cls == Double.class) || (cls == Integer.class) || (cls == Boolean.class) || (cls == Character.class) || (cls == Void.class)
-                || (cls == Byte.class) || (cls == Short.class) || (cls == Long.class) || (cls == Float.class)) {
-            return true;
-        }
-        return false;
+        return (cls == Double.class) || (cls == Integer.class) || (cls == Boolean.class) || (cls == Character.class) || (cls == Void.class)
+                || (cls == Byte.class) || (cls == Short.class) || (cls == Long.class) || (cls == Float.class);
     }
 
     /**

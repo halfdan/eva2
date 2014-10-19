@@ -770,7 +770,7 @@ public class BayNet {
         double result = 0.0;
         double Nijk = numberSetCorrectly(pop2, k, currentNode.getId());
         if (Nijk > 0) {
-            result = (double) Nijk * Math.log((double) Nijk);
+            result = Nijk * Math.log(Nijk);
         }
         if (k == 1) {
             double prob = Nijk / (double) pop2.size();

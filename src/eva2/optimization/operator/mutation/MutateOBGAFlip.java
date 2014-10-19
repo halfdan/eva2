@@ -43,11 +43,7 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
      */
     @Override
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateOBGAFlip) {
-            return true;
-        } else {
-            return false;
-        }
+        return mutator instanceof MutateOBGAFlip;
     }
 
     @Override

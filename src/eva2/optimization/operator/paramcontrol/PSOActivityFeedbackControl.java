@@ -35,8 +35,6 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
     public PSOActivityFeedbackControl() {
     }
 
-    ;
-
     public PSOActivityFeedbackControl(
             PSOActivityFeedbackControl o) {
         minInert = o.minInert;

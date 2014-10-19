@@ -43,7 +43,7 @@ public class ImprovementDeactivationStrategy implements InterfaceDeactivationStr
 
     @Override
     public Object clone() {
-        return (Object) new ImprovementDeactivationStrategy(this);
+        return new ImprovementDeactivationStrategy(this);
     }
 
     public String globalInfo() {

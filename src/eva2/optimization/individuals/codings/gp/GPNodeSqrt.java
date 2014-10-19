@@ -37,7 +37,7 @@ public class GPNodeSqrt extends AbstractGPNode implements java.io.Serializable {
      */
     @Override
     public Object clone() {
-        return (Object) new GPNodeSqrt(this);
+        return new GPNodeSqrt(this);
     }
 
     /**

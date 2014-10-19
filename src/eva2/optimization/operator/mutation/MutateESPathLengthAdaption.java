@@ -38,10 +38,10 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
         this.expectedPathLen = mutator.expectedPathLen;
         this.cu = mutator.cu;
         if (mutator.randZ != null) {
-            this.randZ = (double[]) mutator.randZ.clone();
+            this.randZ = mutator.randZ.clone();
         }
         if (mutator.path != null) {
-            this.path = (double[]) mutator.path.clone();
+            this.path = mutator.path.clone();
         }
     }
 

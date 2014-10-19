@@ -149,7 +149,6 @@ public class MatlabEvalMediator {
                 } catch (Exception e) {
                 }
             }
-            ;
             k++;
             if ((k % mod) == 0) {
                 logMPOrSysOut("MEM waiting for JE to ask... (" + mod + ") " + getState());

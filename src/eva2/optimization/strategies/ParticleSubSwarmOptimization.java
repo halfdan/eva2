@@ -71,7 +71,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      */
     @Override
     public Object clone() {
-        return (Object) new ParticleSubSwarmOptimization(this);
+        return new ParticleSubSwarmOptimization(this);
     }
 
 
@@ -115,7 +115,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      */
     protected void initIndividuals() {
         for (int i = 0; i < population.size(); ++i) {
-            AbstractEAIndividual indy = (AbstractEAIndividual) (population.getEAIndividual(i));
+            AbstractEAIndividual indy = population.getEAIndividual(i);
             initSubSwarmDefaultsOf(indy);
         }
     }
@@ -284,7 +284,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     public void updateFitnessArchives() {
         //int lim = 3; // maximal number of fitnessvalues remembered from former iterations
         for (int i = 0; i < population.size(); ++i) {
-            AbstractEAIndividual indy = (AbstractEAIndividual) population.getEAIndividual(i);
+            AbstractEAIndividual indy = population.getEAIndividual(i);
             Vector<Double> fitArchive_old = (Vector<Double>) (indy.getData(NichePSO.fitArchiveKey));
             double scalarFitness = sum(indy.getFitness()); // if multiobjective, use the sum of all fitnessvalues (dont use the norm because fitnessvalues may be negative)
             Double fitness = new Double(scalarFitness);
@@ -486,7 +486,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         AbstractEAIndividual tmpIndy;
 
         for (int i = 0; i < tmp.getTargetSize(); i++) {
-            tmpIndy = (AbstractEAIndividual) ((AbstractEAIndividual) template).clone();
+            tmpIndy = (AbstractEAIndividual) template.clone();
             tmpIndy.init(prob);
             tmp.add(tmpIndy);
         }

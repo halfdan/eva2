@@ -29,11 +29,7 @@ public class MutateDefault implements InterfaceMutation, java.io.Serializable {
      */
     @Override
     public boolean equals(Object mutator) {
-        if (mutator instanceof MutateDefault) {
-            return true;
-        } else {
-            return false;
-        }
+        return mutator instanceof MutateDefault;
     }
 
     /**
@@ -56,7 +52,7 @@ public class MutateDefault implements InterfaceMutation, java.io.Serializable {
     @Override
     public void mutate(AbstractEAIndividual individual) {
         if (individual instanceof IndividualInterface) {
-            ((IndividualInterface) individual).defaultMutate();
+            individual.defaultMutate();
         }
     }
 

@@ -20,7 +20,7 @@ public class ObjectiveSpaceMetric implements InterfaceDistanceMetric, java.io.Se
 
     @Override
     public Object clone() {
-        return (Object) new ObjectiveSpaceMetric(this);
+        return new ObjectiveSpaceMetric(this);
     }
 
     /**

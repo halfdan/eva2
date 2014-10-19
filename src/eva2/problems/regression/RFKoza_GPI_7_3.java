@@ -19,7 +19,7 @@ public class RFKoza_GPI_7_3 implements InterfaceRegressionFunction, java.io.Seri
 
     @Override
     public Object clone() {
-        return (Object) new RFKoza_GPI_7_3(this);
+        return new RFKoza_GPI_7_3(this);
     }
 
     /**

@@ -50,19 +50,12 @@ public class EuclideanDiversityAbsorptionStrategy extends StandardAbsorptionStra
         if (!super.shouldAbsorbParticleIntoSubswarm(indy, subswarm, mainswarm)) {
             return false; //
         }
-        if (!diversityIsBelowThreshold(subswarm)) {
-            return false;
-        }
-        return true;
+        return diversityIsBelowThreshold(subswarm);
     }
 
     private boolean diversityIsBelowThreshold(ParticleSubSwarmOptimization subswarm) {
         double meanDistanceFromGBestPos = subswarm.getEuclideanDiversity();
-        if (meanDistanceFromGBestPos < getEpsilon()) {
-            return true;
-        } else {
-            return false;
-        }
+        return meanDistanceFromGBestPos < getEpsilon();
     }
 
     /**

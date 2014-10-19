@@ -76,7 +76,7 @@ public class DContainer extends DComponent implements DParent {
             return;
         }
         if (e instanceof DParent) {
-            DParent he = (DParent) e, me = (DParent) this;
+            DParent he = (DParent) e, me = this;
             if (he == me) {
                 throw new
                         IllegalArgumentException("Adding DParent to itself");
@@ -157,11 +157,11 @@ public class DContainer extends DComponent implements DParent {
     public DElement getDElement(String key) {
         int index = -1;
         for (int i = 0; index == -1 && i < keys.size(); i++) {
-            if (((String) keys.get(i)).equals(key)) {
+            if (keys.get(i).equals(key)) {
                 index = i;
             }
         }
-        return (index < keys.size()) ? (DElement) elements.get(index) : (DElement) null;
+        return (index < keys.size()) ? elements.get(index) : null;
     }
 
 // implementing DComponent:
@@ -176,7 +176,7 @@ public class DContainer extends DComponent implements DParent {
     public void paint(DMeasures m) {
         DElement e;
         for (int i = 0; i < elements.size(); i++) {
-            e = (DElement) elements.elementAt(i);
+            e = elements.elementAt(i);
             if (e.isVisible() && !m.getSlimRectangle().hasEmptyIntersection(e.getRectangle())) {
                 m.g.setColor(DEFAULT_COLOR);
                 e.paint(m);
@@ -203,7 +203,7 @@ public class DContainer extends DComponent implements DParent {
     @Override
     public void setColor(Color c) {
         for (int i = 0; i < elements.size(); i++) {
-            ((DElement) elements.get(i)).setColor(c);
+            elements.get(i).setColor(c);
         }
         super.setColor(c);
     }
@@ -226,7 +226,7 @@ public class DContainer extends DComponent implements DParent {
     public void restoreBorder() {
         DBorder b = new DBorder();
         for (int i = 0; i < elements.size(); i++) {
-            b.insert(((DElement) elements.get(i)).getDBorder());
+            b.insert(elements.get(i).getDBorder());
         }
         setDBorder(b);
     }
@@ -241,7 +241,7 @@ public class DContainer extends DComponent implements DParent {
         rectangle = DRectangle.getEmpty();
         setDBorder(new DBorder());
         for (int i = 0; i < elements.size(); i++) {
-            DElement elt = (DElement) elements.elementAt(i);
+            DElement elt = elements.elementAt(i);
             rectangle.insert(elt.getRectangle());
             addDBorder(elt.getDBorder());
         }

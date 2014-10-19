@@ -46,11 +46,11 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     public PSymbolicRegression(PSymbolicRegression b) {
         //AbstractOptimizationProblem
         if (b.template != null) {
-            this.template = (AbstractEAIndividual) ((AbstractEAIndividual) b.template).clone();
+            this.template = (AbstractEAIndividual) b.template.clone();
         }
         //F1Problem
         if (b.overallBestIndividuum != null) {
-            this.overallBestIndividuum = (AbstractEAIndividual) ((AbstractEAIndividual) b.overallBestIndividuum).clone();
+            this.overallBestIndividuum = (AbstractEAIndividual) b.overallBestIndividuum.clone();
         }
         if (b.gpArea != null) {
             this.gpArea = (GPArea) b.gpArea.clone();
@@ -87,7 +87,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      */
     @Override
     public Object clone() {
-        return (Object) new PSymbolicRegression(this);
+        return new PSymbolicRegression(this);
     }
 
     /**

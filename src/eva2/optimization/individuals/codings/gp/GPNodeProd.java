@@ -28,7 +28,7 @@ public class GPNodeProd extends AbstractGPNode implements java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new GPNodeProd(this);
+        return new GPNodeProd(this);
     }
 
     @Override

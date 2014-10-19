@@ -58,7 +58,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
      */
     @Override
     public Object clone() {
-        return (Object) new ClusteringKMeans(this);
+        return new ClusteringKMeans(this);
     }
 
     /**

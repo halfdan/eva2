@@ -30,7 +30,7 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
 
     @Override
     public Object clone() {
-        return (Object) new SelectEPTournaments(this);
+        return new SelectEPTournaments(this);
     }
 
     /**

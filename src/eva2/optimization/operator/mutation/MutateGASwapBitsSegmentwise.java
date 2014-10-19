@@ -86,10 +86,7 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
             if (this.multiplesPerSegment != mut.multiplesPerSegment) {
                 return false;
             }
-            if (this.preferPairs != mut.preferPairs) {
-                return false;
-            }
-            return true;
+            return this.preferPairs == mut.preferPairs;
         } else {
             return false;
         }
@@ -173,7 +170,7 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
             int maxTries = (1 + len) / 2;
             while (!(maybePrefered == bs.get(k)) && (maxTries >= 0)) {
                 k = RNG.randomInt(offset, offset + len - 1);
-                ; // try next random position
+                // try next random position
                 maxTries--;
             }
         }

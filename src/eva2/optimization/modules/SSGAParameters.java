@@ -84,11 +84,11 @@ public class SSGAParameters extends AbstractOptimizationParameters implements In
      * @return The population of current solutions to a given problem.
      */
     public Population getPopulation() {
-        return ((SteadyStateGA) this.optimizer).getPopulation();
+        return this.optimizer.getPopulation();
     }
 
     public void setPopulation(Population pop) {
-        ((SteadyStateGA) this.optimizer).setPopulation(pop);
+        this.optimizer.setPopulation(pop);
     }
 
     public String populationTipText() {

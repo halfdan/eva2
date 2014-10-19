@@ -63,11 +63,7 @@ public class SolutionHistogram {
     }
 
     public boolean isCompatible(SolutionHistogram o) {
-        if (lBound == o.getLowerBound() && (uBound == o.getUpperBound()) && (numBins == o.getNumBins())) {
-            return true;
-        } else {
-            return false;
-        }
+        return lBound == o.getLowerBound() && (uBound == o.getUpperBound()) && (numBins == o.getNumBins());
     }
 
     /**

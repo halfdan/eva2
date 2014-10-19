@@ -44,7 +44,7 @@ public class EnumEditor extends PropertyEditorSupport {
     public void setAsText(String text) throws IllegalArgumentException {
         for (int i = 0; i < enumConstants.length; i++) {
             if (text.equals(enumConstants[i].toString())) {
-                setValue((Enum) enumConstants[i]);
+                setValue(enumConstants[i]);
                 return;
             }
         }

@@ -1,22 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Filename: $RCSfile: PolyInterpolation.java,v $
-//  Purpose:  Some interpolation stuff.
-//  Language: Java
-//  Compiler: JDK 1.4
-//  Authors:  Joerg K. Wegner
-//  Version:  $Revision: 1.1 $
-//            $Date: 2003/07/22 19:25:30 $
-//            $Author: wegnerj $
-//
-//  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
-//
-///////////////////////////////////////////////////////////////////////////////
-
 package eva2.tools.math.interpolation;
-
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 /**
  * Defines the routines for the interpolation of data.
@@ -25,10 +7,6 @@ public class PolyInterpolation {
     AbstractDataSet abstractDataSet = null;
     boolean sloppy = true;
     double[] polynomialCoefficients = null;
-
-	/*------------------------------------------------------------------------*
-     * constructor
-	 *------------------------------------------------------------------------*/
 
     /**
      * Initializes this class.
@@ -272,7 +250,7 @@ public class PolyInterpolation {
         PolynomialInterpolationResult result =
                 new PolynomialInterpolationResult();
 
-        dif = Math.abs(x - xa[1 - 1]);
+        dif = Math.abs(x - xa[01 - 1]);
         for (i = 1; i <= xa.length; i++) {
             if ((dift = Math.abs(x - xa[i - 1])) < dif) {
                 ns = i;
@@ -280,10 +258,8 @@ public class PolyInterpolation {
             }
             c[i] = ya[i - 1];
             d[i] = ya[i - 1];
-            //System.out.println("x"+xa[i-1]+" y"+ya[i-1]);
         }
         result.y = ya[ns - 1];
-        //System.out.println("y="+result.y+" ns="+ns);
         ns--;
         for (m = 1; m < xa.length; m++) {
             for (i = 1; i <= xa.length - m; i++) {
@@ -292,8 +268,7 @@ public class PolyInterpolation {
                 w = c[i + 1] - d[i];
                 if ((den = ho - hp) == 0.0) {
                     if (sloppy) {
-                        System.out.println(
-                                "Two identical x values. The values must be distinct.");
+                        System.out.println("Two identical x values. The values must be distinct.");
                         den = 1.0;
                     } else {
                         throw new InterpolationException("Two identical x values.");
@@ -428,7 +403,3 @@ public class PolyInterpolation {
         return cof;
     }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

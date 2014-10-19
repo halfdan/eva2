@@ -113,11 +113,7 @@ public class CrossoverESSPX implements InterfaceCrossover, java.io.Serializable 
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverESSPX) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverESSPX;
     }
 
     /**

@@ -20,7 +20,7 @@ public class StandardAbsorptionStrategy implements InterfaceAbsorptionStrategy, 
      */
     @Override
     public Object clone() {
-        return (Object) new StandardAbsorptionStrategy();
+        return new StandardAbsorptionStrategy();
     }
 
     public String globalInfo() {

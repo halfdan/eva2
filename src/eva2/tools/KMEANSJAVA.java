@@ -51,7 +51,7 @@ public class KMEANSJAVA {
         int counter = 0;
         c = new double[K][];
         for (int i = 0; i < K; i++) {
-            c[i] = (double[]) samples[i].clone();
+            c[i] = samples[i].clone();
         }
         indices = new int[samples.length];
         while (counter++ < iterations) {

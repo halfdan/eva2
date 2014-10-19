@@ -20,7 +20,7 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
 
     @Override
     public Object clone() {
-        return (Object) new MOSOMOGARankBased(this);
+        return new MOSOMOGARankBased(this);
     }
 
     /**

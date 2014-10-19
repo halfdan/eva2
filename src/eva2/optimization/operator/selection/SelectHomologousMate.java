@@ -24,7 +24,7 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
 
     @Override
     public Object clone() {
-        return (Object) new SelectHomologousMate(this);
+        return new SelectHomologousMate(this);
     }
 
     /**

@@ -76,10 +76,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
             if (this.tau1 != mut.tau1) {
                 return false;
             }
-            if (this.lowerLimitStepSize != mut.lowerLimitStepSize) {
-                return false;
-            }
-            return true;
+            return this.lowerLimitStepSize == mut.lowerLimitStepSize;
         } else {
             return false;
         }
@@ -148,7 +145,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
             }
             double[] list = new double[tmpList.size()];
             for (int i = 0; i < tmpList.size(); i++) {
-                list[i] = ((Double) tmpList.get(i)).doubleValue();
+                list[i] = tmpList.get(i).doubleValue();
             }
             if (list.length <= 1) {
                 return;

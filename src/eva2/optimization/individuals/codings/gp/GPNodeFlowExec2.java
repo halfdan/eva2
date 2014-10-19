@@ -37,7 +37,7 @@ public class GPNodeFlowExec2 extends AbstractGPNode implements java.io.Serializa
      */
     @Override
     public Object clone() {
-        return (Object) new GPNodeFlowExec2(this);
+        return new GPNodeFlowExec2(this);
     }
 
     /**

@@ -24,7 +24,7 @@ public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Se
 
     @Override
     public Object clone() {
-        return (Object) new GenotypeMetricBitSet(this);
+        return new GenotypeMetricBitSet(this);
     }
 
     /**

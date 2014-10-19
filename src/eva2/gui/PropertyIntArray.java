@@ -21,7 +21,7 @@ public class PropertyIntArray implements java.io.Serializable {
 
     @Override
     public Object clone() {
-        return (Object) new PropertyIntArray(this);
+        return new PropertyIntArray(this);
     }
 
     /**

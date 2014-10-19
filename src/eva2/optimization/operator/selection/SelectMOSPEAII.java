@@ -31,7 +31,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
 
     @Override
     public Object clone() {
-        return (Object) new SelectMOSPEAII(this);
+        return new SelectMOSPEAII(this);
     }
 
     /**

@@ -17,7 +17,6 @@ import java.util.List;
  * @author mkron
  */
 public class OptimizationJob implements Serializable, InterfaceStatisticsListener {
-    private static final boolean TRACE = false;
 
     private InterfaceOptimizationParameters params = null;
     private String[] fieldHeaders = null;
@@ -25,13 +24,10 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
     private int jobID = 0;
     private static int jobIDCounter = 0;
     private int numRuns = 0;
-    private boolean lastRunIncompl = false;
-    //	private boolean jobFinished = false;
+    private boolean lastRunIncomplete = false;
     private StateEnum state = StateEnum.idle;
 
     private enum StateEnum {running, idle, complete, incomplete}
-
-    ;
 
     public OptimizationJob() {
         jobID = jobIDCounter;
@@ -54,8 +50,7 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
     public void resetJob() {
         numRuns = 0;
         state = StateEnum.idle;
-        lastRunIncompl = false;
-//		jobFinished=false;
+        lastRunIncomplete = false;
         fieldHeaders = null;
         multiRunFinalObjectData = null;
     }
@@ -86,13 +81,10 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
             String name = getStateTag();
             name = name + " Job (" + jobID + "), "; // +params.getName();
             name = name + params.getOptimizer().getName() + "/" + params.getProblem().getName();
-//			name=name+( (onlineData==null) ? ", empty" : (onlineData.size()+" records"));
             name += (", " + numRuns + " runs");
             if (fieldHeaders != null) {
                 name += (", " + fieldHeaders.length + " fields");
             }
-//			if (jobFinished) name=name+", finished";
-//			if (lastRunIncompl) name=name+", incomplete";
             return name;
         }
     }
@@ -116,14 +108,6 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
 
         tag = tag + numRuns + " ";
         return tag;
-//		if (isFinishedAndComplete()) return "*";
-//		else if (jobFinished && !lastRunIncompl) return "?";
-//		else if (!jobFinished && lastRunIncompl) return "-";
-//		else if (!jobFinished && !lastRunIncompl) return "O";
-//		else {
-//			System.err.println("Invalid state of job " + this.toString());
-//			return "?";
-//		}
     }
 
     public String globalInfo() {
@@ -131,8 +115,7 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
     }
 
     public boolean isFinishedAndComplete() {
-//		return (jobFinished && !lastRunIncompl);
-        return (state == StateEnum.complete) && !lastRunIncompl;
+        return (state == StateEnum.complete) && !lastRunIncomplete;
     }
 
     public String[] getFieldHeaders() {
@@ -148,8 +131,7 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
     }
 
     @Override
-    public void finalMultiRunResults(String[] header,
-                                     List<Object[]> multiRunFinalObjDat) {
+    public void finalMultiRunResults(String[] header, List<Object[]> multiRunFinalObjDat) {
         fieldHeaders = header;
         multiRunFinalObjectData = multiRunFinalObjDat;
     }
@@ -161,39 +143,28 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
         if (state != StateEnum.running) {
             throw new RuntimeException("Sent data to job with invalid state!");
         }
-//		if (onlineData==null) onlineData = new ArrayList<Object[]>(10);
-//		onlineData.add(statObjects);
     }
 
     @Override
     public void notifyRunStarted(int runNumber, int plannedMultiRuns,
                                  String[] header, String[] metaInfo) {
         state = StateEnum.running;
-//		onlineData = null;
-//		multiRunFinalObjectData = null;
     }
 
     @Override
     public void notifyRunStopped(int runsPerformed, boolean completedLastRun) {
         numRuns = runsPerformed;
-        lastRunIncompl = !completedLastRun;
-        if (TRACE) {
-            System.out.println("OptimizationJob.notifyRunStopped, " + runsPerformed + " " + completedLastRun);
-        }
+        lastRunIncomplete = !completedLastRun;
     }
 
     @Override
     public boolean notifyMultiRunFinished(String[] header, List<Object[]> multiRunFinalObjDat) {
         fieldHeaders = header;
         multiRunFinalObjectData = multiRunFinalObjDat;
-        if (lastRunIncompl) {
+        if (lastRunIncomplete) {
             state = StateEnum.incomplete;
         } else {
             state = StateEnum.complete;
-        }
-//		jobFinished=true;
-        if (TRACE) {
-            System.out.println("multi run finished!");
         }
         return true;
     }

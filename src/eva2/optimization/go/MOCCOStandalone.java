@@ -575,7 +575,7 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
                     double y = x / (double) ((EvaluationTerminator) this.state.terminator).getFitnessCalls();
                     currentProgress = (int) (population.getFunctionCalls() * y);
                 } else {
-                    currentProgress = (int) (0);
+                    currentProgress = 0;
                 }
                 updateStatus("Optimizing...", currentProgress);
             } else {
