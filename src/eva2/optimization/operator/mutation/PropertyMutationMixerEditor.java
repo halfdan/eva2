@@ -231,9 +231,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
             mutatorsWithWeights.addMutator((InterfaceMutation) mutatorsWithWeights.getAvailableMutators()[0].clone());
             int l = mutatorsWithWeights.getSelectedMutators().length;
             GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l];
-            for (int i = 0; i < editors.length; i++) {
-                newEdit[i] = editors[i];
-            }
+            System.arraycopy(editors, 0, newEdit, 0, editors.length);
             InterfaceMutation[] list = mutatorsWithWeights.getSelectedMutators();
             l--;
             newEdit[l] = new GeneralOptimizationEditorProperty();
@@ -312,7 +310,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
             for (int i = 0; i < newW.length; i++) {
                 try {
                     double d = 0;
-                    d = new Double(weights[i].getText()).doubleValue();
+                    d = Double.parseDouble(weights[i].getText());
                     newW[i] = d;
                 } catch (Exception e) {
                 }

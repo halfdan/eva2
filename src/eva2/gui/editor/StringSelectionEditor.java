@@ -59,7 +59,7 @@ public class StringSelectionEditor extends AbstractListSelectionEditor {
 
     @Override
     public String getAsText() {
-        StringBuffer sbuf = new StringBuffer("{");
+        StringBuilder sbuf = new StringBuilder("{");
         boolean first = true;
         for (int i = 0; i < getElementCount(); i++) {
             if (isElementSelected(i)) {

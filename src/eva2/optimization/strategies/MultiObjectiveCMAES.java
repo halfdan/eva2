@@ -219,7 +219,7 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     @Override
     public void optimize() {
 
-        HashMap<Long, CounterClass> SuccessCounterMap = new HashMap<Long, CounterClass>();
+        HashMap<Long, CounterClass> SuccessCounterMap = new HashMap<>();
 
         // Eltern markieren und f�r die Z�hlung vorbereiten
         for (int j = 0; j < lambdaMO && j < population.size(); j++) {

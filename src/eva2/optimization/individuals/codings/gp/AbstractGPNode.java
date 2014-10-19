@@ -144,7 +144,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
                             ((GPNodeInput) currentNode).setIdentifier(currentNode.getOpIdentifier());
                         }
                     }
-                    return new Pair<AbstractGPNode, String>(currentNode, restStr);
+                    return new Pair<>(currentNode, restStr);
                 } else {
                     restStr = str.substring(cutFront + 1).trim(); // cut this op and front brace
                     currentNode.nodes = new AbstractGPNode[currentNode.getArity()];
@@ -159,7 +159,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
                             e.printStackTrace();
                         }
                     }
-                    return new Pair<AbstractGPNode, String>(currentNode, restStr);
+                    return new Pair<>(currentNode, restStr);
                 }
             }
         }
@@ -175,7 +175,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     public static Vector<AbstractGPNode> getNodeTypes() {
         ArrayList<String> cls = GenericObjectEditor.getClassesFromClassPath(AbstractGPNode.class.getCanonicalName(), null);
-        Vector<AbstractGPNode> nodeTypes = new Vector<AbstractGPNode>(cls.size());
+        Vector<AbstractGPNode> nodeTypes = new Vector<>(cls.size());
         for (int i = 0; i < cls.size(); i++) {
             try {
                 AbstractGPNode node = (AbstractGPNode) Class.forName((String) cls.get(i)).newInstance();
@@ -206,7 +206,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         }
         try {
             Double d = Double.parseDouble(firstArg);
-            return new Pair<Double, String>(d, str.substring(firstArg.length()));
+            return new Pair<>(d, str.substring(firstArg.length()));
         } catch (NumberFormatException e) {
             if (expect) {
                 System.err.println("String has unknown prefix: " + str);
@@ -246,7 +246,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      */
     private static Vector<AbstractGPNode> match(
             Vector<AbstractGPNode> nodeTypes, String str, boolean firstLongestOnly, boolean ignoreCase) {
-        Vector<AbstractGPNode> matching = new Vector<AbstractGPNode>();
+        Vector<AbstractGPNode> matching = new Vector<>();
         for (int i = 0; i < nodeTypes.size(); i++) {
             String reqPrefix = nodeTypes.get(i).getOpIdentifier();
             if (nodeTypes.get(i).getArity() > 0) {
@@ -261,7 +261,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
         if (matching.size() > 1 && firstLongestOnly) { // allow only the longest match (or first longest)
             int maxLen = matching.get(0).getOpIdentifier().length();
             AbstractGPNode longest = matching.get(0);
-            Vector<AbstractGPNode> longestList = new Vector<AbstractGPNode>();
+            Vector<AbstractGPNode> longestList = new Vector<>();
             longestList.add(longest);
             for (int i = 1; i < matching.size(); i++) {
                 if (matching.get(i).getOpIdentifier().length() > maxLen) {
@@ -338,7 +338,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
      * @return
      */
     public static String createNodeList() {
-        String ret = new String();
+        String ret = "";
 
         Class<?> cls = AbstractGPNode.class;
         Class<?>[] nodes = ReflectPackage.getAssignableClassesInPackage(cls.getPackage().getName(), AbstractGPNode.class, true, false);

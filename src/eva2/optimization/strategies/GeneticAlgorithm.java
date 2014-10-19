@@ -166,7 +166,7 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
         if (this.changeListener == null) {
-            this.changeListener = new Vector<InterfacePopulationChangedEventListener>();
+            this.changeListener = new Vector<>();
         }
         this.changeListener.add(ea);
     }

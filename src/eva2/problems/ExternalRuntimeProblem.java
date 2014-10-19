@@ -14,6 +14,7 @@ import eva2.util.annotation.Description;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -235,10 +236,8 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     }
 
     public static List<String> runProcess(String[] parameters, String workingDir) {
-        List<String> params = new ArrayList<String>(parameters.length);
-        for (String str : parameters) {
-            params.add(str);
-        }
+        List<String> params = new ArrayList<>(parameters.length);
+        Collections.addAll(params, parameters);
         return runProcess(params, workingDir);
     }
 
@@ -254,7 +253,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         String colSepRegExp = "[\\s;:|]";  // \s for whitespaces, double quoting necessary!
         Process process;
         ProcessBuilder pb;
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         try {
             pb = new ProcessBuilder(parameters);
             pb.directory(new File(workingDir));
@@ -266,9 +265,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 String[] parts = line.split(colSepRegExp);
-                for (String str : parts) {
-                    results.add(str);
-                }
+                Collections.addAll(results, parts);
 //				results.add(line); 
             }
             br.close();
@@ -286,9 +283,9 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         if (x == null) {
             throw new RuntimeException("Error, x=null value received in ExternalRuntimeProblem.evaluate");
         }
-        ArrayList<Double> fitList = new ArrayList<Double>();
+        ArrayList<Double> fitList = new ArrayList<>();
 
-        List<String> parameters = new ArrayList<String>();
+        List<String> parameters = new ArrayList<>();
         parameters.add(this.command);
         if (additionalArg != null && (additionalArg.length() > 0)) {
             parameters.add(additionalArg);
@@ -323,7 +320,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
      * @return
      */
     protected String prepareParameter(double[] x, int i) {
-        return new String("" + x[i]);
+        return "" + x[i];
     }
 
     /**
@@ -334,7 +331,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
      */
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
-        StringBuffer sb = new StringBuffer(200);
+        StringBuilder sb = new StringBuilder(200);
         sb.append("External Runtime Problem:\n");
         sb.append("Here the individual codes a vector of real number x is to be minimized on a user given external problem.\nParameters:\n");
         sb.append("Dimension   : ");

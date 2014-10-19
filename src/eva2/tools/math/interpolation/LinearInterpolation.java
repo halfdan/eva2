@@ -454,7 +454,7 @@ public class LinearInterpolation {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer(1000);
+        StringBuilder sb = new StringBuilder(1000);
 
         sb.append("Regression Statistics for " + yName + " = a + b*" + xName);
         sb.append("");

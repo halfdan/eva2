@@ -63,7 +63,7 @@ public class ImprovementDeactivationStrategy implements InterfaceDeactivationStr
             return false;
         } else {
             List<Double> lst = bests.subList(bests.size() - haltingWindow, bests.size());
-            bests = new Vector<Double>(haltingWindow);
+            bests = new Vector<>(haltingWindow);
             bests.addAll(lst);
             for (int i = 1; i < pop.size(); i++) {
                 for (int k = 0; k < haltingWindow; k++) {

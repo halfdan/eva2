@@ -24,8 +24,8 @@ public class NicheGraph implements java.io.Serializable {
      * ctor
      */
     public NicheGraph() {
-        graphTable = new TreeMap<String, TreeSet<String>>();
-        set = new HashSet<String>();
+        graphTable = new TreeMap<>();
+        set = new HashSet<>();
     }
 
 
@@ -90,10 +90,10 @@ public class NicheGraph implements java.io.Serializable {
      */
     // run BFS from given root vertex r 
     public void runBFS(String r) {
-        set = new HashSet<String>();
+        set = new HashSet<>();
 
         // put root on the queue
-        java.util.Queue<String> q = new LinkedList<String>();
+        java.util.Queue<String> q = new LinkedList<>();
         q.offer(r);
         set.add(r);
 
@@ -113,7 +113,7 @@ public class NicheGraph implements java.io.Serializable {
      * @return connected components of the graph
      */
     public List<Set<String>> getConnectedComponents() {
-        ArrayList<Set<String>> l = new ArrayList<Set<String>>();
+        ArrayList<Set<String>> l = new ArrayList<>();
 
         for (String v : getVertexIterator()) {
             if (!isComponent(v, l)) {

@@ -880,7 +880,7 @@ public class TribesPosition implements java.io.Serializable {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer("TribesMemory at [");
+        StringBuilder sb = new StringBuilder("TribesMemory at [");
         for (int i = 0; i < x.length; i++) {
             sb.append(x[i]);
             sb.append(",");

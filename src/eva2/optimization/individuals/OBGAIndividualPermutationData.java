@@ -52,13 +52,9 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
         this.mutationOperator = (InterfaceMutation) individual.mutationOperator.clone();
         this.mutationProbability = individual.mutationProbability;
         this.selectionProbability = new double[individual.selectionProbability.length];
-        for (int i = 0; i < this.selectionProbability.length; i++) {
-            this.selectionProbability[i] = individual.selectionProbability[i];
-        }
+        System.arraycopy(individual.selectionProbability, 0, this.selectionProbability, 0, this.selectionProbability.length);
         this.fitness = new double[individual.fitness.length];
-        for (int i = 0; i < this.fitness.length; i++) {
-            this.fitness[i] = individual.fitness[i];
-        }
+        System.arraycopy(individual.fitness, 0, this.fitness, 0, this.fitness.length);
         this.cloneAEAObjects(individual);
     }
 

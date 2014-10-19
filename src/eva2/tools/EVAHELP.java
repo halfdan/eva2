@@ -19,7 +19,7 @@ public class EVAHELP {
      *
      */
     public static String getmyRUP() {
-        String Out = new String();
+        String Out = "";
         String HostName = "";
         try {
             HostName = InetAddress.getLocalHost().getHostName();
@@ -75,7 +75,7 @@ public class EVAHELP {
      *
      */
     public static String getSystemPropertyString() {
-        StringBuffer sBuf = new StringBuffer();
+        StringBuilder sBuf = new StringBuilder();
         Properties prop = System.getProperties();
         Enumeration<?> list = prop.propertyNames();
         while (list.hasMoreElements()) {

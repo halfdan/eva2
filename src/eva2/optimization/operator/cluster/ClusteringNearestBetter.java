@@ -1,6 +1,5 @@
 package eva2.optimization.operator.cluster;
 
-import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.AbstractEAIndividualComparator;
@@ -258,7 +257,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
         // Mark them as clustered and start with the next best unclustered.
         int current = 0; // top indy is first
         boolean[] clustered = new boolean[pop.size()];
-        LinkedList<Population> allClusters = new LinkedList<Population>();
+        LinkedList<Population> allClusters = new LinkedList<>();
         while (current < sorted.size()) {
             Population currentClust = pop.cloneWithoutInds();
             currentClust.add(sorted.get(current));
@@ -270,7 +269,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
             while (current < sorted.size() && (clustered[current])) current++;
         }
 
-        ArrayList<Population> finalClusts = new ArrayList<Population>(allClusters.size());
+        ArrayList<Population> finalClusts = new ArrayList<>(allClusters.size());
         finalClusts.add(pop.cloneWithoutInds());
         for (Population clust : allClusters) {
             if (clust.size() < minimumGroupSize) { // add to loner population
@@ -322,7 +321,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
             }
             // the closest best for indy i is now known. connect them in the graph.
             if (children[uplink[i]] == null) {
-                children[uplink[i]] = new Vector<Integer>();
+                children[uplink[i]] = new Vector<>();
             }
             children[uplink[i]].add(i);
             edgeLengthSum += uplinkDist[i];

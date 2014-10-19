@@ -1018,7 +1018,7 @@ public class OptimizerFactory {
     public static List<BitSet> postProcessBinVec(OptimizerRunnable runnable,
                                                  InterfacePostProcessParams ppp) {
         Population resPop = postProcess(runnable, ppp);
-        List<BitSet> ret = new ArrayList<BitSet>(resPop.size());
+        List<BitSet> ret = new ArrayList<>(resPop.size());
         for (Object o : resPop) {
             if (o instanceof InterfaceDataTypeBinary) {
                 InterfaceDataTypeBinary indy = (InterfaceDataTypeBinary) o;
@@ -1058,7 +1058,7 @@ public class OptimizerFactory {
     public static List<double[]> postProcessDblVec(
             OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
         Population resPop = postProcess(runnable, ppp);
-        List<double[]> ret = new ArrayList<double[]>(resPop.size());
+        List<double[]> ret = new ArrayList<>(resPop.size());
         for (Object o : resPop) {
             if (o instanceof InterfaceDataTypeDouble) {
                 InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) o;
@@ -1098,7 +1098,7 @@ public class OptimizerFactory {
     public static List<AbstractEAIndividual> postProcessIndVec(
             OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
         Population resPop = postProcess(runnable, ppp);
-        List<AbstractEAIndividual> ret = new ArrayList<AbstractEAIndividual>(
+        List<AbstractEAIndividual> ret = new ArrayList<>(
                 resPop.size());
         for (Object o : resPop) {
             if (o instanceof AbstractEAIndividual) {

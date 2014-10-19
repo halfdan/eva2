@@ -513,7 +513,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      */
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
-        StringBuffer sb = new StringBuffer(200);
+        StringBuilder sb = new StringBuilder(200);
         sb.append("A double valued problem: ");
         sb.append(this.getName());
         sb.append("\n");
@@ -616,7 +616,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
             }
             sum += v;
         }
-        return new Pair<Integer, Double>(numViol, sum);
+        return new Pair<>(numViol, sum);
     }
 
     public boolean isShowPlot() {

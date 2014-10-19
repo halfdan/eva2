@@ -1,6 +1,5 @@
 package eva2.optimization.operator.terminators;
 
-import eva2.gui.BeanInspector;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceOptimizationProblem;
@@ -129,7 +128,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      * @return
      */
     protected String getTerminationMessage() {
-        StringBuffer sb = new StringBuffer(getMeasureName());
+        StringBuilder sb = new StringBuilder(getMeasureName());
 //		if (convergenceCondition.isSelectedString("Relative")) sb.append(" converged relatively ");
         switch (changeType) {
             case absoluteChange:

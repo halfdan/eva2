@@ -30,7 +30,7 @@ public class StringToolsTest {
 	 */
 	@Test
 	public void testHumaniseCamelCase() {
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, String> map = new HashMap<>();
 		map.put("camelCase", "Camel Case");
 		map.put("Camel Case", "Camel Case");
 		map.put("thisIsAwesome", "This Is Awesome");
@@ -38,14 +38,13 @@ public class StringToolsTest {
 		map.put("iLikeABC", "I Like ABC");
 
 		String key, value;
-		Iterator iter = map.entrySet().iterator();
-		while (iter.hasNext()) {
-			Map.Entry pairs = (Map.Entry) iter.next();
-			key = (String) pairs.getKey();
-			value = (String) pairs.getValue();
-			String result = StringTools.humaniseCamelCase(key);
-			assertEquals(value, result);
-		}
+        for (Object o : map.entrySet()) {
+            Map.Entry pairs = (Map.Entry) o;
+            key = (String) pairs.getKey();
+            value = (String) pairs.getValue();
+            String result = StringTools.humaniseCamelCase(key);
+            assertEquals(value, result);
+        }
 	}
 
 	/**

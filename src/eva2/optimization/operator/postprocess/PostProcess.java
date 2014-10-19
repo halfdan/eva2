@@ -35,7 +35,6 @@ import eva2.tools.math.Mathematics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Vector;
 
 
@@ -52,7 +51,7 @@ public class PostProcess {
     // lower limit mutation step size for HC post processing
     private static double minMutationStepSize = 0.0000000000000001;
     // used for hill climbing post processing and only alive during that period
-    private static Vector<OptimizerRunnable> ppRunnables = new Vector<OptimizerRunnable>();
+    private static Vector<OptimizerRunnable> ppRunnables = new Vector<>();
     public static final String movedDistanceKey = "PostProcessingMovedBy";
     public static final String movedToPositionKey = "PostProcessingMovedTo";
 
@@ -347,7 +346,7 @@ public class PostProcess {
                 bestDist = tmpDist;
             }
         }
-        return new Pair<Double, Integer>(bestDist, bestIndex);
+        return new Pair<>(bestDist, bestIndex);
     }
 
     /**
@@ -466,7 +465,7 @@ public class PostProcess {
         int funCallsDone = pop.getFunctionCalls() - baseEvals;
         pop.setFunctionCalls(funCallsBefore);
 
-        return new Pair<Integer, Boolean>(funCallsDone, ppRunnable.wasAborted());
+        return new Pair<>(funCallsDone, ppRunnable.wasAborted());
     }
 
     /**
@@ -510,7 +509,7 @@ public class PostProcess {
         int funCallsDone = es.getPopulation().getFunctionCalls() - baseEvals;
         pop.setFunctionCalls(funCallsBefore);
 
-        return new Pair<Integer, Boolean>(funCallsDone, ppRunnable.wasAborted());
+        return new Pair<>(funCallsDone, ppRunnable.wasAborted());
     }
 
     private static boolean checkRange(AbstractEAIndividual indy) {
@@ -538,7 +537,7 @@ public class PostProcess {
         pop.add(cand);
         int evalsDone = processSingleCandidates(PostProcessMethod.nelderMead, pop, hcSteps, initPerturbation, prob, null);
 
-        return new Pair<AbstractEAIndividual, Integer>(pop.getBestEAIndividual(), evalsDone);
+        return new Pair<>(pop.getBestEAIndividual(), evalsDone);
     }
 
     /**
@@ -659,7 +658,7 @@ public class PostProcess {
      * @see #processWithNMS(Population, AbstractOptimizationProblem, InterfaceTerminator, int)
      */
     public static int processSingleCandidatesNMCMA(PostProcessMethod method, Population candidates, InterfaceTerminator term, double maxRelativePerturbation, AbstractOptimizationProblem prob) {
-        ArrayList<Population> nmPops = new ArrayList<Population>();
+        ArrayList<Population> nmPops = new ArrayList<>();
         int stepsPerf = 0;
         Population subPop;
 
@@ -906,7 +905,7 @@ public class PostProcess {
         Population found = getFoundOptima(pop, mmp.getRealOptima(), 0.05, true);
         System.out.println("all found (" + found.size() + "): " + BeanInspector.toString(found));
 
-        Pair<Population, Double> popD = new Pair<Population, Double>(pop, 1.);
+        Pair<Population, Double> popD = new Pair<>(pop, 1.);
         int i = 0;
         int evalCnt = 0;
         while (popD.tail() > 0.001) {
@@ -947,7 +946,7 @@ public class PostProcess {
         clust.setFunctionCalls(evalsBefore + evalsDone);
 
         double improvement = EuclideanMetric.euclideanDistance(meanFit, clust.getMeanFitness());
-        return new Pair<Population, Double>(clust, improvement);
+        return new Pair<>(clust, improvement);
     }
 
     /**

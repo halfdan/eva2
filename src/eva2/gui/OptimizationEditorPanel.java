@@ -311,15 +311,15 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      */
     public void updateClassType() {
         List<String> classesLongNames;
-        ArrayList<Class<?>> instances = new ArrayList<Class<?>>(5);
+        ArrayList<Class<?>> instances = new ArrayList<>(5);
         classesLongNames = GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances);
         LOGGER.finest("Selected type for OptimizationEditorPanel: " + genericObjectEditor.getClassType().getName());
         if (classesLongNames.size() > 1) {
-            classNameMap = new HashMap<String, String>();
+            classNameMap = new HashMap<>();
             for (String className : classesLongNames) {
                 classNameMap.put(EVAHELP.cutClassName(className), className);
             }
-            Vector<String> classesList = new Vector<String>(classesLongNames);
+            Vector<String> classesList = new Vector<>(classesLongNames);
             objectChooser.setModel(new DefaultComboBoxModel(classesList));
             if (withComboBoxToolTips) {
                 objectChooser.setRenderer(new ToolTipComboBoxRenderer(collectComboToolTips(instances, tipMaxLen)));

@@ -82,7 +82,7 @@ public class FunctionArea extends DArea implements Serializable {
         setBorder(scaledBorder);
         setAutoGrid(true);
         setGridVisible(true);
-        pointSetContainer = new ArrayList<GraphPointSet>(20);
+        pointSetContainer = new ArrayList<>(20);
         // new DMouseZoom( this );
         addPopup();
         repaint();

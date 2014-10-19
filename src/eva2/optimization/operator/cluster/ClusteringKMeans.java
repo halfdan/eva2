@@ -123,9 +123,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             numbOfAssigned = new int[this.k];
             for (int i = 0; i < newC.length; i++) {
                 numbOfAssigned[i] = 1;
-                for (int j = 0; j < newC[i].length; j++) {
-                    newC[i][j] = this.c[i][j];
-                }
+                System.arraycopy(this.c[i], 0, newC[i], 0, newC[i].length);
             }
             for (int i = 0; i < assignment.length; i++) {
                 numbOfAssigned[assignment[i]]++;

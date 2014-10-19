@@ -191,9 +191,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         if (globalRange != null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here
             this.range = new double[globalRange.length][globalRange[0].length];
             for (int i = 0; i < this.range.length; i++) {
-                for (int j = 0; j < this.range[0].length; j++) {
-                    this.range[i][j] = globalRange[i][j];
-                }
+                System.arraycopy(globalRange[i], 0, this.range[i], 0, this.range[0].length);
             }
         } else {
             this.range = null;
@@ -202,9 +200,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         if (initRange != null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here
             this.initialRange = new double[initRange.length][initRange[0].length];
             for (int i = 0; i < this.initialRange.length; i++) {
-                for (int j = 0; j < this.initialRange[0].length; j++) {
-                    this.initialRange[i][j] = initRange[i][j];
-                }
+                System.arraycopy(initRange[i], 0, this.initialRange[i], 0, this.initialRange[0].length);
             }
         } else {
             this.initialRange = null;
@@ -476,7 +472,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         if (runnable == null) {
             return "";
         }
-        StringBuffer sb = new StringBuffer("");
+        StringBuilder sb = new StringBuilder("");
         sb.append(runnable.terminatedBecause());
         return sb.toString();
     }
@@ -605,7 +601,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
-        StringBuffer sb = new StringBuffer(200);
+        StringBuilder sb = new StringBuilder(200);
         sb.append("A general Matlab problem");
         sb.append(this.getName());
         //sb.append("\n");

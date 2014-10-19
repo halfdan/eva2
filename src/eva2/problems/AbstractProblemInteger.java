@@ -105,7 +105,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
      */
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
-        StringBuffer sb = new StringBuffer(200);
+        StringBuilder sb = new StringBuilder(200);
         sb.append("An integer valued problem:\n");
         sb.append(globalInfo());
         sb.append("Dimension   : ");

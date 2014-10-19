@@ -157,13 +157,13 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
 
     private Stack<Set<Integer>> buildLinkageTree() {
         // the final tree
-        Stack<Set<Integer>> linkageTree = new Stack<Set<Integer>>();
+        Stack<Set<Integer>> linkageTree = new Stack<>();
         // the stack to cluster here clusters can be removed
-        Stack<Set<Integer>> workingTree = new Stack<Set<Integer>>();
+        Stack<Set<Integer>> workingTree = new Stack<>();
         // add the problem variables to the stacks
         for (int i = 0; i < this.probDim; i++) {
-            Set<Integer> s1 = new HashSet<Integer>();
-            Set<Integer> s2 = new HashSet<Integer>();
+            Set<Integer> s1 = new HashSet<>();
+            Set<Integer> s2 = new HashSet<>();
             s1.add(i);
             s2.add(i);
             linkageTree.add(s1);
@@ -184,8 +184,8 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     }
 
     private Pair<Set<Integer>, Set<Integer>> findNearestClusters(Stack<Set<Integer>> stack) {
-        Set<Integer> bestI = new HashSet<Integer>();
-        Set<Integer> bestJ = new HashSet<Integer>();
+        Set<Integer> bestI = new HashSet<>();
+        Set<Integer> bestJ = new HashSet<>();
         double bestScore = Double.MAX_VALUE;
         for (int i = 0; i < stack.size(); i++) {
             Set<Integer> s1 = stack.get(i);
@@ -201,13 +201,13 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
             }
         }
         // return the best pair
-        return new Pair<Set<Integer>, Set<Integer>>(bestI, bestJ);
+        return new Pair<>(bestI, bestJ);
     }
 
     private double calculateDistance(Set<Integer> s1, Set<Integer> s2) {
         double entropy1 = calculateEntropy(s1);
         double entropy2 = calculateEntropy(s2);
-        Set<Integer> combined = new HashSet<Integer>();
+        Set<Integer> combined = new HashSet<>();
         combined.addAll(s1);
         combined.addAll(s2);
         double entropy3 = calculateEntropy(combined);

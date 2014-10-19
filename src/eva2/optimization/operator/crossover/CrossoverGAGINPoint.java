@@ -1,7 +1,6 @@
 package eva2.optimization.operator.crossover;
 
 
-import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.optimization.individuals.InterfaceGIIndividual;

@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 /**
  * @author becker
  */
-public class AboutDialog extends JDialog {
+class AboutDialog extends JDialog {
     private JLabel imageLabel;
     private JEditorPane infoEditorPane;
     private JTextArea aboutTextArea;

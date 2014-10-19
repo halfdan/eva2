@@ -37,9 +37,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
     public MutateESLocal(MutateESLocal mutator) {
         if (mutator.sigmas != null) {
             this.sigmas = new double[mutator.sigmas.length];
-            for (int i = 0; i < this.sigmas.length; i++) {
-                this.sigmas[i] = mutator.sigmas[i];
-            }
+            System.arraycopy(mutator.sigmas, 0, this.sigmas, 0, this.sigmas.length);
         }
         this.mutationStepSize = mutator.mutationStepSize;
         this.tau1 = mutator.tau1;

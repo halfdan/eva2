@@ -69,7 +69,7 @@ public class MOCCOInitialPopulationSize extends MOCCOPhase implements InterfaceP
         public void actionPerformed(ActionEvent event) {
             String s = textField.getText();
             try {
-                int t = new Integer(s).intValue();
+                int t = Integer.parseInt(s);
                 mocco.state.initialPopulationSize = t;
             } catch (java.lang.NumberFormatException e) {
 

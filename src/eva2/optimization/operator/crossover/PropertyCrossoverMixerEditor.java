@@ -229,9 +229,7 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
             crossoverMixer.addCrossers((InterfaceCrossover) crossoverMixer.getAvailableCrossers()[0].clone());
             int l = crossoverMixer.getSelectedCrossers().length;
             GeneralOptimizationEditorProperty[] newEdit = new GeneralOptimizationEditorProperty[l];
-            for (int i = 0; i < editors.length; i++) {
-                newEdit[i] = editors[i];
-            }
+            System.arraycopy(editors, 0, newEdit, 0, editors.length);
             InterfaceCrossover[] list = crossoverMixer.getSelectedCrossers();
             l--;
             newEdit[l] = new GeneralOptimizationEditorProperty();
@@ -310,7 +308,7 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
             for (int i = 0; i < newW.length; i++) {
                 try {
                     double d = 0;
-                    d = new Double(weights[i].getText()).doubleValue();
+                    d = Double.parseDouble(weights[i].getText());
                     newW[i] = d;
                 } catch (Exception e) {
                 }

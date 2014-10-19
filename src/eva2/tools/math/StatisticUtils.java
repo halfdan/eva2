@@ -509,7 +509,7 @@ public class StatisticUtils {
         // Pre-allocate memory
         Matrix X = new Matrix(samples, dim);
 
-        ArrayList<Integer> indices = new ArrayList<Integer>(samples);
+        ArrayList<Integer> indices = new ArrayList<>(samples);
         for (int i = 0; i < samples; ++i) {
             indices.add(i);
         }
@@ -574,7 +574,7 @@ public class StatisticUtils {
      * @return
      */
     public static ArrayList<Matrix> rlhPoints(int samples, int dim, double lb, double ub, boolean edges) {
-        ArrayList<Matrix> samplePoints = new ArrayList<Matrix>(samples);
+        ArrayList<Matrix> samplePoints = new ArrayList<>(samples);
         Matrix p = rlh(samples, dim, lb, ub, edges);
 
         for (int i = 0; i < samples; ++i) {

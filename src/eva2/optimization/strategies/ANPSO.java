@@ -70,7 +70,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      */
     // for ANPSO it is necessary to keep an own archiv of inactive subswarms, because the standard set of
     // subswarms is completely renewed every iteration.
-    public Vector<ParticleSubSwarmOptimization> inactiveSubSwarms = new Vector<ParticleSubSwarmOptimization>();
+    public Vector<ParticleSubSwarmOptimization> inactiveSubSwarms = new Vector<>();
 
     // the s matrix keeps track of how long particles are close to each other
     int[][] s = new int[mainSwarmSize][mainSwarmSize];
@@ -215,7 +215,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         initSTo(0);
         initNicheGraph();
 
-        inactiveSubSwarms = new Vector<ParticleSubSwarmOptimization>(); // dont want to use subswarms from old optimization run (especially not in multiruns)...
+        inactiveSubSwarms = new Vector<>(); // dont want to use subswarms from old optimization run (especially not in multiruns)...
     }
 
     /**
@@ -466,7 +466,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      * @param setOfSubswarms
      */
     public void useAsSubSwarms(Vector<Population> setOfSubswarms) {
-        Vector<ParticleSubSwarmOptimization> newSubSwarms = new Vector<ParticleSubSwarmOptimization>();
+        Vector<ParticleSubSwarmOptimization> newSubSwarms = new Vector<>();
 
         for (int i = 0; i < setOfSubswarms.size(); ++i) {
             Population pop = setOfSubswarms.get(i);
@@ -521,7 +521,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         List<Set<String>> connectedComps = nicheGraph.getConnectedComponents();
 
         Population tmpPop = new Population(), newMainPop = new Population();
-        Vector<Population> setOfSubswarms = new Vector<Population>();
+        Vector<Population> setOfSubswarms = new Vector<>();
         boolean reinitSuperfl = true;
 
         for (Set<String> connSet : connectedComps) {

@@ -64,15 +64,11 @@ public class PropertyOptimizationObjectivesWithParam implements java.io.Serializ
 
         if (d.length > this.weights.length) {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < this.weights.length; i++) {
-                newWeights[i] = this.weights[i];
-            }
+            System.arraycopy(this.weights, 0, newWeights, 0, this.weights.length);
             this.weights = newWeights;
         } else {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < d.length; i++) {
-                newWeights[i] = this.weights[i];
-            }
+            System.arraycopy(this.weights, 0, newWeights, 0, d.length);
             this.weights = newWeights;
         }
     }

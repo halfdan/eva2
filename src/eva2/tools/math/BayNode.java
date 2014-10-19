@@ -9,8 +9,8 @@ public class BayNode {
     private int numberOfParents = 0;
     private double[] pTable = {0.5};
     private boolean calculated = false;
-    private List<Integer> parents = new LinkedList<Integer>();
-    private List<Integer> children = new LinkedList<Integer>();
+    private List<Integer> parents = new LinkedList<>();
+    private List<Integer> children = new LinkedList<>();
 
     public BayNode(int id) {
         this.id = id;
@@ -20,8 +20,8 @@ public class BayNode {
         this.id = b.id;
         this.numberOfParents = b.numberOfParents;
         this.pTable = b.pTable.clone();
-        this.parents = new LinkedList<Integer>();
-        this.children = new LinkedList<Integer>();
+        this.parents = new LinkedList<>();
+        this.children = new LinkedList<>();
         for (int i : b.parents) {
             this.parents.add(i);
         }

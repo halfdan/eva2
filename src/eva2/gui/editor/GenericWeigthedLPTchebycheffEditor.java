@@ -97,7 +97,7 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
         @Override
         public void keyReleased(KeyEvent event) {
             try {
-                int d = new Integer(pvalueTextField.getText()).intValue();
+                int d = Integer.parseInt(pvalueTextField.getText());
                 propertyWeightedLPTchebycheff.p = d;
             } catch (Exception e) {
 
@@ -126,14 +126,14 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
 
                 try {
                     double d = 0;
-                    d = new Double(idealTextField[i].getText()).doubleValue();
+                    d = Double.parseDouble(idealTextField[i].getText());
                     tmpT[i] = d;
                 } catch (Exception e) {
 
                 }
                 try {
                     double d = 0;
-                    d = new Double(weightTextField[i].getText()).doubleValue();
+                    d = Double.parseDouble(weightTextField[i].getText());
                     tmpP[i] = d;
                 } catch (Exception e) {
 

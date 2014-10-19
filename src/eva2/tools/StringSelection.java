@@ -183,7 +183,7 @@ public class StringSelection implements Serializable {
      */
     public boolean isSelected(String str) {
         if (stringToIndexHash == null) { // for some time efficiency...
-            stringToIndexHash = new HashMap<String, Integer>(2 * strObjects.length);
+            stringToIndexHash = new HashMap<>(2 * strObjects.length);
             for (int i = 0; i < strObjects.length; i++) {
                 stringToIndexHash.put(strObjects[i], i);
             }
@@ -209,7 +209,7 @@ public class StringSelection implements Serializable {
      */
     public int stringToIndex(String str) {
         if (stringToIndexHash == null) { // for some time efficiency...
-            stringToIndexHash = new HashMap<String, Integer>(2 * strObjects.length);
+            stringToIndexHash = new HashMap<>(2 * strObjects.length);
             for (int i = 0; i < strObjects.length; i++) {
                 stringToIndexHash.put(strObjects[i], i);
             }
@@ -298,7 +298,7 @@ public class StringSelection implements Serializable {
      * @return
      */
     public String[] getSelected() {
-        ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<String> ret = new ArrayList<>();
         for (int i = 0; i < getLength(); i++) {
             if (isSelected(i)) {
                 ret.add(getElement(i));
@@ -314,10 +314,10 @@ public class StringSelection implements Serializable {
      * @return
      */
     public List<Pair<String, Integer>> getSelectedWithIndex() {
-        ArrayList<Pair<String, Integer>> ret = new ArrayList<Pair<String, Integer>>();
+        ArrayList<Pair<String, Integer>> ret = new ArrayList<>();
         for (int i = 0; i < getLength(); i++) {
             if (isSelected(i)) {
-                ret.add(new Pair<String, Integer>(getElement(i), i));
+                ret.add(new Pair<>(getElement(i), i));
             }
         }
         return ret;
@@ -330,7 +330,7 @@ public class StringSelection implements Serializable {
      * @return
      */
     public Enum[] getSelectedEnum(Enum[] e) {
-        LinkedList<Integer> selectedList = new LinkedList<Integer>();
+        LinkedList<Integer> selectedList = new LinkedList<>();
         for (int i = 0; i < e.length; i++) {
             if (isSelected(e[i])) {
                 selectedList.add(i);

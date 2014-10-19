@@ -250,7 +250,7 @@ public class PolyInterpolation {
         PolynomialInterpolationResult result =
                 new PolynomialInterpolationResult();
 
-        dif = Math.abs(x - xa[01 - 1]);
+        dif = Math.abs(x - xa[0]);
         for (i = 1; i <= xa.length; i++) {
             if ((dift = Math.abs(x - xa[i - 1])) < dif) {
                 ns = i;

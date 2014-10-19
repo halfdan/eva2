@@ -15,7 +15,7 @@ public class BayNet {
     private boolean[][] network = null;
     private int dimension = 3;
     private BayNode[] nodes = null;
-    private List<Integer> rootNodes = new LinkedList<Integer>();
+    private List<Integer> rootNodes = new LinkedList<>();
     private double upperProbLimit = 0.9;
     private double lowerProbLimit = 0.1;
     private BOAScoringMethods scoringMethod = BOAScoringMethods.BDM;
@@ -36,7 +36,7 @@ public class BayNet {
         for (int i = 0; i < this.nodes.length; i++) {
             this.nodes[i] = (BayNode) b.nodes[i].clone();
         }
-        this.rootNodes = new LinkedList<Integer>();
+        this.rootNodes = new LinkedList<>();
         for (Integer node : b.rootNodes) {
             this.rootNodes.add(node);
         }
@@ -104,7 +104,7 @@ public class BayNet {
 //			}
 //		}
 //		return result;
-        LinkedList<BayNode> result = new LinkedList<BayNode>();
+        LinkedList<BayNode> result = new LinkedList<>();
         for (Integer i : this.rootNodes) {
             result.add(this.nodes[i]);
         }
@@ -137,7 +137,7 @@ public class BayNet {
 //		}
 //		return result;
         List<Integer> ids = n.getChildren();
-        List<BayNode> result = new ArrayList<BayNode>();
+        List<BayNode> result = new ArrayList<>();
         for (int i : ids) {
             result.add(this.nodes[i]);
         }
@@ -163,7 +163,7 @@ public class BayNet {
 //		}
 //		return result;
         List<Integer> ids = n.getParents();
-        List<BayNode> result = new LinkedList<BayNode>();
+        List<BayNode> result = new LinkedList<>();
         for (int i : ids) {
             result.add(this.nodes[i]);
         }
@@ -177,7 +177,7 @@ public class BayNet {
      * @return the children of the nodes
      */
     public List<BayNode> getChildren(List<BayNode> n) {
-        ArrayList<BayNode> result = new ArrayList<BayNode>();
+        ArrayList<BayNode> result = new ArrayList<>();
         for (BayNode node : n) {
             List<BayNode> children = getChildren(node);
             for (BayNode nod : children) {
@@ -284,10 +284,10 @@ public class BayNet {
 
     private List<BayNode> removeDuplicate(List<BayNode> nodes) {
         //Create a HashSet which allows no duplicates
-        HashSet<BayNode> hashSet = new HashSet<BayNode>(nodes);
+        HashSet<BayNode> hashSet = new HashSet<>(nodes);
 
         //Assign the HashSet to a new ArrayList
-        ArrayList<BayNode> arrayList2 = new ArrayList<BayNode>(hashSet);
+        ArrayList<BayNode> arrayList2 = new ArrayList<>(hashSet);
         return arrayList2;
     }
 
@@ -467,7 +467,7 @@ public class BayNet {
      * @return is the net acyclic
      */
     public boolean isACyclic() {
-        List<Pair<Integer, Integer>> deletedEdges = new LinkedList<Pair<Integer, Integer>>();
+        List<Pair<Integer, Integer>> deletedEdges = new LinkedList<>();
         List<BayNode> nodes = getRootNodes();
         boolean res = false;
         for (int i = 0; i <= this.dimension; i++) {
@@ -476,7 +476,7 @@ public class BayNet {
                 for (int j = 0; j < this.dimension; j++) {
                     if (this.network[id][j]) {
                         this.network[id][j] = false;
-                        deletedEdges.add(new Pair<Integer, Integer>(id, j));
+                        deletedEdges.add(new Pair<>(id, j));
                     }
                 }
             }
@@ -1053,7 +1053,7 @@ public class BayNet {
             line = line + ": " + pTable[j];
             result += line;
         }
-        Pair<Integer, String> p = new Pair<Integer, String>();
+        Pair<Integer, String> p = new Pair<>();
         p.setHead(length);
         p.setTail(result);
         return p;

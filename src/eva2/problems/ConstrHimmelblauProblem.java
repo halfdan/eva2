@@ -34,7 +34,7 @@ public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Se
     }
 
     public static AbstractConstraint[] makeDefaultConstraints() {
-        Vector<AbstractConstraint> constraints = new Vector<AbstractConstraint>();
+        Vector<AbstractConstraint> constraints = new Vector<>();
         constraints.add(new IntervalConstraint("+(+(85.334407,*(0.0056858,*(x1,x4))), +(*(0.00026,*(x0,x3)),*(-0.0022053,*(x2,x4))))", 0, 92));
         constraints.add(new IntervalConstraint("+(+(80.51249,*(0.0071317,*(x1,x4))), +(*(0.0029955,*(x0,x1)),*(0.0021813,*(x2,x2))))", 90, 110));
         constraints.add(new IntervalConstraint("+(+(9.300961,*(0.0047026,*(x2,x4))), +(*(0.0012547,*(x0,x2)),*(0.0019085,*(x2,x3))))", 20, 25));

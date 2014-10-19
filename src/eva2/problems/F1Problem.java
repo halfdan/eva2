@@ -66,7 +66,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      */
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
-        StringBuffer sb = new StringBuffer(200);
+        StringBuilder sb = new StringBuilder(200);
         sb.append("F1 Sphere model:\n");
         sb.append("Here the individual codes a vector of real number x and F1(x)= x^2 is to be minimized.\nParameters:\n");
         sb.append("Dimension   : ");

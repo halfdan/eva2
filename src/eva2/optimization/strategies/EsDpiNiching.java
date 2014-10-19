@@ -631,9 +631,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                     newClusters[i] = initRandomPeakPop(cntPerNewSpecies);
                 }
             }
-            for (int i = 0; i < origClusters.length; i++) {
-                newClusters[i] = origClusters[i];
-            }
+            System.arraycopy(origClusters, 0, newClusters, 0, origClusters.length);
             return newClusters;
         }
     }
@@ -960,7 +958,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
 
     @Override
     public String getStringRepresentation() {
-        StringBuffer sb = new StringBuffer("EsDpiNiching:\n");
+        StringBuilder sb = new StringBuilder("EsDpiNiching:\n");
         sb.append("Optimization Problem: ");
         sb.append(this.problem.getStringRepresentationForProblem(this));
         sb.append("\n");

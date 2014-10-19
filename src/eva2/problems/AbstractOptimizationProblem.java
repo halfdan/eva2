@@ -124,7 +124,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         evaluatePopulationStart(population);
 
         if (this.parallelthreads > 1) {
-            Vector<AbstractEAIndividual> queue = new Vector<AbstractEAIndividual>(population.size());
+            Vector<AbstractEAIndividual> queue = new Vector<>(population.size());
             Semaphore sema = new Semaphore(0);
             ExecutorService pool = Executors.newFixedThreadPool(parallelthreads);
             int cntIndies = 0;

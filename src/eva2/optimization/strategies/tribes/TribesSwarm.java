@@ -6,6 +6,7 @@ import eva2.optimization.strategies.Tribes;
 import eva2.tools.math.RNG;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -63,9 +64,7 @@ public class TribesSwarm implements java.io.Serializable {
     public Population toPopulation() {
         Population pop = new Population(numExplorers());
         for (int n = 0; n < tribeNb; n++) {
-            for (int i = 0; i < tribes[n].explorerNb; i++) {
-                pop.add(tribes[n].explorer[i]);
-            }
+            pop.addAll(Arrays.asList(tribes[n].explorer).subList(0, tribes[n].explorerNb));
         }
         pop.add(getBestMemory().asDummyExplorer(range, masterTribe.getObjectiveFirstDim()));
         pop.synchSize();
@@ -209,7 +208,7 @@ public class TribesSwarm implements java.io.Serializable {
      * @return
      */
     public List<TribesPosition> collectMem() {
-        ArrayList<TribesPosition> bestList = new ArrayList<TribesPosition>();
+        ArrayList<TribesPosition> bestList = new ArrayList<>();
 
         for (int n = 0; n < tribeNb; n++) {
             for (int m = 0; m < tribes[n].memoryNb; m++) {

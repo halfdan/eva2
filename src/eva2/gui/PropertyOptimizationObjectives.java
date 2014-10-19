@@ -85,9 +85,7 @@ public class PropertyOptimizationObjectives implements java.io.Serializable {
      */
     public void addTarget(InterfaceOptimizationObjective optTarget) {
         InterfaceOptimizationObjective[] newList = new InterfaceOptimizationObjective[this.selectedObjectives.length + 1];
-        for (int i = 0; i < this.selectedObjectives.length; i++) {
-            newList[i] = this.selectedObjectives[i];
-        }
+        System.arraycopy(this.selectedObjectives, 0, newList, 0, this.selectedObjectives.length);
         newList[this.selectedObjectives.length] = optTarget;
         this.selectedObjectives = newList;
     }

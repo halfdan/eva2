@@ -326,7 +326,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      */
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
-        StringBuffer result = new StringBuffer(100);
+        StringBuilder result = new StringBuilder(100);
 
         result.append("Knapsack Problem:\n");
         result.append("The task is to find a packing for a knapsack with limited size(");

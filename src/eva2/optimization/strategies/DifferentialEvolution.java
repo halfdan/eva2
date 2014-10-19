@@ -305,7 +305,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         InterfaceDataTypeDouble esIndy;
 
         if (doLogParents) {
-            parents = new Vector<AbstractEAIndividual>();
+            parents = new Vector<>();
         } else {
             parents = null;
         }

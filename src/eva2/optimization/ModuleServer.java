@@ -32,7 +32,7 @@ public class ModuleServer {
         if (instanceCounter > 0) {
             EVAERROR.EXIT("ModuleServer created twice");
         }
-        moduleClassList = new ArrayList<Class<?>>();
+        moduleClassList = new ArrayList<>();
 
         String modulePckg = null;
         Class<?> filterBy = null;
@@ -63,7 +63,7 @@ public class ModuleServer {
      * @return Array of available modules
      */
     public String[] getModuleNameList() {
-        List<String> moduleNameList = new ArrayList<String>();
+        List<String> moduleNameList = new ArrayList<>();
         for (Class<?> module : moduleClassList) {
             try {
                 Method[] methods = module.getDeclaredMethods();

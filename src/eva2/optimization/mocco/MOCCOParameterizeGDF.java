@@ -204,7 +204,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
             double[] w = new double[tradeOffTextFields.length];
             double sum = 0;
             for (int i = 0; i < tradeOffTextFields.length; i++) {
-                w[i] = new Double(tradeOffTextFields[i][i].getText()).doubleValue();
+                w[i] = Double.parseDouble(tradeOffTextFields[i][i].getText());
                 sum += w[i];
             }
             if (new Double(sum).isNaN()) {
@@ -226,7 +226,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
         public void actionPerformed(ActionEvent event) {
             double[] w = new double[tradeOffTextFields.length];
             for (int i = 0; i < tradeOffTextFields.length; i++) {
-                w[i] = new Double(tradeOffTextFields[i][i].getText()).doubleValue();
+                w[i] = Double.parseDouble(tradeOffTextFields[i][i].getText());
             }
             MOSOWeightedFitness wf = new MOSOWeightedFitness();
             // I've to set this before I change the parameters, because the problem sets the

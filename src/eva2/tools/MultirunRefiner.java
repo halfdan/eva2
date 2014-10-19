@@ -238,7 +238,7 @@ public class MultirunRefiner {
         double[] tmp;
         double[] mean = new double[3];
         int numExp = 0, iteration = 0, lineCnt = 0;
-        ArrayList<double[]> result = new ArrayList<double[]>();
+        ArrayList<double[]> result = new ArrayList<>();
         String line;
         String runHeader = "Fun.calls 	 Best 	 Mean 	 Worst 	 Solution";
         String runFinalizer = " Best solution: ";

@@ -10,7 +10,7 @@ public class OptimizationRun {
     List<Double> fitness;
 
     public OptimizationRun() {
-        this.fitness = new ArrayList<Double>();
+        this.fitness = new ArrayList<>();
     }
 
     public void addFitnessValue(double value) {

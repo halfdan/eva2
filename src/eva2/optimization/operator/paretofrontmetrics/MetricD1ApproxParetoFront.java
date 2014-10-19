@@ -27,16 +27,12 @@ public class MetricD1ApproxParetoFront implements eva2.optimization.operator.par
     public MetricD1ApproxParetoFront(MetricD1ApproxParetoFront b) {
         if (b.titles != null) {
             this.titles = new String[b.titles.length];
-            for (int i = 0; i < this.titles.length; i++) {
-                this.titles[i] = b.titles[i];
-            }
+            System.arraycopy(b.titles, 0, this.titles, 0, this.titles.length);
         }
         if (b.reference != null) {
             this.reference = new double[b.reference.length][b.reference[0].length];
             for (int i = 0; i < this.reference.length; i++) {
-                for (int j = 0; j < this.reference[i].length; j++) {
-                    this.reference[i][j] = b.reference[i][j];
-                }
+                System.arraycopy(b.reference[i], 0, this.reference[i], 0, this.reference[i].length);
             }
         }
     }
@@ -75,7 +71,7 @@ public class MetricD1ApproxParetoFront implements eva2.optimization.operator.par
             lines[i].trim();
             tmpS = lines[i].split("\t");
             for (int j = 0; (j < tmpD.length) && (j < tmpS.length); j++) {
-                tmpD[j] = new Double(tmpS[j]).doubleValue();
+                tmpD[j] = Double.parseDouble(tmpS[j]);
             }
             tmpA.add(tmpD);
         }

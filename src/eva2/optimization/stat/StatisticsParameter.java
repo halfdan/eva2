@@ -351,8 +351,8 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      */
     @Override
     public void setInformers(List<InterfaceAdditionalPopulationInformer> informers) {
-        ArrayList<String> headerFields = new ArrayList<String>();
-        ArrayList<String> infoFields = new ArrayList<String>();
+        ArrayList<String> headerFields = new ArrayList<>();
+        ArrayList<String> infoFields = new ArrayList<>();
         // parse list of header elements, show additional Strings according to names.
         for (InterfaceAdditionalPopulationInformer inf : informers) {
             String[] dataHeader = inf.getAdditionalDataHeader();

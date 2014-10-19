@@ -27,9 +27,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
         super(population);
 
         this.probabilityVector = new double[population.probabilityVector.length];
-        for (int i = 0; i < this.probabilityVector.length; i++) {
-            this.probabilityVector[i] = population.probabilityVector[i];
-        }
+        System.arraycopy(population.probabilityVector, 0, this.probabilityVector, 0, this.probabilityVector.length);
     }
 
     @Override

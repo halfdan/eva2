@@ -26,10 +26,7 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
         this.weightsLabel = d.weightsLabel;
         this.normalizationEnabled = d.normalizationEnabled;
         this.availableTargets = new InterfaceCrossover[d.availableTargets.length];
-        for (int i = 0; i < this.availableTargets.length; i++) {
-            //this.availableTargets[i]  = (InterfaceMutation)d.availableTargets[i].clone();
-            this.availableTargets[i] = d.availableTargets[i];
-        }
+        System.arraycopy(d.availableTargets, 0, this.availableTargets, 0, this.availableTargets.length);
         this.selectedTargets = new InterfaceCrossover[d.selectedTargets.length];
         for (int i = 0; i < this.selectedTargets.length; i++) {
             this.selectedTargets[i] = (InterfaceCrossover) d.selectedTargets[i].clone();
@@ -67,15 +64,11 @@ public class PropertyCrossoverMixer implements java.io.Serializable {
 
         if (d.length > this.weights.length) {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < this.weights.length; i++) {
-                newWeights[i] = this.weights[i];
-            }
+            System.arraycopy(this.weights, 0, newWeights, 0, this.weights.length);
             this.weights = newWeights;
         } else {
             double[] newWeights = new double[d.length];
-            for (int i = 0; i < d.length; i++) {
-                newWeights[i] = this.weights[i];
-            }
+            System.arraycopy(this.weights, 0, newWeights, 0, d.length);
             this.weights = newWeights;
         }
     }

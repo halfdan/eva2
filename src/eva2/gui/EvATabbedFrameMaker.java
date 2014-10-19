@@ -30,7 +30,7 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
 
     public void addPanelMaker(PanelMaker pm) {
         if (pmContainer == null) {
-            pmContainer = new ArrayList<PanelMaker>(2);
+            pmContainer = new ArrayList<>(2);
         }
         pmContainer.add(pm);
     }

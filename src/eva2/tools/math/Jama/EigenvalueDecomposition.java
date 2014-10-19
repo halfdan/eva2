@@ -81,9 +81,7 @@ public class EigenvalueDecomposition implements java.io.Serializable {
         //  Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
         //  Fortran subroutine in EISPACK.
 
-        for (int j = 0; j < n; j++) {
-            d[j] = V[n - 1][j];
-        }
+        System.arraycopy(V[n - 1], 0, d, 0, n);
 
         // Householder reduction to tridiagonal form.
 
@@ -198,9 +196,7 @@ public class EigenvalueDecomposition implements java.io.Serializable {
         //  Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
         //  Fortran subroutine in EISPACK.
 
-        for (int i = 1; i < n; i++) {
-            e[i - 1] = e[i];
-        }
+        System.arraycopy(e, 1, e, 0, n - 1);
         e[n - 1] = 0.0;
 
         double f = 0.0;
@@ -846,9 +842,7 @@ public class EigenvalueDecomposition implements java.io.Serializable {
 
         for (int i = 0; i < nn; i++) {
             if (i < low | i > high) {
-                for (int j = i; j < nn; j++) {
-                    V[i][j] = H[i][j];
-                }
+                System.arraycopy(H[i], i, V[i], i, nn - i);
             }
         }
 
@@ -893,9 +887,7 @@ public class EigenvalueDecomposition implements java.io.Serializable {
 
         if (issymmetric) {
             for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    V[i][j] = A[i][j];
-                }
+                System.arraycopy(A[i], 0, V[i], 0, n);
             }
 
             // Tridiagonalize.

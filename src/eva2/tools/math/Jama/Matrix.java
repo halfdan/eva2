@@ -235,9 +235,7 @@ public class Matrix implements Cloneable, Serializable {
                 throw new IllegalArgumentException
                         ("All rows must have the same length.");
             }
-            for (int j = 0; j < n; j++) {
-                C[i][j] = A[i][j];
-            }
+            System.arraycopy(A[i], 0, C[i], 0, n);
         }
         return X;
     }
@@ -250,9 +248,7 @@ public class Matrix implements Cloneable, Serializable {
         Matrix X = new Matrix(m, n);
         double[][] C = X.getArray();
         for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                C[i][j] = A[i][j];
-            }
+            System.arraycopy(A[i], 0, C[i], 0, n);
         }
         return X;
     }
@@ -362,9 +358,7 @@ public class Matrix implements Cloneable, Serializable {
     public double[] getRowPackedCopy() {
         double[] vals = new double[m * n];
         for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                vals[i * n + j] = A[i][j];
-            }
+            System.arraycopy(A[i], 0, vals, i * n + 0, n);
         }
         return vals;
     }
@@ -417,9 +411,7 @@ public class Matrix implements Cloneable, Serializable {
         double[][] B = X.getArray();
         try {
             for (int i = i0; i <= i1; i++) {
-                for (int j = j0; j <= j1; j++) {
-                    B[i - i0][j - j0] = A[i][j];
-                }
+                System.arraycopy(A[i], j0, B[i - i0], j0 - j0, j1 + 1 - j0);
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ArrayIndexOutOfBoundsException("Submatrix indices");
@@ -491,9 +483,7 @@ public class Matrix implements Cloneable, Serializable {
         double[][] B = X.getArray();
         try {
             for (int i = 0; i < r.length; i++) {
-                for (int j = j0; j <= j1; j++) {
-                    B[i][j - j0] = A[r[i]][j];
-                }
+                System.arraycopy(A[r[i]], j0, B[i], j0 - j0, j1 + 1 - j0);
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ArrayIndexOutOfBoundsException("Submatrix indices");
@@ -996,7 +986,7 @@ public class Matrix implements Cloneable, Serializable {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < m; i++) {
             sb.append(BeanInspector.toString(A[i]));
             sb.append("\n");
@@ -1252,7 +1242,7 @@ public class Matrix implements Cloneable, Serializable {
         }
 
         double v = get(0, 0);
-        Pair<Double, Double> ret = new Pair<Double, Double>(v, v);
+        Pair<Double, Double> ret = new Pair<>(v, v);
         for (int i = 1; i < Math.min(m, n); i++) {
             v = get(i, i);
             ret.head = Math.min(ret.head, v);
@@ -1366,7 +1356,7 @@ public class Matrix implements Cloneable, Serializable {
         tokenizer.wordChars(0, 255);
         tokenizer.whitespaceChars(0, ' ');
         tokenizer.eolIsSignificant(true);
-        Vector<Object> v = new Vector<Object>();
+        Vector<Object> v = new Vector<>();
 
         // Ignore initial empty lines
         while (tokenizer.nextToken() == StreamTokenizer.TT_EOL) ;

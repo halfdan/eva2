@@ -156,7 +156,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     public static Map<String, Class<? extends InterfaceOptimizer>> createOptimizerList() {
-        Map<String, Class<? extends InterfaceOptimizer>> optimizerList = new TreeMap<String, Class<? extends InterfaceOptimizer>>();
+        Map<String, Class<? extends InterfaceOptimizer>> optimizerList = new TreeMap<>();
 
         Reflections reflections = new Reflections("eva2.optimization.strategies");
         Set<Class<? extends InterfaceOptimizer>> optimizers = reflections.getSubTypesOf(InterfaceOptimizer.class);
@@ -171,7 +171,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     public static Map<String, Class<? extends AbstractProblemDoubleOffset>> createProblemList() {
-        Map<String, Class<? extends AbstractProblemDoubleOffset>> problemList = new TreeMap<String, Class<? extends AbstractProblemDoubleOffset>>();
+        Map<String, Class<? extends AbstractProblemDoubleOffset>> problemList = new TreeMap<>();
         Reflections reflections = new Reflections("eva2.problems");
         Set<Class<? extends AbstractProblemDoubleOffset>> problems = reflections.getSubTypesOf(AbstractProblemDoubleOffset.class);
         for (Class<? extends AbstractProblemDoubleOffset> problem : problems) {
@@ -185,7 +185,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     public static Map<String, Class<? extends InterfaceMutation>> createMutatorList() {
-        Map<String, Class<? extends InterfaceMutation>> mutationList = new TreeMap<String, Class<? extends InterfaceMutation>>();
+        Map<String, Class<? extends InterfaceMutation>> mutationList = new TreeMap<>();
         Reflections reflections = new Reflections("eva2.optimization.operator.mutation");
         Set<Class<? extends InterfaceMutation>> mutators = reflections.getSubTypesOf(InterfaceMutation.class);
         for (Class<? extends InterfaceMutation> mutator : mutators) {
@@ -199,7 +199,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     public static Map<String, Class<? extends InterfaceCrossover>> createCrossoverList() {
-        Map<String, Class<? extends InterfaceCrossover>> crossoverList = new TreeMap<String, Class<? extends InterfaceCrossover>>();
+        Map<String, Class<? extends InterfaceCrossover>> crossoverList = new TreeMap<>();
         Reflections reflections = new Reflections("eva2.optimization.operator.crossover");
         Set<Class<? extends InterfaceCrossover>> crossovers = reflections.getSubTypesOf(InterfaceCrossover.class);
         for (Class<? extends InterfaceCrossover> crossover : crossovers) {
@@ -213,7 +213,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
     }
 
     public static Map<String, Class<? extends InterfaceSelection>> createSelectionList() {
-        Map<String, Class<? extends InterfaceSelection>> selectionList = new TreeMap<String, Class<? extends InterfaceSelection>>();
+        Map<String, Class<? extends InterfaceSelection>> selectionList = new TreeMap<>();
         Reflections reflections = new Reflections("eva2.optimization.operator.selection");
         Set<Class<? extends InterfaceSelection>> selections = reflections.getSubTypesOf(InterfaceSelection.class);
         for (Class<? extends InterfaceSelection> selection : selections) {

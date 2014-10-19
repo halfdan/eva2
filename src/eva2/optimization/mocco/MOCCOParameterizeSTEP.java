@@ -263,8 +263,8 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
             weights = new double[refSolTextField.length];
             relax = new double[refSolTextField.length];
             for (int i = 0; i < refSolTextField.length; i++) {
-                weights[i] = new Double(weightTextField[i].getText()).doubleValue();
-                relax[i] = new Double(relaxTextField[i].getText()).doubleValue();
+                weights[i] = Double.parseDouble(weightTextField[i].getText());
+                relax[i] = Double.parseDouble(relaxTextField[i].getText());
                 if ((satisfied[i].isSelected()) && (obj[i].getOptimizationMode().contains("Objective"))) {
                     weights[i] = 0;
                     if (obj[i].is2BMinimized()) {

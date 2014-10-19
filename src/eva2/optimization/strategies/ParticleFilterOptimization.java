@@ -1,12 +1,10 @@
 package eva2.optimization.strategies;
 
-import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.Plot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.mutation.MutateESCorrVector;
 import eva2.optimization.operator.mutation.MutateESFixedStepSize;
 import eva2.optimization.operator.selection.InterfaceSelection;

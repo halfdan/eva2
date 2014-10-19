@@ -60,15 +60,11 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         }
         if (b.x != null) {
             this.x = new double[b.x.length];
-            for (int i = 0; i < this.x.length; i++) {
-                this.x[i] = b.x[i];
-            }
+            System.arraycopy(b.x, 0, this.x, 0, this.x.length);
         }
         if (b.constants != null) {
             this.constants = new double[b.constants.length];
-            for (int i = 0; i < this.constants.length; i++) {
-                this.constants[i] = b.constants[i];
-            }
+            System.arraycopy(b.constants, 0, this.constants, 0, this.constants.length);
         }
         this.noise = b.noise;
         this.useInnerConst = b.useInnerConst;

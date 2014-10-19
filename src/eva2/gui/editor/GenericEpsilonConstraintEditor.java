@@ -117,7 +117,7 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
 
                 try {
                     double d = 0;
-                    d = new Double(targetTextField[i].getText()).doubleValue();
+                    d = Double.parseDouble(targetTextField[i].getText());
                     tmpT[i] = d;
                 } catch (Exception e) {
 
