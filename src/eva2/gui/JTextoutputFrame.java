@@ -1,15 +1,14 @@
 package eva2.gui;
-/*
- * Title: EvA2 Description: Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher @version: $Revision: 255
- * $ $Date: 2007-11-15 14:58:12 +0100 (Thu, 15 Nov 2007) $ $Author: mkron $
- */
 
 import eva2.optimization.tools.FileTools;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
@@ -80,6 +79,8 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
         textArea.setEditable(false);
         textArea.setCaretPosition(0);
         textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
+        ((AbstractDocument)textArea.getDocument()).setDocumentFilter(new LineBufferDocumentFilter(textArea, 2500));
+
 
         frame.getContentPane().setLayout(new BorderLayout());
         final JScrollPane scrollpane = new JScrollPane(textArea);
@@ -92,10 +93,10 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
             @Override
             public void stateChanged(ChangeEvent e) {
                 JViewport viewport = (JViewport) e.getSource();
-                int Height = viewport.getViewSize().height;
-                if (Height != lastHeight) {
-                    lastHeight = Height;
-                    int x = Height - viewport.getExtentSize().height;
+                int height = viewport.getViewSize().height;
+                if (height != lastHeight) {
+                    lastHeight = height;
+                    int x = height - viewport.getExtentSize().height;
                     viewport.setViewPosition(new Point(0, x));
                 }
             }
@@ -161,6 +162,27 @@ class PopupListener extends MouseAdapter {
         if (e.isPopupTrigger()) {
             popup.show(e.getComponent(),
                     e.getX(), e.getY());
+        }
+    }
+}
+
+class LineBufferDocumentFilter extends DocumentFilter {
+    private JTextArea area;
+    private int max;
+
+    public LineBufferDocumentFilter(JTextArea area, int max) {
+        this.area = area;
+        this.max = max;
+    }
+
+    @Override
+    public void insertString(FilterBypass fb, int offset, String text, AttributeSet attr) throws BadLocationException {
+        super.insertString(fb, offset, text, attr);
+        int lines = area.getLineCount();
+        if (lines > max) {
+            int linesToRemove = lines - max -1;
+            int lengthToRemove = area.getLineStartOffset(linesToRemove);
+            remove(fb, 0, lengthToRemove);
         }
     }
 }
