@@ -228,6 +228,11 @@ public class ReflectPackage {
 
         for (String aDynCP : dynCP) {
             if (aDynCP.endsWith(".jar")) {
+                // Skip JARs that don't start with the EvA substring.
+                // This improves performance a lot when having a lot of JARs on the classpath
+                if (!aDynCP.substring(0, aDynCP.lastIndexOf(System.getProperty("file.separator"))).contains("EvA")) {
+                    continue;
+                }
                 getClassesFromJarFltr(set, aDynCP, pkg, includeSubs, reqSuperCls);
             } else {
                 getClassesFromFilesFltr(set, aDynCP, pkg, includeSubs, reqSuperCls);
