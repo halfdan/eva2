@@ -37,13 +37,15 @@ public class Serializer {
      * @throws IOException
      */
     private static void store(Serializable o, OutputStream outStream, boolean serializeInMem) throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(outStream);
+        ObjectOutputStream objectStream = new ObjectOutputStream(outStream);
         try {
             Object objToStore = o;
             if (serializeInMem) {
                 objToStore = new SerializedObject(o);
             }
-            // I don't care!
+            objectStream.writeObject(objToStore);
+            objectStream.flush();
+            objectStream.close();
         } catch (java.io.NotSerializableException ex) {
             LOGGER.log(Level.SEVERE, "Object is not serializable!", ex);
         }
@@ -142,7 +144,7 @@ public class Serializer {
         try {
             store(s, outStream, true);
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Could not write object to stream.", ex);
+            LOGGER.log(Level.FINER, "Could not write object to stream.", ex);
         }
     }
 

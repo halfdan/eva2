@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 /**
  * Collect available ModuleAdapter implementations and load them on request.
  */
-public class ModuleServer {
+public final class ModuleServer {
 
     private static final Logger LOGGER = Logger.getLogger(ModuleServer.class.getName());
     private static int instanceCounter = 0;

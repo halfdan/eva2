@@ -15,22 +15,20 @@ import java.text.NumberFormat;
  * ( especially around DrawingAreas ) with scaled and labeled axes.
  */
 public class ScaledBorder implements Border {
-    private boolean under_construction = false;
-
     /**
      * length of the distance markers on the axes in pixels
      */
-    int marker_length = 2;
+    int markerLength = 2;
 
     /**
      * length in pixels of the arrows at the ends of the axes
      */
-    int arrow_length = 10;
+    int arrowLength = 10;
 
     /**
      * a flag if the arrows should be visible
      */
-    public boolean show_arrows = true;
+    public boolean showArrows = true;
 
     /**
      * distance between the x-values in digits
@@ -212,12 +210,7 @@ public class ScaledBorder implements Border {
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        if (under_construction) {
-            System.out.println("ScaledBorder.paintBorder()");
-        }
-
-//  Here one might know how much of the graph is taken by the border only and possibly switch to exponential numbering?
-
+        //  Here one might know how much of the graph is taken by the border only and possibly switch to exponential numbering?
         if (foreground == null) {
             foreground = c.getForeground();
         }
@@ -255,35 +248,35 @@ public class ScaledBorder implements Border {
         g.drawLine(inner_insets.left, inner_insets.top + cd.height,
                 inner_insets.left + cd.width, inner_insets.top + cd.height);
 
-        if (show_arrows) {
+        if (showArrows) {
             g.drawLine(inner_insets.left, inner_insets.top,
                     inner_insets.left, inner_insets.top - y_values2arrow);
-            g.drawLine(inner_insets.left - marker_length, inner_insets.top - y_values2arrow,
-                    inner_insets.left, inner_insets.top - y_values2arrow - arrow_length);
-            g.drawLine(inner_insets.left + marker_length, inner_insets.top - y_values2arrow,
-                    inner_insets.left, inner_insets.top - y_values2arrow - arrow_length);
-            g.drawLine(inner_insets.left - marker_length, inner_insets.top - y_values2arrow,
-                    inner_insets.left + marker_length, inner_insets.top - y_values2arrow);
+            g.drawLine(inner_insets.left - markerLength, inner_insets.top - y_values2arrow,
+                    inner_insets.left, inner_insets.top - y_values2arrow - arrowLength);
+            g.drawLine(inner_insets.left + markerLength, inner_insets.top - y_values2arrow,
+                    inner_insets.left, inner_insets.top - y_values2arrow - arrowLength);
+            g.drawLine(inner_insets.left - markerLength, inner_insets.top - y_values2arrow,
+                    inner_insets.left + markerLength, inner_insets.top - y_values2arrow);
 
             g.drawLine(inner_insets.left + cd.width, inner_insets.top + cd.height,
                     inner_insets.left + cd.width + x_values2arrow, inner_insets.top + cd.height);
             g.drawLine(inner_insets.left + cd.width + x_values2arrow,
-                    inner_insets.top + cd.height - marker_length,
-                    inner_insets.left + cd.width + x_values2arrow + arrow_length,
+                    inner_insets.top + cd.height - markerLength,
+                    inner_insets.left + cd.width + x_values2arrow + arrowLength,
                     inner_insets.top + cd.height);
             g.drawLine(inner_insets.left + cd.width + x_values2arrow,
-                    inner_insets.top + cd.height + marker_length,
-                    inner_insets.left + cd.width + x_values2arrow + arrow_length,
+                    inner_insets.top + cd.height + markerLength,
+                    inner_insets.left + cd.width + x_values2arrow + arrowLength,
                     inner_insets.top + cd.height);
             g.drawLine(inner_insets.left + cd.width + x_values2arrow,
-                    inner_insets.top + cd.height - marker_length,
+                    inner_insets.top + cd.height - markerLength,
                     inner_insets.left + cd.width + x_values2arrow,
-                    inner_insets.top + cd.height + marker_length);
+                    inner_insets.top + cd.height + markerLength);
         }
 
         if (yLabel != null) {
             Dimension yld = new Dimension(fm.getAscent() + fm.getDescent(), fm.stringWidth(yLabel));
-            AffineTransform T = new AffineTransform(0, -1, 1, 0, 0, 0);
+            AffineTransform T = new AffineTransform(0, 1, 1, 0, 0, 0);
             Font old = g.getFont(), f = old.deriveFont(T);
             g.setFont(f);
             g.drawString(yLabel, y_label2border + fm.getAscent(), inner_insets.top + (cd.height + yld.height) / 2);
@@ -298,12 +291,12 @@ public class ScaledBorder implements Border {
 
         if (src_rect.x == 0 && src_rect.y == 0) {
             int v2m = fm.stringWidth("0") / y_values2marker;
-            g.drawString("0", inner_insets.left - fm.stringWidth("0") - v2m - marker_length,
+            g.drawString("0", inner_insets.left - fm.stringWidth("0") - v2m - markerLength,
                     inner_insets.top + cd.height + fontAsc);
             g.drawLine(inner_insets.left, inner_insets.top + cd.height + fm.getAscent(),
                     inner_insets.left, inner_insets.top + cd.height);
             g.drawLine(inner_insets.left, inner_insets.top + cd.height,
-                    inner_insets.left - fm.stringWidth("0") - v2m - marker_length,
+                    inner_insets.left - fm.stringWidth("0") - v2m - markerLength,
                     inner_insets.top + cd.height);
         }
 
@@ -320,19 +313,8 @@ public class ScaledBorder implements Border {
      * @param insets
      */
     private void drawYValues(Graphics g, Insets insets) {
-        if (under_construction) {
-            System.out.println("ScaledBorder.drawYValues()");
-        }
-
         FontMetrics fm = g.getFontMetrics();
         int fontAsc = fm.getAscent(), v2m = fm.stringWidth("0") / y_values2marker;
-
-//	  double startVal,dn = (src_rect.y / src_dY );
-//	  startVal = Math.round(dn-0.5)*src_dY;
-//
-//	  if( startVal < src_rect.y || ( src_rect.x == 0 && src_rect.y == 0 ) ) {
-//		  startVal+=src_dY; 
-//	  }
 
         double startVal = Mathematics.firstMultipleAbove(src_rect.y, src_dY);
 
@@ -355,9 +337,9 @@ public class ScaledBorder implements Border {
             Point p = m.getPoint(minx, scaledV);
             if (p != null) {
                 g.drawString(text,
-                        insets.left - fm.stringWidth(text) - v2m - marker_length,
+                        insets.left - fm.stringWidth(text) - v2m - markerLength,
                         p.y + fontAsc / 2);
-                g.drawLine(insets.left - marker_length, p.y, insets.left, p.y);
+                g.drawLine(insets.left - markerLength, p.y, insets.left, p.y);
             }
             if (v + src_dY <= v) {
 //			  System.err.println("Overflow error B in ScaledBorder! v,src_dY:" + v + ", " + src_dY);
@@ -372,9 +354,6 @@ public class ScaledBorder implements Border {
     }
 
     public double getSrcdY(int fontMetricsHeight, int componentHeight) {
-        if (under_construction) {
-            System.out.println("ScaledBorder.getSrcdY()");
-        }
         if ((!do_refresh && src_dY != -1) || !auto_scale_y) {
             return src_dY;
         }
@@ -387,17 +366,10 @@ public class ScaledBorder implements Border {
         if (src_dY < minimal_increment) {
             src_dY = minimal_increment;
         }
-        if (under_construction) {
-            System.out.println("Setting src_dY to " + src_dY + " for " + src_rect);
-        }
         return src_dY;
     }
 
     private void drawXValues(Graphics g, Insets insets, Dimension cd) {
-        if (under_construction) {
-            System.out.println("ScaledBorder.drawXValues()");
-        }
-
         FontMetrics fm = g.getFontMetrics();
         double mx = cd.width / src_rect.width;
         int n, labelX,
@@ -422,16 +394,13 @@ public class ScaledBorder implements Border {
             }
             int strW = fm.stringWidth(text);
             g.drawString(text, labelX - strW / 2, xLineY + fontAsc);
-            g.drawLine(labelX, xLineY, labelX, xLineY + marker_length);
+            g.drawLine(labelX, xLineY, labelX, xLineY + markerLength);
             n++;
             labelX = xnull + (int) (n * src_dX * mx);
         }
     }
 
     public double getSrcdX(FontMetrics fm, Dimension cd) {
-        if (under_construction) {
-            System.out.println("ScaledBorder.getSrcdX()");
-        }
         if ((!do_refresh && src_dX != -1) || !auto_scale_x) {
             return src_dX;
         }
@@ -481,7 +450,7 @@ public class ScaledBorder implements Border {
      * displayed, which looks a bit nicer
      * it returns values like ... 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, ...
      *
-     * @param the double value next to which the displayable value should be found
+     * @param min the double value next to which the displayable value should be found
      * @return the displayable value
      */
     public static double aBitBigger(double min) {
@@ -525,7 +494,6 @@ public class ScaledBorder implements Border {
      * @param xOrY if true toggle for the x axis otherwise for the y axis
      */
     public void toggleDecPattern(boolean xOrY) {
-//	  System.out.println("Next pattern: " + nextYPattern);
         int current;
         if (xOrY) {
             current = nextXPattern;
@@ -594,9 +562,6 @@ public class ScaledBorder implements Border {
      */
     @Override
     public Insets getBorderInsets(Component c) {
-        if (under_construction) {
-            System.out.println("ScaledBorder.getBorderInsets()");
-        }
         if (!do_refresh && old_insets != null) {
             return old_insets;
         }
@@ -613,7 +578,6 @@ public class ScaledBorder implements Border {
         }
 
         FontMetrics fm = g.getFontMetrics();
-//    int fontAsc = fm.getAscent();
         int fontHeight = fm.getHeight(),
                 digit_width = fm.stringWidth("0");
 
@@ -639,7 +603,6 @@ public class ScaledBorder implements Border {
             n += src_dY;
         }
 
-//    System.out.println("Steps approx: " + ((src_rect.y + src_rect.height)-start)/src_dY);
         if (((src_rect.y + src_rect.height) - start) / src_dY > 20) {
             inc = ((src_rect.y + src_rect.height) - start) / 20.;
         } else {
@@ -649,7 +612,6 @@ public class ScaledBorder implements Border {
             System.err.println("Warning, too small increase step size!");
         }
         for (; n <= src_rect.y + src_rect.height; n += inc) {
-//    	System.out.println(n);
             // TODO here might be a bug for mean values
             double v = n;
             if (y_scale != null) {
@@ -662,7 +624,7 @@ public class ScaledBorder implements Border {
             // avoid nearly endless loop for large src_rect.y value and small src_dY
         }
 
-        insets.left += 1 + y_label2border + maxWidth + digit_width / y_values2marker + marker_length;
+        insets.left += 1 + y_label2border + maxWidth + digit_width / y_values2marker + markerLength;
 
         // bottom:
         insets.bottom += 1 + fontHeight + x_label2border;
@@ -671,14 +633,14 @@ public class ScaledBorder implements Border {
         }
 
         // top:
-        if (show_arrows) {
-            insets.top += y_values2arrow + arrow_length;
+        if (showArrows) {
+            insets.top += y_values2arrow + arrowLength;
         }
         insets.top += axis2border;
 
         // right:
-        if (show_arrows) {
-            insets.right += x_values2arrow + arrow_length;
+        if (showArrows) {
+            insets.right += x_values2arrow + arrowLength;
         }
         insets.right += axis2border;
         getSrcdX(fm, c.getSize());
