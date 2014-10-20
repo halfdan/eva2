@@ -549,7 +549,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             if (origEsPop != null && (origEsPop >= 0)) {
                 Population origPop = peakOpts[origEsPop].getPopulation();
                 clusteredPeakPops[i].copyHashData(origPop);
-                clusteredPeakPops[i].SetHistory(origPop.getHistory()); // copy the history for deactivation!
+                clusteredPeakPops[i].setHistory(origPop.getHistory()); // copy the history for deactivation!
             } else { // ok in the first iteration of if the indy was a random immigrant
                 if (population.getGeneration() > 1 && (getNumRndImmigrants() == 0)) {
                     System.err.println("Error, empty original es pop ID!");

@@ -736,7 +736,7 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         spec1.addPopulation(spec2);
         // keep longer history
         if (spec2.getHistoryLength() > spec1.getHistoryLength()) {
-            spec1.SetHistory(spec2.getHistory());
+            spec1.setHistory(spec2.getHistory());
         }
         if (spec2.getGeneration() > spec1.getGeneration()) {
             spec1.setGeneration(spec2.getGeneration());
@@ -760,10 +760,10 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         newSp.setUseHistory(true);
         if (startAtP1Gen) { // start explicitely as a child population of p1
             newSp.setGeneration(parentSp.getGeneration());
-            newSp.SetHistory((LinkedList<AbstractEAIndividual>) parentSp.getHistory().clone());
+            newSp.setHistory((LinkedList<AbstractEAIndividual>) parentSp.getHistory().clone());
         } else { // start anew (from undiff)
             newSp.setGeneration(0);
-            newSp.SetHistory(new LinkedList<AbstractEAIndividual>());
+            newSp.setHistory(new LinkedList<AbstractEAIndividual>());
         }
 
         if (optimizer instanceof InterfaceSpeciesAware) {

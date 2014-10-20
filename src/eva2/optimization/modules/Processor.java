@@ -50,7 +50,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     private InterfaceStatistics statistics;
     private InterfaceOptimizationParameters optimizationParameters;
     private boolean createInitialPopulations = true;
-    private boolean saveParams = true;
+    private boolean saveParams = false;
     private OptimizationStateListener optimizationStateListener;
     private boolean wasRestarted = false;
     private int runCounter = 0;
@@ -170,6 +170,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             EVAERROR.clearMsgCache();
             while (isOptimizationRunning()) {
                 setPriority(3);
+                // ToDo: Do we need this really?
                 if (saveParams) {
                     try {
                         optimizationParameters.saveInstance();

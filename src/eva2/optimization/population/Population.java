@@ -123,9 +123,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public Population(Population population) {
         LOGGER.log(Level.FINER, "New population has been created.");
         setSameParams(population);
-        for (int i = 0; i < population.size(); i++) {
-            if (population.get(i) != null) {
-                this.add((((AbstractEAIndividual) population.get(i))).clone());
+        for (Object individual : population) {
+            if (individual != null) {
+                this.add((((AbstractEAIndividual) individual)).clone());
             }
         }
         copyHistAndArchive(population);
@@ -406,7 +406,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
                 createBinCardinality(this, true, seedCardinality.head(), seedCardinality.tail());
                 break;
         }
-        //System.out.println("After pop initialize: " + this.getStringRepresentation());
         firePropertyChangedEvent(Population.POPULATION_INITIALIZED);
     }
 
@@ -601,7 +600,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return historyList;
     }
 
-    public void SetHistory(LinkedList<AbstractEAIndividual> theHist) {
+    public void setHistory(LinkedList<AbstractEAIndividual> theHist) {
         historyList = theHist;
     }
 
@@ -715,8 +714,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             }
             this.historyList.add((AbstractEAIndividual) this.getBestEAIndividual().clone());
         }
-        for (int i = 0; i < size(); i++) {
-            ((AbstractEAIndividual) get(i)).incrAge();
+        for (Object individual : this) {
+            ((AbstractEAIndividual) individual).incrAge();
         }
         this.generationCount++;
         firePropertyChangedEvent(NEXT_GENERATION_PERFORMED);
@@ -1223,7 +1222,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             skip = super.size() - n;
         }
 
-//    	hier getSorted aufrufen
         ArrayList<AbstractEAIndividual> sorted = getSorted(comp);
         res.clear();
         for (int i = skip; i < skip + n; i++) {

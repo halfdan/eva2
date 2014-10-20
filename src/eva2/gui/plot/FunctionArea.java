@@ -33,7 +33,6 @@ public class FunctionArea extends DArea implements Serializable {
     private GraphPointSetLegend legendBox = null;
     private ScaledBorder scaledBorder;
     private DPointIcon currentPointIcon;
-    private JFileChooser fileChooser;
     private boolean legend = true;
     private boolean log = false;
     private ArrayList<GraphPointSet> pointSetContainer;
@@ -511,7 +510,7 @@ public class FunctionArea extends DArea implements Serializable {
      *
      */
     protected void createFileChooser() {
-        fileChooser = new JFileChooser(new File("/resources"));
+        JFileChooser fileChooser = new JFileChooser(new File("/resources"));
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
 

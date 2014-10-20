@@ -183,7 +183,7 @@ public class Plot implements PlotInterface, Serializable {
     }
 
     /**
-     *
+     * ToDo: This is ugly as fuck. The plot shouldn't create internal frames.
      */
     @Override
     public void init() {
