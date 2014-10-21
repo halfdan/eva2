@@ -38,7 +38,8 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         } else {
             statisticsModule = new StatisticsStandalone(noGUIStatOut);
         }
-        processor = new Processor(statisticsModule, this, params);
+        processor = new Processor(statisticsModule, params);
+        processor.addListener(this);
 
         // the statistics want to be informed if the strategy or the optimizer (which provide statistical data as InterfaceAdditionalInformer) change.
         // THIS is now done directly in the constructor of a Processor
@@ -87,7 +88,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         EvAModuleButtonPanelMaker buttonPanel = new EvAModuleButtonPanelMaker(remoteModuleAdapter, ((Processor) processor).isOptimizationRunning());
         buttonPanel.setHelperFilename(helperFilename);
         frmMkr.addPanelMaker(buttonPanel);
-        InterfaceOptimizationParameters optimizationParameters = ((Processor) processor).getOptimizationParameterss();
+        InterfaceOptimizationParameters optimizationParameters = ((Processor) processor).getOptimizationParameters();
 
         frmMkr.addPanelMaker(paramPanel = new JParaPanel(optimizationParameters, optimizationParameters.getName()));
 
@@ -102,7 +103,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
 
         frmMkr.addPanelMaker(jobPanel);
 
-        ((Processor) processor).getOptimizationParameterss().addInformableInstance(frmMkr);
+        ((Processor) processor).getOptimizationParameters().addInformableInstance(frmMkr);
         return frmMkr;
     }
 
@@ -133,7 +134,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
 
     @Override
     public OptimizationJob scheduleJob() {
-        OptimizationJob job = jobList.addJob(((Processor) processor).getOptimizationParameterss(), (AbstractStatistics) (((Processor) processor).getStatistics()));
+        OptimizationJob job = jobList.addJob(((Processor) processor).getOptimizationParameters(), (AbstractStatistics) (((Processor) processor).getStatistics()));
         jobPanel.getEditor().setValue(jobList);
         return job;
     }

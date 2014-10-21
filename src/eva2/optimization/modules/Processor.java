@@ -69,10 +69,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
      *
      * @see InterfaceNotifyOnInformers
      */
-    public Processor(InterfaceStatistics statistics, ModuleAdapter moduleAdapter, InterfaceOptimizationParameters optimizationParameters) {
+    public Processor(InterfaceStatistics statistics, InterfaceOptimizationParameters optimizationParameters) {
         this.optimizationParameters = optimizationParameters;
         this.statistics = statistics;
-        optimizationStateListener = moduleAdapter;
 
         // the statistics want to be informed if the strategy or the optimizer (which provide statistical data as InterfaceAdditionalInformer) change.
         if (statistics != null && (optimizationParameters != null)) {
@@ -211,7 +210,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         Population resultPop = null;
 
         if (!isOptimizationRunning()) {
-            System.err.println("warning, this shouldnt happen in processor! Was startOptimization called?");
+            LOGGER.warning("Was startOptimization already called?");
             setOptimizationRunning(true);
         }
 
@@ -407,11 +406,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
     @Override
     public String getInfoString() {
-        //StringBuffer sb = new StringBuffer("processing ");
-        StringBuilder sb = new StringBuilder(this.optimizationParameters.getProblem().getName());
-        sb.append("+");
-        sb.append(this.optimizationParameters.getOptimizer().getName());
-        return sb.toString();
+        return this.optimizationParameters.getProblem().getName() + "+" + this.optimizationParameters.getOptimizer().getName();
     }
 
     /**
@@ -424,7 +419,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     /**
      * These methods allow you to get and set the Module Parameters.
      */
-    public InterfaceOptimizationParameters getOptimizationParameterss() {
+    public InterfaceOptimizationParameters getOptimizationParameters() {
         return optimizationParameters;
     }
 

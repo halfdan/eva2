@@ -82,7 +82,7 @@ public class OptimizerRunnable implements Runnable {
         rnblID = cntID;
         cntID++;
 
-        proc = new Processor(stats, null, params);
+        proc = new Processor(stats, params);
         if (proc.getStatistics() instanceof AbstractStatistics) {
             ((AbstractStatistics) proc.getStatistics()).setSaveParams(false);
         }
@@ -107,7 +107,7 @@ public class OptimizerRunnable implements Runnable {
     }
 
     public InterfaceOptimizationParameters getGOParams() {
-        return proc.getOptimizationParameterss();
+        return proc.getOptimizationParameters();
     }
 
     public InterfaceStatistics getStats() {
@@ -118,8 +118,8 @@ public class OptimizerRunnable implements Runnable {
         if (proc.isOptimizationRunning()) {
             throw new RuntimeException("Error - cannot change statistics instance during optimization.");
         }
-        InterfaceOptimizationParameters params = proc.getOptimizationParameterss();
-        proc = new Processor(stats, null, params);
+        InterfaceOptimizationParameters params = proc.getOptimizationParameters();
+        proc = new Processor(stats, params);
         if (proc.getStatistics() instanceof AbstractStatistics) {
             ((AbstractStatistics) proc.getStatistics()).setSaveParams(false);
         }
@@ -149,7 +149,7 @@ public class OptimizerRunnable implements Runnable {
         try {
             proc.setSaveParams(false);
             if (postProcessOnly) {
-                proc.performPostProcessing((PostProcessParams) proc.getOptimizationParameterss().getPostProcessParams(), listener);
+                proc.performPostProcessing((PostProcessParams) proc.getOptimizationParameters().getPostProcessParams(), listener);
             } else {
                 if (doRestart) {
                     proc.restartOptimization();
@@ -199,15 +199,15 @@ public class OptimizerRunnable implements Runnable {
     }
 
     public SolutionSet getSolutionSet() {
-        return (SolutionSet) proc.getOptimizationParameterss().getOptimizer().getAllSolutions();
+        return (SolutionSet) proc.getOptimizationParameters().getOptimizer().getAllSolutions();
     }
 
     public void setPostProcessingParams(InterfacePostProcessParams ppp) {
-        proc.getOptimizationParameterss().setPostProcessParams(ppp);
+        proc.getOptimizationParameters().setPostProcessParams(ppp);
     }
 
     public int getProgress() {
-        return proc.getOptimizationParameterss().getOptimizer().getPopulation().getFunctionCalls();
+        return proc.getOptimizationParameters().getOptimizer().getPopulation().getFunctionCalls();
     }
 
     public String terminatedBecause() {
@@ -215,7 +215,7 @@ public class OptimizerRunnable implements Runnable {
             if (postProcessOnly) {
                 return "Post processing finished";
             } else {
-                InterfaceTerminator term = proc.getOptimizationParameterss().getTerminator();
+                InterfaceTerminator term = proc.getOptimizationParameters().getTerminator();
                 return term.lastTerminationMessage();
             }
         } else {

@@ -1,7 +1,6 @@
 package eva2.optimization;
 
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.modules.GOModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
 import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;
@@ -121,7 +120,7 @@ public final class ModuleServer {
                     /* create a module instance */
                     int constrIndex = 0;
 
-                    if ((optimizationParameters == null && noGuiLogFile == null) || !module.equals(GOModuleAdapter.class)) {
+                    if ((optimizationParameters == null && noGuiLogFile == null)) {
                         if (optimizationParameters != null) {
                             System.err.println("Cant set params - no matching constructor found for " + adapterName + " (ModuleServer)");
                         }
