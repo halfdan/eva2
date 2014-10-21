@@ -1,5 +1,7 @@
 package eva2.tools;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +48,10 @@ public class Serializer {
             objectStream.writeObject(objToStore);
             objectStream.flush();
             objectStream.close();
+            String output;
+            Gson gson = new Gson();
+            output = gson.toJson(objToStore);
+            System.out.println(output);
         } catch (java.io.NotSerializableException ex) {
             LOGGER.log(Level.SEVERE, "Object is not serializable!", ex);
         }
