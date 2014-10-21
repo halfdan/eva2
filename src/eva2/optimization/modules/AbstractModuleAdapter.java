@@ -60,7 +60,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      */
     @Override
     public boolean hasPostProcessing() {
-        return ((processor instanceof Processor) && ((Processor) processor).getOptimizationParameterss().getPostProcessParams().isDoPostProcessing());
+        return ((processor instanceof Processor) && ((Processor) processor).getOptimizationParameters().getPostProcessParams().isDoPostProcessing());
     }
 
     /**
@@ -70,7 +70,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      */
     @Override
     public boolean startPostProcessing() {
-        if (hasPostProcessing() && ((Processor) processor).getOptimizationParameterss().getPostProcessParams().isDoPostProcessing()) {
+        if (hasPostProcessing() && ((Processor) processor).getOptimizationParameters().getPostProcessParams().isDoPostProcessing()) {
             ((Processor) processor).performPostProcessing();
             return true;
         } else {
@@ -80,7 +80,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
 
     public InterfaceOptimizationParameters getOptimizationParameters() {
         if ((processor != null) && (processor instanceof Processor)) {
-            return ((Processor) processor).getOptimizationParameterss();
+            return ((Processor) processor).getOptimizationParameters();
         } else {
             return null;
         }
