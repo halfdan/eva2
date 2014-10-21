@@ -20,7 +20,7 @@ public class GenerationTerminator implements InterfaceTerminator, Serializable {
     private String msg = "";
 
     @Override
-    public void init(InterfaceOptimizationProblem prob) {
+    public void initialize(InterfaceOptimizationProblem prob) {
         msg = "Not terminated.";
     }
 

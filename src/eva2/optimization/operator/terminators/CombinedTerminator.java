@@ -38,12 +38,12 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
     }
 
     @Override
-    public void init(InterfaceOptimizationProblem prob) {
+    public void initialize(InterfaceOptimizationProblem prob) {
         if (t1 != null) {
-            t1.init(prob);
+            t1.initialize(prob);
         }
         if (t2 != null) {
-            t2.init(prob);
+            t2.initialize(prob);
         }
         msg = "Not terminated.";
     }

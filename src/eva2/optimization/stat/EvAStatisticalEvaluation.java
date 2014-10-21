@@ -12,8 +12,6 @@ import java.util.List;
 /**
  * Do some statistical tests on a set of job results. Note that the plausibility (comparability of the
  * jobs) is not tested here.
- *
- * @author mkron
  */
 public class EvAStatisticalEvaluation {
 
@@ -230,9 +228,6 @@ public class EvAStatisticalEvaluation {
         if (dat1 != null && dat2 != null) {
             t = Mathematics.tTestEqSizeEqVar(dat1, dat2);
         }
-//		MannWhitneyTest mwt = new MannWhitneyTest(job1.getDoubleDataColumn(field), job2.getDoubleDataColumn(field));
-//		double t = mwt.getSP();
-//		t = roundTo2DecimalPlaces(t);
         return "" + t;
     }
 
@@ -243,7 +238,6 @@ public class EvAStatisticalEvaluation {
         if (dat1 != null && dat2 != null) {
             t = Mathematics.tTestUnEqSizeEqVar(dat1, dat2);
         }
-//		t = roundTo2DecimalPlaces(t);
         return "" + t;
     }
 
@@ -254,7 +248,6 @@ public class EvAStatisticalEvaluation {
         if (dat1 != null && dat2 != null) {
             t = Mathematics.tTestUnEqSizeUnEqVar(dat1, dat2);
         }
-//		t = roundTo2DecimalPlaces(t);
         return "" + t;
     }
 
@@ -266,8 +259,6 @@ public class EvAStatisticalEvaluation {
             Object obj = ReflectPackage.instantiateWithParams("jsc.independentsamples.MannWhitneyTest", new Object[]{dat1, dat2}, null);
             if (obj != null) {
                 Object sp = BeanInspector.callIfAvailable(obj, "getSP", new Object[]{});
-//				System.out.println(BeanInspector.niceToString(obj));
-//				System.out.println("SP val is " + sp);
                 t = (Double) sp;
             } else {
                 System.err.println("For the MannWhitney test, the JSC package is required on the class path!");

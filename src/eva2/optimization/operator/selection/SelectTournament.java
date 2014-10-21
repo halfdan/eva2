@@ -9,11 +9,6 @@ import eva2.tools.math.RNG;
  * also scaling invariant.
  * In case of multiple fitness values the selection
  * critria is selected randomly for each selection event.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.04.2003
- * Time: 16:17:26
- * To change this template use Options | File Templates.
  */
 public class SelectTournament implements InterfaceSelection, java.io.Serializable {
 
@@ -112,18 +107,15 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
      * This method allows you to select partners for a given Individual
      *
      * @param dad              The already seleceted parent
-     * @param avaiablePartners The mating pool.
+     * @param availablePartners The mating pool.
      * @param size             The number of partners needed.
      * @return The selected partners.
      */
     @Override
-    public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
-        return this.selectFrom(avaiablePartners, size);
+    public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
+        return this.selectFrom(availablePartners, size);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.

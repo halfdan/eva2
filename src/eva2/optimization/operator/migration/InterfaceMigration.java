@@ -10,11 +10,6 @@ import eva2.optimization.strategies.InterfaceOptimizer;
  * MOXMigration typically stands for multi-criterial migration.
  * For multi-criterial optimization the migration scheme
  * also may give the subdividing scheme.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.09.2004
- * Time: 14:45:15
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceMigration {
 
@@ -27,7 +22,7 @@ public interface InterfaceMigration {
      * Typically i'll need some initialization method for
      * every bit of code i write....
      */
-    public void initMigration(InterfaceOptimizer[] islands);
+    public void initializeMigration(InterfaceOptimizer[] islands);
 
     /**
      * The migrate method can be called asychnronously or

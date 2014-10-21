@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 /**
  * Utility class to provide simplification functions
  * for working with Strings.
- *
- * @author Fabian Becker, Marcel Kronfeld
  */
 public final class StringTools {
 
@@ -102,13 +100,6 @@ public final class StringTools {
         }
         return -1;
     }
-
-//    public static void main(String[] args) {
-//    	System.out.println(toHTML("Hallo-asdfsadfsafdsadfo, dies ist ein doller test text!", 15));
-//    	System.out.println(toHTML("Set the interval of data output for intermediate verbosity (in generations).", 15));
-//    	System.out.println(toHTML("Set the interval of data output for intermediate verbosity (in generations).", 25));
-//    	System.out.println(toHTML("Set the interval of data output for intermediate verbosity (in generations).", 30));
-//    }
 
     /**
      * Parse an array of Strings as an argument list. Take the argument list, a set of keys together

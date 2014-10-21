@@ -19,8 +19,6 @@ import java.util.logging.Logger;
 /**
  * Some miscellaneous functions to help with Beans, reflection, conversion and
  * generic display.
- *
- * @author mkron, Holger Ulmer, Felix Streichert, Hannes Planatscher
  */
 public class BeanInspector {
     private static final Logger LOGGER = Logger.getLogger(BeanInspector.class.getName());
@@ -164,13 +162,11 @@ public class BeanInspector {
             }
             int len = Array.getLength(obj);
             for (int i = 0; i < len; i++) {
-//				sbuf.append(toString(Array.get(obj, i)));
                 if (withNewlines) {
                     sbuf.append('\n');
                 }
                 sbuf.append(toString(Array.get(obj, i), delim, tight, indentStr, indentDepth, withNewlines));
                 if (i < len - 1) {
-//					sbuf.append(delim);
                     if (!tight) {
                         sbuf.append(" ");
                     }
@@ -216,7 +212,6 @@ public class BeanInspector {
         for (int ii = 0; ii < methods.length; ii++) { // check if the object has its own toString method, in this case use it
             if ((methods[ii].getName().equals("toString") /*|| (methods[ii].getName().equals("getStringRepresentation"))*/) && (methods[ii].getParameterTypes().length == 0)) {
                 Object[] args = new Object[0];
-                //args[0] = obj;
                 try {
                     String ret = (String) methods[ii].invoke(obj, args);
                     return makeIndent(indentStr, indentDepth) + ret;
@@ -292,8 +287,6 @@ public class BeanInspector {
         System.out.println("----");
         System.out.println(BeanInspector.toString(new Population(), ';', false, ">", 1, false));
         System.out.println(BeanInspector.toString(new GeneticAlgorithm(), ';', false, ">", 1, false));
-        //		System.out.println(BeanInspector.toString(new Population(), ',', false, "\t"));
-//		System.out.println(BeanInspector.toString(new GeneticAlgorithm(), ',', false, "\t"));
     }
 
     /**
@@ -308,7 +301,6 @@ public class BeanInspector {
     public static Pair<String[], Object[]> getPublicPropertiesOf(Object target, boolean requireSetter, boolean showHidden) {
         BeanInfo Info = null;
         PropertyDescriptor[] Properties = null;
-//		MethodDescriptor[] Methods = null;
         try {
             Info = Introspector.getBeanInfo(target.getClass());
             Properties = Info.getPropertyDescriptors();
@@ -322,21 +314,15 @@ public class BeanInspector {
         Object[] valArray = new Object[Properties.length];
         for (int i = 0; i < Properties.length; i++) {
             if ((Properties[i].isHidden() && !showHidden) || Properties[i].isExpert()) {
-//				System.err.println(Properties[i].getDisplayName() + " is " + ( (Properties[i].isExpert())? "expert": "hidden"));
                 continue;
             }
             String name = Properties[i].getDisplayName();
-            //System.out.println("name = "+name );
-            //Class type = Properties[i].getPropertyType();
-            //System.out.println("type = "+type.getName() );
             Method getter = Properties[i].getReadMethod();
             Method setter = Properties[i].getWriteMethod();
             // Only display read/write properties.
             if (getter == null || (setter == null && requireSetter)) {
                 continue;
             }
-            //System.out.println("name = "+name );
-            //System.out.println("type = "+type.getName() );
             Object args[] = {};
 
             try {
@@ -375,7 +361,6 @@ public class BeanInspector {
         // then the properties
         BeanInfo Info = null;
         PropertyDescriptor[] Properties = null;
-//		MethodDescriptor[] Methods = null;
         try {
             Info = Introspector.getBeanInfo(obj.getClass());
             Properties = Info.getPropertyDescriptors();
@@ -390,17 +375,12 @@ public class BeanInspector {
                 continue;
             }
             String name = Properties[i].getDisplayName();
-            //System.out.println("name = "+name );
-//			Class type = Properties[i].getPropertyType();
-            //System.out.println("type = "+type.getName() );
             Method getter = Properties[i].getReadMethod();
             Method setter = Properties[i].getWriteMethod();
             // Only display read/write properties.
             if (getter == null || setter == null) {
                 continue;
             }
-            //System.out.println("name = "+name );
-            //System.out.println("type = "+type.getName() );
             Object args[] = {};
             try {
                 Object value = getter.invoke(obj, args);
@@ -753,11 +733,11 @@ public class BeanInspector {
         if (val instanceof Integer) {
             return ((Integer) val).doubleValue();
         } else if (val instanceof Double) {
-            return ((Double) val).doubleValue();
+            return (Double) val;
         } else if (val instanceof Boolean) {
             return (((Boolean) val) ? 1. : 0.);
         } else if (val instanceof Character) {
-            return ((Character) val).charValue();
+            return (Character) val;
         } else if (val instanceof Byte) {
             return ((Byte) val).doubleValue();
         } else if (val instanceof Short) {
@@ -816,21 +796,21 @@ public class BeanInspector {
             return d;
         }
         if ((destType == Integer.class) || (destType == int.class)) {
-            return new Integer(d.intValue());
+            return d.intValue();
         } else if ((destType == Boolean.class) || (destType == boolean.class)) {
             return (d != 0) ? Boolean.TRUE : Boolean.FALSE;
         } else if ((destType == Byte.class) || (destType == byte.class)) {
-            return new Byte(d.byteValue());
+            return d.byteValue();
         } else if ((destType == Short.class) || (destType == short.class)) {
-            return new Short(d.shortValue());
+            return d.shortValue();
         } else if ((destType == Long.class) || (destType == long.class)) {
-            return new Long(d.longValue());
+            return d.longValue();
         } else if ((destType == Float.class) || (destType == float.class)) {
-            return new Float(d.floatValue());
+            return d.floatValue();
         } else { // this makes hardly sense...
             System.err.println("warning: converting from double to character or void...");
             if ((destType == Character.class) || (destType == char.class)) {
-                return new Character(d.toString().charAt(0));
+                return d.toString().charAt(0);
             } else {
                 return 0;
             }
@@ -891,7 +871,6 @@ public class BeanInspector {
      * @return
      */
     public static Object decodeType(Class<?> destType, Object value) {
-//		System.err.println("desttype: " + destType.toString() + ", val: " + value.getClass().toString());
         if (destType.isAssignableFrom(value.getClass())) {
             // value is already of destType or assignable (subclass), so just return it
             return value;
@@ -974,14 +953,10 @@ public class BeanInspector {
             return false;
         }
         PropertyDescriptor[] properties = bi.getPropertyDescriptors();
-//		Method getter = null;
         Method setter = null;
         Class<?> type = null;
-//		System.err.println("looking at " + toString(obj));
         for (int i = 0; i < properties.length; i++) {
             if (properties[i].getDisplayName().equals(mem)) {
-//				System.err.println("looking at " + properties[i].getDisplayName());
-//				getter  = properties[i].getReadMethod();
                 setter = properties[i].getWriteMethod();
                 type = properties[i].getPropertyType();
                 break;
@@ -989,7 +964,6 @@ public class BeanInspector {
         }
         if (setter != null) {
             try {
-//				System.out.println("setting value...");
                 Object[] args = new Object[]{decodeType(type, val)};
                 if (args[0] != null) {
                     setter.invoke(obj, args);

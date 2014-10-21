@@ -13,8 +13,6 @@ import java.util.List;
  * framework should guarantee that the job is removed as a statistics listener.
  * <p/>
  * A job contains data fields of a multi-run experiment and header strings describing the data.
- *
- * @author mkron
  */
 public class OptimizationJob implements Serializable, InterfaceStatisticsListener {
 

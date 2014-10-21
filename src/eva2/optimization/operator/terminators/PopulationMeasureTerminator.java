@@ -76,7 +76,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
     }
 
     @Override
-    public void init(InterfaceOptimizationProblem prob) {
+    public void initialize(InterfaceOptimizationProblem prob) {
         firstTime = true;
         msg = "Not terminated.";
 //		oldFit = null;

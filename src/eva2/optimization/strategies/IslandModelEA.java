@@ -116,7 +116,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
              }*/
         }
 
-        this.migration.initMigration(this.islands);
+        this.migration.initializeMigration(this.islands);
         Population pop;
         this.population.incrGeneration(); // the island-initialization has increased the island-pop generations.
 
@@ -183,7 +183,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
              }*/
         }
 
-        this.migration.initMigration(this.islands);
+        this.migration.initializeMigration(this.islands);
         Population pop;
         for (int i = 0; i < this.islands.length; i++) {
             pop = (Population) this.islands[i].getPopulation().clone();

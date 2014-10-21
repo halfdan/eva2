@@ -23,7 +23,7 @@ public class FitnessValueTerminator implements InterfaceTerminator,
     }
 
     @Override
-    public void init(InterfaceOptimizationProblem prob) {
+    public void initialize(InterfaceOptimizationProblem prob) {
         msg = "Not terminated.";
     }
 

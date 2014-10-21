@@ -45,8 +45,6 @@ public class EvAInfo {
     public static final String infoTitle = productName + " Information";
     public static final String copyrightYear = "2010-2014";
 
-    ////////////// Property handling...
-
     private static Properties evaProperties;
 
     static {
@@ -101,9 +99,5 @@ public class EvAInfo {
 
     public static String propDefaultModule() {
         return getProperty("DefaultModule");
-    }
-
-    public static String propShowModules() {
-        return getProperty("ShowModules");
     }
 }

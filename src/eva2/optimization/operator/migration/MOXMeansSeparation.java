@@ -64,7 +64,7 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
      * every bit of code i write....
      */
     @Override
-    public void initMigration(InterfaceOptimizer[] islands) {
+    public void initializeMigration(InterfaceOptimizer[] islands) {
         // pff at a later stage i could initialize a topology here
     }
 

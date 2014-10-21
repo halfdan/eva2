@@ -68,10 +68,6 @@ public class Matrix implements Cloneable, Serializable {
      */
     private static final long serialVersionUID = 3672826349694248499L;
 
-  /* ------------------------
-     Class variables
-   * ------------------------ */
-
     /**
      * Array for internal storage of elements.
      *
@@ -86,10 +82,6 @@ public class Matrix implements Cloneable, Serializable {
      * @serial column dimension.
      */
     private int m, n;
-
-/* ------------------------
-   Constructors
- * ------------------------ */
 
     /**
      * Construct an m-by-n matrix of zeros.
@@ -213,11 +205,6 @@ public class Matrix implements Cloneable, Serializable {
         return Ret;
     }
 
-
-/* ------------------------
-   Public Methods
- * ------------------------ */
-
     /**
      * Construct a matrix from a copy of a 2-D array.
      *
@@ -309,9 +296,6 @@ public class Matrix implements Cloneable, Serializable {
         double[][] C = new double[m][n];
         for (int i = 0; i < m; i++) {
             System.arraycopy(A[i], 0, C[i], 0, n);
-//         for (int j = 0; j < n; j++) {
-//            C[i][j] = A[i][j];
-//         }
         }
         return C;
     }
@@ -1395,11 +1379,6 @@ public class Matrix implements Cloneable, Serializable {
         v.copyInto(A);  // copy the rows out of the vector
         return new Matrix(A);
     }
-
-
-/* ------------------------
-   Private Methods
- * ------------------------ */
 
     /**
      * Check if size(A) == size(B) *

@@ -133,13 +133,13 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
      * This method allows you to select partners for a given Individual
      *
      * @param dad              The already seleceted parent
-     * @param avaiablePartners The mating pool.
+     * @param availablePartners The mating pool.
      * @param size             The number of partners needed.
      * @return The selected partners.
      */
     @Override
-    public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size) {
-        return this.selectFrom(avaiablePartners, size);
+    public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
+        return this.selectFrom(availablePartners, size);
     }
 
 /**********************************************************************************************************************

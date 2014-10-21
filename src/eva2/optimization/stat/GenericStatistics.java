@@ -162,16 +162,16 @@ public class GenericStatistics implements Serializable {
                     String desc = fields[i].toString(); //System.out.println("desc "+desc);
                     int istransient = desc.indexOf("transient");
 
-                    Object FieldValue = null;
+                    Object fieldValue = null;
                     if (istransient == -1 || fields[i].getName().equals("elementData")) {  // the elementdatahack
                         fields[i].setAccessible(true);
                         try {
-                            FieldValue = fields[i].get(target);
-                            if (FieldValue instanceof Double) {
-                                data[index] = ((Double) FieldValue).doubleValue();
+                            fieldValue = fields[i].get(target);
+                            if (fieldValue instanceof Double) {
+                                data[index] = (Double) fieldValue;
                             }
-                            if (FieldValue instanceof Integer) {
-                                data[index] = ((Integer) FieldValue).doubleValue();
+                            if (fieldValue instanceof Integer) {
+                                data[index] = ((Integer) fieldValue).doubleValue();
                             }
                             index++;
                         } catch (Exception ex) {

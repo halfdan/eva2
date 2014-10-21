@@ -12,25 +12,12 @@
 
 package eva2.tools.diagram;
 
-/*============================================================================
- * IMPORTS
- *============================================================================*/
-
 import java.awt.*;
-
-
-/*============================================================================
- * CLASS DECLARATION
- *============================================================================*/
 
 /**
  * Calculates the color values for a legend-style color bar.
  */
 public class ColorBarCalculator {
-  /*--------------------------------------------------------------------------
-   * static public final member variables
-   *--------------------------------------------------------------------------*/
-
     static public final int BLUE_TO_RED = 0;
     static public final int GREY_SCALE = 1;
     static public final int BLUE_SCALE = 2;
@@ -38,24 +25,12 @@ public class ColorBarCalculator {
     // GREY_SCALE returns luminance values in [0.1;0.9], GREY_EXTENDED_SCALE in [0.0;1.0]
     static public final int GREY_EXTENDED_SCALE = 4;
 
-  /*--------------------------------------------------------------------------
-   * private member variables
-   *--------------------------------------------------------------------------*/
-
     private int color_scale = BLUE_TO_RED;
     private boolean inverseScale = false;
-
-  /*--------------------------------------------------------------------------
-   * constructor
-   *--------------------------------------------------------------------------*/
 
     public ColorBarCalculator(int color_scale) {
         this.color_scale = color_scale;
     }
-
-  /*--------------------------------------------------------------------------
-   * public methods
-   *--------------------------------------------------------------------------*/
 
     public void setColorScale(int color_scale) {
         this.color_scale = color_scale;
@@ -122,10 +97,6 @@ public class ColorBarCalculator {
         return inverseScale;
     }
 
-  /*--------------------------------------------------------------------------
-   * static public methods
-   *--------------------------------------------------------------------------*/
-
     /**
      * Returns color for the given float-value, which must be in the range from 0 to 1.
      * Warning: Creates new color object, better use the method 'getRGB' if possible.
@@ -142,8 +113,3 @@ public class ColorBarCalculator {
         return Color.HSBtoRGB(hue, 0.6F, 1F);
     }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/
-

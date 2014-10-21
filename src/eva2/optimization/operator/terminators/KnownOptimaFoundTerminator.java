@@ -29,7 +29,7 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
     }
 
     @Override
-    public void init(InterfaceOptimizationProblem prob) {
+    public void initialize(InterfaceOptimizationProblem prob) {
         if (prob != null) {
             if (prob instanceof InterfaceMultimodalProblemKnown) {
                 mProblem = (InterfaceMultimodalProblemKnown) prob;

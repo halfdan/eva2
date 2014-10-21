@@ -4,6 +4,7 @@ import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 
@@ -20,13 +21,14 @@ public class EvaluationTerminator implements InterfaceTerminator,
     /**
      * Number of fitness calls on the problem which is optimized.
      */
+    @Parameter(name = "Max. Fitness Calls", description = "Number of calls to fitness function.")
     protected int maxFitnessCalls = 1000;
 
     public EvaluationTerminator() {
     }
 
     @Override
-    public void init(InterfaceOptimizationProblem prob) {
+    public void initialize(InterfaceOptimizationProblem prob) {
         msg = "Not terminated.";
     }
 
@@ -74,14 +76,4 @@ public class EvaluationTerminator implements InterfaceTerminator,
         //System.out.println("getFitnessCalls"+maxFitnessCalls);
         return maxFitnessCalls;
     }
-
-    /**
-     * Returns the tip text for this property
-     *
-     * @return tip text for this property
-     */
-    public String fitnessCallsTipText() {
-        return "number of calls to fitness function.";
-    }
-
 }

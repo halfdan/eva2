@@ -683,7 +683,7 @@ public class PostProcess {
         Pair<Integer, Boolean> stepsAbortedFlag = null;
         for (int i = 0; i < candidates.size(); i++) { // improve each single sub pop
             subPop = nmPops.get(i);
-            term.init(prob);
+            term.initialize(prob);
 
             switch (method) {
                 case nelderMead:

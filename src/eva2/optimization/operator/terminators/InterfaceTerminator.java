@@ -6,8 +6,6 @@ import eva2.problems.InterfaceOptimizationProblem;
 
 /**
  * Interface for a termination criterion.
- *
- * @author mkron, streiche
  */
 public interface InterfaceTerminator {
     /**
@@ -25,5 +23,5 @@ public interface InterfaceTerminator {
 
     public String lastTerminationMessage();
 
-    public void init(InterfaceOptimizationProblem prob);
+    public void initialize(InterfaceOptimizationProblem prob);
 }

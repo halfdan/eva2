@@ -367,7 +367,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
             createActions();
 
-            setSize(800, 600);
+            setSize(1024, 800);
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             setLocation((screenSize.width - this.getWidth()) / 2, (int) ((screenSize.height - this.getHeight()) / 2.5));
 
@@ -533,8 +533,8 @@ public class Main extends JFrame implements OptimizationStateListener {
             System.setProperty("com.apple.mrj.application.live-resize", "true");
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
             }
         } else {
             /* Set Look and Feel */

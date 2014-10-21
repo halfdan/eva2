@@ -170,7 +170,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         propertyTable.setRowHeight(20);
         propertyTable.setDragEnabled(false);
         propertyTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        propertyTable.setIntercellSpacing(new Dimension(8, 0));
+        //propertyTable.setIntercellSpacing(new Dimension(8, 0));
 
         // Close any child windows at this point
         removeAll();
