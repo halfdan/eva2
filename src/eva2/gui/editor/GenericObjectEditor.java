@@ -89,9 +89,7 @@ public class GenericObjectEditor implements PropertyEditor {
                      * not have this field.
                      */
                     LOGGER.log(Level.FINER, String.format("%1$s does not have a hideFromGOE field", clazz.toString()), e);
-                } catch (IllegalArgumentException e) {
-                    LOGGER.log(Level.FINER, e.getMessage(), e);
-                } catch (IllegalAccessException e) {
+                } catch (IllegalArgumentException | IllegalAccessException e) {
                     LOGGER.log(Level.FINER, e.getMessage(), e);
                 }
 
@@ -122,7 +120,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @param cls      class the property belongs to
      * @param property string name of the property
-     * @param hide     desired value to set, true for hidden, false for visible
+     * @param expertValue desired value to set, true for hidden, false for visible
      * @return false, if an error occurs, else true
      */
     public static boolean setExpertProperty(Class<?> cls, String property, boolean expertValue) {
@@ -393,8 +391,7 @@ public class GenericObjectEditor implements PropertyEditor {
             if (getNameMethod >= 0) {
                 try {
                     rep = (String) methods[getNameMethod].getMethod().invoke(object, (Object[]) null);
-                } catch (java.lang.IllegalAccessException e1) {
-                } catch (java.lang.reflect.InvocationTargetException e2) {
+                } catch (IllegalAccessException | java.lang.reflect.InvocationTargetException ignored) {
                 }
             }
             if (rep.length() <= 0) {

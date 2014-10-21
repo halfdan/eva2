@@ -43,7 +43,7 @@ public class EvAInfo {
     public static final String splashLocation = "images/EvASplashScreen.png";
 
     public static final String infoTitle = productName + " Information";
-    public static final String copyrightYear = "2010-2012";
+    public static final String copyrightYear = "2010-2014";
 
     ////////////// Property handling...
 
