@@ -359,31 +359,6 @@ public class BasicResourceLoader implements ResourceLoader {
         return in;
     }
 
-//    public InputStream getStreamFromClassPath(String resourceLocation) {
-//    	String[] dynCP = ReflectPackage.getValidCPArray(); 
-//    	Vector<String> found = new Vector<String>();
-//		for (int i=0; i<dynCP.length; i++) {
-//			System.out.println("reading element "+dynCP[i]);
-//			if (dynCP[i].endsWith(".jar")) {
-//				// those should be found somewhere else
-////				getClassesFromJarFltr(set, dynCP[i], pckg, includeSubs, reqSuperCls);
-//			} else {
-//				String absRes = dynCP[i];
-//				if (!absRes.endsWith("/")) absRes += "/";
-//				absRes += resourceLocation;
-//				System.out.println("reading from files: "+dynCP[i]);
-//				InputStream in = getStreamFromFile(absRes);
-//				if (in != null) found.add(absRes);
-//			}
-//		}
-//		if (found.size() == 0) return null;
-//		if (found.size()>1) {
-//			System.err.println("Warning, more than one instance of " + resourceLocation + " were found, returning first of:");
-//			for (int i=0; i<found.size(); i++) System.err.println(found.get(i));
-//		}
-//		return getStreamFromFile(found.get(0));
-//    }
-
     /**
      * Gets the byte data from a file at the given resource location.
      *
@@ -626,6 +601,4 @@ public class BasicResourceLoader implements ResourceLoader {
         }
         return userProps;
     }
-
-
 }

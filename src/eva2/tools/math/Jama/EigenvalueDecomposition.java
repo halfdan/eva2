@@ -22,10 +22,6 @@ import eva2.tools.math.Jama.util.Maths;
 
 public class EigenvalueDecomposition implements java.io.Serializable {
 
-/* ------------------------
-   Class variables
- * ------------------------ */
-
     /**
      * Row and column dimension (square matrix).
      *

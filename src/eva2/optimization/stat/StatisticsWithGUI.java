@@ -32,7 +32,6 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     private Graph[][] fitnessGraph;
     private Graph[][] statGraph;
     private String graphInfoString;
-    protected int plotCounter;
     private JTextoutputFrameInterface proxyPrinter;
     /*
      * List of descriptor strings and optional indices. strictly its redundant
@@ -135,7 +134,6 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
         for (int i = 0; i < fitnessGraph.length; i++) {
             fitnessGraph[i] = new Graph[graphCount];
             for (int j = 0; j < fitnessGraph[i].length; j++) {
-//				String[] d = (String[]) description.get(i);
                 // this is where the column string for ascii export is created! Uah!
                 fitnessGraph[i][j] =
                         fitnessFrame[i].getNewGraph(graphDesc.get(j).head + "_"
@@ -166,12 +164,6 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
             return;
         }
         boolean isValidGraph = fitnessFrame[graph].isValid();
-        if (!isValidGraph) {
-            // this happens if the user closed the plot window.
-            // if the plots are reinitialized immediately, the user might get angry, so wait (till next opt start)
-//			EVAERROR.WARNING("fitness graph is invalid, trying to reinitialize...");
-//			initPlots(getDescription());
-        }
         if (isValidGraph) {
             fitnessGraph[graph][subGraph].setConnectedPoint(x, y);
         }
@@ -242,6 +234,5 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
                 index++;
             }
         }
-//		}
     }
 }

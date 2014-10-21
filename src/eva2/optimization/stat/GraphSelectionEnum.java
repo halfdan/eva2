@@ -35,14 +35,6 @@ public enum GraphSelectionEnum {
         }
     }
 
-    //	public static boolean doPlotCurrentBest(StringSelection sel) {
-//		return sel.isSelected(GraphSelectionEnum.currentBest.ordinal());
-//	}
-//	
-//	public static boolean doPlotRunBest(StringSelection sel) {
-//		return sel.isSelected(GraphSelectionEnum.runBest.ordinal());
-//	}
-//	
     public static boolean doPlotWorst(StringSelection sel) {
         return sel.isSelected(GraphSelectionEnum.currentWorst.ordinal());
     }
@@ -51,14 +43,6 @@ public enum GraphSelectionEnum {
         return sel.isSelected(GraphSelectionEnum.meanFit.ordinal());
     }
 
-    //	public static boolean doPlotCurrentBestFeasible(StringSelection sel) {
-//		return sel.isSelected(GraphSelectionEnum.currentBestFeasible.ordinal()); 
-//	}
-//	
-//	public static boolean doPlotRunBestFeasible(StringSelection sel) {
-//		return sel.isSelected(GraphSelectionEnum.runBestFeasible.ordinal()); 
-//	}
-//	
     public static boolean doPlotAvgEucDist(StringSelection sel) {
         return sel.isSelected(GraphSelectionEnum.avgEucPopDistance.ordinal());
     }

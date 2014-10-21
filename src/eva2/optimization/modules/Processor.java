@@ -235,7 +235,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
             this.optimizationParameters.getProblem().initializeProblem();
             this.optimizationParameters.getOptimizer().setProblem(this.optimizationParameters.getProblem());
-            this.optimizationParameters.getTerminator().init(this.optimizationParameters.getProblem());
+            this.optimizationParameters.getTerminator().initialize(this.optimizationParameters.getProblem());
             maybeInitParamCtrl(optimizationParameters);
             if (this.createInitialPopulations) {
                 this.optimizationParameters.getOptimizer().initialize();

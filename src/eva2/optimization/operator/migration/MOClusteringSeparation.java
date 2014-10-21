@@ -65,7 +65,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
      * every bit of code i write....
      */
     @Override
-    public void initMigration(InterfaceOptimizer[] islands) {
+    public void initializeMigration(InterfaceOptimizer[] islands) {
         // pff at a later stage i could initialize a topology here
         if (this.reuseC) {
             this.kMeans.resetC();

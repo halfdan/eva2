@@ -131,7 +131,7 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
         // update the stagnation time in the terminator
         if (!isStagnationTimeUserDef() && (fitConvTerm != null)) {
             fitConvTerm.setStagnationTime(calcDefaultStagnationTime());
-            fitConvTerm.init(getProblem());
+            fitConvTerm.initialize(getProblem());
         }
         bestList.add(best);
         best = null;

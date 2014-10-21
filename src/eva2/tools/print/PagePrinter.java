@@ -12,19 +12,11 @@
 
 package eva2.tools.print;
 
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
-
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 
 public class PagePrinter {
     Component c;
@@ -151,7 +143,3 @@ public class PagePrinter {
         return Printable.PAGE_EXISTS;
     }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

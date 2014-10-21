@@ -42,7 +42,7 @@ public class HistoryConvergenceTerminator implements InterfaceTerminator, Serial
     }
 
     @Override
-    public void init(InterfaceOptimizationProblem prob) {
+    public void initialize(InterfaceOptimizationProblem prob) {
         msg = "Not terminated.";
     }
 

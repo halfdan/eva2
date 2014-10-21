@@ -20,7 +20,7 @@ public class SOMONoMigration implements InterfaceMigration, java.io.Serializable
      * every bit of code i write....
      */
     @Override
-    public void initMigration(InterfaceOptimizer[] islands) {
+    public void initializeMigration(InterfaceOptimizer[] islands) {
 
     }
 

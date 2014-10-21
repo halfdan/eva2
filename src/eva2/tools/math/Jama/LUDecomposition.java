@@ -17,10 +17,6 @@ package eva2.tools.math.Jama;
 
 public class LUDecomposition implements java.io.Serializable {
 
-/* ------------------------
-   Class variables
- * ------------------------ */
-
     /**
      * Array for internal storage of decomposition.
      *

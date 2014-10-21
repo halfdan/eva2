@@ -33,10 +33,6 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
     public GeneralGenericObjectEditorPanel objectEditorPanel;
     public Hashtable editorTable = new Hashtable();
 
-    /**
-     * ****************************** java.beans.PropertyChangeListener ************************
-     */
-
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
         if (propertyChangeSupport == null) {

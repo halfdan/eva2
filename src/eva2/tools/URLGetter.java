@@ -5,16 +5,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * <p>Title: EvA2</p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2003</p>
- * <p>Company: </p>
- *
- * @author not attributable
- * @version 1.0
- */
-
 public class URLGetter {
     public URLGetter() {
 

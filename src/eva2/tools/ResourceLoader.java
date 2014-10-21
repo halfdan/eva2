@@ -29,14 +29,8 @@ package eva2.tools;
 
 /**
  * TODO description.
- *
- * @.author wegnerj
- * @.license GPL
- * @.cvsversion $Revision: 1.8 $, $Date: 2005/02/17 16:48:44 $
  */
 public interface ResourceLoader {
-    //~ Methods ////////////////////////////////////////////////////////////////
-
     /**
      * Gets the byte data from a file at the given resource location.
      *
@@ -45,7 +39,3 @@ public interface ResourceLoader {
      */
     byte[] getBytesFromResourceLocation(String rawResrcLoc);
 }
-
-///////////////////////////////////////////////////////////////////////////////
-//END OF FILE.
-///////////////////////////////////////////////////////////////////////////////

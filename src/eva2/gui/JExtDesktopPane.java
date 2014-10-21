@@ -1,9 +1,4 @@
 package eva2.gui;
-/*
- * Title: EvA2 Description: Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher @version: $Revision: 10 $
- * $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $ $Author: streiche $
- */
 
 import eva2.gui.editor.ComponentFilter;
 
@@ -11,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.util.Vector;
@@ -55,32 +51,35 @@ public class JExtDesktopPane extends JDesktopPane {
             }
         };
 
-        windowMenu.add(actWindowTileVert = new ExtAction("Tile &Vertically", "Tiles all windows vertically",
-                KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, Event.CTRL_MASK)) {
+        actWindowTileVert = new ExtAction("Tile &Vertically", "Tiles all windows vertically",
+                KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, InputEvent.CTRL_MASK)) {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
                 tileWindows(SwingConstants.HORIZONTAL);
             }
-        });
+        };
+        windowMenu.add(actWindowTileVert);
 
-        windowMenu.add(actWindowTileHorz = new ExtAction("Tile &Horizontally", "Tiles all windows horizontically",
-                KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, Event.CTRL_MASK)) {
+        actWindowTileHorz = new ExtAction("Tile &Horizontally", "Tiles all windows horizontically",
+                KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, InputEvent.CTRL_MASK)) {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
                 tileWindows(SwingConstants.VERTICAL);
             }
-        });
+        };
+        windowMenu.add(actWindowTileHorz);
 
-        windowMenu.add(actWindowOverlap = new ExtAction("&Cascade Windows", "Cascades all visible windows",
-                KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.CTRL_MASK)) {
+        actWindowOverlap = new ExtAction("&Cascade Windows", "Cascades all visible windows",
+                KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_MASK)) {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
                 overlapWindows();
             }
-        });
+        };
+        windowMenu.add(actWindowOverlap);
 
         windowMenu.addSeparator();
         desktopManager.WINDOW_LIST_START = 4;
@@ -232,7 +231,7 @@ public class JExtDesktopPane extends JDesktopPane {
                 } else {
                     f.setSelected(true);
                 }
-            } catch (PropertyVetoException exc) {
+            } catch (PropertyVetoException ignore) {
             }
         }
     }
@@ -240,18 +239,17 @@ public class JExtDesktopPane extends JDesktopPane {
     @Override
     public void addImpl(Component comp, Object constraints, int index) {
         super.addImpl(comp, constraints, index);
-        //System.out.println("JExtDesktopPane.addImpl");
         if (comp instanceof JInternalFrame) {
             JInternalFrame docFrame = (JInternalFrame) comp;
             int frameIndex = windowMenu.getItemCount() - desktopManager.WINDOW_LIST_START + 1;
             if (docFrame.getClientProperty(ExtDesktopManager.INDEX) != null) {
                 return;
             }
-            docFrame.putClientProperty(ExtDesktopManager.INDEX, new Integer(frameIndex));
+            docFrame.putClientProperty(ExtDesktopManager.INDEX, frameIndex);
             JMenuItem m = new JMenuItem((frameIndex < 10 ? frameIndex + " " : "") + docFrame.getTitle());
             if (frameIndex < 10) {
                 m.setMnemonic((char) (0x30 + frameIndex));
-                m.setAccelerator(KeyStroke.getKeyStroke(0x30 + frameIndex, Event.ALT_MASK));
+                m.setAccelerator(KeyStroke.getKeyStroke(0x30 + frameIndex, InputEvent.ALT_MASK));
             }
             m.setToolTipText("Shows the window " + docFrame.getTitle());
             m.putClientProperty(ExtDesktopManager.FRAME, docFrame);

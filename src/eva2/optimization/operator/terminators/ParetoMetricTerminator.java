@@ -43,8 +43,8 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
     }
 
     @Override
-    public void init(InterfaceOptimizationProblem prob) {
-        super.init(prob);
+    public void initialize(InterfaceOptimizationProblem prob) {
+        super.initialize(prob);
         if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
             moProb = (AbstractMultiObjectiveOptimizationProblem) prob;
         } else {

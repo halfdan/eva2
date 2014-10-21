@@ -8,11 +8,6 @@ import eva2.optimization.population.Population;
  * a single double values, thus allowing weight aggregation, goal programming and
  * so on. To allow logging the original double[] values are stored in the userData
  * using the key "MOFitness".
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 05.03.2004
- * Time: 10:44:14
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceMOSOConverter {
 
@@ -42,11 +37,6 @@ public interface InterfaceMOSOConverter {
      * @param dim output dimension
      */
     public void setOutputDimension(int dim);
-
-//    /** This method allows the problem to set the names of the output variables
-//     * @param dim       Output names
-//     */
-//    public void setOutputNames(String[] dim);
 
     /**
      * This method processes a single individual

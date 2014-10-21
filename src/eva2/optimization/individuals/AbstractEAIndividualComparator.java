@@ -93,12 +93,12 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
      *
      * @param indyDataKey
      * @param fitnessCriterion
-     * @param priorizeConstraints
+     * @param preferFeasible
      * @see #AbstractEAIndividualComparator(int)
      * @see #AbstractEAIndividualComparator(String)
      */
-    public AbstractEAIndividualComparator(String indDataKey, int fitnessCriterion, boolean preferFeasible) {
-        this.indyDataKey = indDataKey;
+    public AbstractEAIndividualComparator(String indyDataKey, int fitnessCriterion, boolean preferFeasible) {
+        this.indyDataKey = indyDataKey;
         this.fitCriterion = fitnessCriterion;
         this.preferFeasible = preferFeasible;
     }

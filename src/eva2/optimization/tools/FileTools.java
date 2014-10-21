@@ -9,13 +9,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
-
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 09.06.2005
- * Time: 13:01:18
- * To change this template use File | Settings | File Templates.
  */
 public class FileTools {
 

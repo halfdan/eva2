@@ -12,11 +12,6 @@ import eva2.optimization.population.Population;
  * not implemented. All selection method should obey Deb's constraint
  * handling principle, first select feasible, only if all are infeasible
  * select the individuals with the smallest constraint violation.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.03.2003
- * Time: 11:24:22
- * To change this template use Options | File Templates.
  */
 public interface InterfaceSelection {
 
@@ -51,12 +46,12 @@ public interface InterfaceSelection {
     /**
      * This method allows you to select >size< partners for a given Individual
      *
-     * @param dad              The already seleceted parent
-     * @param avaiablePartners The mating pool.
-     * @param size             The number of partners needed.
+     * @param dad               The already seleceted parent
+     * @param availablePartners The mating pool.
+     * @param size              The number of partners needed.
      * @return The selected partners.
      */
-    public Population findPartnerFor(AbstractEAIndividual dad, Population avaiablePartners, int size);
+    public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size);
 
     /**
      * Toggle the use of obeying the constraint violation principle

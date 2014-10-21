@@ -1031,7 +1031,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @return The index of the best (worst) individual.
      */
     public int getIndexOfBestOrWorstIndividual(boolean bBest, Comparator<Object> comparator) {
-        ArrayList<?> sorted = sortBy(comparator);
+        ArrayList<?> sorted = getSorted(comparator);
         if (bBest) {
             return indexOf(sorted.get(0));
         } else {
