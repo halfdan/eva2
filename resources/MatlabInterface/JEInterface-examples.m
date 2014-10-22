@@ -5,8 +5,8 @@
 % adapt the path settings!
 addpath '/home/user/workspace/MatlabInterface' 	% .. directory containing @JEInterface
 javaaddpath '/home/user/workspace/EvA2Base.jar'  	% .. the EvA2 base package
-% addpath 'C:\Dokumente und Einstellungen\user\workspace\MatlabInterface'	% Windows will look differently
-% javaaddpath 'C:\Dokumente und Einstellungen\user\workspace\EvA2Base.jar'	% Windows will look differently
+% addpath 'C:\Projects\eva2\resources\MatlabInterface'	% Windows will look differently
+% javaaddpath 'C:\Projects\eva2\out\artifacts\EvA2\EvA2.jar'	% Windows will look differently
 
 % real valued case
 R=[-5 -5 -5; 5 5 5];
@@ -19,7 +19,7 @@ finalPop=getMultipleResults(JI);
 R=30;
 JI=JEInterface(@testfun, 'binary', R, R, 4, 'Display', 'iter');
 JI=setOutputAllStatsFields(JI, 0); % suppress output of additional statistics, spares runtime with large populations
-JI=optimizeWith(JI, 3, 'population', eva2.optimization.populations.Population(1000);
+JI=optimizeWith(JI, 3, 'population', eva2.optimization.populations.Population(1000));
 [sol, fit]=getResult(JI);
 finalPop=getMultipleResults(JI);
 
