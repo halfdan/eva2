@@ -257,9 +257,6 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         }
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -344,24 +341,6 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         return "Length of the x vector at is to be optimized.";
     }
 
-//    /** This method allows you to set the number of objective variables
-//     * @param a The number of objective variables
-//     */
-//    public void setOutputDimension(int a) {
-//        this.outputDimension = a;
-//        this.border = new double[this.outputDimension][2];
-//        for (int i = 0; i < this.border.length; i++) {
-//            this.border[i][0] = 0;
-//            this.border[i][1] = 5;
-//        }
-//    }
-//    public int getOutputDimension() {
-//        return this.outputDimension;
-//    }
-//    public String outputDimensionTipText() {
-//        return "Number of objective variables.";
-//    }
-
     /**
      * This method allows you to choose the EA individual
      *
@@ -396,19 +375,6 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
     public String mOSOConverterTipText() {
         return "Choose a Multiobjective to Singleobjective converter.";
     }
-
-//    /** This method allows you to toggel the application of constraints on the problem
-//     * @param b     state.
-//     */
-//    public void setApplyConstraints(boolean b) {
-//        this.applyConstraints = b;
-//    }
-//    public boolean getApplyConstraints() {
-//        return this.applyConstraints;
-//    }
-//    public String applyConstraintsTipText() {
-//        return "Toggle application of constraint (works only for T1).";
-//    }
 
     /**
      * Since you can apply single objective optimization algorithms on

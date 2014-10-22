@@ -5,11 +5,7 @@ import java.awt.*;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 17.08.2005
- * Time: 16:52:34
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class Chart2DDPointIconPoint implements DPointIcon {
 

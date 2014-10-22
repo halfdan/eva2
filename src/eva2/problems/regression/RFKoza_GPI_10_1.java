@@ -1,11 +1,6 @@
 package eva2.problems.regression;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.06.2003
- * Time: 15:55:28
- * To change this template use Options | File Templates.
  */
 public class RFKoza_GPI_10_1 implements InterfaceRegressionFunction, java.io.Serializable {
 
@@ -37,9 +32,6 @@ public class RFKoza_GPI_10_1 implements InterfaceRegressionFunction, java.io.Ser
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.

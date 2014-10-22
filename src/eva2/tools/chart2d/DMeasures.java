@@ -14,13 +14,12 @@ public class DMeasures implements Serializable {
      *
      */
     private static final long serialVersionUID = 243092480517044848L;
-    private boolean under_construction = false;
     // when in use for a DArea:
     Graphics g;
     // when in use for a ScaledBorder:
     ScaledBorder sb;
     // for both:
-    DFunction x_scale, y_scale;
+    DFunction xScale, yScale;
     Component comp;
     Insets insets;
 
@@ -55,11 +54,11 @@ public class DMeasures implements Serializable {
             return null;
         }
         try {
-            if (x_scale != null) {
-                x = x_scale.getSourceOf(x);
+            if (xScale != null) {
+                x = xScale.getSourceOf(x);
             }
-            if (y_scale != null) {
-                y = y_scale.getSourceOf(y);
+            if (yScale != null) {
+                y = yScale.getSourceOf(y);
             }
         } catch (IllegalArgumentException e) {
             return null;
@@ -93,11 +92,11 @@ public class DMeasures implements Serializable {
         dx = rect.x + rect.width * x / (double) dim.width;
         dy = rect.y + rect.height * (1 - y / (double) dim.height);
         try {
-            if (x_scale != null) {
-                dx = x_scale.getImageOf(dx);
+            if (xScale != null) {
+                dx = xScale.getImageOf(dx);
             }
-            if (y_scale != null) {
-                dy = y_scale.getImageOf(dy);
+            if (yScale != null) {
+                dy = yScale.getImageOf(dy);
             }
         } catch (IllegalArgumentException nde) {
             return null;
@@ -105,16 +104,6 @@ public class DMeasures implements Serializable {
         return new DPoint(dx, dy);
     }
 
-//  /**
-//   * returns the visible rectangle in D-coordinates of the shown component
-//   *
-//   * @return the visible rectangle
-//   */
-//  public DRectangle getDRectangle(){
-//    if( under_construction ) System.out.println("DMeasures.getDRectangle");
-//    if( sb != null ) return getImageOf( sb.src_rect );
-//    return ((DArea)comp).getDRectangle();
-//  }
 
     /**
      * Returns the visible rectangle in D-coordinates of the shown component as slim structure.
@@ -122,9 +111,8 @@ public class DMeasures implements Serializable {
      * @return the visible rectangle
      */
     public SlimRect getSlimRectangle() {
-//	    if( under_construction ) System.out.println("DMeasures.getDRectangle");
         if (sb != null) {
-            return getImageOf(sb.src_rect.x, sb.src_rect.y, sb.src_rect.width, sb.src_rect.height);
+            return getImageOf(sb.srcRect.x, sb.srcRect.y, sb.srcRect.width, sb.srcRect.height);
         }
         return ((DArea) comp).getSlimRectangle();
     }
@@ -138,9 +126,6 @@ public class DMeasures implements Serializable {
      * @return the Graphics object ( or null if no object was set )
      */
     public Graphics getGraphics() {
-        if (under_construction) {
-            System.out.println("DMeasures.getGraphics");
-        }
         if (g != null) {
             Dimension d = comp.getSize();
             Insets insets = getInsets();
@@ -156,9 +141,6 @@ public class DMeasures implements Serializable {
      * used by DArea to set a new Graphics object
      */
     void setGraphics(Graphics g) {
-        if (under_construction) {
-            System.out.println("DMeasures.setGraphics");
-        }
         this.g = g;
     }
 
@@ -170,8 +152,8 @@ public class DMeasures implements Serializable {
     void update(Component c, Insets insets) {
         this.comp = c;
         this.insets = insets;
-        x_scale = sb.x_scale;
-        y_scale = sb.y_scale;
+        xScale = sb.xScale;
+        yScale = sb.yScale;
     }
 
     private Dimension getInner() {
@@ -182,60 +164,28 @@ public class DMeasures implements Serializable {
         return d;
     }
 
-//  /**
-//   * method returns the image rectangle of the given rectangle
-//   * they differ if there are scale functions selected which are not the identity
-//   * if the given rectangle does not belong to the defintion area of the scale
-//   * functions, the method returns <code>null</code>
-//   *
-//   * @param rect the source rectangle
-//   * @return the source of it
-//   */
-//  DRectangle getImageOf( DRectangle rect ){
-//    if( under_construction ) System.out.println("DMeasures.getImageOf: "+rect);
-//    if( x_scale == null && y_scale == null ) return rect;
-//    if( rect.isEmpty() ) return (DRectangle)rect.clone();
-//    DPoint p1 = new DPoint( rect.x, rect.y ),
-//           p2 = new DPoint( rect.x + rect.width, rect.y + rect.height );
-//    try{
-//      if( x_scale != null ){
-//        p1.x = x_scale.getImageOf( p1.x );
-//        p2.x = x_scale.getImageOf( p2.x );
-//      }
-//      if( y_scale != null ){
-//        p1.y = y_scale.getImageOf( p1.y );
-//        p2.y = y_scale.getImageOf( p2.y );
-//      }
-//    }
-//    catch( IllegalArgumentException nde ){ return null; }
-//    return new DRectangle( p1.x, p1.y, p2.x - p1.x, p2.y - p1.y );
-//  }
-
     /**
      * method returns the image rectangle of the given rectangle
      * they differ if there are scale functions selected which are not the identity
      * if the given rectangle does not belong to the definition area of the scale
      * functions, the method returns <code>null</code>
      *
-     * @param rect the source rectangle
      * @return the source of it
      */
     SlimRect getImageOf(double xpos, double ypos, double width, double height) {
-//    if( under_construction ) System.out.println("DMeasures.getImageOf: "+rect);
-
-        if (x_scale == null && y_scale == null) {
+        if (xScale == null && yScale == null) {
             return new SlimRect(xpos, ypos, width, height);
         }
         double x1 = xpos, y1 = ypos, x2 = xpos + width, y2 = ypos + height;
 
         try {
-            if (x_scale != null) {
-                x1 = x_scale.getImageOf(x1);
-                x2 = x_scale.getImageOf(x2);
+            if (xScale != null) {
+                x1 = xScale.getImageOf(x1);
+                x2 = xScale.getImageOf(x2);
             }
-            if (y_scale != null) {
-                y1 = y_scale.getImageOf(y1);
-                y2 = y_scale.getImageOf(y2);
+            if (yScale != null) {
+                y1 = yScale.getImageOf(y1);
+                y2 = yScale.getImageOf(y2);
             }
         } catch (IllegalArgumentException nde) {
             return null;
@@ -246,47 +196,6 @@ public class DMeasures implements Serializable {
     SlimRect getImageOf(SlimRect srect) {
         return getImageOf(srect.x, srect.y, srect.width, srect.height);
     }
-
-//  /**
-//   * method returns the source rectangle of the given rectangle
-//   * they differ if there are scale functions selected which are not the identity
-//   * if the given rectangle does not belong to the image area of the scale
-//   * functions, the method returns <code>null</code>
-//   *
-//   * @param rect the image rectangle
-//   * @return the source of it
-//   */
-//  DRectangle getSourceOf( DRectangle rect ){
-//    if( under_construction ) System.out.println("DMeasures.getSourceOf: "+rect);
-//    if( !getDRectangle().contains( rect ) ) {
-////    	System.out.println("case not contains");
-//    	return null;
-//    	//throw new IllegalArgumentException("The rectangle lies not in the currently painted rectangle");
-//    }
-//      
-//    if( x_scale == null && y_scale == null ) {
-////    	System.out.println("Case scale null");
-//    	return rect;
-//    }
-//    if( rect.isEmpty() ) {
-////    	System.out.println("Case isEmpty");
-//    	return (DRectangle)rect.clone();
-//    }
-//    DPoint p1 = new DPoint( rect.x, rect.y ),
-//           p2 = new DPoint( rect.x + rect.width, rect.y + rect.height );
-//    try{
-//      if( x_scale != null ){
-//        p1.x = x_scale.getSourceOf( p1.x );
-//        p2.x = x_scale.getSourceOf( p2.x );
-//      }
-//      if( y_scale != null ){
-//        p1.y = y_scale.getSourceOf( p1.y );
-//        p2.y = y_scale.getSourceOf( p2.y );
-//      }
-//    }
-//    catch( IllegalArgumentException nde ){ return null; }
-//    return new DRectangle( p1.x, p1.y, p2.x - p1.x, p2.y - p1.y );
-//  }
 
     /**
      * method returns the source rectangle of the given rectangle
@@ -300,27 +209,23 @@ public class DMeasures implements Serializable {
      * @return the source of it
      */
     SlimRect getSourceOf(double x, double y, double width, double height) {
-//	    if( under_construction ) System.out.println("DMeasures.getSourceOf: "+rect);
         if (!getSlimRectangle().contains(x, y, width, height)) {
-//	    	System.out.println("case not contains");
             return null;
-            //throw new IllegalArgumentException("The rectangle lies not in the currently painted rectangle");
         }
 
-        if (x_scale == null && y_scale == null) {
-//	    	System.out.println("Case scale null");
+        if (xScale == null && yScale == null) {
             return new SlimRect(x, y, width, height);
         }
 
         double x1 = x, y1 = y, x2 = x + width, y2 = y + height;
         try {
-            if (x_scale != null) {
-                x1 = x_scale.getSourceOf(x1);
-                x2 = x_scale.getSourceOf(x2);
+            if (xScale != null) {
+                x1 = xScale.getSourceOf(x1);
+                x2 = xScale.getSourceOf(x2);
             }
-            if (y_scale != null) {
-                y1 = y_scale.getSourceOf(y1);
-                y2 = y_scale.getSourceOf(y2);
+            if (yScale != null) {
+                y1 = yScale.getSourceOf(y1);
+                y2 = yScale.getSourceOf(y2);
             }
         } catch (IllegalArgumentException nde) {
             return null;
@@ -329,15 +234,6 @@ public class DMeasures implements Serializable {
         }
         return new SlimRect(x1, y1, x2 - x1, y2 - y1);
     }
-//  SlimRect getSourceOf( double xpos, double ypos, double width, double height){
-//    if( !getSlimRectangle().contains( xpos, ypos, width, height ) ) {
-//    	System.err.println("The rectangle lies not in the currently painted rectangle");
-//    	return null;
-//    	//throw new IllegalArgumentException("The rectangle lies not in the currently painted rectangle");
-//    }
-//     // MK: this now strangely does the same as getImageOf
-//    return getImageOf(xpos, ypos, width, height);
-//  }
 
     SlimRect getSourceOf(SlimRect srect) {
         return getSourceOf(srect.x, srect.y, srect.width, srect.height);
@@ -350,7 +246,3 @@ public class DMeasures implements Serializable {
         return ((DArea) comp).getInsets();
     }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

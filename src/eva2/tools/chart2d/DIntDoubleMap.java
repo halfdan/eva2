@@ -1,15 +1,6 @@
 package eva2.tools.chart2d;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2001
- * Company:
- * @author
- * @version 1.0
- */
-
-/**
  * This interface is used by DPointSet to store values as images of integer
  * values which can be displayed in a DArea. All modifications of the values can
  * only be shown by the DArea, when the DPointSet.repaint method is

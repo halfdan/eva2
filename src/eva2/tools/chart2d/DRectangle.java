@@ -1,28 +1,8 @@
-/**
- *  Filename: $RCSfile: DRectangle.java,v $
- *  Purpose:
- *  Language: Java
- *  Compiler: JDK 1.3
- *  Authors:  Fabian Hennecke
- *  Version:  $Revision: 1.1.1.1 $
- *            $Date: 2003/07/03 14:59:42 $
- *            $Author: ulmerh $
- *  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
- */
-
 package eva2.tools.chart2d;
-
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import eva2.tools.EVAERROR;
 
 import java.awt.*;
-
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 
 public class DRectangle extends DComponent {
     private double x, y;
@@ -357,7 +337,3 @@ public class DRectangle extends DComponent {
         return status == EMPTY;
     }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

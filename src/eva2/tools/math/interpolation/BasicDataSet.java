@@ -1,17 +1,3 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Filename: $RCSfile: BasicDataSet.java,v $
-//  Purpose:  Some interpolation stuff.
-//  Language: Java
-//  Compiler: JDK 1.4
-//  Authors:  Joerg K. Wegner
-//  Version:  $Revision: 1.1 $
-//            $Date: 2003/07/22 19:25:11 $
-//            $Author: wegnerj $
-//
-//  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
-//
-///////////////////////////////////////////////////////////////////////////////
-
 package eva2.tools.math.interpolation;
 
 /**

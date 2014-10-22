@@ -71,7 +71,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     private int parallelthreads = 1;
 
     protected AbstractEAIndividual template = null;
-//    private transient ArrayList<ParamChangeListener> changeListeners = null;
 
     private double defaultAccuracy = 0.001; // default accuracy for identifying optima.
 
@@ -101,8 +100,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     @Override
     public abstract void initializeProblem();
-
-    /******************** The most important methods ****************************************/
 
     /**
      * This method inits a given population
@@ -204,8 +201,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         // it set's fitcalls and generation to zero
         population.init();
     }
-
-    /******************** Some output methods *******************************************/
 
     /**
      * This method allows you to output a string that describes a found solution
@@ -430,15 +425,12 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      * @param clusterSigma      minimum cluster distance
      * @param maxEvalsPerIndy   maximum number of evaluations or -1 to take the maximum
      * @return
-     * @see #isPotentialOptimumNMS(AbstractEAIndividual, double, double, int)
      */
     public static Population extractPotentialOptima(AbstractOptimizationProblem prob, Population pop,
                                                     double epsilonPhenoSpace, double epsilonFitConv, double clusterSigma, int maxEvalsPerIndy) {
         Population potOptima = new Population();
         for (int i = 0; i < pop.size(); ++i) {
-            //System.out.println("Refining " + i + " of " + population.size());
             AbstractEAIndividual indy = pop.getEAIndividual(i);
-//    		System.out.println("bef: " + indy.toString());
             boolean isConverged = AbstractOptimizationProblem.isPotentialOptimumNMS(prob, indy, epsilonPhenoSpace, epsilonFitConv, maxEvalsPerIndy);
             if (isConverged) {
                 potOptima.addIndividual(indy);
@@ -514,11 +506,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
                 return false; // dont waste any more evaluations on this candidate
             }
         }
-        if (overallDist < epsilon) {
-            return true;
-        } else {
-            return false;
-        }
+        return overallDist < epsilon;
     }
 
     /**
@@ -565,31 +553,14 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         }
         int evalsPerf = PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, pop, term, initRelPerturb, prob);
         overallDist = metric.distance(indy, pop.getBestEAIndividual());
-        //System.out.println(System.currentTimeMillis() + " in " + evalsPerf + " evals moved by "+ overallDist);
-//    	System.out.println("aft: " + population.getBestEAIndividual().toString() + ", evals performed: " + evalsPerf + ", opt moved by " + overallDist);
-//    	System.out.println("terminated because: " + term.lastTerminationMessage());
         orig.putData(PostProcess.movedDistanceKey, overallDist);
         orig.putData(PostProcess.movedToPositionKey, pop.getBestEAIndividual().getDoublePosition());
-//    	if (overallDist==0) {
-//    		PostProcess.processSingleCandidatesNMCMA(PostProcessMethod.nelderMead, population, term, initPerturb, this);
-//    	}
-
-//    		System.out.println("Checked "+ indy.getStringRepresentation());
-//    		String msg = 								"----discarding ";
-//    		if (overallDist <= epsilonPhenoSpace) msg=	"++++keeping    ";
-//    		System.out.println(msg + BeanInspector.toString(indy.getDoublePosition()));
-//    		System.out.println("which moved to " + BeanInspector.toString(population.getBestEAIndividual().getDoublePosition()));
-//    		System.out.println(" by " + overallDist + " > " + epsilonPhenoSpace);
 
         return (overallDist < epsilonPhenoSpace);
     }
 
     public double getDefaultAccuracy() {
         return defaultAccuracy;
-    }
-
-    public void SetDefaultAccuracy(double defAcc) {
-        defaultAccuracy = defAcc;
     }
 
     public void setDefaultAccuracy(double defAcc) {

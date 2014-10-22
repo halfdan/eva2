@@ -65,16 +65,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             if (border == null) {
                 prob.border = new double[fitness.length][2];
             } else if (fitness.length != prob.border.length) {
-                //System.out.println("AbstractMOOptimizationProblem: Warning fitness.length("+fitness.length+") doesn't fit border.length("+this.border.length+")");
-                //System.out.println("Resetting the border!");
                 prob.border = new double[fitness.length][2];
             }
             for (int j = 0; j < fitness.length; j++) {
-//	                if ((this.border[j][0] > fitness[j]) || (this.border[j][1] < fitness[j])) {
-//	                    System.out.println("border... " + j);
-//	                    System.out.println(this.border[j][0]+" > "+fitness[j]);
-//	                    System.out.println(this.border[j][1]+" < "+fitness[j]);
-//	                }
                 prob.border[j][0] = Math.min(prob.border[j][0], fitness[j]);
                 prob.border[j][1] = Math.max(prob.border[j][1], fitness[j]);
             }
@@ -192,11 +185,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         for (int i = 0; i < pop.size(); i++) {
             tmpFitLen = ((AbstractEAIndividual) pop.get(i)).getFitness().length;
             if (tmpFitLen <= 1) {
-                //System.out.println("There is a single objective individual in the population!");
                 return false;
             }
             if (tmpFitLen != bestFitLen) {
-                //System.out.println("Not all individual have equal length fitness!");
                 return false;
             }
         }
@@ -232,16 +223,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             if (border == null) {
                 this.border = new double[fitness.length][2];
             } else if (fitness.length != this.border.length) {
-                //System.out.println("AbstractMOOptimizationProblem: Warning fitness.length("+fitness.length+") doesn't fit border.length("+this.border.length+")");
-                //System.out.println("Resetting the border!");
                 this.border = new double[fitness.length][2];
             }
             for (int j = 0; j < fitness.length; j++) {
-//                if ((this.border[j][0] > fitness[j]) || (this.border[j][1] < fitness[j])) {
-//                    System.out.println("border... " + j);
-//                    System.out.println(this.border[j][0]+" > "+fitness[j]);
-//                    System.out.println(this.border[j][1]+" < "+fitness[j]);
-//                }
                 this.border[j][0] = Math.min(this.border[j][0], fitness[j]);
                 this.border[j][1] = Math.max(this.border[j][1], fitness[j]);
             }
@@ -330,7 +314,6 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
      */
     public static void drawProblem(Population pFront, Population archive, Plot plot) {
         ArchivingAllDominating tmpArch = new ArchivingAllDominating();
-//  	Population              tmpPop = null;
 
         // i want to plot the pareto front for MOEA and other strategies
         // but i have to differentiate between the case where
@@ -377,7 +360,6 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         Population tmpPop = null;
 
         if (p.getGeneration() > 2) {
-//            plot = new eva2.gui.plot.Plot("Multiobjective Optimization", "Y1", "Y2");
             // i want to plot the pareto front for MOEA and other strategies
             // but i have to differentiate between the case where
             // there is a true MOEA at work and where the
@@ -519,13 +501,13 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     @Override
     public Double getDoublePlotValue(Population pop) {
         if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(pop)) {
-            return new Double(this.calculateMetric(pop));
+            return this.calculateMetric(pop);
         } else {
             // in this case the local Pareto-Front could be multi-objective
             if (AbstractMultiObjectiveOptimizationProblem.isPopulationMultiObjective(this.paretoFront)) {
-                return new Double(this.calculateMetric(this.paretoFront));
+                return this.calculateMetric(this.paretoFront);
             } else {
-                return new Double(pop.getBestEAIndividual().getFitness(0));
+                return pop.getBestEAIndividual().getFitness(0);
             }
         }
     }
@@ -558,10 +540,6 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         return ToolBox.appendArrays(result, super.getAdditionalDataValue(pop));
     }
 
-    /*
-     * (non-Javadoc)
-     * @see eva2.problems.AbstractOptimizationProblem#getAdditionalDataInfo(eva2.optimization.PopulationInterface)
-     */
     @Override
     public String[] getAdditionalDataInfo() {
         String[] superInfo = super.getAdditionalDataInfo();
@@ -569,10 +547,6 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
                 "Pareto metric on the collected pareto front"}, superInfo);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see eva2.problems.InterfaceOptimizationProblem#getStringRepresentationForProblem(eva2.optimization.strategies.InterfaceOptimizer)
-     */
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         // TODO Auto-generated method stub
@@ -607,32 +581,6 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     public int getOutputDimension() {
         return this.outputDimension;
     }
-
-//    /** This method will calculate the s-Metric if an archive population is present.
-//     * @param population       The population.
-//     * @return s-metric
-//     */
-//    public double tcalculateSMetric(Population population) {
-//        double result = 0;
-//
-//        ((SMetric)this.distanceMetric).setObjectiveSpaceRange(this.border);
-//        result = this.distanceMetric.calculateMetricOn(population);
-//
-//        return result;
-//    }
-//
-//    /** This method will calculate the s-Metric if an archive population is present.
-//     * @param population       The population.
-//     * @return s-metric
-//     */
-//    public double calculateRelativeSMetric(Population population, double[][] ref) {
-//        double result = 0;
-//        SMetricWithReference tmpMetric = new SMetricWithReference();
-//        tmpMetric.setObjectiveSpaceRange(this.border);
-//        tmpMetric.setReferenceFront(ref);
-//        result = tmpMetric.calculateMetricOn(population);
-//        return result;
-//    }
 
     /**
      * This method allows you to set a Multiobjective to

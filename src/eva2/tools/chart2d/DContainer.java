@@ -1,27 +1,7 @@
-/**
- *  Filename: $RCSfile: DContainer.java,v $
- *  Purpose:
- *  Language: Java
- *  Compiler: JDK 1.3
- *  Authors:  Fabian Hennecke
- *  Version:  $Revision: 1.1.1.1 $
- *            $Date: 2003/07/03 14:59:41 $
- *            $Author: ulmerh $
- *  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
- */
-
 package eva2.tools.chart2d;
-
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import java.awt.*;
 import java.util.Vector;
-
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 
 public class DContainer extends DComponent implements DParent {
     /**
@@ -78,14 +58,12 @@ public class DContainer extends DComponent implements DParent {
         if (e instanceof DParent) {
             DParent he = (DParent) e, me = this;
             if (he == me) {
-                throw new
-                        IllegalArgumentException("Adding DParent to itself");
+                throw new IllegalArgumentException("Adding DParent to itself");
             }
             me = getDParent();
             while (me != null) {
                 if (he == me) {
-                    throw new
-                            IllegalArgumentException("Adding DContainer's parent to itself");
+                    throw new IllegalArgumentException("Adding DContainer's parent to itself");
                 }
                 if (me instanceof DElement) {
                     me = ((DElement) me).getDParent();
@@ -163,8 +141,6 @@ public class DContainer extends DComponent implements DParent {
         }
         return (index < keys.size()) ? elements.get(index) : null;
     }
-
-// implementing DComponent:
 
     /**
      * method calls all currently visible DElements of the container to paint
@@ -248,7 +224,3 @@ public class DContainer extends DComponent implements DParent {
         return !old.equals(rectangle);
     }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

@@ -1,15 +1,5 @@
 package eva2.tools.chart2d;
 
-/**
- *  Filename: $RCSfile: DPointIcon.java,v $
- *  Purpose:
- *  Language: Java
- *  Compiler: JDK 1.3
- *  Authors:  Fabian Hennecke
- *  Version:
- *  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
- */
-
 import java.awt.*;
 
 /**

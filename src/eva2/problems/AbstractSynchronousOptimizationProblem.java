@@ -11,10 +11,6 @@ import eva2.optimization.population.Population;
  * so that the problem changes after every evaluation. This of course under the simplification
  * that an evaluation takes no time, or from a different POV, changes within an evaluation
  * can not be taken into account (or just discretely approximated).
- *
- * @author M.Kronfeld
- *         <p/>
- *         Jan 4, 2007
  */
 public abstract class AbstractSynchronousOptimizationProblem extends
         AbstractDynamicOptimizationProblem {
@@ -31,7 +27,6 @@ public abstract class AbstractSynchronousOptimizationProblem extends
      * measures the "distance" which the problem shifts when it changes
      */
     protected double shiftPerChange;
-    //protected double timeIntPerEval			= 1.;	// better assume this to be constant
 
     /**
      *
@@ -51,18 +46,12 @@ public abstract class AbstractSynchronousOptimizationProblem extends
 
     }
 
-    /* (non-Javadoc)
-     * @see eva2.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#changeProblemAt(double)
-     */
     @Override
     protected void changeProblemAt(double problemTime) {
         incProblemTime(shiftPerChange);
         evalsSinceChange = 0.;
     }
 
-    /* (non-Javadoc)
-     * @see eva2.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#problemToChangeAt(double)
-     */
     @Override
     protected boolean problemToChangeAt(double problemTime) {
         return (evalsSinceChange >= constantProblemEvals);
@@ -78,9 +67,6 @@ public abstract class AbstractSynchronousOptimizationProblem extends
         constantProblemEvals = constEvals;
     }
 
-    /* (non-Javadoc)
-     * @see eva2.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#countEvaluation()
-     */
     @Override
     protected void countEvaluation() {
         evalsSinceChange += 1.;
@@ -99,7 +85,6 @@ public abstract class AbstractSynchronousOptimizationProblem extends
     @Override
     public void setFrequency(double frequency) {
         super.setFrequency(frequency);
-        //if (frequency > 1.) System.out.println("warning, frequency should be <= 1 (setFrequency)");
         if (isFrequencyRelative()) {
             // bogus. this must be reset right before population evaluation
             setConstantProblemEvals(9999999);
@@ -109,10 +94,6 @@ public abstract class AbstractSynchronousOptimizationProblem extends
         }
     }
 
-
-    /* (non-Javadoc)
-     * @see eva2.server.oa.go.OptimizationProblems.AbstractDynamicOptimizationProblem#setFrequencyRelative(boolean)
-     */
     @Override
     public void setFrequencyRelative(boolean frequencyRelative) {
         super.setFrequencyRelative(frequencyRelative);

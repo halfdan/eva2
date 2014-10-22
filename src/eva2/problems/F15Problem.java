@@ -15,7 +15,7 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
 
     public F15Problem() {
         super();
-        super.SetDefaultAccuracy(0.00001);
+        super.setDefaultAccuracy(0.00001);
         setDefaultRange(10);
     }
 

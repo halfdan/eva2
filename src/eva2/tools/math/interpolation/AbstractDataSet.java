@@ -1,35 +1,6 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Filename: $RCSfile: AbstractDataSet.java,v $
-//  Purpose:  Some interpolation stuff.
-//  Language: Java
-//  Compiler: JDK 1.4
-//  Authors:  Joerg K. Wegner
-//  Version:  $Revision: 1.1 $
-//            $Date: 2003/07/22 19:25:04 $
-//            $Author: wegnerj $
-//
-//  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
-//
-///////////////////////////////////////////////////////////////////////////////
-
 package eva2.tools.math.interpolation;
 
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-
-/*==========================================================================*
-* CLASS DECLARATION
-*==========================================================================*/
-
 public abstract class AbstractDataSet {
-    /*-------------------------------------------------------------------------*
-     * public member variables
-	 *-------------------------------------------------------------------------*/
-
-	/*--------------------------------------------------------------o-----------*
-     * protected member variables
-	 *-------------------------------------------------------------------------*/
     /**
      * double array of X data.
      *
@@ -42,10 +13,6 @@ public abstract class AbstractDataSet {
      * @see #xDoubleData
      */
     protected double[] yDoubleData = {1, 1};
-
-	/*-------------------------------------------------------------------------*
-	 * abstract methods
-	 *-------------------------------------------------------------------------*/
 
     /**
      * Returns the length of the data set
@@ -115,6 +82,3 @@ public abstract class AbstractDataSet {
         modifier.modify(xDoubleData, yDoubleData);
     }
 }
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

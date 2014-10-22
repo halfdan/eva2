@@ -53,7 +53,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
                     writer.write(c);
                     writer.flush();
                 }
-//				System.out.println("monitor-thread finished!");
             } catch (IOException ioe) {
                 System.err.println("IOException in MonitorInputStreamThread/ExternalRuntimeProblem: " + ioe.getMessage());
                 ioe.printStackTrace(System.err);
@@ -208,7 +207,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
     @Override
     public void evaluate(AbstractEAIndividual individual) {
         double[] x;
-//        double[]        fitness;
 
         x = getXVector(individual);
 
@@ -266,7 +264,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
                 line = line.trim();
                 String[] parts = line.split(colSepRegExp);
                 Collections.addAll(results, parts);
-//				results.add(line); 
             }
             br.close();
         } catch (IOException e) {
@@ -463,7 +460,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         this.additionalArg = additionalArg;
     }
 
-    //	@Override
     @Override
     public Object getInitializationRange() {
         if (initializationRange == null) {

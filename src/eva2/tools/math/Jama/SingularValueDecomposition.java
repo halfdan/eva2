@@ -20,10 +20,6 @@ import eva2.tools.math.Jama.util.Maths;
 
 public class SingularValueDecomposition implements java.io.Serializable {
 
-/* ------------------------
-   Class variables
- * ------------------------ */
-
     /**
      * Arrays for internal storage of U and V.
      *
@@ -47,24 +43,20 @@ public class SingularValueDecomposition implements java.io.Serializable {
      */
     private int m, n;
 
-/* ------------------------
-   Constructor
- * ------------------------ */
-
     /**
      * Construct the singular value decomposition
      *
-     * @param A Rectangular matrix
+     * @param arg A Rectangular matrix
      * @return Structure to access U, S and V.
      */
 
-    public SingularValueDecomposition(Matrix Arg) {
+    public SingularValueDecomposition(Matrix matrix) {
 
         // Derived from LINPACK code.
         // Initialize.
-        double[][] A = Arg.getArrayCopy();
-        m = Arg.getRowDimension();
-        n = Arg.getColumnDimension();
+        double[][] A = matrix.getArrayCopy();
+        m = matrix.getRowDimension();
+        n = matrix.getColumnDimension();
         int nu = Math.min(m, n);
         s = new double[Math.min(m + 1, n)];
         U = new double[m][nu];
@@ -475,10 +467,6 @@ public class SingularValueDecomposition implements java.io.Serializable {
             }
         }
     }
-
-/* ------------------------
-   Public Methods
- * ------------------------ */
 
     /**
      * Return the left singular vectors

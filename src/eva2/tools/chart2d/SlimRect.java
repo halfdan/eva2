@@ -3,8 +3,6 @@ package eva2.tools.chart2d;
 /**
  * Encapsulates a slim rectangle structure with x, y, width and height and
  * nothing else. Makes some painting calculations quite a bit faster.
- *
- * @author mkron
  */
 public class SlimRect {
     double x, y, width, height;
