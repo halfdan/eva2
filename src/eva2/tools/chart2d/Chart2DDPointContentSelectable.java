@@ -68,10 +68,6 @@ public class Chart2DDPointContentSelectable implements InterfaceDPointWithConten
         this.size = d;
     }
 
-    /*********************************************************************************************
-     *  The InterfaceSelectablePointIcon
-     */
-
     /**
      * This method allows to add a selection listner to the PointIcon
      * it should need more than one listener to this abstruse event

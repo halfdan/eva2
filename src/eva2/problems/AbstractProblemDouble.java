@@ -86,7 +86,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     protected void cloneObjects(AbstractProblemDouble o) {
         this.defaultRange = o.defaultRange;
         this.noise = o.noise;
-        this.SetDefaultAccuracy(o.getDefaultAccuracy());
+        this.setDefaultAccuracy(o.getDefaultAccuracy());
         if (o.template != null) {
             this.template = (AbstractEAIndividual) o.template.clone();
         }

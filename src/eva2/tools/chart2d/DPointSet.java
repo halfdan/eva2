@@ -1,14 +1,4 @@
-/**
- * Filename: $RCSfile: DPointSet.java,v $ Purpose: Language: Java Compiler: JDK 1.3 Authors: Fabian
- * Hennecke Version: $Revision: 1.1.1.1 $ $Date: 2003/07/03 14:59:42 $ $Author: ulmerh $ Copyright
- * (c) Dept. Computer Architecture, University of Tuebingen, Germany
- */
 package eva2.tools.chart2d;
-
-/*
- * ==========================================================================* IMPORTS
- *==========================================================================
- */
 
 import eva2.tools.math.Mathematics;
 
@@ -19,11 +9,6 @@ public class DPointSet extends DComponent {
 
     protected DPointIcon icon = null;
 
-    /*
-     * -------------------------------------------------------------------------* private member
-     * variables
-   *-------------------------------------------------------------------------
-     */
     protected DIntDoubleMap x, y;
     protected boolean connected;
     protected Stroke stroke = new BasicStroke();
@@ -48,8 +33,7 @@ public class DPointSet extends DComponent {
 
     public DPointSet(DIntDoubleMap x_values, DIntDoubleMap y_values) {
         if (x_values.getSize() != y_values.getSize()) {
-            throw new IllegalArgumentException(
-                    "The number of x-values has to be the same than the number of y-values");
+            throw new IllegalArgumentException("The number of x-values has to be the same than the number of y-values");
         }
         x = x_values;
         y = y_values;
@@ -57,10 +41,6 @@ public class DPointSet extends DComponent {
         setDBorder(new DBorder(1, 1, 1, 1));
     }
 
-    /*
-     * -------------------------------------------------------------------------* public methods
-   *-------------------------------------------------------------------------
-     */
     @Override
     public void paint(DMeasures m) {
         Graphics2D g = (Graphics2D) m.getGraphics();
@@ -297,16 +277,6 @@ public class DPointSet extends DComponent {
             return new DPoint(x.getImage(minIndex), y.getImage(minIndex));
         }
     }
-
-//  public int getSize(){
-//    int size = x.getSize();
-//    if( size != y.getSize() ) throw
-//      new ArrayStoreException(
-//        "The number of x-values is not equal to the number of y-values.\n"
-//        +"The size of the DPointSet isn�t clear."
-//      );
-//    return size;
-//  }
 
     /**
      *

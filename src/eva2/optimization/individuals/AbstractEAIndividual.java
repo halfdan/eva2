@@ -185,9 +185,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
                 return false;
             }
 
-            // Age will not be used
-            //if (this.age != indy.age) return false;
-
             // checking on mutation/crossover probabilities
             if (this.mutationProbability != indy.mutationProbability) {
                 return false;
@@ -203,7 +200,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             if (!this.crossoverOperator.equals(indy.crossoverOperator)) {
                 return false;
             }
-//            System.err.println("Check whether this is semantically meant by equality!!! (AbstractEAIndividual.equals())");
             return true;
         } else {
             return false;
@@ -234,10 +230,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public String getName() {
         return "AbstractEAIndividual";
     }
-
-//    public String getIndividualName() {
-//        return this.name;
-//    }
 
     /**
      * This method is used when a new offspring is created the increment the
@@ -276,28 +268,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     public abstract boolean equalGenotypes(AbstractEAIndividual individual);
 
-//    /** Every object should have it's equals method, but who to programm it.
-//     * Currently i will limit myself to check the class and the fitness
-//     * values.
-//     * @param obj
-//     * @return True if the objects are equal.
-//     */
-//    public boolean equals(Object obj) {
-//        if (obj instanceof AbstractEAIndividual) {
-//            AbstractEAIndividual indy = (AbstractEAIndividual)obj;
-//            if (this.fitness.length != indy.fitness.length) return false;
-////            for (int i = 0; i < this.fitness.length; i++) if (this.fitness[i] != indy.fitness[i]) return false;
-////            for (int i = 0; i < this.fitness.length; i++)
-////                if (new Double(this.fitness[i]).compareTo(new Double(indy.fitness[i])) != 0) return false;
-//            for (int i = 0; i < this.fitness.length; i++) {
-//                if (Math.abs(this.fitness[i]- indy.fitness[i]) > 0.00000001) return false;
-//            }
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
     /**
      * This method will allow a default initialisation of the individual
      *
@@ -305,7 +275,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     public void init(InterfaceOptimizationProblem opt) {
         initializationOperator.initialize(this, opt);
-//        this.defaultInit(opt);
         this.mutationOperator.init(this, opt);
         this.crossoverOperator.init(this, opt);
     }
@@ -411,7 +380,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             sb.append("[ ");
             for (int i = 0; i < parentTree.length; i++) {
                 sb.append(parentTree[i].getHeritageTree(depth - 1));
-//					if ((i+1) < parentTree.length) sb.append(", ");
             }
             sb.append("] ");
         }
@@ -779,7 +747,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         } else {
             return (constrViolComp > 0);
         }
-//        return isDominatingFitnessNotEqual(getFitness(), indy.getFitness());
     }
 
     /**
@@ -1087,8 +1054,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         } else if (individual instanceof InterfaceDataTypeDouble) {
             double[] d = ((InterfaceDataTypeDouble) individual).getDoubleData();
             for (int i = 0; i < d.length; i++) {
-//                sb.append(d[i]);
-//                if ((i+1) < d.length) sb.append(separator);
                 fm.format("% .3f", d[i]);
                 if ((i + 1) < d.length) {
                     sb.append(separator);

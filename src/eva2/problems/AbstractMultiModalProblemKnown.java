@@ -377,7 +377,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
      */
     @Override
     public void setDefaultAccuracy(double epsilon) {
-        super.SetDefaultAccuracy(epsilon);
+        super.setDefaultAccuracy(epsilon);
     }
 
     @Override

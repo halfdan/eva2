@@ -400,43 +400,6 @@ public class StatisticUtils {
     }
 
     /**
-     * Main method for testing this class.
-     */
-    public static void main(String[] ops) {
-        double[][] vs = {{356.873, -498.563, 130.923, -223.684, 494.296, 380.739, 481.353, 344.571, 501.105, -166.109},
-                {199.116, -423.448, 487.898, 344.579, 140.709, 89.007, -259.310, 512.000, 152.069, -440.778},
-                {439.128, 112.370, -422.820, -43.119, -297.609, -438.940, 488.914, -512.000, -407.847, 386.611},
-                {395.772, 191.634, -511.999, -93.078, -282.853, -444.621, 491.291, -512.000, -407.620, 386.493}};
-
-        vs[1] = Mathematics.rotate(vs[0], AbstractProblemDouble.initializeDefaultRotationMatrix(10, 10));
-
-        for (int i = 0; i < vs.length; i++) {
-            for (int j = 0; j < vs.length; j++) {
-                System.out.print("\t" + correlation(vs[i], vs[j]));
-            }
-            System.out.println();
-        }
-//		vs[1]=Mathematics.rotate(vs[0], AbstractProblemDouble.initializeDefaultRotationMatrix(30, 10));
-//		vs[2]=Mathematics.rotate(vs[0], AbstractProblemDouble.initializeDefaultRotationMatrix(50, 10));
-//		vs[3]=Mathematics.rotate(vs[0], AbstractProblemDouble.initializeDefaultRotationMatrix(70, 10));
-
-        vs = new double[][]{{0.1, 0.9},
-                {0.8, 0.2},
-//							{0.8,0.2},
-                {0.0, 1.0}};
-        System.out.println("---");
-
-//		for (int i=0; i<vs.length; i++) {
-//			Mathematics.svAdd(512, vs[i], vs[i]);
-//			Mathematics.normVect(vs[i], vs[i]);
-//			System.out.println(BeanInspector.toString(vs[i]));
-//		}
-
-//		System.out.println("entropy cols: " + entropyOverColumns(vs));
-//		System.out.println("entropy rows: " + entropyOverRows(vs));
-    }
-
-    /**
      * Computes the entropy of the given array.
      *
      * @param array an array of double data
@@ -500,9 +463,6 @@ public class StatisticUtils {
      * @return
      */
     public static Matrix rlh(int samples, int dim, double lb, double ub, boolean edges) {
-        //    		System.out.println( "Latin Hypercube sampling" );
-        //    		++rlhsamplings;
-
         // perform Latin-Hypercube-Sampling to obtain a stratified sample of
         // function values over the optimization domain
 
@@ -593,9 +553,7 @@ public class StatisticUtils {
      * Returns a list of point matrices which form a latin hypercube sampling of the given space.
      *
      * @param samples
-     * @param dim
-     * @param lb
-     * @param ub
+     * @param range
      * @param edges
      * @return
      */

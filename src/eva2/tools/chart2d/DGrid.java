@@ -1,28 +1,8 @@
-/**
- *  Filename: $RCSfile: DGrid.java,v $
- *  Purpose:
- *  Language: Java
- *  Compiler: JDK 1.3
- *  Authors:  Fabian Hennecke
- *  Version:  $Revision: 1.1.1.1 $
- *            $Date: 2003/07/03 14:59:41 $
- *            $Author: ulmerh $
- *  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
- */
-
 package eva2.tools.chart2d;
-
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import eva2.tools.math.Mathematics;
 
 import java.awt.*;
-
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 
 /**
  * this class paints a grid with certain line distances on a DParent
@@ -31,7 +11,7 @@ public class DGrid extends DComponent {
     /**
      * the distances between the lines
      */
-    private double hor_dist, ver_dist;
+    private double horDist, verDist;
 
     private Color DEFAULT_COLOR = Color.lightGray;
 
@@ -39,15 +19,15 @@ public class DGrid extends DComponent {
      * constructor with the size and position of the grid and the line distances
      *
      * @param rectangle the rectangle around the grid
-     * @param hor_dist  the horizontal distance between the lines in D-coordinates,
+     * @param horDist   the horizontal distance between the lines in D-coordinates,
      *                  not in pixel coordinates!
-     * @param ver_dist  vertical distance between the lines in D-coordinates,
+     * @param verDist   vertical distance between the lines in D-coordinates,
      *                  not in pixel coordinates!
      */
-    public DGrid(DRectangle rectangle, double hor_dist, double ver_dist) {
+    public DGrid(DRectangle rectangle, double horDist, double verDist) {
         this.rectangle = rectangle;
-        this.hor_dist = hor_dist;
-        this.ver_dist = ver_dist;
+        this.horDist = horDist;
+        this.verDist = verDist;
         color = DEFAULT_COLOR;
     }
 
@@ -55,32 +35,31 @@ public class DGrid extends DComponent {
      * constructor with the size and position of the grid and the line distances
      *
      * @param rectangle the rectangle around the grid
-     * @param hor_dist  the horizontal distance between the lines in D-coordinates,
+     * @param horDist   the horizontal distance between the lines in D-coordinates,
      *                  not in pixel coordinates!
-     * @param ver_dist  the vertical distance between the lines in D-coordinates,
+     * @param verDist   the vertical distance between the lines in D-coordinates,
      *                  not in pixel coordinates!
      * @param color     the color of the grid
      *                  ( can also be set by setColor( java.awt.Color ) )
      */
-    public DGrid(DRectangle rectangle, double hor_dist, double ver_dist, Color color) {
+    public DGrid(DRectangle rectangle, double horDist, double verDist, Color color) {
         this.rectangle = rectangle;
-        this.hor_dist = hor_dist;
-        this.ver_dist = ver_dist;
+        this.horDist = horDist;
+        this.verDist = verDist;
         this.color = color;
     }
 
     public void setDistances(double hor, double ver) {
-        hor_dist = hor;
-        ver_dist = ver;
-//	  System.out.println("set new Grid distances " + this.toString());
+        horDist = hor;
+        verDist = ver;
     }
 
     public double getHorDist() {
-        return hor_dist;
+        return horDist;
     }
 
     public double getVerDist() {
-        return ver_dist;
+        return verDist;
     }
 
     /**
@@ -98,18 +77,12 @@ public class DGrid extends DComponent {
         DPoint p1, p2;
         DLine l;
 
-        minX = Mathematics.firstMultipleAbove(rectangle.getX(), hor_dist);
-        minY = Mathematics.firstMultipleAbove(rectangle.getY(), ver_dist);
-//    minX = (int)( rectangle.x / hor_dist );
-//    if( minX * hor_dist <= rectangle.x ) minX++;
-//    minX *= hor_dist;
-//    minY = (int)( rectangle.y / ver_dist );
-//    if( minY * ver_dist <= rectangle.y ) minY++;
-//    minY *= ver_dist;
+        minX = Mathematics.firstMultipleAbove(rectangle.getX(), horDist);
+        minY = Mathematics.firstMultipleAbove(rectangle.getY(), verDist);
 
         p1 = new DPoint(0, rectangle.getY());
         p2 = new DPoint(0, rectangle.getY() + rectangle.getHeight());
-        for (pos = minX; pos <= rectangle.getX() + rectangle.getWidth(); pos += hor_dist) {
+        for (pos = minX; pos <= rectangle.getX() + rectangle.getWidth(); pos += horDist) {
             p1.x = p2.x = pos;
             l = new DLine(p1, p2, color);
             l.paint(m);
@@ -122,22 +95,17 @@ public class DGrid extends DComponent {
             p1.y = p2.y = pos;
             l = new DLine(p1, p2, color);
             l.paint(m);
-            if (pos + ver_dist <= pos) {
+            if (pos + verDist <= pos) {
                 System.err.println("Overflow error in DGrid!");
                 pos *= 1.01;
             } else {
-                pos += ver_dist;
+                pos += verDist;
             }
-//      System.out.println("pos is " + pos + ", loop until " + rectangle.y + rectangle.height);
         }
     }
 
     @Override
     public String toString() {
-        return "chart2d.DGrid[ hor: " + hor_dist + ", ver: " + ver_dist + " ]";
+        return "chart2d.DGrid[ hor: " + horDist + ", ver: " + verDist + " ]";
     }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

@@ -12,8 +12,6 @@ import eva2.tools.EVAERROR;
  * function by scaling it logarithmically. This avoids ugly functions in GP. To activate scaling,
  * set the scStart and scLimit parameters to positive values. Function values y with |y|>scStart
  * will be rescaled to values below scLimit.
- *
- * @author mkron
  */
 public class GPFunctionProblem extends AbstractProblemDouble implements InterfaceProgramProblem {
     InterfaceProgram gpProblem = null;
@@ -109,7 +107,7 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
     /**
      * Scale the allover fitness value.
      *
-     * @param doubleValue
+     * @param v
      * @return
      */
     public double scaleFit(double v) {
@@ -126,12 +124,6 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
             }
         }
     }
-
-//	public static void main(String[] args) {
-//		for (double x=1.; x<100000000; x*=10.) {
-//			System.out.println("x: " + -x + " sc: " + scaleFit(-x));
-//		}
-//	}
 
     @Override
     public int getProblemDimension() {

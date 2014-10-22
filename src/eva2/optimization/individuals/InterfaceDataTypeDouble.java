@@ -4,11 +4,6 @@ package eva2.optimization.individuals;
  * This interface gives access to a double phenotype and except
  * for problemspecific operators should only be used by the
  * optimization problem.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 10:57:39
- * To change this template use Options | File Templates.
  */
 public interface InterfaceDataTypeDouble {
 

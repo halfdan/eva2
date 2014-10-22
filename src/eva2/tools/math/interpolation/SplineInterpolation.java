@@ -1,22 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
-//  Filename: $RCSfile: SplineInterpolation.java,v $
-//  Purpose:  Some interpolation stuff.
-//  Language: Java
-//  Compiler: JDK 1.4
-//  Authors:  Joerg K. Wegner
-//  Version:  $Revision: 1.1 $
-//            $Date: 2003/07/22 19:25:42 $
-//            $Author: wegnerj $
-//
-//  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
-//
-///////////////////////////////////////////////////////////////////////////////
-
 package eva2.tools.math.interpolation;
-
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 /**
  * Defines the routines for the spline interpolation of data.
@@ -28,16 +10,10 @@ public class SplineInterpolation {
     double[] yArray = null;
     boolean ascendingData = true;
 
-	/*------------------------------------------------------------------------*
-     * constructor
-	 *------------------------------------------------------------------------*/
-
     /**
      * Initializes this class.
      */
     public SplineInterpolation() throws InterpolationException {
-        this.abstractDataSet = null;
-        this.secondDerivative = null;
     }
 
     /**
@@ -62,7 +38,6 @@ public class SplineInterpolation {
         double[] x = abstractDataSet.getXData();
         double[] y = abstractDataSet.getYData();
         boolean ascending = false;
-        boolean descending = false;
         int n = x.length;
 
         xArray = new double[n];
@@ -76,17 +51,11 @@ public class SplineInterpolation {
                 //if(descending)throw new InterpolationException("The x values must be"+
                 //          " in continous ascending/descending order.");
                 ascending = true;
-            } else {
-                //if(ascending)throw new InterpolationException("The x values must be"+
-                //          " in continous ascending/descending order.");
-                descending = true;
             }
         }
         ascendingData = ascending;
 
         if (ascendingData) {
-            xArray = null;
-            yArray = null;
             xArray = abstractDataSet.getXData();
             yArray = abstractDataSet.getYData();
         }
@@ -212,7 +181,7 @@ public class SplineInterpolation {
             }
         }
         h = xa[khi] - xa[klo];
-        //System.out.println(""+x+" between "+xa[khi]+" "+xa[klo]);
+
         if (h == 0.0) {
             throw new InterpolationException("Two identical x values. The values must be distinct.");
         }
@@ -262,7 +231,6 @@ public class SplineInterpolation {
             }
         }
         h = xa[khi] - xa[klo];
-        //System.out.println(""+x+" between "+xa[khi]+" "+xa[klo]);
         if (h == 0.0) {
             throw new InterpolationException("Two identical x values. The values must be distinct.");
         }
@@ -275,7 +243,3 @@ public class SplineInterpolation {
         return dydx;
     }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

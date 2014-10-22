@@ -1,6 +1,5 @@
 package eva2.tools.chart2d;
 
-
 import eva2.gui.plot.InterfaceDPointWithContent;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.problems.InterfaceOptimizationProblem;
@@ -10,13 +9,6 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 13.04.2004
- * Time: 13:31:48
- * To change this template use File | Settings | File Templates.
- */
 public class Chart2DDPointIconContent implements InterfaceDPointWithContent, DPointIcon {
 
     AbstractEAIndividual individual;

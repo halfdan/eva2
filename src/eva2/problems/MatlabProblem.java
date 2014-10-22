@@ -53,30 +53,16 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         this.handler = o.handler;
         this.runnable = o.runnable;
         this.allowSingleRunnable = o.allowSingleRunnable;
-//		this.jmInterface = new String(o.jmInterface);
         this.problemDimension = o.problemDimension;
-//		this.res = new ResultArr();
-//		if (o.res != null) if (o.res.get() != null) res.set(o.res.get());
         this.range = o.range;
         this.dataType = o.dataType;
         this.initialRange = o.initialRange;
-//		this.mtCmd = o.mtCmd;
-//		currArray = null;
     }
 
     @Override
     public Object clone() {
         return new MatlabProblem(this);
     }
-
-    /**
-     * Constructor of a real valued problem.
-     * @param dim
-     * @param range
-     */
-//	public MatlabProblem(int dim, double[][] range) {
-//		initialize(dim, ProblemDataTypeEnum.typeDouble, range, null, defTestOut);
-//	}
 
     /**
      * Constructor of a binary problem with given bit length.
@@ -86,16 +72,6 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
     public MatlabProblem(int dim) {
         init(dim, MatlabProblemDataTypeEnum.typeBinary, null, null, defTestOut);
     }
-
-    /**
-     * Constructor of a real valued problem with initialization range.
-     * @param dim
-     * @param range
-     * @param initRange
-     */
-//	public MatlabProblem(int dim, double[][] range, double[][] initRange) {
-//		initialize(dim, ProblemDataTypeEnum.typeDouble, range, initRange, defTestOut);
-//	}
 
     /**
      * Constructor of real or integer valued problem, the range will be converted
@@ -187,7 +163,6 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
      */
     private void init(int dim, MatlabProblemDataTypeEnum datType, double[][] globalRange, double[][] initRange, String outFile) {
         this.problemDimension = dim;
-//		if ((rng != null) && (dim != rng.length)) throw new ArrayIndexOutOfBoundsException("Mismatching dimension and range!");
         if (globalRange != null) { // these may be Matlab objects, so I do it by foot, just to be sure not to clone them within Matlab instead of here
             this.range = new double[globalRange.length][globalRange[0].length];
             for (int i = 0; i < this.range.length; i++) {
@@ -344,7 +319,6 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
      * @param outputFilePrefix
      * @param specParams
      * @param specValues
-     * @see OptimizerFactory.getOptRunnable
      */
     public void optimize(final int optType, String outputFilePrefix, Object[] specParams, Object[] specValues) {
         if (allowSingleRunnable && (runnable != null) && (!runnable.isFinished())) {

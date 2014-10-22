@@ -50,8 +50,8 @@ public abstract class DFunction extends DComponent {
         Point last = null, next;
         for (int i = 0; i < int_w; i++) {
             double x_val = src_rect.x + i / (double) int_w * src_rect.width;
-            if (m.x_scale != null) {
-                x_val = m.x_scale.getImageOf(x_val);
+            if (m.xScale != null) {
+                x_val = m.xScale.getImageOf(x_val);
             }
             if (isDefinedAt(x_val)) {
                 next = m.getPoint(x_val, getImageOf(x_val));
