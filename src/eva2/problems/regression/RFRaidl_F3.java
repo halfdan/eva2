@@ -1,11 +1,7 @@
 package eva2.problems.regression;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.09.2003
- * Time: 14:02:59
- * To change this template use Options | File Templates.
+ *
  */
 public class RFRaidl_F3 implements InterfaceRegressionFunction, java.io.Serializable {
 
@@ -37,9 +33,6 @@ public class RFRaidl_F3 implements InterfaceRegressionFunction, java.io.Serializ
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.

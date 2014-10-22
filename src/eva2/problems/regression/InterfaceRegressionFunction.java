@@ -1,11 +1,6 @@
 package eva2.problems.regression;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.06.2003
- * Time: 15:51:48
- * To change this template use Options | File Templates.
  */
 public interface InterfaceRegressionFunction {
 

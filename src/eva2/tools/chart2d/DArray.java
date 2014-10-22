@@ -1,23 +1,14 @@
 package eva2.tools.chart2d;
 
 /**
- * Title:
- * Description:
- * Copyright:    Copyright (c) 2001
- * Company:
- * @author
- * @version 1.0
- */
-
-/**
  * This class stores an array of double values.
  * It can be used as data stack for an DPointSet object.
  * For that use, it is important to tell the DPoitSet object, when the data has
  * been modified.
  */
 public class DArray implements DIntDoubleMap {
-    private int initial_capacity, size;
-    private double capacity_multiplier = 2, max, min, minPositive = -1;
+    private int initialCapacity, size;
+    private double capacityMultiplier = 2, max, min, minPositive = -1;
     private double[] value;
 
     /**
@@ -32,30 +23,28 @@ public class DArray implements DIntDoubleMap {
      * Constructor for an DArray object with default value for the capacity
      * multiplier (2).
      *
-     * @param initial_capacity the initial capacity of the array
+     * @param initialCapacity the initial capacity of the array
      */
-    public DArray(int initial_capacity) {
-        this(initial_capacity, 2);
+    public DArray(int initialCapacity) {
+        this(initialCapacity, 2);
     }
 
     /**
      * Constructor for an DArray object
      *
-     * @param initial_capacity    the initial capacity of the array
-     * @param capacity_multiplier the capacity multiplier when the array overflows
+     * @param initialCapacity    the initial capacity of the array
+     * @param capacityMultiplier the capacity multiplier when the array overflows
      */
-    public DArray(int initial_capacity, double capacity_multiplier) {
-        if (initial_capacity < 1) {
-            throw
-                    new IllegalArgumentException("The initial capacity has to be at least 1");
+    public DArray(int initialCapacity, double capacityMultiplier) {
+        if (initialCapacity < 1) {
+            throw new IllegalArgumentException("The initial capacity has to be at least 1");
         }
-        if (capacity_multiplier <= 1) {
-            throw
-                    new IllegalArgumentException("The capacity multiplier has to be bigger than 1");
+        if (capacityMultiplier <= 1) {
+            throw new IllegalArgumentException("The capacity multiplier has to be bigger than 1");
         }
-        this.initial_capacity = initial_capacity;
-        value = new double[initial_capacity];
-        this.capacity_multiplier = capacity_multiplier;
+        this.initialCapacity = initialCapacity;
+        value = new double[initialCapacity];
+        this.capacityMultiplier = capacityMultiplier;
     }
 
     /**
@@ -67,25 +56,24 @@ public class DArray implements DIntDoubleMap {
     @Override
     public boolean setImage(int source, double image) {
         if (source < 0 || source >= size) {
-            throw
-                    new ArrayIndexOutOfBoundsException(source);
+            throw new ArrayIndexOutOfBoundsException(source);
         }
-        boolean min_max_changed = false, restore = false;
+        boolean minMaxChanged = false, restore = false;
         if (image < min) {
             min = image;
-            min_max_changed = true;
+            minMaxChanged = true;
         } else if (image > max) {
             max = image;
-            min_max_changed = true;
+            minMaxChanged = true;
         }
         if (value[source] == min || value[source] == max || (value[source] == minPositive)) {
             restore = true;
         }
         value[source] = image;
         if (restore) {
-            min_max_changed = restore() || min_max_changed;
+            minMaxChanged = restore() || minMaxChanged;
         }
-        return min_max_changed;
+        return minMaxChanged;
     }
 
     /**
@@ -94,15 +82,10 @@ public class DArray implements DIntDoubleMap {
      * @param source the source value
      * @return the image value
      */
-//  public double getImage(int source){
-//    if(source<0 || source>=size) throw
-//      new ArrayIndexOutOfBoundsException(source);
-//    return value[source];
-//  }
     @Override
     public double getImage(int source) {
         if (source < 0) {
-            new ArrayIndexOutOfBoundsException(source);
+            throw new ArrayIndexOutOfBoundsException(source);
         }
         if (source >= size && size > 1) {
             return value[size - 1];
@@ -121,37 +104,37 @@ public class DArray implements DIntDoubleMap {
     @Override
     public boolean addImage(double image) {
         if (size >= value.length) {
-            int new_length = (int) (value.length * capacity_multiplier);
-            if (!(new_length > value.length)) {
-                new_length++;
+            int newLength = (int) (value.length * capacityMultiplier);
+            if (!(newLength > value.length)) {
+                newLength++;
             }
-            double[] new_val = new double[new_length];
+            double[] new_val = new double[newLength];
             System.arraycopy(value, 0, new_val, 0, value.length);
             value = new_val;
         }
-        boolean min_max_changed = false;
+        boolean minMaxChanged = false;
         if (size == 0) {
             min = image;
             max = image;
-            min_max_changed = true;
+            minMaxChanged = true;
             if (image > 0) {
                 minPositive = image;
             }
         } else {
             if ((image > 0) && ((image < minPositive) || (minPositive < 0))) {
                 minPositive = image;
-                min_max_changed = true;
+                minMaxChanged = true;
             }
             if (image > max) {
                 max = image;
-                min_max_changed = true;
+                minMaxChanged = true;
             } else if (image < min) {
                 min = image;
-                min_max_changed = true;
+                minMaxChanged = true;
             }
         }
         value[size++] = image;
-        return min_max_changed;
+        return minMaxChanged;
     }
 
     /**
@@ -200,7 +183,7 @@ public class DArray implements DIntDoubleMap {
     @Override
     public void reset() {
         size = 0;
-        value = new double[initial_capacity];
+        value = new double[initialCapacity];
     }
 
     /**
@@ -211,8 +194,7 @@ public class DArray implements DIntDoubleMap {
     @Override
     public double getMinImageValue() {
         if (size == 0) {
-            throw
-                    new IllegalArgumentException("DArray is empty. No minimal value exists");
+            throw new IllegalArgumentException("DArray is empty. No minimal value exists");
         }
         return min;
     }
@@ -225,8 +207,7 @@ public class DArray implements DIntDoubleMap {
     @Override
     public double getMinPositiveImageValue() {
         if (size == 0) {
-            throw
-                    new IllegalArgumentException("DArray is empty. No minimal value exists");
+            throw new IllegalArgumentException("DArray is empty. No minimal value exists");
         }
         return (minPositive < 0) ? max : minPositive;
     }
@@ -239,8 +220,7 @@ public class DArray implements DIntDoubleMap {
     @Override
     public double getMaxImageValue() {
         if (size == 0) {
-            throw
-                    new IllegalArgumentException("DArray is empty. No maximal value exists");
+            throw new IllegalArgumentException("DArray is empty. No maximal value exists");
         }
         return max;
     }

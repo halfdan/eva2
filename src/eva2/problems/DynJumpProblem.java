@@ -154,11 +154,6 @@ public class DynJumpProblem extends eva2.problems.AbstractDynTransProblem {
         return null;
     }
 
-    /**
-     * ***********************************************************************
-     * These are for the GUI
-     */
-
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         return "DynJumpProblem";

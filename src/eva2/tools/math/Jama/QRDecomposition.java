@@ -15,12 +15,7 @@ import eva2.tools.math.Jama.util.Maths;
  * of simultaneous linear equations.  This will fail if isFullRank()
  * returns false.
  */
-
 public class QRDecomposition implements java.io.Serializable {
-
-/* ------------------------
-   Class variables
- * ------------------------ */
 
     /**
      * Array for internal storage of decomposition.
@@ -44,17 +39,12 @@ public class QRDecomposition implements java.io.Serializable {
      */
     private double[] Rdiag;
 
-/* ------------------------
-   Constructor
- * ------------------------ */
-
     /**
      * QR Decomposition, computed by Householder reflections.
      *
      * @param A Rectangular matrix
      * @return Structure to access R and the Householder vectors and compute Q.
      */
-
     public QRDecomposition(Matrix A) {
         // Initialize.
         QR = A.getArrayCopy();
@@ -96,16 +86,11 @@ public class QRDecomposition implements java.io.Serializable {
         }
     }
 
-/* ------------------------
-   Public Methods
- * ------------------------ */
-
     /**
      * Is the matrix full rank?
      *
      * @return true if R, and hence A, has full rank.
      */
-
     public boolean isFullRank() {
         for (int j = 0; j < n; j++) {
             if (Rdiag[j] == 0) {
@@ -120,7 +105,6 @@ public class QRDecomposition implements java.io.Serializable {
      *
      * @return Lower trapezoidal matrix whose columns define the reflections
      */
-
     public Matrix getH() {
         Matrix X = new Matrix(m, n);
         double[][] H = X.getArray();
@@ -141,7 +125,6 @@ public class QRDecomposition implements java.io.Serializable {
      *
      * @return R
      */
-
     public Matrix getR() {
         Matrix X = new Matrix(n, n);
         double[][] R = X.getArray();
@@ -164,7 +147,6 @@ public class QRDecomposition implements java.io.Serializable {
      *
      * @return Q
      */
-
     public Matrix getQ() {
         Matrix X = new Matrix(m, n);
         double[][] Q = X.getArray();
@@ -197,7 +179,6 @@ public class QRDecomposition implements java.io.Serializable {
      * @throws IllegalArgumentException Matrix row dimensions must agree.
      * @throws RuntimeException         Matrix is rank deficient.
      */
-
     public Matrix solve(Matrix B) {
         if (B.getRowDimension() != m) {
             throw new IllegalArgumentException("Matrix row dimensions must agree.");

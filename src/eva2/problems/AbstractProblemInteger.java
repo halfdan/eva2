@@ -77,11 +77,6 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
      */
     public abstract double[] evaluate(int[] x);
 
-    /**
-     * *******************************************************************************************************************
-     * These are for GUI
-     */
-
     @Override
     public String getName() {
         return "AbstractProblemInteger";

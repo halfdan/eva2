@@ -1,26 +1,6 @@
-/**
- *  Filename: $RCSfile: DPoint.java,v $
- *  Purpose:
- *  Language: Java
- *  Compiler: JDK 1.3
- *  Authors:  Fabian Hennecke
- *  Version:  $Revision: 1.1.1.1 $
- *            $Date: 2003/07/03 14:59:42 $
- *            $Author: ulmerh $
- *  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
- */
-
 package eva2.tools.chart2d;
 
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-
 import java.awt.*;
-
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 
 public class DPoint extends DComponent {
     public double x, y;
@@ -105,7 +85,3 @@ public class DPoint extends DComponent {
         return text;
     }
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

@@ -21,8 +21,6 @@ import java.util.concurrent.Semaphore;
  * Adding sleep time reduces CPU load a lot but reduces efficiency badly at the same time, probably because
  * there's so much going on. For cases where the evaluation function is very time-consuming, adding sleep time
  * might be an option.
- *
- * @author mkron
  */
 public class MatlabEvalMediator {
     volatile Boolean requesting = false;
@@ -71,13 +69,7 @@ public class MatlabEvalMediator {
     double[] requestEval(MatlabProblem mp, Object x) {
         this.mp = mp;
         question = x;
-//		System.err.println("IN REQUESTEVAL, x is " + BeanInspector.toString(x));
         if (question.getClass().isArray()) {
-//			System.err.println("array of type ** " + Array.get(question, 0).getClass().toString());
-//		} else if (question instanceof BitSet){
-//			BitSet b = (BitSet)x;
-//			Integer.decode()
-//			
             if (question == null) {
                 System.err.println("Error: requesting evaluation for null array!");
             }
@@ -86,35 +78,15 @@ public class MatlabEvalMediator {
                 System.err.println("Error, requesting evaluation for invalid data type! " + question.getClass());
             }
         }
-//		logMPAndSysOut("Synch requesting A requestEval " + getState());
         synchronized (requesting) { //MdP
-//			logMPAndSysOut(" in synch requesting A requestEval " + getState());
             if (requesting) {
                 String msg = "Warning: already in requesting state when request arrived!";
                 System.err.println(msg);
                 logMP(msg);
             }
             requesting = true;
-//			logMPAndSysOut("-- Requesting evaluate for " + BeanInspector.toString(x) + ", req state is " + requesting + "\n");
         }
 
-
-//		logMPAndSysOut("Synch requesting A done " + getState());
-        /*int k=0; int mod=25;
-        while (requesting && !quit) {
-			// 	wait for matlab to answer the question
-			if (sleepTime > 0) try { Thread.sleep(sleepTime); } catch(Exception e) {
-				System.err.println("Exception in sleep (MatlabEvalMediator)");
-			};
-			k++;
-			if ((k%mod)==0) {
-//				System.out.println("waiting for matlab to answer...");
-				logMP("waiting for matlab to answer... (" + mod + ") " + getState() + "\n");
-				mod*=2;
-				if (mod <=0) mod=Integer.MAX_VALUE;
-				
-			}
-		}*/
         try {
             requests.acquire();
         } catch (InterruptedException e) {
@@ -123,7 +95,6 @@ public class MatlabEvalMediator {
         }
         logMP("-- Requesting done\n");
         // matlab is finished, answer is here
-        //return null;
         return getAnswer(); // return to JE with answer
     }
 

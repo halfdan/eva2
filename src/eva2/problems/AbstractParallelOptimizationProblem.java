@@ -8,8 +8,7 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
     private boolean parallelize = false;
 
     @Override
-    public void initializeProblem() {
-    }
+    public void initializeProblem() { }
 
     /**
      * This method returns a global info string

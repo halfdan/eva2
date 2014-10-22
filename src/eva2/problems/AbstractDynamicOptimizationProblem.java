@@ -52,11 +52,9 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      * A constructor.
      */
     public AbstractDynamicOptimizationProblem() {
-        //System.out.println("AbstractDynamicOptimizationProblem()");
         bExtraPlot = false;
         myplot = null;
         idealInd = null;
-//		initialize(0, 1., 0.1);
     }
 
     /**
@@ -103,7 +101,6 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      */
     @Override
     public void initializePopulation(Population population) {
-        //initializeProblem();	// this shouldnt be necessary
         this.initPopulationAt(population, getCurrentProblemTime());
     }
 
@@ -225,7 +222,6 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      */
     public abstract AbstractEAIndividual getCurrentOptimum();
 
-    /******************** The most important methods ****************************************/
 
     /**
      * This method evaluates a single individual and sets the fitness value at default time stamp 0.
@@ -279,9 +275,6 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
         evaluateAt(individual, getCurrentProblemTime());
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * Override population evaluation to do some data output.
      *
@@ -289,26 +282,10 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      */
     @Override
     public void evaluatePopulationEnd(Population population) {
-        //System.out.println(">> mean distance at " + population.getFunctionCalls() + " / " + getProblemTime() + " is " + population.getMeanDistance());
-        //System.out.println("> current best is " + population.getBestFitness()[0]);
-        //double[] meanMinMax = population.getPopulationMeasures();
-
-        //myplot.setConnectedPoint(population.getFunctionCalls(), population.getPopulationMeasures()[0], 0);
-
         AbstractEAIndividual popBest = (AbstractEAIndividual) (population.getBestIndividual());
         if (idealInd == null) {
             idealInd = (AbstractEAIndividual) popBest.clone();
         }
-
-//		getCurrentOptimum((InterfaceDataTypeDouble)idealInd);
-
-//		double d = new PhenotypeMetric().distance(popBest, idealInd);
-//		double d = distanceBetween(popBest, idealInd);
-
-        //System.out.println("tracking dist is " + d);
-
-        //if (myplot!=null) myplot.setConnectedPoint(population.getFunctionCalls(), d, 0);
-        //myplot.setUnconnectedPoint(population.getFunctionCalls(), population.getPopulationMeasures()[2], 2);
     }
 
     protected void setExtraPlot(boolean doPlot) {

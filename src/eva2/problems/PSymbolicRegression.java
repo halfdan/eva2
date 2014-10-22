@@ -150,7 +150,10 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     /**
      * This method inits a given population
      *
-     * @param population The populations that is to be inited
+     * @param pop The populations that is to be inited
+     * @param prob
+     * @param useInnerConsts
+     * @param numConsts
      */
     public static void initPopulation(Population pop, InterfaceProgramProblem prob, boolean useInnerConsts, int numConsts) {
         AbstractEAIndividual template;
@@ -240,8 +243,8 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 
         for (int j = 0; j < this.numberOfCheckPoints; j++) {
             setCheckPoint(x, j);
-            tmpValue = ((Double) program.evaluate(this)).doubleValue();
-            fitness += Math.pow((this.targetFunction.evaluateFunction(this.x) - ((Double) program.evaluate(this)).doubleValue()), 2);
+            tmpValue = (Double) program.evaluate(this);
+            fitness += Math.pow((this.targetFunction.evaluateFunction(this.x) - (Double) program.evaluate(this)), 2);
         }
 
         fitness /= (double) this.numberOfCheckPoints;
@@ -262,7 +265,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
                 program = ((InterfaceDataTypeProgram) this.overallBestIndividuum).getProgramData()[0];
                 for (int i = 0; i < this.numberOfCheckPoints; i++) {
                     setCheckPoint(x, i);
-                    tmpValue = ((Double) program.evaluate(this)).doubleValue();
+                    tmpValue = (Double) program.evaluate(this);
                     this.plot.setConnectedPoint(this.x[0], tmpValue, 0);
                     tmpValue = this.targetFunction.evaluateFunction(this.x);
                     this.plot.setConnectedPoint(this.x[0], tmpValue, 1);
@@ -309,9 +312,6 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
     @Override
     public Object getSensorValue(String sensor) {
         return PSymbolicRegression.getSensorValue(sensor, x, constants);
-//        for (int i = 0; i < this.x.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.x[i]);
-//        for (int i = 0; i < this.c.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.c[i]);
-//        return new Double(0);
     }
 
     /**
@@ -333,22 +333,19 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
                     return vars;
                 }
                 int index = Integer.parseInt(sensor.substring(1));
-                return new Double(vars[index]);
+                return vars[index];
             } catch (Exception e) {
                 System.err.println("Warning, unable to access " + sensor);
                 return vars;
             }
         } else if (sensor.charAt(0) == 'C') {
             int index = Integer.parseInt(sensor.substring(1));
-            return new Double(consts[index]);
+            return consts[index];
         } else if (sensor.charAt(0) == 'N') {
             return (double) vars.length;
         } else {
-            return new Double(0);
+            return (double) 0;
         }
-//        for (int i = 0; i < this.x.length; i++) if (sensor.equalsIgnoreCase("X"+i)) return new Double(this.x[i]);
-//        for (int i = 0; i < this.c.length; i++) if (sensor.equalsIgnoreCase("C"+i)) return new Double(this.c[i]);
-//        return new Double(0);
     }
 
     /**
@@ -362,9 +359,6 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         // no actuators in this problem
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -702,10 +696,4 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         System.out.println("Evaluated individual: " + indy);
         return indy.getFitness();
     }
-
-//	public static void main(String[] args) {
-//		String bestStudentSol = "-(abs(abs(-(-(X0, -(-(X0, X0), X0)), sin(abs(-(-(X0, X0), X0)))))), -(-(sin(-(abs(X0), -(-(-(X0, X0), X0), abs(abs(X0))))), -(-(abs(abs(abs(X0))), -(-(-(X0, X0), X0), abs(-(X0,X0)))), sin(-(abs(X0), sin(sin(X0)))))), X0))";
-////    	String bestStudentSol = "-(abs(-(sqrt(-(-(abs(1.0), X0), X0)), -(sqrt(-(sqrt(1.0), sqrt(pi))), X0))),-(-(sin(sqrt(-(-(sqrt(1.0), X0), pi))), abs(X0)), -(sqrt(pi), -(sqrt(sqrt(-(abs(1.0), X0))),X0))))";
-//		evalNodeString(bestStudentSol);
-//	}
 }

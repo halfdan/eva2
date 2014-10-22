@@ -11,8 +11,6 @@ import java.util.BitSet;
 
 /**
  * An abstract problem based on binary data.
- *
- * @author mkron
  */
 public abstract class AbstractProblemBinary extends AbstractOptimizationProblem {
 
@@ -63,16 +61,6 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
      */
     public abstract int getProblemDimension();
 
-//	/**
-//	 * Initialize a single individual with index k in the
-//	 * initializePopulation cycle.
-//	 * @param k
-//	 * @param indy
-//	 */
-//    protected void initIndy(int k, AbstractEAIndividual indy) {
-//    	indy.initialize(this);
-//    }
-
     @Override
     public void initializePopulation(Population population) {
         ((InterfaceDataTypeBinary) this.template).setBinaryDataLength(this.getProblemDimension());
@@ -84,9 +72,6 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
         initTemplate();
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -123,4 +108,3 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
         return sb.toString();
     }
 }
-
