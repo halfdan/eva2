@@ -64,10 +64,6 @@ public class EigenvalueDecomposition implements java.io.Serializable {
      */
     private double[] ort;
 
-/* ------------------------
-   Private Methods
- * ------------------------ */
-
     // Symmetric Householder reduction to tridiagonal form.
 
     private void tred2() {
@@ -855,21 +851,16 @@ public class EigenvalueDecomposition implements java.io.Serializable {
         }
     }
 
-
-/* ------------------------
-   Constructor
- * ------------------------ */
-
     /**
      * Check for symmetry, then construct the eigenvalue decomposition
      *
-     * @param A Square matrix
+     * @param arg A Square matrix
      * @return Structure to access D and V.
      */
 
-    public EigenvalueDecomposition(Matrix Arg) {
-        double[][] A = Arg.getArray();
-        n = Arg.getColumnDimension();
+    public EigenvalueDecomposition(Matrix matrix) {
+        double[][] A = matrix.getArray();
+        n = matrix.getColumnDimension();
         V = new double[n][n];
         d = new double[n];
         e = new double[n];
@@ -909,10 +900,6 @@ public class EigenvalueDecomposition implements java.io.Serializable {
             hqr2();
         }
     }
-
-/* ------------------------
-   Public Methods
- * ------------------------ */
 
     /**
      * Return the eigenvector matrix

@@ -347,7 +347,6 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         result.append(this.punish);
         result.append("\n");
         result.append("Solution representation:\n");
-        //result += this.template.getSolutionRepresentationFor();
         return result.toString();
     }
 

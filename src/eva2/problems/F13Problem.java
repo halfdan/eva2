@@ -69,7 +69,6 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
             result[0] -= xi * Math.sin(Math.sqrt(Math.abs(xi)));
         }
         result[0] += (418.9829 * problemDimension);
-        // res = cn-sum_i(xi*sin(sqrt(abs(xi))))
         return result;
     }
 
@@ -86,19 +85,16 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
         result += "Dimension   : " + this.problemDimension + "\n";
         result += "Noise level : " + this.getNoise() + "\n";
         result += "Solution representation:\n";
-        //result += this.template.getSolutionRepresentationFor();
         return result;
     }
 
     @Override
     public SolutionHistogram getHistogram() {
-//		EVAERROR.errorMsgOnce("Warning: Restore line in getHistogram for evaluation on F13Problem ???");
         if (getProblemDimension() < 15) {
             return new SolutionHistogram(0, 800, 16);
         } else if (getProblemDimension() < 25) {
             return new SolutionHistogram(0, 1600, 16);
         }
-//		else if (getProblemDimension() < 35) return new SolutionHistogram(0, 1600, 16);
         else {
             return new SolutionHistogram(0, 3200, 12);
         }
@@ -117,6 +113,6 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
 
     @Override
     public void setDefaultAccuracy(double v) {
-        super.SetDefaultAccuracy(v);
+        super.setDefaultAccuracy(v);
     }
 }

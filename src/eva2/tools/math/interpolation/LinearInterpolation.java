@@ -15,12 +15,6 @@
 
 package eva2.tools.math.interpolation;
 
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-
-//import cern.jet.stat.*;
-
 /**
  * Defines the routines for the spline interpolation of data.
  */

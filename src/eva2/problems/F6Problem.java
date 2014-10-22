@@ -137,7 +137,7 @@ public class F6Problem extends AbstractProblemDoubleOffset
 
     @Override
     public void setDefaultAccuracy(double acc) {
-        super.SetDefaultAccuracy(acc);
+        super.setDefaultAccuracy(acc);
     }
 
     @Override

@@ -1,26 +1,6 @@
-/**
- *  Filename: $RCSfile: DComponent.java,v $
- *  Purpose:
- *  Language: Java
- *  Compiler: JDK 1.3
- *  Authors:  Fabian Hennecke
- *  Version:  $Revision: 1.1.1.1 $
- *            $Date: 2003/07/03 14:59:41 $
- *            $Author: ulmerh $
- *  Copyright (c) Dept. Computer Architecture, University of Tuebingen, Germany
- */
-
 package eva2.tools.chart2d;
 
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
-
 import java.awt.*;
-
-/*==========================================================================*
- * CLASS DECLARATION
- *==========================================================================*/
 
 /**
  * <code>DComponent</code> is the mother of all objects which can be displayed
@@ -133,7 +113,6 @@ public abstract class DComponent implements DElement {
      */
     @Override
     public void repaint() {
-        //System.out.println("DComponent.repaint()");
         if (parent != null) {
             parent.repaint(getRectangle());
         }
@@ -180,7 +159,3 @@ public abstract class DComponent implements DElement {
     }
 
 }
-
-/****************************************************************************
- * END OF FILE
- ****************************************************************************/

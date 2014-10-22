@@ -13,10 +13,6 @@ package eva2.tools.math.Jama;
 
 public class CholeskyDecomposition implements java.io.Serializable {
 
-/* ------------------------
-   Class variables
- * ------------------------ */
-
     /**
      * Array for internal storage of decomposition.
      *
@@ -37,10 +33,6 @@ public class CholeskyDecomposition implements java.io.Serializable {
      * @serial is symmetric and positive definite flag.
      */
     private boolean isspd;
-
-/* ------------------------
-   Constructor
- * ------------------------ */
 
     /**
      * Cholesky algorithm for symmetric and positive definite matrix.

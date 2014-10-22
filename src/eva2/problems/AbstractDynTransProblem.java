@@ -61,7 +61,6 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
         double delta = transLength(getCurrentProblemTime());
         if (isExtraPlot()) {
             if (myplot != null) {
-                //	myplot.addGraph(0, 1);
                 myplot.jump();
             } else {
                 double[] tmpD = new double[2];
@@ -71,7 +70,6 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
                 this.myplot = new Plot("population measures", "x1", "x2", tmpD, tmpD);
             }
             myplot.setConnectedPoint(population.getFunctionCalls(), delta, 0);
-            //myplot.setUnconnectedPoint(population.getFunctionCalls(), population.getPopulationMeasures()[2], 2);
         } else {
             myplot = null;
         }
@@ -142,10 +140,6 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
         return problemDimension;
     }
 
-    /**
-     * ***************************************************************************
-     * These are for the GUI
-     */
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         return "DynTransProblem";
