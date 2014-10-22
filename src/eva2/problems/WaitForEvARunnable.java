@@ -37,7 +37,7 @@ class WaitForEvARunnable implements Runnable {
             try {
                 mp.log("runnable.getDoubleSolution: " + BeanInspector.toString(runnable.getDoubleSolution()) + "\n");
                 mp.log("runnable.getIntegerSolution: " + BeanInspector.toString(runnable.getIntegerSolution()) + "\n");
-                mp.log("getAllSols best: " + AbstractEAIndividual.getDefaultDataString(runnable.getGOParams().getOptimizer().getAllSolutions().getSolutions().getBestEAIndividual()) + "\n");
+                mp.log("getAllSols best: " + AbstractEAIndividual.getDefaultDataString(runnable.getOptimizationParameters().getOptimizer().getAllSolutions().getSolutions().getBestEAIndividual()) + "\n");
                 mp.log("\n");
                 // write results back to matlab
                 mp.exportResultToMatlab(runnable);

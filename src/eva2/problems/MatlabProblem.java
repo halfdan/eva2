@@ -366,7 +366,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
             runnable.setOutputFullStatsToText(outputAllStatsField);
 
             if (seedPopulation != null) {
-                runnable.getGOParams().getOptimizer().setPopulation(seedPopulation);
+                runnable.getOptimizationParameters().getOptimizer().setPopulation(seedPopulation);
                 runnable.setDoRestart(true);
                 log("Setting seed population of size " + seedPopulation.size() + ", target size " + seedPopulation.getTargetSize() + "\n");
                 log(BeanInspector.toString(seedPopulation.getStringRepresentation()) + "\n");
@@ -378,7 +378,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
                     System.err.println("mismatching value list for parameter arguments: " + specValues);
                 } else {
                     log("setting specific parameters...\n");
-                    InterfaceOptimizer opt = runnable.getGOParams().getOptimizer();
+                    InterfaceOptimizer opt = runnable.getOptimizationParameters().getOptimizer();
                     for (int i = 0; i < specParams.length; i++) { // loop over settings
                         log("try setting " + specParams[i] + " to " + specValues[i]);
                         String paramName = null;
@@ -481,7 +481,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         if (runnable == null) {
             return 0;
         }
-        return runnable.getGOParams().getOptimizer().getPopulation().getFunctionCalls();
+        return runnable.getOptimizationParameters().getOptimizer().getPopulation().getFunctionCalls();
     }
 
     void exportResultPopulationToMatlab(Population pop) {

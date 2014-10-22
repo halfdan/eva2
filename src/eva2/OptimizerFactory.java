@@ -627,9 +627,9 @@ public class OptimizerFactory {
         if (params != null) {
             opt = new OptimizerRunnable(params, outputFilePrefix);
             if (terminator != null) {
-                opt.getGOParams().setTerminator(terminator);
+                opt.getOptimizationParameters().setTerminator(terminator);
             } else {
-                opt.getGOParams().setTerminator(getTerminator());
+                opt.getOptimizationParameters().setTerminator(getTerminator());
             }
         }
         return opt;

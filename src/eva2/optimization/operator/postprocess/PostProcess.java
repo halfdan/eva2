@@ -813,11 +813,11 @@ public class PostProcess {
      * Just execute the runnable.
      */
     private static void runPP(OptimizerRunnable rnbl) {
-        rnbl.getGOParams().setDoPostProcessing(false);
+        rnbl.getOptimizationParameters().setDoPostProcessing(false);
         rnbl.setVerbosityLevel(StatisticsParameter.VERBOSITY_NONE);
         ppRunnables.add(rnbl);
         rnbl.run();
-        rnbl.getGOParams().setDoPostProcessing(true);
+        rnbl.getOptimizationParameters().setDoPostProcessing(true);
         ppRunnables.remove(rnbl);
     }
 
@@ -901,7 +901,7 @@ public class PostProcess {
         InterfaceMultimodalProblemKnown mmp = (InterfaceMultimodalProblemKnown) problem;
         OptimizerRunnable runnable = OptimizerFactory.getOptRunnable(OptimizerFactory.STD_GA, problem, 100, null);
         runnable.run();
-        Population pop = runnable.getGOParams().getOptimizer().getPopulation();
+        Population pop = runnable.getOptimizationParameters().getOptimizer().getPopulation();
         Population found = getFoundOptima(pop, mmp.getRealOptima(), 0.05, true);
         System.out.println("all found (" + found.size() + "): " + BeanInspector.toString(found));
 

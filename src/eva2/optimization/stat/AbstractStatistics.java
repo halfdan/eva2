@@ -253,7 +253,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     public void startOptimizationPerformed(String infoString, int runNumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
 
         if (runNumber == 0) {
-            // store the intial graph selection state, so that modifications during runtime cannot cause inconsistencies
+            // store the initial graph selection state, so that modifications during runtime cannot cause inconsistencies
             lastFieldSelection = (StringSelection) statisticsParameter.getFieldSelection().clone();
             lastIsShowFull = statisticsParameter.isOutputAllFieldsAsText();
 
@@ -305,20 +305,19 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if (printRunIntroVerbosity()) {
             printToTextListener("\n****** Multirun " + runNumber);
         }
+        /*
+        ToDo: Figure out if we need this. Right now it is just spamming the text output
         if (params != null) {
             if (printRunIntroVerbosity()) {
-                printToTextListener("\nModule parameters: ");
-            }
-            if (printRunIntroVerbosity()) {
+                printToTextListener("\nOptimization parameters: ");
                 printToTextListener(BeanInspector.niceToString(params));
             }
         }
         if (printRunIntroVerbosity()) {
             printToTextListener("\nStatistics parameters: ");
-        }
-        if (printRunIntroVerbosity()) {
             printToTextListener(BeanInspector.niceToString(getStatisticsParameter()) + '\n');
         }
+        */
         functionCalls = 0;
         fireDataListenersStartStop(runNumber, true, true);
     }
@@ -326,7 +325,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     @Override
     public void stopOptimizationPerformed(boolean normal, String stopMessage) {
         if (lastSols == null) {
-            System.err.println("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptimizationPerformed (AnstractStatistics).");
+            System.err.println("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptimizationPerformed (AbstractStatistics).");
         }
 
         if (iterationCounter < sumDataCollection.size()) {
