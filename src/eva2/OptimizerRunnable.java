@@ -42,7 +42,7 @@ public class OptimizerRunnable implements Runnable {
      * @param params
      * @param outputFilePrefix
      */
-    public OptimizerRunnable(OptimizationParameters params, String outputFilePrefix) {
+    public OptimizerRunnable(InterfaceOptimizationParameters params, String outputFilePrefix) {
         this(params, outputFilePrefix, false);
     }
 
@@ -53,7 +53,7 @@ public class OptimizerRunnable implements Runnable {
      * @param params
      * @param restart
      */
-    public OptimizerRunnable(OptimizationParameters params, boolean restart) {
+    public OptimizerRunnable(InterfaceOptimizationParameters params, boolean restart) {
         this(params, new StatisticsDummy(), restart);
     }
 
@@ -66,7 +66,7 @@ public class OptimizerRunnable implements Runnable {
      * @param outputFilePrefix
      * @param restart
      */
-    public OptimizerRunnable(OptimizationParameters params, String outputFilePrefix, boolean restart) {
+    public OptimizerRunnable(InterfaceOptimizationParameters params, String outputFilePrefix, boolean restart) {
         this(params, new StatisticsStandalone(outputFilePrefix), restart);
     }
 
@@ -75,10 +75,10 @@ public class OptimizerRunnable implements Runnable {
      * If restart is true, the processor will not reinitialize the population allowing search on predefined populations.
      *
      * @param params
-     * @param outputFilePrefix
+     * @param stats
      * @param restart
      */
-    public OptimizerRunnable(OptimizationParameters params, InterfaceStatistics stats, boolean restart) {
+    public OptimizerRunnable(InterfaceOptimizationParameters params, InterfaceStatistics stats, boolean restart) {
         rnblID = cntID;
         cntID++;
 
@@ -106,7 +106,7 @@ public class OptimizerRunnable implements Runnable {
         return rnblID;
     }
 
-    public InterfaceOptimizationParameters getGOParams() {
+    public InterfaceOptimizationParameters getOptimizationParameters() {
         return proc.getOptimizationParameters();
     }
 
@@ -114,7 +114,7 @@ public class OptimizerRunnable implements Runnable {
         return proc.getStatistics();
     }
 
-    public void setStats(InterfaceStatistics stats) {
+    public void setStatistics(InterfaceStatistics stats) {
         if (proc.isOptimizationRunning()) {
             throw new RuntimeException("Error - cannot change statistics instance during optimization.");
         }
