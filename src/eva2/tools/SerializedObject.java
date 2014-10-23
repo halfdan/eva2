@@ -26,7 +26,6 @@ public class SerializedObject implements Serializable {
      *
      * @param obj the Object to serialize.
      * @throws IOException
-     * @throws Exception   if the object is not Serializable.
      */
     public SerializedObject(Object obj) throws IOException {
         this(obj, false);
@@ -38,7 +37,6 @@ public class SerializedObject implements Serializable {
      * @param obj      the Object to serialize.
      * @param compress true if the object should be stored compressed.
      * @throws IOException
-     * @throws Exception   if the object is not Serializable.
      */
     public SerializedObject(Object obj, boolean compress) throws IOException {
         isCompressed = compress;
@@ -51,8 +49,7 @@ public class SerializedObject implements Serializable {
      * @param obj      the Object to serialize
      * @param compress true if the object should be compressed.
      * @return the byte array containing the serialized object.
-     * @throws IOException
-     * @throws Exception   if the object is not Serializable.
+     * @throws IOException   if the object is not Serializable.
      */
     protected static byte[] toByteArray(Object obj, boolean compress) throws IOException {
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
@@ -86,10 +83,6 @@ public class SerializedObject implements Serializable {
         Object result = oi.readObject();
         oi.close();
         return result;
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		}
-//		return null;
     }
 
     /**

@@ -52,17 +52,16 @@ public class GenericStatistics implements Serializable {
             states = new boolean[fields.length];
             for (int i = 0; i < fields.length; i++) {
                 String desc = fields[i].toString(); //System.out.println("desc "+desc);
-                int istransient = desc.indexOf("transient");
+                int isTransient = desc.indexOf("transient");
                 Object FieldValue = null;
-                if (istransient == -1 || fields[i].getName().equals("elementData")) {  // the elementdatahack
+                if (isTransient == -1 || fields[i].getName().equals("elementData")) {  // the elementdatahack
                     fields[i].setAccessible(true);
                     FieldValue = fields[i].get(target);
                 }
                 propertyNames[i] = fields[i].getName();
             }
         } catch (Exception ex) {
-            System.out.println("ERROR in GenericStatistics:" + ex.getMessage());
-            ex.printStackTrace();
+            LOGGER.severe("GenericStatistics:" + ex.getMessage());
         }
     }
 
@@ -98,7 +97,6 @@ public class GenericStatistics implements Serializable {
      *
      */
     public void setState(boolean[] x) {
-        System.out.println("in statistics setState !!!!!!!!!!!!!!!!!!");
         states = x;
     }
 
@@ -149,8 +147,7 @@ public class GenericStatistics implements Serializable {
         try {
             fields = getDeclaredFields(target);
         } catch (Exception ex) {
-            System.out.println("ERROR in GenericStatistics:" + ex.getMessage());
-            ex.printStackTrace();
+            LOGGER.severe("ERROR in GenericStatistics:" + ex.getMessage());
         }
         int index = 0;
         for (int i = 0; i < fields.length; i++) {
@@ -159,11 +156,11 @@ public class GenericStatistics implements Serializable {
                     continue;
                 }
                 if (fields[i].getName().equals(propertyNames[n])) {
-                    String desc = fields[i].toString(); //System.out.println("desc "+desc);
-                    int istransient = desc.indexOf("transient");
+                    String desc = fields[i].toString();
+                    int isTransient = desc.indexOf("transient");
 
                     Object fieldValue = null;
-                    if (istransient == -1 || fields[i].getName().equals("elementData")) {  // the elementdatahack
+                    if (isTransient == -1 || fields[i].getName().equals("elementData")) {  // the elementdatahack
                         fields[i].setAccessible(true);
                         try {
                             fieldValue = fields[i].get(target);
@@ -175,8 +172,7 @@ public class GenericStatistics implements Serializable {
                             }
                             index++;
                         } catch (Exception ex) {
-                            System.out.println("ERROR in GenericStatistics:" + ex.getMessage());
-                            ex.printStackTrace();
+                            LOGGER.severe("ERROR in GenericStatistics:" + ex.getMessage());
                         }
                     }
                     break;

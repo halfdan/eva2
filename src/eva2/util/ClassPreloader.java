@@ -1,4 +1,4 @@
-package eva2.client;
+package eva2.util;
 
 import eva2.gui.editor.GenericObjectEditor;
 
@@ -6,8 +6,6 @@ import eva2.gui.editor.GenericObjectEditor;
  * This Runnable just requests a number of classes as does the
  * GenericObjectEditor so that they are loaded into the system cache. It can be
  * done at startup time and accelerates later reloading.
- *
- * @author mkron
  */
 public class ClassPreloader implements Runnable {
 

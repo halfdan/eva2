@@ -56,7 +56,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
             population.incrFunctionCalls();
             semaphore.release();
         }
-
     }
 
     /**
@@ -68,7 +67,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     public static final String OLD_FITNESS_KEY = "oldFitness";
 
-    private int parallelthreads = 1;
+    private int parallelThreads = 1;
 
     protected AbstractEAIndividual template = null;
 
@@ -83,11 +82,11 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     public abstract Object clone();
 
     public int getParallelThreads() {
-        return parallelthreads;
+        return parallelThreads;
     }
 
-    public void setParallelThreads(int parallelthreads) {
-        this.parallelthreads = parallelthreads;
+    public void setParallelThreads(int parallelThreads) {
+        this.parallelThreads = parallelThreads;
     }
 
     public String parallelThreadsTipText() {
@@ -120,10 +119,10 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         AbstractEAIndividual tmpIndy;
         evaluatePopulationStart(population);
 
-        if (this.parallelthreads > 1) {
+        if (this.parallelThreads > 1) {
             Vector<AbstractEAIndividual> queue = new Vector<>(population.size());
             Semaphore sema = new Semaphore(0);
-            ExecutorService pool = Executors.newFixedThreadPool(parallelthreads);
+            ExecutorService pool = Executors.newFixedThreadPool(parallelThreads);
             int cntIndies = 0;
             for (; cntIndies < population.size(); cntIndies++) {
                 AbstractEAIndividual tmpindy = (AbstractEAIndividual) population.get(cntIndies);
@@ -160,17 +159,14 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      *
      * @param population
      */
-
-    public void evaluatePopulationStart(Population population) {
-    }
+    public void evaluatePopulationStart(Population population) {}
 
     /**
      * Empty thunk for implementation in subclasses. This is called after a population was evaluated.
      *
      * @param population
      */
-    public void evaluatePopulationEnd(Population population) {
-    }
+    public void evaluatePopulationEnd(Population population) {}
 
     /**
      * This method evaluate a single individual and sets the fitness values
@@ -224,7 +220,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     @Override
     public Double getDoublePlotValue(Population pop) {
-        return new Double(pop.getBestEAIndividual().getFitness(0));
+        return pop.getBestEAIndividual().getFitness(0);
     }
 
     /**

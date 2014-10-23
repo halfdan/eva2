@@ -3,9 +3,12 @@ package eva2.tools.math.Jama.util;
 public class Maths {
 
     /**
-     * sqrt(a^2 + b^2) without under/overflow. *
+     * sqrt(a^2 + b^2) without under/overflow.
+     *
+     * @param a
+     * @param b
+     * @return
      */
-
     public static double hypot(double a, double b) {
         double r;
         double aa = Math.abs(a);

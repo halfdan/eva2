@@ -424,7 +424,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
     /**
      * The returned array may contain null entries (for indies scheduled for reinitialization).
      *
-     * @param pop
      * @return an array of references sorted according to the particle indices
      *         (i.e. returnedArray[i] = individual with individualIndex i)
      */
@@ -569,11 +568,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         useAsMainSwarm(newMainPop);
     }
 
-/**********************************************************************************************************************
- * Optimization
- */
     /**
-     * @tested (non-Javadoc) @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#optimize()
      */
     @Override
     public void optimize() {
@@ -674,7 +669,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
  */
     /**
      * @param size
-     * @tested ps
      * sets the !initial! size of the mainswarm population
      * use this instead of getPopulation.setPopulationSize()
      */
@@ -709,7 +703,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 
     /**
      * @return a population consisting of copies from the mainswarm and all subswarms.
-     * @tested junit
      * returns a population consisting of copies from the mainswarm and all subswarms
      * (active and inactive, so the size of this Population is not necessarily constant).
      * Especially important for the call back regarding the output file...
@@ -748,7 +741,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 
     /**
      * @return array with copies of the gbest individuals
-     * @tested junit
      * returns the cloned global best individuals (ie best of all time) from every subswarm
      */
     public Population getSubswarmRepresentatives() {
@@ -769,7 +761,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 
     /**
      * @return descriptive string of the elite
-     * @tested emp
      * returns a string that lists the global best individuals (ie best of all time) from every subswarm
      */
     public String getSubswarmRepresentativesAsString() {
@@ -782,7 +773,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
     }
 
     /**
-     * @tested plots all subswarms as connected lines to their respective best individual
      */
     @Override
     protected void plotSubSwarms() {
@@ -845,7 +835,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      * @return inactive particles with given index
      *         (may return more than one particle for a given index because indizes are reused during deactivation
      *         and the reinitialized particle may be deactivated again...)
-     * @tested method not used any more
      */
     public Vector<AbstractEAIndividual> getInactiveIndiesByParticleIndex(Integer index) {
         Vector<AbstractEAIndividual> indies = null;
@@ -862,7 +851,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 
     /**
      * @return The name of the algorithm
-     * @tested nn
      * This method will return a naming String
      */
     @Override
@@ -1030,22 +1018,6 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         representatives.synchSize();
         return representatives;
     }
-
-/*
-    public String[] getAdditionalDataHeader(PopulationInterface pop) {
-		return new String[]{"mainSwarmSize","numActSpec","numArchived", "archivedMedCorr"};
-	}
-
-	public Object[] getAdditionalDataValue(PopulationInterface pop) {
-		int actSwarms = countActiveSubswarms();
-		double medCor = (getSubswarmRepresentatives(true)).getCorrelations()[3]; // median correlation of best indies of inactive subswarms
-		return new Object[]{getMainSwarm().getPopulation().size(),
-				actSwarms,
-				(getSubSwarms().size()-actSwarms),
-				medCor};
-	}
-
-*/
 
     /**
      * Return the median correlation of the best individuals of the given set of swarms.

@@ -7,8 +7,6 @@ import java.util.List;
 
 /**
  * Collection of miscellaneous static helper methods.
- *
- * @author mkron
  */
 public final class ToolBox {
     /**
@@ -20,28 +18,29 @@ public final class ToolBox {
     /**
      * Convert all items of an enum to a String array and append the given String array at the end.
      *
-     * @param additionals
+     * @param e The enum to convert
+     * @param additionalValues Additional string values
      * @return
      */
-    public static String[] appendEnumAndArray(Enum<?> e, String[] additionals) {
+    public static String[] appendEnumAndArray(Enum<?> e, String[] additionalValues) {
         Enum<?>[] fields = e.getClass().getEnumConstants();
         int enumLen = fields.length; //values().length;
-        int len = enumLen + additionals.length;
+        int len = enumLen + additionalValues.length;
         String[] ret = new String[len];
         for (int i = 0; i < enumLen; i++) {
             ret[i] = fields[i].toString();
         }
 
-        System.arraycopy(additionals, enumLen - enumLen, ret, enumLen, ret.length - enumLen);
+        System.arraycopy(additionalValues, enumLen - enumLen, ret, enumLen, ret.length - enumLen);
         return ret;
     }
 
     /**
      * Append two String arrays. If both are null, null is returned.
      *
-     * @param strArr1
-     * @param strArr2
-     * @return
+     * @param strArr1 First array
+     * @param strArr2 Second array
+     * @return A single array containing the merged set of values
      */
     public static String[] appendArrays(String[] strArr1, String[] strArr2) {
         if (strArr1 == null) {
@@ -82,16 +81,15 @@ public final class ToolBox {
      * converted double arrays whenever this is directly possible, or null otherwise.
      * The length of the array will correspond to the length of the given list.
      *
-     * @param l
-     * @return
-     * @see BeanInspector.toString(Object)
+     * @param l A list of Objects
+     * @return A double array containing the converted object values
      */
     public static Double[] parseDoubles(List<Object> l) {
-        ArrayList<Double> vals = new ArrayList<>();
+        ArrayList<Double> values = new ArrayList<>();
         for (Object o : l) {
-            vals.add(toDouble(o)); // null if unsuccessfull
+            values.add(toDouble(o)); // null if unsuccessful
         }
-        return vals.toArray(new Double[vals.size()]);
+        return values.toArray(new Double[values.size()]);
     }
 
     /**
@@ -107,8 +105,7 @@ public final class ToolBox {
             return ((Number) o).doubleValue();
         } else {
             try {
-                Double d = Double.parseDouble(BeanInspector.toString(o));
-                return d;
+                return Double.parseDouble(BeanInspector.toString(o));
             } catch (Exception e) {
                 // Here be dragons!
             }
@@ -120,9 +117,8 @@ public final class ToolBox {
      * For an array of objects, generate an array of Double which contains the
      * converted double arrays whenever this is directly possible, or null otherwise.
      *
-     * @param l
-     * @return
-     * @see BeanInspector.toString(Object)
+     * @param os
+     * @return Double array containing the converted object values.
      */
     public static Double[] parseDoubles(Object[] os) {
         Double[] vals = new Double[os.length];

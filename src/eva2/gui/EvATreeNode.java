@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *
  * @author mkron
  * @see PropertySheetPanel
- * @see GOParameters
+ * @see eva2.optimization.modules.OptimizationParameters
  */
 public class EvATreeNode extends DefaultMutableTreeNode {
     private String[] childrenNames = null;

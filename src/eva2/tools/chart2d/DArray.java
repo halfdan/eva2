@@ -97,7 +97,7 @@ public class DArray implements DIntDoubleMap {
      * the given image value becomes the image of (highest source value + 1)
      *
      * @param image the new image value
-     * @return <code>true<\code> when the minmal or the maximal image value
+     * @return <code>true</code> when the minimal or the maximal image value
      *         has been changed by this method call, else it returns
      *         <code>false</code> @see #getMinImageValue(), #getMaxImageValue()
      */

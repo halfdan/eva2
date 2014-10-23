@@ -6,7 +6,7 @@ import java.awt.*;
  * <code>DComponent</code> is the mother of all objects which can be displayed
  * by a <code>DArea</code> object, even when it would be also enough to
  * implement the <code>DElement</code> interface to an class
- * <p/>
+ * </p>
  * DComponent is abstract because the paint method has to be overridden
  */
 public abstract class DComponent implements DElement {

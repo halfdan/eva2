@@ -183,7 +183,6 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
         genericArrayEditor.addUpperActionButton("Test Stats", al);
         genericArrayEditor.addLowerActionButton("Save selected", sal);
 
-//    	edi.addPopupItem("Reset selected", getClearSelectedActionListener(parent, jobList)); // this option does not make much sense - instead of deleting data, taking over the settings for a new run is more plausible
         genericArrayEditor.addPopupItem("Reuse as current settings", getReuseActionListener(parent, jobList));
         genericArrayEditor.setAdditionalCenterPane(createStatsPanel(jobList, genericArrayEditor));
         genericArrayEditor.setValue(jobList);
@@ -193,12 +192,11 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
 
     private static JComponent createStatsPanel(final OptimizationJobList jobList, final GenericArrayEditor edi) {
         JParaPanel pan = new JParaPanel(EvAStatisticalEvaluation.statsParams, "Statistics");
-        JComponent paraPan = pan.makePanel();
-        return paraPan;
+        return pan.makePanel();
     }
 
     private static ActionListener getReuseActionListener(final Component parent, final OptimizationJobList jobList) {
-        ActionListener al = new ActionListener() {
+        return new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -215,11 +213,10 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                 }
             }
         };
-        return al;
     }
 
     private static ActionListener getClearSelectedActionListener(final Component parent, final OptimizationJobList jobList) {
-        ActionListener al = new ActionListener() {
+        return new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -229,13 +226,12 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                 }
             }
         };
-        return al;
     }
 
     /**
      * Link a processor to the job list for re-scheduling jobs.
      *
-     * @param processor
+     * @param mod
      */
     public void setModule(ModuleAdapter mod) {
         module = mod;
@@ -251,16 +247,9 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
     }
 
     public boolean removeTextListener(InterfaceTextListener tListener) {
-        if (listeners != null) {
-            return listeners.remove(tListener);
-        } else {
-            return false;
-        }
+        return listeners != null && listeners.remove(tListener);
     }
 
-    /*
-     * (non-Javadoc) @see eva2.server.stat.InterfaceTextListener#print(java.lang.String)
-     */
     @Override
     public void print(String str) {
         if (listeners != null) {
@@ -270,9 +259,6 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
         }
     }
 
-    /*
-     * (non-Javadoc) @see eva2.server.stat.InterfaceTextListener#println(java.lang.String)
-     */
     @Override
     public void println(String str) {
         if (listeners != null) {

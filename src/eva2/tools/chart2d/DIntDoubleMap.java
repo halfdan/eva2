@@ -16,7 +16,7 @@ public interface DIntDoubleMap {
      *
      * @param source the preimage of the image
      * @param image  the new image of the source value
-     * @return <code>true<\code> when the minmal or the maximal image value
+     * @return <code>true</code> when the minimal or the maximal image value
      *         has been changed by this method call, else it returns
      *         <code>false</code> @see #getMinImageValue(), #getMaxImageValue()
      */
@@ -34,7 +34,7 @@ public interface DIntDoubleMap {
      * the image of the highest source value + 1 should be the given image value
      *
      * @param image the new image value
-     * @return <code>true<\code> when the minmal or the maximal image value
+     * @return <code>true</code> when the minimal or the maximal image value
      *         has been changed by this method call, else it returns
      *         <code>false</code> @see #getMinImageValue(), #getMaxImageValue()
      */
@@ -51,23 +51,23 @@ public interface DIntDoubleMap {
      * returns the maximal image value
      *
      * @return the maximal image value
-     * @throw an IllegalArgumentException when it has no image values
+     * @throws IllegalArgumentException when it has no image values
      */
     double getMaxImageValue();
 
     /**
      * returns the minimal image value
      *
-     * @return the minmal image value
-     * @throw an IllegalArgumentException when it has no image values
+     * @return the minimal image value
+     * @throws IllegalArgumentException when it has no image values
      */
     double getMinImageValue();
 
     /**
      * returns the minimal image value
      *
-     * @return the minmal image value
-     * @throw an IllegalArgumentException when it has no image values
+     * @return the minimal image value
+     * @throws IllegalArgumentException when it has no image values
      */
     double getMinPositiveImageValue();
 
@@ -76,7 +76,7 @@ public interface DIntDoubleMap {
      * when at least one of them has changed
      *
      * @return <code>true</code> when either the maximal image value or the
-     *         minmal image value has changed
+     *         minimal image value has changed
      */
     boolean restore();
 

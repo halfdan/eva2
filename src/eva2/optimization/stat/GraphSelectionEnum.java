@@ -5,11 +5,10 @@ import eva2.tools.StringSelection;
 /**
  * An Enum to be used in the statistics classes for identifying data fields.
  *
- * @author mkron
  * @see AbstractStatistics
  */
 public enum GraphSelectionEnum {
-    // DONT change this order, or the relation to AbstractStatistics will be lost
+    // DON'T change this order, or the relation to AbstractStatistics will be lost
     currentBest, meanFit, currentWorst, runBest, currentBestFeasible, runBestFeasible,
     avgEucPopDistance, maxEucPopDistance, avgPopMetricDist, maxPopMetricDist;
 

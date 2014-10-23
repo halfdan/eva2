@@ -51,8 +51,8 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     }
 
     @Override
-    public void createNextGenerationPerformed(double[] bestfit,
-                                              double[] worstfit, int calls) {
+    public void createNextGenerationPerformed(double[] bestFit,
+                                              double[] worstFit, int calls) {
     }
 
     @Override
@@ -93,9 +93,9 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     }
 
     @Override
-    public void startOptimizationPerformed(String InfoString, int runnumber,
+    public void startOptimizationPerformed(String infoString, int runNumber,
                                            Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
-        if (runnumber == 0) {
+        if (runNumber == 0) {
             bestIndividualAllover = null;
         }
         bestRunIndy = null;

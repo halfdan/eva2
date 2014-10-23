@@ -1,21 +1,7 @@
 package eva2.tools;
-/**
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version: $Revision: 10 $
- *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
- *            $Author: streiche $
- */
-/*==========================================================================*
- * IMPORTS
- *==========================================================================*/
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -25,7 +11,7 @@ import java.util.zip.ZipInputStream;
 
 /**
  * JarResources: JarResources maps all resources included in a
- * Zip or Jar file. Additionaly, it provides a method to extract one
+ * Zip or Jar file. Additionally, it provides a method to extract one
  * as a blob.
  */
 public final class JarResources {
@@ -34,15 +20,15 @@ public final class JarResources {
     public boolean debugOn = false;
 
     // jar resource mapping tables
-    private Hashtable htSizes = new Hashtable();
-    private Hashtable htJarContents = new Hashtable();
+    private Hashtable<String,Integer> htSizes = new Hashtable<>();
+    private Hashtable<String,byte[]> htJarContents = new Hashtable<>();
 
     // a jar file
     private String jarFileName;
 
     /**
      * creates a JarResources. It extracts all resources from a Jar
-     * into an internal hashtable, keyed by resource names.
+     * into an internal HashTable, keyed by resource names.
      *
      * @param jarFileName a jar or zip file
      */
@@ -57,7 +43,7 @@ public final class JarResources {
      * @param name a resource name.
      */
     public byte[] getResource(String name) {
-        return (byte[]) htJarContents.get(name);
+        return htJarContents.get(name);
     }
 
     /**
@@ -73,15 +59,15 @@ public final class JarResources {
                 if (debugOn) {
                     System.out.println(dumpZipEntry(ze));
                 }
-                htSizes.put(ze.getName(), new Integer((int) ze.getSize()));
+                htSizes.put(ze.getName(), (int) ze.getSize());
             }
             zf.close();
 
-            // extract resources and put them into the hashtable.
+            // extract resources and put them into the HashTable.
             FileInputStream fis = new FileInputStream(jarFileName);
             BufferedInputStream bis = new BufferedInputStream(fis);
             ZipInputStream zis = new ZipInputStream(bis);
-            ZipEntry ze = null;
+            ZipEntry ze;
             while ((ze = zis.getNextEntry()) != null) {
                 if (ze.isDirectory()) {
                     continue;
@@ -94,11 +80,11 @@ public final class JarResources {
                 int size = (int) ze.getSize();
                 // -1 means unknown size.
                 if (size == -1) {
-                    size = ((Integer) htSizes.get(ze.getName())).intValue();
+                    size = htSizes.get(ze.getName());
                 }
                 byte[] b = new byte[size];
                 int rb = 0;
-                int chunk = 0;
+                int chunk;
                 while ((size - rb) > 0) {
                     chunk = zis.read(b, rb, size - rb);
                     if (chunk == -1) {
@@ -106,7 +92,7 @@ public final class JarResources {
                     }
                     rb += chunk;
                 }
-                // add to internal resource hashtable
+                // add to internal resource HashTable
                 htJarContents.put(ze.getName(), b);
                 if (debugOn) {
                     System.out.println(
@@ -118,8 +104,6 @@ public final class JarResources {
             }
         } catch (NullPointerException e) {
             System.out.println("done.");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,15 +128,15 @@ public final class JarResources {
         }
         sb.append(ze.getName());
         sb.append("\t");
-        sb.append("" + ze.getSize());
+        sb.append("").append(ze.getSize());
         if (ze.getMethod() == ZipEntry.DEFLATED) {
-            sb.append("/" + ze.getCompressedSize());
+            sb.append("/").append(ze.getCompressedSize());
         }
         return (sb.toString());
     }
 
     /**
-     * Is a test driver. Given a jar file and a resource name, it trys to
+     * Is a test driver. Given a jar file and a resource name, it tries to
      * extract the resource and then tells us whether it could or not.
      * <p/>
      * <strong>Example</strong>
@@ -185,4 +169,4 @@ public final class JarResources {
         }
     }
 
-}    // End of JarResources class.
+}

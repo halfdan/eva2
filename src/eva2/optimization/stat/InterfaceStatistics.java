@@ -15,7 +15,7 @@ public interface InterfaceStatistics {
     /**
      * Initialize statistics computations.
      */
-    void startOptimizationPerformed(String InfoString, int runnumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList); // called from processor
+    void startOptimizationPerformed(String infoString, int runNumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList); // called from processor
 
     /**
      * Finalize statistics computations.
@@ -34,7 +34,7 @@ public interface InterfaceStatistics {
 
     void createNextGenerationPerformed(PopulationInterface Pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList);
 
-    void createNextGenerationPerformed(double[] bestfit, double[] worstfit, int calls);
+    void createNextGenerationPerformed(double[] bestFit, double[] worstFit, int calls);
 
     InterfaceStatisticsParameter getStatisticsParameter(); // called from moduleadapter
 

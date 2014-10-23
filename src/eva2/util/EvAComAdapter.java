@@ -1,4 +1,4 @@
-package eva2.client;
+package eva2.util;
 
 
 import eva2.gui.LoggingPanel;

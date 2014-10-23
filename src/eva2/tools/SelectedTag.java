@@ -4,7 +4,6 @@ package eva2.tools;
  * This serves as activation state of one item in an array of Tags
  * identified by integer IDs. String names should be unique as well as integer IDs.
  */
-
 public class SelectedTag implements java.io.Serializable {
     protected int selectedId;
     protected Tag[] tags;
@@ -30,7 +29,7 @@ public class SelectedTag implements java.io.Serializable {
      * Constructor from a String array, creates a Tag array where the IDs correspond to array index.
      *
      * @param selID
-     * @param tagStrings
+     * @param strings
      */
     public SelectedTag(int selID, String... strings) {
         init(selID, strings);

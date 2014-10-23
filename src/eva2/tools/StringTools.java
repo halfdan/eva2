@@ -22,8 +22,8 @@ public final class StringTools {
      * Returns a HTML formatted String, in which each line is at most lineBreak
      * symbols long.
      *
-     * @param string
-     * @param lineBreak
+     * @param string Text to be converted to HTML
+     * @param lineBreak Number of characters until a line break is inserted
      * @return
      */
     public static String toHTML(String string, int lineBreak) {
@@ -129,7 +129,7 @@ public final class StringTools {
                         || (!ignoreCase && (args[i].equals(keys[k])))) { // if the key was found
                     found = true;
                     if (arities[k] == 0) {
-                        values[k] = new String("true");
+                        values[k] = "true";
                     } // and its zero-arity, just return true as its value
                     else { // else return an array of size arity with following strings
                         try {
@@ -302,7 +302,7 @@ public final class StringTools {
      * Concatenate a list of Objects using a given delimiter string.
      * The objects are converted to strings using the BeanInspector class.
      *
-     * @param headlineFields
+     * @param objects
      * @param delim
      * @return
      */
@@ -337,7 +337,7 @@ public final class StringTools {
     /**
      * Remove or replace blanks, braces, etc. from a string for use as a file name.
      *
-     * @param predefName
+     * @param str
      * @return
      */
     public static String simplifySymbols(String str) {

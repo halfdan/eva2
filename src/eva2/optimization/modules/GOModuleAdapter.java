@@ -8,6 +8,7 @@ import java.io.Serializable;
 /**
  * Starts a statistics GUI and the GOProcessor thread.
  */
+@SuppressWarnings("unused")
 public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapter, Serializable {
 
     private static final String moduleName = "Genetic_Optimization";

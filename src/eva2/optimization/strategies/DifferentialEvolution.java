@@ -195,7 +195,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 }
                 isEmpty = (isEmpty && (result[i] == 0));
             }
-            // single parent! dont add another one
+            // single parent! don't add another one
         }
 
         return result;
@@ -250,7 +250,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                 }
                 isEmpty = (isEmpty && (result[i] == 0));
             }
-            // single parent! dont add another one
+            // single parent! don't add another one
         }
 
         return result;
@@ -538,8 +538,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         optimizationProblem.evaluate(children);
 
         /**
-         * MdP: added a reevalutation mechanism for dynamically changing
-         * problems
+         * Re-evalutation mechanism for dynamically changing problems
          */
         if (isReEvaluate()) {
             for (int i = 0; i < this.population.size(); i++) {
@@ -594,8 +593,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
 
 
         /**
-         * MdP: added a reevalutation mechanism for dynamically changing
-         * problems
+         * Reevalutation mechanism for dynamically changing problems
          */
         if (isReEvaluate()) {
             nextDoomed = -1;
