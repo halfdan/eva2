@@ -19,7 +19,7 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
     public Object clone();
 
     /**
-     * This method inits the Problem to log multiruns
+     * This method initializes the Problem to log multiruns
      */
     public void initializeProblem();
 

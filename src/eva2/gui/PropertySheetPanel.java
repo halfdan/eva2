@@ -292,7 +292,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 itemIndex++;
                 newView = getView(propertyEditors[i]);
                 if (newView == null) {
-                    System.err.println("Warning: Property \"" + name + "\" has non-displayabale editor.  Skipping.");
+                    System.err.println("Warning: Property \"" + name + "\" has non-displayable editor.  Skipping.");
                     continue;
                 }
             } catch (Exception ex) {
@@ -424,7 +424,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      * @return
      */
     private PropertyDescriptor[] reorderProperties(Method meth) {
-//        Mathematics.revertArray(oldProps, newProps);
         Object[] args = {};
         Object retV = null;
         PropertyDescriptor[] newProps = null;
