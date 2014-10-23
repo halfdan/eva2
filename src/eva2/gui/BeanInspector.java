@@ -1022,16 +1022,15 @@ public class BeanInspector {
         String tipName = name + "TipText";
 
         // Find by annotation
-        Parameter[] parameters= target.getClass().getAnnotationsByType(Parameter.class);
         Parameter parameter = BeanInspector.getAnnotationFromField(name, target.getClass(), Parameter.class);
         if (parameter != null) {
             return parameter.description();
         }
 
         // Find by deprecated TipText method
-        for (int j = 0; j < methods.length; j++) {
-            String mname = methods[j].getDisplayName();
-            Method meth = methods[j].getMethod();
+        for (MethodDescriptor method : methods) {
+            String mname = method.getDisplayName();
+            Method meth = method.getMethod();
 
             if (mname.equals(tipName)) {
                 if (meth.getReturnType().equals(String.class)) {
@@ -1046,7 +1045,7 @@ public class BeanInspector {
                             }
                         }
                     } catch (Exception ex) {
-
+                        LOGGER.log(Level.FINE, "Error calling TipText method.", ex);
                     }
                     break;
                 }
