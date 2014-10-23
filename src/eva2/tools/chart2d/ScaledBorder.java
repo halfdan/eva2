@@ -144,8 +144,8 @@ public class ScaledBorder implements Border {
     }
 
     /**
-     * constructor creates a new <code>ScaledBorder<code/>
-     * surrounded by the specified <code>Border<code/>
+     * constructor creates a new <code>ScaledBorder</code>
+     * surrounded by the specified <code>Border</code>
      */
     public ScaledBorder(Border outer) {
         outerBorder = outer;
@@ -171,9 +171,8 @@ public class ScaledBorder implements Border {
     /**
      * method sets the differences between source x-values of the displayed values
      *
-     * @see setAutoScaleX().
-     *      If scale functions are used there might be a difference between the shown values
-     *      and the source values
+     * If scale functions are used there might be a difference between the shown values
+     * and the source values
      */
     public void setSrcdX(double dX) {
         autoScaleX = false;
@@ -183,9 +182,8 @@ public class ScaledBorder implements Border {
     /**
      * method sets the differences between source y-values of the displayed values
      *
-     * @see setAutoScaleY().
-     *      If scale functions are used there might be a difference between the shown values
-     *      and the source values
+     * If scale functions are used there might be a difference between the shown values
+     * and the source values
      */
     public void setSrcdY(double dY) {
         autoScaleY = false;

@@ -41,7 +41,6 @@ public class ReflectPackage {
      *
      * @param pckgname
      * @return
-     * @throws ClassNotFoundException
      */
     public static int getClassesFromFilesFltr(HashSet<Class> set, String path, String pckgname, boolean includeSubs, Class reqSuperCls) {
         try {
@@ -91,9 +90,7 @@ public class ReflectPackage {
                         } else {
                             cntAdded += addClass(set, cls);
                         }
-                    } catch (Exception e) {
-                        System.err.println("ReflectPackage: Couldnt get Class from jar for " + pckgname + '.' + file + ": " + e.getMessage());
-                    } catch (Error e) {
+                    } catch (Exception | Error e) {
                         System.err.println("ReflectPackage: Couldnt get Class from jar for " + pckgname + '.' + file + ": " + e.getMessage());
                     }
                 } else if (includeSubs) {
@@ -157,7 +154,7 @@ public class ReflectPackage {
                 String jarEntryName = jarEntry.getName();
                 if ((jarEntryName.startsWith(packageName)) &&
                         (jarEntryName.endsWith(".class"))) {
-//					subpackages are hit here as well!
+                    // subpackages are hit here as well!
                     if (!includeSubs) { // check if the class belongs to a subpackage
                         int lastDash = jarEntryName.lastIndexOf('/');
                         isInSubPackage = lastDash > packageName.length() + 1;

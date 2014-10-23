@@ -97,7 +97,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     private List<InterfaceAdditionalPopulationInformer> lastInformerList = null;
     private PopulationInterface lastSols = null;
     private String textFieldDelimiter = "\t";
-    private int defaultFitCriterion = 0; // TODO this might be a user chosen int - or even more elegantly, a MOSOConverter
+    private int defaultFitCriterion = 0; // ToDo this might be a user chosen int - or even more elegantly, a MOSOConverter
 
     protected StringSelection lastFieldSelection = null; // store the graph selection at the beginning of a multi-run
     protected boolean lastIsShowFull = false; // store the "show full text" stats property at the beginning of a multi-run
@@ -891,7 +891,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             }
         }
         return values;
-//		return StringTools.concatValues(values, textFieldDelimiter);
     }
 
     /**
@@ -899,7 +898,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * The length of this list depends on the field selection state.
      *
      * @param informerList
-     * @param pop
      * @param metaInfo     if non null, the meta info strings are returned in this list
      * @return
      */
@@ -913,7 +911,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             if (metaInfo != null) {
                 metaInfo.addAll(Arrays.asList(informer.getAdditionalDataInfo()));
             }
-//			hdr = hdr + "\t " + informer.getAdditionalDataHeader(pop);
         }
         Iterator<String> hIter = headers.iterator();
         Iterator<String> mIter = (metaInfo != null) ? metaInfo.iterator() : null;
@@ -950,48 +947,15 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         return new Pair<>(statValuesString, statValues.toArray(new Object[statValues.size()]));
     }
 
-//	/**
-//	 * Append additional informer informations to the given StringBuffer.
-//	 * 
-//	 * @param informerList
-//	 * @param pop
-//	 * @param sbuf
-//	 */
-//	protected Double[] appendAdditionalInfo(List<InterfaceAdditionalPopulationInformer> informerList, PopulationInterface pop, StringBuffer sbuf) {
-//		if (informerList != null) {
-//			ArrayList<Object> additionalObjects = new ArrayList<Object>(5);
-//			
-//			for (InterfaceAdditionalPopulationInformer informer : informerList) {
-//				additionalObjects.addAll(Arrays.asList(informer.getAdditionalDataValue(pop)));
-//			}
-//			String addInfo = StringTools.concatValues(additionalObjects, textFieldDelimiter);
-//			Double[] retVals = parseDoubles(additionalObjects);
-//			if (sbuf!=null) sbuf.append(addInfo);
-//			return retVals;
-//			
-////			StringBuffer addBuffer = new StringBuffer();
-////			for (InterfaceAdditionalPopulationInformer informer : informerList) {
-////				addBuffer.append(" \t ");
-////				addBuffer.append(informer.getAdditionalDataValue(pop));
-////			}
-////			String addInfo = addBuffer.toString().trim();
-////			if (addInfo.startsWith("\t")) addInfo.substring(2); // remove first separator to avoid returning empty field as double
-////			Double[] retVals = parseDoubles(addInfo, "\t");
-////			if (sbuf!=null) sbuf.append(addInfo);
-////			return retVals;
-//		}
-//		return null;
-//	}	
-
     /**
-     * @deprecated The method {@link #createNextGenerationPerformed(PopulationInterface, List)} should be used instead.
+     * @deprecated The method {@link #createNextGenerationPerformed(eva2.optimization.population.PopulationInterface, eva2.optimization.strategies.InterfaceOptimizer, java.util.List)} should be used instead.
      */
     @Override
-    public synchronized void createNextGenerationPerformed(double[] bestfit,
-                                                           double[] worstfit, int calls) {
+    public synchronized void createNextGenerationPerformed(double[] bestFit,
+                                                           double[] worstFit, int calls) {
         functionCalls = calls;
-        currentBestFit = bestfit;
-        currentWorstFit = worstfit;
+        currentBestFit = bestFit;
+        currentWorstFit = worstFit;
         currentBestFeasibleFit = null;
         currentMeanFit = null;
 
@@ -1044,7 +1008,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * If the population returns a specific data array, this method is called instead of doing standard output
      *
      * @param pop
-     * @param informer
+     * @param informerList
      */
     public abstract void plotSpecificData(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList);
 

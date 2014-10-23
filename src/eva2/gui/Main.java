@@ -1,8 +1,8 @@
 package eva2.gui;
 
 import eva2.EvAInfo;
-import eva2.client.ClassPreloader;
-import eva2.client.EvAComAdapter;
+import eva2.util.ClassPreloader;
+import eva2.util.EvAComAdapter;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.AbstractModuleAdapter;
@@ -90,7 +90,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
     /**
      * Constructor of GUI of EvA2. Works as client for the EvA2 server. Note
-     * that the Main initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+     * that the Main initialized multi-threaded for efficiency. Use {@link #awaitClientInitialized()} }
      * to await full initialization if necessary.
      */
     public Main(final String hostName) {
@@ -100,7 +100,7 @@ public class Main extends JFrame implements OptimizationStateListener {
     /**
      * A constructor. Splash screen is optional, Gui is activated, no parent
      * window. Note that the Main initialized multi-threaded for
-     * efficiency. Use {@link #awaitGuiInitialized()} to await full
+     * efficiency. Use {@link #awaitClientInitialized()} to await full
      * initialization if necessary.
      *
      * @param hostName
@@ -114,7 +114,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
     /**
      * A constructor with optional spash screen. Note that the Main is
-     * initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+     * initialized multi-threaded for efficiency. Use {@link #awaitClientInitialized()}
      * to await full initialization if necessary.
      *
      * @param hostName
@@ -128,7 +128,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
     /**
      * A constructor with optional splash screen. Note that the Main
-     * initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+     * initialized multi-threaded for efficiency. Use {@link #awaitClientInitialized()}
      * to await full initialization if necessary.
      *
      * @param hostName
@@ -144,11 +144,11 @@ public class Main extends JFrame implements OptimizationStateListener {
 
     /**
      * A constructor with optional splash screen. Note that the Main
-     * initialized multi-threaded for efficiency. Use {@link #awaitGuiInitialized()}
+     * initialized multi-threaded for efficiency. Use {@link #awaitClientInitialized()}
      * to await full initialization if necessary.
      *
      * @param hostName
-     * @param paramsFile
+     * @param optimizationParameters
      * @param autorun
      * @param noSplash
      * @param noGui
@@ -179,7 +179,7 @@ public class Main extends JFrame implements OptimizationStateListener {
      * from a file (paramsFile) or given directly as a java instance. Both may
      * be null to start with standard parameters. If both are non null, the java
      * instance has the higher priority. Note that the Main initialized
-     * multi-threaded for efficiency. Use {@link #awaitGuiInitialized()} to
+     * multi-threaded for efficiency. Use {@link #awaitClientInitialized()} to
      * await full initialization if necessary.
      *
      * @param hostName

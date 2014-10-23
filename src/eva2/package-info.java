@@ -1,4 +1,4 @@
 /**
- * Base package of the project that contains globally important classes.
+ * Base package of EvA2
  */
 package eva2;

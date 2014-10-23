@@ -56,7 +56,6 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
      *
      * @param adapterName     The AdapterName
      * @param helperFName     name of a html help file name
-     * @param Client          The client to serve
      * @param params          a parameter set describing the optimizer module
      * @param optimizerExpert set to true if setting the optimizer is an expert option being hidden from the gui
      */

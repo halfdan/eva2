@@ -202,7 +202,7 @@ public class DRectangle extends DComponent {
     /**
      * method resizes the rectangle to insert p
      *
-     * @param the dPoint p to insert
+     * @param p the dPoint p to insert
      * @return true when the size of the rectangle changed
      */
     public boolean insert(DPoint p) {

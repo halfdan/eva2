@@ -94,10 +94,10 @@ public class DArea extends JComponent implements DParent, Printable {
 
     /**
      * method 'adds' a certain border around the contained rectangle that means
-     * that it takes the old border and takes the maxima of the old and the new
+     * that it takes the old border and takes the maximum of the old and the new
      * values
      *
-     * @param clip the java.awt.Insets object of the new clip
+     * @param b The border
      */
     @Override
     public void addDBorder(DBorder b) {
@@ -146,7 +146,7 @@ public class DArea extends JComponent implements DParent, Printable {
 
     /**
      * returns the measures of the DArea The DMeasures object calculates the
-     * different coodinates and contains a Graphics object to paint the
+     * different coordinates and contains a Graphics object to paint the
      * DElements of the area
      *
      * @return the measures of the DArea
@@ -424,8 +424,7 @@ public class DArea extends JComponent implements DParent, Printable {
      * @param pf the @see java.awt.print.PageFormat
      * @param pi the page index
      * @return int @see java.awt.print.Printable
-     * @see java.awt.print.Printable and
-     * @see java.awt.print.PrintJob
+     * @see java.awt.print.Printable
      */
     @Override
     public int print(Graphics g, PageFormat pf, int pi) {

@@ -40,17 +40,15 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
-
 /**
  * Loads resource file from directory OR jar file. Now it is easier possible to
  * access resource files in a directory structure or a .jar/.zip file.
  *
- * @.author		Marcel Kronfeld
- * @.author wegnerj
- * @.author Robin Friedman, rfriedman@TriadTherapeutics.com
- * @.author Gerd Mueller
- * @.license GPL
- * @.cvsversion $Revision: 1.3 $, $Date: 2005/02/17 16:48:44 $
+ * @author Marcel Kronfeld
+ * @author wegnerj
+ * @author Robin Friedman, rfriedman@TriadTherapeutics.com
+ * @author Gerd Mueller
+ * @license GPL
  */
 public class BasicResourceLoader implements ResourceLoader {
     /**
@@ -81,7 +79,7 @@ public class BasicResourceLoader implements ResourceLoader {
     /**
      * Description of the Method
      *
-     * @param resourceFile Description of the Parameter
+     * @param resourceFile Source file to read
      * @return Description of the Return Value
      */
     public static List<String> readLines(String resourceFile) {
@@ -91,8 +89,8 @@ public class BasicResourceLoader implements ResourceLoader {
     /**
      * Description of the Method
      *
-     * @param resourceFile   Description of the Parameter
-     * @param ignoreComments Description of the Parameter
+     * @param resourceFile   Source file to read
+     * @param ignoreCommentedLines Whether to ignore commented lines
      * @return Description of the Return Value
      */
     public static List<String> readLines(String resourceFile,
@@ -106,7 +104,7 @@ public class BasicResourceLoader implements ResourceLoader {
      * @param resourceFile File to read
      * @param ignorePrefix array of prefixes which mark a line to be ignored
      * @param lOffset      offset of the first line to read
-     * @param lCnt         number of lines to read, if <= 0, all lines are read
+     * @param lCnt         number of lines to read, if less than 0, all lines are read
      * @return List of lines which were read or null on an error
      */
     public static List<String> readLines(String resourceFile,

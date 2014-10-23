@@ -511,7 +511,7 @@ public class BeanInspector {
      * For a primitive type, return the boxed referenced type. Return null for
      * any non-primitive type.
      *
-     * @param clz1
+     * @param cls
      * @return
      */
     public static Class getBoxedType(Class cls) {

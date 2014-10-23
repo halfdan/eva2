@@ -26,6 +26,7 @@ public final class ModuleServer {
 
     /**
      *
+     * @param EvAProps
      */
     public ModuleServer(Properties EvAProps) {
         if (instanceCounter > 0) {
@@ -93,6 +94,9 @@ public final class ModuleServer {
      * module classes; if necessary through a remote proxy. Try to load a given
      * parameter file in case its a GOModuleAdapter.
      *
+     * @param selectedModuleName
+     * @param optimizationParameters
+     * @param noGuiLogFile
      * @return the loaded module adapter instance
      */
     public ModuleAdapter createModuleAdapter(String selectedModuleName, InterfaceOptimizationParameters optimizationParameters, String noGuiLogFile) {

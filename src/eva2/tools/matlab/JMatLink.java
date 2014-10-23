@@ -20,11 +20,11 @@
 
  * 13.08.1999  thread implementation due to ActiveX thread problem     (0.05) *
 
- * 15.08.1999  intruduced 2 locking mechanisms to lock the engine and         *
+ * 15.08.1999  introduced 2 locking mechanisms to lock the engine and         *
 
  *                wait for data to be return to caller.                (0.06) *
 
- * 16.08.1999  wait for all engine calls to return savely              (0.06a)*
+ * 16.08.1999  wait for all engine calls to return safely              (0.06a)*
 
  * 29.08.1999  made all engine routines "synchronized"                 (0.07) *
 
@@ -113,15 +113,10 @@
 package eva2.tools.matlab;
 
 // **** Thread programming. Notify and start and stop ****
-
 // Look at
-
 // file:///e%7C/jdk1.2/docs/guide/misc/threadPrimitiveDeprecation.html
-
-// on how to suspend, start, stop, interrupt a thread savely in JDK1.2.x
-
+// on how to suspend, start, stop, interrupt a thread safely in JDK1.2.x
 // The problem is ActiveX: one only can make calls to the engine library
-
 // (especially engEvalString) from ONE single thread.
 
 import java.io.UnsupportedEncodingException;

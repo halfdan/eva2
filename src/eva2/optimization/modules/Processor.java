@@ -40,8 +40,6 @@ import java.util.logging.Logger;
  * interface, it is applied to the instance that returned it directly. For
  * arrays of objects each array entry is again handled by checking for
  * getParamControl, thus recursive controllable structures are possible.
- *
- * @author mkron
  */
 public class Processor extends Thread implements InterfaceProcessor, InterfacePopulationChangedEventListener {
 
@@ -227,7 +225,6 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         optimizationParameters.getOptimizer().addPopulationChangedEventListener(this);
 
         runCounter = 0;
-        String popLog = null; //"populationLog.txt";
 
         while (isOptimizationRunning() && (runCounter < statistics.getStatisticsParameter().getMultiRuns())) {
             LOGGER.info(String.format("Starting Optimization %d/%d", runCounter + 1, statistics.getStatisticsParameter().getMultiRuns()));
@@ -244,19 +241,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             if (optimizationStateListener != null) {
                 optimizationStateListener.updateProgress(getStatusPercent(optimizationParameters.getOptimizer().getPopulation(), runCounter, statistics.getStatisticsParameter().getMultiRuns()), null);
             }
-            if (popLog != null) {
-                EVAHELP.clearLog(popLog);
-            }
 
             do {    // main loop
                 maybeUpdateParamCtrl(optimizationParameters);
 
                 this.optimizationParameters.getOptimizer().optimize();
-                // registerPopulationStateChanged *SHOULD* be fired by the optimizer or resp. the population
-                // as we are event listener
-                if (popLog != null) {
-                    EVAHELP.logString(this.optimizationParameters.getOptimizer().getPopulation().getIndyList(), popLog);
-                }
             }
             while (isOptimizationRunning() && !this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getAllSolutions()));
 

@@ -955,7 +955,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * population. If the population is empty, -1 is returned.
      *
      * @return The index of the best individual.
-     * @see getIndexOfBestOrWorstIndividual()
+     * @see #getIndexOfBestOrWorstIndividual(boolean, java.util.Comparator)
      */
     public int getIndexOfBestIndividualPrefFeasible() {
         if (size() < 1) {
@@ -969,7 +969,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * the population.
      *
      * @return The index of the worst individual.
-     * @see getIndexOfBestOrWorstIndividual()
+     * @see #getIndexOfBestOrWorstIndividual(boolean, java.util.Comparator)
      */
     public int getIndexOfWorstIndividualNoConstr() {
         return getIndexOfBestOrWorstIndy(false, false, -1);
@@ -981,7 +981,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * fitIndex < 0). If the population is empty, -1 is returned.
      *
      * @return The index of the best individual.
-     * @see getIndexOfBestOrWorstIndividual()
+     * @see #getIndexOfBestOrWorstIndividual(boolean, java.util.Comparator)
      */
     public int getIndexOfBestIndividualPrefFeasible(int fitIndex) {
         if (size() < 1) {
@@ -996,7 +996,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * fitIndex < 0).
      *
      * @return The index of the best individual.
-     * @see getIndexOfBestOrWorstIndividual()
+     * @see #getIndexOfBestOrWorstIndividual(boolean, java.util.Comparator)
      */
     public int getIndexOfWorstIndividualNoConstr(int fitIndex) {
         return getIndexOfBestOrWorstIndy(false, false, fitIndex);
@@ -1257,7 +1257,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * instance.
      *
      * @param n
-     * @param l
      */
     public Population toTail(int n) {
         Population retPop = new Population(n);
@@ -1310,8 +1309,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * the population has not been modified. The returned array must not be
      * altered!
      *
-     * @param fitIndex the fitness criterion to be used or -1 for pareto
-     *                 dominance
+     * @param comp The comparator
      * @return
      */
     public ArrayList<AbstractEAIndividual> getSorted(Comparator<Object> comp) {
@@ -1332,7 +1330,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /**
      * Returns the sorted population as a new population instance.
      *
-     * @see getSorted(Comparator)
+     * @see #getSorted(java.util.Comparator)
      */
     public Population getSortedPop(Comparator<Object> comp) {
         Population pop = this.cloneWithoutInds();
@@ -1386,8 +1384,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * returns dst Population.
      *
      * @param n
-     * @param from
-     * @param to
+     * @param src
+     * @param dst
      * @return
      */
     public static Population moveNInds(int n, Population src, Population dst) {
@@ -1402,8 +1400,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /**
      * Move one random individual from src to dst population.
      *
-     * @param from
-     * @param to
+     * @param src
+     * @param dst
      */
     public static void moveRandIndFromTo(Population src, Population dst) {
         int k = RNG.randomInt(src.size());
@@ -1762,7 +1760,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * individual to be removed is not contained in the instance. Otherwise,
      * this is ignored.
      *
-     * @param tmpPop
+     * @param popToRemove
      * @param errorOnMissing
      */
     public void removeMembers(Population popToRemove, boolean errorOnMissing) {
@@ -1843,7 +1841,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /**
      * Returns the average, minimal and maximal individual distance as diversity
      * measure for the population. If the given metric argument is null, the
-     * euclidian distance of individual positions is used, which presumes that {@link AbstractEAIndividual.getDoublePosition(indy)}
+     * euclidian distance of individual positions is used, which presumes that {@link eva2.optimization.individuals.AbstractEAIndividual#getDoublePosition(eva2.optimization.individuals.AbstractEAIndividual)}
      * returns a valid double position for the individuals of the population.
      * This is of course rather expensive computationally.
      *
@@ -1859,7 +1857,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /**
      * Returns the average, minimal and maximal individual distance as diversity
      * measure for the population. If the given metric argument is null, the
-     * euclidian distance of individual positions is used, which presumes that {@link AbstractEAIndividual.getDoublePosition(indy)}
+     * euclidian distance of individual positions is used, which presumes that {@link AbstractEAIndividual#getDoublePosition(eva2.optimization.individuals.AbstractEAIndividual)}
      * returns a valid double position for the individuals of the population.
      * This is of course rather expensive computationally.
      *
@@ -2046,7 +2044,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Return a Pair of the individuals index and distance. If the population is
      * empty, a Pair of (-1,-1) is returned.
      *
-     * @param pos
+     * @param refIndy
      * @param pop
      * @param closestOrFarthest if true, the closest individual is retrieved,
      *                          otherwise the farthest
@@ -2073,8 +2071,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * population.
      *
      * @param indy
-     * @param pop
      * @param d
+     * @param metric
      * @return true if d(indy,pop)<=d, else false
      */
     public boolean isWithinPopDist(AbstractEAIndividual indy, double d, InterfaceDistanceMetric metric) {
@@ -2140,7 +2138,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      *
      * @param criterion
      * @return
-     * @see AbstractEAIndidivual.getDoublePosition(individual)
      */
     public double[] getCenterWeighted(AbstractSelProb selProb, int criterion, boolean obeyConst) {
         selProb.computeSelectionProbability(this, "Fitness", obeyConst);
@@ -2162,7 +2159,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Search for the closest individual to the indexed individual within the
      * population. Return its index or -1 if none could be found.
      *
-     * @param indy
+     * @param neighborIndex
      * @return closest neighbor (euclidian measure) of the given individual in
      *         the given population
      */
@@ -2309,8 +2306,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * true and the individuals are out of range, they are projected into the
      * range by force.
      *
-     * @param modRange
-     * @param b
+     * @param range
+     * @param forceRange
      */
     public void updateRange(double[][] range, boolean forceRange) {
         for (int i = 0; i < size(); i++) {
@@ -2337,19 +2334,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public String initMethodTipText() {
         return "Define the initial sampling method. Note that anything other than inidividualDefault will override the individual initialization concerning the positions in solution space.";
     }
-//	/**
-//	 * Check whether the population at the current state has been marked as
-//	 * evaluated. This allows to avoid double evaluations. 
-//	 * 
-//	 * @return true if the population has been marked as evaluated in its current state, else false 
-//	 */
-//	public boolean isEvaluated() {
-//		if (evaluationTimeModCount != modCount) return false;
-//		Pair<Integer,Integer> hashes = getIndyHashSums();
-//		
-//		if (evaluationTimeHashes == null) return false;
-//		else return ((hashes.head().equals(evaluationTimeHashes.head())) && (hashes.tail().equals(evaluationTimeHashes.tail())) && (evaluationTimeModCount == modCount));
-//	}
 
     /**
      * Add the population data of a given population to this instance. Note that
@@ -2435,7 +2419,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * Return true if the current instance is a subset of the given population,
      * otherwise false.
      *
-     * @param offspring
+     * @param set
      * @return
      */
     public boolean isSubSet(Population set) {
