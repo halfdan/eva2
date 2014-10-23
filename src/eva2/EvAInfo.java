@@ -35,7 +35,7 @@ public class EvAInfo {
     /**
      * Relative path to application icon.
      */
-    public static final String iconLocation = "images/icon4.gif";
+    public static final String iconLocation = "images/icon.png";
 
     /**
      * Relative path to splash screen image.
