@@ -90,10 +90,6 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
         }
     }
 
-    /************************************************************************************
-     * AbstractEAIndividual methods
-     */
-
     /**
      * This method will initialize the individual with a given value for the
      * phenotype.
@@ -203,11 +199,11 @@ public class OBGAIndividualPermutationData extends AbstractEAIndividual implemen
             perm[p] = new int[this.genotype[p].length];
             ArrayList pot = new ArrayList();
             for (int i = 0; i < this.sizePermutation()[p]; i++) {
-                pot.add(new Integer(firstindex[p] + i));
+                pot.add(firstindex[p] + i);
             }
             int i = 0;
             while (!pot.isEmpty()) {
-                perm[p][i] = ((Integer) (pot.remove(RNG.randomInt(0, pot.size() - 1)))).intValue();
+                perm[p][i] = (Integer) (pot.remove(RNG.randomInt(0, pot.size() - 1)));
                 i++;
             }
         }
