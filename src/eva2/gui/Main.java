@@ -1,14 +1,11 @@
 package eva2.gui;
 
 import eva2.EvAInfo;
+import eva2.optimization.modules.*;
 import eva2.util.ClassPreloader;
 import eva2.util.EvAComAdapter;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.modules.AbstractModuleAdapter;
-import eva2.optimization.modules.GenericModuleAdapter;
-import eva2.optimization.modules.ModuleAdapter;
-import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.stat.AbstractStatistics;
 import eva2.optimization.stat.InterfaceStatisticsListener;
 import eva2.optimization.stat.InterfaceStatisticsParameter;
@@ -772,7 +769,8 @@ public class Main extends JFrame implements OptimizationStateListener {
         ModuleAdapter newModuleAdapter = null;
         //
         try {
-            newModuleAdapter = comAdapter.getModuleAdapter(selectedModule, optimizationParameters, withGUI ? null : "EvA2");
+            newModuleAdapter = new GOModuleAdapter(selectedModule, OptimizationParameters.getInstance(), withGUI ? null : "EvA2");
+            //newModuleAdapter = comAdapter.getModuleAdapter(selectedModule, optimizationParameters, withGUI ? null : "EvA2");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error loading module.", e);
             EVAERROR.EXIT("Error while comAdapter.GetModuleAdapter Host: " + e.getMessage());

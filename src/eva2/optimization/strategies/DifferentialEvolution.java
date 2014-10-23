@@ -583,14 +583,13 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     }
 
     public void optimizeSteadyState() {
-        AbstractEAIndividual indy = null, orig;
+        AbstractEAIndividual indy, orig;
         int index;
 
         int nextDoomed = getNextDoomed(population, 0);
 
         // required for dynamic problems especially
         optimizationProblem.evaluatePopulationStart(population);
-
 
         /**
          * Reevalutation mechanism for dynamically changing problems
@@ -654,7 +653,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      *
      * @param pop        Population to search
      * @param startIndex index to start the search from
-     * @return index of an overaged individual or -1
+     * @return index of an over aged individual or -1
      */
     protected int getNextDoomed(Population pop, int startIndex) {
         if (maximumAge > 0) {
@@ -689,12 +688,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     /**
      * Something has changed
      *
-     * @param name
+     * @param name Event name
      */
     protected void firePropertyChangedEvent(String name) {
         if (this.populationChangedEventListeners != null) {
-            for (int i = 0; i < this.populationChangedEventListeners.size(); i++) {
-                this.populationChangedEventListeners.get(i).registerPopulationStateChanged(this, name);
+            for (InterfacePopulationChangedEventListener listener : this.populationChangedEventListeners) {
+                listener.registerPopulationStateChanged(this, name);
             }
         }
     }

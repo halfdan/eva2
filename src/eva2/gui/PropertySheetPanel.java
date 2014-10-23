@@ -8,9 +8,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.beans.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -82,7 +84,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
      */
     // If true, tool tips are used up to the first point only. 
     boolean stripToolTipToFirstPoint = false;
-    private JTable propertyTable;
+    private ToolTipTable propertyTable;
     private DefaultTableModel propertyTableModel;
 
     /**
@@ -156,6 +158,38 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     }
 
     /**
+     * JTable extended to show ToolTips
+     */
+    class ToolTipTable extends JTable {
+        private String[] toolTips;
+
+        public ToolTipTable(TableModel model) {
+            super(model);
+        }
+
+        public void setToolTips(String[] toolTips) {
+            this.toolTips = toolTips;
+        }
+
+        //Implement table cell tool tips.
+        public String getToolTipText(MouseEvent e) {
+            String tip = null;
+            java.awt.Point p = e.getPoint();
+            int rowIndex = rowAtPoint(p);
+
+            try {
+                if(this.toolTips != null && rowIndex <= this.toolTips.length){
+                    tip = this.toolTips[rowIndex];
+                }
+            } catch (RuntimeException e1) {
+                //catch null pointer exception if mouse is over an empty line
+            }
+
+            return tip;
+        }
+    }
+
+    /**
      * Sets a new target object for customisation.
      *
      * @param targ a value of type 'Object'
@@ -164,7 +198,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         propertyTableModel = new DefaultTableModel();
         propertyTableModel.addColumn("Key");
         propertyTableModel.addColumn("Value");
-        propertyTable = new JTable(propertyTableModel);
+        propertyTable = new ToolTipTable(propertyTableModel);
         propertyTable.setDefaultRenderer(Object.class, new PropertyCellRenderer());
         propertyTable.setDefaultEditor(Object.class, new PropertyCellEditor());
         propertyTable.setRowHeight(20);
@@ -237,7 +271,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         propertyLabels = new JLabel[propertyDescriptors.length];
         toolTips = new String[propertyDescriptors.length];
 
-
+        int itemIndex = 0;
         for (int i = 0; i < propertyDescriptors.length; i++) {
             // For each property do this
             // Don't display hidden or expert properties.
@@ -253,8 +287,9 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
                 if (propertyEditors[i] == null) {
                     continue;
                 }
-                toolTips[i] = BeanInspector.getToolTipText(name, methodDescriptors, targetObject, stripToolTipToFirstPoint, tipTextLineLen);
 
+                toolTips[itemIndex] = BeanInspector.getToolTipText(name, methodDescriptors, targetObject, stripToolTipToFirstPoint, tipTextLineLen);
+                itemIndex++;
                 newView = getView(propertyEditors[i]);
                 if (newView == null) {
                     System.err.println("Warning: Property \"" + name + "\" has non-displayabale editor.  Skipping.");
@@ -271,6 +306,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             name = eva2.tools.StringTools.humaniseCamelCase(name);
             propertyTableModel.addRow(new Object[]{name, newView});
         }
+
+        propertyTable.setToolTips(toolTips);
 
         JScrollPane scrollableTable = new JScrollPane(propertyTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         gbConstraints.gridx = 0;
@@ -359,27 +396,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         return values;
     }
 
-    /**
-     * Create a label to be shown if no other properties are shown.
-     *
-     * @param componentOffset
-     * @param gbLayout
-     * @return
-     */
-    private JLabel createDummyLabel(int componentOffset, GridBagLayout gbLayout) {
-        JLabel empty = new JLabel("No editable properties", SwingConstants.CENTER);
-        Dimension d = empty.getPreferredSize();
-        empty.setPreferredSize(new Dimension(d.width * 2, d.height * 2));
-        empty.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 10));
-        GridBagConstraints gbConstraints = new GridBagConstraints();
-        gbConstraints.anchor = GridBagConstraints.CENTER;
-        gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gbConstraints.gridy = componentOffset;
-        gbConstraints.gridx = 0;
-        gbLayout.setConstraints(empty, gbConstraints);
-        return empty;
-    }
-
     private PropertyEditor makeEditor(PropertyDescriptor property, String name, Object value) {
         PropertyEditor editor = PropertyEditorProvider.findEditor(property, value);
         if (editor == null) {
@@ -397,65 +413,8 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         }
         editor.setValue(value);
 
-//        System.out.println("PSP editor class: " + editor.getClass());
-
         editor.addPropertyChangeListener(this);
         return editor;
-    }
-
-    private void addLabelView(int componentOffset, GridBagLayout gbLayout,
-                              int i, String name, JComponent newView) {
-
-        propertyLabels[i] = makeLabel(name);
-        views[i] = newView;
-        viewWrappers[i] = new JPanel();
-        viewWrappers[i].setLayout(new BorderLayout());
-
-        gbLayout.setConstraints(propertyLabels[i], makeLabelConstraints(i + componentOffset));
-        add(propertyLabels[i]);
-        JPanel newPanel = makeViewPanel(toolTips[i], propertyLabels[i], views[i], viewWrappers[i]);
-        gbLayout.setConstraints(newPanel, makeViewConstraints(i + componentOffset));
-        add(newPanel);
-    }
-
-    private JLabel makeLabel(String name) {
-        JLabel label = new JLabel(name, SwingConstants.RIGHT);
-        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 5));
-        return label;
-    }
-
-    private static JPanel makeViewPanel(String tipText, JLabel label,
-                                        JComponent view, JComponent viewWrapper) {
-        JPanel newPanel = new JPanel();
-        if (tipText != null) {
-            label.setToolTipText(tipText);
-            view.setToolTipText(tipText);
-        }
-        newPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 10));
-        newPanel.setLayout(new BorderLayout());
-        // @todo: Streiche here i could add the ViewWrapper
-        viewWrapper.add(view, BorderLayout.CENTER);
-        newPanel.add(viewWrapper, BorderLayout.CENTER);
-        return newPanel;
-    }
-
-    private GridBagConstraints makeLabelConstraints(int componentIndex) {
-        GridBagConstraints gbConstraints = new GridBagConstraints();
-        gbConstraints.anchor = GridBagConstraints.EAST;
-        gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gbConstraints.gridy = componentIndex;
-        gbConstraints.gridx = 0;
-        return gbConstraints;
-    }
-
-    private GridBagConstraints makeViewConstraints(int componentIndex) {
-        GridBagConstraints gbConstraints = new GridBagConstraints();
-        gbConstraints.anchor = GridBagConstraints.WEST;
-        gbConstraints.fill = GridBagConstraints.BOTH;
-        gbConstraints.gridy = componentIndex;
-        gbConstraints.gridx = 1;
-        gbConstraints.weightx = 100;
-        return gbConstraints;
     }
 
     /**
@@ -543,8 +502,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
     }
 
     private JPanel makeInfoPanel(String infoText, Object targ, int rowHeight) {
-        Object args[] = {};
-
         className = targ.getClass().getName();
         helpButton = new JButton("Help");
         helpButton.setToolTipText("More information about " + className);
@@ -1038,9 +995,7 @@ class PropertyCellRenderer implements TableCellRenderer {
         }
 
         throw new UnsupportedOperationException("Not supported yet.");
-
     }
-
 }
 
 class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {

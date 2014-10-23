@@ -23,8 +23,7 @@ public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
     /**
      * Starts a statistics GUI and the GOProcessor thread.
      *
-     * @param AdapterName the title of the ModulAdapter
-     * @param Client      the client instance
+     * @param adapterName the title of the ModuleAdapter
      */
     public GOModuleAdapter(String adapterName) {
         super(adapterName, "", OptimizationParameters.getInstance(), false);
@@ -33,10 +32,11 @@ public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
     /**
      * Starts a statistics GUI and the GOProcessor thread with a given OptimizationParameters file.
      *
-     * @param AdapterName the title of the ModulAdapter
-     * @param Client      the client instance
+     * @param adapterName the title of the ModuleAdapter
+     * @param optimizationParameters the client instance
+     * @param noGuiLogFile
      */
-    public GOModuleAdapter(String adapterName, InterfaceOptimizationParameters goParams, String noGuiLogFile) {
-        super(adapterName, "", goParams, false, noGuiLogFile);
+    public GOModuleAdapter(String adapterName, InterfaceOptimizationParameters optimizationParameters, String noGuiLogFile) {
+        super(adapterName, "", optimizationParameters, false, noGuiLogFile);
     }
 }
