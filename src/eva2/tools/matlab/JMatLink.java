@@ -318,16 +318,6 @@ public class JMatLink extends Thread {
 
     }
 
-    // **** terminate running thread ****
-
-    @Override
-    public void destroy() {
-
-        destroyJMatLinkB = true;
-
-        notifyAll();
-
-    }
 
     public void kill() {
 
