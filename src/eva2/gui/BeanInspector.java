@@ -7,9 +7,11 @@ import eva2.tools.SelectedTag;
 import eva2.tools.StringTools;
 import eva2.tools.Tag;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.beans.*;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -994,6 +996,16 @@ public class BeanInspector {
         String result = "";
         String tipName = name + "TipText";
 
+        // Find by annotation
+        Parameter[] parameters= target.getClass().getAnnotationsByType(Parameter.class);
+        for (Field field : target.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(Parameter.class) && field.getName().equals(name)) {
+                Parameter parameter = field.getAnnotation(Parameter.class);
+                return parameter.description();
+            }
+        }
+
+        // Find by deprecated TipText method
         for (int j = 0; j < methods.length; j++) {
             String mname = methods[j].getDisplayName();
             Method meth = methods[j].getMethod();
