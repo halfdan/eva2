@@ -296,10 +296,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     /**
      * This method will generate one new individual from the given population
      *
-     * @param pop The current population
+     * @param population    The current population
+     * @param parentIndex
      * @return AbstractEAIndividual
      */
-    public AbstractEAIndividual generateNewIndividual(Population pop, int parentIndex) {
+    public AbstractEAIndividual generateNewIndividual(Population population, int parentIndex) {
         AbstractEAIndividual indy;
         InterfaceDataTypeDouble esIndy;
 
@@ -309,11 +310,11 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             parents = null;
         }
         try {
-            // select one random indy as starting individual. its a parent in any case.
+            // select one random indy as starting individual. It's a parent in any case.
             if (parentIndex < 0) {
-                parentIndex = RNG.randomInt(0, pop.size() - 1);
+                parentIndex = RNG.randomInt(0, population.size() - 1);
             }
-            indy = (AbstractEAIndividual) (pop.getEAIndividual(parentIndex)).getClone();
+            indy = (AbstractEAIndividual) (population.getEAIndividual(parentIndex)).getClone();
             esIndy = (InterfaceDataTypeDouble) indy;
         } catch (java.lang.ClassCastException e) {
             throw new RuntimeException("Differential Evolution currently requires InterfaceESIndividual as basic data type!");
@@ -325,9 +326,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         switch (this.DEType) {
             case DE1_Rand_1: {
                 // this is DE1 or DE/rand/1
-                double[] delta = this.fetchDeltaRandom(pop);
+                double[] delta = this.fetchDeltaRandom(population);
                 if (parents != null) {
-                    parents.add(pop.getEAIndividual(parentIndex));
+                    parents.add(population.getEAIndividual(parentIndex));
                 }  // Add wherever oX is used directly
                 for (int i = 0; i < oX.length; i++) {
                     vX[i] = oX[i] + this.getCurrentF() * delta[i];
@@ -336,10 +337,10 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
             case DE_CurrentToRand: {
                 // this is DE/current-to-rand/1
-                double[] rndDelta = this.fetchDeltaRandom(pop);
-                double[] bestDelta = this.fetchDeltaCurrentRandom(pop, esIndy);
+                double[] rndDelta = this.fetchDeltaRandom(population);
+                double[] bestDelta = this.fetchDeltaCurrentRandom(population, esIndy);
                 if (parents != null) {
-                    parents.add(pop.getEAIndividual(parentIndex));
+                    parents.add(population.getEAIndividual(parentIndex));
                 }  // Add wherever oX is used directly
                 for (int i = 0; i < oX.length; i++) {
                     vX[i] = oX[i] + this.getCurrentLambda() * bestDelta[i] + this.getCurrentF() * rndDelta[i];
@@ -348,10 +349,10 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
             case DE2_CurrentToBest: {
                 // this is DE2 or DE/current-to-best/1
-                double[] rndDelta = this.fetchDeltaRandom(pop);
-                double[] bestDelta = this.fetchDeltaBest(pop, esIndy);
+                double[] rndDelta = this.fetchDeltaRandom(population);
+                double[] bestDelta = this.fetchDeltaBest(population, esIndy);
                 if (parents != null) {
-                    parents.add(pop.getEAIndividual(parentIndex));
+                    parents.add(population.getEAIndividual(parentIndex));
                 }  // Add wherever oX is used directly
                 for (int i = 0; i < oX.length; i++) {
                     vX[i] = oX[i] + this.getCurrentLambda() * bestDelta[i] + this.getCurrentF() * rndDelta[i];
@@ -360,12 +361,12 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
             case DE_Best_1: {
                 // DE/best/1
-                AbstractEAIndividual bestIndy = getBestIndy(pop);
+                AbstractEAIndividual bestIndy = getBestIndy(population);
                 oX = getGenotype(bestIndy);
                 if (parents != null) {
                     parents.add(bestIndy);
                 }  // Add best instead of preselected
-                double[] delta1 = this.fetchDeltaRandom(pop);
+                double[] delta1 = this.fetchDeltaRandom(population);
                 for (int i = 0; i < oX.length; i++) {
                     vX[i] = oX[i] + this.getCurrentF() * delta1[i];
                 }
@@ -373,13 +374,13 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
             case DE_Best_2: {
                 // DE/best/2
-                AbstractEAIndividual bestIndy = getBestIndy(pop);
+                AbstractEAIndividual bestIndy = getBestIndy(population);
                 oX = getGenotype(bestIndy);
                 if (parents != null) {
                     parents.add(bestIndy);
                 }  // Add best instead of preselected
-                double[] delta1 = this.fetchDeltaRandom(pop);
-                double[] delta2 = this.fetchDeltaRandom(pop);
+                double[] delta1 = this.fetchDeltaRandom(population);
+                double[] delta2 = this.fetchDeltaRandom(population);
                 for (int i = 0; i < oX.length; i++) {
                     vX[i] = oX[i] + this.getCurrentF() * delta1[i] + this.getCurrentF() * delta2[i];
                 }
@@ -388,7 +389,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             case TrigonometricDE: {
                 // this is trigonometric mutation
                 if (parents != null) {
-                    parents.add(pop.getEAIndividual(parentIndex));
+                    parents.add(population.getEAIndividual(parentIndex));
                 }  // Add wherever oX is used directly
                 if (RNG.flipCoin(this.mt)) {
                     double[] xk, xl;
@@ -396,8 +397,8 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                     InterfaceDataTypeDouble indy1 = null, indy2 = null;
                     try {
                         // and i got indy!
-                        indy1 = (InterfaceDataTypeDouble) pop.get(RNG.randomInt(0, pop.size() - 1));
-                        indy2 = (InterfaceDataTypeDouble) pop.get(RNG.randomInt(0, pop.size() - 1));
+                        indy1 = (InterfaceDataTypeDouble) population.get(RNG.randomInt(0, population.size() - 1));
+                        indy2 = (InterfaceDataTypeDouble) population.get(RNG.randomInt(0, population.size() - 1));
                         if (parents != null) {
                             parents.add((AbstractEAIndividual) indy1);
                             parents.add((AbstractEAIndividual) indy2);
@@ -416,9 +417,9 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
                     }
                 } else {
                     // this is DE1
-                    double[] delta = this.fetchDeltaRandom(pop);
+                    double[] delta = this.fetchDeltaRandom(population);
                     if (parents != null) {
-                        parents.add(pop.getEAIndividual(parentIndex));
+                        parents.add(population.getEAIndividual(parentIndex));
                     }  // Add wherever oX is used directly
                     for (int i = 0; i < oX.length; i++) {
                         vX[i] = oX[i] + this.getCurrentF() * delta[i];
