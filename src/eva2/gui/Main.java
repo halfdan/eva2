@@ -669,7 +669,14 @@ public class Main extends JFrame implements OptimizationStateListener {
 
             @Override
             public void actionPerformed(final ActionEvent event) {
-                Main.this.close();
+                int result = JOptionPane.showConfirmDialog(
+                        Main.this,
+                        "Do you really want to exit EvA2?",
+                        "Exit Application",
+                        JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    Main.this.close();
+                }
             }
         };
 
