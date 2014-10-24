@@ -1,5 +1,7 @@
-package eva2.optimization.stat;
+package eva2.optimization.statistics;
 
+import eva2.optimization.enums.StatisticsOnSingleDataSet;
+import eva2.optimization.enums.StatisticsOnTwoSampledData;
 import eva2.tools.StringSelection;
 
 import javax.swing.*;
@@ -9,8 +11,8 @@ import java.util.List;
 @eva2.util.annotation.Description(value = "Select statistical values to be calculated and tests to be performed.")
 public class EvAStatisticalEvaluationParams implements Serializable {
 
-    private StringSelection singleStats = new StringSelection(StatsOnSingleDataSetEnum.mean, StatsOnSingleDataSetEnum.getInfoStrings());
-    private StringSelection twoSampledStats = new StringSelection(StatsOnTwoSampledDataEnum.tTestUneqLenEqVar, StatsOnTwoSampledDataEnum.getInfoStrings());
+    private StringSelection singleStats = new StringSelection(StatisticsOnSingleDataSet.mean, StatisticsOnSingleDataSet.getInfoStrings());
+    private StringSelection twoSampledStats = new StringSelection(StatisticsOnTwoSampledData.tTestUneqLenEqVar, StatisticsOnTwoSampledData.getInfoStrings());
     private List<JButton> additionalButtons = null;
 
     public void setGenericAdditionalButtons(List<JButton> buts) {

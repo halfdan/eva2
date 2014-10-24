@@ -1,4 +1,4 @@
-package eva2.optimization.stat;
+package eva2.optimization.statistics;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
 package eva2.gui.editor;
 
 import eva2.tools.StringSelection;
+import eva2.tools.StringTools;
 
 public class StringSelectionEditor extends AbstractListSelectionEditor {
     StringSelection strs;
@@ -24,7 +25,7 @@ public class StringSelectionEditor extends AbstractListSelectionEditor {
 
     @Override
     protected String getElementName(int i) {
-        return strs.getElement(i);
+        return StringTools.humaniseCamelCase(strs.getElement(i));
     }
 
     @Override

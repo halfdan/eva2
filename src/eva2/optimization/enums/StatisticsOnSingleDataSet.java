@@ -1,6 +1,6 @@
-package eva2.optimization.stat;
+package eva2.optimization.enums;
 
-public enum StatsOnSingleDataSetEnum {
+public enum StatisticsOnSingleDataSet {
     mean, median, variance, stdDev;
 
     public static String[] getInfoStrings() {

@@ -1,6 +1,6 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.enums.PSOTopologyEnum;
+import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;
 import eva2.optimization.operator.distancemetric.IndividualDataMetric;
 import eva2.optimization.operator.paramcontrol.ParamAdaption;
@@ -27,7 +27,7 @@ public class SqPSO extends ClusterBasedNichingEA {
         setEpsilonBound(epsilonConv);
         setHaltingWindow(haltingWindow);
         setMaxSpeciesSize(popSize);
-        setOptimizer(new ParticleSwarmOptimization(popSize, 2.05, 2.05, PSOTopologyEnum.grid, 2));
+        setOptimizer(new ParticleSwarmOptimization(popSize, 2.05, 2.05, PSOTopology.grid, 2));
         ParamAdaption[] defAdpt = new ParamAdaption[]{};
         setParameterControl(defAdpt);
         setPopulationSize(popSize);

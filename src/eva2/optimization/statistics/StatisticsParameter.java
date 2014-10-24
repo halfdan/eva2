@@ -1,4 +1,4 @@
-package eva2.optimization.stat;
+package eva2.optimization.statistics;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
@@ -42,8 +42,8 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     public final static int OUTPUT_WINDOW = 1;
     public final static int OUTPUT_FILE_WINDOW = 2;
     SelectedTag outputTo = new SelectedTag("File (current dir.)", "Text-window", "Both file and text-window");
-    private int verboK = 10;
-    private int textoutput = 0;
+    private int verbosityK = 10;
+    private int textOutput = 0;
     private int multiRuns = 1;
     private String resultFilePrefix = "EvA2";
     protected String name = "not defined";
@@ -98,7 +98,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     @Override
     public String toString() {
         String ret = "\r\nStatisticsParameter (" + super.toString() + "):\r\nmultiRuns=" + multiRuns
-                + ", textoutput=" + textoutput
+                + ", textOutput=" + textOutput
                 + ", verbosity= " + outputVerbosity.getSelectedString()
                 + "\nTo " + outputTo.getSelectedString()
                 + ", " + BeanInspector.toString(graphSel.getStrings());
@@ -121,13 +121,13 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     /**
      *
      */
-    private StatisticsParameter(StatisticsParameter Source) {
-        convergenceRateThreshold = Source.convergenceRateThreshold;
-        useStatPlot = Source.useStatPlot;
-        textoutput = Source.textoutput;
-        multiRuns = Source.multiRuns;
-        resultFilePrefix = Source.resultFilePrefix;
-        verboK = Source.verboK;
+    private StatisticsParameter(StatisticsParameter statisticsParameter) {
+        convergenceRateThreshold = statisticsParameter.convergenceRateThreshold;
+        useStatPlot = statisticsParameter.useStatPlot;
+        textOutput = statisticsParameter.textOutput;
+        multiRuns = statisticsParameter.multiRuns;
+        resultFilePrefix = statisticsParameter.resultFilePrefix;
+        verbosityK = statisticsParameter.verbosityK;
     }
 
     /**
@@ -173,7 +173,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      *
      */
     public String infoStringTipText() {
-        return "Infostring displayed on fitness graph by prssing the right mouse button.";
+        return "Infostring displayed on fitness graph by pressing the right mouse button.";
     }
 
     /**
@@ -232,12 +232,6 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
         return outputTo.getSelectedTagID() > 0;
     }
 
-    //	/**
-//	*
-//	*/
-//	public String resultFileNameTipText() {
-//	return "File name for the result file. If empty or 'none', no output file will be created.";
-//	}
     public String convergenceRateThresholdTipText() {
         return "Provided the optimal fitness is at zero, give the threshold below which it is considered as 'reached'";
     }
@@ -298,12 +292,12 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
 
     @Override
     public int getOutputVerbosityK() {
-        return verboK;
+        return verbosityK;
     }
 
     @Override
     public void setOutputVerbosityK(int k) {
-        verboK = k;
+        verbosityK = k;
     }
 
     public String outputVerbosityKTipText() {
@@ -371,16 +365,12 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
                     infoFields.add(null);
                 }
             }
-//			header += inf.getAdditionalDataHeader(null); // lets hope this works with a null 
         }
         // create additional fields to be selectable by the user, defined by the informer headers
-//		StringSelection ss = new StringSelection(GraphSelectionEnum.getAndAppendArray(headerFields.toArray(new String[headerFields.size()])));
         StringSelection ss = new StringSelection(GraphSelectionEnum.currentBest, GraphSelectionEnum.getInfoStrings(),
                 headerFields, infoFields.toArray(new String[infoFields.size()]));
         ss.takeOverSelection(graphSel);
-//		System.out.println("In " + this + ": setting new informers: " + BeanInspector.toString(ss.getStrings()));
         // This works!
         setFieldSelection(ss);
-//		System.out.println("After: " + this);
     }
 }

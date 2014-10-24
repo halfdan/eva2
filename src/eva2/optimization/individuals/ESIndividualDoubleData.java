@@ -1,7 +1,7 @@
 package eva2.optimization.individuals;
 
 
-import eva2.optimization.enums.MutateESCrossoverTypeEnum;
+import eva2.optimization.enums.MutateESCrossoverType;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
 import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateESGlobal;
@@ -24,7 +24,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
 
     public ESIndividualDoubleData() {
         this.mutationProbability = 1.0;
-        this.mutationOperator = new MutateESGlobal(0.2, MutateESCrossoverTypeEnum.intermediate);
+        this.mutationOperator = new MutateESGlobal(0.2, MutateESCrossoverType.intermediate);
         this.crossoverProbability = 0.5;
         this.crossoverOperator = new CrossoverESDefault();
         this.genotype = new double[1];

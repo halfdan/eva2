@@ -1,6 +1,6 @@
 package eva2.optimization.enums;
 
-public enum PSOTopologyEnum {
+public enum PSOTopology {
     /**
      *
      */
@@ -37,7 +37,7 @@ public enum PSOTopologyEnum {
      * @param oldID
      * @return
      */
-    public static PSOTopologyEnum getFromId(int oldID) {
+    public static PSOTopology getFromId(int oldID) {
         switch (oldID) {
             case 0:
                 return linear;

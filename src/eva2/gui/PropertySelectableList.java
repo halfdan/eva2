@@ -4,11 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 23.03.2004
- * Time: 15:04:05
- * To change this template use File | Settings | File Templates.
  */
 public class PropertySelectableList<T> implements java.io.Serializable {
 
@@ -16,9 +11,6 @@ public class PropertySelectableList<T> implements java.io.Serializable {
     protected boolean[] selections;
     private transient PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    //    public PropertySelectableList() {
-//    }
-//    
     public PropertySelectableList(T[] initial) {
         objects = initial;
         selections = new boolean[initial.length];

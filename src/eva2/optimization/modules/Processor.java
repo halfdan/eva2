@@ -15,12 +15,11 @@ import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
-import eva2.optimization.stat.InterfaceStatistics;
-import eva2.optimization.stat.InterfaceTextListener;
-import eva2.optimization.stat.StatisticsWithGUI;
+import eva2.optimization.statistics.InterfaceStatistics;
+import eva2.optimization.statistics.InterfaceTextListener;
+import eva2.optimization.statistics.StatisticsWithGUI;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.EVAERROR;
-import eva2.tools.EVAHELP;
 import eva2.tools.StringTools;
 import eva2.tools.math.RNG;
 

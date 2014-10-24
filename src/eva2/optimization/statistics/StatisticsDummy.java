@@ -1,4 +1,4 @@
-package eva2.optimization.stat;
+package eva2.optimization.statistics;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.IndividualInterface;
@@ -12,13 +12,11 @@ import java.util.List;
 /**
  * This may be given to a Processor if no further stats are required. It speeds up
  * optimization especially with small populations (e.g. HC as local search operator).
- *
- * @author mkron
  */
 public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListener {
-    boolean consoleOut = false;
-    StatisticsParameter sParams = null;
-    AbstractEAIndividual bestCurrentIndividual, bestRunIndy, bestIndividualAllover;
+    private boolean consoleOut = false;
+    private StatisticsParameter sParams = null;
+    private AbstractEAIndividual bestCurrentIndividual, bestRunIndy, bestIndividualAllover;
 
     public StatisticsDummy() {
         bestIndividualAllover = null;

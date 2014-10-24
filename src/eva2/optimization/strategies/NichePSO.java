@@ -3,7 +3,7 @@ package eva2.optimization.strategies;
 import eva2.OptimizerFactory;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.TopoPlot;
-import eva2.optimization.enums.PSOTopologyEnum;
+import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -92,7 +92,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     // Parameter for the mainswarm
 //	protected double mainSwarmPhi1 = 1.2;
 //	protected double mainSwarmPhi2 = 0; // by default no communication in the mainswarm
-    protected PSOTopologyEnum mainSwarmTopology = PSOTopologyEnum.grid; // = 1; 
+    protected PSOTopology mainSwarmTopology = PSOTopology.grid; // = 1;
     protected int mainSwarmTopologyRange = 0;
     private int mainSwarmAlgoType = 0; // 0: inertness, 1: constriction
     //	private InterfaceParameterAging mainSwarmParamAging = new LinearParameterAging();
@@ -1014,10 +1014,10 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 //	}
     public void SetMainSwarmTopologyTag(int mainSwarmTopologyTag) {
         // Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random"  in that order starting by 0.
-        this.mainSwarmTopology = PSOTopologyEnum.getFromId(mainSwarmTopologyTag);
+        this.mainSwarmTopology = PSOTopology.getFromId(mainSwarmTopologyTag);
     }
 
-    public PSOTopologyEnum getMainSwarmTopology() {
+    public PSOTopology getMainSwarmTopology() {
         return mainSwarm.topology;
     }
 
@@ -1026,10 +1026,10 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      *
      * @param t The type.
      */
-    public void setMainSwarmTopology(PSOTopologyEnum t) {
+    public void setMainSwarmTopology(PSOTopology t) {
         mainSwarm.topology = t;
         this.mainSwarmTopology = t;
-        GenericObjectEditor.setHideProperty(getClass(), "mainSwarmTopologyRange", mainSwarmTopology == PSOTopologyEnum.multiSwarm); // "Multi-Swarm" has no topologyRange
+        GenericObjectEditor.setHideProperty(getClass(), "mainSwarmTopologyRange", mainSwarmTopology == PSOTopology.multiSwarm); // "Multi-Swarm" has no topologyRange
     }
 
     public int getMainSwarmTopologyRange() {

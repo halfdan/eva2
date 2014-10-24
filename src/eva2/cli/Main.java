@@ -3,8 +3,8 @@ package eva2.cli;
 import com.google.gson.*;
 import eva2.OptimizerFactory;
 import eva2.optimization.OptimizationStateListener;
-import eva2.optimization.enums.DETypeEnum;
-import eva2.optimization.enums.PSOTopologyEnum;
+import eva2.optimization.enums.DEType;
+import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
@@ -461,7 +461,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
 
                 if (commandLine.hasOption("DEType")) {
                     ((DifferentialEvolution)this.optimizer).setDEType(
-                            DETypeEnum.getFromId(
+                            DEType.getFromId(
                                     Integer.parseInt(commandLine.getOptionValue("DEType"))
                             )
                     );
@@ -498,7 +498,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             case "ParticleSwarmOptimization": {
                 double phi1 = 2.05, phi2 = 2.05, speedLimit = 0.1;
                 int topoRange = 2;
-                PSOTopologyEnum selectedTopology = PSOTopologyEnum.star;
+                PSOTopology selectedTopology = PSOTopology.star;
 
                 opt.addOption("speedLimit", true, "Speed Limit");
                 opt.addOption("topology", true, "Particle Swarm Topology (0-7)");
@@ -524,7 +524,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
                 }
 
                 if (commandLine.hasOption("topology")) {
-                    selectedTopology = PSOTopologyEnum.getFromId(Integer.parseInt(commandLine.getOptionValue("topology")));
+                    selectedTopology = PSOTopology.getFromId(Integer.parseInt(commandLine.getOptionValue("topology")));
                 }
 
                 if (commandLine.hasOption("speedLimit")) {

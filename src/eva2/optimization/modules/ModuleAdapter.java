@@ -1,7 +1,7 @@
 package eva2.optimization.modules;
 import eva2.gui.EvATabbedFrameMaker;
 import eva2.optimization.OptimizationStateListener;
-import eva2.optimization.stat.OptimizationJob;
+import eva2.optimization.statistics.OptimizationJob;
 
 /**
  *
