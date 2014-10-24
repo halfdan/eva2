@@ -837,21 +837,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         return result;
     }
 
-    /**
-     * This method allows you to set an identifier for the algorithm
-     *
-     * @param name The indenifier
-     */
-    @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
 
     /**
      * This method will return a naming String

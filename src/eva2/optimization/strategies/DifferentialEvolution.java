@@ -518,11 +518,15 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     public void optimizeGenerational() {
         int parentIndex;
+
+        // Initialize or clear child population
         if (children == null) {
             children = new Population(population.size());
         } else {
             children.clear();
         }
+
+        // Create a new population based on the old one
         for (int i = 0; i < this.population.size(); i++) {
             if (cyclePop) {
                 parentIndex = i;
@@ -726,21 +730,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         result += this.optimizationProblem.getStringRepresentationForProblem(this) + "\n";
         result += this.population.getStringRepresentation();
         return result;
-    }
-
-    /**
-     * This method allows you to set an identifier for the algorithm
-     *
-     * @param name The identifier
-     */
-    @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
     }
 
     /**

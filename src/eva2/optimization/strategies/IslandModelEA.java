@@ -92,7 +92,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.islands = new InterfaceOptimizer[this.numLocalCPUs];
             for (int i = 0; i < this.numLocalCPUs; i++) {
                 this.islands[i] = (InterfaceOptimizer) this.optimizer.clone();
-                this.islands[i].setIdentifier("" + i);
+                //this.islands[i].setIdentifier("" + i);
                 this.islands[i].initialize();
                 if (this.logLocalChanges) {
                     this.islands[i].addPopulationChangedEventListener(this);
@@ -161,7 +161,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             this.islands = new InterfaceOptimizer[this.numLocalCPUs];
             for (int i = 0; i < this.numLocalCPUs; i++) {
                 this.islands[i] = (InterfaceOptimizer) this.optimizer.clone();
-                this.islands[i].setIdentifier("" + i);
+                //this.islands[i].setIdentifier("" + i);
                 this.islands[i].initialize();
                 if (this.logLocalChanges) {
                     this.islands[i].addPopulationChangedEventListener(this);
@@ -387,21 +387,6 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     }
 
     /**
-     * This method allows you to set an identifier for the algorithm
-     *
-     * @param name The indenifier
-     */
-    @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    /**
      * This method will return the Optimizers
      *
      * @return An array of optimizers
@@ -434,9 +419,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         InterfaceOptimizer opt = (InterfaceOptimizer) source;
-        int sourceID = Integer.parseInt(opt.getIdentifier());
+        int sourceID = 12; //Integer.parseInt(opt.getIdentifier());
         double cFCOpt = opt.getPopulation().getFunctionCalls();
-        double plotValue = (this.optimizationProblem.getDoublePlotValue(opt.getPopulation())).doubleValue();
+        double plotValue = this.optimizationProblem.getDoublePlotValue(opt.getPopulation());
 
         if (this.show) {
             this.plot.setConnectedPoint(cFCOpt, plotValue, (sourceID + 1));

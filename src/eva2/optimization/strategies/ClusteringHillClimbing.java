@@ -99,16 +99,6 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         setLocalSearchMethod(getLocalSearchMethod());
     }
 
-    @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
     /**
      * This method will set the problem that is to be optimized
      *

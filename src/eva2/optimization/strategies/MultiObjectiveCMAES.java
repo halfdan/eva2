@@ -71,18 +71,6 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
      * (non-Javadoc)
      * 
      * @see
-     * eva2.optimization.strategies.InterfaceOptimizer#setIdentifier(java.lang.
-     * String)
-     */
-    @Override
-    public void setIdentifier(String name) {
-        identifier = name;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
      * eva2.optimization.strategies.InterfaceOptimizer#SetProblem(eva2.optimization
      * .problems.InterfaceOptimizationProblem)
      */
@@ -111,16 +99,6 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     public InterfaceSolutionSet getAllSolutions() {
         Population pop = getPopulation();
         return new SolutionSet(pop, pop);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see eva2.optimization.strategies.InterfaceOptimizer#getIdentifier()
-     */
-    @Override
-    public String getIdentifier() {
-        return identifier;
     }
 
     /*

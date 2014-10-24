@@ -57,11 +57,6 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     }
 
     @Override
-    public void setIdentifier(String name) {
-        identifier = name;
-    }
-
-    @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         optimizationProblem = (AbstractOptimizationProblem) problem;
     }
@@ -222,11 +217,6 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     }
 
     @Override
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    @Override
     public String getName() {
         return identifier;
     }
@@ -360,7 +350,6 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     /**
      * This method creates a Nelder-Mead instance.
      *
-     * @param pop      The size of the population
      * @param problem  The problem to be optimized
      * @param listener
      * @return An optimization procedure that performs nelder mead optimization.

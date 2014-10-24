@@ -638,16 +638,6 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
     }
 
     @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    @Override
     public String getName() {
         return "TRIBES";
     }

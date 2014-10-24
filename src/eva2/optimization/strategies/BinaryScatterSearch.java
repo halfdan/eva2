@@ -762,16 +762,6 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     }
 
     @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.problem = (AbstractOptimizationProblem) problem;
     }

@@ -334,21 +334,6 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
 
     /**
-     * This method allows you to set an identifier for the algorithm
-     *
-     * @param name The indenifier
-     */
-    @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    /**
      * These are for GUI
      */
 
