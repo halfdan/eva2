@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A selectable list of EvAJobs. Each job contains a OptimizationParameters instance and potentially
+ * A selectable list of OptimizationJobs. Each job contains a OptimizationParameters instance and potentially
  * statistical data.
  */
 @eva2.util.annotation.Description(value = "Display a set of jobs consisting of a multi-run experiment.")
