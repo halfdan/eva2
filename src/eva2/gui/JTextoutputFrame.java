@@ -75,6 +75,7 @@ public class JTextoutputFrame implements JTextoutputFrameInterface, ActionListen
         textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
         textArea.setCaretPosition(0);
+        textArea.setTabSize(16);
         textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
         ((AbstractDocument)textArea.getDocument()).setDocumentFilter(new LineBufferDocumentFilter(textArea, 2500));
 

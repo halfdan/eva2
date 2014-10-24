@@ -4,12 +4,14 @@ import eva2.gui.BeanInspector;
 import eva2.optimization.enums.StatisticsOnSingleDataSet;
 import eva2.optimization.enums.StatisticsOnTwoSampledData;
 import eva2.tools.ReflectPackage;
+import eva2.tools.StringTools;
 import eva2.tools.math.Mathematics;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Do some statistical tests on a set of job results. Note that the plausibility (comparability of the
@@ -17,6 +19,7 @@ import java.util.List;
  */
 public class EvAStatisticalEvaluation {
 
+    private static Logger LOGGER = Logger.getLogger(EvAStatisticalEvaluation.class.getName());
     public static EvAStatisticalEvaluationParams statsParams = new EvAStatisticalEvaluationParams();
 
 
@@ -33,10 +36,10 @@ public class EvAStatisticalEvaluation {
         List<String> commonFields = getCommonFields(jobsToWorkWith);
         if (commonFields != null && !commonFields.isEmpty()) {
             for (String field : commonFields) {
-                textout.println("###\t" + field + " statistical evaluation");
+                textout.println("###\t" + StringTools.humaniseCamelCase(field) + " statistical evaluation");
 
                 if (singleStats.length > 0) {
-                    textout.println("one-sampled statistics");
+                    textout.println("One-sampled Statistics\n");
                     for (int j = -1; j < singleStats.length; j++) {
                         if (j < 0) {
                             textout.print("method");
@@ -65,11 +68,11 @@ public class EvAStatisticalEvaluation {
                                     textout.println("");
                             }
                         }
-                        textout.println("");
+                        textout.println("\n");
                     }
                 }
                 if (twoSampledStats.length > 0) {
-                    textout.println("two-sampled stats:");
+                    textout.println("Two-sampled Statistics:\n");
                     for (int i = 0; i < twoSampledStats.length; i++) {
                         switch (twoSampledStats[i]) {
                             case tTestEqLenEqVar:
@@ -151,12 +154,11 @@ public class EvAStatisticalEvaluation {
         }
     }
 
-    private static void writeMannWhitney(InterfaceTextListener textout,
-                                         ArrayList<OptimizationJob> jobsToWorkWith, String field) {
+    private static void writeMannWhitney(InterfaceTextListener textout, ArrayList<OptimizationJob> jobsToWorkWith, String field) {
         for (int i = 0; i < jobsToWorkWith.size(); i++) {
             textout.print(jobsToWorkWith.get(i).getParams().getOptimizer().getName());
             for (int j = 0; j < jobsToWorkWith.size(); j++) {
-                textout.print("\t" + calculateMannWhintey(field, jobsToWorkWith.get(i), jobsToWorkWith.get(j)));
+                textout.print("\t" + calculateMannWhitney(field, jobsToWorkWith.get(i), jobsToWorkWith.get(j)));
             }
             textout.println("");
         }
@@ -178,8 +180,7 @@ public class EvAStatisticalEvaluation {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
         String b = twoDForm.format(value);
         b = b.replace(',', '.');
-        Double c = Double.valueOf(b);
-        return c;
+        return Double.valueOf(b);
     }
 
     private static String calculateMean(String field, OptimizationJob job1) {
@@ -253,7 +254,7 @@ public class EvAStatisticalEvaluation {
         return "" + t;
     }
 
-    private static String calculateMannWhintey(String field, OptimizationJob job1, OptimizationJob job2) {
+    private static String calculateMannWhitney(String field, OptimizationJob job1, OptimizationJob job2) {
         double[] dat1 = job1.getDoubleDataColumn(field);
         double[] dat2 = job2.getDoubleDataColumn(field);
         double t = Double.NaN;
@@ -263,7 +264,7 @@ public class EvAStatisticalEvaluation {
                 Object sp = BeanInspector.callIfAvailable(obj, "getSP", new Object[]{});
                 t = (Double) sp;
             } else {
-                System.err.println("For the MannWhitney test, the JSC package is required on the class path!");
+                LOGGER.warning("For the MannWhitney test, the JSC package is required on the class path!");
             }
         }
         return "" + t;
