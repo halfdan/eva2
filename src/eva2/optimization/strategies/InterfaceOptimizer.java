@@ -78,15 +78,6 @@ public interface InterfaceOptimizer {
     InterfaceSolutionSet getAllSolutions();
 
     /**
-     * This method allows you to set an identifier for the algorithm
-     *
-     * @param name The identifier
-     */
-    void setIdentifier(String name);
-
-    String getIdentifier();
-
-    /**
      * This method will set the problem that is to be optimized. The problem
      * should be initialized when this method is called.
      *

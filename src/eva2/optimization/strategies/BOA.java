@@ -559,16 +559,6 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     }
 
     @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.problem = (AbstractOptimizationProblem) problem;
     }
@@ -583,9 +573,6 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         return "Bayesian Network";
     }
 
-    // -------------------------------
-    // -------------GUI---------------
-    // -------------------------------
     public int getNumberOfParents() {
         return this.numberOfParents;
     }

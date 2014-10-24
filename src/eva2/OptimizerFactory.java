@@ -356,7 +356,6 @@ public class OptimizerFactory {
         setTemplateOperators(problem, mutator, 1., new NoCrossover(), 0);
 
         HillClimbing hc = new HillClimbing();
-        hc.setIdentifier("-" + popSize + "-" + mutator.getStringRepresentation());
         hc.getPopulation().setTargetSize(popSize);
         hc.addPopulationChangedEventListener(listener);
         hc.setProblem(problem);

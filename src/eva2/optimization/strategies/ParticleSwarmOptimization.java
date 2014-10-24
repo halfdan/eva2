@@ -1522,28 +1522,12 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     /**
-     * This method allows you to set an identifier for the algorithm
-     *
-     * @param name The indenifier
-     */
-    @Override
-    public void setIdentifier(String name) {
-        this.indentifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.indentifier;
-    }
-
-    /**
      * This method will return a naming String
      *
      * @return The name of the algorithm
      */
     @Override
     public String getName() {
-//		return "PSO-"+getTopology()+getTopologyRange()+(isDoLocalSearch() ? "-ls_" : "_")+getPhi1()+"_"+getPhi2();
         return "PSO-" + getTopology() + getTopologyRange() + "_" + getPhi1() + "_" + getPhi2();
     }
 

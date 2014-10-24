@@ -8,6 +8,8 @@ import eva2.problems.F1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 
+import java.util.ArrayList;
+
 /**
  *
  */
@@ -16,6 +18,8 @@ public class ArtificialBeeColony implements InterfaceOptimizer {
 
     protected AbstractOptimizationProblem optimizationProblem = new F1Problem();
     protected Population population;
+
+    private ArrayList<InterfacePopulationChangedEventListener> populationChangedEventListeners;
 
     public ArtificialBeeColony() {
 
@@ -37,12 +41,15 @@ public class ArtificialBeeColony implements InterfaceOptimizer {
 
     @Override
     public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-
+        if (populationChangedEventListeners == null) {
+            populationChangedEventListeners = new ArrayList<>();
+        }
+        populationChangedEventListeners.add(ea);
     }
 
     @Override
     public boolean removePopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        return false;
+        return populationChangedEventListeners != null && populationChangedEventListeners.remove(ea);
     }
 
     @Override
@@ -50,13 +57,50 @@ public class ArtificialBeeColony implements InterfaceOptimizer {
 
     }
 
+    /**
+     * This method will initialize the optimizer with a given population
+     *
+     * @param pop   The initial population
+     * @param reset If true the population is reset.
+     */
     @Override
     public void initializeByPopulation(Population pop, boolean reset) {
+        this.population = (Population) pop.clone();
+        if (reset) {
+            this.population.init();
+            this.evaluatePopulation(this.population);
+            this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
+        }
+    }
 
+    /**
+     * Something has changed
+     *
+     * @param name Event name
+     */
+    protected void firePropertyChangedEvent(String name) {
+        if (this.populationChangedEventListeners != null) {
+            for (InterfacePopulationChangedEventListener listener : this.populationChangedEventListeners) {
+                listener.registerPopulationStateChanged(this, name);
+            }
+        }
+    }
+
+    /**
+     * This method will evaluate the current population using the given problem.
+     *
+     * @param population The population that is to be evaluated
+     */
+    private void evaluatePopulation(Population population) {
+        this.optimizationProblem.evaluate(population);
+        population.incrGeneration();
     }
 
     @Override
     public void optimize() {
+        /**
+         *
+         */
 
     }
 
@@ -72,16 +116,6 @@ public class ArtificialBeeColony implements InterfaceOptimizer {
 
     @Override
     public InterfaceSolutionSet getAllSolutions() {
-        return null;
-    }
-
-    @Override
-    public void setIdentifier(String name) {
-
-    }
-
-    @Override
-    public String getIdentifier() {
         return null;
     }
 

@@ -679,11 +679,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         return RNG.randomDouble(lowB, upB);
     }
 
-    ///////////// Trivials...
-    @Override
-    public void setIdentifier(String name) {
-        identifier = name;
-    }
 
     @Override
     public InterfaceOptimizationProblem getProblem() {
@@ -710,11 +705,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         } else {
             return false;
         }
-    }
-
-    @Override
-    public String getIdentifier() {
-        return identifier;
     }
 
     @Override

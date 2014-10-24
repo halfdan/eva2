@@ -926,16 +926,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     }
 
     @Override
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    @Override
-    public void setIdentifier(String name) {
-        identifier = name;
-    }
-
-    @Override
     public void setPopulation(Population pop) {
         // this might cause problems if the pop.size() does not fit the EsDpiNiching parameters mu/lamba per peak
         this.population = pop;

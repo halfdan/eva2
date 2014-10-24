@@ -1292,24 +1292,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     }
 
     /**
-     * @param name The indenifier
-     * @tested nn This method allows you to set an identifier for the algorithm
-     */
-    @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    /**
-     * @tested nn (non-Javadoc)
-     * @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#getIdentifier()
-     */
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    /**
      * ********************************************************************************************************************
      * getter: "descriptive parameters" for the mainswarm and subswarms
      */

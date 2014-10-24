@@ -288,21 +288,6 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     }
 
     /**
-     * This method allows you to set an identifier for the algorithm
-     *
-     * @param name The indenifier
-     */
-    @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    /**
      * This method will return a naming String
      *
      * @return The name of the algorithm

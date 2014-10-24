@@ -308,16 +308,6 @@ public class MLTGA implements InterfaceOptimizer, java.io.Serializable, Interfac
     }
 
     @Override
-    public void setIdentifier(String name) {
-        this.identifier = name;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.problem = (AbstractOptimizationProblem) problem;
     }
