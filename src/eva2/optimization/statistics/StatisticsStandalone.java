@@ -1,4 +1,4 @@
-package eva2.optimization.stat;
+package eva2.optimization.statistics;
 
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
@@ -80,7 +80,6 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
         double[] specificData = pop.getSpecificData();
         if (specificData != null) {
             for (int i = 0; i < specificData.length; i++) {
-//				((ArrayList<Object[]>[]) resultFrame.get(i))[optRunsPerformed].add(new Double[] {new Double(functionCalls), specificData[i]});
                 resultData.get(optRunsPerformed).add(new Object[]{new Double(functionCalls), specificData});
             }
         }

@@ -1,7 +1,7 @@
 package eva2.gui;
 
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.stat.OptimizationJobList;
+import eva2.optimization.statistics.OptimizationJobList;
 
 import javax.swing.*;
 import java.beans.PropertyEditor;

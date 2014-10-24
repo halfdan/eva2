@@ -1,12 +1,14 @@
-package eva2.optimization.stat;
+package eva2.optimization.enums;
 
-public enum StatsOnTwoSampledDataEnum {
+public enum StatisticsOnTwoSampledData {
     tTestEqLenEqVar, tTestUneqLenEqVar, tTestUneqLenUneqVar, mannWhitney;
 
     public static String[] getInfoStrings() {
-        return new String[]{"Two-sampled t-Test with equal sized data sets",
+        return new String[]{
+                "Two-sampled t-Test with equal sized data sets",
                 "Two-sampled t-Test with unequal sized data sets",
                 "Two-sampled t-Test with unequal data sets and unequal variances",
-                "Two-sampled Mann-Whitney test"};
+                "Two-sampled Mann-Whitney test"
+        };
     }
 }

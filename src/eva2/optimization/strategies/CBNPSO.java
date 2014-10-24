@@ -1,6 +1,6 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.enums.PSOTopologyEnum;
+import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;
 import eva2.optimization.operator.distancemetric.IndividualDataMetric;
 import eva2.optimization.operator.paramcontrol.CbpsoFitnessThresholdBasedAdaption;
@@ -53,7 +53,7 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
         setEpsilonBound(epsilonConv);
         setHaltingWindow(haltingWindow);
         setMaxSpeciesSize(maxSpecSize);
-        setOptimizer(new ParticleSwarmOptimization(popSize, 2.05, 2.05, PSOTopologyEnum.grid, 2));
+        setOptimizer(new ParticleSwarmOptimization(popSize, 2.05, 2.05, PSOTopology.grid, 2));
         ParamAdaption[] defAdpt = new ParamAdaption[]{getDefaultSinusoidalAdaption()};
         setParameterControl(defAdpt);
         if (threshAdaption) {

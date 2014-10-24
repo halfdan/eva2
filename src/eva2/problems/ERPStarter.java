@@ -14,7 +14,7 @@ import eva2.optimization.operator.selection.SelectBestIndividuals;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
-import eva2.optimization.stat.StatisticsStandalone;
+import eva2.optimization.statistics.StatisticsStandalone;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.BasicResourceLoader;

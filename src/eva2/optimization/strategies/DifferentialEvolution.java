@@ -2,7 +2,6 @@ package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.enums.DETypeEnum;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -41,7 +40,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     protected AbstractOptimizationProblem optimizationProblem = new F1Problem();
 
     @Parameter(name = "DEType", description = "Mutation type for DE")
-    private DETypeEnum DEType;
+    private eva2.optimization.enums.DEType DEType;
 
     @Parameter(name = "F", description = "Differential Weight")
     private double differentialWeight = 0.8;
@@ -71,10 +70,10 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      */
     public DifferentialEvolution() {
         // sets DE2 as default
-        DEType = DETypeEnum.DE2_CurrentToBest;
+        DEType = eva2.optimization.enums.DEType.DE2_CurrentToBest;
     }
 
-    public DifferentialEvolution(int popSize, DETypeEnum type, double f, double cr, double lambda, double mt) {
+    public DifferentialEvolution(int popSize, eva2.optimization.enums.DEType type, double f, double cr, double lambda, double mt) {
         population = new Population(popSize);
         DEType = type;
         differentialWeight = f;
@@ -865,14 +864,14 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
      *
      * @param s The type.
      */
-    public void setDEType(DETypeEnum s) {
+    public void setDEType(eva2.optimization.enums.DEType s) {
         this.DEType = s;
         // show mt for trig. DE only
-        GenericObjectEditor.setShowProperty(this.getClass(), "lambda", s == DETypeEnum.DE2_CurrentToBest);
-        GenericObjectEditor.setShowProperty(this.getClass(), "mt", s == DETypeEnum.TrigonometricDE);
+        GenericObjectEditor.setShowProperty(this.getClass(), "lambda", s == eva2.optimization.enums.DEType.DE2_CurrentToBest);
+        GenericObjectEditor.setShowProperty(this.getClass(), "mt", s == eva2.optimization.enums.DEType.TrigonometricDE);
     }
 
-    public DETypeEnum getDEType() {
+    public eva2.optimization.enums.DEType getDEType() {
         return this.DEType;
     }
 

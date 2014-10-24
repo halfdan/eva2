@@ -4,7 +4,7 @@ package eva2.gui.editor;
  */
 
 import eva2.gui.PropertySheetPanelStat;
-import eva2.optimization.stat.GenericStatistics;
+import eva2.optimization.statistics.GenericStatistics;
 
 import javax.swing.*;
 import java.awt.*;

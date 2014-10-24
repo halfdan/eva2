@@ -2,7 +2,7 @@ package eva2.gui;
 
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.modules.ModuleAdapter;
-import eva2.optimization.stat.OptimizationJob;
+import eva2.optimization.statistics.OptimizationJob;
 import eva2.tools.ToolBoxGui;
 
 import javax.swing.*;

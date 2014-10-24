@@ -1,6 +1,8 @@
-package eva2.optimization.stat;
+package eva2.optimization.statistics;
 
 import eva2.gui.BeanInspector;
+import eva2.optimization.enums.StatisticsOnSingleDataSet;
+import eva2.optimization.enums.StatisticsOnTwoSampledData;
 import eva2.tools.ReflectPackage;
 import eva2.tools.math.Mathematics;
 
@@ -19,8 +21,8 @@ public class EvAStatisticalEvaluation {
 
 
     public static void evaluate(InterfaceTextListener textout, OptimizationJob[] jobList, int[] selectedIndices,
-                                StatsOnSingleDataSetEnum[] singleStats,
-                                StatsOnTwoSampledDataEnum[] twoSampledStats) {
+                                StatisticsOnSingleDataSet[] singleStats,
+                                StatisticsOnTwoSampledData[] twoSampledStats) {
         ArrayList<OptimizationJob> jobsToWorkWith = new ArrayList<>();
         for (int i = 0; i < jobList.length; i++) {
             // remove jobs which are not finished or not selected
@@ -71,22 +73,22 @@ public class EvAStatisticalEvaluation {
                     for (int i = 0; i < twoSampledStats.length; i++) {
                         switch (twoSampledStats[i]) {
                             case tTestEqLenEqVar:
-                                textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
+                                textout.println(StatisticsOnTwoSampledData.getInfoStrings()[twoSampledStats[i].ordinal()]);
                                 writeTwoSampleFirstLine(textout, jobsToWorkWith);
                                 writeTTestEqSizeEqVar(textout, jobsToWorkWith, field);
                                 break;
                             case tTestUneqLenEqVar:
-                                textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
+                                textout.println(StatisticsOnTwoSampledData.getInfoStrings()[twoSampledStats[i].ordinal()]);
                                 writeTwoSampleFirstLine(textout, jobsToWorkWith);
                                 writeUnEqSizeEqVar(textout, jobsToWorkWith, field);
                                 break;
                             case tTestUneqLenUneqVar:
-                                textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
+                                textout.println(StatisticsOnTwoSampledData.getInfoStrings()[twoSampledStats[i].ordinal()]);
                                 writeTwoSampleFirstLine(textout, jobsToWorkWith);
                                 writeTTestUnEqSizeUnEqVar(textout, jobsToWorkWith, field);
                                 break;
                             case mannWhitney:
-                                textout.println(StatsOnTwoSampledDataEnum.getInfoStrings()[twoSampledStats[i].ordinal()]);
+                                textout.println(StatisticsOnTwoSampledData.getInfoStrings()[twoSampledStats[i].ordinal()]);
                                 writeTwoSampleFirstLine(textout, jobsToWorkWith);
                                 writeMannWhitney(textout, jobsToWorkWith, field);
                             default:

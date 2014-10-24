@@ -1,4 +1,4 @@
-package eva2.optimization.stat;
+package eva2.optimization.statistics;
 
 import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.population.Population;

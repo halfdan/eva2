@@ -11,11 +11,6 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.06.2003
- * Time: 11:41:01
- * To change this template use Options | File Templates.
  */
 public abstract class AbstractListSelectionEditor extends JPanel implements PropertyEditor, PropertyChangeListener {
 

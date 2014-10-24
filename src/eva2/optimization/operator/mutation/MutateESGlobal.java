@@ -1,6 +1,6 @@
 package eva2.optimization.operator.mutation;
 
-import eva2.optimization.enums.MutateESCrossoverTypeEnum;
+import eva2.optimization.enums.MutateESCrossoverType;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
@@ -19,7 +19,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
     protected double mutationStepSize = 0.2;
     protected double tau1 = 0.15;
     protected double lowerLimitStepSize = 0.0000005;
-    protected MutateESCrossoverTypeEnum crossoverType = MutateESCrossoverTypeEnum.none;
+    protected MutateESCrossoverType crossoverType = MutateESCrossoverType.none;
 
     public MutateESGlobal() {
     }
@@ -30,7 +30,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      * @param mutationStepSize
      */
     public MutateESGlobal(double mutationStepSize) {
-        this(mutationStepSize, MutateESCrossoverTypeEnum.none);
+        this(mutationStepSize, MutateESCrossoverType.none);
     }
 
     /**
@@ -38,7 +38,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      *
      * @param mutationStepSize
      */
-    public MutateESGlobal(double mutationStepSize, MutateESCrossoverTypeEnum coType) {
+    public MutateESGlobal(double mutationStepSize, MutateESCrossoverType coType) {
         setMutationStepSize(mutationStepSize);
         setCrossoverType(coType);
     }
@@ -133,7 +133,7 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      */
     @Override
     public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners) {
-        if (crossoverType != MutateESCrossoverTypeEnum.none) {
+        if (crossoverType != MutateESCrossoverType.none) {
             ArrayList<Double> tmpList = new ArrayList<>();
             if (indy1.getMutationOperator() instanceof MutateESGlobal) {
                 tmpList.add(new Double(((MutateESGlobal) indy1.getMutationOperator()).mutationStepSize));
@@ -266,11 +266,11 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      *
      * @param d The mutation operator.
      */
-    public void setCrossoverType(MutateESCrossoverTypeEnum d) {
+    public void setCrossoverType(MutateESCrossoverType d) {
         this.crossoverType = d;
     }
 
-    public MutateESCrossoverTypeEnum getCrossoverType() {
+    public MutateESCrossoverType getCrossoverType() {
         return this.crossoverType;
     }
 

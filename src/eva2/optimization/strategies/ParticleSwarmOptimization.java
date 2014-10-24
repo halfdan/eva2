@@ -4,7 +4,7 @@ import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.Plot;
 import eva2.gui.plot.TopoPlot;
-import eva2.optimization.enums.PSOTopologyEnum;
+import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.AbstractEAIndividualComparator;
@@ -53,7 +53,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     protected boolean checkRange = true;
     protected boolean checkSpeedLimit = false;
     protected boolean useAlternative = false;
-    protected PSOTopologyEnum topology = PSOTopologyEnum.grid;
+    protected PSOTopology topology = PSOTopology.grid;
     /**
      * Defines which version of PSO is applied, classical inertness or
      * constriction (using chi)
@@ -110,7 +110,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //	private double lsCandidateRatio=0.25;
 
     public ParticleSwarmOptimization() {
-        topology = PSOTopologyEnum.grid;
+        topology = PSOTopology.grid;
         algType = new SelectedTag("Inertness", "Constriction");
         algType.setSelectedTag(1);
 
@@ -145,7 +145,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      * @param topo      type of the neighbourhood topology
      * @param topoRange range of the neighbourhood topology
      */
-    public ParticleSwarmOptimization(int popSize, double p1, double p2, PSOTopologyEnum topo, int topoRange) {
+    public ParticleSwarmOptimization(int popSize, double p1, double p2, PSOTopology topo, int topoRange) {
         this();
         algType.setSelectedTag(1); // set to constriction
         population = new Population(popSize);
@@ -454,7 +454,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 
         treeLevels = 0;
         // the HPSO tree will contain layers 0...HPSOLevels, the last one is "incomplete" with only HPSOOrphans number of nodes
-        if (getTopology() == PSOTopologyEnum.hpso || getTopology() == PSOTopologyEnum.tree) {
+        if (getTopology() == PSOTopology.hpso || getTopology() == PSOTopology.tree) {
             if (topologyRange < 2) {
                 System.err.println("Error, tree/hpso requires topology range of at least 2!");
             } else {
@@ -465,7 +465,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
                 treeLastFullLevelNodeCnt = (int) Math.pow(topologyRange, treeLevels - 1);
             }
         }
-        if (getTopology() == PSOTopologyEnum.dms) {
+        if (getTopology() == PSOTopology.dms) {
             dmsLinks = regroupSwarm(population, getTopologyRange());
         }
     }
@@ -1310,21 +1310,21 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     protected void updateTopology(Population pop) {
-        if (topology == PSOTopologyEnum.dms) { // Dynamic multi-swarm after Liang & Suganthan
+        if (topology == PSOTopology.dms) { // Dynamic multi-swarm after Liang & Suganthan
             if (pop.getGeneration() % getDmsRegroupGens() == 0) {
                 dmsLinks = regroupSwarm(pop, getTopologyRange());
             }
         }
-        if ((topology == PSOTopologyEnum.multiSwarm) || (topology == PSOTopologyEnum.tree)) {
+        if ((topology == PSOTopology.multiSwarm) || (topology == PSOTopology.tree)) {
             sortedPop = pop.toArray();
-            if ((topology == PSOTopologyEnum.multiSwarm) || (treeStruct >= 2)) {
+            if ((topology == PSOTopology.multiSwarm) || (treeStruct >= 2)) {
                 Arrays.sort(sortedPop, new AbstractEAIndividualComparator());
             } else {
                 Arrays.sort(sortedPop, new AbstractEAIndividualComparator(partBestFitKey));
             }
             addSortedIndicesTo(sortedPop, pop);
         }
-        if (topology == PSOTopologyEnum.multiSwarm) {
+        if (topology == PSOTopology.multiSwarm) {
             // prepare multi swarm topology
             PhenotypeMetric metric = new PhenotypeMetric();
             Vector<AbstractEAIndividual> leaders = new Vector<>(pop.size());
@@ -1378,7 +1378,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
 //			}
             //System.out.println(" -- best " + population.indexOf(population.getBestEAIndividual()));
         }
-        if (topology == PSOTopologyEnum.hpso) { // HPSO sorting the population
+        if (topology == PSOTopology.hpso) { // HPSO sorting the population
             int parentIndex;
             AbstractEAIndividual indy;
             AbstractEAIndividualComparator comp = new AbstractEAIndividualComparator(partBestFitKey);
@@ -1756,7 +1756,7 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
      *
      * @param s The type.
      */
-    public void setTopology(PSOTopologyEnum t) {
+    public void setTopology(PSOTopology t) {
         this.topology = t;
         setGOEShowProperties(getClass());
     }
@@ -1764,22 +1764,22 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     public void setGOEShowProperties(Class<?> cls) {
 
         // linear, grid, random
-        GenericObjectEditor.setShowProperty(cls, "topologyRange", (topology == PSOTopologyEnum.linear) || (topology == PSOTopologyEnum.grid) || (topology == PSOTopologyEnum.random) || (topology == PSOTopologyEnum.tree) || (topology == PSOTopologyEnum.hpso) || (topology == PSOTopologyEnum.dms));
+        GenericObjectEditor.setShowProperty(cls, "topologyRange", (topology == PSOTopology.linear) || (topology == PSOTopology.grid) || (topology == PSOTopology.random) || (topology == PSOTopology.tree) || (topology == PSOTopology.hpso) || (topology == PSOTopology.dms));
         // multi swarm
-        GenericObjectEditor.setShowProperty(cls, "subSwarmRadius", (topology == PSOTopologyEnum.multiSwarm));
+        GenericObjectEditor.setShowProperty(cls, "subSwarmRadius", (topology == PSOTopology.multiSwarm));
         // multi swarm
-        GenericObjectEditor.setShowProperty(cls, "maxSubSwarmSize", (topology == PSOTopologyEnum.multiSwarm));
+        GenericObjectEditor.setShowProperty(cls, "maxSubSwarmSize", (topology == PSOTopology.multiSwarm));
         // tree
-        GenericObjectEditor.setShowProperty(cls, "treeStruct", (topology == PSOTopologyEnum.tree));
+        GenericObjectEditor.setShowProperty(cls, "treeStruct", (topology == PSOTopology.tree));
         // tree, hpso
 //		GenericObjectEditor.setShowProperty(cls, "treeBranchDegree", (topology==PSOTopologyEnum.tree) || (topology==PSOTopologyEnum.hpso));
         // linear
-        GenericObjectEditor.setShowProperty(cls, "wrapTopology", (topology == PSOTopologyEnum.linear) || (topology == PSOTopologyEnum.grid));
+        GenericObjectEditor.setShowProperty(cls, "wrapTopology", (topology == PSOTopology.linear) || (topology == PSOTopology.grid));
         // dms
-        GenericObjectEditor.setShowProperty(cls, "dmsRegroupGens", (topology == PSOTopologyEnum.dms));
+        GenericObjectEditor.setShowProperty(cls, "dmsRegroupGens", (topology == PSOTopology.dms));
     }
 
-    public PSOTopologyEnum getTopology() {
+    public PSOTopology getTopology() {
         return topology;
     }
 

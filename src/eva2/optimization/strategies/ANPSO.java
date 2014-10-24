@@ -2,7 +2,7 @@ package eva2.optimization.strategies;
 
 import eva2.OptimizerFactory;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.enums.PSOTopologyEnum;
+import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.modules.OptimizationParameters;
@@ -126,7 +126,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 //		setMainSwarmInertness(new NoParameterAging(0.7298437881283576));
         setMainSwarmAlgoType(getMainSwarm().getAlgoType().setSelectedTag("Constriction")); // constriction
         setMaxInitialSubSwarmSize(0); // deactivate early reinits
-        setMainSwarmTopology(PSOTopologyEnum.grid);
+        setMainSwarmTopology(PSOTopology.grid);
         setMainSwarmTopologyRange(1);
         setDeactivationStrategy(new StandardDeactivationStrategy(0.000001, 8));
         setMainSwarmSize(100);
@@ -154,7 +154,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
 		initMainSwarm();
 	}*/
 
-    public ANPSO(int mainSwarmSize, double phi1, double phi2, PSOTopologyEnum mainSwarmTopo, int mainSwarmTopoRange, int maxInitialSubSwarmSize) {
+    public ANPSO(int mainSwarmSize, double phi1, double phi2, PSOTopology mainSwarmTopo, int mainSwarmTopoRange, int maxInitialSubSwarmSize) {
         this();
         setMainSwarmSize(mainSwarmSize);
         getMainSwarm().setPhi1(phi1);
@@ -177,7 +177,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         GenericObjectEditor.setHideProperty(getClass(), "mergingStrategy", true);
         GenericObjectEditor.setHideProperty(getClass(), "absorptionStrategy", true);
         GenericObjectEditor.setHideProperty(getClass(), "maxAllowedSwarmRadius", true);
-        GenericObjectEditor.setHideProperty(getClass(), "mainSwarmTopologyRange", mainSwarmTopology == PSOTopologyEnum.multiSwarm); // "Multi-Swarm" has no topologyRange
+        GenericObjectEditor.setHideProperty(getClass(), "mainSwarmTopologyRange", mainSwarmTopology == PSOTopology.multiSwarm); // "Multi-Swarm" has no topologyRange
 
         // population size is set via setMainSwarmSize
         GenericObjectEditor.setHideProperty(getClass(), "population", true);
@@ -614,7 +614,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         // createSubswarmIfPossible();
 
         // adapt the species radius of the SPSO using similar population statistics as for the radius parameter r
-        if ((mainSwarm.getTopology() == PSOTopologyEnum.multiSwarm) && (mainSwarm.getMaxSubSwarmSize() > 1)) { //Multi-Swarm
+        if ((mainSwarm.getTopology() == PSOTopology.multiSwarm) && (mainSwarm.getMaxSubSwarmSize() > 1)) { //Multi-Swarm
             double aveDistToNeighInMain = getMainSwarm().getPopulation().getAvgDistToClosestNeighbor(true, false)[0];
             getMainSwarm().setSubSwarmRadius(aveDistToNeighInMain);
         }
@@ -907,7 +907,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         anpso.getMainSwarm().setInertnessOrChi(0.7298437881283576);
         anpso.setMainSwarmAlgoType(anpso.getMainSwarm().getAlgoType().setSelectedTag("Constriction")); // constriction
         anpso.setMaxInitialSubSwarmSize(0); // deactivate early reinits
-        anpso.setMainSwarmTopology(PSOTopologyEnum.grid);
+        anpso.setMainSwarmTopology(PSOTopology.grid);
         anpso.setMainSwarmTopologyRange(1);
         anpso.setDeactivationStrategy(new StandardDeactivationStrategy(0.000001, 8));
 

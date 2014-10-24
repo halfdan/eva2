@@ -1,5 +1,5 @@
 package eva2.optimization.enums;
 
-public enum MutateESCrossoverTypeEnum {
+public enum MutateESCrossoverType {
     none, intermediate, discrete
 }

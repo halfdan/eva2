@@ -6,7 +6,7 @@ import eva2.gui.EvATabbedFrameMaker;
 import eva2.gui.JParaPanel;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.stat.*;
+import eva2.optimization.statistics.*;
 
 import java.io.Serializable;
 

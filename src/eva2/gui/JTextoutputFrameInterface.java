@@ -1,6 +1,6 @@
 package eva2.gui;
 
-import eva2.optimization.stat.InterfaceTextListener;
+import eva2.optimization.statistics.InterfaceTextListener;
 
 /*
  *

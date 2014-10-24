@@ -1,8 +1,8 @@
 package eva2;
 
-import eva2.optimization.enums.DETypeEnum;
-import eva2.optimization.enums.MutateESCrossoverTypeEnum;
-import eva2.optimization.enums.PSOTopologyEnum;
+import eva2.optimization.enums.DEType;
+import eva2.optimization.enums.MutateESCrossoverType;
+import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.enums.PostProcessMethod;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.*;
@@ -28,7 +28,7 @@ import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.PBILPopulation;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractOptimizationProblem;
-import eva2.optimization.stat.InterfaceStatistics;
+import eva2.optimization.statistics.InterfaceStatistics;
 import eva2.optimization.strategies.*;
 import eva2.tools.math.RNG;
 
@@ -106,7 +106,7 @@ public class OptimizerFactory {
         DifferentialEvolution de = new DifferentialEvolution();
         de.setProblem(problem);
         de.getPopulation().setTargetSize(popsize);
-        de.setDEType(DETypeEnum.DE2_CurrentToBest);
+        de.setDEType(DEType.DE2_CurrentToBest);
         de.setDifferentialWeight(f);
         de.setCrossoverRate(CR);
         de.setLambda(lambda);
@@ -416,7 +416,7 @@ public class OptimizerFactory {
      */
     public static ParticleSwarmOptimization createParticleSwarmOptimization(
             AbstractOptimizationProblem problem, int popsize, double phi1,
-            double phi2, double speedLim, PSOTopologyEnum selectedTopology, int topologyRange,
+            double phi2, double speedLim, PSOTopology selectedTopology, int topologyRange,
             InterfacePopulationChangedEventListener listener) {
 
         problem.initializeProblem();
@@ -1449,7 +1449,7 @@ public class OptimizerFactory {
     public static OptimizationParameters standardDE(
             AbstractOptimizationProblem problem) {
         DifferentialEvolution de = new DifferentialEvolution();
-        de.setDEType(DETypeEnum.DE2_CurrentToBest); // this sets current-to-best
+        de.setDEType(DEType.DE2_CurrentToBest); // this sets current-to-best
         de.setDifferentialWeight(0.8);
         de.setCrossoverRate(0.6);
         de.setLambda(0.6);
@@ -1465,7 +1465,7 @@ public class OptimizerFactory {
         es.setPlusStrategy(false);
 
         if (assertIndyType(problem, InterfaceESIndividual.class)) {
-            setTemplateOperators(problem, new MutateESGlobal(0.2, MutateESCrossoverTypeEnum.intermediate), 0.9, new CrossoverESDefault(), 0.2);
+            setTemplateOperators(problem, new MutateESGlobal(0.2, MutateESCrossoverType.intermediate), 0.9, new CrossoverESDefault(), 0.2);
         } else {
             System.err.println("Error, standard ES is implemented for ES individuals only (requires double data types)");
             return null;
@@ -1493,7 +1493,7 @@ public class OptimizerFactory {
             AbstractOptimizationProblem problem) {
         ParticleSwarmOptimization pso = new ParticleSwarmOptimization();
         pso.setPhiValues(2.05, 2.05);
-        pso.setTopology(PSOTopologyEnum.grid);
+        pso.setTopology(PSOTopology.grid);
         pso.setTopologyRange(1);
         return makeParams(pso, 30, problem, randSeed, getTerminator());
     }
@@ -1526,7 +1526,7 @@ public class OptimizerFactory {
         EsDpiNiching nes = new EsDpiNiching(nicheRadius, muPerPeak, lambdaPerPeak, expectedPeaks, rndImmigrants, explorerPeaks, resetExplInterval, etaPresel);
 
         if (assertIndyType(prob, InterfaceESIndividual.class)) {
-            setTemplateOperators(prob, new MutateESGlobal(0.2, MutateESCrossoverTypeEnum.intermediate), 0.9, new CrossoverESDefault(), 0.2);
+            setTemplateOperators(prob, new MutateESGlobal(0.2, MutateESCrossoverType.intermediate), 0.9, new CrossoverESDefault(), 0.2);
         } else {
             System.err.println("Error, standard ES is implemented for ES individuals only (requires double data types)");
             return null;

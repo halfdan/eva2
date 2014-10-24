@@ -1,8 +1,10 @@
-package eva2.optimization.stat;
+package eva2.optimization.statistics;
 
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertySelectableList;
 import eva2.gui.editor.GenericArrayEditor;
+import eva2.optimization.enums.StatisticsOnSingleDataSet;
+import eva2.optimization.enums.StatisticsOnTwoSampledData;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.AbstractModuleAdapter;
 import eva2.optimization.modules.AbstractOptimizationParameters;
@@ -161,8 +163,8 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
             @Override
             public void actionPerformed(ActionEvent e) {
                 EvAStatisticalEvaluation.evaluate(jobList, jobList.getObjects(), genericArrayEditor.getSelectedIndices(),
-                        (StatsOnSingleDataSetEnum[]) EvAStatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatsOnSingleDataSetEnum.values()),
-                        (StatsOnTwoSampledDataEnum[]) EvAStatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatsOnTwoSampledDataEnum.values()));
+                        (StatisticsOnSingleDataSet[]) EvAStatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatisticsOnSingleDataSet.values()),
+                        (StatisticsOnTwoSampledData[]) EvAStatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatisticsOnTwoSampledData.values()));
             }
         };
         ActionListener sl = new ActionListener() {

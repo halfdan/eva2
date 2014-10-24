@@ -13,7 +13,7 @@ import eva2.optimization.operator.terminators.PopulationMeasureTerminator.Change
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.optimization.population.Population;
-import eva2.optimization.stat.InterfaceTextListener;
+import eva2.optimization.statistics.InterfaceTextListener;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.util.annotation.Description;
 
