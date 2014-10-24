@@ -683,7 +683,7 @@ public class Mathematics {
     /**
      * Computes the 2-norm of an array of doubles.
      *
-     * @param doubles the array of double
+     * @param d the array of double
      * @return the 2-norm of the elements
      */
     public static double norm(double[] d) {
@@ -698,7 +698,7 @@ public class Mathematics {
      * Normalizes the doubles in the array by their sum, so that they add up to
      * one.
      *
-     * @param doubles the array of double
+     * @param d the array of double
      * @throws IllegalArgumentException if sum is Zero or NaN
      */
     public static double[] normalizeSum(double[] v) {
@@ -711,7 +711,7 @@ public class Mathematics {
      * Normalizes the doubles in the array by their sum, so that they add up to
      * one.
      *
-     * @param doubles the array of double
+     * @param v the array of double
      * @throws IllegalArgumentException if sum is Zero or NaN
      */
     public static void normalizeSum(double[] v, double[] res) {

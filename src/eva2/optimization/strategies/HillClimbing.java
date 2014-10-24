@@ -217,7 +217,7 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
      */
     @Override
     public String getName() {
-        return "MS-HC" + getIdentifier();
+        return "MS-HC";
     }
 
     @Override

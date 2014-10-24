@@ -124,7 +124,7 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
         return multiRunFinalObjectData;
     }
 
-    public InterfaceOptimizationParameters getGOParams() {
+    public InterfaceOptimizationParameters getOptimizationParameters() {
         return params;
     }
 
@@ -197,14 +197,15 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
      * Retrieve a single column of double data indicated by a field name. If the field is unknown
      * or there is no double data, null is returned.
      *
-     * @param field
-     * @return
+     * @param field Field name
+     * @return An array of values from the field provided
      */
     public double[] getDoubleDataColumn(String field) {
         int index = getFieldIndex(field);
+        int numRuns = getNumRuns();
         if (index >= 0) {
-            double[] data = new double[getNumRuns()];
-            for (int i = 0; i < getNumRuns(); i++) {
+            double[] data = new double[numRuns];
+            for (int i = 0; i < numRuns; i++) {
                 Object o = multiRunFinalObjectData.get(i)[index];
                 try {
                     if ((o instanceof Double)) {

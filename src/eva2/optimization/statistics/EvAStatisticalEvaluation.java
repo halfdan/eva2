@@ -8,9 +8,7 @@ import eva2.tools.StringTools;
 import eva2.tools.math.Mathematics;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -266,6 +264,53 @@ public class EvAStatisticalEvaluation {
             } else {
                 LOGGER.warning("For the MannWhitney test, the JSC package is required on the class path!");
             }
+        }
+        return "" + t;
+    }
+
+    /**
+     * ToDo: Figure out why this gives different results than jsc.independentsamples.MannWhitneyTest#getSP
+     * @param field The field for which the test should be executed for.
+     * @param job1 First job to test
+     * @param job2 Second job to test
+     * @return
+     */
+    private static String calculateMannWhitneyU(String field, OptimizationJob job1, OptimizationJob job2) {
+        double[] dat1 = job1.getDoubleDataColumn(field);
+        double[] dat2 = job2.getDoubleDataColumn(field);
+        double t = Double.NaN;
+
+        // We can't compute the MannWhitney test if one of the samples is empty
+        if (dat1 != null && dat2 != null) {
+            double n1 = dat1.length;
+            double n2 = dat2.length;
+
+            ArrayList<Double> sortedValues = new ArrayList<>();
+            // This is stupid. Find a better way.
+            for (Double d : dat1) {
+                sortedValues.add(d);
+            }
+            for (Double d : dat2) {
+                sortedValues.add(d);
+            }
+            Collections.sort(sortedValues);
+            double tA = 0.0;
+            for (Double value : dat1) {
+                tA += (sortedValues.indexOf(value) + 1.0 + sortedValues.lastIndexOf(value) + 1.0) / 2.0;;
+            }
+            double tB = 0.0;
+            for (Double value : dat2) {
+                tB += (sortedValues.indexOf(value) + 1 + sortedValues.lastIndexOf(value) + 1) / 2.0;
+            }
+            double uA = (n1 * n2) + ((0.5 * n1) * (n1 + 1.0)) - tA;
+            double uB = (n1 * n2) + ((0.5 * n2) * (n2 + 1.0)) - tB;
+
+            assert(uA + uB == n1 * n2);
+            double u = Math.min(uA, uB);
+            double mU = (n1 * n2) / 2;
+            double omegaU = Math.sqrt((n1*n2*(n1 + n2 + 1.0))/12.0);
+
+            t = (u - mU) / omegaU;
         }
         return "" + t;
     }

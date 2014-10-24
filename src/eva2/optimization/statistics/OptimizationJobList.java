@@ -141,7 +141,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
      */
     public OptimizationJob getJobOf(InterfaceOptimizationParameters params) {
         for (OptimizationJob job : getObjects()) {
-            if (job.getGOParams() == params) {
+            if (job.getOptimizationParameters() == params) {
                 return job;
             }
         }
@@ -206,7 +206,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                 if (jobs.size() == 1) {
                     OptimizationJob job = jobs.get(0);
                     AbstractOptimizationParameters curParams = (AbstractOptimizationParameters) ((AbstractModuleAdapter) jobList.module).getOptimizationParameters();
-                    curParams.setSameParams((AbstractOptimizationParameters) job.getGOParams());
+                    curParams.setSameParams((AbstractOptimizationParameters) job.getOptimizationParameters());
                     ((GenericModuleAdapter) jobList.module).setOptimizationParameters(curParams);
                     ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().setMultiRuns(job.getNumRuns());
                     ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().setFieldSelection(job.getFieldSelection(((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().getFieldSelection()));
