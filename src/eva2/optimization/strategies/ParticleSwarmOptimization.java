@@ -40,16 +40,14 @@ import java.util.Vector;
  * "HPSO", "Random" in that order starting by 0.
  */
 @Description("Particle Swarm Optimization by Kennedy and Eberhart.")
-public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Serializable, InterfaceAdditionalPopulationInformer {
+public class ParticleSwarmOptimization extends AbstractOptimizer implements java.io.Serializable, InterfaceAdditionalPopulationInformer {
 
     /**
      * Generated serial version uid.
      */
     private static final long serialVersionUID = -149996122795669589L;
-    protected Population population = new Population();
     Object[] sortedPop = null;
     protected AbstractEAIndividual bestIndividual = null;
-    protected InterfaceOptimizationProblem optimizationProblem = new F1Problem();
     protected boolean checkRange = true;
     protected boolean checkSpeedLimit = false;
     protected boolean useAlternative = false;
@@ -1459,53 +1457,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     /**
-     * This method allows you to add the LectureGUI as listener to the Optimizer
-     *
-     * @param ea
-     */
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        if (this.changeListener == null) {
-            this.changeListener = new Vector<>();
-        }
-        this.changeListener.add(ea);
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        return changeListener != null && changeListener.removeElement(ea);
-    }
-
-    /**
-     * Something has changed
-     *
-     * @param name
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.changeListener != null) {
-            for (int i = 0; i < this.changeListener.size(); i++) {
-                this.changeListener.get(i).registerPopulationStateChanged(this, name);
-            }
-        }
-    }
-
-    /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
-    /**
      * This method will return a string describing all properties of the
      * optimizer and the applied methods.
      *
@@ -1532,11 +1483,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
     }
 
     @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
     public void setPopulation(Population pop) {
         this.population = pop;
         if (pop.size() != pop.getTargetSize()) { // new particle count!
@@ -1556,10 +1502,6 @@ public class ParticleSwarmOptimization implements InterfaceOptimizer, java.io.Se
             }
         }
         bestIndividual = pop.getBestEAIndividual();
-    }
-
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
     }
 
     @Override

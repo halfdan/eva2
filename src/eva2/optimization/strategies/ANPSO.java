@@ -61,7 +61,7 @@ import java.util.Vector;
  *
  * @author aschoff, mkron
  */
-public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAdditionalPopulationInformer, java.io.Serializable {
+public class ANPSO extends NichePSO implements InterfaceAdditionalPopulationInformer, java.io.Serializable {
 
 
     /**
@@ -493,7 +493,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         }
         getMainSwarm().getPopulation().incrFunctionCallsBy(calls);
 
-        this.SetSubSwarms(newSubSwarms);
+        this.setSubSwarms(newSubSwarms);
     }
 
     /**
@@ -928,7 +928,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         anpso.getMainSwarm().setPhi1(1.2);
         anpso.getMainSwarm().setPhi2(0.6);  // ANPSO uses communication in the main swarm
         //Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" in that order starting by 0.
-        anpso.SetMainSwarmTopologyTag(3); //"Multi-Swarm" favors the formation of groups in the main swarm
+        anpso.setMainSwarmTopologyTag(3); //"Multi-Swarm" favors the formation of groups in the main swarm
         anpso.setMainSwarmTopologyRange(2); // range for topologies like random, grid etc. (does not affect "Multi-Swarm")
         anpso.setMaxInitialSubSwarmSize(0); // deactivate early reinits
 
@@ -948,7 +948,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
         anpso.getMainSwarm().setPhi1(1.2);
         anpso.getMainSwarm().setPhi2(1.2);  // ANPSO uses communication in the main swarm
         //Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" in that order starting by 0.
-        anpso.SetMainSwarmTopologyTag(3); //"Multi-Swarm" favors the formation of groups in the main swarm
+        anpso.setMainSwarmTopologyTag(3); //"Multi-Swarm" favors the formation of groups in the main swarm
         anpso.setMainSwarmTopologyRange(4); // range for topologies like random, grid etc. (does not affect "Multi-Swarm")
 
 //		es gibt kein species size limit wie im orig-paper, aber sie berichten dort, dass sie für
@@ -985,7 +985,7 @@ public class ANPSO extends NichePSO implements InterfaceOptimizer, InterfaceAddi
      */
     public static OptimizationParameters starTopoANPSO(AbstractOptimizationProblem problem, long randSeed, int evalCnt, int topology, int topologyRange) {
         OptimizationParameters params = starANPSO(problem, randSeed, evalCnt);
-        ((ANPSO) params.getOptimizer()).SetMainSwarmTopologyTag(topology);
+        ((ANPSO) params.getOptimizer()).setMainSwarmTopologyTag(topology);
         ((ANPSO) params.getOptimizer()).setMainSwarmTopologyRange(topologyRange);
         ((ANPSO) params.getOptimizer()).getMainSwarm().setInertnessOrChi(0.73);
 

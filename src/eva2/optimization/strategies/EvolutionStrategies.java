@@ -1,6 +1,5 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.mutation.InterfaceAdaptOperatorGenerational;
 import eva2.optimization.operator.selection.InterfaceSelection;
@@ -9,12 +8,9 @@ import eva2.optimization.operator.selection.SelectRandom;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
-import eva2.problems.B1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Parameter;
-
-import java.util.Vector;
 
 /**
  * Evolution strategies by Rechenberg and Schwefel, but please remember that
@@ -27,7 +23,7 @@ import java.util.Vector;
  * Evolution Strategies.
  */
 @Description(value = "This is an Evolution Strategy. Note that the population size depends on mu (number of parents) and lambda (number of offspring)")
-public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializable {
+public class EvolutionStrategies extends AbstractOptimizer implements java.io.Serializable {
 
     @Parameter(description = "Mu", name = "mu")
     protected int mu = 5;
@@ -37,17 +33,12 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
 
     @Parameter(description = "Determines whether the +-Strategy should be used.", name = "usePlus")
     protected boolean usePlusStrategy = false;
-
-    protected Population population = new Population();
-    protected InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private InterfaceSelection parentSelection = new SelectRandom();
     private InterfaceSelection partnerSelection = new SelectRandom();
     private InterfaceSelection environmentSelection = new SelectBestIndividuals();
     private int numberOfPartners = 1;
     protected int origPopSize = -1; // especially for CBN
     private boolean forceOrigPopSize = true;// especially for CBN
-    transient private String identifier = "";
-    transient private Vector<InterfacePopulationChangedEventListener> changeListener;
     public static final String esMuParam = "EvolutionStrategyMuParameter";
     public static final String esLambdaParam = "EvolutionStrategyLambdaParameter";
 
@@ -244,53 +235,6 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     }
 
     /**
-     * This method allows you to add the LectureGUI as listener to the Optimizer
-     *
-     * @param ea
-     */
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        if (this.changeListener == null) {
-            this.changeListener = new Vector<>();
-        }
-        this.changeListener.add(ea);
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        return changeListener != null && changeListener.removeElement(ea);
-    }
-
-    /**
-     * Something has changed
-     *
-     * @param name
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.changeListener != null) {
-            for (int i = 0; i < this.changeListener.size(); i++) {
-                this.changeListener.get(i).registerPopulationStateChanged(this, name);
-            }
-        }
-    }
-
-    /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
-    /**
      * This method will return a string describing all properties of the
      * optimizer and the applied methods.
      *
@@ -351,18 +295,6 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
         return "(" + getMu() + (isPlusStrategy() ? "+" : ",") + getLambda() + ")-ES";
     }
 
-    /**
-     * Assuming that all optimizer will store their data in a population we will
-     * allow access to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
     // for internal usage
     protected void setPop(Population pop) {
         this.population = pop;
@@ -372,10 +304,6 @@ public class EvolutionStrategies implements InterfaceOptimizer, java.io.Serializ
     public void setPopulation(Population pop) {
         origPopSize = pop.size();
         this.population = pop;
-    }
-
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
     }
 
     @Override

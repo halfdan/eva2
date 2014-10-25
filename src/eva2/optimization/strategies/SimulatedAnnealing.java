@@ -1,12 +1,10 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.GAIndividualBinaryData;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
-import eva2.problems.B1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
@@ -18,20 +16,13 @@ import eva2.util.annotation.Description;
  * size gives the number of multi-starts.
  */
 @Description("The simulated annealing uses an additional cooling rate instead of a simple dominate criteria to accept worse solutions by chance.")
-public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializable {
-    // These variables are necessary for the simple testcase
-
-    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
+public class SimulatedAnnealing extends AbstractOptimizer implements java.io.Serializable {
     private int multiRuns = 100;
     private int fitnessCalls = 100;
     private int fitnessCallsNeeded = 0;
     GAIndividualBinaryData bestIndividual, testIndividual;
     public double initialTemperature = 2, currentTemperature;
     public double alpha = 0.9;
-    // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String identifier = "";
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
-    private Population population;
 
     public SimulatedAnnealing() {
         this.population = new Population();
@@ -132,21 +123,6 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
     }
 
     /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
-    /**
      * This method will initialize the HillClimber
      */
     public void defaultInit() {
@@ -191,28 +167,6 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
         System.out.println("(" + program.multiRuns + "/" + program.fitnessCalls + ") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
 
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
     /**
      * This method will return a string describing all properties of the
      * optimizer and the applied methods.
@@ -242,27 +196,6 @@ public class SimulatedAnnealing implements InterfaceOptimizer, java.io.Serializa
     @Override
     public String getName() {
         return "MS-SA";
-    }
-
-    /**
-     * Assuming that all optimizer will store thier data in a population we will
-     * allow acess to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
-    public String populationTipText() {
-        return "Change the number of best individuals stored (MS-SA)).";
     }
 
     @Override

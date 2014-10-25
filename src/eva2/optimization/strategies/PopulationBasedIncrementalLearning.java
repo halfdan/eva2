@@ -25,7 +25,7 @@ import eva2.util.annotation.Description;
  * a new meta-heuristic. TecReport 215. Univ. de Tours, 1999.
  */
 @Description("The Population based incremental learning is based on a statistical distribution of bit positions. Please note: This optimizer requires a binary genotype!")
-public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, java.io.Serializable {
+public class PopulationBasedIncrementalLearning extends AbstractOptimizer implements java.io.Serializable {
 
     // These variables are necessary for the simple testcase
     private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
@@ -153,36 +153,6 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
         }
     }
 
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
     /**
      * This method will return a string describing all properties of the
      * optimizer and the applied methods.
@@ -207,27 +177,6 @@ public class PopulationBasedIncrementalLearning implements InterfaceOptimizer, j
     @Override
     public String getName() {
         return "PBIL";
-    }
-
-    /**
-     * Assuming that all optimizer will store thier data in a population we will
-     * allow acess to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
-    public String populationTipText() {
-        return "Edit the properties of the PBIL population used.";
     }
 
     @Override

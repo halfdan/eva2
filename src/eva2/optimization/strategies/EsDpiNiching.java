@@ -48,7 +48,7 @@ import java.util.Formatter;
  * number of peak populations is produced.
  * <p/>
  * Also, they gave a general rule for setting the niche radius depending on the
- * problem domain, however in their experiments, they were able to identify
+ * optimizationProblem domain, however in their experiments, they were able to identify
  * optima which were much closer (i.e., on Ackley's), so it is unclear which
  * niche radius was actually used there
  * <p/>
@@ -89,7 +89,7 @@ import java.util.Formatter;
 @Description("A niching ES with dynamic peak identification, after Shir and Bäck: Niching in Evolution Strategies, "
         + "GECCO 2005. Basically, there are several variants of a (mu,lambda)-ES performed "
         + "in parallel, which are reclustered in each iteration based on the dynamic peak set.")
-public class EsDpiNiching implements InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer, InterfacePopulationChangedEventListener {
+public class EsDpiNiching extends AbstractOptimizer implements Serializable, InterfaceAdditionalPopulationInformer, InterfacePopulationChangedEventListener {
 
     private double nicheRadius = 0.3;
     private int expectedPeaks = 5;
@@ -104,10 +104,6 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     private transient Population archive = new Population(); // collect deactivated optima
     protected ParameterControlManager paramControl = new ParameterControlManager();
     private transient EvolutionStrategies[] peakOpts = null;
-    Population population = new Population();
-    private InterfaceOptimizationProblem problem;
-    private transient InterfacePopulationChangedEventListener populationChangedEventListener;
-    private String identifier = "Niching-ES";
     private transient TopoPlot plot = null;
     private transient Population randomNewIndies = null;
     private int plotInterval = 0;
@@ -202,10 +198,9 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
         if (o.population != null) {
             this.population = (Population) o.population.clone();
         }
-        if (o.problem != null) {
-            this.problem = (InterfaceOptimizationProblem) o.problem.clone();
+        if (o.optimizationProblem != null) {
+            this.optimizationProblem = (InterfaceOptimizationProblem) o.optimizationProblem.clone();
         }
-        this.identifier = o.identifier;
         this.plotInterval = o.plotInterval;
     }
 
@@ -240,7 +235,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             // Trying to come close to the selection scheme of Shir&Bäck'05:
             peakOpts[i].setParentSelection(parentSel);
             peakOpts[i].setPartnerSelection(new SelectBestSingle(true));
-            peakOpts[i].setProblem(problem);
+            peakOpts[i].setProblem(optimizationProblem);
             peakOpts[i].initialize();
             peakOpts[i].setLambda(lambdaPerPeak); // set lambda after initialization
             peakOpts[i].setForceOrigPopSize(false);
@@ -293,7 +288,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     }
 
     /**
-     * Calculate the estimated maximal niche radius for a given problem range.
+     * Calculate the estimated maximal niche radius for a given optimizationProblem range.
      * This is an estimate on the q-th part of the volume transfered to the
      * radius of a hypersphere, where q is the number of expected peaks.
      *
@@ -464,7 +459,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
             population.incrFunctionCallsBy(optimizedSpecies.size());
         }
 
-        // we may have a problem if, by chance, all species have been deactivated simultaneously AND there are no unclustered !
+        // we may have a optimizationProblem if, by chance, all species have been deactivated simultaneously AND there are no unclustered !
         if (dynamicPopSize() == 0) {
             // if this is the case, we just reinit a single in analogy to a missing peak
             peakOpts[0].getPopulation().addPopulation(initRandomPeakPop(getMuPerPeak()));
@@ -638,7 +633,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
 
     /**
      * Initialize a new peak population with the given number of indies, which
-     * are initialized randomly (using the problem instance) and assigned a
+     * are initialized randomly (using the optimizationProblem instance) and assigned a
      * maximally bad fitness.
      *
      * @param cntPerNewSpecies
@@ -646,7 +641,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
      */
     private Population initRandomPeakPop(int cntPerNewSpecies) {
         Population newPop = new Population(cntPerNewSpecies);
-        problem.initializePopulation(newPop);
+        optimizationProblem.initializePopulation(newPop);
         newPop.putData(EvolutionStrategies.esLambdaParam, getLambdaPerPeak());
         newPop.putData(EvolutionStrategies.esMuParam, getMuPerPeak());
         newPop.setMaxHistoryLength(haltingWindowLen);
@@ -659,20 +654,11 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     private void generateEvalImmigrants(int cnt) {
         if (cnt > 0) {
             randomNewIndies = new Population(cnt);
-            problem.initializePopulation(randomNewIndies);
-            problem.evaluate(randomNewIndies);
+            optimizationProblem.initializePopulation(randomNewIndies);
+            optimizationProblem.evaluate(randomNewIndies);
             population.incrFunctionCallsBy(cnt);
         } else {
             randomNewIndies = null;
-        }
-    }
-
-    /**
-     * Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
         }
     }
 
@@ -702,8 +688,8 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
                 if (plot == null) {
                     plot = new TopoPlot("Niching-ES " + npop.getGeneration(), "x", "y");
                     plot.setParams(50, 50);
-                    if (problem instanceof Interface2DBorderProblem) {
-                        plot.setTopology((Interface2DBorderProblem) problem);
+                    if (optimizationProblem instanceof Interface2DBorderProblem) {
+                        plot.setTopology((Interface2DBorderProblem) optimizationProblem);
                     }
                 }
                 ClusterBasedNichingEA.plotPopConnected(plot, npop);
@@ -892,24 +878,7 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
 
     @Override
     public String getName() {
-        return identifier + "_" + getExpectedPeaks() + "_" + getNicheRadius();
-    }
-
-    @Override
-    public void addPopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (ea.equals(populationChangedEventListener)) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
+        return "Niching-ES_" + getExpectedPeaks() + "_" + getNicheRadius();
     }
 
     @Override
@@ -926,31 +895,10 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
     }
 
     @Override
-    public void setPopulation(Population pop) {
-        // this might cause problems if the pop.size() does not fit the EsDpiNiching parameters mu/lamba per peak
-        this.population = pop;
-    }
-
-    @Override
-    public Population getPopulation() {
-        return population;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return problem;
-    }
-
-    @Override
-    public void setProblem(InterfaceOptimizationProblem prob) {
-        this.problem = prob;
-    }
-
-    @Override
     public String getStringRepresentation() {
         StringBuilder sb = new StringBuilder("EsDpiNiching:\n");
         sb.append("Optimization Problem: ");
-        sb.append(this.problem.getStringRepresentationForProblem(this));
+        sb.append(this.optimizationProblem.getStringRepresentationForProblem(this));
         sb.append("\n");
         sb.append(this.population.getStringRepresentation());
         return sb.toString();
@@ -958,11 +906,10 @@ public class EsDpiNiching implements InterfaceOptimizer, Serializable, Interface
 
     @Override
     public void initializeByPopulation(Population pop, boolean reset) {
-//		int pSize = pop.size();
         this.population = (Population) pop.clone();
         if (reset) {
             this.population.init();
-            this.problem.evaluate(population);
+            this.optimizationProblem.evaluate(population);
             population.incrGeneration();
         }
     }

@@ -24,17 +24,9 @@ import eva2.util.annotation.Description;
  * now.
  */
 @Description("This is a Particle Filter Algorithm.")
-public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.Serializable {
+public class ParticleFilterOptimization extends AbstractOptimizer implements java.io.Serializable {
 
-    /**
-     * Comment for
-     * <code>serialVersionUID</code>
-     */
-    private static final long serialVersionUID = 1L;
-    private Population population = new Population();
-    private InterfaceOptimizationProblem optimizationProblem = new F1Problem();
     private InterfaceSelection parentSelection = new SelectParticleWheel(0.5);
-    private String identifier = "";
     private boolean withShow = false;
     private double mutationSigma = 0.01;
     private double randomImmigrationQuota = 0.05;
@@ -43,7 +35,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     private int popSize = 300;
     private int sleepTime = 0;
     transient private int indCount = 0;
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
     transient Plot myPlot = null;
 
     public ParticleFilterOptimization() {
@@ -66,7 +57,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     public ParticleFilterOptimization(ParticleFilterOptimization a) {
         this.population = (Population) a.population.clone();
         this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
-        this.identifier = a.identifier;
         this.parentSelection = (InterfaceSelection) a.parentSelection.clone();
         if (a.withShow) {
             setWithShow(true);
@@ -84,9 +74,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     @Override
     public void initialize() {
-        //System.out.println("popsize is   " + population.size());
-        //System.out.println("pops targ is " + population.getPopulationSize());
-
         if (initialVelocity <= 0.) {
             (((AbstractOptimizationProblem) optimizationProblem).getIndividualTemplate()).setMutationOperator(new MutateESFixedStepSize(mutationSigma));
         } else {
@@ -203,13 +190,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
                 } else {
                     myPlot.setUnconnectedPoint(curPosition[0], curPosition[1], graphLabel);
                 }
-//    			myPlot.setConnectedPoint(curPosition[0], curPosition[1], graphLabel);
-//    			if ( !useCircles && (pop.getEAIndividual(i).hasData(MutateESCorrVector.vectorKey))) {
-//    				double[] v=(double[])pop.getEAIndividual(i).getData(MutateESCorrVector.vectorKey);
-//    				myPlot.setConnectedPoint(curPosition[0], curPosition[1], graphLabel+5);
-//    				curPosition=Mathematics.vvAdd(v, curPosition);
-//    				myPlot.setConnectedPoint(curPosition[0], curPosition[1], graphLabel+5);
-//    			}
             }
         }
     }
@@ -250,28 +230,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
 
     }
 
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
     /**
      * This method will set the problem that is to be optimized
      *
@@ -283,11 +241,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
         if (problem instanceof AbstractOptimizationProblem) {
             ((AbstractOptimizationProblem) problem).informAboutOptimizer(this);
         }
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
     }
 
     /**
@@ -314,27 +267,6 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     @Override
     public String getName() {
         return "PF";
-    }
-
-    /**
-     * Assuming that all optimizer will store thier data in a population we will
-     * allow acess to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
     }
 
     @Override
@@ -386,9 +318,9 @@ public class ParticleFilterOptimization implements InterfaceOptimizer, java.io.S
     /**
      * @param withShow the withShow to set
      */
-    public void setWithShow(boolean wShow) {
-        this.withShow = wShow;
-        if (!withShow) {
+    public void setWithShow(boolean withShow) {
+        this.withShow = withShow;
+        if (!this.withShow) {
             myPlot = null;
         } else {
             double[][] range;

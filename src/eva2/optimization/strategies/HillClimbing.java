@@ -1,6 +1,5 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.population.InterfaceSolutionSet;
@@ -16,15 +15,11 @@ import eva2.util.annotation.Description;
  * strategy sets the mutation rate temporarily to 1.0.
  */
 @Description("The Hill Climber uses the default EA mutation and initializing operators. If the population size is bigger than one a multi-start Hill Climber is performed.")
-public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
+public class HillClimbing extends AbstractOptimizer implements java.io.Serializable {
     // These variables are necessary for the simple testcase
 
     private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private InterfaceMutation mutator = null;
-    // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String identifier = "";
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
-    private Population population;
 
     public HillClimbing() {
         this.population = new Population();
@@ -85,7 +80,6 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
         this.optimizationProblem.evaluate(this.population);
         for (int i = 0; i < this.population.size(); i++) {
             if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.population.get(i)))) {
-//                this.population.remove(i);
                 // throw away mutated one and replace by old one 
                 this.population.set(i, original.get(i));
             } else {
@@ -93,20 +87,6 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
             }
         }
         this.population.incrGeneration();
-//        for (int i = 0; i < this.population.size(); i++) {
-//            indy1 = (AbstractEAIndividual) this.population.get(i);
-//            indy2 = (AbstractEAIndividual)(indy1).clone();
-//            indy2.mutate();
-//            this.problem.evaluate((AbstractEAIndividual) indy2);
-//            //indy2.SetFitness(0, indy2.evaulateAsMiniBits());
-//            this.population.incrFunctionCalls();
-//            //if (indy2.getFitness(0) < indy1.getFitness(0)) {
-//            if (indy2.isDominating(indy1)) {
-//                this.population.remove(i);
-//                this.population.add(i, indy2);
-//            }
-//        }
-//        this.population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
@@ -121,53 +101,8 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
      *
      * @param mute
      */
-    public void SetMutationOperator(InterfaceMutation mute) {
+    public void setMutationOperator(InterfaceMutation mute) {
         mutator = mute;
-    }
-
-    /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
-    /**
-     * This method allows you to add the LectureGUI as listener to the Optimizer
-     *
-     * @param ea
-     */
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
     }
 
     /**
@@ -198,16 +133,6 @@ public class HillClimbing implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public String getName() {
         return "MS-HC";
-    }
-
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
     }
 
     @Override

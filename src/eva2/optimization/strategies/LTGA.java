@@ -23,30 +23,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Description("Basic implementation of the Linkage Tree Genetic Algorithm based on the works by Dirk Thierens.")
-public class LTGA implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
+public class LTGA extends AbstractOptimizer implements java.io.Serializable, InterfacePopulationChangedEventListener {
 
     private static final Logger LOGGER = Logger.getLogger(LTGA.class.getName());
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener = null;
-    private String identifier = "LTGA";
     private int probDim = 8;
     private int fitCrit = -1;
     private int popSize = 50;
-    private Population population = new Population();
-    private AbstractOptimizationProblem problem = new BKnapsackProblem();
+    private AbstractOptimizationProblem optimizationProblem = new BKnapsackProblem();
     private AbstractEAIndividual template = null;
     private int generationCycle = 500;
     private boolean elitism = true;
 
     public LTGA() {
+
     }
 
     public LTGA(LTGA l) {
-        this.populationChangedEventListener = l.populationChangedEventListener;
-        this.identifier = l.identifier;
         this.probDim = l.probDim;
         this.popSize = l.popSize;
         this.population = (Population) l.population.clone();
-        this.problem = (AbstractOptimizationProblem) l.problem.clone();
         this.template = (AbstractEAIndividual) template.clone();
     }
 
@@ -60,35 +55,17 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
         return "Linkage Tree Genetic Algorithm";
     }
 
-    @Override
-    public void addPopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     private void defaultInit() {
         if (population == null) {
             this.population = new Population(this.popSize);
         } else {
             this.population.setTargetPopSize(this.popSize);
         }
-        this.template = this.problem.getIndividualTemplate();
+        this.template = this.optimizationProblem.getIndividualTemplate();
         if (!(template instanceof InterfaceDataTypeBinary)) {
             LOGGER.log(Level.WARNING, "Requiring binary data!");
         } else {
-            Object dim = BeanInspector.callIfAvailable(problem,
+            Object dim = BeanInspector.callIfAvailable(optimizationProblem,
                     "getProblemDimension", null);
             if (dim == null) {
                 LOGGER.log(Level.WARNING, "Couldn't get problem dimension!");
@@ -115,7 +92,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
     @Override
     public void initialize() {
         this.defaultInit();
-        this.problem.initializePopulation(this.population);
+        this.optimizationProblem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
@@ -138,7 +115,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
             LOGGER.log(Level.WARNING, "tried to evaluate null");
             return;
         }
-        this.problem.evaluate(indy);
+        this.optimizationProblem.evaluate(indy);
         // increment the number of evaluations
         this.population.incrFunctionCalls();
     }
@@ -242,7 +219,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
 
     @Override
     public void optimize() {
-        this.problem.evaluatePopulationStart(this.population);
+        this.optimizationProblem.evaluatePopulationStart(this.population);
         Stack<Set<Integer>> linkageTree = this.buildLinkageTree();
         Population newPop = new Population(this.popSize);
         if (elitism) {
@@ -260,7 +237,7 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
         }
         this.population.clear();
         this.population.addAll(newPop);
-        this.problem.evaluatePopulationEnd(this.population);
+        this.optimizationProblem.evaluatePopulationEnd(this.population);
     }
 
     private Population buildNewIndies(Population indies,
@@ -302,33 +279,9 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
         return result;
     }
 
-    /**
-     * Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(this.population);
-    }
-
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.problem = (AbstractOptimizationProblem) problem;
     }
 
     public boolean getElitism() {
@@ -341,11 +294,6 @@ public class LTGA implements InterfaceOptimizer, java.io.Serializable, Interface
 
     public String elitismTipText() {
         return "use elitism?";
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.problem;
     }
 
     @Override

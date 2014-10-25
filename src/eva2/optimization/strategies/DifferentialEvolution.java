@@ -31,13 +31,8 @@ import java.util.Vector;
  * doomed and replaced by the next challenge vector, even if its worse.
  */
 @Description(value = "Differential Evolution using a steady-state population scheme.")
-public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serializable {
-
-    @Parameter(name = "Population", description = "Edit the properties of the population used.")
-    protected Population population = new Population();
-
+public class DifferentialEvolution extends AbstractOptimizer implements java.io.Serializable {
     protected transient Population children = null;
-    protected AbstractOptimizationProblem optimizationProblem = new F1Problem();
 
     @Parameter(name = "DEType", description = "Mutation type for DE")
     private eva2.optimization.enums.DEType DEType;
@@ -60,7 +55,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
     private boolean randomizeFKLambda = false;
     private boolean generational = true;
     private String identifier = "";
-    transient private Vector<InterfacePopulationChangedEventListener> populationChangedEventListeners = new Vector<>();
     private boolean forceRange = true;
     private boolean cyclePop = false; // if true, individuals are used as parents in a cyclic sequence - otherwise randomly 
     private boolean compareToParent = true;  // if true, the challenge indy is compared to its parent, otherwise to a random individual
@@ -592,7 +586,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         int nextDoomed = getNextDoomed(population, 0);
 
         // required for dynamic problems especially
-        optimizationProblem.evaluatePopulationStart(population);
+        ((AbstractOptimizationProblem) optimizationProblem).evaluatePopulationStart(population);
 
         /**
          * Reevalutation mechanism for dynamically changing problems
@@ -643,7 +637,7 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
         }
 
-        optimizationProblem.evaluatePopulationEnd(population);
+        ((AbstractOptimizationProblem) optimizationProblem).evaluatePopulationEnd(population);
         this.population.incrGeneration();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
@@ -667,53 +661,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
             }
         }
         return -1;
-    }
-
-    /**
-     * This method allows you to add the LectureGUI as listener to the Optimizer
-     *
-     * @param ea
-     */
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        if (this.populationChangedEventListeners == null) {
-            this.populationChangedEventListeners = new Vector<>();
-        }
-        this.populationChangedEventListeners.add(ea);
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        return populationChangedEventListeners != null && populationChangedEventListeners.removeElement(ea);
-    }
-
-    /**
-     * Something has changed
-     *
-     * @param name Event name
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListeners != null) {
-            for (InterfacePopulationChangedEventListener listener : this.populationChangedEventListeners) {
-                listener.registerPopulationStateChanged(this, name);
-            }
-        }
-    }
-
-    /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = (AbstractOptimizationProblem) problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
     }
 
     /**
@@ -742,22 +689,6 @@ public class DifferentialEvolution implements InterfaceOptimizer, java.io.Serial
         return "Differential Evolution";
     }
 
-    /**
-     * Assuming that all optimizers will store their data in a population we will
-     * allow access to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
 
     public String populationTipText() {
         return "Edit the properties of the population used.";

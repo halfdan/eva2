@@ -18,7 +18,7 @@ public class StarANPSO extends ANPSO {
         getMainSwarm().setPhi1(1.2);
         getMainSwarm().setPhi2(0.6);  // ANPSO uses communication in the main swarm
         //Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" in that order starting by 0.
-        SetMainSwarmTopologyTag(3); //"Multi-Swarm" favors the formation of groups in the main swarm
+        setMainSwarmTopologyTag(3); //"Multi-Swarm" favors the formation of groups in the main swarm
         setMainSwarmTopologyRange(2); // range for topologies like random, grid etc. (does not affect "Multi-Swarm")
         setMaxInitialSubSwarmSize(0); // deactivate early reinits
     }

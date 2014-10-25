@@ -31,12 +31,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     private int particleIndexCounter; // used to give each particle a unique index (for debbugging and plotting)
     private int fitnessArchiveSize = 15; // maximal number of fitnessvalues remembered from former iterations
 
-    //ParameterupdateStrategies
-//	InterfaceParameterAging inertnessAging = new NoParameterAging();
-
-/**********************************************************************************************************************
- * ctors, clone
- */
     /**
      * @tested ps
      * ctor

@@ -75,8 +75,8 @@ import java.util.Vector;
  * Yilmaz. Particle Swarms for Multimodal Optimization. In: ICANNGA (1), Seiten
  * 366�375, 2007
  */
-@Description(value = "A Niching Particle Swarm Optimizer")
-public class NichePSO implements InterfaceAdditionalPopulationInformer, InterfaceOptimizer, java.io.Serializable {
+@Description("A Niching Particle Swarm Optimizer")
+public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPopulationInformer, java.io.Serializable {
 
     /**
      *
@@ -120,10 +120,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     protected InterfaceSubswarmCreationStrategy subswarmCreationStrategy = new StandardSubswarmCreationStrategy();
     // the problem
     protected InterfaceOptimizationProblem optimizationProblem = new FM0Problem();
-    // only used by island model ?
-    protected String identifier = "";
-    // eventListener
-    transient protected InterfacePopulationChangedEventListener populationChangedEventListener;
     // for debugging: file containing the output 
     transient protected BufferedWriter outputFile = null;
     // for debugging and plotting	-----------------------------------------------
@@ -203,10 +199,10 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         this.useSinglePlotWindow = a.useSinglePlotWindow;
         this.savePlots = a.savePlots;
         this.showCycle = a.showCycle;
-        this.SetDirForCurrentExperiment(a.getDirForCurrentExperiment());
+        this.setDirForCurrentExperiment(a.getDirForCurrentExperiment());
 
         this.setMainSwarm((ParticleSubSwarmOptimization) a.getMainSwarm().clone());
-        this.SetSubSwarms((Vector<ParticleSubSwarmOptimization>) a.getSubSwarms().clone());
+        this.setSubSwarms((Vector<ParticleSubSwarmOptimization>) a.getSubSwarms().clone());
         this.setSubswarmOptimizerTemplate((ParticleSubSwarmOptimization) a.getSubswarmOptimizerTemplate().clone());
 
         this.deactivationStrategy = (InterfaceDeactivationStrategy) a.deactivationStrategy.clone();
@@ -215,8 +211,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         this.subswarmCreationStrategy = (InterfaceSubswarmCreationStrategy) a.subswarmCreationStrategy.clone();
 
         this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
-
-        this.identifier = a.identifier;
     }
 
     /**
@@ -228,10 +222,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         return new NichePSO(this);
     }
 
-    /**
-     * ********************************************************************************************************************
-     * inits
-     */
     /**
      * @tested ps sets the mainswarm according to the NichePSO Parameters,
      * called via initialize()
@@ -318,7 +308,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         // initialize subswarms
         //initSubswarmOptimizerTemplate(); //only in ctor, would change parameters for the next multirun 
         //subwarmOptimizerTemplate.initialize(); // dont initialize and evaluate individuals !
-        SetSubSwarms(new Vector<ParticleSubSwarmOptimization>()); // dont want to use subswarms from old optimization run (especially not in multiruns)...
+        setSubSwarms(new Vector<ParticleSubSwarmOptimization>()); // dont want to use subswarms from old optimization run (especially not in multiruns)...
         indicesToReinit = null;
         // show in plot
         //MainSwarm.setShow(true);
@@ -696,50 +686,10 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
 
     /**
      * ********************************************************************************************************************
-     * event listening
-     */
-    /**
-     * @tested Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
-    /**
-     * @param ea
-     * @tested This method allows you to add the LectureGUI as listener to the
-     * Optimizer
-     */
-    @Override
-    public void addPopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @tested nn This method is required to free the memory on a RMIServer, but
-     * there is nothing to implement.
-     */
-    /**
-     * ********************************************************************************************************************
      * setter, getter: population and solutions
      */
     /**
      * @tested nn (non-Javadoc)
-     * @see eva2.optimization.strategies.InterfaceOptimizer#setPopulation(javaeva.server.oa.go.Populations.Population)
      */
     @Override
     public void setPopulation(Population pop) {
@@ -996,23 +946,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         return "weights the cognitive component for the PSO used to train the main swarm";
     }
 
-    //	public void setMainSwarmPhi2(double p2) {
-//		this.SetMainSwarmPhi2(p2);
-//	}
-//	
-//	public void setMainSwarmPhi2(double mainSwarmPhi2) {
-//		this.mainSwarmPhi2 = mainSwarmPhi2;
-//		double inertChi = getMainSwarm().getInertnessOrChi();
-//		getMainSwarm().setPhi2(mainSwarmPhi2);
-////		mainSwarmParamAging.setStartValue(getMainSwarm().getInertnessOrChi());
-//		// if constriction calc. changed the inertness, update it here, else dont.
-////		if (getMainSwarm().getInertnessOrChi() != inertChi) mainSwarmParamAging.setStartValue(getMainSwarm().getInertnessOrChi());
-//		if (getMainSwarm().getInertnessOrChi() != inertChi) getMainSwarm().setInertnessOrChi(mainSwarmPhi2);
-//	}
-//	public int getMainSwarmTopologyTag() {
-//		return mainSwarmTopologyTag;
-//	}
-    public void SetMainSwarmTopologyTag(int mainSwarmTopologyTag) {
+    public void setMainSwarmTopologyTag(int mainSwarmTopologyTag) {
         // Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random"  in that order starting by 0.
         this.mainSwarmTopology = PSOTopology.getFromId(mainSwarmTopologyTag);
     }
@@ -1172,7 +1106,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      *
      * @param dirForCurrentExperiment
      */
-    public void SetDirForCurrentExperiment(String dirForCurrentExperiment) {
+    public void setDirForCurrentExperiment(String dirForCurrentExperiment) {
         this.dirForCurrentExperiment = dirForCurrentExperiment;
     }
 
@@ -1184,21 +1118,11 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         return mainSwarm;
     }
 
-    //	public InterfaceParameterAging getMainSwarmInertness(){
-//		return mainSwarmParamAging;
-////		return this.mainSwarm.getInertnessAging();
-//	}
-//	
-//	public void setMainSwarmInertness(InterfaceParameterAging pa){
-//		mainSwarmParamAging = pa;
-//		this.mainSwarm.setInertnessAging(pa);
-//		getMainSwarm().setInertnessOrChi(pa.getStartValue());
-//	}
     public String mainSwarmInertnessTipText() {
         return "sets the inertness weight used for the PSO to train the main swarm (see help for details)";
     }
 
-    public void SetSubSwarms(Vector<ParticleSubSwarmOptimization> subSwarms) {
+    public void setSubSwarms(Vector<ParticleSubSwarmOptimization> subSwarms) {
         this.subSwarms = subSwarms;
     }
 
@@ -1265,16 +1189,6 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
     public String subswarmCreationStrategyTipText() {
         return "sets the strategy to create subswarms from the main swarm";
     }
-
-    /**
-     * @tested nn (non-Javadoc)
-     * @see javaeva.server.oa.go.Strategies.InterfaceOptimizer#getProblem()
-     */
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
     /**
      * @param problem
      * @tested ps This method will set the problem that is to be optimized
@@ -2114,7 +2028,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * @param randSeed
      * @param evalCnt
      * @return
-     * @see #stdNPSO(AbstractOptimizationProblem, long, int)
+     * @see #stdNPSO(AbstractOptimizer, long, int)
      */
     public static OptimizationParameters stdNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         if (npso == null) {
@@ -2136,7 +2050,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         npso.getMainSwarmAlgoType().setSelectedTag("Inertness");
         npso.getMainSwarm().setPhi1(1.2);
         npso.getMainSwarm().setPhi2(0); // by default no communication in the mainswarm
-        npso.SetMainSwarmTopologyTag(0); // this doesnt have any effect due to no communication
+        npso.setMainSwarmTopologyTag(0); // this doesnt have any effect due to no communication
         npso.setMainSwarmTopologyRange(0);
         npso.mainSwarmAlgoType = 0;
         npso.getMainSwarm().setParameterControl(new ParamAdaption[]{getDefaultInertnessAdaption()});
@@ -2159,12 +2073,12 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
      * Optimizer. SEAL 2002. Exeption: the swarm size is 200 by default, because
      * 30 (of the orig. paper) seems way too low.
      *
-     * @param an       already existing NichePSO instance or null to create a new one
+     * @param npso an already existing NichePSO instance or null to create a new one
      * @param problem
      * @param randSeed
      * @param evalCnt
      * @return
-     * @see #stdNPSO(AbstractOptimizationProblem, long, int)
+     * @see #stdNPSO(AbstractOptimizer, long, int)
      */
     public static OptimizationParameters starNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         starNPSO(npso, evalCnt);
@@ -2191,7 +2105,7 @@ public class NichePSO implements InterfaceAdditionalPopulationInformer, Interfac
         npso.setMainSwarmAlgoType(npso.getMainSwarm().getAlgoType().setSelectedTag("Inertness")); // constriction
         npso.getMainSwarm().setPhi1(1.2);
 //		npso.SetMainSwarmPhi2(0); // by default no communication in the mainswarm
-        npso.SetMainSwarmTopologyTag(0); // this doesnt have any effect due to no communication
+        npso.setMainSwarmTopologyTag(0); // this doesnt have any effect due to no communication
         npso.setMainSwarmTopologyRange(0);
         npso.mainSwarmAlgoType = 0;
         npso.getMainSwarm().setParameterControl(new ParamAdaption[]{getDefaultInertnessAdaption()});

@@ -44,10 +44,9 @@ import java.util.*;
  * species clustering actually makes sense).
  */
 @Description("This is a versatile species based niching EA method.")
-public class ClusterBasedNichingEA implements InterfacePopulationChangedEventListener, InterfaceAdditionalPopulationInformer, InterfaceOptimizer, java.io.Serializable {
+public class ClusterBasedNichingEA extends AbstractOptimizer implements InterfacePopulationChangedEventListener, InterfaceAdditionalPopulationInformer, java.io.Serializable {
 
     private static final long serialVersionUID = -3143069327594708609L;
-    private Population population = new Population();
     private transient Population populationArchive = new Population();
     private ArrayList<Population> species = new ArrayList<>();
     private Population undifferentiatedPopulation = new Population();
@@ -59,8 +58,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     private double clusterDiffDist = 0.05;
     private boolean useDistraction = false;
     private double epsilonBound = 1e-10;
-    transient private String identifier = "";
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
     private int speciesCycle = 1;
 
     private int minGroupSize = 3;
@@ -783,28 +780,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
         //Population population = ((InterfaceOptimizer)source).getPopulation();
     }
 
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
     /**
      * This method will set the problem that is to be optimized
      *
@@ -814,11 +789,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
         this.optimizer.setProblem(this.optimizationProblem);
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
     }
 
     /**
@@ -849,14 +819,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     }
 
     @Override
-    public Population getPopulation() {
-//        this.population = (Population)undifferentiatedPopulation.clone();
-//        for (int i = 0; i < this.species.size(); i++) this.population.addPopulation((Population)this.species.get(i));
-//        population.setPopulationSize(population.size()); // set it to true value
-        return this.population;
-    }
-
-    @Override
     public void setPopulation(Population pop) {
         this.undifferentiatedPopulation = pop;
         if (populationArchive == null) {
@@ -873,10 +835,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
             ((InterfaceClusteringMetricBased) caForSpeciesMerging).setMetric(pop.getPopMetric());
         }
         pop.setUseHistory(true);
-    }
-
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
     }
 
     public Population getArchivedSolutions() {
@@ -1069,34 +1027,6 @@ public class ClusterBasedNichingEA implements InterfacePopulationChangedEventLis
     public String haltingWindowTipText() {
         return "Number of generations after which a cluster without improvement is seen as converged and deactivated; set to zero to disable.";
     }
-
-//	/**
-//	 * @return the useDistraction
-//	 */
-//	public boolean isDistractionActive() {
-//		return useDistraction;
-//	}
-//
-//	/**
-//	 * @param useDistraction the useDistraction to set
-//	 */
-//	public void setDistractionActive(boolean useDistraction) {
-//		this.useDistraction = useDistraction;
-//	}
-//	/**
-//	 * @return the distrDefaultStrength
-//	 */
-//	public double getDistrStrength() {
-//		return distrDefaultStrength;
-//	}
-//
-//	/**
-//	 * @param distrDefaultStrength the distrDefaultStrength to set
-//	 */
-//	public void setDistrStrength(double distrDefaultStrength) {
-//		this.distrDefaultStrength = distrDefaultStrength;
-//		distraction.setDefaultStrength(distrDefaultStrength);
-//	}
 
     /**
      * @return the sleepTime

@@ -402,16 +402,15 @@ public class OptimizerFactory {
      * are linear, grid and star.
      *
      * @param problem
-     * @param mut
      * @param popsize
      * @param phi1
      * @param phi2
      * @param speedLim
+     * @param selectedTopology
+     * @param topologyRange
      * @param listener
-     * @param topology
      * @return An optimization algorithm that performs particle swarm
      *         optimization.
-     * @see ParticleSwarmOpimization
      */
     public static ParticleSwarmOptimization createParticleSwarmOptimization(
             AbstractOptimizationProblem problem, int popsize, double phi1,

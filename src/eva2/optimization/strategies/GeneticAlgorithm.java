@@ -22,16 +22,13 @@ import java.util.Vector;
  * GA might not converge. This is a implementation of Genetic Algorithms.
  */
 @Description(value = "This is a basic generational Genetic Algorithm.")
-public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializable {
+public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Serializable {
 
-    private Population population = new Population();
-    private InterfaceOptimizationProblem optimizationProblem = new F1Problem();
     private InterfaceSelection parentSelection = new SelectXProbRouletteWheel();
     private InterfaceSelection partnerSelection = new SelectRandom();
     private boolean useElitism = true;
     private int plague = 0;
     private int numberOfPartners = 1;
-    private String identifier = "";
     transient private Vector<InterfacePopulationChangedEventListener> changeListener;
 
     public GeneticAlgorithm() {
@@ -40,7 +37,6 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
     public GeneticAlgorithm(GeneticAlgorithm ga) {
         this.population = (Population) ga.population.clone();
         this.optimizationProblem = (InterfaceOptimizationProblem) ga.optimizationProblem.clone();
-        this.identifier = ga.identifier;
         this.plague = ga.plague;
         this.numberOfPartners = ga.numberOfPartners;
         this.useElitism = ga.useElitism;
@@ -234,27 +230,6 @@ public class GeneticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
     @Override
     public String getName() {
         return "Genetic Algorithm";
-    }
-
-    /**
-     * Assuming that all optimizer will store thier data in a population we will
-     * allow acess to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
     }
 
     @Override
