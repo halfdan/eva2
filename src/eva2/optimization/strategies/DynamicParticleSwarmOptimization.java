@@ -19,7 +19,6 @@ import eva2.util.annotation.Description;
 public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization {
 
     private boolean envHasChanged = false;
-//    private boolean useCurrentFit	= true;
     /**
      * switch for the speed adaptation mechanism
      */

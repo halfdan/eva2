@@ -2,7 +2,6 @@ package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
 import eva2.optimization.enums.BOAScoringMethods;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.GAIndividualBinaryData;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
@@ -12,7 +11,6 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.BKnapsackProblem;
-import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.tools.math.BayNet;
 import eva2.tools.math.RNG;
@@ -34,18 +32,15 @@ import java.util.logging.Logger;
  * Optimization Algorithm' the works by Martin Pelikan and David E. Goldberg.
  * Genetic and Evolutionary Computation Conference (GECCO-99), pp. 525-532
  */
-@Description(value = "Basic implementation of the Bayesian Optimization Algorithm based on the works by Martin Pelikan and David E. Goldberg.")
-public class BOA implements InterfaceOptimizer, java.io.Serializable {
+@Description("Basic implementation of the Bayesian Optimization Algorithm based on the works by Martin Pelikan and David E. Goldberg.")
+public class BOA extends AbstractOptimizer implements java.io.Serializable {
     private static final Logger LOGGER = Logger.getLogger(BOA.class.getName());
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener = null;
-    private String identifier = "BOA";
     private int probDim = 8;
     private int fitCrit = -1;
     private int PopSize = 50;
     private int numberOfParents = 3;
     private transient BayNet network = null;
-    private Population population = new Population();
-    private AbstractOptimizationProblem problem = new BKnapsackProblem();
+    private AbstractOptimizationProblem optimizationProblem = new BKnapsackProblem();
     private AbstractEAIndividual template = null;
     private double learningSetRatio = 0.5;
     private double resampleRatio = 0.5;
@@ -82,15 +77,13 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     }
 
     public BOA(BOA b) {
-        this.populationChangedEventListener = b.populationChangedEventListener;
-        this.identifier = b.identifier;
         this.probDim = b.probDim;
         this.fitCrit = b.fitCrit;
         this.PopSize = b.PopSize;
         this.numberOfParents = b.numberOfParents;
         this.network = (BayNet) b.network.clone();
         this.population = (Population) b.population.clone();
-        this.problem = (AbstractOptimizationProblem) b.problem.clone();
+        this.optimizationProblem = (AbstractOptimizationProblem) b.optimizationProblem.clone();
         this.template = (AbstractEAIndividual) b.template.clone();
         this.learningSetRatio = b.learningSetRatio;
         this.resampleRatio = b.resampleRatio;
@@ -104,7 +97,6 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
             System.arraycopy(b.edgeRate[i], 0, this.edgeRate[i], 0, this.edgeRate[i].length);
         }
         this.scoringMethod = b.scoringMethod;
-//		this.printExtraOutput = b.printExtraOutput;
         this.printNetworks = b.printNetworks;
         this.printMetrics = b.printMetrics;
         this.printEdgeRate = b.printEdgeRate;
@@ -121,29 +113,12 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         return "Bayesian Optimization Algorithm";
     }
 
-    @Override
-    public void addPopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
     private void createDirectoryIfNeeded(String directoryName) {
         File theDir = new File(directoryName);
         // if the directory does not exist, create it
         if (!theDir.exists()) {
             LOGGER.log(Level.INFO, "creating directory: " + directoryName);
             theDir.mkdir();
-        }
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -171,7 +146,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
             LOGGER.log(Level.WARNING, "tried to evaluate null");
             return;
         }
-        this.problem.evaluate(indy);
+        this.optimizationProblem.evaluate(indy);
         // increment the number of evaluations
         this.population.incrFunctionCalls();
     }
@@ -191,11 +166,11 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         } else {
             this.population.setTargetPopSize(this.PopSize);
         }
-        this.template = this.problem.getIndividualTemplate();
+        this.template = this.optimizationProblem.getIndividualTemplate();
         if (!(template instanceof InterfaceDataTypeBinary)) {
             LOGGER.log(Level.WARNING, "Requiring binary data!");
         } else {
-            Object dim = BeanInspector.callIfAvailable(problem,
+            Object dim = BeanInspector.callIfAvailable(optimizationProblem,
                     "getProblemDimension", null);
             if (dim == null) {
                 LOGGER.log(Level.WARNING, "Coudn't get problem dimension!");
@@ -212,7 +187,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
     @Override
     public void initialize() {
         defaultInit();
-        this.problem.initializePopulation(this.population);
+        this.optimizationProblem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
@@ -495,7 +470,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public void optimize() {
-        this.problem.evaluatePopulationStart(this.population);
+        this.optimizationProblem.evaluatePopulationStart(this.population);
         // get the best individuals from the population
         Population best = this.population.getBestNIndividuals(
                 calcLearningSetSize(), this.fitCrit);
@@ -516,7 +491,7 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
         this.count++;
         // we are done with one generation
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
-        this.problem.evaluatePopulationEnd(this.population);
+        this.optimizationProblem.evaluatePopulationEnd(this.population);
         // print output if desired
 //		if (this.printExtraOutput) {
         if (printNetworks) {
@@ -534,38 +509,9 @@ public class BOA implements InterfaceOptimizer, java.io.Serializable {
 //		}
     }
 
-    /**
-     * Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(this.population);
-    }
-
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.problem = (AbstractOptimizationProblem) problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.problem;
     }
 
     @Override

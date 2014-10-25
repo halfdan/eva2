@@ -1,6 +1,5 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.GAIndividualBinaryData;
 import eva2.optimization.operator.selection.InterfaceSelection;
@@ -20,16 +19,13 @@ import eva2.util.annotation.Description;
  * are performed each time optimize() is called.
  */
 @Description("This is a Steady-State Genetic Algorithm.")
-public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
+public class SteadyStateGA extends AbstractOptimizer implements java.io.Serializable {
 
-    private Population population = new Population();
     private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private InterfaceSelection parentSelection = new SelectTournament();
     private InterfaceSelection partnerSelection = new SelectTournament();
     private InterfaceReplacement replacementSelection = new ReplaceWorst();
     private int numberOfPartners = 1;
-    private String identifier = "";
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
     public SteadyStateGA() {
     }
@@ -37,7 +33,6 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
     public SteadyStateGA(SteadyStateGA a) {
         this.population = (Population) a.population.clone();
         this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
-        this.identifier = a.identifier;
         this.numberOfPartners = a.numberOfPartners;
         this.parentSelection = (InterfaceSelection) a.parentSelection.clone();
         this.partnerSelection = (InterfaceSelection) a.partnerSelection.clone();
@@ -123,43 +118,6 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
-    /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
     /**
      * This method will return a string describing all properties of the
      * optimizer and the applied methods.
@@ -186,22 +144,6 @@ public class SteadyStateGA implements InterfaceOptimizer, java.io.Serializable {
         return "SS-GA";
     }
 
-    /**
-     * Assuming that all optimizers will store their data in a population we will
-     * allow access to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
 
     public String populationTipText() {
         return "Edit the properties of the population used.";

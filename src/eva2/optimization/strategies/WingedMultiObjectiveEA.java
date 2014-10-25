@@ -29,7 +29,6 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
     private int migrationRate = 5;
     private int outputDimension = 2;
     private InterfaceOptimizationProblem optimizationProblem = new FM0Problem();
-    private String identifier = "";
     transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
     public WingedMultiObjectiveEA() {

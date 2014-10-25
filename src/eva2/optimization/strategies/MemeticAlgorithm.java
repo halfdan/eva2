@@ -23,8 +23,7 @@ import java.util.Hashtable;
 @Description("This is a basic generational Memetic Algorithm. Local search steps are performed on a selected subset "
         + "of individuals after certain numbers of global search iterations. Note "
         + "that the problem class must implement InterfaceLocalSearchable.")
-public class MemeticAlgorithm implements InterfaceOptimizer,
-        java.io.Serializable {
+public class MemeticAlgorithm implements InterfaceOptimizer, java.io.Serializable {
 
     /**
      * serial version uid.

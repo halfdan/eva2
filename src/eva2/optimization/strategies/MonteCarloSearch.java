@@ -17,22 +17,12 @@ import eva2.util.annotation.Description;
  * characteristics may be problem dependent.
  */
 @Description("The Monte Carlo Search repeatively creates random individuals and stores the best individuals found.")
-public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializable {
+public class MonteCarloSearch extends AbstractOptimizer implements java.io.Serializable {
 
-    /**
-     * Generated serial version id.
-     */
-    private static final long serialVersionUID = -751760624411490405L;
-    // These variables are necessary for the simple testcase
-    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private int multiRuns = 100;
     private int fitnessCalls = 100;
     private int fitnessCallsNeeded = 0;
-    private Population population;
     private GAIndividualBinaryData bestIndividual;
-    // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String identifier = "";
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
     public MonteCarloSearch() {
         this.population = new Population();
@@ -101,21 +91,6 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     }
 
     /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
-    /**
      * This method will initialize the HillClimber
      */
     public void defaultInit() {
@@ -162,36 +137,6 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     }
 
     /**
-     * This method allows you to add the LectureGUI as listener to the Optimizer
-     *
-     * @param ea
-     */
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
-    /**
      * This method will return a string describing all properties of the
      * optimizer and the applied methods.
      *
@@ -216,27 +161,6 @@ public class MonteCarloSearch implements InterfaceOptimizer, java.io.Serializabl
     @Override
     public String getName() {
         return "MCS";
-    }
-
-    /**
-     * Assuming that all optimizer will store thier data in a population we will
-     * allow acess to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
-    public String populationTipText() {
-        return "Change the number of best individuals stored.";
     }
 
     @Override

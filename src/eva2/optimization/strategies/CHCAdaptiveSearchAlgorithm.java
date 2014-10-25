@@ -26,19 +26,15 @@ import java.util.BitSet;
  * ToDo: Check implementation for correctness.
  */
 @eva2.util.annotation.Description("This is an implementation of the CHC Adaptive Search Algorithm by Eselman.")
-public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.Serializable {
+public class CHCAdaptiveSearchAlgorithm extends AbstractOptimizer implements java.io.Serializable {
 
     private double initialDifferenceThreshold = 0.25;
     private int differenceThreshold;
     private double divergenceRate = 0.35;
     private boolean useElitism = true;
     private int numberOfPartners = 1;
-    private Population population = new Population();
-    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private InterfaceSelection recombSelectionOperator = new SelectRandom();
     private InterfaceSelection populationSelectionOperator = new SelectBestSingle();
-    transient private String identifier = "";
-    transient private InterfacePopulationChangedEventListener interfacePopulationChangedEventListener;
 
     public CHCAdaptiveSearchAlgorithm() {
     }
@@ -231,46 +227,6 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.interfacePopulationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (interfacePopulationChangedEventListener == ea) {
-            interfacePopulationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.interfacePopulationChangedEventListener != null) {
-            this.interfacePopulationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
-    /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
     /**
      * This method will return a string describing all properties of the
      * optimizer and the applied methods.
@@ -295,27 +251,6 @@ public class CHCAdaptiveSearchAlgorithm implements InterfaceOptimizer, java.io.S
     @Override
     public String getName() {
         return "CHC";
-    }
-
-    /**
-     * Assuming that all optimizer will store thier data in a population we will
-     * allow acess to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
     }
 
     @Override

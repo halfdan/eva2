@@ -396,7 +396,7 @@ public class PostProcess {
         // HC depends heavily on the selected mutation operator!
         hc.setProblem(problem);
         mute.init(problem.getIndividualTemplate(), problem);
-        hc.SetMutationOperator(mute);
+        hc.setMutationOperator(mute);
         if (pop.size() != pop.getTargetSize()) {
             System.err.println(pop.size() + " vs. " + pop.getTargetSize());
             System.err.println("warning: population size and vector size dont match! (PostProcess::processWithHC)");

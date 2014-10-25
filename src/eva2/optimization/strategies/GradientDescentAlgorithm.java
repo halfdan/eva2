@@ -1,6 +1,5 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.InterfaceSolutionSet;
@@ -21,9 +20,8 @@ import eva2.util.annotation.Description;
  *
  */
 @Description("Gradient Descent can be applied to derivable functions (InterfaceFirstOrderDerivableProblem).")
-public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Serializable {
+public class GradientDescentAlgorithm extends AbstractOptimizer implements java.io.Serializable {
 
-    private InterfaceOptimizationProblem optimizationProblem;
     InterfaceDataTypeDouble bestDataTypeDouble, testDataTypeDouble;
     private int iterations = 1;
     private double wDecreaseStepSize = 0.5;
@@ -40,12 +38,8 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
     double localmaxstepsize = 10;
     double localminstepsize = 1e-10;
     private boolean momentumterm = false;
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
     public double maximumabsolutechange = 0.2;
-    //  Hashtable             indyhash;
     // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String identifier = "";
-    private Population population;
     private static final String lockKey = "gdaLockDataKey";
     private static final String lastFitnessKey = "gdaLastFitDataKey";
     private static final String stepSizeKey = "gdaStepSizeDataKey";
@@ -62,12 +56,9 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
             this.optimizationProblem.evaluate(this.getPopulation());
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
-        //System.out.println("initializeByPopulation() called");
-//    indyhash = new Hashtable();
     }
 
     public GradientDescentAlgorithm() {
-//    indyhash = new Hashtable();
         this.population = new Population();
         this.population.setTargetSize(1);
     }
@@ -281,14 +272,12 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
                     } else {
                         indystepsize *= wIncreaseStepSize;
                     }
-//System.out.println("newstepsize" + indystepsize);
                     indystepsize = (indystepsize > globalmaxstepsize) ? globalmaxstepsize : indystepsize;
                     indystepsize = (indystepsize < globalminstepsize) ? globalminstepsize : indystepsize;
                     indy.putData(stepSizeKey, indystepsize);
                 }
 
-//System.out.println("newstepsize in bounds" + indystepsize);
-                indy.putData(lastFitnessKey, new Double(indy.getFitness()[0]));
+                indy.putData(lastFitnessKey, indy.getFitness()[0]);
             }
 
         }
@@ -299,57 +288,14 @@ public class GradientDescentAlgorithm implements InterfaceOptimizer, java.io.Ser
 
     private double momentumweigth = 0.1;
 
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(getPopulation());
     }
 
     @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-
-        optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return optimizationProblem;
-    }
-
-    @Override
     public String getStringRepresentation() {
         return "GradientDescentAlgorithm";
-    }
-
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public static void main(String[] args) {

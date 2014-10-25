@@ -22,16 +22,13 @@ import java.util.Vector;
  * available by projection at the bounds.
  */
 @Description("The Nelder-Mead simplex search algorithm for local search. Reflection on bounds may be used for constraint handling.")
-public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, InterfacePopulationChangedEventListener {
+public class NelderMeadSimplex extends AbstractOptimizer implements Serializable, InterfacePopulationChangedEventListener {
 
     private int populationSize = 100;
     // simulating the generational cycle. Set rather small (eg 5) for use as local search, higher for global search (eg 50)
     private int generationCycle = 50;
     private int fitIndex = 0; // choose criterion for multi objective functions
-    private Population population;
     private AbstractOptimizationProblem optimizationProblem;
-    private transient Vector<InterfacePopulationChangedEventListener> populationChangedEventListeners;
-    private String identifier = "NelderMeadSimplex";
     private boolean checkConstraints = true;
 
     public NelderMeadSimplex() {
@@ -48,7 +45,6 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
         setPopulation((Population) a.population.clone());
         populationSize = a.populationSize;
         generationCycle = a.generationCycle;
-        identifier = a.identifier;
     }
 
     @Override
@@ -74,29 +70,6 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
             }
         }
         return false;
-    }
-
-    @Override
-    public void addPopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (ea != null) {
-            if (populationChangedEventListeners == null) {
-                populationChangedEventListeners = new Vector<>();
-            }
-            if (!populationChangedEventListeners.contains(ea)) {
-                populationChangedEventListeners.add(ea);
-            }
-        }
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListeners == null) {
-            return false;
-        } else {
-            return populationChangedEventListeners.remove(ea);
-        }
     }
 
     protected double[] calcChallengeVect(double[] centroid, double[] refX) {
@@ -218,17 +191,7 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 
     @Override
     public String getName() {
-        return identifier;
-    }
-
-    @Override
-    public Population getPopulation() {
-        return population;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return optimizationProblem;
+        return "NelderMeadSimplex";
     }
 
     @Override
@@ -257,14 +220,6 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
 //		fireNextGenerationPerformed();
     }
 
-    private void fireNextGenerationPerformed() {
-        if (populationChangedEventListeners != null) {
-            for (int i = 0; i < populationChangedEventListeners.size(); i++) {
-                populationChangedEventListeners.elementAt(i).registerPopulationStateChanged(this, Population.NEXT_GENERATION_PERFORMED);
-            }
-        }
-    }
-
     @Override
     public void optimize() {
         // make at least as many calls as there are individuals within the population.
@@ -279,10 +234,6 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
                 double[][] range = ((InterfaceDataTypeDouble) ind).getDoubleRange();
                 if (!Mathematics.isInRange(x, range)) {
                     System.err.println("WARNING: nelder mead step produced indy out of range!");
-//					Mathematics.projectToRange(x, range);
-//					((InterfaceDataTypeDouble)ind).setDoubleGenotype(x);
-//					problem.evaluate(ind);
-//					this.population.incrFunctionCalls();
                 }
                 population.set(population.getIndexOfWorstIndividualNoConstr(fitIndex), ind, fitIndex);
             } else {//keine Verbesserung gefunden shrink!!
@@ -343,8 +294,8 @@ public class NelderMeadSimplex implements InterfaceOptimizer, Serializable, Inte
     @Override
     public void registerPopulationStateChanged(Object source, String name) {
         if (name.compareTo(Population.FUN_CALL_INTERVAL_REACHED) == 0) {
-            fireNextGenerationPerformed();
-        }// else System.err.println("unknown event!");
+            firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
+        }
     }
 
     /**

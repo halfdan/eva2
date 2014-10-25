@@ -29,9 +29,7 @@ import java.util.BitSet;
  *         research, vol. 37, no. 11, pp. 1977-1986 (2010)
  */
 @Description("A basic implementation of a Binary ScatterSearch")
-public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener = null;
-    private String identifier = "BinaryScatterSearch";
+public class BinaryScatterSearch extends AbstractOptimizer implements java.io.Serializable, InterfacePopulationChangedEventListener {
     private int MaxImpIter = 5;
     private int poolSize = 100;
     private int refSetSize = 10;
@@ -44,7 +42,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     private double g2 = 1.0 / 3.0;
     private boolean firstTime = true;
     private AbstractEAIndividual template = null;
-    private AbstractOptimizationProblem problem = new B1Problem();
+    private AbstractOptimizationProblem optimizationProblem = new B1Problem();
     private Population pool = new Population();
     private Population refSet = new Population(10);
     private AdaptiveCrossoverEAMixer cross = new AdaptiveCrossoverEAMixer(new CM1(), new CM2(), new CM3(), new CM4(), new CM5(), new CM6(), new CM7());
@@ -62,8 +60,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * @param b
      */
     public BinaryScatterSearch(BinaryScatterSearch b) {
-        this.populationChangedEventListener = b.populationChangedEventListener;
-        this.identifier = b.identifier;
+        this.populationChangedEventListeners = b.populationChangedEventListeners;
         this.MaxImpIter = b.MaxImpIter;
         this.poolSize = b.poolSize;
         this.refSetSize = b.refSetSize;
@@ -76,7 +73,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
         this.g2 = b.g2;
         this.firstTime = b.firstTime;
         this.template = (AbstractEAIndividual) b.template.clone();
-        this.problem = (AbstractOptimizationProblem) b.problem.clone();
+        this.optimizationProblem = (AbstractOptimizationProblem) b.optimizationProblem.clone();
         this.pool = (Population) b.pool.clone();
         this.refSet = (Population) b.refSet.clone();
         this.cross = b.cross;
@@ -104,7 +101,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
         this.th2 = upperThreshold;
         this.g1 = perCentFirstIndGenerator;
         this.g2 = perCentSecondIndGenerator;
-        this.problem = prob;
+        this.optimizationProblem = prob;
     }
 
     /**
@@ -131,7 +128,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
         this.th2 = upperThreshold;
         this.g1 = perCentFirstIndGenerator;
         this.g2 = perCentSecondIndGenerator;
-        this.problem = prob;
+        this.optimizationProblem = prob;
         this.cross = cross;
     }
 
@@ -148,23 +145,6 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
         return "BSS";
     }
 
-    @Override
-    public void addPopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     /**
      * evaluate the given Individual and increments the counter. if the
      * individual is null, only the counter is incremented
@@ -177,7 +157,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
             System.err.println("tried to evaluate null");
             return;
         }
-        this.problem.evaluate(indy);
+        this.optimizationProblem.evaluate(indy);
         // increment the number of evaluations 
         this.refSet.incrFunctionCalls();
     }
@@ -187,11 +167,11 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      */
     private void defaultInit() {
         this.refSet = new Population();
-        this.template = this.problem.getIndividualTemplate();
+        this.template = this.optimizationProblem.getIndividualTemplate();
         if (!(template instanceof InterfaceDataTypeBinary)) {
             System.err.println("Requiring binary data!");
         } else {
-            Object dim = BeanInspector.callIfAvailable(problem, "getProblemDimension", null);
+            Object dim = BeanInspector.callIfAvailable(optimizationProblem, "getProblemDimension", null);
             if (dim == null) {
                 System.err.println("Couldnt get problem dimension!");
             }
@@ -199,7 +179,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
             ((InterfaceDataTypeBinary) this.template).setBinaryGenotype(new BitSet(probDim));
         }
         this.firstTime = true;
-        this.cross.init(this.template, problem, refSet, Double.MAX_VALUE);
+        this.cross.init(this.template, optimizationProblem, refSet, Double.MAX_VALUE);
         refSet.addPopulationChangedEventListener(this);
         this.refSet.setNotifyEvalInterval(this.generationCycle);
     }
@@ -246,7 +226,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * 000...000, then 010101...01, 101010...10, 001001001...001,
      * 110110110...110 and so on The returned population is evaluated.
      *
-     * @param pop the initial Population
+     * @param numToInit
      * @return the new Population
      */
     private Population generateG1(int numToInit) {
@@ -471,7 +451,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
      * @param pop the generated Pool
      */
     private void initRefSet(Population pop) {
-        this.problem.evaluatePopulationStart(this.refSet);
+        this.optimizationProblem.evaluatePopulationStart(this.refSet);
         this.pool = pop;
         refSetUpdate(true);
         Population best = this.refSet.getBestNIndividuals(this.refSetSize / 2, fitCrit);
@@ -484,7 +464,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
                 this.refSet.add(x);
             }
         }
-        this.problem.evaluatePopulationEnd(this.refSet);
+        this.optimizationProblem.evaluatePopulationEnd(this.refSet);
     }
 
     /**
@@ -665,7 +645,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
             for (int i = 0; i < this.refSet.size(); i++) {
                 pop.add(this.refSet.getEAIndividual(i));
             }
-            this.cross.update(indy1, problem, refSet, indy1.getFitness(0));
+            this.cross.update(indy1, optimizationProblem, refSet, indy1.getFitness(0));
             result = this.cross.mate(indy1, pop)[0];
             //result = indy1.mateWith(s)[0];
         } else if (pop.size() > 0) {
@@ -701,7 +681,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
 
     @Override
     public void optimize() {
-        problem.evaluatePopulationStart(refSet);
+        optimizationProblem.evaluatePopulationStart(refSet);
         int funCallsStart = this.refSet.getFunctionCalls();
         do {
             // generate a new Pool
@@ -738,12 +718,7 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
                 refSetUpdate(true);
             }
         } while (refSet.getFunctionCalls() - funCallsStart < generationCycle);
-        problem.evaluatePopulationEnd(refSet);
-    }
-
-    @Override
-    public Population getPopulation() {
-        return this.refSet;
+        optimizationProblem.evaluatePopulationEnd(refSet);
     }
 
     @Override
@@ -762,24 +737,8 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
     }
 
     @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.problem = (AbstractOptimizationProblem) problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.problem;
-    }
-
-    @Override
     public String getStringRepresentation() {
         return "BinaryScatterSearch";
-    }
-
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
     }
 
     @Override
@@ -795,7 +754,6 @@ public class BinaryScatterSearch implements InterfaceOptimizer, java.io.Serializ
         }
     }
 
-    //----------GUI----------
     public int getPoolSize() {
         return this.poolSize;
     }

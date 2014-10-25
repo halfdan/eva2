@@ -15,20 +15,13 @@ import eva2.util.annotation.Description;
  * similar problems.
  */
 @Description("The threshold algorithm uses an declining threshold to accpect new solutions.")
-public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializable {
-    // These variables are necessary for the simple testcase
-
-    private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
+public class ThresholdAlgorithm extends AbstractOptimizer implements java.io.Serializable {
     private int multiRuns = 100;
     private int fitnessCalls = 100;
     private int fitnessCallsNeeded = 0;
     GAIndividualBinaryData bestIndividual, testIndividual;
     public double initialT = 2, currentT;
     public double alpha = 0.9;
-    // These variables are necessary for the more complex LectureGUI enviroment
-    transient private String indentifier = "";
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
-    private Population population;
 
     public ThresholdAlgorithm() {
         this.population = new Population();
@@ -182,28 +175,6 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
         System.out.println("(" + program.multiRuns + "/" + program.fitnessCalls + ") Mean Fitness : " + TmpMeanFitness + " Mean Calls needed: " + TmpMeanCalls);
     }
 
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
     /**
      * This method will return a string describing all properties of the
      * optimizer and the applied methods.
@@ -232,27 +203,6 @@ public class ThresholdAlgorithm implements InterfaceOptimizer, java.io.Serializa
     @Override
     public String getName() {
         return "MS-TA";
-    }
-
-    /**
-     * Assuming that all optimizer will store thier data in a population we will
-     * allow acess to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
-    public String populationTipText() {
-        return "Change the number of best individuals stored (MS-TA).";
     }
 
     @Override

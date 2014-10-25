@@ -20,7 +20,7 @@ import java.util.HashMap;
  * ToDo: Document
  */
 @Description("A multi-objective CMA-ES variant after Igel, Hansen and Roth 2007 (EC 15(1),1-28).")
-public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
+public class MultiObjectiveCMAES extends AbstractOptimizer implements Serializable {
 
     /**
      * Generated serial version identifier
@@ -40,10 +40,6 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
         public boolean seen = false;
     }
 
-    private String identifier = "MOCMAES";
-    private Population population;
-    private AbstractOptimizationProblem optimizationProblem;
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
     private int lambda = 1;
     private int lambdaMO = 1;
 
@@ -66,30 +62,6 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
         GenericObjectEditor
                 .setHideProperty(this.getClass(), "population", true);
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * eva2.optimization.strategies.InterfaceOptimizer#SetProblem(eva2.optimization
-     * .problems.InterfaceOptimizationProblem)
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        optimizationProblem = (AbstractOptimizationProblem) problem;
-    }
-
-    /**
-     * This method allows you to add the LectureGUI as listener to the Optimizer
-     *
-     * @param ea
-     */
-    @Override
-    public void addPopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -109,26 +81,6 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     @Override
     public String getName() {
         return "(1+" + lambda + ") MO-CMA-ES";
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see eva2.optimization.strategies.InterfaceOptimizer#getPopulation()
-     */
-    @Override
-    public Population getPopulation() {
-        return population;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see eva2.optimization.strategies.InterfaceOptimizer#getProblem()
-     */
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return optimizationProblem;
     }
 
     /*
@@ -329,19 +281,6 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
     /*
      * (non-Javadoc)
      * 
-     * @seeeva2.optimization.strategies.InterfaceOptimizer#
-     * removePopulationChangedEventListener
-     * (eva2.optimization.InterfacePopulationChangedEventListener)
-     */
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        return false;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see
      * eva2.optimization.strategies.InterfaceOptimizer#setPopulation(eva2.server
      * .go.populations.Population)
@@ -352,17 +291,6 @@ public class MultiObjectiveCMAES implements InterfaceOptimizer, Serializable {
         population.setNotifyEvalInterval(1);
         lambdaMO = population.getTargetSize();
 
-    }
-
-    /**
-     * Something has changed
-     *
-     * @param name
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
     }
 
     public int getLambda() {
