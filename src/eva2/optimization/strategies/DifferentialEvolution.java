@@ -696,8 +696,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
 
     @Override
     public InterfaceSolutionSet getAllSolutions() {
-        Population pop = getPopulation();
-        return new SolutionSet(pop, pop);
+        return new SolutionSet(this.population);
     }
 
     /**

@@ -110,7 +110,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 
     /**
      * This method evaluates a given population and set the fitness values
-     * accordingly
+     * accordingly. It also keeps track of the function call count.
      *
      * @param population The population that is to be evaluated.
      */
@@ -120,7 +120,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         evaluatePopulationStart(population);
 
         if (this.parallelThreads > 1) {
-            Vector<AbstractEAIndividual> queue = new Vector<>(population.size());
             Semaphore sema = new Semaphore(0);
             ExecutorService pool = Executors.newFixedThreadPool(parallelThreads);
             int cntIndies = 0;

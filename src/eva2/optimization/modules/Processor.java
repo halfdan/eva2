@@ -225,6 +225,10 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
         runCounter = 0;
 
+        /**
+         * We keep the optimization running until it is aborted by the user or
+         * the number of multiple runs has been reached.
+         */
         while (isOptimizationRunning() && (runCounter < statistics.getStatisticsParameter().getMultiRuns())) {
             LOGGER.info(String.format("Starting Optimization %d/%d", runCounter + 1, statistics.getStatisticsParameter().getMultiRuns()));
             statistics.startOptimizationPerformed(getInfoString(), runCounter, optimizationParameters, getInformerList());
@@ -241,12 +245,16 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 optimizationStateListener.updateProgress(getStatusPercent(optimizationParameters.getOptimizer().getPopulation(), runCounter, statistics.getStatisticsParameter().getMultiRuns()), null);
             }
 
-            do {    // main loop
+            /**
+             * This is the main optimization loop. We keep calling
+             * optimize() until a termination criterion is met or
+             * the user aborts the optimization manually.
+             */
+            do {
                 maybeUpdateParamCtrl(optimizationParameters);
 
                 this.optimizationParameters.getOptimizer().optimize();
-            }
-            while (isOptimizationRunning() && !this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getAllSolutions()));
+            } while (isOptimizationRunning() && !this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getAllSolutions()));
 
             runCounter++;
             maybeFinishParamCtrl(optimizationParameters);
