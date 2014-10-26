@@ -2,7 +2,7 @@ package eva2.optimization.strategies;
 
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.AbstractEAIndividualComparator;
+import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
 import eva2.optimization.operator.archiving.InformationRetrievalInserting;
 import eva2.optimization.operator.archiving.InterfaceArchiving;
@@ -248,7 +248,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
 
     @Override
     public InterfaceSolutionSet getAllSolutions() {
-        return new SolutionSet(getPopulation(), ArchivingNSGAII.getNonDominatedSortedFront(getPopulation().getArchive()).getSortedPop(new AbstractEAIndividualComparator(0)));
+        return new SolutionSet(getPopulation(), ArchivingNSGAII.getNonDominatedSortedFront(getPopulation().getArchive()).getSortedPop(new EAIndividualComparator(0)));
     }
 
     /**

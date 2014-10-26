@@ -3,7 +3,7 @@ package eva2.optimization.operator.mutation;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.enums.ESMutationInitialSigma;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.AbstractEAIndividualComparator;
+import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.population.Population;
@@ -112,7 +112,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
      */
     @Override
     public void adaptAfterSelection(Population oldGen, Population selectedP) {
-        Population selectedSorted = selectedP.getSortedBestFirst(new AbstractEAIndividualComparator(-1));
+        Population selectedSorted = selectedP.getSortedBestFirst(new EAIndividualComparator(-1));
 
         int mu, lambda;
         mu = selectedP.size();

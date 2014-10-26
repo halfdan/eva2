@@ -1,7 +1,7 @@
 package eva2.optimization.operator.cluster;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.AbstractEAIndividualComparator;
+import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.individuals.IndividualDistanceComparator;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
@@ -99,7 +99,7 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
 
     @Override
     public Population[] cluster(Population pop, Population referenceSet) {
-        AbstractEAIndividualComparator eaComparator = new AbstractEAIndividualComparator(-1);
+        EAIndividualComparator eaComparator = new EAIndividualComparator(-1);
         Population sorted = pop.getSortedBestFirst(eaComparator);
         Population peaks = performDynPeakIdent(metric, sorted, numNiches, nicheRadius);
         Population[] clusters = new Population[peaks.size() + 1];

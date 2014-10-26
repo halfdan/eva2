@@ -2,7 +2,7 @@ package eva2.optimization.operator.cluster;
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.AbstractEAIndividualComparator;
+import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.operator.paramcontrol.ParamAdaption;
@@ -37,7 +37,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
 
     private int[] uplink;
     private double[] uplinkDist;
-    private AbstractEAIndividualComparator comparator = new AbstractEAIndividualComparator();
+    private EAIndividualComparator comparator = new EAIndividualComparator();
     private Vector<Integer>[] children;
     private static final String initializedForKey = "initializedClustNearestBetterOnHash";
     private static final String initializedRefData = "initializedClustNearestBetterData";
@@ -52,7 +52,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
         this.meanDistFactor = o.meanDistFactor;
         this.currentMeanDistance = o.currentMeanDistance;
         this.minimumGroupSize = o.minimumGroupSize;
-        this.comparator = (AbstractEAIndividualComparator) o.comparator.clone();
+        this.comparator = (EAIndividualComparator) o.comparator.clone();
         this.testConvergingSpeciesOnBestOnly = o.testConvergingSpeciesOnBestOnly;
     }
 
@@ -435,7 +435,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
         return "Define the comparator by which the population is sorted before clustering.";
     }
 
-    public AbstractEAIndividualComparator getComparator() {
+    public EAIndividualComparator getComparator() {
         return comparator;
     }
 //	public void setComparator(AbstractEAIndividualComparator comparator) {
