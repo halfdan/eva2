@@ -1,23 +1,32 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
-import eva2.problems.AbstractOptimizationProblem;
-import eva2.problems.F1Problem;
-import eva2.problems.InterfaceOptimizationProblem;
+import eva2.optimization.population.SolutionSet;
+import eva2.tools.math.Mathematics;
+import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
+ * Artificial Bee Colony
  *
+ * This optimizer implements the original ABC algorithm proposed by Karaboga et.al.
  */
-@Description(value = "Artificial Bee Colony Optimizer")
-public class ArtificialBeeColony extends AbstractOptimizer {
+@Description("Artificial Bee Colony")
+public class ArtificialBeeColony extends AbstractOptimizer implements Serializable {
 
-    protected AbstractOptimizationProblem optimizationProblem = new F1Problem();
-    protected Population population;
+    /**
+     * A food source which could not be improved through "maxTrials" trials is abandoned by its employed bee.
+     */
+    @Parameter(name = "trials", description = "Maximum number of trials until bee abandons the food source")
+    protected int maxTrials = 100;
+
+    protected AbstractEAIndividual bestIndividual;
 
 
     public ArtificialBeeColony() {
@@ -25,7 +34,8 @@ public class ArtificialBeeColony extends AbstractOptimizer {
     }
 
     public ArtificialBeeColony(ArtificialBeeColony copy) {
-
+        this.population = (Population) copy.population.clone();
+        this.maxTrials = copy.maxTrials;
     }
 
     @Override
@@ -40,7 +50,9 @@ public class ArtificialBeeColony extends AbstractOptimizer {
 
     @Override
     public void initialize() {
-
+        this.optimizationProblem.initializePopulation(this.population);
+        this.evaluatePopulation(this.population);
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
     /**
@@ -55,6 +67,7 @@ public class ArtificialBeeColony extends AbstractOptimizer {
         if (reset) {
             this.population.init();
             this.evaluatePopulation(this.population);
+            this.bestIndividual = this.population.getBestEAIndividual();
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
     }
@@ -72,18 +85,162 @@ public class ArtificialBeeColony extends AbstractOptimizer {
     @Override
     public void optimize() {
         /**
-         *
+         * bee.SendEmployedBees();
+         * bee.CalculateProbabilities();
+         * bee.SendOnlookerBees();
+         * bee.MemorizeBestSource();
+         * bee.SendScoutBees();
          */
 
+        /**
+         * Sending employed bees
+         */
+        for(int i = 0; i < this.population.size(); i++) {
+            // The current individual to compare to
+            AbstractEAIndividual indy = this.population.getEAIndividual(i);
+
+            // The new individual which we are generating
+            AbstractEAIndividual newIndividual = (AbstractEAIndividual) indy.getClone();
+            double[] indyDoubleData = ((InterfaceDataTypeDouble) newIndividual).getDoubleData();
+
+            int randomParam = RNG.randomInt(0, indyDoubleData.length - 1);
+            int neighbour = RNG.randomInt(0, this.population.size() - 1);
+            double[] randomIndy = ((InterfaceDataTypeDouble) this.population.get(neighbour)).getDoubleData();
+
+            double r = RNG.randomDouble();
+            indyDoubleData[randomParam] = indyDoubleData[randomParam] + (indyDoubleData[randomParam] - randomIndy[randomParam]) * (r - 0.5) * 2.0;
+            // Make sure new indy is in range
+            Mathematics.projectToRange(indyDoubleData, ((InterfaceDataTypeDouble) newIndividual).getDoubleRange());
+
+            ((InterfaceDataTypeDouble) newIndividual).setDoubleGenotype(indyDoubleData);
+            this.optimizationProblem.evaluate(newIndividual);
+
+            if (newIndividual.getFitness(0) < indy.getFitness(0)) {
+                newIndividual.setAge(0);
+                this.population.replaceIndividualAt(i, newIndividual);
+            } else {
+                // Keep individual but increase the age
+                indy.incrAge();
+            }
+        }
+
+        /**
+         * Send onlooker bees to food sources based on fitness proportional probablity
+         */
+        int t = 0, i = 0;
+        double maxFitness = this.population.getBestFitness()[0];
+        while (t < this.population.size()) {
+            double r = RNG.randomDouble();
+
+            /**
+             * Choose a food source depending on its probability to be chosen
+             */
+            if (r < ((0.9 * (this.population.getEAIndividual(i).getFitness(0) / maxFitness)) + 0.1)) {
+                t++;
+
+                // The current individual to compare to
+                AbstractEAIndividual indy = this.population.getEAIndividual(i);
+
+                // The new individual which we are generating
+                AbstractEAIndividual newIndividual = (AbstractEAIndividual) indy.getClone();
+                double[] indyDoubleData = ((InterfaceDataTypeDouble) newIndividual).getDoubleData();
+
+                int randomParam = RNG.randomInt(0, indyDoubleData.length - 1);
+                int neighbour = RNG.randomInt(0, this.population.size() - 1);
+                double[] randomIndy = ((InterfaceDataTypeDouble) this.population.get(neighbour)).getDoubleData();
+
+                r = RNG.randomDouble();
+                indyDoubleData[randomParam] = indyDoubleData[randomParam] + (indyDoubleData[randomParam] - randomIndy[randomParam]) * (r - 0.5) * 2.0;
+                // Make sure new indy is in range
+                Mathematics.projectToRange(indyDoubleData, ((InterfaceDataTypeDouble) newIndividual).getDoubleRange());
+
+                ((InterfaceDataTypeDouble) newIndividual).setDoubleGenotype(indyDoubleData);
+                this.optimizationProblem.evaluate(newIndividual);
+
+                if (newIndividual.getFitness(0) < indy.getFitness(0)) {
+                    newIndividual.setAge(1);
+                    this.population.replaceIndividualAt(i, newIndividual);
+                } else {
+                    // Keep individual but increase the age
+                    indy.incrAge();
+                }
+            }
+
+            i++;
+            if (i == this.population.size()) {
+                i = 0;
+            }
+        }
+
+        /**
+         * Remember best Individual
+         */
+        if (bestIndividual != null && bestIndividual.getFitness(0) < this.population.getBestEAIndividual().getFitness(0)) {
+            bestIndividual = this.population.getBestEAIndividual();
+        } else {
+            bestIndividual = this.population.getBestEAIndividual();
+        }
+
+        /**
+         * Send scout bee
+         */
+        AbstractEAIndividual oldestIndy = getOldestIndividual();
+        if (oldestIndy.getAge() > this.maxTrials) {
+            oldestIndy.init(this.optimizationProblem);
+            this.optimizationProblem.evaluate(oldestIndy);
+            this.population.incrFunctionCalls();
+        }
+
+        this.population.incrFunctionCallsBy(this.population.size());
+
+        /**
+         * ToDo: This is ugly.
+         *
+         * incrGeneration increments the age of all indies. Age management however happens
+         * in the algorithm itself (for ABC) so we have to -1 all ages.
+         */
+        this.population.incrGeneration();
+        for (Object individual : this.population) {
+            ((AbstractEAIndividual) individual).setAge(((AbstractEAIndividual) individual).getAge() - 1);
+        }
+
+        this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
+    }
+
+    private AbstractEAIndividual getOldestIndividual() {
+        AbstractEAIndividual oldestIndy = this.population.getEAIndividual(0);
+        for(int i = 1; i < this.population.size(); i++) {
+            if (oldestIndy.getAge() < this.population.getEAIndividual(i).getAge()) {
+                oldestIndy = this.population.getEAIndividual(i);
+            }
+        }
+        return oldestIndy;
     }
 
     @Override
     public InterfaceSolutionSet getAllSolutions() {
-        return null;
+        /**
+         * ToDo: This should somehow preserve the best found individual.
+         */
+        return new SolutionSet(this.population);
     }
 
     @Override
     public String getStringRepresentation() {
         return this.toString();
+    }
+
+
+    @Override
+    public void setPopulation(Population pop) {
+        this.population = pop;
+    }
+
+    public void setMaxTrials(int maxTrials) {
+        this.maxTrials = maxTrials;
+    }
+
+    public int getMaxTrials() {
+        return maxTrials;
     }
 }
