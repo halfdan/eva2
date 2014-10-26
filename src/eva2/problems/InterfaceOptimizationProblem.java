@@ -39,8 +39,8 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
     public void initializePopulation(Population population);
 
     /**
-     * This method evaluates a given population and set the fitness values
-     * accordingly
+     * This method evaluates a given population and sets the fitness values
+     * accordingly. It also keeps track of the function call count.
      *
      * @param population The population that is to be evaluated.
      */
