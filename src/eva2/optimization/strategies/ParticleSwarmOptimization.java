@@ -7,7 +7,7 @@ import eva2.gui.plot.TopoPlot;
 import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.AbstractEAIndividualComparator;
+import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.operator.paramcontrol.ParamAdaption;
@@ -1316,9 +1316,9 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         if ((topology == PSOTopology.multiSwarm) || (topology == PSOTopology.tree)) {
             sortedPop = pop.toArray();
             if ((topology == PSOTopology.multiSwarm) || (treeStruct >= 2)) {
-                Arrays.sort(sortedPop, new AbstractEAIndividualComparator());
+                Arrays.sort(sortedPop, new EAIndividualComparator());
             } else {
-                Arrays.sort(sortedPop, new AbstractEAIndividualComparator(partBestFitKey));
+                Arrays.sort(sortedPop, new EAIndividualComparator(partBestFitKey));
             }
             addSortedIndicesTo(sortedPop, pop);
         }
@@ -1379,7 +1379,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         if (topology == PSOTopology.hpso) { // HPSO sorting the population
             int parentIndex;
             AbstractEAIndividual indy;
-            AbstractEAIndividualComparator comp = new AbstractEAIndividualComparator(partBestFitKey);
+            EAIndividualComparator comp = new EAIndividualComparator(partBestFitKey);
             for (int i = 0; i < pop.size(); i++) {
                 // loop over the part of the tree which is complete (full degree in each level)
                 parentIndex = getParentIndex(topologyRange, i, pop.size());

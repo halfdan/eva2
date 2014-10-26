@@ -16,11 +16,10 @@ import java.util.Comparator;
  * the comparison is based on those. This may be used to access alternative (e.g. older or
  * best-so-far fitness values) for individual comparison.
  *
- * @author mkron
- * @see #AbstractEAIndividual().isDominatingFitness(double[], double[])
+ * @see AbstractEAIndividual#isDominatingFitness(double[], double[])
  */
 @eva2.util.annotation.Description(value = "A comparator class for general EA individuals. Compares individuals based on their fitness in context of minimization.")
-public class AbstractEAIndividualComparator implements Comparator<Object>, Serializable {
+public class EAIndividualComparator implements Comparator<Object>, Serializable {
     // flag whether a data field should be used.
     private String indyDataKey = "";
     private int fitCriterion = -1;
@@ -31,7 +30,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
      * The default version calls compares based on dominance with priority of feasibility if there are constraints.
      * It assigns -1 if first is better, 1 if second is better, 0 if the two ind.s are not comparable.
      */
-    public AbstractEAIndividualComparator() {
+    public EAIndividualComparator() {
         this("", -1, true);
     }
 
@@ -42,9 +41,9 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
      * also regarded by default.
      * If indyDataKey is null, the default comparison is used.
      *
-     * @param indyDataKey
+     * @param indyDataKey Field of the individual to use for comparison
      */
-    public AbstractEAIndividualComparator(String indyDataKey) {
+    public EAIndividualComparator(String indyDataKey) {
         this(indyDataKey, -1, true);
     }
 
@@ -54,7 +53,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
      *
      * @param fitnessCriterion
      */
-    public AbstractEAIndividualComparator(int fitnessCriterion) {
+    public EAIndividualComparator(int fitnessCriterion) {
         this("", fitnessCriterion, true);
     }
 
@@ -66,14 +65,14 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
      * @param fitIndex
      * @param preferFeasible
      */
-    public AbstractEAIndividualComparator(int fitIndex, boolean preferFeasible) {
+    public EAIndividualComparator(int fitIndex, boolean preferFeasible) {
         this("", fitIndex, preferFeasible);
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other instanceof AbstractEAIndividualComparator) {
-            AbstractEAIndividualComparator o = (AbstractEAIndividualComparator) other;
+        if (other instanceof EAIndividualComparator) {
+            EAIndividualComparator o = (EAIndividualComparator) other;
             if ((indyDataKey == o.indyDataKey) || (indyDataKey != null && (indyDataKey.equals(o.indyDataKey)))) {
                 if ((fitCriterion == o.fitCriterion) && (preferFeasible == o.preferFeasible)) {
                     return true;
@@ -91,19 +90,19 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
     /**
      * Generic constructor.
      *
-     * @param indyDataKey
+     * @param indyDataKey Field of the individual to use for comparison
      * @param fitnessCriterion
      * @param preferFeasible
-     * @see #AbstractEAIndividualComparator(int)
-     * @see #AbstractEAIndividualComparator(String)
+     * @see #EAIndividualComparator(int)
+     * @see #EAIndividualComparator(String)
      */
-    public AbstractEAIndividualComparator(String indyDataKey, int fitnessCriterion, boolean preferFeasible) {
+    public EAIndividualComparator(String indyDataKey, int fitnessCriterion, boolean preferFeasible) {
         this.indyDataKey = indyDataKey;
         this.fitCriterion = fitnessCriterion;
         this.preferFeasible = preferFeasible;
     }
 
-    public AbstractEAIndividualComparator(AbstractEAIndividualComparator other) {
+    public EAIndividualComparator(EAIndividualComparator other) {
         indyDataKey = other.indyDataKey;
         fitCriterion = other.fitCriterion;
         preferFeasible = other.preferFeasible;
@@ -111,7 +110,7 @@ public class AbstractEAIndividualComparator implements Comparator<Object>, Seria
 
     @Override
     public Object clone() {
-        return new AbstractEAIndividualComparator(this);
+        return new EAIndividualComparator(this);
     }
 
     /**

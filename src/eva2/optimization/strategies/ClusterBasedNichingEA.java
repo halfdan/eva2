@@ -7,7 +7,7 @@ import eva2.gui.plot.Plot;
 import eva2.gui.plot.TopoPlot;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.AbstractEAIndividualComparator;
+import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;
 import eva2.optimization.operator.cluster.InterfaceClustering;
@@ -72,8 +72,8 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
     private double muLambdaRatio = 0.5;
     private int sleepTime = 0;
     private int maxSpeciesSize = 15;
-    private AbstractEAIndividualComparator reduceSizeComparator = new AbstractEAIndividualComparator();
-    private AbstractEAIndividualComparator histComparator = new AbstractEAIndividualComparator("", -1, true);
+    private EAIndividualComparator reduceSizeComparator = new EAIndividualComparator();
+    private EAIndividualComparator histComparator = new EAIndividualComparator("", -1, true);
     protected ParameterControlManager paramControl = new ParameterControlManager();
     private double avgDistForConvergence = 0.1; // Upper bound for average indy distance in a species in the test for convergence
 
@@ -1137,12 +1137,12 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
         return "Set the comparator used to define the 'worst' individuals when reducing species size.";
     }
 
-    public AbstractEAIndividualComparator getReduceSizeComparator() {
+    public EAIndividualComparator getReduceSizeComparator() {
         return reduceSizeComparator;
     }
 
     public void setReduceSizeComparator(
-            AbstractEAIndividualComparator reduceSizeComparator) {
+            EAIndividualComparator reduceSizeComparator) {
         this.reduceSizeComparator = reduceSizeComparator;
     }
 
@@ -1153,7 +1153,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
     //	public void setHistComparator(AbstractEAIndividualComparator histComparator) {
 //		this.histComparator = histComparator;
 //	}
-    public AbstractEAIndividualComparator getHistComparator() {
+    public EAIndividualComparator getHistComparator() {
         return histComparator;
     }
 //	public String histComparatorTipText() {

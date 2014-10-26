@@ -1,7 +1,7 @@
 package eva2.optimization.operator.terminators;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.AbstractEAIndividualComparator;
+import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.operator.distancemetric.ObjectiveSpaceMetric;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
@@ -22,7 +22,7 @@ public class HistoryConvergenceTerminator implements InterfaceTerminator, Serial
     int fitCrit = 0;
     double convergenceThreshold;
     boolean stdDevInsteadOfImprovement;
-    AbstractEAIndividualComparator indyImprovementComparator = new AbstractEAIndividualComparator("", -1, true);
+    EAIndividualComparator indyImprovementComparator = new EAIndividualComparator("", -1, true);
     String msg;
 
     public static final boolean hideFromGOE = true; // hide from GUI

@@ -1,7 +1,7 @@
 package eva2.optimization.operator.archiving;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.AbstractEAIndividualComparator;
+import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.population.Population;
 
 import java.util.Arrays;
@@ -65,7 +65,7 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
         }
 
 
-        Arrays.sort(frontArray, new AbstractEAIndividualComparator(0));
+        Arrays.sort(frontArray, new EAIndividualComparator(0));
 
 
         ((AbstractEAIndividual) frontArray[0]).putData("HyperCube", Double.MAX_VALUE); //die beiden aussen bekommen maximal wert als smeasure

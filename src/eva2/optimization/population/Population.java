@@ -1039,7 +1039,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         }
     }
 
-    public int getIndexOfBestEAIndividual(AbstractEAIndividualComparator comparator) {
+    public int getIndexOfBestEAIndividual(EAIndividualComparator comparator) {
         return getIndexOfBestOrWorstIndividual(true, comparator);
     }
 
@@ -1059,10 +1059,10 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param fitIndex
      * @return
      * @see #getIndexOfBestOrWorstIndividual(boolean, Comparator)
-     * @see AbstractEAIndividualComparator
+     * @see eva2.optimization.individuals.EAIndividualComparator
      */
     public int getIndexOfBestOrWorstIndy(boolean bBest, boolean checkConstraints, int fitIndex) {
-        return getIndexOfBestOrWorstIndividual(bBest, new AbstractEAIndividualComparator(fitIndex, checkConstraints));
+        return getIndexOfBestOrWorstIndividual(bBest, new EAIndividualComparator(fitIndex, checkConstraints));
     }
 
     /**
@@ -1162,7 +1162,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             n = super.size();
         }
         Population pop = new Population(n);
-        getSortedNIndividuals(n, true, pop, new AbstractEAIndividualComparator(fitIndex));
+        getSortedNIndividuals(n, true, pop, new EAIndividualComparator(fitIndex));
         return pop;
     }
 
@@ -1179,7 +1179,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      */
     public Population getWorstNIndividuals(int n, int fitIndex) {
         Population pop = new Population(n);
-        getSortedNIndividuals(n, false, pop, new AbstractEAIndividualComparator(fitIndex));
+        getSortedNIndividuals(n, false, pop, new EAIndividualComparator(fitIndex));
         return pop;
     }
 
@@ -1272,7 +1272,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param fitIndex
      */
     public void setSortingFitnessCriterion(int fitIndex) {
-        getSorted(new AbstractEAIndividualComparator(fitIndex));
+        getSorted(new EAIndividualComparator(fitIndex));
     }
 
     /**
