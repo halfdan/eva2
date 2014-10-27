@@ -16,13 +16,6 @@ public interface InterfaceProblemDouble {
     public double[] evaluate(double[] x);
 
     /**
-     * Get the problem dimension.
-     *
-     * @return the problem dimension
-     */
-    public int getProblemDimension();
-
-    /**
      * Create a new range array by using the getRangeLowerBound and getRangeUpperBound methods.
      *
      * @return a range array

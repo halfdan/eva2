@@ -54,13 +54,6 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
      */
     public abstract double[] eval(BitSet bs);
 
-    /**
-     * Get the problem dimension.
-     *
-     * @return the problem dimension
-     */
-    public abstract int getProblemDimension();
-
     @Override
     public void initializePopulation(Population population) {
         ((InterfaceDataTypeBinary) this.template).setBinaryDataLength(this.getProblemDimension());

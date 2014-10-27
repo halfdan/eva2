@@ -8,15 +8,15 @@ import eva2.util.annotation.Description;
 @Description("N-Function from Shir&Baeck, PPSN 2006")
 public class F18Problem extends AbstractProblemDouble implements
         InterfaceMultimodalProblem {
-    int dim = 10;
+    int problemDimension = 10;
     double alpha = 1.;
 
     public F18Problem() {
-        dim = 10;
+        problemDimension = 10;
     }
 
     public F18Problem(F18Problem other) {
-        dim = other.dim;
+        problemDimension = other.problemDimension;
     }
 
     @Override
@@ -41,13 +41,8 @@ public class F18Problem extends AbstractProblemDouble implements
         return 1.;
     }
 
-    @Override
-    public int getProblemDimension() {
-        return dim;
-    }
-
     public void setProblemDimension(int newDim) {
-        dim = newDim;
+        problemDimension = newDim;
     }
 
     @Override

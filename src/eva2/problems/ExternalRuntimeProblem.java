@@ -364,15 +364,6 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         this.initializationRange.adaptRowCount(t);
     }
 
-    @Override
-    public int getProblemDimension() {
-        return this.problemDimension;
-    }
-
-    public String problemDimensionTipText() {
-        return "Domain dimension of the problem";
-    }
-
     /**
      * Length of the x vector at is to be optimized
      *

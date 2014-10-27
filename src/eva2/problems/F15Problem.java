@@ -47,11 +47,6 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
         return y;
     }
 
-    @Override
-    public int getProblemDimension() {
-        return problemDimension;
-    }
-
     public void setProblemDimension(int d) {
         problemDimension = d;
     }

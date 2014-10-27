@@ -87,14 +87,5 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
     public void setProblemDimension(int t) {
         this.problemDimension = t;
     }
-
-    @Override
-    public int getProblemDimension() {
-        return this.problemDimension;
-    }
-
-    public String problemDimensionTipText() {
-        return "Length of the x vector to be optimized.";
-    }
 }
 

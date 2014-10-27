@@ -379,9 +379,4 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
     public void setDefaultAccuracy(double epsilon) {
         super.setDefaultAccuracy(epsilon);
     }
-
-    @Override
-    public int getProblemDimension() {
-        return problemDimension;
-    }
 }

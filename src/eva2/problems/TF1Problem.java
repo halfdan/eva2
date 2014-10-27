@@ -333,14 +333,6 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         this.problemDimension = d;
     }
 
-    public int getProblemDimension() {
-        return this.problemDimension;
-    }
-
-    public String problemDimensionTipText() {
-        return "Length of the x vector at is to be optimized.";
-    }
-
     /**
      * This method allows you to choose the EA individual
      *

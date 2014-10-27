@@ -53,8 +53,6 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      */
     public void evaluate(AbstractEAIndividual individual);
 
-    /******************** Some output methods *******************************************/
-
     /**
      * This method allows the GenericObjectEditorPanel to read the
      * name to the current object.
@@ -95,4 +93,11 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      * @return Double value
      */
     public Double getDoublePlotValue(Population pop);
+
+    /**
+     * This method returns the dimension of the problem. Some problem implementations
+     * may add a setProblemDimension() method, but as some problems have a fixed problem
+     * dimension this is not added in this interface.
+     */
+    public int getProblemDimension();
 }

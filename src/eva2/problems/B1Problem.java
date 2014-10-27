@@ -119,11 +119,6 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
         this.problemDimension = dim;
     }
 
-    @Override
-    public int getProblemDimension() {
-        return this.problemDimension;
-    }
-
     public String multiRunsTipText() {
         return "Length of the BitSet that is to be optimized.";
     }

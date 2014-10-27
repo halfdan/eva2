@@ -19,6 +19,7 @@ import eva2.optimization.statistics.InterfaceStatistics;
 import eva2.optimization.statistics.InterfaceTextListener;
 import eva2.optimization.statistics.StatisticsWithGUI;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.StringTools;
 import eva2.tools.math.RNG;
@@ -402,7 +403,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
     @Override
     public String getInfoString() {
-        return this.optimizationParameters.getProblem().getName() + "+" + this.optimizationParameters.getOptimizer().getName();
+        InterfaceOptimizationProblem problem = this.optimizationParameters.getProblem();
+
+        return problem.getName() + "{" + problem.getProblemDimension() + "}+" + this.optimizationParameters.getOptimizer().getName();
     }
 
     /**

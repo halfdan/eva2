@@ -530,14 +530,6 @@ public class FLensProblem extends AbstractOptimizationProblem
         this.problemDimension = multiruns;
     }
 
-    public int getProblemDimension() {
-        return this.problemDimension;
-    }
-
-    public String problemDimensionTipText() {
-        return "Length of the x vector at is to be optimized.";
-    }
-
     /**
      * This method allows you to toggle the solution representation.
      *

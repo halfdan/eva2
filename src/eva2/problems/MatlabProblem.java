@@ -235,15 +235,6 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         this.problemDimension = problemDimension;
     }
 
-
-    public int getProblemDimension() {
-        return problemDimension;
-    }
-
-    public String problemDimensionTipText() {
-        return "The dimension of the problem.";
-    }
-
     public void log(String str) {
         if (dos != null) {
             dos.print(str);

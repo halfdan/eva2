@@ -118,14 +118,6 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
         this.problemDimension = n;
     }
 
-    public int getProblemDimension() {
-        return this.problemDimension;
-    }
-
-    public String problemDimensionTipText() {
-        return "Length of the integer vector to be optimized";
-    }
-
     /**
      * This method allows you to choose the EA individual
      *

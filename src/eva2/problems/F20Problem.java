@@ -21,23 +21,23 @@ import java.io.Serializable;
         "The minimum fitness f(x*) is close to (n-1)*r for dimension n and default range r, by which " +
         "this implementation may be shifted to the positive domain.")
 public class F20Problem extends AbstractProblemDouble implements Serializable, InterfaceInterestingHistogram {
-    private int dim = 10;
+    private int problemDimension = 10;
     private boolean shiftFit = false;
 
     public F20Problem() {
         setDefaultRange(512.);
     }
 
-    public F20Problem(int dim, boolean rotate) {
+    public F20Problem(int problemDimension, boolean rotate) {
         this();
-        setProblemDimension(dim);
+        setProblemDimension(problemDimension);
         setDoRotation(rotate);
     }
 
     public F20Problem(F20Problem o) {
         super(o);
         setDefaultRange(512);
-        this.dim = o.dim;
+        this.problemDimension = o.problemDimension;
         this.setShiftFit(o.isShiftFit());
     }
 
@@ -70,13 +70,8 @@ public class F20Problem extends AbstractProblemDouble implements Serializable, I
         return Math.sqrt(Math.abs(x + y + 1));
     }
 
-    @Override
-    public int getProblemDimension() {
-        return dim;
-    }
-
     public void setProblemDimension(int newDim) {
-        dim = newDim;
+        problemDimension = newDim;
     }
 
     @Override
