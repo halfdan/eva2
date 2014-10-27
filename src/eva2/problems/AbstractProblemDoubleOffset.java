@@ -5,7 +5,6 @@ package eva2.problems;
  */
 public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble implements Interface2DBorderProblem {
 
-    protected int problemDimension = 10;
     protected double xOffset = 0.0; // TODO make them private, implement evaluate() and create abstract evalWithoutOffsets
     protected double yOffset = 0.0;
 
