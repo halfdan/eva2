@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 /**
  * A basic implementation of an EA population. Manage a set of potential solutions
- * in form of AbstractEAIndividuals. They can be sorted using an AbstractEAIndividualComparator.
+ * in form of AbstractEAIndividuals. They can be sorted using an EAIndividualComparator.
  * Optionally, a history list is kept storing a clone of the best individual of any generation.
  * The Population also provides for appropriate counting of function calls performed.
  * For initialization, the default individual initialization method may be used, as well as a

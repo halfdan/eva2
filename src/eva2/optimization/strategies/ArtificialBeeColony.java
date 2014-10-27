@@ -103,12 +103,12 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
             AbstractEAIndividual newIndividual = (AbstractEAIndividual) indy.getClone();
             double[] indyDoubleData = ((InterfaceDataTypeDouble) newIndividual).getDoubleData();
 
-            int randomParam = RNG.randomInt(0, indyDoubleData.length - 1);
-            int neighbour = RNG.randomInt(0, this.population.size() - 1);
+            int neighbour = RNG.randomIntWithout(i, 0, this.population.size() - 1);
             double[] randomIndy = ((InterfaceDataTypeDouble) this.population.get(neighbour)).getDoubleData();
 
-            double r = RNG.randomDouble();
-            indyDoubleData[randomParam] = indyDoubleData[randomParam] + (indyDoubleData[randomParam] - randomIndy[randomParam]) * (r - 0.5) * 2.0;
+            int randomParam = RNG.randomInt(0, indyDoubleData.length - 1);
+            double r = RNG.randomDouble(-1.0, 1.0);
+            indyDoubleData[randomParam] += (indyDoubleData[randomParam] - randomIndy[randomParam]) * r;
             // Make sure new indy is in range
             Mathematics.projectToRange(indyDoubleData, ((InterfaceDataTypeDouble) newIndividual).getDoubleRange());
 
@@ -124,18 +124,26 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
             }
         }
 
+
+        this.population.incrFunctionCallsBy(this.population.size());
+
         /**
          * Send onlooker bees to food sources based on fitness proportional probablity
          */
         int t = 0, i = 0;
-        double maxFitness = this.population.getBestFitness()[0];
+        double sumFitness = 0.0;
+        for (Object individual : this.population) {
+            sumFitness += ((AbstractEAIndividual) individual).getFitness(0);
+        }
         while (t < this.population.size()) {
             double r = RNG.randomDouble();
 
             /**
-             * Choose a food source depending on its probability to be chosen
+             * Choose a food source depending on its probability to be chosen. The probability
+             * is proportional to the
              */
-            if (r < ((0.9 * (this.population.getEAIndividual(i).getFitness(0) / maxFitness)) + 0.1)) {
+            double pI = 1 - (this.population.getEAIndividual(i).getFitness(0) / sumFitness);
+            if (r < pI) {
                 t++;
 
                 // The current individual to compare to
@@ -146,16 +154,17 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
                 double[] indyDoubleData = ((InterfaceDataTypeDouble) newIndividual).getDoubleData();
 
                 int randomParam = RNG.randomInt(0, indyDoubleData.length - 1);
-                int neighbour = RNG.randomInt(0, this.population.size() - 1);
+                int neighbour = RNG.randomIntWithout(i, 0, this.population.size() - 1);
                 double[] randomIndy = ((InterfaceDataTypeDouble) this.population.get(neighbour)).getDoubleData();
 
-                r = RNG.randomDouble();
-                indyDoubleData[randomParam] = indyDoubleData[randomParam] + (indyDoubleData[randomParam] - randomIndy[randomParam]) * (r - 0.5) * 2.0;
+                r = RNG.randomDouble(-1.0, 1.0);
+                indyDoubleData[randomParam] += (indyDoubleData[randomParam] - randomIndy[randomParam]) * r;
                 // Make sure new indy is in range
                 Mathematics.projectToRange(indyDoubleData, ((InterfaceDataTypeDouble) newIndividual).getDoubleRange());
 
                 ((InterfaceDataTypeDouble) newIndividual).setDoubleGenotype(indyDoubleData);
                 this.optimizationProblem.evaluate(newIndividual);
+                this.population.incrFunctionCalls();
 
                 if (newIndividual.getFitness(0) < indy.getFitness(0)) {
                     newIndividual.setAge(1);
@@ -191,8 +200,6 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
             this.population.incrFunctionCalls();
         }
 
-        this.population.incrFunctionCallsBy(this.population.size());
-
         /**
          * ToDo: This is ugly.
          *
@@ -210,7 +217,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
     private AbstractEAIndividual getOldestIndividual() {
         AbstractEAIndividual oldestIndy = this.population.getEAIndividual(0);
         for(int i = 1; i < this.population.size(); i++) {
-            if (oldestIndy.getAge() < this.population.getEAIndividual(i).getAge()) {
+            if (oldestIndy.getAge() > this.population.getEAIndividual(i).getAge()) {
                 oldestIndy = this.population.getEAIndividual(i);
             }
         }
