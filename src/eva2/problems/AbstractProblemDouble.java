@@ -202,14 +202,6 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     @Override
     public abstract double[] evaluate(double[] x);
 
-    /**
-     * Get the problem dimension.
-     *
-     * @return the problem dimension
-     */
-    @Override
-    public abstract int getProblemDimension();
-
     @Override
     public void initializePopulation(Population population) {
         initTemplate();

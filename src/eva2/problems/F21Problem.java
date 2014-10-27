@@ -16,7 +16,7 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
     private double[] heights = null; // will receive random positions within the range
     private double[][] peaks = null; // will receive values in [0,1] as peak height values
     private static final int rndSeed = 23;
-    private int dim = 2;
+    private int problemDimension = 2;
 
     public F21Problem() {
     }
@@ -76,13 +76,8 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
         return res;
     }
 
-    @Override
-    public int getProblemDimension() {
-        return dim;
-    }
-
     public void setProblemDimension(int d) {
-        dim = d;
+        problemDimension = d;
     }
 
     public String problemDimensionTipText() {

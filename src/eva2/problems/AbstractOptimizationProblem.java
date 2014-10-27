@@ -24,6 +24,7 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.ToolBox;
+import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,7 +72,11 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 
     protected AbstractEAIndividual template = null;
 
+    @Parameter(name = "defaultAccuracy", description = "A default threshold to identify optima - e.g. the assumed minimal distance between any two optima.")
     private double defaultAccuracy = 0.001; // default accuracy for identifying optima.
+
+    @Parameter(name = "problemDimension", description = "Length of the x vector to be optimized.")
+    protected int problemDimension = 10;
 
     /**
      * This method returns a deep clone of the problem.
@@ -562,10 +567,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         defaultAccuracy = defAcc;
     }
 
-    public String defaultAccuracyTipText() {
-        return "A default threshold to identify optima - e.g. the assumed minimal distance between any two optima.";
-    }
-
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -575,6 +576,11 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     @Override
     public String getName() {
         return "AbstractOptimizationProblem";
+    }
+
+    @Override
+    public int getProblemDimension() {
+        return this.problemDimension;
     }
 
     /**

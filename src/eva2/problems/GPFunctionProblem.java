@@ -17,7 +17,7 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
     InterfaceProgram gpProblem = null;
     GPArea gpArea = new GPArea();
     double[] pos = null;
-    int dim = 2;
+    int problemDimension = 2;
     double scalingStart = 10.;
     double scalingLimit = 20.;
 
@@ -56,8 +56,8 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
      * @param scLim
      */
     public GPFunctionProblem(InterfaceProgram gpProb, GPArea area, int pDim, double scStart, double scLim) {
-        dim = pDim;
-        ((ESIndividualDoubleData) template).setDoubleDataLength(dim);
+        problemDimension = pDim;
+        ((ESIndividualDoubleData) template).setDoubleDataLength(problemDimension);
         gpProblem = gpProb;
         gpArea = area;
         scalingStart = scStart;
@@ -65,10 +65,10 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
     }
 
     public GPFunctionProblem(GPFunctionProblem functionProblem) {
-        dim = functionProblem.dim;
+        problemDimension = functionProblem.problemDimension;
         if (functionProblem.pos != null) {
-            pos = new double[dim];
-            System.arraycopy(functionProblem.pos, 0, pos, 0, dim);
+            pos = new double[problemDimension];
+            System.arraycopy(functionProblem.pos, 0, pos, 0, problemDimension);
         }
         gpArea = (GPArea) functionProblem.gpArea.clone();
         gpProblem = functionProblem.gpProblem;
@@ -81,7 +81,7 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
 
     @Override
     public double[] evaluate(double[] x) {
-        if (x.length != dim) {
+        if (x.length != problemDimension) {
             EVAERROR.errorMsgOnce("mismatching dimension of GPFunctionProblem! Setting to " + x.length);
             setProblemDimension(x.length);
         }
@@ -100,8 +100,8 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
      * @param newDim
      */
     public void setProblemDimension(int newDim) {
-        dim = newDim;
-        ((ESIndividualDoubleData) template).setDoubleDataLength(dim);
+        problemDimension = newDim;
+        ((ESIndividualDoubleData) template).setDoubleDataLength(problemDimension);
     }
 
     /**
@@ -123,11 +123,6 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
                 return v;
             }
         }
-    }
-
-    @Override
-    public int getProblemDimension() {
-        return dim;
     }
 
     @Override

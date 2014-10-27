@@ -136,10 +136,6 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
         }
     }
 
-    public int getProblemDimension() {
-        return problemDimension;
-    }
-
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         return "DynTransProblem";

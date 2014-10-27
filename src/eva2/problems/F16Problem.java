@@ -9,18 +9,18 @@ import eva2.util.annotation.Description;
  */
 @Description("Vincent function: Multiple optima with increasing densitiy near the lower bounds, therefore decreasing attractor size. All have an equal best fitness of zero")
 public class F16Problem extends AbstractProblemDouble implements InterfaceMultimodalProblem, Interface2DBorderProblem, InterfaceInterestingHistogram {
-    int dim = 10;
+    int problemDimension = 10;
 
     public F16Problem() {
-        dim = 10;
+        problemDimension = 10;
     }
 
     public F16Problem(F16Problem other) {
-        dim = other.dim;
+        problemDimension = other.problemDimension;
     }
 
     public F16Problem(int theDim) {
-        this.dim = theDim;
+        this.problemDimension = theDim;
     }
 
     @Override
@@ -37,13 +37,8 @@ public class F16Problem extends AbstractProblemDouble implements InterfaceMultim
         return res;
     }
 
-    @Override
-    public int getProblemDimension() {
-        return dim;
-    }
-
     public void setProblemDimension(int newDim) {
-        dim = newDim;
+        problemDimension = newDim;
     }
 
     @Override

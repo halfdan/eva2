@@ -15,19 +15,19 @@ import java.util.Random;
 @Description("Fletcher-Powell function")
 public class F19Problem extends AbstractProblemDouble implements
         InterfaceMultimodalProblem, InterfaceInterestingHistogram, InterfaceFirstOrderDerivableProblem {
-    int dim = 10;
+    int problemDimension = 10;
     transient private double[] alphas, As;
     transient private int[] A, B;
     private long randSeed = 23;
 
     public F19Problem() {
         alphas = null;
-        dim = 10;
+        problemDimension = 10;
         setDefaultRange(Math.PI);
     }
 
     public F19Problem(F19Problem other) {
-        dim = other.dim;
+        problemDimension = other.problemDimension;
         alphas = null;
     }
 
@@ -42,17 +42,17 @@ public class F19Problem extends AbstractProblemDouble implements
         // create static random data
         Random rand = new Random();
         rand.setSeed(randSeed);
-        alphas = RNG.randomDoubleArray(rand, -Math.PI, Math.PI, dim);
-        A = RNG.randomIntArray(rand, -100, 100, dim * dim);
-        B = RNG.randomIntArray(rand, -100, 100, dim * dim);
+        alphas = RNG.randomDoubleArray(rand, -Math.PI, Math.PI, problemDimension);
+        A = RNG.randomIntArray(rand, -100, 100, problemDimension * problemDimension);
+        B = RNG.randomIntArray(rand, -100, 100, problemDimension * problemDimension);
         As = transform(alphas);
     }
 
     private double[] transform(double[] x) {
-        double[] v = new double[dim];
+        double[] v = new double[problemDimension];
         Arrays.fill(v, 0.);
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
+        for (int i = 0; i < problemDimension; i++) {
+            for (int j = 0; j < problemDimension; j++) {
                 v[i] += get(A, i, j) * Math.sin(x[j]) + get(B, i, j) * Math.cos(x[j]);
             }
         }
@@ -80,7 +80,7 @@ public class F19Problem extends AbstractProblemDouble implements
      * @return
      */
     private int get(int[] M, int i, int j) {
-        return M[i * dim + j];
+        return M[i * problemDimension + j];
     }
 
     @Override
@@ -97,13 +97,8 @@ public class F19Problem extends AbstractProblemDouble implements
         return res;
     }
 
-    @Override
-    public int getProblemDimension() {
-        return dim;
-    }
-
     public void setProblemDimension(int newDim) {
-        dim = newDim;
+        problemDimension = newDim;
         if (alphas != null && (newDim > alphas.length)) { // only recreate if really necessary
             alphas = null;
             A = null;

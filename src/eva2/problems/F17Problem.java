@@ -12,11 +12,11 @@ import eva2.util.annotation.Description;
 @Description("Bohachevsky function, numerous optima on an oval hyperparabola with similar attractor sizes but decreasing fitness towards the bounds")
 public class F17Problem extends AbstractProblemDouble implements
         InterfaceMultimodalProblem, InterfaceInterestingHistogram {
-    int dim = 10;
+    int problemDimension = 10;
 
     public F17Problem() {
         setDefaultRange(10.);
-        dim = 10;
+        problemDimension = 10;
     }
 
     public F17Problem(int dimension) {
@@ -26,7 +26,7 @@ public class F17Problem extends AbstractProblemDouble implements
 
     public F17Problem(F17Problem other) {
         super(other);
-        dim = other.dim;
+        problemDimension = other.problemDimension;
     }
 
     @Override
@@ -42,13 +42,8 @@ public class F17Problem extends AbstractProblemDouble implements
         return res;
     }
 
-    @Override
-    public int getProblemDimension() {
-        return dim;
-    }
-
     public void setProblemDimension(int newDim) {
-        dim = newDim;
+        problemDimension = newDim;
     }
 
     @Override
