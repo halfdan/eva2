@@ -174,7 +174,7 @@ public class EvAStatisticalEvaluation {
         textout.println("");
     }
 
-    public static double roundTo2DecimalPlaces(double value) {
+    public static double formatOutput(double value) {
         DecimalFormat twoDForm = new DecimalFormat("##0.####E0");
         String b = twoDForm.format(value);
         b = b.replace(',', '.');
@@ -186,7 +186,7 @@ public class EvAStatisticalEvaluation {
         double mean = Double.NaN;
         if (dat != null) {
             mean = Mathematics.mean(dat);
-            mean = EvAStatisticalEvaluation.roundTo2DecimalPlaces(mean);
+            mean = EvAStatisticalEvaluation.formatOutput(mean);
         }
         return "" + mean;
     }
@@ -196,7 +196,7 @@ public class EvAStatisticalEvaluation {
         double median = Double.NaN;
         if (dat != null) {
             median = Mathematics.median2(dat, true);
-            median = EvAStatisticalEvaluation.roundTo2DecimalPlaces(median);
+            median = EvAStatisticalEvaluation.formatOutput(median);
         }
 
         return "" + median;
@@ -207,7 +207,7 @@ public class EvAStatisticalEvaluation {
         double variance = Double.NaN;
         if (dat != null) {
             variance = Mathematics.variance(dat);
-            variance = EvAStatisticalEvaluation.roundTo2DecimalPlaces(variance);
+            variance = EvAStatisticalEvaluation.formatOutput(variance);
         }
         return "" + variance;
     }
@@ -217,7 +217,7 @@ public class EvAStatisticalEvaluation {
         double stdDev = Double.NaN;
         if (dat != null) {
             stdDev = Mathematics.stdDev(dat);
-            stdDev = EvAStatisticalEvaluation.roundTo2DecimalPlaces(stdDev);
+            stdDev = EvAStatisticalEvaluation.formatOutput(stdDev);
         }
         return "" + stdDev;
     }
