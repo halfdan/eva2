@@ -20,14 +20,11 @@ import java.util.ArrayList;
  */
 @Description("T1 is to be minimized.")
 public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implements java.io.Serializable {
-    protected int problemDimension = 30;
     protected int outputDimension = 2;
     protected double noise = 0.0;
     protected double xOffset = 0.0;
     protected double yOffset = 0.0;
     protected boolean applyConstraints = false;
-
-//    transient private GraphPointSet     mySet;
 
     public TF1Problem() {
         super(1.);
