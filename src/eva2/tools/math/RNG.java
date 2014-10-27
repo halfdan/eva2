@@ -86,7 +86,23 @@ public class RNG {
     }
 
     /**
-     * This method returns a evenly distributed int value. The boundarys are
+     * Returns a random int between lo and hi but not equal to ignore.
+     *
+     * @param ignore Value to ignore
+     * @param lo Lower bound.
+     * @param hi Upper bound.
+     * @return An int that is not equal to ignore
+     */
+    public static int randomIntWithout(int ignore, int lo, int hi) {
+        int result = ignore;
+        while (result == ignore) {
+            result = randomInt(lo, hi);
+        }
+        return result;
+    }
+
+    /**
+     * This method returns an evenly distributed int value. The boundaries are
      * included.
      *
      * @param lo Lower bound.
@@ -134,7 +150,7 @@ public class RNG {
     }
 
     /**
-     * This method returns a evenly distributed int value. The boundarys are
+     * This method returns an evenly distributed int value. The boundaries are
      * included.
      *
      * @param lo Lower bound.

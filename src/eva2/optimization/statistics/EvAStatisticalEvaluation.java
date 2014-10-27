@@ -175,7 +175,7 @@ public class EvAStatisticalEvaluation {
     }
 
     public static double roundTo2DecimalPlaces(double value) {
-        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        DecimalFormat twoDForm = new DecimalFormat("##0.####E0");
         String b = twoDForm.format(value);
         b = b.replace(',', '.');
         return Double.valueOf(b);

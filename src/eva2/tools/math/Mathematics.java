@@ -528,7 +528,8 @@ public class Mathematics {
         if (vector.length == 0) {
             return 0;
         }
-        return sum(vector) / (double) vector.length;
+        double sum = sum(vector);
+        return sum / (double) vector.length;
     }
 
     /**
