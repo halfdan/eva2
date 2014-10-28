@@ -250,10 +250,6 @@ public class MemeticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
         this.globalOptimizer.setPopulation(pop);
     }
 
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
-    }
-
     /**
      * Choose the global optimization strategy to use
      *

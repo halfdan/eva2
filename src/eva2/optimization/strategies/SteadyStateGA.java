@@ -144,11 +144,6 @@ public class SteadyStateGA extends AbstractOptimizer implements java.io.Serializ
         return "SS-GA";
     }
 
-
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(getPopulation());
