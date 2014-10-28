@@ -4,6 +4,7 @@ import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.EVAHELP;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.beans.*;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.EventObject;
@@ -377,10 +379,17 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             }
             Method getter = props[i].getReadMethod();
             Method setter = props[i].getWriteMethod();
+
             // Only display read/write properties.
             if (onlySetAndGettable && (getter == null || setter == null)) {
                 continue;
             }
+
+            // Never show property if the @Hidden annotation is present
+            if (setter != null && setter.isAnnotationPresent(Hidden.class)) {
+                continue;
+            }
+
             Object args[] = {};
             Object value = null;
             try {
