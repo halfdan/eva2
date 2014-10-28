@@ -11,6 +11,7 @@ import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 /**
  * This individual uses a real-valued genotype to code for double values.
@@ -153,6 +154,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param range The new range for the double data.
      */
     @Override
+    @Hidden
     public void setDoubleRange(double[][] range) {
         if (range.length != this.range.length) {
             System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
@@ -321,6 +323,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param b The new genotype of the Individual
      */
     @Override
+    @Hidden
     public void setDGenotype(double[] b) {
         this.genotype = b;
         this.phenotype = null; // mark it as invalid

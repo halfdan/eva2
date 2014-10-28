@@ -13,6 +13,7 @@ import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Hidden;
 
 import java.util.*;
 
@@ -63,6 +64,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return individualIndex;
     }
 
+    @Hidden
     public void setIndividualIndex(int index) {
         this.individualIndex = index;
     }
@@ -415,6 +417,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @param age The new age.
      */
+    @Hidden
     public void setAge(int age) {
         this.age = age;
     }
@@ -480,6 +483,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return this.isMarked;
     }
 
+    @Hidden
     public void setMarked(boolean t) {
         this.isMarked = t;
     }
@@ -547,6 +551,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param fitness The new fitness array
      */
     @Override
+    @Hidden
     public void setFitness(double[] fitness) {
         this.fitness = fitness;
     }
@@ -781,6 +786,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @param sel The new selection probability array
      */
+    @Hidden
     public void setSelectionProbability(double[] sel) {
         this.selectionProbability = sel;
     }

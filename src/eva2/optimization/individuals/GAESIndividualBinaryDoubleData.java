@@ -6,6 +6,7 @@ import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 import java.util.BitSet;
 
@@ -239,6 +240,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param range The new range for the double data.
      */
     @Override
+    @Hidden
     public void setDoubleRange(double[][] range) {
         this.doubleIndividual.setDoubleRange(range);
     }

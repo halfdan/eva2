@@ -13,6 +13,8 @@ import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateDefault;
 import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectXProbRouletteWheel;
+import eva2.optimization.operator.terminators.CombinedTerminator;
+import eva2.optimization.operator.terminators.FitnessValueTerminator;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractProblemDouble;
 import eva2.problems.AbstractProblemDoubleOffset;
@@ -27,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
@@ -310,15 +313,19 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             this.seed = Long.parseLong(commandLine.getOptionValue("seed"));
         }
 
-        if (commandLine.hasOption("problem")) {
-            String problemName = commandLine.getOptionValue("problem");
-            setProblemFromName(problemName);
-        }
-
         if (commandLine.hasOption("dim")) {
             this.dimension = Integer.parseInt(commandLine.getOptionValue("dim"));
         }
-        this.problem.setProblemDimension(this.dimension);
+
+        if (commandLine.hasOption("problem")) {
+            String problemName = commandLine.getOptionValue("problem");
+            setProblemFromName(problemName);
+            this.problem.setProblemDimension(this.dimension);
+        } else {
+            LOGGER.severe("No problem specified. Please specify a problem with '--problem'.");
+            System.exit(-1);
+        }
+
 
         if (commandLine.hasOption("mutator")) {
             String mutatorName = commandLine.getOptionValue("mutator");
@@ -599,7 +606,7 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
             e.printStackTrace();
         }
 
-        setCECDefaults(this.problem);
+        //setCECDefaults(this.problem);
     }
 
     private void setCECDefaults(AbstractProblemDouble problem) {
@@ -634,7 +641,8 @@ public class Main implements OptimizationStateListener, InterfacePopulationChang
         for(int i = 0; i < this.numberOfRuns; i++) {
             // Terminate after 10000 function evaluations OR after reaching a fitness < 0.1
             OptimizerFactory.setEvaluationTerminator(500000);
-            //OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.00001}), CombinedTerminator.OR);
+            //OptimizerFactory.setTerminator(new FitnessValueTerminator(new double[]{0.0001}));
+            OptimizerFactory.addTerminator(new FitnessValueTerminator(new double[]{0.0001}), CombinedTerminator.OR);
 
             LOGGER.log(Level.INFO, "Running {0}", optimizer.getName());
 
