@@ -139,8 +139,4 @@ public class HillClimbing extends AbstractOptimizer implements java.io.Serializa
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(getPopulation());
     }
-
-    public String populationTipText() {
-        return "Change the number of best individuals stored (MS-HC).";
-    }
 }

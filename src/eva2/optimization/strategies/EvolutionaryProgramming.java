@@ -138,11 +138,6 @@ public class EvolutionaryProgramming extends AbstractOptimizer implements java.i
         return "EP";
     }
 
-
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(getPopulation());

@@ -261,10 +261,6 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         this.population = pop;
     }
 
-    public String populationTipText() {
-        return "Change the number of starting individuals stored (Cluster-HC).";
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         Population tmp = new Population();

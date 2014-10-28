@@ -242,10 +242,6 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
         this.optimizer.setPopulation(pop);
     }
 
-    public String populationTipText() {
-        return "Edit the properties of the Population used.";
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(getPopulation(), ArchivingNSGAII.getNonDominatedSortedFront(getPopulation().getArchive()).getSortedPop(new EAIndividualComparator(0)));

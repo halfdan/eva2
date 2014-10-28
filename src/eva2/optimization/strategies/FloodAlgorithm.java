@@ -9,6 +9,7 @@ import eva2.optimization.population.SolutionSet;
 import eva2.problems.B1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 /**
  * The flood algorithm, and alternative to the threshold algorithms. No really
@@ -26,6 +27,8 @@ public class FloodAlgorithm extends AbstractOptimizer implements java.io.Seriali
     private int fitnessCallsNeeded = 0;
     GAIndividualBinaryData bestIndividual, testIndividual;
     public double initialFloodPeak = 2000.0, currentFloodPeak;
+
+    @Parameter(name = "drainRate", description = "Set the drain rate that reduces the current flood level each generation.")
     public double drainRate = 1.0;
 
     public FloodAlgorithm() {
@@ -193,17 +196,13 @@ public class FloodAlgorithm extends AbstractOptimizer implements java.io.Seriali
         return "MS-FA";
     }
 
-    public String populationTipText() {
-        return "Change the number of best individuals stored (MS-FA).";
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(getPopulation());
     }
 
     /**
-     * This methods allow you to set/get the temperatur of the flood algorithm
+     * This methods allow you to set/get the temperature of the flood algorithm
      * procedure
      *
      * @return The initial flood level.
@@ -235,9 +234,5 @@ public class FloodAlgorithm extends AbstractOptimizer implements java.io.Seriali
         if (this.drainRate < 0) {
             this.drainRate = 0.0;
         }
-    }
-
-    public String drainRateTipText() {
-        return "Set the drain rate that reduces the current flood level each generation.";
     }
 }

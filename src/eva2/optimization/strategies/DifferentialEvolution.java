@@ -689,11 +689,6 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
         return "Differential Evolution";
     }
 
-
-    public String populationTipText() {
-        return "Edit the properties of the population used.";
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(this.population);

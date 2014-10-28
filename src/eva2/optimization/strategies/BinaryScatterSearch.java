@@ -727,10 +727,6 @@ public class BinaryScatterSearch extends AbstractOptimizer implements java.io.Se
         this.refSetSize = pop.getTargetSize();
     }
 
-    public String populationTipText() {
-        return "The Population";
-    }
-
     @Override
     public InterfaceSolutionSet getAllSolutions() {
         return new SolutionSet(this.refSet);
