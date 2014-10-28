@@ -325,7 +325,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     /**
      * Updates the type of object being edited, so attempts to find an appropriate propertyeditor.
      *
-     * @param o a value of type 'Object'
+     * @param obj a value of type 'Object'
      */
     private void updateEditorType(Object obj) {
 
@@ -639,7 +639,6 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
      * Create a menu item with given title and listener, add it to the menu and return it. It may be
      * enabled or disabled.
      *
-     * @param menu
      * @param title
      * @param aListener
      * @param enabled

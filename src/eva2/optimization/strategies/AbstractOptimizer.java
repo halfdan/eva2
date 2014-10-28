@@ -1,5 +1,6 @@
 package eva2.optimization.strategies;
 
+import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.Population;
 import eva2.problems.F1Problem;
@@ -68,6 +69,7 @@ public abstract class AbstractOptimizer implements InterfaceOptimizer {
     @Override
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
+        GenericObjectEditor.setShowProperty(this.getClass(), "problem", false);
     }
 
     @Override

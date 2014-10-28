@@ -1,6 +1,7 @@
 package eva2.gui;
 
 import eva2.gui.editor.GenericObjectEditor;
+import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.EVAHELP;
 import eva2.util.annotation.Description;
 
@@ -241,7 +242,6 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         // Look for a globalInfo method that returns a string
         // describing the target
         int methsFound = 0; // dont loop too long, so count until all found
-        // @ToDo: Replace hideHideable method with annotation
         for (MethodDescriptor methodDescriptor : methodDescriptors) {
             String name = methodDescriptor.getDisplayName();
             Method meth = methodDescriptor.getMethod();
@@ -265,7 +265,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
         // values, views and editors...
         propertyEditors = new PropertyEditor[propertyDescriptors.length];
         // collect property values if possible
-        objectValues = getValues(targetObject, propertyDescriptors, true, false, true);
+        objectValues = getValues(targetObject, propertyDescriptors, true, true, true);
         views = new JComponent[propertyDescriptors.length];
         viewWrappers = new JComponent[propertyDescriptors.length];
         propertyLabels = new JLabel[propertyDescriptors.length];
@@ -753,6 +753,7 @@ public class PropertySheetPanel extends JPanel implements PropertyChangeListener
             views[i].repaint();
             revalidate();
         }
+
         return true;
     }
 
