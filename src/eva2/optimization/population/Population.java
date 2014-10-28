@@ -179,6 +179,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     public void hideHideable() {
         setInitMethod(getInitMethod());
+        GenericObjectEditor.setHideProperty(this.getClass(), "functionCalls", true);
+        GenericObjectEditor.setHideProperty(this.getClass(), "generation", true);
     }
 
     /**
