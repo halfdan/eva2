@@ -7,7 +7,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-class WaitForEvARunnable implements Runnable {
+final class WaitForEvARunnable implements Runnable {
     OptimizerRunnable runnable;
     MatlabProblem mp;
 

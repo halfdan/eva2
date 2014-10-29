@@ -7,6 +7,7 @@ import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  *
@@ -63,8 +64,7 @@ public class FitnessValueTerminator implements InterfaceTerminator,
      */
     @Override
     public String toString() {
-        String ret = "FitnessValueTerminator,fitnessValue=" + fitnessValue;
-        return ret;
+        return "FitnessValueTerminator,fitnessValue=" + Arrays.toString(fitnessValue);
     }
 
     /**

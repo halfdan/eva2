@@ -3,7 +3,7 @@ package eva2.tools.math;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BayNode {
+public final class BayNode {
 
     private int id;
     private int numberOfParents = 0;

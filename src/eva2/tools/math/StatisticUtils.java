@@ -1,6 +1,5 @@
 package eva2.tools.math;
 
-import eva2.problems.AbstractProblemDouble;
 import eva2.tools.math.Jama.Matrix;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.Collections;
 /**
  * Statistic utils.
  */
-public class StatisticUtils {
+public final class StatisticUtils {
     /**
      * The natural logarithm of 2.
      */

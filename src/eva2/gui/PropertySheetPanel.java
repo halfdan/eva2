@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 /**
  * There are some trick methods interpreted here. Check EvA2Notes.txt.
  */
-public class PropertySheetPanel extends JPanel implements PropertyChangeListener {
+public final class PropertySheetPanel extends JPanel implements PropertyChangeListener {
 
     public final static Logger LOGGER = Logger.getLogger(PropertySheetPanel.class.getName());
     /**
