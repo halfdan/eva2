@@ -2,6 +2,7 @@ package eva2.optimization.operator.terminators;
 
 import eva2.optimization.population.PopulationInterface;
 import eva2.tools.math.Mathematics;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  *
  * @see PopulationMeasureTerminator
  */
+@Description("Stop if a fitness convergence criterion has been met.")
 public class FitnessConvergenceTerminator extends PopulationMeasureTerminator
         implements InterfaceTerminator, Serializable {
 
@@ -25,10 +27,6 @@ public class FitnessConvergenceTerminator extends PopulationMeasureTerminator
 
     public FitnessConvergenceTerminator(FitnessConvergenceTerminator other) {
         super(other);
-    }
-
-    public static String globalInfo() {
-        return "Stop if a fitness convergence criterion has been met.";
     }
 
     @Override

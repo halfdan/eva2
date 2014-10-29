@@ -4,11 +4,12 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
+@Description("Terminate if the best individual of the current population moved less than a threshold within phenotypic space.")
 public class PhenotypeConvergenceTerminator extends PopulationMeasureTerminator implements InterfaceTerminator {
     AbstractEAIndividual oldIndy = null;
     private PhenotypeMetric pMetric = null;
-//	double oldPhenNorm = 0;
 
     public PhenotypeConvergenceTerminator() {
         super();
@@ -24,20 +25,17 @@ public class PhenotypeConvergenceTerminator extends PopulationMeasureTerminator 
         super(o);
         oldIndy = (AbstractEAIndividual) o.oldIndy.clone();
         pMetric = (PhenotypeMetric) o.pMetric.clone();
-//		oldPhenNorm = o.oldPhenNorm;
     }
 
     @Override
     public void initialize(InterfaceOptimizationProblem prob) {
         super.initialize(prob);
-//		oldPhenNorm  = 0;
         oldIndy = null;
     }
 
     @Override
     protected double calcInitialMeasure(PopulationInterface pop) {
         oldIndy = (AbstractEAIndividual) ((AbstractEAIndividual) pop.getBestIndividual()).clone();
-//		oldPhenNorm = PhenotypeMetric.norm(oldIndy);
         return Double.MAX_VALUE;
     }
 
@@ -50,15 +48,10 @@ public class PhenotypeConvergenceTerminator extends PopulationMeasureTerminator 
     protected void saveState(PopulationInterface Pop) {
         super.saveState(Pop);
         oldIndy = (AbstractEAIndividual) ((AbstractEAIndividual) Pop.getBestIndividual()).clone();
-//		oldPhenNorm = PhenotypeMetric.norm(oldIndy);
     }
 
     @Override
     protected String getMeasureName() {
         return "Phenotype";
-    }
-
-    public static String globalInfo() {
-        return "Terminate if the best individual of the current population moved less than a threshold within phenotypic space.";
     }
 }

@@ -39,8 +39,10 @@ import java.util.List;
 /**
  * <p> The OptimizerFactory allows quickly creating some optimizers without
  * thinking much about parameters. You can access a runnable Optimization thread
- * and directly start it, or access its fully prepared GOParameter instance,
- * change some parameters, and start it then. </p> <p> On the other hand this
+ * and directly start it, or access its fully prepared OptimizationParameter instance,
+ * change some parameters, and start it then.
+ * </p> <p>
+ * On the other hand this
  * class provides an almost complete list of all currently available
  * optimization procedures in EvA2. The arguments passed to the methods
  * initialize the respective optimization procedure. To perform an optimization
@@ -50,12 +52,6 @@ import java.util.List;
  * EvaluationTerminator terminator = new EvaluationTerminator(numOfFitnessCalls);
  * while (!terminator.isTerminated(optimizer.getPopulation())) optimizer.optimize();
  * </code> </p>
- *
- * @author mkron
- * @author Andreas Dr&auml;ger
- * @version 0.1
- * @date 17.04.2007
- * @since 2.0
  */
 public class OptimizerFactory {
 

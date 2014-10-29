@@ -8,6 +8,7 @@ import eva2.optimization.population.PopulationInterface;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -17,9 +18,10 @@ import java.io.Serializable;
  * on the fitness range.
  * The metric may be employed on the current population or the current pareto front
  * maintained by the problem instance.
- *
- * @author mkron
  */
+@Description("Terminate if the pareto front of a multi-objective optimization process converges " +
+        "with respect to a certain measure. Note that this only works with " +
+        "AbstractMultiObjectiveOptimizationProblem instances.")
 public class ParetoMetricTerminator extends PopulationMeasureTerminator implements Serializable {
     private InterfaceParetoFrontMetric pMetric = new MetricS();
     AbstractMultiObjectiveOptimizationProblem moProb = null;
@@ -85,12 +87,6 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
         } else {
             return metricName;
         }
-    }
-
-    public static String globalInfo() {
-        return "Terminate if the pareto front of a multi-objective optimization process converges " +
-                "with respect to a certain measure. Note that this only works with " +
-                "AbstractMultiObjectiveOptimizationProblem instances.";
     }
 
     public void setParetoMetric(InterfaceParetoFrontMetric pMetric) {

@@ -8,7 +8,7 @@ import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
-@Description(value = "Boolean combination of two terminators.")
+@Description("Boolean combination of two terminators.")
 public class CombinedTerminator implements InterfaceTerminator, Serializable {
     /**
      *

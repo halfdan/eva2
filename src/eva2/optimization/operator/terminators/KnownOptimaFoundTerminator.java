@@ -6,6 +6,7 @@ import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceMultimodalProblemKnown;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -16,9 +17,8 @@ import java.util.logging.Logger;
  * implements InterfaceMultimodalProblemKnown. A population is regarded as terminated
  * if the preset number of optima is identified.
  * For any other problem types, this terminator will not make sense, so take care.
- *
- * @author mkron
  */
+@Description("Terminate if a given number of optima has been found. Works for problems implementing InterfaceMultimodalProblemKnown, e.g. FM0.")
 public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializable {
     private Logger LOGGER = Logger.getLogger(KnownOptimaFoundTerminator.class.getName());
     private InterfaceMultimodalProblemKnown mProblem = null;
@@ -89,9 +89,5 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
     @Override
     public String toString() {
         return "KnownOptimaFoundTerminator requiring " + reqOptima + " optima.";
-    }
-
-    public static String globalInfo() {
-        return "Terminate if a given number of optima has been found. Works for problems implementing InterfaceMultimodalProblemKnown, e.g. FM0.";
     }
 }
