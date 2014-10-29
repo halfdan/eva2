@@ -4,7 +4,6 @@ package eva2.problems.simple;
  * A simple interface to easily include new optimization problems in Java into the
  * EvA framework.
  */
-
 public interface InterfaceSimpleProblem<T> {
     /**
      * Evaluate a double vector representing a possible problem solution as

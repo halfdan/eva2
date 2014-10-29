@@ -10,7 +10,7 @@ import eva2.tools.Pair;
 
 import java.util.*;
 
-public class BayNet {
+public final class BayNet {
 
     private boolean[][] network = null;
     private int dimension = 3;

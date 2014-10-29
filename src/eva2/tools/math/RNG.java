@@ -10,7 +10,7 @@ import java.util.Random;
  * Random number generator used across all optimizations
  * for reproducability of runs.
  */
-public class RNG {
+public final class RNG {
 
     private static Random random;
     private static long randomSeed;
