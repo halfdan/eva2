@@ -69,6 +69,6 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
      */
     @Override
     public String getName() {
-        return "F3-Problem";
+        return "Step";
     }
 }

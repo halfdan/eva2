@@ -73,6 +73,6 @@ public class F12Problem extends AbstractProblemDoubleOffset implements Serializa
      */
     @Override
     public String getName() {
-        return "F12 Problem";
+        return "Galar";
     }
 }

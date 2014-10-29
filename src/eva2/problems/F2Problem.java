@@ -100,7 +100,7 @@ public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceL
      */
     @Override
     public String getName() {
-        return "F2-Problem";
+        return "Generalized Rosenbrock";
     }
 
     @Override

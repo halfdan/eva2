@@ -231,8 +231,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      *
      * @param dim
      * @return the lower bound of the double range in the given dimension
-     * @see makeRange()
-     * @see getRangeUpperBound(int dim)
+     * @see #makeRange()
+     * @see #getRangeUpperBound(int dim)
      */
     @Override
     public double getRangeLowerBound(int dim) {
@@ -246,8 +246,8 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      *
      * @param dim
      * @return the upper bound of the double range in the given dimension
-     * @see makeRange()
-     * @see getRangeLowerBound(int dim)
+     * @see #makeRange()
+     * @see #getRangeLowerBound(int dim)
      */
     @Override
     public double getRangeUpperBound(int dim) {

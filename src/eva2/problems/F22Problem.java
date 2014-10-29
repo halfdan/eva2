@@ -5,27 +5,26 @@ import eva2.tools.math.Mathematics;
 import eva2.util.annotation.Description;
 
 /**
- * F1 Sphere Problem
+ * F22 Schwefel 2.22 Problem
  */
-@Description(value ="Sphere Problem")
-public class F1Problem extends AbstractProblemDoubleOffset implements Interface2DBorderProblem, InterfaceHasInitRange, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
-    private double initialRangeRatio = 1.; // reduce to initialize in a smaller subrange of the original range (in the corner box)
+@Description(value ="Schwefel 2.22")
+public class F22Problem extends AbstractProblemDoubleOffset implements InterfaceHasInitRange, java.io.Serializable {
 
-    public F1Problem() {
+    public F22Problem() {
         super();
         setDefaultRange(10);
     }
 
-    public F1Problem(F1Problem b) {
+    public F22Problem(F22Problem b) {
         super();
         super.cloneObjects(b);
     }
 
-    public F1Problem(int dim) {
+    public F22Problem(int dim) {
         super(dim);
     }
 
-    public F1Problem(int dim, double defRange) {
+    public F22Problem(int dim, double defRange) {
         this(dim);
         setDefaultRange(defRange);
     }
@@ -37,7 +36,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      */
     @Override
     public Object clone() {
-        return new F1Problem(this);
+        return new F22Problem(this);
     }
 
     /**
@@ -51,10 +50,13 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
         x = rotateMaybe(x);
         double[] result = new double[1];
         result[0] = yOffset;
+        double sum = 0.0, product = 1.0;
         // add an offset in solution space
         for (int i = 0; i < x.length; i++) {
-            result[0] += Math.pow(x[i] - this.xOffset, 2);
+            sum += Math.abs(x[i]);
+            product *= Math.abs(x[i]);
         }
+        result[0] = sum + product;
         return result;
     }
 
@@ -67,18 +69,14 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
     @Override
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         StringBuilder sb = new StringBuilder(200);
-        sb.append("F1 Sphere model:\n");
-        sb.append("Here the individual codes a vector of real number x and F1(x)= x^2 is to be minimized.\nParameters:\n");
+        sb.append("F22 Schwefel 2.22 model:\n");
+        sb.append("Here the individual codes a vector of real number x and F22(x) is to be minimized.\nParameters:\n");
         sb.append("Dimension   : ");
         sb.append(this.problemDimension);
         sb.append("\nNoise level : ");
         sb.append(this.getNoise());
         return sb.toString();
     }
-
-    /**
-     * These are for GUI
-     */
 
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
@@ -88,18 +86,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      */
     @Override
     public String getName() {
-        return "Sphere";
-    }
-
-    @Override
-    public double[] getFirstOrderGradients(double[] x) {
-        x = rotateMaybe(x);
-        // first order partial derivation in direction x_i is 2*x_i
-        double[] grads = new double[x.length];
-        for (int i = 0; i < x.length; i++) {
-            grads[i] = (2. * (x[i] - this.xOffset));
-        }
-        return grads;
+        return "Schwefel 2.22";
     }
 
     /**
@@ -107,18 +94,6 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
      */
     @Override
     public Object getInitializationRange() {
-        if (initialRangeRatio < 1.) {
-            double[][] gR = makeRange();
-            double[][] initR = makeRange();
-            Mathematics.scaleRange(initialRangeRatio, initR);
-            for (int i = 0; i < getProblemDimension(); i++) {
-                double d = gR[i][0] - initR[i][0];
-                initR[i][0] += d; // shift back by original offsets
-                initR[i][1] += d;
-            }
-            return initR;
-        } else {
-            return makeRange();
-        }
+        return makeRange();
     }
 }

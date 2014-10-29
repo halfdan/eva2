@@ -97,7 +97,7 @@ public class F6Problem extends AbstractProblemDoubleOffset
      */
     @Override
     public String getName() {
-        return "F6-Problem";
+        return "Generalized Rastrigin";
     }
 
     /**

@@ -64,7 +64,7 @@ public class GenericObjectEditor implements PropertyEditor {
      *
      * @param className
      * @return
-     * @see ReflectPackage.getAssignableClassesInPackage
+     * @see ReflectPackage#getAssignableClassesInPackage
      */
     public static ArrayList<String> getClassesFromClassPath(String className, ArrayList<Class<?>> instances) {
         ArrayList<String> classes = new ArrayList<>();

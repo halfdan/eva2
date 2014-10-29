@@ -406,6 +406,9 @@ public class Main extends JFrame implements OptimizationStateListener {
             statusBarControls.setLayout(new BoxLayout(statusBarControls, BoxLayout.LINE_AXIS));
 
             statusBarControls.add(Box.createHorizontalGlue());
+
+            /* Set default logging level to INFO */
+            Logger.getLogger("eva2").setLevel(Level.INFO);
             /* Logging settings drop down */
             LoggingLevelLabel loggingOption = new LoggingLevelLabel();
 
@@ -490,6 +493,9 @@ public class Main extends JFrame implements OptimizationStateListener {
         } else {
             if (parentWindow == null) {
                 System.exit(1);
+            } else {
+                this.setVisible(false);
+                this.dispose();
             }
         }
     }

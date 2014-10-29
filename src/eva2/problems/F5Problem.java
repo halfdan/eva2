@@ -77,6 +77,6 @@ public class F5Problem extends AbstractProblemDoubleOffset implements Serializab
      */
     @Override
     public String getName() {
-        return "F5-Problem";
+        return "Schwefel 1.2";
     }
 }
