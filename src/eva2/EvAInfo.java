@@ -98,6 +98,7 @@ public class EvAInfo {
     }
 
     public static String propDefaultModule() {
-        return getProperty("DefaultModule");
+        String defaultModule = getProperty("DefaultModule");
+        return defaultModule;
     }
 }

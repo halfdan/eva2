@@ -112,7 +112,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
      */
     @Override
     public String getName() {
-        return "F8-Problem";
+        return "Ackley";
     }
 
     @Override

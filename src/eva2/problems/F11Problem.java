@@ -77,7 +77,7 @@ public class F11Problem extends AbstractProblemDoubleOffset implements Interface
      */
     @Override
     public String getName() {
-        return "F11-Problem";
+        return "Griewank";
     }
 
     /**

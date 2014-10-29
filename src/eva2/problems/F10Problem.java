@@ -88,7 +88,7 @@ public class F10Problem extends AbstractProblemDoubleOffset implements Interface
      */
     @Override
     public String getName() {
-        return "F10 Problem";
+        return "Weierstrass-Mandelbrot Fractal";
     }
 
     /**

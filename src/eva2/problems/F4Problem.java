@@ -56,7 +56,7 @@ public class F4Problem extends AbstractProblemDoubleOffset implements Serializab
         String result = "";
 
         result += "F4 Quadratic Function with noise:\n";
-        result += "This problem is noisey.\n";
+        result += "This problem is noisy.\n";
         result += "Parameters:\n";
         result += "Dimension   : " + this.problemDimension + "\n";
         result += "Noise level : " + this.getNoise() + "\n";
@@ -73,6 +73,6 @@ public class F4Problem extends AbstractProblemDoubleOffset implements Serializab
      */
     @Override
     public String getName() {
-        return "F4 Problem";
+        return "Noisy Quaric";
     }
 }

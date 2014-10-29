@@ -108,7 +108,7 @@ public class F13Problem extends AbstractProblemDoubleOffset implements Interface
      */
     @Override
     public String getName() {
-        return "F13-Problem";
+        return "Schwefel 2.26";
     }
 
     @Override

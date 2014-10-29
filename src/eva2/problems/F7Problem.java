@@ -118,7 +118,7 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
      */
     @Override
     public String getName() {
-        return "F7 Problem";
+        return "Changing Sphere";
     }
 
     /**

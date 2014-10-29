@@ -69,6 +69,6 @@ public class F9Problem extends AbstractProblemDoubleOffset implements java.io.Se
      */
     @Override
     public String getName() {
-        return "F9 Problem";
+        return "Weighted Sphere";
     }
 }

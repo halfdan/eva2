@@ -27,7 +27,7 @@ public class F21Problem extends AbstractProblemDouble implements InterfaceMultim
 
     @Override
     public String getName() {
-        return "Langerman-Function";
+        return "Langerman";
     }
 
     @Override
