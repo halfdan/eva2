@@ -4,12 +4,14 @@ import eva2.gui.BeanInspector;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
  *
  */
+@Description("Terminate if a certain fitness value has been reached.")
 public class FitnessValueTerminator implements InterfaceTerminator,
         Serializable {
     protected double[] fitnessValue;
@@ -25,13 +27,6 @@ public class FitnessValueTerminator implements InterfaceTerminator,
     @Override
     public void initialize(InterfaceOptimizationProblem prob) {
         msg = "Not terminated.";
-    }
-
-    /**
-     *
-     */
-    public static String globalInfo() {
-        return "Terminate if a certain fitness value has been reached.";
     }
 
     /**

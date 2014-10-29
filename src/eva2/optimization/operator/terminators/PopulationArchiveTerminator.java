@@ -3,19 +3,15 @@ package eva2.optimization.operator.terminators;
 import eva2.optimization.individuals.IndividualWeightedFitnessComparator;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
+import eva2.util.annotation.Description;
 
 /**
  * Terminate if a score based on the archive of the population converges.
  * Note that this only works if the archive is filled with sensible data.
- *
- * @author mkron
  */
+@Description("Stop if a linear recombination of the best fitness stagnates for a certain period.")
 public class PopulationArchiveTerminator extends PopulationMeasureTerminator {
     IndividualWeightedFitnessComparator wfComp = new IndividualWeightedFitnessComparator(new double[]{1.});
-
-    public static String globalInfo() {
-        return "Stop if a linear recombination of the best fitness stagnates for a certain period.";
-    }
 
     @Override
     protected double calcInitialMeasure(PopulationInterface pop) {

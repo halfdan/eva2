@@ -35,7 +35,7 @@ public class EvaluationTerminator implements InterfaceTerminator,
     /**
      * Construct Terminator with a maximum number of fitness calls.
      *
-     * @param maximum number of fitness calls
+     * @param x number of fitness calls
      */
     public EvaluationTerminator(int x) {
         maxFitnessCalls = x;
@@ -68,12 +68,10 @@ public class EvaluationTerminator implements InterfaceTerminator,
     }
 
     public void setFitnessCalls(int x) {
-        //System.out.println("setFitnessCalls"+x);
         maxFitnessCalls = x;
     }
 
     public int getFitnessCalls() {
-        //System.out.println("getFitnessCalls"+maxFitnessCalls);
         return maxFitnessCalls;
     }
 }

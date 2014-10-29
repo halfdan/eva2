@@ -4,6 +4,7 @@ import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -14,9 +15,10 @@ import java.io.Serializable;
  * May be computationally expensive.
  *
  * @author mkron
- * @see Population.getPopulationMeasures()
+ * @see Population#getPopulationMeasures()
  * @see PhenotypeMetric
  */
+@Description("The diversity terminator uses the distance of individuals in the population as a termination criterion.")
 public class DiversityTerminator extends PopulationMeasureTerminator implements InterfaceTerminator, Serializable {
     public enum DiversityCriterion {averageDistance, minimumDistance, maximumDistance}
 
@@ -33,10 +35,6 @@ public class DiversityTerminator extends PopulationMeasureTerminator implements 
         super(convergenceThreshold, stagnationTime, stagType, changeType, dirType);
         this.metric = metric;
         this.criterion = divCrit;
-    }
-
-    public static String globalInfo() {
-        return "The diversity terminator uses the distance of individuals in the population as a termination criterion.";
     }
 
     /**
