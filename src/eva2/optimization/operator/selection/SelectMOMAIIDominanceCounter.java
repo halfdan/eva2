@@ -2,12 +2,14 @@ package eva2.optimization.operator.selection;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * Experimental selection mechanism for MOMA II where
  * a single individual is a whole set of Pareto optimal
  * solution. Currently defunct.
  */
+@Description("This selection method only works for MOMA-II, it selects an individual depending on the number of non-dominated solutions.")
 public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io.Serializable {
 
     private InterfaceSelection selection = new SelectBestIndividuals();
@@ -112,18 +114,6 @@ public class SelectMOMAIIDominanceCounter implements InterfaceSelection, java.io
     @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
         return this.selectFrom(availablePartners, size);
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This selection method only works for MOMA-II, it selects an individual depending on the number of non-dominated solutions.";
     }
 
     /**

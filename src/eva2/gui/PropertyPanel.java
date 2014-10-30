@@ -68,9 +68,12 @@ public class PropertyPanel extends JPanel {
         Rectangle box = new Rectangle(i.left, i.top,
                 getSize().width - i.left - i.right,
                 getSize().height - i.top - i.bottom);
-        g.clearRect(i.left, i.top,
+        Color back = g.getColor();
+        g.setColor(Color.WHITE);
+        g.fillRect(i.left, i.top,
                 getSize().width - i.right - i.left,
                 getSize().height - i.bottom - i.top);
+        g.setColor(back);
         propertyEditor.paintValue(g, box);
     }
 

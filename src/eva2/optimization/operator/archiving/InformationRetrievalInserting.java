@@ -1,12 +1,14 @@
 package eva2.optimization.operator.archiving;
 
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * This information retrieval inserts the retrieved
  * solutions, by removing random individuals from the
  * population.
  */
+@Description("This Information Retrieval will insert the archive into current population by replacing random individuals if necessary.")
 public class InformationRetrievalInserting implements InterfaceInformationRetrieval, java.io.Serializable {
 
     public InformationRetrievalInserting() {
@@ -41,18 +43,6 @@ public class InformationRetrievalInserting implements InterfaceInformationRetrie
         }
 
         pop.addPopulation((Population) archive.getClone());
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This Information Retrieval will insert the archive into current population by replacing random individuals if necessary.";
     }
 
     /**

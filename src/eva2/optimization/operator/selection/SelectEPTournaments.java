@@ -4,6 +4,7 @@ package eva2.optimization.operator.selection;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
@@ -11,8 +12,11 @@ import java.util.ArrayList;
  * This method implements the multiple tournament scheme
  * for EP.
  * In case of multiple fitness values the selection
- * critria is selected randomly for each selection event.
+ * criteria is selected randomly for each selection event.
  */
+@Description("The EP tournament selection performs a number of tournaments per individual, the winner is assigned a point." +
+        " The individuals with the most points are selected." +
+        " This is a single objective selecting method, it will select in respect to a random criterion.")
 public class SelectEPTournaments implements InterfaceSelection, java.io.Serializable {
 
     private int tournamentSize = 4;
@@ -178,17 +182,6 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
      */
     public String getName() {
         return "EP Tournament Selection";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The EP tournament selection performs a number of tournaments per individual, the winner is assigned a point." +
-                " The individuals with the most points are selected." +
-                " This is a single objective selecting method, it will select in respect to a random criterion.";
     }
 
     /**

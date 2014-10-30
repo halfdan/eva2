@@ -83,16 +83,6 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
     }
 
     /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        // ToDo: WTF?
-        return "The programmer did not give further details.";
-    }
-
-    /**
      * This method returns a string describing the optimization problem.
      *
      * @param opt The Optimizer that is used or had been used.
@@ -102,7 +92,6 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
     public String getStringRepresentationForProblem(InterfaceOptimizer opt) {
         StringBuilder sb = new StringBuilder(200);
         sb.append("An integer valued problem:\n");
-        sb.append(globalInfo());
         sb.append("Dimension   : ");
         sb.append(this.getProblemDimension());
         return sb.toString();

@@ -1,11 +1,12 @@
 package eva2.optimization.operator.constraint;
 
+import eva2.util.annotation.Description;
+
 /**
  * To handle a set of constraints with a single parameter adaption mechanism.
  * Single constraints are
- *
- * @author mkron
  */
+@Description("A set of constraints with a single parameter adaption mechanism.")
 public class ConstraintCollection extends AbstractConstraint {
     private AbstractConstraint[] constraintArray = new AbstractConstraint[]{};
 
@@ -63,9 +64,5 @@ public class ConstraintCollection extends AbstractConstraint {
 
     public String getName() {
         return constraintArray.length + " constr./" + getPenaltyFactor() + "/" + getHandlingMethod() + "/" + getPenaltyFactControl().getClass().getSimpleName();
-    }
-
-    public static String globalInfo() {
-        return "A set of constraints with a single parameter adaption mechanism.";
     }
 }

@@ -8,11 +8,13 @@ import eva2.optimization.population.Population;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
+import eva2.util.annotation.Description;
 
 /**
  * The SPEA II selection criteria using strength and raw fitness to determine
  * good individuals.
  */
+@Description("This selection method calucates the strength and selects using the strength.")
 public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable {
 
     private InterfaceSelection environmentSelection = new SelectTournament();
@@ -133,15 +135,6 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
      */
     public String getName() {
         return "MO SPEAII selection";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This selection method calucates the strength and selects using the strength.";
     }
 
     /**

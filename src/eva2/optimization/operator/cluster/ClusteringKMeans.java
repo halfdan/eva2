@@ -12,13 +12,15 @@ import eva2.problems.F1Problem;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
+import eva2.util.annotation.Description;
 
 import java.util.Arrays;
 
 /**
- * The k-mean clustering algorithms. I guess it is not a hierachical
+ * The k-mean clustering algorithms. I guess it is not a hierarchical
  * clustering method.
  */
+@Description("Oldy but goldy: K-Means clustering.")
 public class ClusteringKMeans implements InterfaceClustering, java.io.Serializable {
 
     private int k = 5;
@@ -402,18 +404,6 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         f1.initializePopulation(pop);
         ckm.cluster(pop, (Population) null);
 
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Oldy but goldy: K-Means clustering.";
     }
 
     /**

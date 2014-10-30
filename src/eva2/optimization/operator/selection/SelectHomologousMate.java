@@ -4,11 +4,14 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.ObjectiveSpaceMetric;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * An experimental implementation for mating restriction.
  * Possibly defunct.
  */
+@Description("This selection will select n mates from all individuals within the mating distance (extends Tournament Selection)." +
+        "This is a single objective selecting method, it will select in respect to a random criterion.")
 public class SelectHomologousMate extends SelectTournament implements java.io.Serializable {
 
     private double matingRadius = 0.1;
@@ -67,9 +70,6 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
         }
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -79,16 +79,6 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
     @Override
     public String getName() {
         return "Homologous Mating Selection";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This selection will select n mates from all individuals within the mating distance (extends Tournament Selection)." +
-                "This is a single objective selecting method, it will select in respect to a random criterion.";
     }
 
     /**

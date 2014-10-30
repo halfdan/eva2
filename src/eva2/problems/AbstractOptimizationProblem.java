@@ -230,7 +230,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     /**
      * This method returns the header for the additional data that is to be written into a file
      *
-     * @param pop The population that is to be refined.
      * @return String
      */
     @Override
@@ -278,7 +277,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     /**
      * This method returns the header for the additional data that is to be written into a file
      *
-     * @param pop The population that is to be refined.
      * @return String
      */
     @Override
@@ -581,14 +579,5 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     @Override
     public int getProblemDimension() {
         return this.problemDimension;
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The programmer failed to give further details.";
     }
 }

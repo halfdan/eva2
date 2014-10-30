@@ -6,10 +6,12 @@ import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This is the most sophisticated MVA mutation.")
 public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Serializable {
 
     private boolean checkConstraints = true;
@@ -242,9 +244,7 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
     public String getStringRepresentation() {
         return "MVA mutation";
     }
-/**********************************************************************************************************************
- * These are for GUI
- */
+
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -253,15 +253,6 @@ public class MutateESMainVectorAdaption implements InterfaceMutation, java.io.Se
      */
     public String getName() {
         return "MVA mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is the most sophisticated MVA mutation.";
     }
 
     /**

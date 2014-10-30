@@ -108,10 +108,6 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
         return tag;
     }
 
-    public String globalInfo() {
-        return "Job: " + BeanInspector.niceToString(params);
-    }
-
     public boolean isFinishedAndComplete() {
         return (state == StateEnum.complete) && !lastRunIncomplete;
     }

@@ -2,15 +2,12 @@ package eva2.optimization.operator.selection.probability;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * A linear ranking method with offsets.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.06.2004
- * Time: 10:30:47
- * To change this template use File | Settings | File Templates.
  */
+@Description("This is linear ranking normation.")
 public class SelProbLinearRanking extends AbstractSelProb implements java.io.Serializable {
 
     private double nappaPlus = 1.1;
@@ -170,17 +167,6 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                 }
             }
         }
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is linear ranking normation.";
     }
 
     /**

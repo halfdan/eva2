@@ -10,12 +10,14 @@ import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.SelectedTag;
 import eva2.tools.Tag;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
 /**
  *
  */
+@Description("The local mutation stores n sigmas for each double attribute.")
 public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopulationInformer, java.io.Serializable {
 
     protected double mutationStepSize = 0.2;
@@ -217,9 +219,6 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
         return "ES local mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -228,15 +227,6 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      */
     public String getName() {
         return "ES local mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The local mutation stores n sigmas for each double attribute.";
     }
 
     /**

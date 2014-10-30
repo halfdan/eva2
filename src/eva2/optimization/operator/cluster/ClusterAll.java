@@ -1,15 +1,15 @@
 package eva2.optimization.operator.cluster;
 
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * Dummy class which assigns all individuals to a single cluster only.
- *
- * @author mkron
  */
+@Description("A dummy clustering implementation which assigns all elements to a single cluster.")
 public class ClusterAll implements InterfaceClustering, Serializable {
 
     private boolean assignLoners = false; // should loners be assigned?
@@ -78,10 +78,6 @@ public class ClusterAll implements InterfaceClustering, Serializable {
     public boolean mergingSpecies(Population species1, Population species2,
                                   Population referenceSet) {
         return true;
-    }
-
-    public static String globalInfo() {
-        return "A dummy clustering implementation which assigns all elements to a single cluster.";
     }
 
     public String getName() {

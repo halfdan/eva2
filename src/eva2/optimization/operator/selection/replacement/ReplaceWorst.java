@@ -2,15 +2,12 @@ package eva2.optimization.operator.selection.replacement;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * This method replaces the worst indvidual in the population.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.07.2005
- * Time: 14:44:22
- * To change this template use File | Settings | File Templates.
  */
+@Description("This method replaces the worst individual from the population.")
 public class ReplaceWorst implements InterfaceReplacement, java.io.Serializable {
 
     /**
@@ -36,17 +33,6 @@ public class ReplaceWorst implements InterfaceReplacement, java.io.Serializable 
         if (pop.remove(worst)) {
             pop.addIndividual(indy);
         }
-    }
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method replaces the worst individual from the population.";
     }
 
     /**

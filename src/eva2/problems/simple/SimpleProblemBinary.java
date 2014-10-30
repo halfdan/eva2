@@ -5,5 +5,5 @@ import eva2.util.annotation.Description;
 import java.io.Serializable;
 import java.util.BitSet;
 
-@Description("A simple binary problem. Override globalInfo() to insert more information.")
+@Description("A simple binary problem.")
 public abstract class SimpleProblemBinary implements InterfaceSimpleProblem<BitSet>, Serializable { }

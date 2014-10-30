@@ -1,16 +1,13 @@
 package eva2.optimization.operator.archiving;
 
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * This class allows no information retrieval and thus no elitism
  * for MOEAs.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.03.2004
- * Time: 14:54:33
- * To change this template use File | Settings | File Templates.
  */
+@Description("This implements a deactivated Information Retrieval.")
 public class InformationRetrievalNone implements InterfaceInformationRetrieval, java.io.Serializable {
 
     public InformationRetrievalNone() {
@@ -34,17 +31,6 @@ public class InformationRetrievalNone implements InterfaceInformationRetrieval, 
     public void retrieveInformationFrom(Population pop) {
         // no InterfaceInformation Retrieval is performed
         return;
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This implements a deactivated Information Retrieval.";
     }
 
     /**

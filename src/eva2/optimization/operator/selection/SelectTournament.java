@@ -3,13 +3,16 @@ package eva2.optimization.operator.selection;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * Tournament selection within a given tournament group size,
  * also scaling invariant.
  * In case of multiple fitness values the selection
- * critria is selected randomly for each selection event.
+ * criteria is selected randomly for each selection event.
  */
+@Description("The tournament selection compares the raw fitness of n individuals and takes the best." +
+        "This is a single-objective method, it selects with respect to the first criterion in the multi-objective case.")
 public class SelectTournament implements InterfaceSelection, java.io.Serializable {
 
     private int tournamentSize = 4;
@@ -124,16 +127,6 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
      */
     public String getName() {
         return "Tournament Selection";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The tournament selection compares the raw fitness of n individuals and takes the best." +
-                "This is a single-objective method, it selects with respect to the first criterion in the multi-objective case.";
     }
 
     /**

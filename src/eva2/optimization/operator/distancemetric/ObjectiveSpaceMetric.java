@@ -1,15 +1,12 @@
 package eva2.optimization.operator.distancemetric;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.util.annotation.Description;
 
 /**
  * Objective space metric suited for multi-objective optimization.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.08.2003
- * Time: 14:39:47
- * To change this template use Options | File Templates.
  */
+@Description("The objective space metric calculates euclidian distances on the fitness vectors.")
 public class ObjectiveSpaceMetric implements InterfaceDistanceMetric, java.io.Serializable {
 
     public ObjectiveSpaceMetric() {
@@ -44,17 +41,6 @@ public class ObjectiveSpaceMetric implements InterfaceDistanceMetric, java.io.Se
             result += Math.pow((dIndy1[i] - dIndy2[i]), 2);
         }
         return Math.sqrt(result);
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The objective space metric calculates euclidian distances on the fitness vectors.";
     }
 
     /**

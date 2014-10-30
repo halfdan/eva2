@@ -4,11 +4,13 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * The infamous NSGA-II selection scheme for multi-objective
  * optimization based on Pareto ranks and hybergrids.
  */
+@Description("The Crowded Tournament Selection first chooses the better Pareto Front and then the smaller Crowding Distance.")
 public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.io.Serializable {
 
     private int tournamentSize = 4;
@@ -152,9 +154,6 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
         return this.selectFrom(availablePartners, size);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -163,15 +162,6 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
      */
     public String getName() {
         return "MO Crowded Tournament Selection";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The Crowded Tournament Selection first chooses the better Pareto Front and then the smaller Crowding Distance.";
     }
 
     /**

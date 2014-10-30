@@ -2,10 +2,12 @@ package eva2.optimization.operator.postprocess;
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.enums.PostProcessMethod;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
-
+@Description("Combined clustering and local search post-processing of solutions. Additionally, accuracy checks can be performed on the " +
+        "returned solutions with different thresholds.")
 public class PostProcessParams implements InterfacePostProcessParams, Serializable {
 
     protected int postProcessSteps = 5000;
@@ -148,11 +150,6 @@ public class PostProcessParams implements InterfacePostProcessParams, Serializab
 
     public String getName() {
         return "PostProcessing " + (postProcess ? (postProcessSteps + "/" + postProcessClusterSigma) : "off");
-    }
-
-    public static String globalInfo() {
-        return "Combined clustering and local search post-processing of solutions. Additionally, accuracy checks can be performed on the " +
-                "returned solutions with different thresholds.";
     }
 
     @Override

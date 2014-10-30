@@ -5,14 +5,11 @@ import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 02.04.2003
- * Time: 17:58:30
- * To change this template use Options | File Templates.
  */
+@Description("The local correlated mutation stores n sigmas for each double attribute and n(n-1) alphas.")
 public class MutateESCorrolated implements InterfaceMutation, java.io.Serializable {
     protected double mutationStepSize = 0.2;
     protected double tau1 = 0.15;
@@ -228,9 +225,6 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
         return "ES local correlated mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -239,15 +233,6 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      */
     public String getName() {
         return "ES local correlated mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The local correlated mutation stores n sigmas for each double attribute and n(n-1) alphas.";
     }
 
     /**

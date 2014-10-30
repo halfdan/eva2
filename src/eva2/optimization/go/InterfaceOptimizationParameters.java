@@ -27,9 +27,9 @@ public interface InterfaceOptimizationParameters {
      *
      * @param x Long seed.
      */
-    void setSeed(long x);
+    void setRandomSeed(long x);
 
-    long getSeed();
+    long getRandomSeed();
 
     /**
      * This method allows you to choose a termination criteria for the

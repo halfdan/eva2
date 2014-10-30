@@ -4,10 +4,12 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * Here we have the infamous fitness sharing method.
  */
+@Description("This is a fitness sharing based normation method.")
 public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Serializable {
 
     private InterfaceSelectionProbability basicNormationMethod = new SelProbStandard();
@@ -67,18 +69,6 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
             tmpIndy1 = ((AbstractEAIndividual) population.get(i));
             tmpIndy1.setSelectionProbability(0, (selProb[i] / sum));
         }
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a fitness sharing based normation method.";
     }
 
     /**

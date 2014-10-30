@@ -3,11 +3,13 @@ package eva2.optimization.operator.archiving;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.selection.SelectBestIndividuals;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * This simple strategy simply archives all Pareto optimal solutions. This method is
  * very prone to OutOfMemory errors!
  */
+@Description("This is a straightforward strategy, which selects all dominating individuals (very prone to generate OutOfMemory errors).")
 public class ArchivingAllDominating extends AbstractArchiving implements java.io.Serializable {
 
 
@@ -61,18 +63,6 @@ public class ArchivingAllDominating extends AbstractArchiving implements java.io
                 }
             }
         }
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a straightforward strategy, which selects all dominating individuals (very prone to generate OutOfMemory errors).";
     }
 
     /**

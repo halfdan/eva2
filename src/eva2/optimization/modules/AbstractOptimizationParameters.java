@@ -55,7 +55,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
      * optimization e.g. with Hill Climbing.
      */
     @Parameter(name = "Post Processing", description = "Parameters for the post processing step.")
-    protected InterfacePostProcessParams postProcessing = new PostProcessParams(false);
+    protected InterfacePostProcessParams postProcessParams = new PostProcessParams(false);
 
     transient protected InterfacePopulationChangedEventListener populationChangedEventListener;
     transient private List<InterfaceNotifyOnInformers> toInformAboutInformers = null;
@@ -70,7 +70,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
         this.terminator = optimizationParameters.terminator;
         this.optimizer.setProblem(this.problem);
         this.randomSeed = optimizationParameters.randomSeed;
-        this.postProcessing = optimizationParameters.postProcessing;
+        this.postProcessParams = optimizationParameters.postProcessParams;
     }
 
     public AbstractOptimizationParameters(InterfaceOptimizer opt, InterfaceOptimizationProblem prob, InterfaceTerminator term) {
@@ -78,7 +78,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
         optimizer = opt;
         problem = prob;
         terminator = term;
-        postProcessing = new PostProcessParams(false);
+        postProcessParams = new PostProcessParams(false);
         opt.setProblem(prob);
     }
 
@@ -92,8 +92,8 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
         setProblem(parameters.problem);
         setTerminator(parameters.terminator);
         this.optimizer.setProblem(this.problem);
-        setSeed(parameters.randomSeed);
-        setPostProcessParams(parameters.postProcessing);
+        setRandomSeed(parameters.randomSeed);
+        setPostProcessParams(parameters.postProcessParams);
     }
 
     /**
@@ -236,7 +236,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
      * @param x Long seed.
      */
     @Override
-    public void setSeed(long x) {
+    public void setRandomSeed(long x) {
         randomSeed = x;
     }
 
@@ -246,7 +246,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
      * @return The current seed for the random number generator.
      */
     @Override
-    public long getSeed() {
+    public long getRandomSeed() {
         return randomSeed;
     }
 
@@ -268,16 +268,16 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
 
     @Override
     public InterfacePostProcessParams getPostProcessParams() {
-        return postProcessing;
+        return postProcessParams;
     }
 
     @Override
     public void setPostProcessParams(InterfacePostProcessParams ppp) {
-        postProcessing = ppp;
+        postProcessParams = ppp;
     }
 
     @Override
     public void setDoPostProcessing(boolean doPP) {
-        postProcessing.setDoPostProcessing(doPP);
+        postProcessParams.setDoPostProcessing(doPP);
     }
 }

@@ -3,6 +3,7 @@ package eva2.optimization.operator.distancemetric;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.mutation.MutateESGlobal;
+import eva2.util.annotation.Description;
 
 /**
  * This method includes the sigma as distance element.
@@ -10,12 +11,8 @@ import eva2.optimization.operator.mutation.MutateESGlobal;
  * at least on real-valued search spaces together
  * with the correct mutation operator. I guess this
  * could be a paper, but I'm so lazy right now.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 23.04.2004
- * Time: 12:48:26
- * To change this template use File | Settings | File Templates.
  */
+@Description("This is an experimental method for individuals using global ES mutation.")
 public class SigmaSingleMetricGlobalMutation implements InterfaceDistanceMetric, java.io.Serializable {
 
     public SigmaSingleMetricGlobalMutation() {
@@ -65,17 +62,6 @@ public class SigmaSingleMetricGlobalMutation implements InterfaceDistanceMetric,
         } else {
             return 1.0;
         }
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an experimental method for individuals using global ES mutation.";
     }
 
     /**

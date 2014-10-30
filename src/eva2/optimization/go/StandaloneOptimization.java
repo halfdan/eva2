@@ -78,7 +78,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
         this.optimizationParameters = OptimizationParameters.getInstance();
         this.experimentName = this.optimizationParameters.getOptimizer().getName() + "-" + this.performedRuns.size();
         this.optimizationParameters.addPopulationChangedEventListener(this);
-        RNG.setRandomSeed(optimizationParameters.getSeed());
+        RNG.setRandomSeed(optimizationParameters.getRandomSeed());
     }
 
     /**
@@ -348,7 +348,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 this.statusField.setText("Optimizing...");
             }
 
-            RNG.setRandomSeed(optimizationParameters.getSeed());
+            RNG.setRandomSeed(optimizationParameters.getRandomSeed());
             // opening output file...
             if (!this.outputFileName.equalsIgnoreCase("none")) {
                 String name = "";
@@ -646,10 +646,10 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
      * @param seed The seed for the random number generator
      */
     // MK: These methods have nothing to do with the seed parameter from the optimizationParameters object which is actually used, so I comment them out
-//    public void setSeed(long seed) {
+//    public void setRandomSeed(long seed) {
 //        RNG.setseed(seed);
 //    }
-//    public long getSeed() {
+//    public long getRandomSeed() {
 //        return RNG.getRandomSeed();
 //    }
 //    public String seedTipText() {

@@ -3,6 +3,7 @@ package eva2.optimization.operator.distancemetric;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.strategies.ParticleSwarmOptimization;
 import eva2.tools.EVAERROR;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -10,9 +11,8 @@ import java.io.Serializable;
  * Define a metric on data stored within individuals, such as the personal best position
  * in PSO. The metric tries to set the stored data as double position to an indy clone.
  * On these clones, the base metric is applied.
- *
- * @author mkron
  */
+@Description("Uses individual object data (so far only double[]) to calculate the distance.")
 public class IndividualDataMetric implements InterfaceDistanceMetric, Serializable {
     private String dataKey = ParticleSwarmOptimization.partBestPosKey;
     //	private boolean normedDistance = true; // flag whether to use normed distances (for InterfaceDataTypeDouble)
@@ -88,16 +88,6 @@ public class IndividualDataMetric implements InterfaceDistanceMetric, Serializab
 
     public String normedDistanceTipText() {
         return "Flag whether to use euclidean distance directly or normed by the double range.";
-    }
-//	public boolean isNormedDistance() {
-//		return normedDistance;
-//	}
-//	public void setNormedDistance(boolean normedDistance) {
-//		this.normedDistance = normedDistance;
-//	}
-
-    public static String globalInfo() {
-        return "Uses individual object data (so far only double[]) to calculate the distance.";
     }
 
     public void setBaseMetric(InterfaceDistanceMetric baseMetric) {

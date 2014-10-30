@@ -2,6 +2,7 @@ package eva2.optimization.operator.classification;
 
 import eva2.tools.chart2d.*;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ import java.awt.event.WindowEvent;
  * for classification. The Dikel flag is an undocumented extension,
  * which seems to work but is not published.
  */
+@Description("The Self-Organizing Maps, have been proposed by Kohonen (read this book on SOMs for further details).")
 public class ClassificationSelfOrganizingMaps implements java.io.Serializable, InterfaceClassification {
 
     /**
@@ -489,9 +491,6 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
         som.train(data, type);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -500,15 +499,6 @@ public class ClassificationSelfOrganizingMaps implements java.io.Serializable, I
      */
     public String getName() {
         return "Self-Organizing Maps";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The Self-Organizing Maps, have been proposed by Kohonen (read this book on SOMs for further details).";
     }
 
     /**

@@ -8,6 +8,7 @@ import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.operator.paramcontrol.ParamAdaption;
 import eva2.optimization.operator.paramcontrol.ParameterControlManager;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,9 +22,8 @@ import java.util.Vector;
  * A tree is produced by assigning each individual the closest individual with better fitness.
  * Connections with a distance above a certain threshold are cut. After that, each interconnected subtree forms a cluster.
  * In the paper, the threshold is deduced as 2*d_p for d_p: the mean distance in the population.
- *
- * @author mkron
  */
+@Description("A tree is produced by assigning each individual the closest individual with better fitness. Connections with a distance above a certain threshold are cut. After that, each interconnected subtree forms a cluster.")
 public class ClusteringNearestBetter implements InterfaceClustering, Serializable {
     private static final long serialVersionUID = 1L;
     private InterfaceDistanceMetric metric = new PhenotypeMetric();
@@ -389,10 +389,6 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
                 return false;
             }
         }
-    }
-
-    public static String globalInfo() {
-        return "A tree is produced by assigning each individual the closest individual with better fitness. Connections with a distance above a certain threshold are cut. After that, each interconnected subtree forms a cluster.";
     }
 
     public String metricTipText() {

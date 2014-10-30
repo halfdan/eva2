@@ -4,18 +4,15 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.chart2d.Chart2DDPointIconCross;
 import eva2.tools.chart2d.DPointIcon;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
 
 /**
  * The secon verison of the non dominace sorting GA.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.08.2003
- * Time: 16:56:10
- * To change this template use Options | File Templates.
  */
+@Description("Non-dominating sorting GA revision 2.0.")
 public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializable {
 
     public ArchivingNSGAII() {
@@ -174,18 +171,6 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
      */
     public DPointIcon getIconFor(int index, Population pop) {
         return new Chart2DDPointIconCross();
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Non-dominating sorting GA revision 2.0.";
     }
 
     /**

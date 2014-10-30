@@ -5,14 +5,16 @@ import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.population.Population;
 import eva2.tools.Pair;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
 
 /**
- * The DBSCAN method. As far as I recall this is an hierachical
+ * The DBSCAN method. As far as I recall this is an hierarchical
  * clustering method like the single-link method.
  */
+@Description("A density-based clustering algorithm (DBSCAN).")
 public class ClusteringDensityBased implements InterfaceClusteringDistanceParam, InterfaceClusteringMetricBased, java.io.Serializable {
 
     private InterfaceDistanceMetric metric = new PhenotypeMetric();
@@ -231,18 +233,6 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
             } // end for all species
         } // end for all loners
         return res;
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "A density-based clustering algorithm (DBSCAN).";
     }
 
     /**

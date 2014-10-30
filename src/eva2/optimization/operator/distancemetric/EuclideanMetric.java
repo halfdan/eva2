@@ -2,6 +2,7 @@ package eva2.optimization.operator.distancemetric;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -10,8 +11,9 @@ import java.io.Serializable;
  * as given by AbstractEAIndividual.getDoublePosition(AbstractEAIndividual).
  *
  * @author mkron
- * @see AbstractEAIndividual.getDoublePosition(AbstractEAIndividual)
+ * @see AbstractEAIndividual#getDoublePosition(AbstractEAIndividual)
  */
+@Description("Set to true to norm the distance by the double range - only possible with InterfaceDataTypeDouble individuals.")
 public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
     private boolean normedByDblRange = false;
 
@@ -93,7 +95,7 @@ public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
      * @return description
      */
     public static String globalInfo() {
-        return "The euclidean metric calculates euclidian distances for individuals which have a real valued interpretation.";
+        return "The euclidean metric calculates euclidean distances for individuals which have a real valued interpretation.";
     }
 
     /**
@@ -111,10 +113,6 @@ public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
 
     public boolean isNormedByDblRange() {
         return normedByDblRange;
-    }
-
-    public String normedByDblRangeTipText() {
-        return "Set to true to norm the distance by the double range - only possible with InterfaceDataTypeDouble individuals.";
     }
 }
 

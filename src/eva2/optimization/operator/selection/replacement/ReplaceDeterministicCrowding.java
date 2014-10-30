@@ -3,15 +3,12 @@ package eva2.optimization.operator.selection.replacement;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * The deterministic crowiding method replaces the most similar parent if better
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.07.2005
- * Time: 14:46:14
- * To change this template use File | Settings | File Templates.
  */
+@Description("This method replaces the most similar parent if better.")
 public class ReplaceDeterministicCrowding implements InterfaceReplacement, java.io.Serializable {
 
     PhenotypeMetric metric = new PhenotypeMetric();
@@ -50,17 +47,6 @@ public class ReplaceDeterministicCrowding implements InterfaceReplacement, java.
                 pop.addIndividual(indy);
             }
         }
-    }
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method replaces the most similar parent if better.";
     }
 
     /**

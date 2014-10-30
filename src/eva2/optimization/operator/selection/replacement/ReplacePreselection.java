@@ -2,16 +2,13 @@ package eva2.optimization.operator.selection.replacement;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * The preselection replacement scheme replaces the worst parent in case
  * the offspring is better.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.07.2005
- * Time: 15:24:03
- * To change this template use File | Settings | File Templates.
  */
+@Description("This method replaces the worst parent if better.")
 public class ReplacePreselection implements InterfaceReplacement, java.io.Serializable {
 
     /**
@@ -37,17 +34,6 @@ public class ReplacePreselection implements InterfaceReplacement, java.io.Serial
         if ((indy.isDominatingDebConstraints(worst)) && (pop.remove(worst))) {
             pop.addIndividual(indy);
         }
-    }
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method replaces the worst parent if better.";
     }
 
     /**

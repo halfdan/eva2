@@ -2,10 +2,12 @@ package eva2.optimization.operator.mutation;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * Success rule implementation.
  */
+@Description("The 1/5 success rule works only together with an ES optimizer.")
 public class MutateESSuccessRule extends MutateESFixedStepSize implements InterfaceMutation, InterfaceAdaptOperatorGenerational, java.io.Serializable {
     protected double successRate = 0.2;
     protected double alpha = 1.2;
@@ -88,15 +90,6 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
     @Override
     public String getName() {
         return "ES 1/5 Success Rule mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The 1/5 success rule works only together with an ES optimizer.";
     }
 
     public String mutationStepSizeTipText() {

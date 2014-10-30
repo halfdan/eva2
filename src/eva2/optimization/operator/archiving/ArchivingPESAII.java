@@ -3,18 +3,15 @@ package eva2.optimization.operator.archiving;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
 /**
  * The Pareto envelope sorting algorithm using a hybergrid and
- * the so called squezze factor.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 05.04.2004
- * Time: 14:24:54
- * To change this template use File | Settings | File Templates.
+ * the so called squeeze factor.
  */
+@Description("Pareto Envelope-based Selection Algorithm revision 2.0.")
 public class ArchivingPESAII extends AbstractArchiving implements java.io.Serializable {
 
     private int gridSize = 4;
@@ -171,19 +168,6 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
         }
 
         return result;
-    }
-
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Pareto Envelope-based Selection Algorithm revision 2.0.";
     }
 
     /**

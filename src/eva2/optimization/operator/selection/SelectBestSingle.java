@@ -3,13 +3,16 @@ package eva2.optimization.operator.selection;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 
 /**
  * Select best individual multiple times if necessary.
  * In case of multiple fitness values the selection
- * critria is selected randomly for each selection event.
+ * criteria is selected randomly for each selection event.
  */
+@Description("This selection method will select the single Best individual (n-times if necessary)." +
+        "This is a single objective selecting method, it will select in respect to a random criterion.")
 public class SelectBestSingle implements InterfaceSelection, java.io.Serializable {
 
     private boolean obeyDebsConstViolationPrinciple = true;
@@ -125,18 +128,6 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
         } else {
             return this.selectFrom(availablePartners, size);
         }
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This selection method will select the single Best individual (n-times if necessary)." +
-                "This is a single objective selecting method, it will select in respect to a random criterion.";
     }
 
     /**

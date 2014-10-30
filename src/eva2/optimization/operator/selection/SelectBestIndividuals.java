@@ -4,6 +4,7 @@ package eva2.optimization.operator.selection;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,8 @@ import java.util.ArrayList;
  * In case of multiple fitness values the selection
  * criteria is selected randomly for each selection event.
  */
+@Description("This selection method will select the n-Best individuals." +
+        "This is a single objective selecting method, it will select in respect to a random criterion.")
 public class SelectBestIndividuals implements InterfaceSelection, java.io.Serializable {
 
     private boolean obeyDebsConstViolationPrinciple = true;
@@ -167,16 +170,6 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
     @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
         return this.selectFrom(availablePartners, size);
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This selection method will select the n-Best individuals." +
-                "This is a single objective selecting method, it will select in respect to a random criterion.";
     }
 
     /**

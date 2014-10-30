@@ -4,10 +4,12 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.operator.selection.SelectRandom;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * This crowding method replaces the most similar individual from a random group if better.
  */
+@Description("This method replaces the most similar individual from a random group if better.")
 public class ReplacementCrowding implements InterfaceReplacement, java.io.Serializable {
 
     PhenotypeMetric metric = new PhenotypeMetric();
@@ -62,17 +64,6 @@ public class ReplacementCrowding implements InterfaceReplacement, java.io.Serial
                 pop.addIndividual(indy);
             }
         }
-    }
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method replaces the most similar individual from a random group if better.";
     }
 
     /**

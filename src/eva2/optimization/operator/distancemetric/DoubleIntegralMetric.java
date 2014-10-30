@@ -3,6 +3,7 @@ package eva2.optimization.operator.distancemetric;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -12,12 +13,11 @@ import java.io.Serializable;
  * <p/>
  * This can be used with any individual type that implements getDoublePositionShallow.
  *
- * @author mkron
- * @see AbstractEAIndividual.getDoublePositionShallow(AbstractEAIndividual)
+ * @see AbstractEAIndividual#getDoublePositionShallow(AbstractEAIndividual)
  */
+@Description("A simple integral metric for real-valued types.")
 public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializable {
     boolean oneNormed = true; // if true, the vectors are normed to unity sum before comparison.
-//	String indyDataKey=null;
 
     public DoubleIntegralMetric() {
     }
@@ -34,13 +34,6 @@ public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializab
     @Override
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
         double[] dIndy1 = null, dIndy2 = null;
-//		String indyDataKey = ParticleSwarmOptimization.partBestPosKey;
-//		if (indyDataKey!=null && (indyDataKey.length()>0)) {
-//			try {
-//				dIndy1 = (double[]) indy1.getData(indyDataKey);
-//				dIndy2 = (double[]) indy2.getData(indyDataKey);
-//			} catch (Exception e) {dIndy1=null;}
-//		} else dIndy1=null;
 
         if (dIndy1 == null || dIndy2 == null) {
             dIndy1 = AbstractEAIndividual.getDoublePositionShallow(indy1);
@@ -74,10 +67,6 @@ public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializab
 
     public String getName() {
         return "Real-valued integral metric";
-    }
-
-    public static String globalInfo() {
-        return "A simple integral metric for real-valued types.";
     }
 
     public boolean isOneNormed() {

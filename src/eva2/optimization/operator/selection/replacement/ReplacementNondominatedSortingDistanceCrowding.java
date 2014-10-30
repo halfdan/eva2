@@ -4,6 +4,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
 import eva2.optimization.operator.selection.SelectRandom;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,12 +12,8 @@ import java.util.Comparator;
 
 /**
  * This crowding method replaces the most similar individual from a random group if better.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.07.2005
- * Time: 15:25:15
- * To change this template use File | Settings | File Templates.
  */
+@Description("This method replaces the individual with the worsr paretorank and crowding factor")
 public class ReplacementNondominatedSortingDistanceCrowding implements InterfaceReplacement, java.io.Serializable {
 
     public class HypervolumeComperator implements Comparator<AbstractEAIndividual> {
@@ -91,17 +88,6 @@ public class ReplacementNondominatedSortingDistanceCrowding implements Interface
                 pop.add(store[i].getEAIndividual(j));
             }
         }
-    }
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method replaces the individual with the worsr paretorank and crowding factor";
     }
 
     /**

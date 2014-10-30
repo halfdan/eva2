@@ -5,10 +5,12 @@ import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("The mutative step size control mutation randomly increases/decreases the current step size.")
 public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.io.Serializable {
     protected double mutationStepSize = 0.2;
     protected double alpha = 1.2;
@@ -159,15 +161,6 @@ public class MutateESMutativeStepSizeControl implements InterfaceMutation, java.
      */
     public String getName() {
         return "MSR";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The mutative step size control mutation randomly increases/decreases the current step size.";
     }
 
     /**

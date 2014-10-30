@@ -14,6 +14,7 @@ import eva2.tools.Pair;
 import eva2.tools.math.Jama.EigenvalueDecomposition;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -28,9 +29,8 @@ import java.io.Serializable;
  * in the populations, so that in principle, multi-modal optimization with several populations becomes possible.
  * This of course requires proper handling of the generational cycle, i.e., new generations should be cloned from
  * the former ones (without individuals is ok) so that the parameters are taken over.
- *
- * @author mkron
  */
+@Description("The CMA mutator scheme with static cov. matrix, rank-mu update and weighted recombination.")
 public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, InterfaceMutation, Serializable {
     //	int dim;
     private double c_c, expRandStepLen;
@@ -516,10 +516,6 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
     @Override
     public String getStringRepresentation() {
         return "Rank-Mu-CMA-Mutator";
-    }
-
-    public static String globalInfo() {
-        return "The CMA mutator scheme with static cov. matrix, rank-mu update and weighted recombination.";
     }
 
     @Override

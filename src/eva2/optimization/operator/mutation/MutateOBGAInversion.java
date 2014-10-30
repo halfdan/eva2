@@ -6,16 +6,10 @@ import eva2.optimization.individuals.InterfaceOBGAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 
 /**
- * <p>Title: EvA2</p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2003</p>
- * <p>Company: </p>
- *
- * @author planatsc
- * @version 1.0
  *          <p/>
  *          Mutates a permutation by inversion a part of the permutation.
  *          <br><br>
@@ -25,8 +19,7 @@ import eva2.tools.math.RNG;
  *                                                                1 2 | 5 4 3 | 6 7 8 9
  *                                                       </pre>
  */
-
-
+@Description("This mutation operators inverts a certain section of the OBGA.")
 public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutation {
 
     public MutateOBGAInversion() {
@@ -84,22 +77,13 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
         return "OBGA inversion mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /** This method allows the CommonJavaObjectEditorPanel to read the
+    /**
+     * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
      * @return The name.
      */
     public String getName() {
         return "OBGA inversion mutation";
-    }
-
-    /** This method returns a global info string
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This mutation operators inverts a certain section of the OBGA.";
     }
 
 }

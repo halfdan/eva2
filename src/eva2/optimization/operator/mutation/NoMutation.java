@@ -4,14 +4,11 @@ package eva2.optimization.operator.mutation;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 25.03.2003
- * Time: 11:42:42
- * To change this template use Options | File Templates.
  */
+@Description("This thing does nothing, really!")
 public class NoMutation implements InterfaceMutation, java.io.Serializable {
 
     /**
@@ -86,14 +83,5 @@ public class NoMutation implements InterfaceMutation, java.io.Serializable {
      */
     public String getName() {
         return "No mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This thing does nothing, really!";
     }
 }

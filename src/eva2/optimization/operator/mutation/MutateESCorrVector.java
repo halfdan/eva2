@@ -6,6 +6,7 @@ import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
@@ -15,12 +16,13 @@ import java.util.ArrayList;
  * updates the velocity by rotation and scaling, and then mutates the individual
  * by adding the velocity. This was used for a particle filter localization problem
  * and is less useful in general.
- * <p/>
+ * </p><p>
  * Rotation vectors are normal distributed with mean zero, scaling factors are
  * log-normally distributed around mean 1. This means that the averaged expected change
  * of the mutation vector is zero. The smaller the deviations, the higher the correlations
  * between successive mutation steps.
  */
+@Description("The correlated vector mutation stores a specific mutation vector per individual.")
 public class MutateESCorrVector implements InterfaceMutation, java.io.Serializable {
     protected double scalingDev = 0.05;
     protected double initialVelocity = 0.02;
@@ -208,9 +210,6 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
         return "ES global mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -219,15 +218,6 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
      */
     public String getName() {
         return "ES correlated vector mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The correlated vector mutation stores a specific mutation vector per individual.";
     }
 
     /**

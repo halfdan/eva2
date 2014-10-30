@@ -2,18 +2,15 @@ package eva2.optimization.operator.selection.replacement;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * This method replaces the worst parent. Doesn't work,
  * most likely it has the effect of a negative elitism.
  * Good selected parents are replaced by the offspring
  * regardless how bad it is...
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.07.2005
- * Time: 14:45:23
- * To change this template use File | Settings | File Templates.
  */
+@Description("This method replaces the worst parent, if better.")
 public class ReplaceWorstParent implements InterfaceReplacement, java.io.Serializable {
 
     /**
@@ -41,20 +38,6 @@ public class ReplaceWorstParent implements InterfaceReplacement, java.io.Seriali
                 pop.addIndividual(indy);
             }
         }
-//        if (pop.remove(worst)) {
-//            pop.addIndividual(indy);
-//        }
-    }
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method replaces the worst parent, if better.";
     }
 
     /**

@@ -3,11 +3,13 @@ package eva2.optimization.operator.selection;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 
 /**
  * Random selection typically used for ES as mating selection.
  */
+@Description("This method selects randomly. Therefore, it even works fine on Multiobjective fitness cases.")
 public class SelectRandom implements InterfaceSelection, java.io.Serializable {
 
     private boolean obeyDebsConstViolationPrinciple = false;
@@ -113,15 +115,6 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
      */
     public String getName() {
         return "Random Selection";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method selects randomly. Therefore, it even works fine on Multiobjective fitness cases.";
     }
 
     /**

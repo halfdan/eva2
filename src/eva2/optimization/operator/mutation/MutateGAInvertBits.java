@@ -5,12 +5,14 @@ import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  *
  */
+@Description("This mutation operator inverts n successive bits.")
 public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializable {
 
     private int numberOfMutations = 1;
@@ -124,15 +126,6 @@ public class MutateGAInvertBits implements InterfaceMutation, java.io.Serializab
      */
     public String getName() {
         return "GA invert n bits mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This mutation operator inverts n successive bits.";
     }
 
     /**

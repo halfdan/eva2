@@ -3,6 +3,7 @@ package eva2.optimization.operator.terminators;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -18,9 +19,8 @@ import java.io.Serializable;
  * - if the measure remained above m(P)-convThresh (absolute change and regard improvement only),
  * - if the measure remained within m(P)*[1-convThresh, 1+convThresh] (relative change),
  * - if the measure remained above m(P)*(1-convThresh) (relative change and regard improvement only).
- *
- * @author mkron
  */
+@Description("Stop if a convergence criterion has been met.")
 public abstract class PopulationMeasureTerminator implements InterfaceTerminator, Serializable {
     public enum ChangeTypeEnum {relativeChange, absoluteChange, absoluteValue}
 
@@ -35,10 +35,8 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
     private int oldPopGens = 1000;
     private boolean firstTime = true;
     private StagnationTypeEnum stagnationMeasure = StagnationTypeEnum.fitnessCallBased;
-    //	private SelectedTag convCondition = new SelectedTag("Relative change", "Absolute change", "Absolute value");
     private ChangeTypeEnum changeType = ChangeTypeEnum.relativeChange;
     private DirectionTypeEnum condDirection = DirectionTypeEnum.decrease;
-    //	private SelectedTag condImprovementOrChange = new SelectedTag("Decrease", "Improvement and Deterioration");
     protected String msg = "Not terminated.";
 
     public PopulationMeasureTerminator() {
@@ -48,10 +46,8 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
         this.convThresh = convergenceThreshold;
         this.stagTime = stagnationTime;
         this.stagnationMeasure = stagType;
-//		this.convergenceCondition.setSelectedTag(bAbsolute ? 1 : 0);
         this.changeType = changeType;
         this.condDirection = dirType;
-//		this.condImprovementOrChange.setSelectedTag(bImprovement ? 0 : 1);
     }
 
     public PopulationMeasureTerminator(PopulationMeasureTerminator o) {
@@ -60,27 +56,16 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
         oldPopFitCalls = o.oldPopFitCalls;
         oldPopGens = o.oldPopGens;
         firstTime = o.firstTime;
-//		oldFit = o.oldFit.clone();
-//		oldNorm = o.oldNorm;
         msg = o.msg;
         this.stagnationMeasure = o.stagnationMeasure;
-//		this.convergenceCondition.setSelectedTag(o.convergenceCondition.getSelectedTagID());
         this.changeType = o.changeType;
         this.condDirection = o.condDirection;
-//		this.condImprovementOrChange.setSelectedTag(o.condImprovementOrChange.getSelectedTagID());
-    }
-
-
-    public static String globalInfo() {
-        return "Stop if a convergence criterion has been met.";
     }
 
     @Override
     public void initialize(InterfaceOptimizationProblem prob) {
         firstTime = true;
         msg = "Not terminated.";
-//		oldFit = null;
-//		oldNorm=-1;
         oldPopFitCalls = -1;
         oldPopGens = -1;
     }

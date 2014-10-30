@@ -6,6 +6,7 @@ import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
@@ -15,12 +16,9 @@ import java.util.BitSet;
  * individual length).
  * A range of number of par mutations can be given from which the actual number of pairs
  * is drawn in a uniform way.
- * <p/>
- * User: streiche, mkron
- * Date: 05.08.2004
- * Time: 17:45:36
- * To change this template use File | Settings | File Templates.
  */
+@Description("This mutation operator swaps n random position pairs (bits or integers). The number of mutations is" +
+        " chosen uniformly in a given interval.")
 public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializable {
     private int minNumMutations = 1;
     private int maxNumMutations = 3;
@@ -219,16 +217,6 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
      */
     public String getName() {
         return "GA-GI swap bits mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This mutation operator swaps n random position pairs (bits or integers). The number of mutations is" +
-                " chosen uniformly in a given interval.";
     }
 
     /**

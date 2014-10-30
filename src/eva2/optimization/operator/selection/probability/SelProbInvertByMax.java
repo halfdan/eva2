@@ -2,16 +2,15 @@ package eva2.optimization.operator.selection.probability;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * Scale the fitness of a maximization problem by inverting it by the maximum fitness,
  * then normalize by fitness sum. This way, maximally bad individuals will receive a
  * selection probability of zero.
  *
- * @author mkron
- *         <p/>
- *         May 2, 2007
  */
+@Description("This is a standard normation method inverted by maximum fitness.")
 public class SelProbInvertByMax extends AbstractSelProb {
 
     private double maxFit = 1.;
@@ -92,18 +91,6 @@ public class SelProbInvertByMax extends AbstractSelProb {
                 ((AbstractEAIndividual) population.get(i)).setSelectionProbability(tmpD);
             }
         }
-    }
-
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a standard normation method inverted by maximum fitness.";
     }
 
     /**

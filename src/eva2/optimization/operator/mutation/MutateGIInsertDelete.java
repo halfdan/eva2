@@ -5,14 +5,11 @@ import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.05.2005
- * Time: 17:33:46
- * To change this template use File | Settings | File Templates.
  */
+@Description("This mutation operator inserts or adds elements to the array.")
 public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializable {
 
     int maxLengthOfInsDel = 2;
@@ -153,9 +150,6 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
         return "GI insert/delete mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -164,15 +158,6 @@ public class MutateGIInsertDelete implements InterfaceMutation, java.io.Serializ
      */
     public String getName() {
         return "GI insert/delete mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This mutation operator inserts or adds elements to the array.";
     }
 
     /**

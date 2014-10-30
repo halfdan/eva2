@@ -3,17 +3,14 @@ package eva2.optimization.operator.distancemetric;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceGAIndividual;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  * Distance based on a bit-set if any.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.04.2003
- * Time: 18:21:01
- * To change this template use Options | File Templates.
  */
+@Description("This is a genotype based distance metric suited for binary data. The hamming distance is computed and normalized by chromosome length.")
 public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Serializable {
 
     public GenotypeMetricBitSet() {
@@ -62,17 +59,6 @@ public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Se
             }
         }
         return result / (double) length;
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a genotype based distance metric suited for binary data. The hamming distance is computed and normalized by chromosome length.";
     }
 
     /**
