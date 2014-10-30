@@ -18,7 +18,7 @@ public class TestingCbnPostProc {
 
         OptimizationParameters esParams = OptimizerFactory.standardCbnES(fm0);
         esParams.setTerminator(new EvaluationTerminator(2000));
-        esParams.setSeed(0);
+        esParams.setRandomSeed(0);
         best = (AbstractEAIndividual) OptimizerFactory.optimizeToInd(esParams, null);
 
         System.out.println(esParams.getTerminator().lastTerminationMessage() + "\nFound solution: "

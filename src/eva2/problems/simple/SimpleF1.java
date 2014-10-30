@@ -1,10 +1,9 @@
 package eva2.problems.simple;
 
+import eva2.util.annotation.Description;
 
+@Description("A simple F1 implementation, find the minimum of a hyper parabola.")
 public class SimpleF1 extends SimpleProblemDouble {
-    public static String globalInfo() {
-        return "A simple F1 implementation, find the minimum of a hyper parabola.";
-    }
 
     @Override
     public double[] evaluate(double[] x) {

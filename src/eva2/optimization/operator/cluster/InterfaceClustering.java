@@ -7,11 +7,6 @@ import eva2.optimization.population.Population;
  * is no true concept on how to calculate a possibly problem
  * specific distance between two individuals, this is still to
  * be considered as under construction.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.04.2003
- * Time: 15:13:36
- * To change this template use Options | File Templates.
  */
 public interface InterfaceClustering {
 
@@ -65,19 +60,6 @@ public interface InterfaceClustering {
      * @param pop
      */
     public String initClustering(Population pop);
-
-    /**
-     * This method decides if an unclustered individual belongs to an already established species.
-     * For some clustering methods this can only be decided in reference to the complete population.
-     *
-     * @param indy          A unclustered individual.
-     * @param species       A species.
-     * @param pop            The complete population as a reference.
-     * @return True or False.
-     */
-    //Removed since for some clustering methods its not feasible to associate loners sequentially. Instead, a whole set of
-    // lone individuals can now be associated to a given set of clusters
-    //public boolean belongsToSpecies(AbstractEAIndividual indy, Population species);
 
     /**
      * Try to associate a set of loners with a given set of species. Return a list

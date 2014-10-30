@@ -3,15 +3,12 @@ package eva2.optimization.operator.selection.replacement;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * Random replacement.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.07.2005
- * Time: 14:41:15
- * To change this template use File | Settings | File Templates.
  */
+@Description("This method replaces a random individual.")
 public class ReplaceRandom implements InterfaceReplacement, java.io.Serializable {
 
     /**
@@ -36,17 +33,6 @@ public class ReplaceRandom implements InterfaceReplacement, java.io.Serializable
         int rand = RNG.randomInt(0, pop.size() - 1);
         pop.remove(rand);
         pop.addIndividual(indy);
-    }
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method replaces a random individual.";
     }
 
     /**

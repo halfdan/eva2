@@ -11,6 +11,7 @@ import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.Arrays;
 
@@ -18,12 +19,8 @@ import java.util.Arrays;
  * The x-means clustering method should be able to determine a
  * suiteable value for k automatically, simply by evaluating all
  * alternatives.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 23.06.2005
- * Time: 14:48:35
- * To change this template use File | Settings | File Templates.
  */
+@Description("Oldy but goldy: K-Means clustering.")
 public class ClusteringXMeans implements InterfaceClustering, java.io.Serializable {
 
     public int maxK = 5;
@@ -363,18 +360,6 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
         }
         ckm.cluster(pop, (Population) null);
 
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Oldy but goldy: K-Means clustering.";
     }
 
     /**

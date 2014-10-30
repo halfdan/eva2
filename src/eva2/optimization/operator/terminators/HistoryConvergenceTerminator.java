@@ -7,6 +7,7 @@ import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,9 +15,8 @@ import java.util.List;
 /**
  * A terminator regarding population history (the archive of a population). Since the population
  * history is not in general accessible from the GUI, this terminator is hidden.
- *
- * @author mkron
  */
+@Description("Converge based on a halting window on a population history.")
 public class HistoryConvergenceTerminator implements InterfaceTerminator, Serializable {
     int haltingWindowLen = 15;
     int fitCrit = 0;
@@ -35,10 +35,6 @@ public class HistoryConvergenceTerminator implements InterfaceTerminator, Serial
         convergenceThreshold = convThreshold;
         fitCrit = fitnessCrit;
         this.stdDevInsteadOfImprovement = stdDevInsteadOfImprovement;
-    }
-
-    public static String globalInfo() {
-        return "Converge based on a halting window on a population history.";
     }
 
     @Override

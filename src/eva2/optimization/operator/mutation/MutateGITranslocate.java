@@ -5,15 +5,15 @@ import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 
 /**
  * Mutate an integer individual by shifting a connected subsequence within the genotype. The sequence
  * length is chosen uniformly randomly up to an upper limit. The destination position may either be
  * fully randomly or also limited to a maximal distance.
- * <p/>
- * User: mkron, streiche
  */
+@Description("This mutation translocates a segment of the int[].")
 public class MutateGITranslocate implements InterfaceMutation, java.io.Serializable {
 
     int maxLengthOfTranslocate = 4;
@@ -159,9 +159,6 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
         return "GI translocation mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -170,15 +167,6 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
      */
     public String getName() {
         return "GI translocation mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This mutation translocates a segment of the int[].";
     }
 
     /**

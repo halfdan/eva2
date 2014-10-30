@@ -8,10 +8,11 @@ import eva2.tools.math.Jama.EigenvalueDecomposition;
 import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  */
-
+@Description("This is the most sophisticated CMA mutation.")
 public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java.io.Serializable {
 
     protected int D;
@@ -307,9 +308,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
     public String getStringRepresentation() {
         return "CMA mutation";
     }
-/**********************************************************************************************************************
- * These are for GUI
- */
+
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -318,15 +317,6 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
      */
     public String getName() {
         return "CMA mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is the most sophisticated CMA mutation.";
     }
 
     /**

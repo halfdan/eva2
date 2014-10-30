@@ -1,23 +1,18 @@
 package eva2.problems;
 
+import eva2.util.annotation.Parameter;
+
 /**
  * This class is under construction.
  */
 public abstract class AbstractParallelOptimizationProblem extends AbstractOptimizationProblem {
+    @Parameter(name = "localCPUs", description = "Set the number of local CPUS (only active in non-parallelized mode).")
     private int localCPUs = 4;
+    @Parameter(name = "paralellize", description = "Toggle between parallel and serial implementation.")
     private boolean parallelize = false;
 
     @Override
     public void initializeProblem() { }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a framework for parallelizing expensive optimization problems.";
-    }
 
     /**
      * This method will return a naming String
@@ -43,10 +38,6 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
         this.parallelize = b;
     }
 
-    public String parallelizeTipText() {
-        return "Toggle between parallel and serial implementation.";
-    }
-
     /**
      * This method allows you to set the number of processors in local mode
      *
@@ -58,9 +49,5 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
 
     public int getNumberLocalCPUs() {
         return this.localCPUs;
-    }
-
-    public String numberLocalCPUsTipText() {
-        return "Set the number of local CPUS (only active in non-parallelized mode).";
     }
 }

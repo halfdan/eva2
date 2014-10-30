@@ -4,10 +4,12 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingPESAII;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * The multi-objective PESA selection method.
  */
+@Description("Performs a binary tournament selection, preferring the individual with the smaller squeezing factor.")
 public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
 
     ArchivingPESAII PESAII = new ArchivingPESAII();
@@ -97,18 +99,6 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
     @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
         return this.selectFrom(availablePartners, size);
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Performs a binary tournament selection, preferring the individual with the smaller squeezing factor.";
     }
 
     /**

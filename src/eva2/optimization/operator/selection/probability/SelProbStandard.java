@@ -2,12 +2,14 @@ package eva2.optimization.operator.selection.probability;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * A simple sum to calculate the selection probability.
  * <p/>
  * p(i is selected) = exp(-fitness(i))/sum_j(exp(-fitness(j)))
  */
+@Description("This is a standard normation method using the exp function.")
 public class SelProbStandard extends AbstractSelProb implements java.io.Serializable {
 
     public SelProbStandard() {
@@ -94,18 +96,6 @@ public class SelProbStandard extends AbstractSelProb implements java.io.Serializ
                 }
             }
         }
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a standard normation method using the exp function.";
     }
 
     /**

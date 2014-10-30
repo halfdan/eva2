@@ -2,11 +2,13 @@ package eva2.optimization.operator.selection.probability;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * A non-linear ranking, which is difficult to tune to
  * the given optimization problem i guess.
  */
+@Description("This is non-linear ranking normation.")
 public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.Serializable {
 
     private double c = 0.04;
@@ -181,17 +183,6 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                 }
             }
         }
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is non-linear ranking normation.";
     }
 
     /**

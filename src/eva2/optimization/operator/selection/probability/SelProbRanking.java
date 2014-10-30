@@ -2,16 +2,13 @@ package eva2.optimization.operator.selection.probability;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * Ranking for calculating the selection probability.
  * This truly scaling invariant.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 16:58:44
- * To change this template use File | Settings | File Templates.
  */
+@Description("This is ranking normation.")
 public class SelProbRanking extends AbstractSelProb implements java.io.Serializable {
 
     public SelProbRanking() {
@@ -103,17 +100,6 @@ public class SelProbRanking extends AbstractSelProb implements java.io.Serializa
                 }
             }
         }
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is ranking normation.";
     }
 
     /**

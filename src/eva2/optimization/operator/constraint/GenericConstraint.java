@@ -3,15 +3,15 @@ package eva2.optimization.operator.constraint;
 import eva2.optimization.individuals.codings.gp.AbstractGPNode;
 import eva2.problems.GPFunctionProblem;
 import eva2.tools.EVAERROR;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
  * A generic constraint is defined by a String describing a function of the x0...xn values of potential solutions.
  * The function String is parsed to a GP function tree using AbstractGPNode and GPFunctionProblem.
- *
- * @author mkron
  */
+@Description("A generic constraint which is parsed from a String; n is dimension, x0..xn are solution components. Use prefix notation as in \"+(-(sum(x),n),sqrt(*(pi,x0)))\".")
 public class GenericConstraint extends AbstractConstraint implements InterfaceDoubleConstraint, Serializable {
     private String constraintString = "+(x0,x1)";
     private transient AbstractGPNode constraintProgram = null;
@@ -20,7 +20,6 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
     public GenericConstraint() {
         super();
         constraintProgram = null;
-//		compileConstraint(constraintString);
     }
 
     public GenericConstraint(String str) {
@@ -110,9 +109,4 @@ public class GenericConstraint extends AbstractConstraint implements InterfaceDo
     public String getName() {
         return this.getClass().getSimpleName() + " " + constraintString;
     }
-
-    public static String globalInfo() {
-        return "A generic constraint which is parsed from a String; n is dimension, x0..xn are solution components. Use prefix notation as in \"+(-(sum(x),n),sqrt(*(pi,x0)))\".";
-    }
-
 }

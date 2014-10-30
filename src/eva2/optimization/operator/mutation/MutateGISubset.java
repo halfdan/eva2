@@ -7,14 +7,18 @@ import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
  * An integer mutation operator which switches elements within a given subset only.
- *
- * @author mkron
  */
+@Description("A mutation operator which switches positions within a given subset only. A random " +
+        "position is chosen but mutated only if its allele is contained" +
+        " in the mutable set. The new allele is chosen from this set as well." +
+        " In case the random positions do not contain a mutable allele, the switching is skipped. " +
+        "This means that fewer switches may occur than expected from the minimal bound.")
 public class MutateGISubset implements InterfaceMutation, Serializable {
     private int[] mutableSet = new int[]{0, 1};
     private int minNumMutations = 1;
@@ -122,14 +126,6 @@ public class MutateGISubset implements InterfaceMutation, Serializable {
             }
         }
         return false;
-    }
-
-    public static String globalInfo() {
-        return "A mutation operator which switches positions within a given subset only. A random " +
-                "position is chosen but mutated only if its allele is contained" +
-                " in the mutable set. The new allele is chosen from this set as well." +
-                " In case the random positions do not contain a mutable allele, the switching is skipped. " +
-                "This means that fewer switches may occur than expected from the minimal bound.";
     }
 
     public int[] getMutableSet() {

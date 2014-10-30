@@ -4,11 +4,13 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;
 import eva2.optimization.operator.cluster.InterfaceClustering;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * The fitness modifier are defunct and are to be moved to
  * the selection operators...
  */
+@Description("This is a normation method based on Fitness Sharing. It adds a penalty for too similar individuals on the standard Normation method.")
 public class FitnessAdaptiveClustering implements java.io.Serializable, InterfaceFitnessModifier {
 
     private InterfaceClustering clusteringAlgorithm = new ClusteringDensityBased();
@@ -59,18 +61,6 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
                 ((AbstractEAIndividual) population.get(i)).SetFitness(x, result[i]);
             }
         }
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a normation method based on Fitness Sharing. It adds a penalty for too similar individuals on the standard Normation method.";
     }
 
     /**

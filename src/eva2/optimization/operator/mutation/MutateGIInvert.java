@@ -5,14 +5,11 @@ import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.05.2005
- * Time: 16:15:20
- * To change this template use File | Settings | File Templates.
  */
+@Description("The invert mutation inverts a segment of the int[].")
 public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
 
     int maxLengthOfInvert = 2;
@@ -123,9 +120,6 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
         return "GI invert mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -134,15 +128,6 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
      */
     public String getName() {
         return "GI invert mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The invert mutation inverts a segment of the int[].";
     }
 
     /**

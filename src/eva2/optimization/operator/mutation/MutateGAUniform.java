@@ -7,14 +7,14 @@ import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
  * Uniform mutation mutates every GA bit with a fixed probability.
- *
- * @author mkron
  */
+@Description("Uniform mutation mutates every GA bit with a fixed probability.")
 public class MutateGAUniform implements InterfaceMutation, Serializable {
     double bitwiseProb = 0.1;
     private boolean useInvertedLength = true;
@@ -107,9 +107,5 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
 
     public String getName() {
         return "Uniform-GA-Mutation";
-    }
-
-    public static String globalInfo() {
-        return "Uniform mutation mutates every GA bit with a fixed probability.";
     }
 }

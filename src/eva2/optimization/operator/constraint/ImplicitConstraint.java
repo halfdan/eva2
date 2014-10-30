@@ -1,12 +1,13 @@
 package eva2.optimization.operator.constraint;
 
+import eva2.util.annotation.Description;
+
 /**
  * A constraint that is already calculated by the fitness function as an
  * independent criterion. This class can be used to transform it into
  * a fitness penalty.
- *
- * @author mkron
  */
+@Description("Similar to a multi-objective translation into fitness, this class allows to interpret fitness criteria as constraints.")
 public class ImplicitConstraint extends AbstractConstraint {
     int index = 0;
 
@@ -33,10 +34,6 @@ public class ImplicitConstraint extends AbstractConstraint {
 
     public String getName() {
         return "ImplicitCnstr-" + index;
-    }
-
-    public static String globalInfo() {
-        return "Similar to a multi-objective translation into fitness, this class allows to interpret fitness criteria as constraints.";
     }
 
     public int getIndex() {

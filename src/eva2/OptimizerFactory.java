@@ -769,7 +769,7 @@ public class OptimizerFactory {
         opt.setPopulation(pop);
         params.setOptimizer(opt);
         params.setTerminator(term);
-        params.setSeed(seed);
+        params.setRandomSeed(seed);
         return params;
     }
 

@@ -5,21 +5,12 @@ import eva2.optimization.individuals.InterfaceOBGAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 
 /**
- * <p>Title: EvA2</p>
- * <p/>
- * <p>Description: </p>
- * <p/>
- * <p>Copyright: Copyright (c) 2003</p>
- * <p/>
- * <p>Company: </p>
- * Mutates a permutation by flipping edges a given nubmer of times.
- *
- * @author planatsc
- * @version 1.0
  */
+@Description("This mutation operators flips edges of the OBGA.")
 public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
 
     /**
@@ -91,9 +82,6 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
         return "OBGA flip mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -102,15 +90,6 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
      */
     public String getName() {
         return "OBGA flip mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This mutation operators flips edges of the OBGA.";
     }
 
     public int getTimes() {

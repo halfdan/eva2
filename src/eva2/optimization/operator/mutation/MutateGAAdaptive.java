@@ -6,6 +6,7 @@ import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
@@ -13,6 +14,7 @@ import java.util.BitSet;
  * The mutation probability is adapted using a parameter tau and stored in the individual.
  * Better mutation probabilities are selected indirectly as they produce better offspring.
  */
+@Description("The standard mutation switches n bits of the GA genotype.")
 public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable {
 
     protected double mutationStep = 1;
@@ -120,9 +122,6 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
         return "GA adaptive mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -131,15 +130,6 @@ public class MutateGAAdaptive implements InterfaceMutation, java.io.Serializable
      */
     public String getName() {
         return "GA adaptive mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The standard mutation switches n bits of the GA genotype.";
     }
 
     /**

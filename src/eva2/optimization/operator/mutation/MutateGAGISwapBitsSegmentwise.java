@@ -1,15 +1,16 @@
 package eva2.optimization.operator.mutation;
 
 import eva2.tools.EVAERROR;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
  * This implementation restricts the swap positions of the standard swapping mutation
  * to swaps within subsequences (segments) of the genotype. The segments have a fixed length.
- *
- * @author mkron
  */
+@Description("Segment-wise swapping of elements - the mutation pairs are selected within the same" +
+        " sub-sequence of the genotype.")
 public class MutateGAGISwapBitsSegmentwise extends MutateGAGISwapBits implements Serializable {
     private int segmentLength = 8;
 
@@ -35,11 +36,6 @@ public class MutateGAGISwapBitsSegmentwise extends MutateGAGISwapBits implements
     @Override
     public Object clone() {
         return new MutateGAGISwapBitsSegmentwise(this);
-    }
-
-    public static String globalInfo() {
-        return "Segment-wise swapping of elements - the mutation pairs are selected within the same" +
-                " subsequence of the genotype.";
     }
 
     @Override

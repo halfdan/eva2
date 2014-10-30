@@ -6,14 +6,11 @@ import eva2.optimization.individuals.InterfaceGPIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.06.2003
- * Time: 16:52:48
- * To change this template use Options | File Templates.
  */
+@Description("This mutation replaces a random node with a new random subtree.")
 public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable {
     protected double mutationStep = 1;
     protected double tau1 = 0.15;
@@ -124,9 +121,6 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
         return "GP adaptive mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -135,15 +129,6 @@ public class MutateGPAdaptive implements InterfaceMutation, java.io.Serializable
      */
     public String getName() {
         return "GP adaptive mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This mutation replaces a random node with a new random subtree.";
     }
 
     /**

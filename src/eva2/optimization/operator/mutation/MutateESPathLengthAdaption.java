@@ -6,6 +6,7 @@ import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * ES mutation with path length control. The step size (single sigma) is
@@ -13,6 +14,7 @@ import eva2.tools.math.RNG;
  * to the expected path length in for uncorrelated single steps.
  * See Hansen&Ostermeier 2001, Eqs. 16,17.
  */
+@Description("The single step size is controlled using the evolution path.")
 public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Serializable {
 
     private int dim;
@@ -217,9 +219,7 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
     public String getStringRepresentation() {
         return "Mutation/Path-Length-Control";
     }
-/**********************************************************************************************************************
- * These are for GUI
- */
+
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -229,28 +229,6 @@ public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Se
     public String getName() {
         return "Mutation/Path-Length-Control";
     }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The single step size is controlled using the evolution path.";
-    }
-
-//    /** Use only positive numbers this limits the freedom of effect.
-//     * @param bit     The new representation for the inner constants.
-//      */
-//    public void setUsePath(boolean bit) {
-//        this.usePath = bit;
-//    }
-//    public boolean getUsePath() {
-//        return this.usePath;
-//    }
-//    public String usePathTipText() {
-//        return "Use path.";
-//    }
 
     /**
      * This method allows you to set the initial sigma value.

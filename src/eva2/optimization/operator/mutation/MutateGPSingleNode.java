@@ -8,16 +8,13 @@ import eva2.optimization.individuals.codings.gp.GPArea;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 09.09.2004
- * Time: 17:08:37
- * To change this template use File | Settings | File Templates.
  */
+@Description("The node mutation replaces a random node but keeps the descendants.")
 public class MutateGPSingleNode implements InterfaceMutation, java.io.Serializable {
 
     /**
@@ -115,9 +112,6 @@ public class MutateGPSingleNode implements InterfaceMutation, java.io.Serializab
         return "GP node mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -126,14 +120,5 @@ public class MutateGPSingleNode implements InterfaceMutation, java.io.Serializab
      */
     public String getName() {
         return "GP node mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The node mutation replaces a random node but keeps the descendants.";
     }
 }

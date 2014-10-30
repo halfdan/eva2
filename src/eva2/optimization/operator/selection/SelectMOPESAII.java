@@ -5,6 +5,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingPESAII;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -14,6 +15,7 @@ import java.util.Hashtable;
  * The multi-objective PESA II selection criteria based on an n-dimensional
  * grid using a squeezing factor.
  */
+@Description("Performs a binary tournament selection, preferring the gridbox of smaller squeezing factor and selecting a random individual from the winner box.")
 public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable {
 
     ArchivingPESAII PESAII = new ArchivingPESAII();
@@ -133,18 +135,6 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
     @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
         return this.selectFrom(availablePartners, size);
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Performs a binary tournament selection, preferring the gridbox of smaller squeezing factor and selecting a random individual from the winner box.";
     }
 
     /**

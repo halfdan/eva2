@@ -1,16 +1,13 @@
 package eva2.optimization.operator.fitnessmodifier;
 
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * The fitness modifier are defunct and are to be moved to
  * the selection operators...
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 17:43:49
- * To change this template use File | Settings | File Templates.
  */
+@Description("With this method the fitness remains unaltered.")
 public class FitnessModifierNone implements java.io.Serializable, InterfaceFitnessModifier {
 
     /**
@@ -24,9 +21,6 @@ public class FitnessModifierNone implements java.io.Serializable, InterfaceFitne
         // as the name might suggest this guy is pretty lazy
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -35,15 +29,6 @@ public class FitnessModifierNone implements java.io.Serializable, InterfaceFitne
      */
     public String getName() {
         return "No Fitness Modification";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "With this method the fitness remains unaltered.";
     }
 }
 

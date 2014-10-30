@@ -5,14 +5,11 @@ import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.09.2004
- * Time: 17:05:23
- * To change this template use File | Settings | File Templates.
  */
+@Description("The fixed step size mutation alters all elements with a fixed mutation step size.")
 public class MutateESFixedStepSize implements InterfaceMutation, java.io.Serializable {
     protected double sigma = 0.005;
 
@@ -114,9 +111,6 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
         return "ES fixed step size mutation " + getSigma();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -125,15 +119,6 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
      */
     public String getName() {
         return "ES fixed step size mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The fixed step size mutation alters all elements with a fixed mutation step size.";
     }
 
     /**

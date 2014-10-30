@@ -649,7 +649,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
     @Override
     public String getStringRepresentation() {
-        // ToDo: Implement properly (was globalInfo)
+        // ToDo: Implement properly
         return "Not implemented";
     }
 

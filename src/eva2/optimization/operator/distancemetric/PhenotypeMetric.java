@@ -3,15 +3,14 @@ package eva2.optimization.operator.distancemetric;
 
 import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.*;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  * A phenotype metric suited for the most common data types.
- * <p/>
- * User: streiche
- * Date: 19.07.2005
  */
+@Description("This is a phenotype based metric which can be applied to binary, integer, double, permutation, and program data types. For the latter two, the Levenshtein distance is computed. All distance values are normed.")
 public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Serializable {
     private static PhenotypeMetric pMetric = null;
     private static GenotypeMetricBitSet bitMetric = null;
@@ -221,18 +220,6 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
             result += Math.pow(v1[i], 2);
         }
         return Math.sqrt(result);
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a phenotype based metric which can be applied to binary, integer, double, permutation, and program data types. For the latter two, the Levenshtein distance is computed. All distance values are normed.";
     }
 
     /**

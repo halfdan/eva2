@@ -1,12 +1,12 @@
 package eva2.optimization.operator.constraint;
 
 import eva2.gui.editor.GenericObjectEditor;
+import eva2.util.annotation.Description;
 
 /**
  * This constraint is always satisfied.
- *
- * @author mkron
  */
+@Description("This constraint is always fulfilled.")
 public class DummyConstraint extends AbstractConstraint {
 
     @Override
@@ -22,9 +22,5 @@ public class DummyConstraint extends AbstractConstraint {
     @Override
     protected double getRawViolationValue(double[] indyX) {
         return 0;
-    }
-
-    public static String globalInfo() {
-        return "This constraint is always fulfilled.";
     }
 }

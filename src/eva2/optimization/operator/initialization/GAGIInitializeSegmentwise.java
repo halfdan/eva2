@@ -6,6 +6,7 @@ import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
@@ -18,7 +19,7 @@ import java.util.BitSet;
  * integer individuals, it allows to control the number of occurrences of a certain integer
  * per segment. It may also be used to initialize with subsets of integers (by setting 0
  * elements to a certain type and all to a subset of the range).
- * <p/>
+ * </p><p>
  * The initialization may be parameterized in two ways, where each takes a fixed
  * segment length s. Firstly, a fixed number of bits (k<=s) is set per segment,
  * so each segment has equal cardinality.
@@ -26,9 +27,9 @@ import java.util.BitSet;
  * each segment i, so different segments may have different cardinality. The array
  * must comply to the binary genotype length of the problem. The array definition
  * has strict priority over the fixed cardinality definition.
- *
- * @author mkron
  */
+@Description("A method which initializes with a fixed number of occurences per segment, which is a fixed-length" +
+        " substring of equal length. In the binary case, thus the cardinality of each segment can be predefined.")
 public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.io.Serializable {
     private static final long serialVersionUID = 1L;
     protected int[] bitsPerSegmentArray = new int[0];
@@ -93,14 +94,6 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
     public InterfaceInitialization clone() {
         return new GAGIInitializeSegmentwise(this);
     }
-//	
-//	public static void main(String[] args) {
-//		GAGIInitializeSegmentwise initialize = new GAGIInitializeSegmentwise(5, new int[]{5,0}, 0.5);
-//		GIIndividualIntegerData indy = new GIIndividualIntegerData();
-//		indy.setInitOperator(initialize);
-//		indy.initialize(null);
-//		System.out.println(indy.getStringRepresentation());
-//	}
 
     @Override
     public void initialize(AbstractEAIndividual indy,
@@ -287,14 +280,8 @@ public class GAGIInitializeSegmentwise implements InterfaceInitialization, java.
         return "The fixed length of a segment, which is a substring of the binary genotype";
     }
 
-    ////////
     public String getName() {
         return "GA-GI segment-wise initialize";
-    }
-
-    public static String globalInfo() {
-        return "A method which initializes with a fixed number of occurences per segment, which is a fixed-length" +
-                " substring of equal length. In the binary case, thus the cardinality of each segment can be predefined.";
     }
 
     public int getTargetElement() {

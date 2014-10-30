@@ -3,11 +3,13 @@ package eva2.optimization.operator.selection;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.moso.MOSOMaxiMin;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * A multi-objective selection criterion based on the maximin
  * method.
  */
+@Description("This selection method will use the MaxiMin criteria to select individuals (use SelectBestIndividuals).")
 public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable {
 
     private MOSOMaxiMin maxiMin = new MOSOMaxiMin();
@@ -80,18 +82,6 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
     @Override
     public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size) {
         return this.selectFrom(availablePartners, size);
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This selection method will use the MaxiMin criteria to select individuals (use SelectBestIndividuals).";
     }
 
     /**

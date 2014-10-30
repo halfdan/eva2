@@ -2,11 +2,13 @@ package eva2.optimization.operator.archiving;
 
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This information retrieval method simply add the retrieved solutions
  * to the current population.
  */
+@Description("This Information Retrieval will replace the current population by the archive.")
 public class InformationRetrievalReplacing implements InterfaceInformationRetrieval, java.io.Serializable {
 
     public InformationRetrievalReplacing() {
@@ -41,18 +43,6 @@ public class InformationRetrievalReplacing implements InterfaceInformationRetrie
 
         pop.clear();
         pop.addPopulation(tmp);
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This Information Retrieval will replace the current population by the archive.";
     }
 
     /**

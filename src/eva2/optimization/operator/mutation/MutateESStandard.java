@@ -10,12 +10,8 @@ package eva2.optimization.operator.mutation;
 //import eva2.tools.math.RNG;
 //
 ///**
-// * Created by IntelliJ IDEA.
-// * User: streiche
-// * Date: 15.05.2003
-// * Time: 17:04:24
-// * To change this template use Options | File Templates.
 // */
+//@Description("The standard mutation alters all elements of the double attributes with a fixed mutation step size.")
 //public class MutateESStandard implements InterfaceMutation, java.io.Serializable  {
 //    protected double      mutationStepSize = 0.1;
 //    public MutateESStandard() {
@@ -88,22 +84,13 @@ package eva2.optimization.operator.mutation;
 //    public String getStringRepresentation() {
 //        return "ES standard mutation";
 //    }
-//
-///**********************************************************************************************************************
-// * These are for GUI
-// */
+
 //    /** This method allows the CommonJavaObjectEditorPanel to read the
 //     * name to the current object.
 //     * @return The name.
 //     */
 //    public String getName() {
 //        return "ES standard mutation ";
-//    }
-//    /** This method returns a global info string
-//     * @return description
-//     */
-//    public static String globalInfo() {
-//        return "The standard mutation alters all elements of the double attributes with a fixed mutation step size.";
 //    }
 //
 //    /** This method allows you to set the fixed mutation step size

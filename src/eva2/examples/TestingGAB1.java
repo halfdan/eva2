@@ -19,7 +19,7 @@ public class TestingGAB1 {
         // add an evaluation terminator
         gaParams.setTerminator(new EvaluationTerminator(1000));
         // set a specific random seed
-        gaParams.setSeed(2342);
+        gaParams.setRandomSeed(2342);
 
         // access the GA
         GeneticAlgorithm ga = (GeneticAlgorithm) gaParams.getOptimizer();

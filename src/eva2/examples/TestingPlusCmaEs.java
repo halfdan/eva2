@@ -19,7 +19,7 @@ public class TestingPlusCmaEs {
         OptimizationParameters esParams = OptimizerFactory.standardES(fm0);
         esParams.setTerminator(new EvaluationTerminator(2000));
         // set a random seed based on system time               
-        esParams.setSeed(0);
+        esParams.setRandomSeed(0);
 
         // set evolutionary operators and probabilities                 
         AbstractEAIndividual.setOperators(

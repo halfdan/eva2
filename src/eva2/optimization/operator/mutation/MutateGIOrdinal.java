@@ -5,14 +5,11 @@ import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.05.2005
- * Time: 15:53:03
- * To change this template use File | Settings | File Templates.
  */
+@Description("The ordinal mutation alters n element of the int attributes based on an ordinal ordering.")
 public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable {
 
     double stepSize = 0.1;
@@ -128,9 +125,6 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
         return "GI ordinal mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -139,15 +133,6 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
      */
     public String getName() {
         return "GI ordinal mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The ordinal mutation alters n element of the int attributes based on an ordinal ordering.";
     }
 
     /**

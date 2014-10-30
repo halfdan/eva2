@@ -10,11 +10,13 @@ import eva2.optimization.population.Population;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
+import eva2.util.annotation.Description;
 
 /**
  * The strength Pareto EA in it's second version, which is based on
  * dominance counts.
  */
+@Description("Strength Pareto EA revision 2.0. The variable k to calculate the k-th distance is given by max(2, sqrt(archive.size())).")
 public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serializable {
 
     private InterfaceDistanceMetric metric = new ObjectiveSpaceMetric();
@@ -377,18 +379,6 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 
         // Puh!
         return SPEAResult;
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Strength Pareto EA revision 2.0. The variable k to calculate the k-th distance is given by max(2, sqrt(archive.size())).";
     }
 
     /**

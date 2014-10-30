@@ -7,6 +7,7 @@ import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
@@ -19,12 +20,9 @@ import java.util.BitSet;
  * that further mutations are performed recursively with p_mut. Thus, the probability
  * to perform k mutations per segment is (p_mut)^k. However, more than s mutations per segment will
  * never be performed.
- * <p/>
- * User: mkron
- * Date: 05.08.2004
- * Time: 17:45:36
- * To change this template use File | Settings | File Templates.
  */
+@Description("This mutation operator swaps bits in sub-segments of the genotype. Each segment is mutated" +
+        " with a certain probability. Depending on the setting, multiple mutations per segment may occur.")
 public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.Serializable {
     private double mutationProbPerSegment = 0.7;
     private boolean multiplesPerSegment = false;
@@ -151,9 +149,9 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
     /**
      * Swap one pair of bits within an indicated segment.
      *
-     * @param tmpBitSet
+     * @param bs
      * @param i
-     * @param segmentLength2
+     * @param segLen
      */
     private void swapBitsInSegmentAt(BitSet bs, int i, int segLen) {
         int indexOne = getRandomIndex(bs, i, segLen, true); // may prefer true bits
@@ -193,9 +191,6 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
         return "GA swap bits segment-wise mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -204,16 +199,6 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
      */
     public String getName() {
         return "GA swap bits segment-wise mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This mutation operator swaps bits in subsegments of the genotype. Each segment is mutated" +
-                " with a certain probability. Depending on the setting, multiple mutations per segment may occur.";
     }
 
     public void setPreferTrueChange(boolean preferPairs) {

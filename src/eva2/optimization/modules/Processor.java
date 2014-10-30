@@ -212,7 +212,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             setOptimizationRunning(true);
         }
 
-        RNG.setRandomSeed(optimizationParameters.getSeed());
+        RNG.setRandomSeed(optimizationParameters.getRandomSeed());
 
         if (optimizationStateListener != null) {
             if (wasRestarted) {

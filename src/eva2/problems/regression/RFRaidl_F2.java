@@ -1,8 +1,11 @@
 package eva2.problems.regression;
 
+import eva2.util.annotation.Description;
+
 /**
  *
  */
+@Description("This target function is given in Raidl98Hybrid F2.")
 public class RFRaidl_F2 implements InterfaceRegressionFunction, java.io.Serializable {
 
     public RFRaidl_F2() {
@@ -41,14 +44,5 @@ public class RFRaidl_F2 implements InterfaceRegressionFunction, java.io.Serializ
      */
     public String getName() {
         return "Raidl F2";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This target function is given in Raidl98Hybrid F2.";
     }
 }

@@ -2,12 +2,14 @@ package eva2.optimization.operator.selection;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  * Simple method to select all.
  * In case of multiple fitness values the selection
- * criteria is selected randomly for each selection event. pff
+ * criteria is selected randomly for each selection event.
  */
+@Description("This method selects all individuals.")
 public class SelectAll implements InterfaceSelection, java.io.Serializable {
 
     private boolean obeyDebsConstViolationPrinciple = true;
@@ -86,9 +88,6 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
         return this.selectFrom(availablePartners, size);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -97,15 +96,6 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
      */
     public String getName() {
         return "All Selection";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method selects all individuals.";
     }
 
     /**

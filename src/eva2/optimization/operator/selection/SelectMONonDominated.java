@@ -3,12 +3,14 @@ package eva2.optimization.operator.selection;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * This multi-objective selection method preferrs non-dominated
  * individuals over dominated ones. Actually, this fails in case
  * all individuals are Pareto optimal.
  */
+@Description("This selection method will select all non-dominated individuals. Therefore the target size of the selection may be exceeded.")
 public class SelectMONonDominated implements InterfaceSelection, java.io.Serializable {
 
     private boolean obeyDebsConstViolationPrinciple = true;
@@ -129,18 +131,6 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
             }
         }
         return true;
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This selection method will select all non-dominated individuals. Therefore the target size of the selection may be exceeded.";
     }
 
     /**

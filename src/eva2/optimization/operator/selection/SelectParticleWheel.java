@@ -6,13 +6,16 @@ import eva2.optimization.operator.selection.probability.SelProbStandard;
 import eva2.optimization.operator.selection.probability.SelProbStandardScaling;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 
 /**
  * This method implements the roulette wheel selection for
- * a partical filter. In case of multiple fitness values the selection
- * critria should be selected randomly for each selection event.
+ * a particle filter. In case of multiple fitness values the selection
+ * criteria should be selected randomly for each selection event.
  */
+@Description("This method chooses individuals similar to the static roulette wheel. The chance for each individual to be selected depends on the selection probability. The selection probability is 1 for all Individuals with a fitness that is bigger than the midean fitness." +
+        "This is a single objective selecting method, it will select in respect to a random criterion.")
 public class SelectParticleWheel implements InterfaceSelection, java.io.Serializable {
 
     private boolean obeyDebsConstViolationPrinciple = true;
@@ -153,16 +156,6 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
      */
     public String getName() {
         return "Particle Wheel Selection";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method chooses individuals similar to the static roulette wheel. The chance for each individual to be selected depends on the selection probability. The selection probability is 1 for all Individuals with a fitness that is bigger than the midean fitness." +
-                "This is a single objective selecting method, it will select in respect to a random criterion.";
     }
 
     /**

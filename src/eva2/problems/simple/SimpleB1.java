@@ -1,11 +1,11 @@
 package eva2.problems.simple;
 
+import eva2.util.annotation.Description;
+
 import java.util.BitSet;
 
+@Description("A simple B1 implementation, minimize bits in a binary vector.")
 public class SimpleB1 extends SimpleProblemBinary {
-    public static String globalInfo() {
-        return "A simple B1 implementation, minimize bits in a binary vector.";
-    }
 
     @Override
     public double[] evaluate(BitSet b) {

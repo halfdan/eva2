@@ -1,7 +1,10 @@
 package eva2.problems.regression;
 
+import eva2.util.annotation.Description;
+
 /**
  */
+@Description("This target function is given in Koza GP I chapter 7.3.")
 public class RFKoza_GPI_7_3_extended implements InterfaceRegressionFunction, java.io.Serializable {
 
     public RFKoza_GPI_7_3_extended() {
@@ -40,14 +43,5 @@ public class RFKoza_GPI_7_3_extended implements InterfaceRegressionFunction, jav
      */
     public String getName() {
         return "Koza GP I 7.3";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This target function is given in Koza GP I chapter 7.3.";
     }
 }

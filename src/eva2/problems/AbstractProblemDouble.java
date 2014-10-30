@@ -40,8 +40,8 @@ import eva2.tools.math.RNG;
  * in your implementation. The individual template will be initialized to an
  * ESIndividualDoubleData by then.
  * <p/>
- * For the GUI, it is also convenient to implement the {@link #globalInfo()} and
- * {@link #getName()} methods to provide some distinctive information for the
+ * For the GUI, it is also convenient to implement the {@link eva2.util.annotation.Description}
+ * annotation and {@link #getName()} method to provide some distinctive information for the
  * user.
  */
 public abstract class AbstractProblemDouble extends AbstractOptimizationProblem implements InterfaceProblemDouble, Interface2DBorderProblem {
@@ -473,10 +473,6 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         return modifiedInPrjct;
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
-
     /**
      * This method allows the GUI to read the name to the current object.
      *
@@ -485,16 +481,6 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     @Override
     public String getName() {
         return "AbstractProblemDouble";
-    }
-
-    /**
-     * This method returns a global info string.
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        // ToDo: WTF?
-        return "The programmer did not give further details.";
     }
 
     /**
@@ -509,22 +495,12 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         sb.append("A double valued problem: ");
         sb.append(this.getName());
         sb.append("\n");
-        sb.append(globalInfo());
         sb.append("Dimension   : ");
         sb.append(this.getProblemDimension());
         sb.append("\nNoise level : ");
         sb.append(this.noise);
         return sb.toString();
     }
-
-    // public PropertySelectableList<AbstractConstraint> getConstraints() {
-    // return constraintList;
-    // }
-    //
-    // public void setConstraints(PropertySelectableList<AbstractConstraint>
-    // constraintArray) {
-    // this.constraintList = constraintArray;
-    // }
 
     public AbstractConstraint[] getConstraints() {
         return constraintArray;

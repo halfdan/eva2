@@ -8,6 +8,7 @@ import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 /**
  *
  */
+@Description("The global mutation stores only one sigma for all double attributes.")
 public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, InterfaceAdditionalPopulationInformer {
     protected double mutationStepSize = 0.2;
     protected double tau1 = 0.15;
@@ -179,9 +181,6 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
         return "ES global mutation";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -190,15 +189,6 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
      */
     public String getName() {
         return "ES global mutation";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The global mutation stores only one sigma for all double attributes.";
     }
 
     /**
