@@ -998,6 +998,7 @@ class PropertyCellRenderer implements TableCellRenderer {
             component.add((PropertyPanel) value, BorderLayout.CENTER);
             final JButton dialogButton = new JButton("...");
             dialogButton.setMargin(new Insets(0,0,0,0));
+            dialogButton.setBackground(Color.WHITE);
 
             component.add(dialogButton, BorderLayout.LINE_END);
             return component;
@@ -1033,6 +1034,7 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
             component.add((PropertyPanel) value, BorderLayout.CENTER);
             final JButton dialogButton = new JButton("...");
             dialogButton.setMargin(new Insets(0,0,0,0));
+            dialogButton.setBackground(Color.WHITE);
             dialogButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(final ActionEvent event) {
