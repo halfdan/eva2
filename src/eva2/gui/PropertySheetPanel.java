@@ -993,8 +993,14 @@ class PropertyCellRenderer implements TableCellRenderer {
         } else if (value instanceof String) {
             return new JLabel(value.toString());
         } else if (value instanceof eva2.gui.PropertyPanel) {
-            PropertyPanel propertyPanel = (PropertyPanel) value;
-            return propertyPanel;
+            JComponent component = new JPanel();
+            component.setLayout(new BorderLayout());
+            component.add((PropertyPanel) value, BorderLayout.CENTER);
+            final JButton dialogButton = new JButton("...");
+            dialogButton.setMargin(new Insets(0,0,0,0));
+
+            component.add(dialogButton, BorderLayout.LINE_END);
+            return component;
         } else if (value instanceof PropertyText) {
             return (PropertyText) value;
         } else if (value instanceof PropertyBoolSelector) {
@@ -1023,20 +1029,10 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
             component = new JLabel(value.toString());
         } else if (value instanceof PropertyPanel) {
             component = new JPanel();
-            component.setLayout(new GridBagLayout());
-            component.setOpaque(false);
-            GridBagConstraints gbConstraints = new GridBagConstraints();
-            gbConstraints.gridx = 0;
-            gbConstraints.gridy = 0;
-            gbConstraints.weightx = 1.0;
-            gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-            component.add((PropertyPanel) value, gbConstraints);
+            component.setLayout(new BorderLayout());
+            component.add((PropertyPanel) value, BorderLayout.CENTER);
             final JButton dialogButton = new JButton("...");
-            dialogButton.setFocusPainted(false);
-            dialogButton.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-            dialogButton.setBorderPainted(false);
-            //dialogButton.setContentAreaFilled(false);
-            dialogButton.setBackground(Color.LIGHT_GRAY);
+            dialogButton.setMargin(new Insets(0,0,0,0));
             dialogButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(final ActionEvent event) {
@@ -1044,13 +1040,7 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
                     fireEditingStopped();
                 }
             });
-            gbConstraints = new GridBagConstraints();
-            gbConstraints.weighty = 1.0;
-            gbConstraints.fill = GridBagConstraints.BOTH;
-            gbConstraints.anchor = GridBagConstraints.LINE_END;
-            gbConstraints.gridy = 0;
-            gbConstraints.gridx = 1;
-            component.add(dialogButton, gbConstraints);
+            component.add(dialogButton, BorderLayout.LINE_END);
         } else if (value instanceof PropertyText) {
             component = (PropertyText) value;
         } else if (value instanceof PropertyBoolSelector) {
@@ -1059,14 +1049,6 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
             component = (PropertyValueSelector) value;
         } else {
             throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        if (isSelected) {
-            component.setForeground(table.getSelectionForeground());
-            component.setBackground(table.getSelectionBackground());
-        } else {
-            component.setForeground(table.getForeground());
-            component.setBackground(table.getBackground());
         }
         return component;
     }
