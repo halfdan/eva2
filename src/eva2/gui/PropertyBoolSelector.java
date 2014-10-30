@@ -1,6 +1,7 @@
 package eva2.gui;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyEditor;
@@ -14,6 +15,7 @@ public class PropertyBoolSelector extends JCheckBox {
 
     public PropertyBoolSelector(PropertyEditor pe) {
         super();
+        setBackground(Color.WHITE);
         propertyEditor = pe;
         if (propertyEditor.getAsText().equals("True")) {
             setSelected(true);
