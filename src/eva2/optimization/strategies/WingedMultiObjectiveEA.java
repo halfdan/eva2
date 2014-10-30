@@ -20,16 +20,13 @@ import eva2.util.annotation.Description;
  * performance of this algorithm strongly depends on the optimization problem.
  */
 @Description("This is Evolutionary Multi-Criteria Optimization Algorithm hybridized with Local Searchers to span the Pareto-Front.")
-public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Serializable {
+public class WingedMultiObjectiveEA extends AbstractOptimizer implements java.io.Serializable {
 
     private InterfaceOptimizer multiObjectiveEA = new MultiObjectiveEA();
     private InterfaceOptimizer singleObjectiveEA = new GeneticAlgorithm();
     private InterfaceOptimizer[] singleObjectiveOptimizers;
-    private Population population = new Population();
     private int migrationRate = 5;
     private int outputDimension = 2;
-    private InterfaceOptimizationProblem optimizationProblem = new FM0Problem();
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
     public WingedMultiObjectiveEA() {
     }
@@ -205,51 +202,6 @@ public class WingedMultiObjectiveEA implements InterfaceOptimizer, java.io.Seria
             this.singleObjectiveOptimizers[i].getProblem().evaluate(tmpIndy);
             this.singleObjectiveOptimizers[i].getPopulation().set(0, bestIndys[i]);
         }
-    }
-
-    /**
-     * This method allows you to add the LectureGUI as listener to the Optimizer
-     *
-     * @param ea
-     */
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
-    /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
     }
 
     /**

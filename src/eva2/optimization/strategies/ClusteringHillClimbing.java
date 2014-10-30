@@ -10,7 +10,6 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
 import eva2.problems.AbstractOptimizationProblem;
-import eva2.problems.F1Problem;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
@@ -36,17 +35,11 @@ import java.io.Serializable;
  */
 @Description("Similar to multi-start HC, but clusters the population during optimization to remove redundant individuals for efficiency."
         + "If the local search step does not achieve a minimum improvement, the population may be reinitialized.")
-public class ClusteringHillClimbing implements InterfacePopulationChangedEventListener,
-        InterfaceOptimizer, Serializable, InterfaceAdditionalPopulationInformer {
+public class ClusteringHillClimbing extends AbstractOptimizer implements InterfacePopulationChangedEventListener, Serializable, InterfaceAdditionalPopulationInformer {
 
-    transient private InterfacePopulationChangedEventListener populationChangedEventListener;
-    transient private String identifier = "";
-    private Population population = new Population();
     private transient Population archive = new Population();
-    private InterfaceOptimizationProblem optimizationProblem = new F1Problem();
     private int hcEvalCycle = 1000;
     private int initialPopSize = 100;
-    private int loopCnt = 0;
     private int notifyGuiEvery = 50;
     private double sigmaClust = 0.01;
     private double minImprovement = 0.000001;
@@ -82,7 +75,6 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         initialStepSize = other.initialStepSize;
         reduceFactor = other.reduceFactor;
         mutator = (MutateESFixedStepSize) other.mutator.clone();
-        loopCnt = 0;
     }
 
     @Override
@@ -99,40 +91,8 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         setLocalSearchMethod(getLocalSearchMethod());
     }
 
-    /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        this.populationChangedEventListener = ea;
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        if (populationChangedEventListener == ea) {
-            populationChangedEventListener = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     @Override
     public void initialize() {
-        loopCnt = 0;
         mutator = new MutateESFixedStepSize(initialStepSize);
         archive = new Population();
         hideHideable();
@@ -151,7 +111,6 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
      */
     @Override
     public void initializeByPopulation(Population pop, boolean reset) {
-        loopCnt = 0;
         this.population = (Population) pop.clone();
         population.addPopulationChangedEventListener(null);
         if (reset) {
@@ -161,20 +120,10 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
         }
     }
 
-    /**
-     * Something has changed
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.populationChangedEventListener != null) {
-            this.populationChangedEventListener.registerPopulationStateChanged(this, name);
-        }
-    }
-
     @Override
     public void optimize() {
         double improvement;
 
-        loopCnt++;
         population.addPopulationChangedEventListener(this);
         population.setNotifyEvalInterval(notifyGuiEvery);
         Pair<Population, Double> popD;
@@ -242,23 +191,6 @@ public class ClusteringHillClimbing implements InterfacePopulationChangedEventLi
             population.setFunctionCalls(((Population) source).getFunctionCalls());
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
-    }
-
-    /**
-     * Assuming that all optimizer will store thier data in a population we will
-     * allow acess to this population to query to current state of the
-     * optimizer.
-     *
-     * @return The population of current solutions to a given problem.
-     */
-    @Override
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
     }
 
     @Override

@@ -13,6 +13,9 @@ import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.B1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
+
+import java.util.logging.Logger;
 
 /**
  * Population based incremental learning in the PSM by Monmarche version with
@@ -27,6 +30,7 @@ import eva2.util.annotation.Description;
 @Description("The Population based incremental learning is based on a statistical distribution of bit positions. Please note: This optimizer requires a binary genotype!")
 public class PopulationBasedIncrementalLearning extends AbstractOptimizer implements java.io.Serializable {
 
+    private final static Logger LOGGER = Logger.getLogger(PopulationBasedIncrementalLearning.class.getName());
     // These variables are necessary for the simple testcase
     private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private boolean useElitism = true;
@@ -144,11 +148,12 @@ public class PopulationBasedIncrementalLearning extends AbstractOptimizer implem
      * @param problem
      */
     @Override
+    @Hidden
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
         if (optimizationProblem instanceof AbstractOptimizationProblem) {
             if (!(((AbstractOptimizationProblem) optimizationProblem).getIndividualTemplate() instanceof InterfaceGAIndividual)) {
-                System.err.println("Error: PBIL only works with GAIndividuals!");
+                LOGGER.warning("PBIL only works with GAIndividuals!");
             }
         }
     }

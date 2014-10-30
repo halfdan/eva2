@@ -116,21 +116,6 @@ public class ThresholdAlgorithm extends AbstractOptimizer implements java.io.Ser
     }
 
     /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
-    }
-
-    /**
      * This method will initialize the HillClimber
      */
     public void defaultInit() {

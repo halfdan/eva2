@@ -81,8 +81,6 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 
     /**
      * Return the period of the sinusoidal sigma adaption or -1 if not applicable.
-     *
-     * @param p
      */
     public int getSigmaAdaptionPeriod() {
         ParamAdaption[] prmAd = getParameterControl();
@@ -177,10 +175,6 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
      * is in [0,1] if any solutions have been identified, or -1 if the archive
      * is empty.
      *
-     * @param cbpso
-     * @param pop
-     * @param iteration
-     * @param maxIteration
      * @return
      */
     public double getInterestingSolutionRatio() {
@@ -195,9 +189,6 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
         SolutionSet solSet = getAllSolutions();
         Population archived = solSet.getSolutions();
         Population interesting = archived.filterByFitness(fitThres, 0);
-
-//		Population archived = getArchivedSolutions();
-//		Population interesting = archived.filterByFitness(fitThres, 0);
 
         if (archived.size() > 0) {
             return ((double) interesting.size()) / ((double) archived.size());

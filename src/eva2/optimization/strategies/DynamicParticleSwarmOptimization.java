@@ -11,6 +11,7 @@ import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 /**
  * This extends our particle swarm implementation to dynamic optimization problems.
@@ -130,7 +131,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      *
      * @param index The individual to update.
      * @param pop   The current population.
-     * @param best  The best individual found so far.
+     * @param indy  The best individual found so far.
      */
     private void updateQuantumIndividual(int index, AbstractEAIndividual indy, Population pop) {
         InterfaceDataTypeDouble endy = (InterfaceDataTypeDouble) indy;
@@ -473,6 +474,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 
 
     @Override
+    @Hidden
     public void setProblem(InterfaceOptimizationProblem problem) {
         super.setProblem(problem);
         if (problem instanceof AbstractOptimizationProblem) {

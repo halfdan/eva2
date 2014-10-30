@@ -23,6 +23,7 @@ import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 import java.util.ArrayList;
 
@@ -102,6 +103,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     }
 
     @Override
+    @Hidden
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = (AbstractOptimizationProblem) problem;
     }

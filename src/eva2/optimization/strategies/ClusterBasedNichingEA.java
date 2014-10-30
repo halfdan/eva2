@@ -27,6 +27,7 @@ import eva2.tools.EVAERROR;
 import eva2.tools.chart2d.*;
 import eva2.tools.math.Mathematics;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 import java.util.*;
 
@@ -786,6 +787,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
      * @param problem
      */
     @Override
+    @Hidden
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
         this.optimizer.setProblem(this.optimizationProblem);
