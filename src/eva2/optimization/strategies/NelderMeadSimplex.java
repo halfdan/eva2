@@ -52,11 +52,6 @@ public class NelderMeadSimplex extends AbstractOptimizer implements Serializable
         return new NelderMeadSimplex(this);
     }
 
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        optimizationProblem = (AbstractOptimizationProblem) problem;
-    }
-
     public boolean setProblemAndPopSize(InterfaceOptimizationProblem problem) {
         setProblem(problem);
         if (optimizationProblem instanceof AbstractProblemDouble) {
@@ -77,8 +72,6 @@ public class NelderMeadSimplex extends AbstractOptimizer implements Serializable
         for (int i = 0; i < r.length; i++) {
             r[i] = 2 * centroid[i] - refX[i];
         }
-//		double alpha = 1.3;
-//		for (int i=0; i<r.length; i++) r[i] = centroid[i] + alpha*(centroid[i] - refX[i]);
         return r;
     }
 

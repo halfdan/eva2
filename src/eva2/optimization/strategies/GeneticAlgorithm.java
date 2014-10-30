@@ -186,16 +186,6 @@ public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Seria
         }
     }
 
-    /**
-     * This method will set the problem that is to be optimized
-     *
-     * @param problem
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = problem;
-    }
-
     @Override
     public InterfaceOptimizationProblem getProblem() {
         return this.optimizationProblem;

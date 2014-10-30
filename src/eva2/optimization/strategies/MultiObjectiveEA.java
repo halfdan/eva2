@@ -15,6 +15,7 @@ import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.FM0Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 /**
  * A generic framework for multi-objecitve optimization, you need to specify an
@@ -183,6 +184,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
      * @param problem
      */
     @Override
+    @Hidden
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
         this.optimizer.setProblem(problem);

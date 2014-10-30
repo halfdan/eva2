@@ -11,6 +11,7 @@ import eva2.problems.F1Problem;
 import eva2.problems.InterfaceLocalSearchable;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 import java.util.Hashtable;
 
@@ -196,6 +197,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
      * @param problem
      */
     @Override
+    @Hidden
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
         this.globalOptimizer.setProblem(this.optimizationProblem);

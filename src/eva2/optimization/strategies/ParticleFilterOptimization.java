@@ -16,6 +16,7 @@ import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.F1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 /**
  * This is a Particle Filter implemented by Frank Senke, only some documentation
@@ -236,6 +237,7 @@ public class ParticleFilterOptimization extends AbstractOptimizer implements jav
      * @param problem
      */
     @Override
+    @Hidden
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
         if (problem instanceof AbstractOptimizationProblem) {

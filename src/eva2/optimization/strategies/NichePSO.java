@@ -30,6 +30,7 @@ import eva2.problems.*;
 import eva2.tools.SelectedTag;
 import eva2.tools.chart2d.*;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -1194,6 +1195,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
      * @tested ps This method will set the problem that is to be optimized
      */
     @Override
+    @Hidden
     public void setProblem(InterfaceOptimizationProblem problem) {
         // set member
         this.optimizationProblem = problem;

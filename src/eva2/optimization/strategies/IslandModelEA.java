@@ -12,6 +12,7 @@ import eva2.problems.F8Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.problems.TF1Problem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 
 /**
  * The one and only island model for parallelization. Since parallelization
@@ -297,6 +298,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * @param problem
      */
     @Override
+    @Hidden
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.optimizationProblem = problem;
         this.optimizer.setProblem(problem);

@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Yu, Shen, Chen, et.al. in 2014 (IEEE Transaction on Cybernetics, DOI: 10.1109/TCYB.2013.2279211).
  */
 @Description("Differential Evolution with Two-Level Parameter Adaption (Yu, Shen, Chen, et.al., 2014")
-public class AdaptiveDifferentialEvolution implements InterfaceOptimizer {
+public class AdaptiveDifferentialEvolution extends AbstractOptimizer {
     protected Population population;
 
     @Parameter(name = "groups", description = "Number of sub-groups to use during optimization.")
@@ -154,33 +154,8 @@ public class AdaptiveDifferentialEvolution implements InterfaceOptimizer {
     }
 
     @Override
-    public Population getPopulation() {
-        return population;
-    }
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
-    }
-
-    @Override
     public InterfaceSolutionSet getAllSolutions() {
         return null;
-    }
-
-    /**
-     * Sets the optimization problem. Will cast to AbstractOptimizationProblem.
-     *
-     * @param problem The optimization problem.
-     */
-    @Override
-    public void setProblem(InterfaceOptimizationProblem problem) {
-        this.optimizationProblem = (AbstractOptimizationProblem) problem;
-    }
-
-    @Override
-    public InterfaceOptimizationProblem getProblem() {
-        return this.optimizationProblem;
     }
 
     @Override
