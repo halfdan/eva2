@@ -140,7 +140,7 @@ public class MutateESCovarianceMatrixAdaption implements InterfaceMutation, java
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         if (!(individual instanceof InterfaceESIndividual)) {
             return;
         }

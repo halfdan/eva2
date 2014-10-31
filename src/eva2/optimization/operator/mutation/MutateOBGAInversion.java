@@ -40,7 +40,7 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
     }
 
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         //nothing to initialize
     }
 

@@ -45,7 +45,7 @@ public class MutateGPSingleNode implements InterfaceMutation, java.io.Serializab
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
 
     }
 

@@ -102,7 +102,7 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         if (individual instanceof InterfaceESIndividual) {
             // initialize the Sigmas
             this.sigmas = new double[((InterfaceESIndividual) individual).getDGenotype().length];

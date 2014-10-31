@@ -122,7 +122,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
             this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualBinaryData is no BitSet!");
         }
-        this.mutationOperator.init(this, opt);
+        this.mutationOperator.initialize(this, opt);
         this.crossoverOperator.init(this, opt);
     }
 

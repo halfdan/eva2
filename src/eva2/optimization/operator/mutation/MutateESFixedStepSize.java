@@ -57,7 +57,7 @@ public class MutateESFixedStepSize implements InterfaceMutation, java.io.Seriali
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
 
     }
 

@@ -260,7 +260,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
             this.defaultInit(opt);
             System.out.println("Initial value for ESIndividualPermutationData is not int[]!");
         }
-        this.mutationOperator.init(this, opt);
+        this.mutationOperator.initialize(this, opt);
         this.crossoverOperator.init(this, opt);
     }
 

@@ -50,13 +50,13 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual,
-                     InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual,
+                           InterfaceOptimizationProblem opt) {
 
         if (!(individual instanceof InterfaceESIndividual)) {
             return;
         }
-        super.init(individual, opt);
+        super.initialize(individual, opt);
         psuccesstarget = 1.0 / (5 + Math.sqrt(lambda) / 2);
         psuccess = psuccesstarget;
         stepd = 1.0 + D / (2.0 * lambda);

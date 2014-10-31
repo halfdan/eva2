@@ -120,7 +120,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     public void initCloneOperators(InterfaceMutation mutOp, double pMut, InterfaceCrossover coOp, double pCross, InterfaceOptimizationProblem problem) {
         mutationProbability = pMut;
         mutationOperator = (InterfaceMutation) mutOp.clone();
-        mutationOperator.init(this, problem);
+        mutationOperator.initialize(this, problem);
         crossoverProbability = pCross;
         crossoverOperator = (InterfaceCrossover) coOp.clone();
         crossoverOperator.init(this, problem);
@@ -277,7 +277,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      */
     public void init(InterfaceOptimizationProblem opt) {
         initializationOperator.initialize(this, opt);
-        this.mutationOperator.init(this, opt);
+        this.mutationOperator.initialize(this, opt);
         this.crossoverOperator.init(this, opt);
     }
 

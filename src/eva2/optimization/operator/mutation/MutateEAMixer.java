@@ -108,10 +108,10 @@ public class MutateEAMixer implements InterfaceMutation, java.io.Serializable {
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         InterfaceMutation[] mutators = this.mutationMixer.getSelectedMutators();
         for (int i = 0; i < mutators.length; i++) {
-            mutators[i].init(individual, opt);
+            mutators[i].initialize(individual, opt);
         }
     }
 

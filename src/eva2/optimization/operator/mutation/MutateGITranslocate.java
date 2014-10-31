@@ -70,7 +70,7 @@ public class MutateGITranslocate implements InterfaceMutation, java.io.Serializa
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
 
     }
 
