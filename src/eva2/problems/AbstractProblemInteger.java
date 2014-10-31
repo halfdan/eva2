@@ -47,7 +47,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
     public void initializePopulation(Population population) {
         this.bestIndividuum = null;
         ((InterfaceDataTypeInteger) this.template).setIntegerDataLength(this.problemDimension);
-        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
+        AbstractOptimizationProblem.defaultInitializePopulation(population, template, this);
     }
 
     @Override

@@ -188,7 +188,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      * @param template
      * @param prob
      */
-    public static void defaultInitPopulation(Population population, AbstractEAIndividual template, InterfaceOptimizationProblem prob) {
+    public static void defaultInitializePopulation(Population population, AbstractEAIndividual template, InterfaceOptimizationProblem prob) {
         AbstractEAIndividual tmpIndy;
         population.clear();
 

@@ -101,7 +101,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      */
     @Override
     public void initializePopulation(Population population) {
-        this.initPopulationAt(population, getCurrentProblemTime());
+        this.initializePopulationAt(population, getCurrentProblemTime());
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
      * @param population The populations that is to be inited
      * @param time       current time stamp to be used
      */
-    public abstract void initPopulationAt(Population population, double time);
+    public abstract void initializePopulationAt(Population population, double time);
 
     /**
      * @return the startTime

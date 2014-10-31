@@ -52,7 +52,7 @@ public class ImpactOfDimensionOnMOEAs {
                 mean = 0;
                 for (int j = 0; j < multiRuns; j++) {
                     pop = new Population();
-                    ikel.initPopulation(pop, popSize, numberofVariables);
+                    ikel.initializePopulation(pop, popSize, numberofVariables);
                     ikel.evaluatePopulation(pop, i);
                     mean += ikel.numberOfParetoOptimalSolutions(pop) / (double) pop.size();
                 }
@@ -97,7 +97,7 @@ public class ImpactOfDimensionOnMOEAs {
         }
     }
 
-    public void initPopulation(Population pop, int popSize, int numberOfVariables) {
+    public void initializePopulation(Population pop, int popSize, int numberOfVariables) {
         AbstractEAIndividual tmpIndy, template;
         pop.clear();
         template = new ESIndividualDoubleData();

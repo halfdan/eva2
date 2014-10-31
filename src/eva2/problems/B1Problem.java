@@ -48,7 +48,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
      * @return Double[]
      */
     @Override
-    public double[] eval(BitSet b) {
+    public double[] evaluate(BitSet b) {
         double[] result = new double[1];
         int fitness = 0;
 

@@ -144,7 +144,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      */
     @Override
     public void initializePopulation(Population population) {
-        initPopulation(population, this, useInnerConst, numberOfConstants);
+        initializePopulation(population, this, useInnerConst, numberOfConstants);
     }
 
     /**
@@ -155,7 +155,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
      * @param useInnerConsts
      * @param numConsts
      */
-    public static void initPopulation(Population pop, InterfaceProgramProblem prob, boolean useInnerConsts, int numConsts) {
+    public static void initializePopulation(Population pop, InterfaceProgramProblem prob, boolean useInnerConsts, int numConsts) {
         AbstractEAIndividual template;
 
         template = ((AbstractOptimizationProblem) prob).getIndividualTemplate();
@@ -166,7 +166,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         if ((template instanceof GAPIndividualProgramData) && useInnerConsts) {
             ((GAPIndividualProgramData) template).setDoubleDataLength(numConsts);
         }
-        AbstractOptimizationProblem.defaultInitPopulation(pop, template, prob);
+        AbstractOptimizationProblem.defaultInitializePopulation(pop, template, prob);
     }
 
     /**

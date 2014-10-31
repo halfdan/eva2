@@ -13,6 +13,7 @@ public class GeneralOptimizationEditorProperty {
     public PropertyEditor editor;
     public Object value;
     public JComponent view;
+    public JComponent viewWrapper;
     public JLabel label;
     public Class propertyType;
     public String name;

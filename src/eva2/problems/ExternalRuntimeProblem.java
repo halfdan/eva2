@@ -149,7 +149,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
         ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.problemDimension);
         ((InterfaceDataTypeDouble) this.template).setDoubleRange(makeRange());
 
-        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
+        AbstractOptimizationProblem.defaultInitializePopulation(population, template, this);
     }
 
     @Override

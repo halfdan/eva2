@@ -129,7 +129,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
      *
      */
     @Override
-    public void initPopulationAt(Population population, double time) {
+    public void initializePopulationAt(Population population, double time) {
         getProblem().initializePopulation(population);
         for (Object individuum : population) {
             ((AbstractEAIndividual) individuum).setAge(0);

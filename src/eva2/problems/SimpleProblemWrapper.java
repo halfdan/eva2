@@ -104,7 +104,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     @Override
     public void initializePopulation(Population population) {
         initTemplate();
-        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
+        AbstractOptimizationProblem.defaultInitializePopulation(population, template, this);
     }
 
     @Override

@@ -40,7 +40,7 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
 
         tmpBitSet = ((InterfaceDataTypeBinary) individual).getBinaryData();
         // evaluate the fitness
-        result = eval(tmpBitSet);
+        result = evaluate(tmpBitSet);
         // set the fitness
         individual.setFitness(result);
     }
@@ -52,12 +52,12 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
      * @param x a BitSet representing a possible
      * @return
      */
-    public abstract double[] eval(BitSet bs);
+    public abstract double[] evaluate(BitSet bs);
 
     @Override
     public void initializePopulation(Population population) {
         ((InterfaceDataTypeBinary) this.template).setBinaryDataLength(this.getProblemDimension());
-        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
+        AbstractOptimizationProblem.defaultInitializePopulation(population, template, this);
     }
 
     @Override

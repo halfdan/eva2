@@ -95,7 +95,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
         ((InterfaceDataTypeDouble) this.template).setDoubleDataLength(this.problemDimension);
         ((InterfaceDataTypeDouble) this.template).setDoubleRange(newRange);
 
-        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
+        AbstractOptimizationProblem.defaultInitializePopulation(population, template, this);
     }
 
     protected double[][] makeRange() {
