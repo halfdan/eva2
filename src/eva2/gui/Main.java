@@ -90,8 +90,8 @@ public class Main extends JFrame implements OptimizationStateListener {
      * that the Main initialized multi-threaded for efficiency. Use {@link #awaitClientInitialized()} }
      * to await full initialization if necessary.
      */
-    public Main(final String hostName) {
-        this(hostName, null, false, false);
+    public Main() {
+        this(null, false, false);
     }
 
     /**
@@ -100,13 +100,12 @@ public class Main extends JFrame implements OptimizationStateListener {
      * efficiency. Use {@link #awaitClientInitialized()} to await full
      * initialization if necessary.
      *
-     * @param hostName
      * @param paramsFile
      * @param autorun
      * @param nosplash
      */
-    public Main(final String hostName, final String paramsFile, boolean autorun, boolean nosplash) {
-        this(hostName, null, paramsFile, null, autorun, nosplash, false, false);
+    public Main(final String paramsFile, boolean autorun, boolean nosplash) {
+        this(null, paramsFile, null, autorun, nosplash, false, false);
     }
 
     /**
@@ -114,13 +113,12 @@ public class Main extends JFrame implements OptimizationStateListener {
      * initialized multi-threaded for efficiency. Use {@link #awaitClientInitialized()}
      * to await full initialization if necessary.
      *
-     * @param hostName
      * @param autorun
      * @param nosplash
-     * @see #Main(String, String, boolean, boolean)
+     * @see #Main(String, boolean, boolean)
      */
-    public Main(final String hostName, boolean autorun, boolean nosplash) {
-        this(hostName, null, autorun, nosplash);
+    public Main(boolean autorun, boolean nosplash) {
+        this(null, autorun, nosplash);
     }
 
     /**
@@ -128,15 +126,14 @@ public class Main extends JFrame implements OptimizationStateListener {
      * initialized multi-threaded for efficiency. Use {@link #awaitClientInitialized()}
      * to await full initialization if necessary.
      *
-     * @param hostName
      * @param paramsFile
      * @param autorun
      * @param noSplash
      * @param noGui
-     * @see #Main(String, String, boolean, boolean)
+     * @see #Main(boolean, boolean)
      */
-    public Main(final String hostName, String paramsFile, boolean autorun, boolean noSplash, boolean noGui, boolean withTreeView) {
-        this(hostName, null, paramsFile, null, autorun, noSplash, noGui, withTreeView);
+    public Main(String paramsFile, boolean autorun, boolean noSplash, boolean noGui, boolean withTreeView) {
+        this(null, paramsFile, null, autorun, noSplash, noGui, withTreeView);
     }
 
     /**
@@ -144,21 +141,19 @@ public class Main extends JFrame implements OptimizationStateListener {
      * initialized multi-threaded for efficiency. Use {@link #awaitClientInitialized()}
      * to await full initialization if necessary.
      *
-     * @param hostName
      * @param optimizationParameters
      * @param autorun
      * @param noSplash
      * @param noGui
-     * @see #Main(String, String, boolean, boolean)
+     * @see #Main(String, boolean, boolean)
      */
-    public Main(final String hostName, InterfaceOptimizationParameters optimizationParameters, boolean autorun, boolean noSplash, boolean noGui) {
-        this(hostName, null, null, optimizationParameters, autorun, noSplash, noGui, false);
+    public Main(InterfaceOptimizationParameters optimizationParameters, boolean autorun, boolean noSplash, boolean noGui) {
+        this(null, null, optimizationParameters, autorun, noSplash, noGui, false);
     }
 
     /**
      * Do not use the tree view by default.
      *
-     * @param hostName
      * @param parent
      * @param paramsFile
      * @param goParams
@@ -166,8 +161,8 @@ public class Main extends JFrame implements OptimizationStateListener {
      * @param noSplash
      * @param noGui
      */
-    public Main(final String hostName, final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
-        this(hostName, parent, paramsFile, goParams, autorun, noSplash, noGui, false);
+    public Main(final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui) {
+        this(parent, paramsFile, goParams, autorun, noSplash, noGui, false);
     }
 
     /**
@@ -179,14 +174,13 @@ public class Main extends JFrame implements OptimizationStateListener {
      * multi-threaded for efficiency. Use {@link #awaitClientInitialized()} to
      * await full initialization if necessary.
      *
-     * @param hostName
      * @param parent
      * @param paramsFile
      * @param autorun
      * @param noSplash
      * @param noGui
      */
-    public Main(final String hostName, final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui, final boolean showTreeView) {
+    public Main(final Window parent, final String paramsFile, final InterfaceOptimizationParameters goParams, final boolean autorun, final boolean noSplash, final boolean noGui, final boolean showTreeView) {
         clientInited = false;
         final eva2.gui.SplashScreen splashScreen = new eva2.gui.SplashScreen(EvAInfo.splashLocation);
 
@@ -213,7 +207,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             public void run() {
                 synchronized (this) {
                     long startTime = System.currentTimeMillis();
-                    init(hostName, paramsFile, goParams, parent); // this takes a bit
+                    init(paramsFile, goParams, parent); // this takes a bit
 
                     long wait = System.currentTimeMillis() - startTime;
                     LOGGER.info("Loaded EvA2 in " + wait + "ms.");
@@ -309,10 +303,9 @@ public class Main extends JFrame implements OptimizationStateListener {
     }
 
     /**
-     * Sets given hostname and tries to load GOParamsters from given file if non
-     * null.
+     * Tries to load OptimizationParameters from given file if not null.
      */
-    private void init(String hostName, String paramsFile, InterfaceOptimizationParameters optimizationParameters, final Window parent) {
+    private void init(String paramsFile, InterfaceOptimizationParameters optimizationParameters, final Window parent) {
         useDefaultModule = EvAInfo.propDefaultModule();
         this.parentWindow = parent;
 
@@ -510,10 +503,10 @@ public class Main extends JFrame implements OptimizationStateListener {
 
     /**
      * The one and only main of the client program. Possible arguments:
-     * --autorun immediately starts the optimization (with parameters loaded
-     * from current directory if available. --hostname HOST: sets the hostname
-     * for the Main to HOST --nosplash: skip the splash screen. --params
-     * PFILE: load the optimization parameter from the serialized file PFILE
+     * --autorun:   immediately starts the optimization (with parameters loaded
+     *              from current directory if available.
+     * --nosplash:  skip the splash screen.
+     * --params:    PFILE: load the optimization parameter from the serialized file PFILE
      *
      * @param args command line parameters
      */
@@ -583,7 +576,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             boolean treeView = (values[5] != null);
             String paramsFile = StringTools.checkSingleStringArg(keys[4], values[4], arities[4] - 1);
 
-            new Main("", paramsFile, autorun, nosplash, nogui, treeView);
+            new Main(paramsFile, autorun, nosplash, nogui, treeView);
         }
     }
 
@@ -601,7 +594,7 @@ public class Main extends JFrame implements OptimizationStateListener {
                                      WindowListener windowListener, final Window parent) {
         Main evaClient;
 
-        evaClient = new Main(null, parent, null, goParams,
+        evaClient = new Main(parent, null, goParams,
                 false, true, false, false); // initializes GUI in the background
         // important: wait for GUI initialization before accessing any internal
         // settings:
@@ -752,7 +745,7 @@ public class Main extends JFrame implements OptimizationStateListener {
      *
      * @return
      */
-    public InterfaceOptimizationParameters getGOParameters() {
+    public InterfaceOptimizationParameters getOptimizationParameters() {
         if (currentModuleAdapter != null) {
             if (currentModuleAdapter instanceof AbstractModuleAdapter) {
                 return ((AbstractModuleAdapter) currentModuleAdapter).getOptimizationParameters();
@@ -765,7 +758,7 @@ public class Main extends JFrame implements OptimizationStateListener {
         return ((GenericModuleAdapter) currentModuleAdapter).getStatistics();
     }
 
-    public InterfaceStatisticsParameter getStatsParams() {
+    public InterfaceStatisticsParameter getStatisticsParameter() {
         return ((GenericModuleAdapter) currentModuleAdapter).getStatistics().getStatisticsParameter();
     }
 
