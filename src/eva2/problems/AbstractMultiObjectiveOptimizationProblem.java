@@ -96,7 +96,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         this.template = new ESIndividualDoubleData();
         makeBorder();
         if (this.show) {
-            this.initProblemFrame();
+            this.initializeProblemFrame();
         }
     }
 
@@ -112,7 +112,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     public void setShowParetoFront(boolean b) {
         this.show = b;
         if (this.show) {
-            this.initProblemFrame();
+            this.initializeProblemFrame();
         } else if (this.plot != null) {
             this.plot.dispose();
             this.plot = null;
@@ -146,7 +146,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         makeBorder();
         this.paretoFront = new Population();
         if (this.show) {
-            this.initProblemFrame();
+            this.initializeProblemFrame();
         }
     }
 
@@ -206,7 +206,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     public void evaluatePopulationStart(Population population) {
         super.evaluatePopulationStart(population);
         if (this.show && (this.plot == null)) {
-            this.initProblemFrame();
+            this.initializeProblemFrame();
         }
     }
 
@@ -283,7 +283,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
     /**
      * This method will initialize the problem specific visualisation of the problem
      */
-    public void initProblemFrame() {
+    public void initializeProblemFrame() {
         double[] tmpD = new double[2];
         tmpD[0] = 0;
         tmpD[1] = 0;

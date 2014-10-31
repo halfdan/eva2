@@ -165,7 +165,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
             BitSet tmpSet = new BitSet();
             tmpSet.clear();
 
-            while (eval(tmpSet)[1] > 0) {
+            while (evaluate(tmpSet)[1] > 0) {
                 tmpSet.set(RNG.randomInt(0, items.length - 1));
             }
             ((InterfaceDataTypeBinary) indy).setBinaryGenotype(tmpSet);
@@ -183,7 +183,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
         double[] result;
 
         tmpBitSet = ((InterfaceDataTypeBinary) individual).getBinaryData();
-        result = this.eval(tmpBitSet);
+        result = this.evaluate(tmpBitSet);
         if (RNG.flipCoin(this.localSearch)) {
             // first remove surplus assets
             while (result[1] > 0) {
@@ -203,7 +203,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
                 }
                 // remove the weakest
                 tmpBitSet.clear(weakest);
-                result = this.eval(tmpBitSet);
+                result = this.evaluate(tmpBitSet);
             }
             // now lets see if we can replace some guy with a more efficient one
             int weakest = tmpBitSet.nextSetBit(0);
@@ -223,7 +223,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
                 }
 
                 tmpBitSet.clear(weakest);
-                result = this.eval(tmpBitSet);
+                result = this.evaluate(tmpBitSet);
                 int weight = 0;
                 for (int i = 0; i < items.length; i++) {
                     if (tmpBitSet.get(i)) {
@@ -246,7 +246,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
                 if (stronger >= 0) {
                     tmpBitSet.set(stronger);
                 }
-                result = this.eval(tmpBitSet);
+                result = this.evaluate(tmpBitSet);
             }
 
             if (this.lamarckism) {
@@ -266,7 +266,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * @return Double[]
      */
     @Override
-    public double[] eval(BitSet b) {
+    public double[] evaluate(BitSet b) {
         double[] result = new double[3];
 
         int l = items.length;
@@ -306,7 +306,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
 
         tmpIndy = (InterfaceDataTypeBinary) individual;
         tmpBitSet = tmpIndy.getBinaryData();
-        report = this.eval(tmpBitSet);
+        report = this.evaluate(tmpBitSet);
         result += individual.getStringRepresentation() + "\n";
         result += "Is worth: " + Math.abs(report[2]) + " and ";
         if (report[1] == 0) {

@@ -285,7 +285,7 @@ public class FLensProblem extends AbstractOptimizationProblem
         }
         ((InterfaceDataTypeDouble) this.template).setDoubleRange(range);
 
-        AbstractOptimizationProblem.defaultInitPopulation(population, template, this);
+        AbstractOptimizationProblem.defaultInitializePopulation(population, template, this);
         if (this.show) {
             this.initProblemFrame();
         }
