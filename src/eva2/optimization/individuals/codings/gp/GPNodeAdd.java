@@ -4,7 +4,7 @@ package eva2.optimization.individuals.codings.gp;
 import eva2.problems.InterfaceProgramProblem;
 
 /**
- * A simple add node with two arguments.
+ * A eva2.problems.simple add node with two arguments.
  * Created by IntelliJ IDEA.
  * User: streiche
  * Date: 04.04.2003

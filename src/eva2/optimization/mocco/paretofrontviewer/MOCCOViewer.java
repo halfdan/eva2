@@ -351,7 +351,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
     }
 
     /**
-     * This method will plot a simple fitness plot, using the iterations a x-axis
+     * This method will plot a eva2.problems.simple fitness plot, using the iterations a x-axis
      */
     public void plot1DFitnessPlot() {
         double xmin = 0, ymin = Double.POSITIVE_INFINITY, xmax = Double.NEGATIVE_INFINITY, ymax = Double.NEGATIVE_INFINITY, fitness;

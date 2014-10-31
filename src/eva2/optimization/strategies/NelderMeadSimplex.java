@@ -1,7 +1,7 @@
 package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.InterfaceSolutionSet;
@@ -14,7 +14,6 @@ import eva2.tools.math.Mathematics;
 import eva2.util.annotation.Description;
 
 import java.io.Serializable;
-import java.util.Vector;
 
 /**
  * Nelder-Mead-Simplex does not guarantee an equal number of evaluations within

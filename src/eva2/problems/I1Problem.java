@@ -28,7 +28,7 @@ public class I1Problem extends AbstractProblemInteger implements java.io.Seriali
     }
 
     /**
-     * Ths method allows you to evaluate a simple bit string to determine the fitness
+     * Ths method allows you to evaluate a eva2.problems.simple bit string to determine the fitness
      *
      * @param x The n-dimensional input vector
      * @return The m-dimensional output vector.

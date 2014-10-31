@@ -14,6 +14,7 @@ import eva2.optimization.operator.mutation.MutateESFixedStepSize;
 import eva2.optimization.operator.mutation.MutateESLocal;
 import eva2.optimization.operator.selection.SelectTournament;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.Population;
 import eva2.problems.F1Problem;
 import eva2.optimization.strategies.EvolutionStrategies;
@@ -135,7 +136,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
         // build the Options Panel
         JParaPanel paraPanel = new JParaPanel(this, "MyGUI");
         Class object = null, editor = null;
-        String tmp = "eva2.optimization.go.Tools.InterfaceTest";
+        String tmp = "eva2.optimization.tools.InterfaceTest";
         try {
             object = Class.forName(tmp);
         } catch (java.lang.ClassNotFoundException e) {
@@ -316,7 +317,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 break;
             }
             case 1: {
-                // use the simple ES Local
+                // use the eva2.problems.simple ES Local
                 this.outputFileName = "X360_StandardES";
                 EvolutionStrategies es = new EvolutionStrategies();
                 this.optimizationParameters.setOptimizer(es);

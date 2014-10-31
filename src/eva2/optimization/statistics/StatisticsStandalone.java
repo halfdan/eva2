@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This simple statistics implementation can collect all Object data available during runs.
+ * This eva2.problems.simple statistics implementation can collect all Object data available during runs.
  * Be aware that the memory requirements can be excessive depending on the data produced by
  * the additional informers, and depending on the selected fields to be collected.
  * Therefore, the default is not to log the data but just print it using the super class.

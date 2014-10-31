@@ -317,7 +317,7 @@ public class GIIndividualIntegerData extends AbstractEAIndividual implements Int
     }
 
     /**
-     * This method performs a simple one point mutation in the genotype
+     * This method performs a eva2.problems.simple one point mutation in the genotype
      */
     @Override
     public void defaultMutate() {

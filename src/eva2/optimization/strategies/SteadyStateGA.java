@@ -14,7 +14,7 @@ import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 
 /**
- * A simple implementation of the steady-state GA with variable replacement
+ * A eva2.problems.simple implementation of the steady-state GA with variable replacement
  * schemes. To reduce the logging effort population.size() optimization steps
  * are performed each time optimize() is called.
  */

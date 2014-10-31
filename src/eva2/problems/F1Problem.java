@@ -41,7 +41,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
     }
 
     /**
-     * This method allows you to evaluate a simple bit string to determine the fitness
+     * This method allows you to evaluate a eva2.problems.simple bit string to determine the fitness
      *
      * @param x The n-dimensional input vector
      * @return The m-dimensional output vector.

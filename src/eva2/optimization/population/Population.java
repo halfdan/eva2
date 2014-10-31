@@ -1,7 +1,6 @@
 package eva2.optimization.population;
 
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.*;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
@@ -2191,7 +2190,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     /**
      * Calculate the average of the distance of each individual to its closest
      * neighbor in the population. The boolean parameter switches between
-     * range-normalized and simple euclidian distance. If calcVariance is true,
+     * range-normalized and eva2.problems.simple euclidian distance. If calcVariance is true,
      * the variance is calculated and returned as second entry
      *
      * @param normalizedPhenoMetric

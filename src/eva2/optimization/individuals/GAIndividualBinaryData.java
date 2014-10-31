@@ -88,7 +88,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     }
 
     /**
-     * This method evaluates the GAIndividual as simple minimize number
+     * This method evaluates the GAIndividual as eva2.problems.simple minimize number
      * of bits problem.
      *
      * @return The number of true bits
@@ -218,7 +218,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
     }
 
     /**
-     * This method performs a simple one point mutation in the genotype
+     * This method performs a eva2.problems.simple one point mutation in the genotype
      */
     @Override
     public void defaultMutate() {

@@ -4,7 +4,7 @@ import eva2.optimization.enums.DEType;
 import eva2.optimization.enums.MutateESCrossoverType;
 import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.enums.PostProcessMethod;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.*;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
@@ -572,7 +572,7 @@ public class OptimizerFactory {
     }
 
     /**
-     * Return a simple String showing the accessible optimizers. For external
+     * Return a eva2.problems.simple String showing the accessible optimizers. For external
      * access."
      *
      * @return a String listing the accessible optimizers
@@ -1303,7 +1303,7 @@ public class OptimizerFactory {
     }
 
     /**
-     * Create a standard clustering hill climbing employing simple ES mutation
+     * Create a standard clustering hill climbing employing eva2.problems.simple ES mutation
      * with adaptive step size, starting in parallel 100 local searches and
      * clustering intermediate populations to avoid optima being found several
      * times by the same population (density based clustering with sigma =
@@ -1338,9 +1338,9 @@ public class OptimizerFactory {
     }
 
     /**
-     * Create a custom clustering hillclimber using ES mutation (simple or CMA)
+     * Create a custom clustering hillclimber using ES mutation (eva2.problems.simple or CMA)
      * or nelder mead. The parameters hcInitialStep and hcStepThresh are only
-     * relevant for the simple mutation based hc method.
+     * relevant for the eva2.problems.simple mutation based hc method.
      *
      * @param problem
      * @param evalCycle

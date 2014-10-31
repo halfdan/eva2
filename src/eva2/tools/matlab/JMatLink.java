@@ -1710,7 +1710,7 @@ public class JMatLink extends Thread {
 
     // this is a concurrent situation.
 
-    // The solution is simple: I always use a locking-mechanism to wait for the
+    // The solution is eva2.problems.simple: I always use a locking-mechanism to wait for the
 
     // data. The main thread will release the lock and the calling method can
 

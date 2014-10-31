@@ -70,7 +70,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
     }
 
     /**
-     * Evaluate a simple integer array to determine the fitness.
+     * Evaluate a eva2.problems.simple integer array to determine the fitness.
      *
      * @param x The n-dimensional input vector
      * @return The m-dimensional output vector.

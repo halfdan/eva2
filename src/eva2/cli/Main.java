@@ -5,7 +5,7 @@ import eva2.OptimizerFactory;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.enums.DEType;
 import eva2.optimization.enums.PSOTopology;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
 import eva2.optimization.operator.crossover.InterfaceCrossover;
@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**

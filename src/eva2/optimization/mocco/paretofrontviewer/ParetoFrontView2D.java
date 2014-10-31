@@ -176,7 +176,7 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
     }
 
     /**
-     * This method will plot a simple fitness plot, using the iterations a x-axis
+     * This method will plot a eva2.problems.simple fitness plot, using the iterations a x-axis
      */
     public void plot2DParetoFront() {
         double xmin = Double.POSITIVE_INFINITY, ymin = Double.POSITIVE_INFINITY, xmax = Double.NEGATIVE_INFINITY, ymax = Double.NEGATIVE_INFINITY;

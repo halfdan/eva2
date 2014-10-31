@@ -5,7 +5,7 @@ import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
 
 /**
- * A simple sum to calculate the selection probability.
+ * A eva2.problems.simple sum to calculate the selection probability.
  * <p/>
  * p(i is selected) = exp(-fitness(i))/sum_j(exp(-fitness(j)))
  */

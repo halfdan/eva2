@@ -7,6 +7,7 @@ import eva2.optimization.mocco.paretofrontviewer.MOCCOViewer;
 import eva2.optimization.operator.moso.InterfaceMOSOConverter;
 import eva2.optimization.operator.moso.MOSOWeightedFitness;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.Population;
 import eva2.problems.*;
 import eva2.optimization.strategies.InterfaceOptimizer;

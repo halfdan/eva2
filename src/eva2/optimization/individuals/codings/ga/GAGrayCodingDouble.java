@@ -85,7 +85,7 @@ public class GAGrayCodingDouble implements InterfaceGADoubleCoding, java.io.Seri
     }
 
     /**
-     * A simple test method
+     * A eva2.problems.simple test method
      *
      * @param args no args needed
      */

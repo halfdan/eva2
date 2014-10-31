@@ -4,7 +4,7 @@ import eva2.gui.BeanInspector;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceNotifyOnInformers;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.operator.paramcontrol.ConstantParameters;
 import eva2.optimization.operator.paramcontrol.InterfaceParameterControl;
 import eva2.optimization.operator.postprocess.PostProcess;

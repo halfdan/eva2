@@ -27,7 +27,7 @@ import java.util.*;
  * The method plotCurrentResults should be implemented to plot further results per iteration.
  * <p/>
  * All displayable data is now routed through a single pipeline, which consists in a
- * list of Objects assembled in the getOutputValues method. This allows all simple data types which are
+ * list of Objects assembled in the getOutputValues method. This allows all eva2.problems.simple data types which are
  * provided by the external informer instances to be handled uniformly to the internally collected data, and
  * thus they can be plotted and text-dumped in the same manner.
  * Basic fields are identified by the enum GraphSelectionEnum and are available independently of additional
@@ -221,7 +221,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     /**
-     * Return a simple String describing the current date and time.
+     * Return a eva2.problems.simple String describing the current date and time.
      *
      * @return
      */
@@ -807,7 +807,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     /**
-     * Return all simple data fields collected internally. This must correspond to the
+     * Return all eva2.problems.simple data fields collected internally. This must correspond to the
      * method {@link #getSimpleOutputHeader()}.
      *
      * @return

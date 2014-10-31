@@ -1,7 +1,7 @@
 package eva2.optimization.strategies;
 
 import eva2.gui.plot.Plot;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.operator.migration.*;
 import eva2.optimization.population.InterfaceSolutionSet;

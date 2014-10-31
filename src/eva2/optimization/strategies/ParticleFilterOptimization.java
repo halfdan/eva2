@@ -2,7 +2,6 @@ package eva2.optimization.strategies;
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.Plot;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.mutation.MutateESCorrVector;
@@ -13,7 +12,6 @@ import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.problems.AbstractOptimizationProblem;
-import eva2.problems.F1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
