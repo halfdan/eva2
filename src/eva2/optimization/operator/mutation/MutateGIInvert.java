@@ -55,7 +55,7 @@ public class MutateGIInvert implements InterfaceMutation, java.io.Serializable {
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
 
     }
 

@@ -2,6 +2,7 @@ package eva2.gui;
 
 import eva2.EvAInfo;
 import eva2.optimization.modules.*;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.ClassPreloader;
 import eva2.util.EvAComAdapter;
 import eva2.optimization.OptimizationStateListener;
@@ -775,7 +776,11 @@ public class Main extends JFrame implements OptimizationStateListener {
         ModuleAdapter newModuleAdapter = null;
         //
         try {
-            newModuleAdapter = new GOModuleAdapter(selectedModule, OptimizationParameters.getInstance(), withGUI ? null : "EvA2");
+            InterfaceOptimizationParameters params = optimizationParameters;
+            if (optimizationParameters == null) {
+                params = OptimizationParameters.getInstance();
+            }
+            newModuleAdapter = new GOModuleAdapter(selectedModule, params, withGUI ? null : "EvA2");
             //newModuleAdapter = comAdapter.getModuleAdapter(selectedModule, optimizationParameters, withGUI ? null : "EvA2");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error loading module.", e);

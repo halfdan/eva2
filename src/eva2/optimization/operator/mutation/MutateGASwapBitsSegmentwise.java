@@ -97,7 +97,7 @@ public class MutateGASwapBitsSegmentwise implements InterfaceMutation, java.io.S
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
 
     }
 

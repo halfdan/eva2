@@ -395,7 +395,7 @@ public class PostProcess {
         HillClimbing hc = new HillClimbing();
         // HC depends heavily on the selected mutation operator!
         hc.setProblem(problem);
-        mute.init(problem.getIndividualTemplate(), problem);
+        mute.initialize(problem.getIndividualTemplate(), problem);
         hc.setMutationOperator(mute);
         if (pop.size() != pop.getTargetSize()) {
             System.err.println(pop.size() + " vs. " + pop.getTargetSize());

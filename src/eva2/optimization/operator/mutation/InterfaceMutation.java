@@ -23,7 +23,7 @@ public interface InterfaceMutation {
      * @param individual The individual that will be mutated.
      * @param opt        The optimization problem.
      */
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt);
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt);
 
     /**
      * This method will mutate a given AbstractEAIndividual. If the individual

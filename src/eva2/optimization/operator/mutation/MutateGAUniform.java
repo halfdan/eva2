@@ -53,8 +53,8 @@ public class MutateGAUniform implements InterfaceMutation, Serializable {
     }
 
     @Override
-    public void init(AbstractEAIndividual individual,
-                     InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual,
+                           InterfaceOptimizationProblem opt) {
         if (useInvertedLength && (individual instanceof InterfaceGAIndividual)) {
             setBitwiseProb(1. / ((double) ((InterfaceGAIndividual) individual).getGenotypeLength()));
         }

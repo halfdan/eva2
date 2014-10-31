@@ -240,7 +240,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
             this.defaultInit(opt);
             System.out.println("Initial value for ESIndividualIntegerData is not int[]!");
         }
-        this.mutationOperator.init(this, opt);
+        this.mutationOperator.initialize(this, opt);
         this.crossoverOperator.init(this, opt);
     }
 

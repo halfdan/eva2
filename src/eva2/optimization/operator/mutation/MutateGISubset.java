@@ -61,8 +61,8 @@ public class MutateGISubset implements InterfaceMutation, Serializable {
     }
 
     @Override
-    public void init(AbstractEAIndividual individual,
-                     InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual,
+                           InterfaceOptimizationProblem opt) {
         // nothing to do
 
     }

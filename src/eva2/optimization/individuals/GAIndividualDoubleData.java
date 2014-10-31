@@ -252,7 +252,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
             this.defaultInit(opt);
             System.out.println("Initial value for GAIndividualDoubleData is not double[]!");
         }
-        this.mutationOperator.init(this, opt);
+        this.mutationOperator.initialize(this, opt);
         this.crossoverOperator.init(this, opt);
     }
 

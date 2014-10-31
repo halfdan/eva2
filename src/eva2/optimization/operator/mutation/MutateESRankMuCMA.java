@@ -519,8 +519,8 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
     }
 
     @Override
-    public void init(AbstractEAIndividual individual,
-                     InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual,
+                           InterfaceOptimizationProblem opt) {
         double[][] range = ((InterfaceDataTypeDouble) individual).getDoubleRange();
         int dim = range.length;
         c_c = (4. / (dim + 4));

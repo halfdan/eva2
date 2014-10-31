@@ -38,7 +38,7 @@ public class MutateOBGAFlip implements InterfaceMutation, java.io.Serializable {
     }
 
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         //nothing to initialize
     }
 

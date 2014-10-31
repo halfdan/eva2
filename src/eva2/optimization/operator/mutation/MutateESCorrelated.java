@@ -10,7 +10,7 @@ import eva2.util.annotation.Description;
 /**
  */
 @Description("The local correlated mutation stores n sigmas for each double attribute and n(n-1) alphas.")
-public class MutateESCorrolated implements InterfaceMutation, java.io.Serializable {
+public class MutateESCorrelated implements InterfaceMutation, java.io.Serializable {
     protected double mutationStepSize = 0.2;
     protected double tau1 = 0.15;
     protected double lowerLimitStepSize = 0.0000005;
@@ -19,12 +19,12 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
     private double[] alphas = null;
     protected double tau2 = 0.15;
 
-    public MutateESCorrolated() {
+    public MutateESCorrelated() {
         this.sigmas = null;
         this.alphas = null;
     }
 
-    public MutateESCorrolated(MutateESCorrolated mutator) {
+    public MutateESCorrelated(MutateESCorrelated mutator) {
         if ((mutator.sigmas != null)) {
             this.sigmas = new double[mutator.sigmas.length];
             System.arraycopy(mutator.sigmas, 0, this.sigmas, 0, this.sigmas.length);
@@ -49,7 +49,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      */
     @Override
     public Object clone() {
-        return new MutateESCorrolated(this);
+        return new MutateESCorrelated(this);
     }
 
     /**
@@ -63,8 +63,8 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
         if (mutator == this) {
             return true;
         }
-        if (mutator instanceof MutateESCorrolated) {
-            MutateESCorrolated mut = (MutateESCorrolated) mutator;
+        if (mutator instanceof MutateESCorrelated) {
+            MutateESCorrelated mut = (MutateESCorrelated) mutator;
             if (this.tau1 != mut.tau1) {
                 return false;
             }
@@ -105,7 +105,7 @@ public class MutateESCorrolated implements InterfaceMutation, java.io.Serializab
      * @param opt        The optimization problem.
      */
     @Override
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
+    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt) {
         if (individual instanceof InterfaceESIndividual) {
             double[] x = ((InterfaceESIndividual) individual).getDGenotype();
             if (this.sigmas == null) {
