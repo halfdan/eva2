@@ -1,6 +1,6 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.optimization.operator.selection.InterfaceSelection;
@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 /**
  * Population based incremental learning in the PSM by Monmarche version with
  * also allows to simulate ant systems due to the flexible update rule of V. But
- * both are limited to binary genotypes. This is a simple implementation of
+ * both are limited to binary genotypes. This is a eva2.problems.simple implementation of
  * Population Based Incremental Learning.
  * <p/>
  * Nicolas Monmarché , Eric Ramat , Guillaume Dromel , Mohamed Slimane , Gilles
@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 public class PopulationBasedIncrementalLearning extends AbstractOptimizer implements java.io.Serializable {
 
     private final static Logger LOGGER = Logger.getLogger(PopulationBasedIncrementalLearning.class.getName());
-    // These variables are necessary for the simple testcase
+    // These variables are necessary for the eva2.problems.simple testcase
     private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private boolean useElitism = true;
     private InterfaceSelection selectionOperator = new SelectBestIndividuals();

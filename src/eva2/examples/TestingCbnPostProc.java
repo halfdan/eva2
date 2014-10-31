@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TestingCbnPostProc {
     public static void main(String[] args) {
-        // a simple bimodal target function, two optima near (1.7,0) and (-1.44/0)
+        // a eva2.problems.simple bimodal target function, two optima near (1.7,0) and (-1.44/0)
         FM0Problem fm0 = new FM0Problem();
         AbstractEAIndividual best;
         List<AbstractEAIndividual> ppSols;

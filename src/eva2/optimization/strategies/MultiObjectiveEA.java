@@ -1,6 +1,6 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;

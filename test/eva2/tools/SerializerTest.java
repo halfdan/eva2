@@ -22,7 +22,7 @@ public class SerializerTest {
 
     @Before
     public void setUp() {
-        // Create a simple object graph
+        // Create a eva2.problems.simple object graph
         dataStructObject = new ExampleDataStruct();
         dataStructObject.message = "hello world";
         dataStructObject.data = new int[]{1, 2, 3, 4};
@@ -90,7 +90,7 @@ public class SerializerTest {
 }
 
 /**
- * This is a simple serializable data structure that we use below for testing the methods above
+ * This is a eva2.problems.simple serializable data structure that we use below for testing the methods above
  *
  */
 class ExampleDataStruct implements Serializable {

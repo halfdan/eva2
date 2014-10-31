@@ -1,7 +1,7 @@
 package eva2.optimization.statistics;
 
 /**
- * A very simple interface class to receive raw String data.
+ * A very eva2.problems.simple interface class to receive raw String data.
  *
  * @author mkron
  */

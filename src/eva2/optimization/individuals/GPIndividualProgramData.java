@@ -313,7 +313,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     }
 
     /**
-     * This method performs a simple one element mutation on the program
+     * This method performs a eva2.problems.simple one element mutation on the program
      */
     @Override
     public void defaultMutate() {

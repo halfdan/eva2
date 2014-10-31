@@ -2,7 +2,7 @@ package eva2.optimization.strategies;
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.enums.PostProcessMethod;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.operator.mutation.MutateESFixedStepSize;
 import eva2.optimization.operator.postprocess.PostProcess;
 import eva2.optimization.population.InterfaceSolutionSet;

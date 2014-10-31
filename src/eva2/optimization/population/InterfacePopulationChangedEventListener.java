@@ -1,12 +1,8 @@
-package eva2.optimization.go;
+package eva2.optimization.population;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.04.2003
- * Time: 18:09:47
- * To change this template use Options | File Templates.
+ *
  */
 public interface InterfacePopulationChangedEventListener {
 

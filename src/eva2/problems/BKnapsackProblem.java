@@ -258,7 +258,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     }
 
     /**
-     * This is a simple method that evaluates a given Individual. The fitness
+     * This is a eva2.problems.simple method that evaluates a given Individual. The fitness
      * values of the individual will be set inside this method.
      *
      * @param b The BitSet that is to be evaluated.

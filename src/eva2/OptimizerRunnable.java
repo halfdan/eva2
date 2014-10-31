@@ -20,7 +20,7 @@ import java.util.BitSet;
 
 
 /**
- * This Runnable class just encapsulates the Processor class with some simple ways to access a solution.
+ * This Runnable class just encapsulates the Processor class with some eva2.problems.simple ways to access a solution.
  *
  * @author mkron
  */

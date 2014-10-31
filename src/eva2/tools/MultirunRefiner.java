@@ -332,7 +332,7 @@ public class MultirunRefiner {
 //    }
 
     /**
-     * A simple method to read doubles from a string.
+     * A eva2.problems.simple method to read doubles from a string.
      *
      * @param searchme The string to be searched.
      * @return The array of doubles found.

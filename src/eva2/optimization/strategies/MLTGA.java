@@ -1,7 +1,7 @@
 package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.go.InterfacePopulationChangedEventListener;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.individuals.InterfaceGAIndividual;

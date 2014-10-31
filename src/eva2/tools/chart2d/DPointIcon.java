@@ -3,7 +3,7 @@ package eva2.tools.chart2d;
 import java.awt.*;
 
 /**
- * A simple interface which can be used to paint certain icons at DPoints
+ * A eva2.problems.simple interface which can be used to paint certain icons at DPoints
  * ( @see chart2d.DPoint.setIcon or chart2d.DPointSet.setIcon ).
  * Different points may be easier recognized in a complex graph.
  * The container does not guarantee that the whole icon is visible in the graph

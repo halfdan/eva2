@@ -10,7 +10,7 @@ import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 
 /**
- * Simulated Annealing by Nelder and Mead, a simple yet efficient local search
+ * Simulated Annealing by Nelder and Mead, a eva2.problems.simple yet efficient local search
  * method. But to become less prone to premature convergence the cooling rate
  * has to be tuned to the optimization problem at hand. Again the population
  * size gives the number of multi-starts.
@@ -149,7 +149,7 @@ public class SimulatedAnnealing extends AbstractOptimizer implements java.io.Ser
     }
 
     /**
-     * This main method will start a simple hillclimber. No arguments necessary.
+     * This main method will start a eva2.problems.simple hillclimber. No arguments necessary.
      *
      * @param args
      */

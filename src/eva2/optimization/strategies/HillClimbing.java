@@ -16,7 +16,7 @@ import eva2.util.annotation.Description;
  */
 @Description("The Hill Climber uses the default EA mutation and initializing operators. If the population size is bigger than one a multi-start Hill Climber is performed.")
 public class HillClimbing extends AbstractOptimizer implements java.io.Serializable {
-    // These variables are necessary for the simple testcase
+    // These variables are necessary for the eva2.problems.simple testcase
 
     private InterfaceOptimizationProblem optimizationProblem = new B1Problem();
     private InterfaceMutation mutator = null;
