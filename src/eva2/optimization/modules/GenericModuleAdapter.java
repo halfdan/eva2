@@ -83,7 +83,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         }
         EvATabbedFrameMaker frmMkr = new EvATabbedFrameMaker();
 
-        InterfaceStatisticsParameter Stat = statisticsModule.getStatisticsParameter();
+        InterfaceStatisticsParameters Stat = statisticsModule.getStatisticsParameter();
         EvAModuleButtonPanelMaker buttonPanel = new EvAModuleButtonPanelMaker(remoteModuleAdapter, ((Processor) processor).isOptimizationRunning());
         buttonPanel.setHelperFilename(helperFilename);
         frmMkr.addPanelMaker(buttonPanel);

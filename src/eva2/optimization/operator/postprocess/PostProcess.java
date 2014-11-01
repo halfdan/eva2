@@ -23,9 +23,9 @@ import eva2.optimization.operator.selection.SelectBestIndividuals;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
+import eva2.optimization.statistics.StatisticsParameters;
 import eva2.problems.*;
 import eva2.optimization.statistics.InterfaceTextListener;
-import eva2.optimization.statistics.StatisticsParameter;
 import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.optimization.strategies.GradientDescentAlgorithm;
 import eva2.optimization.strategies.HillClimbing;
@@ -814,7 +814,7 @@ public class PostProcess {
      */
     private static void runPP(OptimizerRunnable rnbl) {
         rnbl.getOptimizationParameters().setDoPostProcessing(false);
-        rnbl.setVerbosityLevel(StatisticsParameter.VERBOSITY_NONE);
+        rnbl.setVerbosityLevel(StatisticsParameters.VERBOSITY_NONE);
         ppRunnables.add(rnbl);
         rnbl.run();
         rnbl.getOptimizationParameters().setDoPostProcessing(true);

@@ -30,9 +30,9 @@ import java.util.logging.Logger;
  * @see AbstractStatistics
  */
 @Description(value = "Configure statistics and output of the optimization run. Changes to the data selection state will not take effect during a run.")
-public class StatisticsParameter implements InterfaceStatisticsParameter, InterfaceNotifyOnInformers, Serializable {
+public class StatisticsParameters implements InterfaceStatisticsParameters, InterfaceNotifyOnInformers, Serializable {
     private static final long serialVersionUID = -8681061379203108390L;
-    private static final Logger LOGGER = Logger.getLogger(StatisticsParameter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StatisticsParameters.class.getName());
     public final static int VERBOSITY_NONE = 0;
     public final static int VERBOSITY_FINAL = 1;
     public final static int VERBOSITY_KTH_IT = 2;
@@ -55,11 +55,11 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     /**
      *
      */
-    public static StatisticsParameter getInstance(boolean loadDefaultSerFile) {
+    public static StatisticsParameters getInstance(boolean loadDefaultSerFile) {
         if (loadDefaultSerFile) {
             return getInstance("Statistics.ser");
         } else {
-            return new StatisticsParameter();
+            return new StatisticsParameters();
         }
     }
 
@@ -68,17 +68,17 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
      *
      * @return A loaded (from file) or new instance of the class.
      */
-    public static StatisticsParameter getInstance(String serFileName) {
-        StatisticsParameter instance = null;
+    public static StatisticsParameters getInstance(String serFileName) {
+        StatisticsParameters instance = null;
         try {
             FileInputStream fileStream = new FileInputStream(serFileName);
-            instance = (StatisticsParameter) Serializer.loadObject(fileStream);
+            instance = (StatisticsParameters) Serializer.loadObject(fileStream);
         } catch (FileNotFoundException ex) {
             LOGGER.log(Level.WARNING, "Could not store instance object.", ex);
         }
 
         if (instance == null) {
-            instance = new StatisticsParameter();
+            instance = new StatisticsParameters();
         }
         return instance;
     }
@@ -86,7 +86,7 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     /**
      *
      */
-    public StatisticsParameter() {
+    public StatisticsParameters() {
         name = "Statistics";
         outputVerbosity.setSelectedTag(VERBOSITY_KTH_IT);
         outputTo.setSelectedTag(1);
@@ -121,20 +121,20 @@ public class StatisticsParameter implements InterfaceStatisticsParameter, Interf
     /**
      *
      */
-    private StatisticsParameter(StatisticsParameter statisticsParameter) {
-        convergenceRateThreshold = statisticsParameter.convergenceRateThreshold;
-        useStatPlot = statisticsParameter.useStatPlot;
-        textOutput = statisticsParameter.textOutput;
-        multiRuns = statisticsParameter.multiRuns;
-        resultFilePrefix = statisticsParameter.resultFilePrefix;
-        verbosityK = statisticsParameter.verbosityK;
+    private StatisticsParameters(StatisticsParameters statisticsParameters) {
+        convergenceRateThreshold = statisticsParameters.convergenceRateThreshold;
+        useStatPlot = statisticsParameters.useStatPlot;
+        textOutput = statisticsParameters.textOutput;
+        multiRuns = statisticsParameters.multiRuns;
+        resultFilePrefix = statisticsParameters.resultFilePrefix;
+        verbosityK = statisticsParameters.verbosityK;
     }
 
     /**
      *
      */
     public Object getClone() {
-        return new StatisticsParameter(this);
+        return new StatisticsParameters(this);
     }
 
     /**

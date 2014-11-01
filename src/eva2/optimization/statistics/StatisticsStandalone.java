@@ -24,30 +24,30 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
     private boolean collectData = false;
 
 
-    public StatisticsStandalone(InterfaceStatisticsParameter statParams) {
+    public StatisticsStandalone(InterfaceStatisticsParameters statParams) {
         super();
         statisticsParameter = statParams;
     }
 
     public StatisticsStandalone(String resultFileName) {
-        this(resultFileName, 1, resultFileName == null ? StatisticsParameter.VERBOSITY_NONE : StatisticsParameter.VERBOSITY_FINAL, false);
+        this(resultFileName, 1, resultFileName == null ? StatisticsParameters.VERBOSITY_NONE : StatisticsParameters.VERBOSITY_FINAL, false);
     }
 
     public StatisticsStandalone(String resultFileName, int multiRuns, int verbosity, boolean outputAllFieldsAsText) {
-        this(StatisticsParameter.getInstance(false));
+        this(StatisticsParameters.getInstance(false));
         statisticsParameter.setMultiRuns(multiRuns);
         statisticsParameter.setOutputVerbosity(statisticsParameter.getOutputVerbosity().setSelectedTag(verbosity));
         statisticsParameter.setResultFilePrefix(resultFileName);
         statisticsParameter.setOutputAllFieldsAsText(outputAllFieldsAsText);
         if (resultFileName == null) {
-            statisticsParameter.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_WINDOW);
+            statisticsParameter.getOutputTo().setSelectedTag(StatisticsParameters.OUTPUT_WINDOW);
         } else {
-            statisticsParameter.setOutputTo(statisticsParameter.getOutputTo().setSelectedTag(StatisticsParameter.OUTPUT_FILE));
+            statisticsParameter.setOutputTo(statisticsParameter.getOutputTo().setSelectedTag(StatisticsParameters.OUTPUT_FILE));
         }
     }
 
     public StatisticsStandalone() {
-        this(new StatisticsParameter());
+        this(new StatisticsParameters());
     }
 
     @Override

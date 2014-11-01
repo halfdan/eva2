@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author mkron
  * @see AbstractStatistics
- * @see InterfaceStatisticsParameter
+ * @see InterfaceStatisticsParameters
  */
 public interface InterfaceStatisticsListener {
     /**
@@ -44,7 +44,7 @@ public interface InterfaceStatisticsListener {
      *
      * @param header
      * @param multiRunFinalObjectData
-     * @see InterfaceStatisticsParameter
+     * @see InterfaceStatisticsParameters
      * @see AbstractStatistics
      */
     public void finalMultiRunResults(String[] header, List<Object[]> multiRunFinalObjectData);
