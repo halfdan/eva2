@@ -430,6 +430,44 @@ public final class StringTools {
     }
 
     /**
+     * Converts a camelCase to a more human form, with spaces.
+     * E.g. 'Camel Case'.
+     *
+     * @param word Word to convert to a readable String
+     * @return Readable String representation of input word
+     */
+    public static String convertToUnderscore(final String word) {
+        Pattern pattern = Pattern.compile("([A-Z]|[a-z])[a-z]*");
+
+        List<String> tokens = new ArrayList<>();
+        Matcher matcher = pattern.matcher(word);
+        String acronym = "";
+        while (matcher.find()) {
+            String found = matcher.group();
+            if (found.matches("^[A-Z]$")) {
+                acronym += found;
+            } else {
+                if (acronym.length() > 0) {
+                    //we have an acronym to add before we continue
+                    tokens.add(acronym);
+                    acronym = "";
+                }
+                tokens.add(found);
+            }
+        }
+
+        if (acronym.length() > 0) {
+            tokens.add(acronym);
+        }
+
+        if (!tokens.isEmpty()) {
+            return concatFields(tokens, "-").toLowerCase();
+        }
+
+        return word.toLowerCase();
+    }
+
+    /**
      * Takes a string and returns it with the first character
      * converted to uppercase.
      *
