@@ -15,6 +15,7 @@ import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.tools.math.StatisticUtils;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -1633,6 +1634,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      *
      * @param size
      */
+    @Parameter(name = "size", description = "The initial population size.")
     public final void setTargetSize(int size) {
         this.targetPopSize = size;
     }
@@ -1650,10 +1652,6 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
 
     public int getTargetSize() {
         return this.targetPopSize;
-    }
-
-    public String targetSizeTipText() {
-        return "The initial population size.";
     }
 
     public AbstractEAIndividual getEAIndividual(int i) {
@@ -1831,12 +1829,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return popDistMetric;
     }
 
+    @Parameter(name = "metric", description = "Set a default distance metric to be used with the population.")
     public void setPopMetric(InterfaceDistanceMetric metric) {
         popDistMetric = metric;
-    }
-
-    public String popMetricTipText() {
-        return "Set a default distance metric to be used with the population.";
     }
 
     /**
@@ -2325,15 +2320,12 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return initMethod;
     }
 
+    @Parameter(description = "Define the initial sampling method. Note that anything other than inidividualDefault will override the individual initialization concerning the positions in solution space.")
     public void setInitMethod(PopulationInitMethod initMethod) {
         this.initMethod = initMethod;
         GenericObjectEditor.setShowProperty(this.getClass(), "initAround", initMethod == PopulationInitMethod.aroundSeed);
         GenericObjectEditor.setShowProperty(this.getClass(), "initPos", initMethod == PopulationInitMethod.aroundSeed);
         GenericObjectEditor.setShowProperty(this.getClass(), "seedCardinality", initMethod == PopulationInitMethod.binCardinality);
-    }
-
-    public String initMethodTipText() {
-        return "Define the initial sampling method. Note that anything other than inidividualDefault will override the individual initialization concerning the positions in solution space.";
     }
 
     /**
