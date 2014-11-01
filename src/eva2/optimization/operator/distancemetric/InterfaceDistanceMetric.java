@@ -7,11 +7,6 @@ import eva2.optimization.individuals.AbstractEAIndividual;
  * This metric methods is experimental and should be moved to the
  * optimization problem to allow problem specific distance metrics
  * between individuals.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.04.2003
- * Time: 13:23:40
- * To change this template use Options | File Templates.
  */
 public interface InterfaceDistanceMetric {
 
