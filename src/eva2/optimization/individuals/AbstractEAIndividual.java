@@ -14,6 +14,7 @@ import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Hidden;
+import eva2.util.annotation.Parameter;
 
 import java.util.*;
 
@@ -275,7 +276,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @param opt The optimization problem that is to be solved.
      */
-    public void init(InterfaceOptimizationProblem opt) {
+    public void initialize(InterfaceOptimizationProblem opt) {
         initializationOperator.initialize(this, opt);
         this.mutationOperator.initialize(this, opt);
         this.crossoverOperator.init(this, opt);
@@ -814,6 +815,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @param mutator The mutation operator.
      */
+    @Parameter(name = "mutator", description = "The mutation operator to use.")
     public void setMutationOperator(InterfaceMutation mutator) {
         this.mutationOperator = mutator;
     }
@@ -822,16 +824,13 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return this.mutationOperator;
     }
 
-    public String mutationOperatorTipText() {
-        return "Choose the mutation operator to use.";
-    }
-
     /**
      * This method allows you to set the mutation probability, e.g. the chance
      * that mutation occurs at all.
      *
      * @param mutprob The mutation probability.
      */
+    @Parameter(name = "pm", description = "The chance that mutation occurs.")
     public void setMutationProbability(double mutprob) {
         if (mutprob < 0) {
             mutprob = 0;
@@ -846,16 +845,13 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return mutationProbability;
     }
 
-    public String mutationProbabilityTipText() {
-        return "The chance that mutation occurs.";
-    }
-
     /**
      * This method allows you to choose from multiple crossover operators. Note:
-     * If the operator doeesn't suite the data nothing will happen.
+     * If the operator doesn't suite the data nothing will happen.
      *
      * @param crossover The crossover operator.
      */
+    @Parameter(name = "crossover", description = "The crossover operator.")
     public void setCrossoverOperator(InterfaceCrossover crossover) {
         this.crossoverOperator = crossover;
     }
@@ -864,15 +860,12 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return this.crossoverOperator;
     }
 
-    public String crossoverOperatorTipText() {
-        return "Choose the crossover operator to use.";
-    }
-
     /**
      * This method allows to set the crossover probability
      *
      * @param prob
      */
+    @Parameter(name = "pc", description = "The crossover rate")
     public void setCrossoverProbability(double prob) {
         this.crossoverProbability = prob;
         if (this.crossoverProbability > 1) {
@@ -887,20 +880,13 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return this.crossoverProbability;
     }
 
-    public String crossoverProbabilityTipText() {
-        return "The chance that crossover occurs.";
-    }
-
     public InterfaceInitialization getInitOperator() {
         return initializationOperator;
     }
 
+    @Parameter(name = "initop", description = "The initialization method for the individual")
     public void setInitOperator(InterfaceInitialization mInitOperator) {
         initializationOperator = mInitOperator;
-    }
-
-    public String initOperatorTipText() {
-        return "An initialization method for the individual";
     }
 
     /**

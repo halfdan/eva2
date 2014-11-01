@@ -76,9 +76,9 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * @param opt The optimization problem that is to be solved.
      */
     @Override
-    public void init(InterfaceOptimizationProblem opt) {
-        ((AbstractEAIndividual) this.doubleIndividual).init(opt);
-        ((AbstractEAIndividual) this.binaryIndividual).init(opt);
+    public void initialize(InterfaceOptimizationProblem opt) {
+        ((AbstractEAIndividual) this.doubleIndividual).initialize(opt);
+        ((AbstractEAIndividual) this.binaryIndividual).initialize(opt);
     }
 
     @Override
@@ -105,8 +105,8 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
                 ((AbstractEAIndividual) this.binaryIndividual).initByValue(((Object[]) obj)[0], opt);
             }
         } else {
-            ((AbstractEAIndividual) this.doubleIndividual).init(opt);
-            ((AbstractEAIndividual) this.binaryIndividual).init(opt);
+            ((AbstractEAIndividual) this.doubleIndividual).initialize(opt);
+            ((AbstractEAIndividual) this.binaryIndividual).initialize(opt);
             System.out.println("Initial value for GAESIndividualDoubleData is not suitable!");
         }
     }

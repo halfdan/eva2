@@ -72,9 +72,9 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
      * @param opt The optimization problem that is to be solved.
      */
     @Override
-    public void init(InterfaceOptimizationProblem opt) {
-        ((AbstractEAIndividual) this.integerData).init(opt);
-        ((AbstractEAIndividual) this.permutationData).init(opt);
+    public void initialize(InterfaceOptimizationProblem opt) {
+        ((AbstractEAIndividual) this.integerData).initialize(opt);
+        ((AbstractEAIndividual) this.permutationData).initialize(opt);
     }
 
     @Override
@@ -101,8 +101,8 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
                 ((AbstractEAIndividual) this.permutationData).initByValue(((Object[]) obj)[0], opt);
             }
         } else {
-            ((AbstractEAIndividual) this.integerData).init(opt);
-            ((AbstractEAIndividual) this.permutationData).init(opt);
+            ((AbstractEAIndividual) this.integerData).initialize(opt);
+            ((AbstractEAIndividual) this.permutationData).initialize(opt);
             System.out.println("Initial value for GIOBGAIndividualIntegerPermutationData is not suitable!");
         }
     }

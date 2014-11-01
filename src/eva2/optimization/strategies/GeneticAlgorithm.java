@@ -1,6 +1,5 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.mutation.InterfaceAdaptOperatorGenerational;
 import eva2.optimization.operator.selection.InterfaceSelection;
@@ -11,8 +10,6 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
-
-import java.util.Vector;
 
 /**
  * The traditional genetic algorithms as devised by Holland. To only special
@@ -28,7 +25,6 @@ public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Seria
     private boolean useElitism = true;
     private int plague = 0;
     private int numberOfPartners = 1;
-    transient private Vector<InterfacePopulationChangedEventListener> changeListener;
 
     public GeneticAlgorithm() {
     }
@@ -151,38 +147,6 @@ public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Seria
             this.population.setTargetSize(this.population.size());
         }
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
-    }
-
-    /**
-     * This method allows you to add the LectureGUI as listener to the Optimizer
-     *
-     * @param ea
-     */
-    @Override
-    public void addPopulationChangedEventListener(InterfacePopulationChangedEventListener ea) {
-        if (this.changeListener == null) {
-            this.changeListener = new Vector<>();
-        }
-        this.changeListener.add(ea);
-    }
-
-    @Override
-    public boolean removePopulationChangedEventListener(
-            InterfacePopulationChangedEventListener ea) {
-        return changeListener != null && changeListener.removeElement(ea);
-    }
-
-    /**
-     * Something has changed
-     *
-     * @param name
-     */
-    protected void firePropertyChangedEvent(String name) {
-        if (this.changeListener != null) {
-            for (int i = 0; i < this.changeListener.size(); i++) {
-                this.changeListener.get(i).registerPopulationStateChanged(this, name);
-            }
-        }
     }
 
     @Override

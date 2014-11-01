@@ -244,8 +244,8 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      * @param opt The optimization problem that is to be solved.
      */
     @Override
-    public void init(InterfaceOptimizationProblem opt) {
-        super.init(opt);
+    public void initialize(InterfaceOptimizationProblem opt) {
+        super.initialize(opt);
         // evil operators may not respect the range, so at least give some hint
         if (!Mathematics.isInRange(genotype, range)) {
             EVAERROR.errorMsgOnce("Warning: Individual out of range after initialization (and potential initial crossover/mutation)!");

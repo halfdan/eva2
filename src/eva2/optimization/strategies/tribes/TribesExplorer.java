@@ -954,7 +954,7 @@ v[d] = cmin * v[d];
     }
 
     @Override
-    public void init(InterfaceOptimizationProblem opt) {
+    public void initialize(InterfaceOptimizationProblem opt) {
         // TODO whats this for?
         for (int i = 0; i < this.position.x.length; i++) {
             this.position.x[0] = 0.;
@@ -983,7 +983,7 @@ v[d] = cmin * v[d];
             }
             this.setDoubleGenotype(x);
         } else {
-            this.init(opt);
+            this.initialize(opt);
             System.err.println("Initial value for ESIndividualDoubleData is not double[]!");
         }
     }

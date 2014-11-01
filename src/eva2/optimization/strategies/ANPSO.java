@@ -541,7 +541,7 @@ public class ANPSO extends NichePSO implements InterfaceAdditionalPopulationInfo
                     if (reinitSuperfl) {
                         for (int i = 0; i < tmpPop.size(); i++) {
                             AbstractEAIndividual indy = tmpPop.getEAIndividual(i);
-                            indy.init(optimizationProblem);
+                            indy.initialize(optimizationProblem);
                             indy.resetFitness(Double.MAX_VALUE); // TODO this is not so nice... they should be collected in a reinit-list and inserted at the beginning of the next optimize step
                             ParticleSwarmOptimization.initIndividualDefaults(indy, 0.2);
                             ParticleSwarmOptimization.initIndividualMemory(indy);

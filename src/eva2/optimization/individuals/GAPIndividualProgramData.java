@@ -72,9 +72,9 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
      * @param opt The optimization problem that is to be solved.
      */
     @Override
-    public void init(InterfaceOptimizationProblem opt) {
-        ((AbstractEAIndividual) this.numberData).init(opt);
-        ((AbstractEAIndividual) this.programData).init(opt);
+    public void initialize(InterfaceOptimizationProblem opt) {
+        ((AbstractEAIndividual) this.numberData).initialize(opt);
+        ((AbstractEAIndividual) this.programData).initialize(opt);
     }
 
     @Override
@@ -101,8 +101,8 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
                 ((AbstractEAIndividual) this.programData).initByValue(((Object[]) obj)[0], opt);
             }
         } else {
-            ((AbstractEAIndividual) this.numberData).init(opt);
-            ((AbstractEAIndividual) this.programData).init(opt);
+            ((AbstractEAIndividual) this.numberData).initialize(opt);
+            ((AbstractEAIndividual) this.programData).initialize(opt);
             System.out.println("Initial value for GAPIndividualDoubleData is not suitable!");
         }
     }
