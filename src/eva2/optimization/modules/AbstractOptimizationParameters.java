@@ -25,13 +25,11 @@ import java.util.logging.Logger;
 public abstract class AbstractOptimizationParameters implements InterfaceOptimizationParameters, Serializable {
     protected static final Logger LOGGER = Logger.getLogger(AbstractOptimizationParameters.class.getName());
 
-    @Parameter(name = "Random Seed", description = "Random number seed, set to zero to use current system time.")
     protected long randomSeed = (long) 0.0;
 
     /**
      * The optimizer to be executed.
      */
-    @Parameter(name = "Optimizer", description = "Choose an optimization strategy.")
     protected InterfaceOptimizer optimizer;
 
     /**
@@ -39,14 +37,12 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
      * When changed it is automatically applied to the
      * selected optimizer.
      */
-    @Parameter(name = "Problem", description = "Choose the problem that is to optimize and the EA individual parameters.")
     protected InterfaceOptimizationProblem problem;
 
     /**
      * The termination criteria that terminated an
      * optimization run.
      */
-    @Parameter(name = "Terminator", description = "Choose a termination criterion.")
     protected InterfaceTerminator terminator;
 
     /**
@@ -54,7 +50,6 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
      * This can be enabled in the UI and will perform additional
      * optimization e.g. with Hill Climbing.
      */
-    @Parameter(name = "Post Processing", description = "Parameters for the post processing step.")
     protected InterfacePostProcessParams postProcessParams = new PostProcessParams(false);
 
     transient protected InterfacePopulationChangedEventListener populationChangedEventListener;
@@ -183,6 +178,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
     }
 
     @Override
+    @Parameter(description = "The optimization strategy to use.")
     public void setOptimizer(InterfaceOptimizer optimizer) {
         this.optimizer = optimizer;
         this.optimizer.setProblem(this.problem);
@@ -219,6 +215,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
      * @param problem
      */
     @Override
+    @Parameter(description = "Choose the problem that is to optimize and the EA individual parameters.")
     public void setProblem(InterfaceOptimizationProblem problem) {
         this.problem = problem;
         this.optimizer.setProblem(this.problem);
@@ -236,6 +233,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
      * @param x Long seed.
      */
     @Override
+    @Parameter(name = "seed", description = "Random number seed, set to zero to use current system time.")
     public void setRandomSeed(long x) {
         randomSeed = x;
     }
@@ -257,6 +255,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
      * @param term The new terminator
      */
     @Override
+    @Parameter(description = "The termination criterion.")
     public void setTerminator(InterfaceTerminator term) {
         this.terminator = term;
     }
@@ -272,6 +271,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
     }
 
     @Override
+    @Parameter(description = "Parameters for the post processing step.")
     public void setPostProcessParams(InterfacePostProcessParams ppp) {
         postProcessParams = ppp;
     }

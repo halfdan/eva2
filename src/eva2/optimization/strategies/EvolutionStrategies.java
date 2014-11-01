@@ -24,14 +24,8 @@ import eva2.util.annotation.Parameter;
  */
 @Description(value = "This is an Evolution Strategy. Note that the population size depends on mu (number of parents) and lambda (number of offspring)")
 public class EvolutionStrategies extends AbstractOptimizer implements java.io.Serializable {
-
-    @Parameter(description = "Mu", name = "mu")
     protected int mu = 5;
-
-    @Parameter(description = "Lambda", name = "lambda")
     protected int lambda = 20;
-
-    @Parameter(description = "Determines whether the +-Strategy should be used.", name = "usePlus")
     protected boolean usePlusStrategy = false;
     private InterfaceSelection parentSelection = new SelectRandom();
     private InterfaceSelection partnerSelection = new SelectRandom();
@@ -369,6 +363,7 @@ public class EvolutionStrategies extends AbstractOptimizer implements java.io.Se
      *
      * @param elitism
      */
+    @Parameter(description = "Determines whether the +-Strategy should be used.", name = "usePlus")
     public void setPlusStrategy(boolean elitism) {
         this.usePlusStrategy = elitism;
     }
@@ -405,8 +400,9 @@ public class EvolutionStrategies extends AbstractOptimizer implements java.io.Se
     /**
      * This method allows you to set parent population size myu
      *
-     * @param myu The parent population size.
+     * @param mu The parent population size.
      */
+    @Parameter(description = "The parent population size.")
     public void setMu(int mu) {
         this.mu = mu;
     }
@@ -424,6 +420,7 @@ public class EvolutionStrategies extends AbstractOptimizer implements java.io.Se
      *
      * @param lambda The children population size.
      */
+    @Parameter(description = "The children population size.")
     public void setLambda(int lambda) {
         this.lambda = lambda;
     }

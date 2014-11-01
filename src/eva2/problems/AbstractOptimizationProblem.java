@@ -29,7 +29,6 @@ import eva2.util.annotation.Parameter;
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
-import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
@@ -72,10 +71,8 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 
     protected AbstractEAIndividual template = null;
 
-    @Parameter(name = "defaultAccuracy", description = "A default threshold to identify optima - e.g. the assumed minimal distance between any two optima.")
     private double defaultAccuracy = 0.001; // default accuracy for identifying optima.
 
-    @Parameter(name = "problemDimension", description = "Length of the x vector to be optimized.")
     protected int problemDimension = 10;
 
     /**
@@ -561,6 +558,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         return defaultAccuracy;
     }
 
+    @Parameter(name = "accuracy", description = "A default threshold to identify optima - e.g. the assumed minimal distance between any two optima.")
     public void setDefaultAccuracy(double defAcc) {
         defaultAccuracy = defAcc;
     }

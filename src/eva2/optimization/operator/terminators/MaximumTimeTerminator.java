@@ -15,7 +15,6 @@ import eva2.util.annotation.Parameter;
  */
 @Description("Terminate if a maximum time (seconds) was reached.")
 public class MaximumTimeTerminator implements InterfaceTerminator {
-    @Parameter(name = "maxTime", description = "Maximum time in seconds")
     private int maximumTime = 5;
 
     private long startTime;
@@ -49,6 +48,7 @@ public class MaximumTimeTerminator implements InterfaceTerminator {
         return maximumTime;
     }
 
+    @Parameter(name = "time", description = "Maximum time in seconds")
     public void setMaximumTime(int maximumTime) {
         this.maximumTime = maximumTime;
     }

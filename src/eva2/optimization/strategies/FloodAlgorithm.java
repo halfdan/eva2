@@ -26,7 +26,6 @@ public class FloodAlgorithm extends AbstractOptimizer implements java.io.Seriali
     GAIndividualBinaryData bestIndividual, testIndividual;
     public double initialFloodPeak = 2000.0, currentFloodPeak;
 
-    @Parameter(name = "drainRate", description = "Set the drain rate that reduces the current flood level each generation.")
     public double drainRate = 1.0;
 
     public FloodAlgorithm() {
@@ -227,6 +226,7 @@ public class FloodAlgorithm extends AbstractOptimizer implements java.io.Seriali
         return this.drainRate;
     }
 
+    @Parameter(description = "Set the drain rate that reduces the current flood level each generation.")
     public void setDrainRate(double a) {
         this.drainRate = a;
         if (this.drainRate < 0) {

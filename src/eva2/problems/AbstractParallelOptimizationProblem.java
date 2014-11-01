@@ -6,9 +6,7 @@ import eva2.util.annotation.Parameter;
  * This class is under construction.
  */
 public abstract class AbstractParallelOptimizationProblem extends AbstractOptimizationProblem {
-    @Parameter(name = "localCPUs", description = "Set the number of local CPUS (only active in non-parallelized mode).")
     private int localCPUs = 4;
-    @Parameter(name = "paralellize", description = "Toggle between parallel and serial implementation.")
     private boolean parallelize = false;
 
     @Override
@@ -34,6 +32,7 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
         return this.parallelize;
     }
 
+    @Parameter(description = "Toggle between parallel and serial implementation.")
     public void setParallelize(boolean b) {
         this.parallelize = b;
     }
@@ -43,6 +42,7 @@ public abstract class AbstractParallelOptimizationProblem extends AbstractOptimi
      *
      * @param n Number of processors.
      */
+    @Parameter(name = "cpu", description = "Set the number of local CPUS (only active in non-parallelized mode).")
     public void setNumberLocalCPUs(int n) {
         this.localCPUs = n;
     }
