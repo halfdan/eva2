@@ -21,7 +21,6 @@ public class EvaluationTerminator implements InterfaceTerminator,
     /**
      * Number of fitness calls on the problem which is optimized.
      */
-    @Parameter(name = "Max. Fitness Calls", description = "Number of calls to fitness function.")
     protected int maxFitnessCalls = 1000;
 
     public EvaluationTerminator() {
@@ -67,6 +66,7 @@ public class EvaluationTerminator implements InterfaceTerminator,
         return ret;
     }
 
+    @Parameter(name = "calls", description = "Number of calls to fitness function.")
     public void setFitnessCalls(int x) {
         maxFitnessCalls = x;
     }

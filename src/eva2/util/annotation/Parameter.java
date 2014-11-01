@@ -3,9 +3,8 @@ package eva2.util.annotation;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 public @interface Parameter {
-    String name();
-
+    String name() default "";
     String description();
 }

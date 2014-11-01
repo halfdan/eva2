@@ -23,7 +23,6 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
     /**
      * A food source which could not be improved through "maxTrials" trials is abandoned by its employed bee.
      */
-    @Parameter(name = "trials", description = "Maximum number of trials until bee abandons the food source")
     protected int maxTrials = 100;
 
     protected AbstractEAIndividual bestIndividual;
@@ -243,6 +242,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
         this.population = pop;
     }
 
+    @Parameter(name = "trials", description = "Maximum number of trials until bee abandons the food source")
     public void setMaxTrials(int maxTrials) {
         this.maxTrials = maxTrials;
     }

@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 public abstract class AbstractOptimizer implements InterfaceOptimizer {
 
-    @Parameter(name = "Population", description = "Edit the properties of the population used.")
     protected Population population = new Population();
 
     protected InterfaceOptimizationProblem optimizationProblem = new F1Problem();
@@ -56,6 +55,7 @@ public abstract class AbstractOptimizer implements InterfaceOptimizer {
     }
 
     @Override
+    @Parameter(description = "Edit the properties of the population used.")
     public void setPopulation(Population pop) {
         this.population = pop;
     }

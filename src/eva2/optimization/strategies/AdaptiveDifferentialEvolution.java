@@ -1,13 +1,12 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.F1Problem;
 import eva2.util.annotation.Description;
-import eva2.util.annotation.Parameter;
 
 import java.util.ArrayList;
 
@@ -19,13 +18,8 @@ import java.util.ArrayList;
 public class AdaptiveDifferentialEvolution extends AbstractOptimizer {
     protected Population population;
 
-    @Parameter(name = "groups", description = "Number of sub-groups to use during optimization.")
     protected int nonOverlappingGroups = 5;
-
-    @Parameter(name = "F", description = "Differential Weight")
     protected double differentialWeight = 0.8;
-
-    @Parameter(name = "CR", description = "Crossover Rate")
     protected double crossoverRate = 0.6;
 
 

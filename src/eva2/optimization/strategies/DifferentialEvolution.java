@@ -31,16 +31,12 @@ import java.util.Vector;
 public class DifferentialEvolution extends AbstractOptimizer implements java.io.Serializable {
     protected transient Population children = null;
 
-    @Parameter(name = "DEType", description = "Mutation type for DE")
     private eva2.optimization.enums.DEType DEType;
 
-    @Parameter(name = "F", description = "Differential Weight")
     private double differentialWeight = 0.8;
 
-    @Parameter(name = "CR", description = "Crossover Rate")
     private double crossoverRate = 0.6;
 
-    @Parameter(name = "Lambda", description = "Enhance greediness through amplification of the differential vector to the best individual for DE2.")
     private double lambda = 0.6;
 
     private double mt = 0.05;
@@ -697,6 +693,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
      *
      * @param f
      */
+    @Parameter(name = "F", description = "Differential Weight")
     public void setDifferentialWeight(double f) {
         this.differentialWeight = f;
     }
@@ -715,6 +712,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
      *
      * @param k
      */
+    @Parameter(name = "CR", description = "Crossover Rate")
     public void setCrossoverRate(double k) {
         if (k < 0) {
             k = 0;
@@ -739,6 +737,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
      *
      * @param l
      */
+    @Parameter(description = "Enhance greediness through amplification of the differential vector to the best individual for DE2.")
     public void setLambda(double l) {
         this.lambda = l;
     }
@@ -775,6 +774,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
      *
      * @param s The type.
      */
+    @Parameter(name = "type", description = "Mutation type for DE")
     public void setDEType(eva2.optimization.enums.DEType s) {
         this.DEType = s;
         // show mt for trig. DE only
