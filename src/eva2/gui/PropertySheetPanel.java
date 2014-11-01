@@ -1,10 +1,10 @@
 package eva2.gui;
 
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.EVAHELP;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
+import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.beans.*;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.EventObject;
@@ -290,7 +289,13 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                     continue;
                 }
 
-                toolTips[itemIndex] = BeanInspector.getToolTipText(name, methodDescriptors, targetObject, stripToolTipToFirstPoint, tipTextLineLen);
+                // If the property's setter has the Parameter annotation use the description as tipText
+                if (propertyDescriptors[i].getWriteMethod() != null && propertyDescriptors[i].getWriteMethod().isAnnotationPresent(Parameter.class)) {
+                    Parameter parameter = propertyDescriptors[i].getWriteMethod().getAnnotation(Parameter.class);
+                    toolTips[itemIndex] = parameter.description();
+                } else {
+                    toolTips[itemIndex] = BeanInspector.getToolTipText(name, methodDescriptors, targetObject);
+                }
                 itemIndex++;
                 newView = getView(propertyEditors[i]);
                 if (newView == null) {
