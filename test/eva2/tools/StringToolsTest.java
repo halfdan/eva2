@@ -1,12 +1,13 @@
 package eva2.tools;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -46,6 +47,28 @@ public class StringToolsTest {
             assertEquals(value, result);
         }
 	}
+
+    /**
+     * Test of humaniseCamelCase method, of class StringTools.
+     */
+    @Test
+    public void testConvertToUnderscore() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("camelCase", "camel-case");
+        map.put("CamelCase", "camel-case");
+        map.put("thisIsAwesome", "this-is-awesome");
+        map.put("THQIsNice", "thq-is-nice");
+        map.put("iLikeABC", "i-like-abc");
+
+        String key, value;
+        for (Object o : map.entrySet()) {
+            Map.Entry pairs = (Map.Entry) o;
+            key = (String) pairs.getKey();
+            value = (String) pairs.getValue();
+            String result = StringTools.convertToUnderscore(key);
+            assertEquals(value, result);
+        }
+    }
 
 	/**
 	 * Test of upcaseFirst method, of class StringTools.
