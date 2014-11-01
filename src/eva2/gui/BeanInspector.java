@@ -7,12 +7,9 @@ import eva2.tools.SelectedTag;
 import eva2.tools.StringTools;
 import eva2.tools.Tag;
 import eva2.util.annotation.Description;
-import eva2.util.annotation.Parameter;
 
 import java.beans.*;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -986,30 +983,6 @@ public class BeanInspector {
     }
 
     /**
-     * Annotations on Fields are not retained when inherited. This method traverses the
-     * superclass hierarchy and looks for an annotation on a given field name.
-     *
-     * @param name Name of the field in the class
-     * @param c Class to start searching for the field with the annotation
-     * @param annotation The annotation to look for
-     * @param <T>
-     * @return Returns the annotation of the field if found, null otherwise
-     */
-    public static <T extends Annotation> T getAnnotationFromField(final String name, final Class c, final Class<T> annotation) {
-        for (Field field : c.getDeclaredFields()) {
-            if (field.isAnnotationPresent(annotation) && field.getName().equals(name)) {
-                return field.getAnnotation(annotation);
-            }
-        }
-
-        if (!c.getSuperclass().equals(Object.class)) {
-            return getAnnotationFromField(name, c.getSuperclass(), annotation);
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * This method simply looks for an appropriate tiptext
      *
      * @param name    The name of the property
@@ -1020,12 +993,6 @@ public class BeanInspector {
     public static String getToolTipText(String name, MethodDescriptor[] methods, Object target, boolean stripToolTipToFirstPoint, int toHTMLLen) {
         String result = "";
         String tipName = name + "TipText";
-
-        // Find by annotation
-        Parameter parameter = BeanInspector.getAnnotationFromField(name, target.getClass(), Parameter.class);
-        if (parameter != null) {
-            return parameter.description();
-        }
 
         // Find by deprecated TipText method
         for (MethodDescriptor method : methods) {

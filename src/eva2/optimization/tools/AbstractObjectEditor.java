@@ -7,6 +7,7 @@ import eva2.gui.PropertyEditorProvider;
 import eva2.gui.PropertySheetPanel;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.EVAHELP;
+import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -265,7 +266,13 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
                 result.propertyType = propertyDescriptor.getPropertyType();
                 result.name = propertyDescriptor.getDisplayName();
                 result.label = new JLabel(result.name, SwingConstants.RIGHT);
-                result.tipText = BeanInspector.getToolTipText(result.name, methods, target);
+                // If the property's setter has the Parameter annotation use the description as tipText
+                if (propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getWriteMethod().isAnnotationPresent(Parameter.class)) {
+                    Parameter parameter = propertyDescriptor.getWriteMethod().getAnnotation(Parameter.class);
+                    result.tipText = parameter.description();
+                } else {
+                    result.tipText = BeanInspector.getToolTipText(result.name, methods, target);
+                }
                 try {
                     result.value = result.getMethod.invoke(target, args);
                     result.editor = PropertyEditorProvider.findEditor(propertyDescriptor, result.value);
