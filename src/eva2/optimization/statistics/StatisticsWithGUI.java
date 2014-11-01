@@ -45,7 +45,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
      *
      */
     public StatisticsWithGUI() {
-        statisticsParameter = StatisticsParameter.getInstance(true);
+        statisticsParameter = StatisticsParameters.getInstance(true);
         proxyPrinter = new JTextoutputFrame("Optimization Log");
         addTextListener(proxyPrinter);
     }
@@ -113,7 +113,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
     @Override
     protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
-        if (statisticsParameter instanceof StatisticsParameter) {
+        if (statisticsParameter instanceof StatisticsParameters) {
             graphDesc = lastFieldSelection.getSelectedWithIndex();
         } else {
             graphDesc = null;

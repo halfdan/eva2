@@ -6,9 +6,9 @@ import eva2.tools.StringSelection;
 /**
  * An interface to encapsulate statistics parameters.
  *
- * @see StatisticsParameter
+ * @see StatisticsParameters
  */
-public interface InterfaceStatisticsParameter {
+public interface InterfaceStatisticsParameters {
     String getName();
 
     void saveInstance();

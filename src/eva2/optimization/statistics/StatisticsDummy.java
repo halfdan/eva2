@@ -15,19 +15,19 @@ import java.util.List;
  */
 public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListener {
     private boolean consoleOut = false;
-    private StatisticsParameter sParams = null;
+    private StatisticsParameters sParams = null;
     private AbstractEAIndividual bestCurrentIndividual, bestRunIndy, bestIndividualAllover;
 
     public StatisticsDummy() {
         bestIndividualAllover = null;
-        sParams = new StatisticsParameter();
-        sParams.setOutputVerbosityK(StatisticsParameter.VERBOSITY_NONE);
+        sParams = new StatisticsParameters();
+        sParams.setOutputVerbosityK(StatisticsParameters.VERBOSITY_NONE);
     }
 
     public StatisticsDummy(boolean doConsoleOut) {
         bestIndividualAllover = null;
-        sParams = new StatisticsParameter();
-        sParams.setOutputVerbosityK(StatisticsParameter.VERBOSITY_NONE);
+        sParams = new StatisticsParameters();
+        sParams.setOutputVerbosityK(StatisticsParameters.VERBOSITY_NONE);
         consoleOut = doConsoleOut;
     }
 
@@ -73,7 +73,7 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     }
 
     @Override
-    public InterfaceStatisticsParameter getStatisticsParameter() {
+    public InterfaceStatisticsParameters getStatisticsParameter() {
         return sParams;
     }
 
