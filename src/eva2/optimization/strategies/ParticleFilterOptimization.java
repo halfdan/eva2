@@ -146,7 +146,7 @@ public class ParticleFilterOptimization extends AbstractOptimizer implements jav
             int i;
             for (i = 0; (i + parents.getTargetSize()) < pop.getTargetSize(); i++) {
                 immi = (AbstractEAIndividual) pop.getEAIndividual(0).clone();
-                immi.init(getProblem());
+                immi.initialize(getProblem());
                 parents.add(immi);
             }
             parents.synchSize();

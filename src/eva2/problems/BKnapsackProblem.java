@@ -160,7 +160,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
     }
 
     protected void initIndy(int k, AbstractEAIndividual indy) {
-        indy.init(this);
+        indy.initialize(this);
         if (RNG.flipCoin(this.problemSpecificInit)) {
             BitSet tmpSet = new BitSet();
             tmpSet.clear();

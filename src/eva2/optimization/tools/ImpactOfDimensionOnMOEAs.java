@@ -104,7 +104,7 @@ public class ImpactOfDimensionOnMOEAs {
         ((InterfaceDataTypeDouble) template).setDoubleDataLength(numberOfVariables);
         for (int i = 0; i < popSize; i++) {
             tmpIndy = (AbstractEAIndividual) template.clone();
-            tmpIndy.init(null);
+            tmpIndy.initialize(null);
             pop.add(tmpIndy);
         }
     }
