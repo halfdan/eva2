@@ -155,8 +155,14 @@ public final class OptimizationBuilder {
                     } else {
                         // The subtree has the name of the class
                         String className = (String)((ArgumentTree)tree.get(name)).getValue();
-                        // Try to get the actual class from its name
-                        Class subType = getClassFromName(className, type);
+
+                        Class subType;
+                        if (className != null) {
+                            // Try to get the actual class from its name
+                            subType = getClassFromName(className, type);
+                        } else {
+                            subType = type;
+                        }
 
                         // Here the recursion starts
                         obj = constructFromArgumentTree(subType, (ArgumentTree) tree.get(name));

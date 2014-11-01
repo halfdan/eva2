@@ -22,6 +22,7 @@ import eva2.tools.diagram.ColorBarCalculator;
 import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Parameter;
 
 /**
  * For a double valued problem, there are two main methods to implement:
@@ -285,6 +286,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      *
      * @param noise The sigma for a gaussian random number.
      */
+    @Parameter(description = "Gaussian noise level on the fitness value.")
     public void setNoise(double noise) {
         if (noise < 0) {
             noise = 0;
@@ -301,15 +303,12 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         return this.noise;
     }
 
-    public String noiseTipText() {
-        return "Gaussian noise level on the fitness value.";
-    }
-
     /**
      * This method allows you to choose the EA individual used by the problem.
      *
      * @param indy The EAIndividual type
      */
+    @Parameter(name = "individual", description = "Base individual type defining the data representation and mutation/crossover operators")
     public void setEAIndividual(InterfaceDataTypeDouble indy) {
         this.template = (AbstractEAIndividual) indy;
     }
@@ -322,10 +321,6 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     @Override
     public InterfaceDataTypeDouble getEAIndividual() {
         return (InterfaceDataTypeDouble) this.template;
-    }
-
-    public String EAIndividualTipText() {
-        return "Set the base individual type defining the data representation and mutation/crossover operators";
     }
 
     /**
@@ -351,6 +346,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         return "Absolute limit for the symmetric range in any dimension";
     }
 
+    @Parameter(name = "rotate", description = "If marked, the function is rotated by 22.5 degrees along every axis.")
     public void setDoRotation(boolean doRotation) {
         this.doRotation = doRotation;
         if (!doRotation) {
@@ -360,10 +356,6 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 
     public boolean isDoRotation() {
         return doRotation;
-    }
-
-    public String doRotationTipText() {
-        return "If marked, the function is rotated by 22.5 degrees along every axis.";
     }
 
     /**

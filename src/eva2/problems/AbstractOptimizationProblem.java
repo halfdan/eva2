@@ -87,13 +87,11 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         return parallelThreads;
     }
 
+    @Parameter(name = "parallel", description = "Set the number of threaded parallel function evaluations - interesting for slow functions and generational optimizers.")
     public void setParallelThreads(int parallelThreads) {
         this.parallelThreads = parallelThreads;
     }
 
-    public String parallelThreadsTipText() {
-        return "Set the number of threaded parallel function evaluations - interesting for slow functions and generational optimizers.";
-    }
 
     /**
      * This method initializes the problem instance.
@@ -404,10 +402,6 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     public AbstractEAIndividual getIndividualTemplate() {
         return template;
-    }
-
-    public String individualTemplateTipText() {
-        return "Choose the individual representation to use.";
     }
 
     /**
