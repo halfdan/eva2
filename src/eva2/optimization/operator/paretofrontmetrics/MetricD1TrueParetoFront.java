@@ -7,14 +7,16 @@ import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.tools.FileTools;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
 /**
- * The D1 Pareto front metric requires a refrence Pareto front
+ * The D1 Pareto front metric requires a reference Pareto front
  * and calculate the distance between the  current solution and
  * the true Pareto front.
  */
+@Description("This method calculates the mean distance of the true Pareto front to the approximated set.")
 public class MetricD1TrueParetoFront implements eva2.optimization.operator.paretofrontmetrics.InterfaceParetoFrontMetric, java.io.Serializable {
 
     private PropertyFilePath inputFilePath = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
@@ -128,9 +130,6 @@ public class MetricD1TrueParetoFront implements eva2.optimization.operator.paret
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -139,15 +138,6 @@ public class MetricD1TrueParetoFront implements eva2.optimization.operator.paret
      */
     public String getName() {
         return "D1 P*";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method calculates the mean distance of the true Pareto front to the approximated set.";
     }
 
     /**

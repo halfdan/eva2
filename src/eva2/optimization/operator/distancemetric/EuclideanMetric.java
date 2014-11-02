@@ -10,10 +10,9 @@ import java.io.Serializable;
  * The Euclidean metric just measures the Euclidean distance based on the default double representation
  * as given by AbstractEAIndividual.getDoublePosition(AbstractEAIndividual).
  *
- * @author mkron
  * @see AbstractEAIndividual#getDoublePosition(AbstractEAIndividual)
  */
-@Description("Set to true to norm the distance by the double range - only possible with InterfaceDataTypeDouble individuals.")
+@Description("The euclidean metric calculates euclidean distances for individuals which have a real valued interpretation.")
 public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
     private boolean normedByDblRange = false;
 
@@ -87,15 +86,6 @@ public class EuclideanMetric implements InterfaceDistanceMetric, Serializable {
             result += (tmp * tmp);
         }
         return Math.sqrt(result);
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The euclidean metric calculates euclidean distances for individuals which have a real valued interpretation.";
     }
 
     /**

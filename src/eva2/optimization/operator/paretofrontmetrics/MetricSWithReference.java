@@ -8,6 +8,7 @@ import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.tools.FileTools;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  * S-Metric calculates the hyper-volume covered between the current solutions and a reference point.
  * But here the difference to a given hybervolume is to be minimized.
  */
+@Description("Difference between the current SMetric and the reference SMetric (curSM - refSM).")
 public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io.Serializable {
     private double[][] objectiveSpaceRange;
     private PropertyFilePath inputFilePath = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
@@ -249,9 +251,6 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -260,15 +259,6 @@ public class MetricSWithReference implements InterfaceParetoFrontMetric, java.io
      */
     public String getName() {
         return "S-Metric";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Difference between the current SMetric and the reference SMetric (curSM - refSM).";
     }
 
     /**

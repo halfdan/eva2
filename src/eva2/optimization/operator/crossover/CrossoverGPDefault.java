@@ -8,9 +8,11 @@ import eva2.optimization.individuals.codings.gp.AbstractGPNode;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  */
+@Description("This is a one-point crossover between two programs.")
 public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializable {
     /**
      *
@@ -141,9 +143,6 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
         return this.getName();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -152,14 +151,5 @@ public class CrossoverGPDefault implements InterfaceCrossover, java.io.Serializa
      */
     public String getName() {
         return "GP default crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a one-point crossover between two programs.";
     }
 }

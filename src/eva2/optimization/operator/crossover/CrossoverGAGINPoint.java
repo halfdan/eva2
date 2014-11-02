@@ -7,6 +7,7 @@ import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
@@ -15,9 +16,8 @@ import java.util.BitSet;
  * parent individuals are recombined by exchanging sub-segments within randomly
  * selected points. Therefore, far-away alleles (larger GA schemas) are more likely to be split
  * between individuals.
- *
- * @author mkron, streiche
  */
+@Description("This is an n-point crossover between m individuals which may be binary or integer based.")
 public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializable {
     private int numberOfCrossovers = 3;
 
@@ -242,9 +242,6 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
         return this.getName();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -253,15 +250,6 @@ public class CrossoverGAGINPoint implements InterfaceCrossover, java.io.Serializ
      */
     public String getName() {
         return "GA-GI N-Point Crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an n-point crossover between m individuals which may be binary or integer based.";
     }
 
     /**

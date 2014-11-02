@@ -16,6 +16,7 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
+import eva2.util.annotation.Description;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.io.IOException;
  * scheme suited to identify uni- and multi-modal search spaces
  * under development and currently defunct.
  */
+@Description("This is migration scheme, which implements a clustering based partitioning.")
 public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializable {
 
     public boolean debug = false;
@@ -353,18 +355,6 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
         } catch (IOException e) {
             System.out.println("Problems writing to output file!");
         }
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is migration scheme, which implements a clustering based partitioning.";
     }
 
     /**

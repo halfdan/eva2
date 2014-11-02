@@ -1,10 +1,12 @@
 package eva2.optimization.operator.migration;
 
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.util.annotation.Description;
 
 /**
  * Implements no migration as reference.
  */
+@Description("This is actually no mirgation scheme, because no individuals are exchanged.")
 public class SOMONoMigration implements InterfaceMigration, java.io.Serializable {
 
     /**
@@ -38,18 +40,6 @@ public class SOMONoMigration implements InterfaceMigration, java.io.Serializable
     @Override
     public void migrate(InterfaceOptimizer[] islands) {
 
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is actually no mirgation scheme, because no individuals are exchanged.";
     }
 
     /**

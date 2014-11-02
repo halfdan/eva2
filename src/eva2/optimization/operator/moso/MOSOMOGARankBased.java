@@ -2,14 +2,11 @@ package eva2.optimization.operator.moso;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 14.06.2005
- * Time: 17:05:11
- * To change this template use File | Settings | File Templates.
  */
+@Description("This method calculates the MOGA rank of each individual and uses the rank as fitness [Fonseca93Genetic].")
 public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serializable {
 
     public MOSOMOGARankBased() {
@@ -93,10 +90,6 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -106,14 +99,5 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
     @Override
     public String getName() {
         return "MOGA Rank Based";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method calcuates the MOGA rank of each individual and uses the rank as fitness [Fonseca93Genetic].";
     }
 }

@@ -3,10 +3,12 @@ package eva2.optimization.operator.crossover;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("No crossover at all, even for occasional strategy parameters.")
 public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
     private InterfaceOptimizationProblem optimizationProblem;
 
@@ -79,9 +81,6 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
         return this.getName();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -90,14 +89,5 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
      */
     public String getName() {
         return "Nocrossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "No crossover at all, even for occasional strategy paramters.";
     }
 }

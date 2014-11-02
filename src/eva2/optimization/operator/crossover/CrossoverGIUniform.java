@@ -6,14 +6,12 @@ import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.06.2005
- * Time: 14:38:23
- * To change this template use File | Settings | File Templates.
+ *
  */
+@Description("This is a uniform crossover between m individuals.")
 public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializable {
 
     private InterfaceOptimizationProblem optimizationProblem;
@@ -121,9 +119,6 @@ public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializa
         return this.getName();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -132,14 +127,5 @@ public class CrossoverGIUniform implements InterfaceCrossover, java.io.Serializa
      */
     public String getName() {
         return "GI uniform crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a uniform crossover between m individuals.";
     }
 }

@@ -4,6 +4,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.NichePSO;
 import eva2.optimization.strategies.ParticleSubSwarmOptimization;
+import eva2.util.annotation.Description;
 
 /**
  * The standard deviation in the fitness of each main swarm particle over the last 3 iterations is calculated.
@@ -15,6 +16,7 @@ import eva2.optimization.strategies.ParticleSubSwarmOptimization;
  * In Proceedings of the 4th Asia-Pacific Conference on Simulated Evolution and Learning (SEAL'02),
  * 2002, 2, 692-696
  */
+@Description("Strategy to create subswarms from the main swarm")
 public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreationStrategy, java.io.Serializable {
 
     protected double delta = 0.0001; //  "experimentally found to be effective" according to "a niching particle swarm optimizer" by Brits et al.
@@ -32,13 +34,6 @@ public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreati
         return new StandardSubswarmCreationStrategy(delta);
     }
 
-    public String globalInfo() {
-        return "Strategy to create subswarms from the main swarm";
-    }
-
-/**********************************************************************************************************************
- * shouldCreateSubswarm
- */
     /**
      * @param indy main swarm particle
      * @return

@@ -3,10 +3,12 @@ package eva2.optimization.operator.moso;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This method selects a random fitness value, actually this implements VEGA [Schaffer84Experiments].")
 public class MOSORandomChoice implements InterfaceMOSOConverter, java.io.Serializable {
 
     private int outputDimension = 2;
@@ -79,10 +81,6 @@ public class MOSORandomChoice implements InterfaceMOSOConverter, java.io.Seriali
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -92,14 +90,5 @@ public class MOSORandomChoice implements InterfaceMOSOConverter, java.io.Seriali
     @Override
     public String getName() {
         return "Random Choice";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method selects a random fitness value, actually this implements VEGA [Schaffer84Experiments].";
     }
 }

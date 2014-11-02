@@ -5,10 +5,12 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * S-Metric calculates the hyper-volume covered between the current solutions and a reference point.
  */
+@Description("Calculating the hypervolume UNDER the given Pareto-front.")
 public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable {
 
     private double[][] objectiveSpaceRange;
@@ -200,9 +202,6 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -211,14 +210,5 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
      */
     public String getName() {
         return "S-Metric";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Calculating the hypervolume UNDER the given Pareto-front.";
     }
 }

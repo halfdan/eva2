@@ -3,10 +3,12 @@ package eva2.optimization.operator.moso;
 import eva2.gui.PropertyDoubleArray;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This method minimizes the delta to a given target fitness values.")
 public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Serializable {
 
     private PropertyDoubleArray goals = null;
@@ -96,10 +98,6 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -109,15 +107,6 @@ public class MOSOGoalProgramming implements InterfaceMOSOConverter, java.io.Seri
     @Override
     public String getName() {
         return "Goal Programming";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method minimizes the delta to a given target fitness values.";
     }
 
     /**

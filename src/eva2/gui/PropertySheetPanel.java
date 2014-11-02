@@ -240,9 +240,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             }
         }
 
-        // Look for a globalInfo method that returns a string
-        // describing the target
-        int methsFound = 0; // dont loop too long, so count until all found
+        int methsFound = 0; // don't loop too long, so count until all found
         for (MethodDescriptor methodDescriptor : methodDescriptors) {
             String name = methodDescriptor.getDisplayName();
             Method meth = methodDescriptor.getMethod();

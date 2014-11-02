@@ -1,6 +1,7 @@
 package eva2.optimization.operator.paramcontrol;
 
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -9,9 +10,10 @@ import java.io.Serializable;
  * value with a given iteration period. The dampening is integrated as a sub-linear reduction of the
  * frequency, turning sin(t) into sin(((t+1)^d)-1) which is linear for d=1. For slightly smaller values,
  * the frequency slowly decreases, while for slightly larger values, it slowly increases.
- *
- * @author mkron
  */
+@Description("Sinusoidally oscillating value, the frequency may be varyied with time. E.g. use dampening 0.9 " +
+        "for a slightly decreasing frequency, dampening 1.1 for a slight increase. The frequency is modified " +
+        "in the form sin(t) -> sin(-1+(t+1)^d)")
 public class SinusoidalParamAdaption implements InterfaceHasUpperDoubleBound, ParamAdaption, GenericParamAdaption, Serializable {
     private double upperBnd = 1;
     private double lowerBnd = 0;
@@ -62,19 +64,11 @@ public class SinusoidalParamAdaption implements InterfaceHasUpperDoubleBound, Pa
         }
 
         res = medVal + (upperBnd - lowerBnd) * 0.5 * Math.sin(t);
-//		System.out.println("In " + this + " at " + iteration + ": " + res); 
-
         return res;
     }
 
     public String getName() {
         return "SinAdapt(" + getControlledParam() + "_" + lowerBnd + "_" + upperBnd + "_" + iterationPeriod + ((dampening != 1) ? ("_dmp-" + dampening) : "") + ")";
-    }
-
-    public String globalInfo() {
-        return "Sinusoidally oscillating value, the frequency may be varyied with time. E.g. use dampening 0.9 " +
-                "for a slightly decreasing frequency, dampening 1.1 for a slight increase. The frequency is modified " +
-                "in the form sin(t) -> sin(-1+(t+1)^d)";
     }
 
     /**

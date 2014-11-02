@@ -5,14 +5,12 @@ import eva2.optimization.individuals.InterfaceGIIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.06.2005
- * Time: 14:38:54
- * To change this template use File | Settings | File Templates.
+ *
  */
+@Description("This is an n-point crossover between m individuals.")
 public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializable {
     private InterfaceOptimizationProblem optimizationProblem;
     private int numberOfCrossovers = 3;
@@ -135,9 +133,6 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
         return this.getName();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -146,15 +141,6 @@ public class CrossoverGINPoint implements InterfaceCrossover, java.io.Serializab
      */
     public String getName() {
         return "GI N-Point Crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an n-point crossover between m individuals.";
     }
 
     /**

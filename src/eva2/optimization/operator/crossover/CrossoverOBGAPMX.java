@@ -5,17 +5,11 @@ import eva2.optimization.individuals.InterfaceOBGAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * <p>Title: EvA2</p>
- * <p>Description: PMX-Crossover as defined in http://www.cs.rit.edu/usr/local/pub/pga/Genetic/Slides_etc/ga_5_og.pdf</p>
- * <p>Copyright: Copyright (c) 2003</p>
- * <p>Company: </p>
- *
- * @author planatsc
- * @version 1.0
  */
-
+@Description("The infamous PMX crossover for Permutations.")
 public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializable {
 
     public CrossoverOBGAPMX() {
@@ -111,9 +105,6 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
         return this.getName();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -123,14 +114,4 @@ public class CrossoverOBGAPMX implements InterfaceCrossover, java.io.Serializabl
     public String getName() {
         return "OBGA PMX crossover";
     }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The infamous PMX crossover for Permutations.";
-    }
-
 }

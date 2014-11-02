@@ -10,6 +10,7 @@ import eva2.problems.F1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,7 @@ import java.util.ArrayList;
  * url = {http://garage.cse.msu.edu/icga97/Abstracts.html#092}
  * }
  */
+@Description("This is the Unimodal Normally Distributed crossover (UNDX) by Ono and Kobayashi, 1997, typically uses more than two parents.")
 public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable {
 
     private InterfaceOptimizationProblem optimizationProblem;
@@ -301,9 +303,6 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
         return this.getName();
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -312,15 +311,6 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
      */
     public String getName() {
         return "ES UNDX crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is the Unimodal Normally Distributed crossover (UNDX) by Ono and Kobayashi, 1997, typically uses more than two parents.";
     }
 
     public void setEta(double a) {

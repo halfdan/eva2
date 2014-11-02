@@ -3,10 +3,12 @@ package eva2.optimization.operator.moso;
 import eva2.gui.PropertyDoubleArray;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This method calcuates the weighted sum over all fitness values.")
 public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Serializable {
 
     private PropertyDoubleArray weights = null;
@@ -114,10 +116,6 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -127,15 +125,6 @@ public class MOSOWeightedFitness implements InterfaceMOSOConverter, java.io.Seri
     @Override
     public String getName() {
         return "Weighted Sum";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method calcuates the weighted sum over all fitness values.";
     }
 
     /**

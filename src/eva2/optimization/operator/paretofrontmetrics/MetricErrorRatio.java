@@ -1,21 +1,21 @@
 package eva2.optimization.operator.paretofrontmetrics;
 
-
 import eva2.gui.PropertyFilePath;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.tools.FileTools;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
-
 
 /**
  * The error ratio metric only suited for small discrete
  * Pareto fronts, since it calculates the intersection between
  * the reference and the current solution.
  */
+@Description("This method calculates how many solutions are contained in the reference solution.")
 public class MetricErrorRatio implements eva2.optimization.operator.paretofrontmetrics.InterfaceParetoFrontMetric, java.io.Serializable {
     private PropertyFilePath inputFilePath = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
     private double epsilon = 0.0001;
@@ -135,9 +135,6 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
         return false;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -146,15 +143,6 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
      */
     public String getName() {
         return "Error ratio";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method calculates how many solutions are contained in the reference solution.";
     }
 
     /**

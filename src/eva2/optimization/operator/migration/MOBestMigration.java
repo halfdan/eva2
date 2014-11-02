@@ -4,11 +4,13 @@ import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectMOMaxiMin;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.util.annotation.Description;
 
 /**
  * Migration based on a Multi-criterial selection mechanism
  * migrating the n best individuals between all populations.
  */
+@Description("This is multi-objective migration scheme.")
 public class MOBestMigration implements InterfaceMigration, java.io.Serializable {
 
     private InterfaceSelection selection = new SelectMOMaxiMin();
@@ -73,18 +75,6 @@ public class MOBestMigration implements InterfaceMigration, java.io.Serializable
         for (int i = 0; i < islands.length; i++) {
             islands[i].setPopulation(newIPOP[i]);
         }
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is multi-objective migration scheme.";
     }
 
     /**

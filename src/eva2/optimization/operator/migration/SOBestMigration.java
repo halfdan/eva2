@@ -5,10 +5,12 @@ import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectBestIndividuals;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.util.annotation.Description;
 
 /**
  * Simple single-objective migration scheme.
  */
+@Description("This is a single-objective migration scheme.")
 public class SOBestMigration implements InterfaceMigration, java.io.Serializable {
 
     private InterfaceSelection selection = new SelectBestIndividuals();
@@ -32,11 +34,11 @@ public class SOBestMigration implements InterfaceMigration, java.io.Serializable
     }
 
     /**
-     * The migrate method can be called asychnronously or
-     * sychronously. Basically it allows migration of individuals
+     * The migrate method can be called asynchronously or
+     * synchronously. Basically it allows migration of individuals
      * between multiple EA islands and since there are so many
      * different possible strategies i've introduced this
-     * interface which is mostlikely subject to numerous changes..
+     * interface which is most likely subject to numerous changes..
      * Note: Since i use the RMIRemoteThreadProxy everything done
      * to the islands will use the serialization method, so if
      * you call getPopulation() on an island it is not a reference
@@ -73,17 +75,6 @@ public class SOBestMigration implements InterfaceMigration, java.io.Serializable
         for (int i = 0; i < islands.length; i++) {
             islands[i].setPopulation(newIPOP[i]);
         }
-    }
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a single-objective migration scheme.";
     }
 
     /**

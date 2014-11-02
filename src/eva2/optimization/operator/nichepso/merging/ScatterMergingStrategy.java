@@ -1,6 +1,7 @@
 package eva2.optimization.operator.nichepso.merging;
 
 import eva2.optimization.strategies.ParticleSubSwarmOptimization;
+import eva2.util.annotation.Description;
 
 import java.util.Vector;
 
@@ -16,6 +17,7 @@ import java.util.Vector;
  * In IEEE Congress on Evolutionary Computation,
  * 2007.
  */
+@Description("Strategy to merge subswarms")
 public class ScatterMergingStrategy extends StandardMergingStrategy {
 
     public ScatterMergingStrategy() {
@@ -25,15 +27,6 @@ public class ScatterMergingStrategy extends StandardMergingStrategy {
     public ScatterMergingStrategy(double theMu) {
         super(theMu);
     }
-
-    @Override
-    public String globalInfo() {
-        return "Strategy to merge subswarms";
-    }
-
-/**********************************************************************************************************************
- * mergeSubswarms
- */
 
     /**
      * @param i

@@ -15,16 +15,18 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
+import eva2.util.annotation.Description;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 
 /**
  * This method implements the clustering based subdivision
- * scheme, this method rearanges the populations and may
+ * scheme, this method rearranges the populations and may
  * impose area constraints on the subpopulations. This method
  * is suited for K-means only.
  */
+@Description("This is migration scheme, which implements a clustering based partitioning.")
 public class MOClusteringSeparation implements InterfaceMigration, java.io.Serializable {
 
     public boolean debug = false;
@@ -349,18 +351,6 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
         } catch (IOException e) {
             System.out.println("Problems writing to output file!");
         }
-    }
-
-/**********************************************************************************************************************
- * These are for GUI
- */
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is migration scheme, which implements a clustering based partitioning.";
     }
 
     /**

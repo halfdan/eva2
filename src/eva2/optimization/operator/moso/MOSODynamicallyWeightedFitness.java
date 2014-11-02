@@ -2,10 +2,12 @@ package eva2.optimization.operator.moso;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This method calcuates a dynamic weighted sum over TWO fitness values depending on the current generation.")
 public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, java.io.Serializable {
 
     private double f = 50;
@@ -92,9 +94,6 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
         return this.getName() + "\n";
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -104,15 +103,6 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
     @Override
     public String getName() {
         return "Dynamic Weighted Sum";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method calcuates a dynamic weighted sum over TWO fitness values depending on the current generation.";
     }
 
     /**

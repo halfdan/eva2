@@ -10,8 +10,6 @@ import java.util.BitSet;
 /**
  * This crossover-Method tries to convert the first individual into the second. If a better Individual is found on the way, this individual is chosen.
  * If no better individual is found, one with the greatest distance from the both is chosen
- *
- * @author Alex
  */
 public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceEvaluatingCrossoverOperator {
     private InterfaceOptimizationProblem optimizationProblem;
@@ -88,18 +86,8 @@ public class CM7 implements InterfaceCrossover, java.io.Serializable, InterfaceE
         return this.evaluations;
     }
 
-    /**
-     * **************************************************
-     * GUI
-     */
-
     public String getName() {
         return "Combination Method 7";
-    }
-
-    public static String globalInfo() {
-        //TODO
-        return "";
     }
 
     @Override

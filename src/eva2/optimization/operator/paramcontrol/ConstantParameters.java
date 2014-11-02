@@ -1,14 +1,14 @@
 package eva2.optimization.operator.paramcontrol;
 
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
 /**
  * Dummy implementation. This class is ignored by the Processor. Parameters will not be changed.
- *
- * @author mkron
  */
+@Description("Parameters will not be changed.")
 public class ConstantParameters extends AbstractParameterControl implements Serializable {
     public ConstantParameters() {
     }
@@ -34,9 +34,5 @@ public class ConstantParameters extends AbstractParameterControl implements Seri
 
     @Override
     public void updateParameters(Object obj) {
-    }
-
-    public static String globalInfo() {
-        return "Parameters will not be changed.";
     }
 }

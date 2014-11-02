@@ -3,10 +3,12 @@ package eva2.optimization.operator.moso;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This method calculate the maximum of minimum distance over all criterias over all individuals.")
 public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable {
 
     private int outputDimension = 2;
@@ -117,14 +119,5 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
     @Override
     public String getName() {
         return "MaxiMin Criterium";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method calculate the maximum of minimum distance over all criterias over all individuals.";
     }
 }

@@ -601,19 +601,16 @@ public class BeanInspector {
         Object args[] = {};
         Object ret;
 
-        for (String meth : new String[]{"getName", "globalInfo"}) {
-            ret = callIfAvailable(obj, meth, args);
-            if (ret != null) {
+        ret = callIfAvailable(obj, "getName", args);
+        if (ret != null) {
+            infoBf.append("\t");
+            infoBf.append((String) ret);
+        } else {
+            Description description = obj.getClass().getAnnotation(Description.class);
+            if (description != null) {
                 infoBf.append("\t");
-                infoBf.append((String) ret);
-            } else {
-                Description description = obj.getClass().getAnnotation(Description.class);
-                if (description != null) {
-                    infoBf.append("\t");
-                    infoBf.append(description.value());
-                }
+                infoBf.append(description.value());
             }
-
         }
 
         return infoBf.toString();

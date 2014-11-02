@@ -3,10 +3,12 @@ package eva2.optimization.operator.moso;
 import eva2.gui.PropertyDoubleArray;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This method minimizes the Lp metric to a given target fitness values, for (p<1) this equals the Tchebycheff metric.")
 public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializable {
 
     private PropertyDoubleArray reference = null;
@@ -119,9 +121,6 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -131,15 +130,6 @@ public class MOSOLpMetric implements InterfaceMOSOConverter, java.io.Serializabl
     @Override
     public String getName() {
         return "Lp Metric";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method minimizes the Lp metric to a given target fitness values, for (p<1) this equals the Tchebycheff metric.";
     }
 
     /**

@@ -3,6 +3,7 @@ package eva2.optimization.operator.paramcontrol;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.ParticleSwarmOptimization;
 import eva2.tools.math.Mathematics;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 
@@ -18,9 +19,8 @@ import java.io.Serializable;
  * to work ok, although it depends on the defined target activity. I am not convinced that in general it is
  * easier to define than a constant constriction factor for the standard constricted PSO.
  * Still, the possibility to control the convergence behaviour based on time is nice, and it works quite good on F6, for example.
- *
- * @author mkron
  */
+@Description("Controls the inertness factor based on the average velocity.")
 public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
     private double minInert = 0.5;
     private double maxInert = 1;
@@ -153,10 +153,6 @@ public class PSOActivityFeedbackControl implements ParamAdaption, Serializable {
 
     public String deltaInertnessTipText() {
         return "The additive change of the inertness in each adaption step.";
-    }
-
-    public static String globalInfo() {
-        return "Controls the inertness factor based on the average velocity.";
     }
 
     @Override

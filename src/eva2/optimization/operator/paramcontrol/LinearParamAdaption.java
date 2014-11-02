@@ -1,13 +1,14 @@
 package eva2.optimization.operator.paramcontrol;
 
+import eva2.util.annotation.Description;
+
 import java.io.Serializable;
 
 
 /**
  * Linearly adapt a specific target String parameter.
- *
- * @author mkron
  */
+@Description("Simple linear parameter adaption.")
 public class LinearParamAdaption extends AbstractLinearParamAdaption
         implements InterfaceHasUpperDoubleBound, GenericParamAdaption, Serializable {
     String target = "undefinedParameter";
@@ -40,10 +41,6 @@ public class LinearParamAdaption extends AbstractLinearParamAdaption
     @Override
     public void setControlledParam(String target) {
         this.target = target;
-    }
-
-    public static String globalInfo() {
-        return "Simple linear parameter adaption.";
     }
 
     public String[] customPropertyOrder() {
