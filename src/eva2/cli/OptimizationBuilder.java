@@ -69,7 +69,7 @@ public final class OptimizationBuilder {
                 }
             }
         }
-        System.out.println(argumentMap.toString());
+
         ArgumentTree argumentTree = new ArgumentTree();
         for (String key : argumentMap.keySet()) {
             insertIntoArgumentTree(argumentTree, key, argumentMap.get(key));
@@ -137,7 +137,7 @@ public final class OptimizationBuilder {
                 Method setter = pd.getWriteMethod();
                 Class<?> type = pd.getPropertyType();
                 // We skip non-existing setters or setters that are hidden by annotation
-                if (setter == null || setter.isAnnotationPresent(Hidden.class)) {
+                if (getter == null || setter == null || setter.isAnnotationPresent(Hidden.class)) {
                     continue;
                 }
                 System.out.println(name + " = " + " type = " + type);
@@ -156,9 +156,15 @@ public final class OptimizationBuilder {
                  */
                 if (tree.containsKey(name)) {
                     foundParameters++;
-                    Object obj;
+                    Object obj = null;
                     if (type.isPrimitive() && ((ArgumentTree)tree.get(name)).getValue() != null) {
-                        obj = BeanInspector.stringToPrimitive((String)((ArgumentTree) tree.get(name)).getValue(), type);
+                        obj = BeanInspector.stringToPrimitive((String) ((ArgumentTree) tree.get(name)).getValue(), type);
+                    } else if (type.isArray() && ((ArgumentTree)tree.get(name)).getValue() != null) {
+
+                    } else if (type.isEnum() && ((ArgumentTree)tree.get(name)).getValue() != null) {
+                        int enumIndex = Integer.parseInt((String)((ArgumentTree)tree.get(name)).getValue());
+                        // ToDo: Properly check
+                        obj = type.getEnumConstants()[enumIndex];
                     } else {
                         // The subtree has the name of the class
                         String className = (String)((ArgumentTree)tree.get(name)).getValue();
