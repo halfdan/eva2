@@ -57,7 +57,7 @@ public class MonteCarloSearch extends AbstractOptimizer implements java.io.Seria
     public void initializeByPopulation(Population pop, boolean reset) {
         this.population = (Population) pop.clone();
         if (reset) {
-            this.population.init();
+            this.population.initialize();
             this.optimizationProblem.evaluate(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }

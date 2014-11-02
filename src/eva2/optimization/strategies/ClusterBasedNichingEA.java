@@ -216,7 +216,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
     public void initializeByPopulation(Population pop, boolean reset) {
         this.undifferentiatedPopulation = (Population) pop.clone();
         if (reset) {
-            this.undifferentiatedPopulation.init();
+            this.undifferentiatedPopulation.initialize();
         }
         initDefaults(reset);
     }

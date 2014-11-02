@@ -78,7 +78,7 @@ public class CHCAdaptiveSearchAlgorithm extends AbstractOptimizer implements jav
     public void initializeByPopulation(Population pop, boolean reset) {
         this.population = (Population) pop.clone();
         if (reset) {
-            this.population.init();
+            this.population.initialize();
         }
         AbstractEAIndividual tmpIndy = ((AbstractEAIndividual) (this.population.get(0)));
         if (tmpIndy instanceof InterfaceGAIndividual) {

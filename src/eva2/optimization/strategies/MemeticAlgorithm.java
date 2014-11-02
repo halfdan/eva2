@@ -64,7 +64,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
     public void initializeByPopulation(Population pop, boolean reset) {
         this.setPopulation((Population) pop.clone());
         if (reset) {
-            this.getPopulation().init();
+            this.getPopulation().initialize();
             this.optimizationProblem.evaluate(this.getPopulation());
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }

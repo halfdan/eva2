@@ -59,7 +59,7 @@ public class EvolutionaryProgramming extends AbstractOptimizer implements java.i
     public void initializeByPopulation(Population pop, boolean reset) {
         this.population = (Population) pop.clone();
         if (reset) {
-            this.population.init();
+            this.population.initialize();
             this.evaluatePopulation(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }

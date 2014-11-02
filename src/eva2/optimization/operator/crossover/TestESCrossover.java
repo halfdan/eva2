@@ -113,7 +113,7 @@ public class TestESCrossover implements java.io.Serializable {
                 tmpIndyEA.initialize(optimizationProblem);
                 partners.add(tmpIndyEA);
             }
-            partners.init();
+            partners.initialize();
             daddy = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
             daddy.initialize(optimizationProblem);
             plot.clearAll();

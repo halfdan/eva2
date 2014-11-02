@@ -114,7 +114,7 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
         this.population = (Population) pop.clone();
         population.addPopulationChangedEventListener(null);
         if (reset) {
-            this.population.init();
+            this.population.initialize();
             this.optimizationProblem.evaluate(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }

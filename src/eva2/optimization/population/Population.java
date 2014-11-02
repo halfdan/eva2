@@ -363,19 +363,17 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     }
 
     /**
-     * This method inits the state of the population AFTER the individuals have
-     * been inited by a problem
+     * This method initializes the state of the population AFTER the individuals have
+     * been initialized by a problem
      */
-    public void init() {
+    public void initialize() {
         this.historyList = new LinkedList<>();
         this.generationCount = 0;
         this.functionCallCount = 0;
         double[] popSeed = null;
-//    	evaluationTimeHashes = null;
-//    	evaluationTimeModCount = -1;
         if (this.populationArchive != null) {
             this.populationArchive.clear();
-            this.populationArchive.init();
+            this.populationArchive.initialize();
         }
         switch (initMethod) {
             case individualDefault:
@@ -433,24 +431,18 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return seedPos;
     }
 
+    @Parameter(description = "Position around which the population will be (randomly) initialized. Be aware that the vector length must match (or exceed) problem dimension!")
     public void setInitPos(double[] si) {
         seedPos = si;
     }
 
-    public String initPosTipText() {
-        return "Position around which the population will be (randomly) initialized. Be aware that the vector length must match (or exceed) problem dimension!";
-    }
-
+    @Parameter(description = "Length of hypercube within which individuals are initialized around the initial position.")
     public void setInitAround(double d) {
         aroundDist = d;
     }
 
     public double getInitAround() {
         return aroundDist;
-    }
-
-    public String initAroundTipText() {
-        return "Lenght of hypercube within which individuals are initialized around the initial position.";
     }
 
     /**

@@ -91,7 +91,7 @@ public class PopulationBasedIncrementalLearning extends AbstractOptimizer implem
         this.population = new PBILPopulation();
         this.population.addPopulation((Population) pop.clone());
         if (reset) {
-            this.population.init();
+            this.population.initialize();
             this.evaluatePopulation(this.population);
         }
         ((PBILPopulation) this.population).buildProbabilityVector();

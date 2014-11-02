@@ -40,7 +40,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
      * have been inited by a problem.
      */
     @Override
-    public void init() {
+    public void initialize() {
         this.generationCount = 0;
         this.functionCallCount = 0;
         if (!(this.get(0) instanceof InterfaceGAIndividual)) {

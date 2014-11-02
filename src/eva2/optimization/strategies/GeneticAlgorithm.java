@@ -61,7 +61,7 @@ public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Seria
         this.population = (Population) pop.clone();
         if (reset) {
             this.optimizationProblem.initializePopulation(population);
-            this.population.init();
+            this.population.initialize();
             this.evaluatePopulation(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }
