@@ -4,12 +4,11 @@ import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.strategies.DifferentialEvolution;
+import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.F1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
-import eva2.optimization.strategies.GeneticAlgorithm;
-import eva2.optimization.strategies.InterfaceOptimizer;
-import eva2.tools.Serializer;
 import eva2.util.annotation.Description;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,21 +34,21 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
      * @return
      */
     public static OptimizationParameters getInstance() {
-        return getInstance("OptimizationParameters.ser", true);
+        return getInstance("OptimizationParameters.yml", true);
     }
 
     /**
      * Create an instance from a given serialized parameter file.
      *
-     * @param serParamFile Serialized Parameter File
+     * @param yamlFile Serialized Parameter File
      * @param casually     if true, standard parameters are used quietly if the params cannot be loaded
      * @return a OptimizationParameters instance
      */
-    public static OptimizationParameters getInstance(String serParamFile, final boolean casually) {
+    public static OptimizationParameters getInstance(String yamlFile, final boolean casually) {
         OptimizationParameters instance = null;
         try {
-            FileInputStream fileStream = new FileInputStream(serParamFile);
-            instance = (OptimizationParameters) Serializer.loadObject(fileStream, casually);
+            FileInputStream fileStream = new FileInputStream(yamlFile);
+            instance = (OptimizationParameters) new Yaml().load(fileStream);
         } catch (FileNotFoundException ex) {
             LOGGER.log(Level.WARNING, "Could not load instance object.", ex);
         }

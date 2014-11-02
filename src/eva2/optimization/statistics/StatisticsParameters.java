@@ -9,6 +9,7 @@ import eva2.tools.SelectedTag;
 import eva2.tools.Serializer;
 import eva2.tools.StringSelection;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -31,7 +32,6 @@ import java.util.logging.Logger;
  */
 @Description(value = "Configure statistics and output of the optimization run. Changes to the data selection state will not take effect during a run.")
 public class StatisticsParameters implements InterfaceStatisticsParameters, InterfaceNotifyOnInformers, Serializable {
-    private static final long serialVersionUID = -8681061379203108390L;
     private static final Logger LOGGER = Logger.getLogger(StatisticsParameters.class.getName());
     public final static int VERBOSITY_NONE = 0;
     public final static int VERBOSITY_FINAL = 1;
@@ -170,13 +170,6 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     }
 
     /**
-     *
-     */
-    public String infoStringTipText() {
-        return "Infostring displayed on fitness graph by pressing the right mouse button.";
-    }
-
-    /**
      * Use averaged graph for multi-run plots or not
      */
     @Override
@@ -232,14 +225,11 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
         return outputTo.getSelectedTagID() > 0;
     }
 
-    public String convergenceRateThresholdTipText() {
-        return "Provided the optimal fitness is at zero, give the threshold below which it is considered as 'reached'";
-    }
-
     /**
      * @param x
      */
     @Override
+    @Parameter(description = "Provided the optimal fitness is at zero, give the threshold below which it is considered as 'reached'")
     public void setConvergenceRateThreshold(double x) {
         convergenceRateThreshold = x;
     }
@@ -258,12 +248,9 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     }
 
     @Override
+    @Parameter(description = "Output all available data fields or only the selected entries as value.")
     public void setOutputAllFieldsAsText(boolean bShowFullText) {
         showAdditionalProblemInfo = bShowFullText;
-    }
-
-    public String outputAllFieldsAsTextTipText() {
-        return "Output all available data fields or only the selected entries as value.";
     }
 
     public void hideHideable() {
@@ -296,12 +283,9 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     }
 
     @Override
+    @Parameter(description = "Set the interval of data output for intermediate verbosity (in generations).")
     public void setOutputVerbosityK(int k) {
         verbosityK = k;
-    }
-
-    public String outputVerbosityKTipText() {
-        return "Set the interval of data output for intermediate verbosity (in generations).";
     }
 
     @Override
@@ -314,13 +298,11 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
         outputTo = tag;
     }
 
+    @Parameter(description = "Set the output destination; to deactivate output, set verbosity to none.")
     public void setOutputTo(int i) {
         outputTo.setSelectedTag(i);
     }
 
-    public String outputToTipText() {
-        return "Set the output destination; to deactivate output, set verbosity to none.";
-    }
 
     @Override
     public StringSelection getFieldSelection() {
@@ -328,13 +310,11 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     }
 
     @Override
+    @Parameter(description = "Select the data fields to be collected and plotted. Note that only simple types can be plotted to the GUI.")
     public void setFieldSelection(StringSelection v) {
         graphSel = v;
     }
 
-    public String fieldSelectionTipText() {
-        return "Select the data fields to be collected and plotted. Note that only simple types can be plotted to the GUI.";
-    }
 
     /**
      * May be called to dynamically alter the set of graphs that can be

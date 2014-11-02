@@ -4,7 +4,6 @@ import eva2.gui.BeanInspector;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceNotifyOnInformers;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.operator.paramcontrol.ConstantParameters;
 import eva2.optimization.operator.paramcontrol.InterfaceParameterControl;
 import eva2.optimization.operator.postprocess.PostProcess;
@@ -12,13 +11,14 @@ import eva2.optimization.operator.postprocess.PostProcessParams;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.GenerationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.Population;
-import eva2.problems.AbstractOptimizationProblem;
-import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.statistics.InterfaceStatistics;
 import eva2.optimization.statistics.InterfaceTextListener;
 import eva2.optimization.statistics.StatisticsWithGUI;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.problems.AbstractOptimizationProblem;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.StringTools;
@@ -48,7 +48,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     private InterfaceStatistics statistics;
     private InterfaceOptimizationParameters optimizationParameters;
     private boolean createInitialPopulations = true;
-    private boolean saveParams = false;
+    private boolean saveParams = true;
     private OptimizationStateListener optimizationStateListener;
     private boolean wasRestarted = false;
     private int runCounter = 0;
@@ -167,7 +167,6 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             EVAERROR.clearMsgCache();
             while (isOptimizationRunning()) {
                 setPriority(3);
-                // ToDo: Do we need this really?
                 if (saveParams) {
                     try {
                         optimizationParameters.saveInstance();

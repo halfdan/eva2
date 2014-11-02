@@ -110,7 +110,6 @@ public class FileTools {
      * a PrintWriter while other objects are written using an ObjectOutputStream.
      *
      * @param parentComponent the parent component
-     * @param fc              a filechooser or null to create a new one
      * @param object          The object to save.
      */
     public static boolean saveObjectWithFileChooser(Component parentComponent, Object object) {
@@ -208,10 +207,10 @@ public class FileTools {
         String predefName = null;
         try {
             predefName = (String) BeanInspector.callIfAvailable(object, "getName", null);
-            predefName = StringTools.simplifySymbols(predefName) + ".ser";
+            predefName = StringTools.simplifySymbols(predefName) + ".yml";
         } catch (Exception e) {
             predefName = object.getClass().getName();
-            predefName = StringTools.simplifySymbols(predefName) + ".ser";
+            predefName = StringTools.simplifySymbols(predefName) + ".yml";
         }
 
         if (!folder.exists()) {
