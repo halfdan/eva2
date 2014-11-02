@@ -3,6 +3,7 @@ package eva2.tools;
 import eva2.gui.BeanInspector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,44 +37,24 @@ public final class ToolBox {
     }
 
     /**
-     * Append two String arrays. If both are null, null is returned.
+     * Appends two typed arrays.
      *
-     * @param strArr1 First array
-     * @param strArr2 Second array
+     * @param first First array
+     * @param rest Arbitrary number of remaining arrays
      * @return A single array containing the merged set of values
      */
-    public static String[] appendArrays(String[] strArr1, String[] strArr2) {
-        if (strArr1 == null) {
-            return strArr2;
+    public static <T> T[] appendArrays(T[] first, T[]... rest) {
+        int totalLength = first.length;
+        for (T[] array : rest) {
+            totalLength += array.length;
         }
-        if (strArr2 == null) {
-            return strArr1;
+        T[] result = Arrays.copyOf(first, totalLength);
+        int offset = first.length;
+        for (T[] array : rest) {
+            System.arraycopy(array, 0, result, offset, array.length);
+            offset += array.length;
         }
-        String[] ret = new String[strArr1.length + strArr2.length];
-        System.arraycopy(strArr1, 0, ret, 0, strArr1.length);
-        System.arraycopy(strArr2, 0, ret, strArr1.length, strArr2.length);
-        return ret;
-    }
-
-    public static String[] appendArrays(String[] strArr1, String str) {
-        String[] ret = new String[strArr1.length + 1];
-        System.arraycopy(strArr1, 0, ret, 0, strArr1.length);
-        ret[ret.length - 1] = str;
-        return ret;
-    }
-
-    public static Object[] appendArrays(Object[] objArr1, Object o) {
-        Object[] ret = new Object[objArr1.length + 1];
-        System.arraycopy(objArr1, 0, ret, 0, objArr1.length);
-        ret[ret.length - 1] = o;
-        return ret;
-    }
-
-    public static Object[] appendArrays(Object[] objArr1, Object[] objArr2) {
-        Object[] ret = new Object[objArr1.length + objArr2.length];
-        System.arraycopy(objArr1, 0, ret, 0, objArr1.length);
-        System.arraycopy(objArr2, 0, ret, objArr1.length, objArr2.length);
-        return ret;
+        return result;
     }
 
     /**
