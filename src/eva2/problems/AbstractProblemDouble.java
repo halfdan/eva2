@@ -274,9 +274,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      * @return
      */
     public static Matrix initializeDefaultRotationMatrix(double rotAngle, int dim) {
-        Matrix rotation = null;
-        rotation = Mathematics.getRotationMatrix((rotAngle * Math.PI / 180.), dim).transpose();
-        return rotation;
+        return Mathematics.getRotationMatrix((rotAngle * Math.PI / 180.), dim).transpose();
     }
 
     /**
@@ -498,26 +496,20 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         return constraintArray;
     }
 
+    @Parameter(description = "Add constraints to the problem.")
     public void setConstraints(AbstractConstraint[] constrArray) {
         this.constraintArray = constrArray;
-    }
-
-    public String constraintsTipText() {
-        return "Add constraints to the problem.";
     }
 
     public boolean isWithConstraints() {
         return withConstraints;
     }
 
+    @Parameter(description = "(De-)Activate constraints for the problem.")
     public void setWithConstraints(boolean withConstraints) {
         this.withConstraints = withConstraints;
         GenericObjectEditor.setShowProperty(this.getClass(), "constraints",
                 withConstraints);
-    }
-
-    public String withConstraintsTipText() {
-        return "(De-)Activate constraints for the problem.";
     }
 
     @Override

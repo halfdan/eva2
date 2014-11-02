@@ -1,5 +1,7 @@
 package eva2.optimization.individuals;
 
+import eva2.util.annotation.Parameter;
+
 /**
  * This interface gives access to a double phenotype and except
  * for problemspecific operators should only be used by the
@@ -28,6 +30,7 @@ public interface InterfaceDataTypeDouble {
      *
      * @param range The new range for the double data.
      */
+    @Parameter(name = "range", description = "The initialization range for the individual.")
     public void setDoubleRange(double[][] range);
 
     /**
