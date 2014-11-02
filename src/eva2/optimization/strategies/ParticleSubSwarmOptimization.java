@@ -481,7 +481,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
         for (int i = 0; i < tmp.getTargetSize(); i++) {
             tmpIndy = (AbstractEAIndividual) template.clone();
-            tmpIndy.init(prob);
+            tmpIndy.initialize(prob);
             tmp.add(tmpIndy);
         }
         tmp.init();

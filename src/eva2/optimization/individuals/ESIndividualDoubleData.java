@@ -105,9 +105,6 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         }
     }
 
-/************************************************************************************
- * InterfaceDataTypeDouble methods
- */
     /**
      * This method allows you to request a certain amount of double data
      *
@@ -235,17 +232,14 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         System.arraycopy(doubleData, 0, this.genotype, 0, doubleData.length);
     }
 
-/************************************************************************************
- * AbstractEAIndividual methods
- */
     /**
      * This method will allow a default initialisation of the individual
      *
      * @param opt The optimization problem that is to be solved.
      */
     @Override
-    public void init(InterfaceOptimizationProblem opt) {
-        super.init(opt);
+    public void initialize(InterfaceOptimizationProblem opt) {
+        super.initialize(opt);
         // evil operators may not respect the range, so at least give some hint
         if (!Mathematics.isInRange(genotype, range)) {
             EVAERROR.errorMsgOnce("Warning: Individual out of range after initialization (and potential initial crossover/mutation)!");
@@ -304,9 +298,6 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         return strB.toString();
     }
 
-/************************************************************************************
- * InterfaceESIndividual methods
- */
     /**
      * This method will allow the user to read the ES 'genotype'
      *

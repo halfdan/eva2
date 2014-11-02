@@ -12,6 +12,7 @@ import eva2.problems.simple.InterfaceSimpleProblem;
 import eva2.problems.simple.SimpleF1;
 import eva2.problems.simple.SimpleProblemBinary;
 import eva2.problems.simple.SimpleProblemDouble;
+import eva2.util.annotation.Parameter;
 
 import java.util.BitSet;
 
@@ -164,6 +165,7 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     /**
      * @param simProb the simProb to set
      */
+    @Parameter(description = "Set the simple problem class which is to be optimized")
     public void setSimpleProblem(InterfaceSimpleProblem<?> simProb) {
         this.simProb = simProb;
         initTemplate();
@@ -187,18 +189,12 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     }
 
     /**
-     *
-     */
-    public String simpleProblemTipText() {
-        return "Set the simple problem class which is to be optimized";
-    }
-
-    /**
      * This method allows you to choose how much noise is to be added to the
      * fitness. This can be used to make the optimization problem more difficult.
      *
      * @param noise The sigma for a gaussian random number.
      */
+    @Parameter(description = "Gaussian noise level on the fitness value.")
     public void setNoise(double noise) {
         if (noise < 0) {
             noise = 0;
@@ -209,11 +205,6 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
     public double getNoise() {
         return this.noise;
     }
-
-    public String noiseTipText() {
-        return "Gaussian noise level on the fitness value.";
-    }
-
 
     /**
      * A (symmetric) absolute range limit.
@@ -229,13 +220,10 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
      *
      * @param defaultRange
      */
+    @Parameter(name = "range", description =  "Absolute limit for the symmetric range in any dimension")
     public void setDefaultRange(double defaultRange) {
         this.defaultRange = defaultRange;
         initTemplate();
-    }
-
-    public String defaultRangeTipText() {
-        return "Absolute limit for the symmetric range in any dimension";
     }
 
     /**
@@ -246,14 +234,10 @@ public class SimpleProblemWrapper extends AbstractOptimizationProblem {
         setSimpleProblem(getSimpleProblem());
     }
 
+    @Parameter(name = "individual", description = "Set the individual properties for the optimization")
     public void setIndividualTemplate(AbstractEAIndividual indy) {
         resetTemplate = false;
         template = indy;
-    }
-
-    @Override
-    public String individualTemplateTipText() {
-        return "Set the individual properties for the optimization";
     }
 
     /**

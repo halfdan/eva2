@@ -275,7 +275,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      *
      * @param opt The optimization problem that is to be solved.
      */
-    public void init(InterfaceOptimizationProblem opt) {
+    public void initialize(InterfaceOptimizationProblem opt) {
         initializationOperator.initialize(this, opt);
         this.mutationOperator.initialize(this, opt);
         this.crossoverOperator.init(this, opt);

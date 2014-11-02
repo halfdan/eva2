@@ -189,7 +189,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 
         for (int i = 0; i < population.getTargetSize(); i++) {
             tmpIndy = (AbstractEAIndividual) template.clone();
-            tmpIndy.init(prob);
+            tmpIndy.initialize(prob);
             population.add(tmpIndy);
         }
         // population initialize must be last
