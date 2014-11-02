@@ -110,11 +110,16 @@ public final class OptimizationBuilder {
         } else {
             Class<?>[] params = new Class[0];
             try {
-                Constructor constr = clazz.getConstructor(params);
-                instance = (T)constr.newInstance(null);
+                Constructor constructor = clazz.getConstructor(params);
+                instance = (T)constructor.newInstance(null);
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
                 ex.printStackTrace();
             }
+        }
+
+        /* No need to continue if there are no parameters to set */
+        if (tree.isEmpty()) {
+            return instance;
         }
 
         BeanInfo info;
@@ -125,6 +130,7 @@ public final class OptimizationBuilder {
                 info = Introspector.getBeanInfo(clazz, Object.class);
             }
             PropertyDescriptor[] properties = info.getPropertyDescriptors();
+            int foundParameters = 0;
             for (PropertyDescriptor pd : properties) {
                 String name = pd.getName();
                 Method getter = pd.getReadMethod();
@@ -149,6 +155,7 @@ public final class OptimizationBuilder {
                  * If the tree contains this property we try to set it on the object.
                  */
                 if (tree.containsKey(name)) {
+                    foundParameters++;
                     Object obj;
                     if (type.isPrimitive() && ((ArgumentTree)tree.get(name)).getValue() != null) {
                         obj = BeanInspector.stringToPrimitive((String)((ArgumentTree) tree.get(name)).getValue(), type);
@@ -172,6 +179,11 @@ public final class OptimizationBuilder {
                     if (obj != null) {
                         BeanInspector.callIfAvailable(instance, setter.getName(), new Object[]{obj});
                     }
+                }
+
+                // If we configured all parameters in the tree we can break the loop
+                if (tree.size() == foundParameters) {
+                    break;
                 }
             }
         } catch (IntrospectionException ex) {
