@@ -64,7 +64,7 @@ public class SimulatedAnnealing extends AbstractOptimizer implements java.io.Ser
         this.population = (Population) pop.clone();
         this.currentTemperature = this.initialTemperature;
         if (reset) {
-            this.population.init();
+            this.population.initialize();
             this.optimizationProblem.evaluate(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }

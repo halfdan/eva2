@@ -229,7 +229,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
 
         population.clear();
         population.addAll(swarm.toPopulation());
-        population.init();    // necessary to allow for multi-runs
+        population.initialize();    // necessary to allow for multi-runs
 
         if (show) {
             show();

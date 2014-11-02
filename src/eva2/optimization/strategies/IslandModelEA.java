@@ -83,7 +83,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
 
 //        this.population = new Population();
         this.population.clear();
-        this.population.init();
+        this.population.initialize();
         this.optimizer.initialize();
         this.optimizer.setProblem(this.optimizationProblem);
         this.optimizer.setPopulation((Population) population.clone());
@@ -151,7 +151,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
 
         this.population = (Population) tpop.clone();
         if (reset) {
-            this.population.init();
+            this.population.initialize();
             this.population.incrGeneration();
         }
         this.optimizer.initialize();

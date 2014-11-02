@@ -484,7 +484,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
             tmpIndy.initialize(prob);
             tmp.add(tmpIndy);
         }
-        tmp.init();
+        tmp.initialize();
         ///////////
 
         ParticleSubSwarmOptimization tmpopt = new ParticleSubSwarmOptimization();

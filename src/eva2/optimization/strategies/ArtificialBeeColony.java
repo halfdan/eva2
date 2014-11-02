@@ -64,7 +64,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
     public void initializeByPopulation(Population pop, boolean reset) {
         this.population = (Population) pop.clone();
         if (reset) {
-            this.population.init();
+            this.population.initialize();
             this.evaluatePopulation(this.population);
             this.bestIndividual = this.population.getBestEAIndividual();
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);

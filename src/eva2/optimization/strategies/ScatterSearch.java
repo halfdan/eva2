@@ -844,7 +844,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         }
         Population pop = new Population();
         pop.setTargetSize(refSetSize);
-        pop.init();
+        pop.initialize();
         problem.initializePopulation(pop);
         ss.initializeByPopulation(pop, true);
 

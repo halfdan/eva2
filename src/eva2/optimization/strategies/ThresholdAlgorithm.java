@@ -61,7 +61,7 @@ public class ThresholdAlgorithm extends AbstractOptimizer implements java.io.Ser
         this.population = (Population) pop.clone();
         this.currentT = this.initialT;
         if (reset) {
-            this.population.init();
+            this.population.initialize();
             this.optimizationProblem.evaluate(this.population);
             this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
         }

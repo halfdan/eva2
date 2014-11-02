@@ -101,7 +101,7 @@ public class EvolutionStrategies extends AbstractOptimizer implements java.io.Se
         origPopSize = pop.getTargetSize();
         this.population = (Population) pop.clone();
         if (reset) {
-            this.population.init();
+            this.population.initialize();
             this.evaluatePopulation(this.population);
         }
     }

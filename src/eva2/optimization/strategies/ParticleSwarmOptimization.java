@@ -424,7 +424,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
             externalInitialPop = true;
         }
         if (reset) {
-            this.population.init();
+            this.population.initialize();
         }
 
         AbstractEAIndividual indy;

@@ -194,7 +194,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         }
         // population initialize must be last
         // it set's fitcalls and generation to zero
-        population.init();
+        population.initialize();
     }
 
     /**

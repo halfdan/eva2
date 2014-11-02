@@ -62,7 +62,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
         }
         // population initialize must be last
         // it set's fitcalls and generation to zero
-        population.init();
+        population.initialize();
         if (listOfOptima == null) {
             this.globalOptimum = Double.NEGATIVE_INFINITY;
             listOfOptima = new Population();

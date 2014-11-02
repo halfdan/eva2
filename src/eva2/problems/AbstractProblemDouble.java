@@ -62,14 +62,14 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     public static String rawFitKey = "UnconstrainedFitnessValue";
 
     public AbstractProblemDouble() {
-        initTemplate();
+        initializeTemplate();
     }
 
     public AbstractProblemDouble(AbstractProblemDouble o) {
         cloneObjects(o);
     }
 
-    protected void initTemplate() {
+    protected void initializeTemplate() {
         if (template == null) {
             template = new ESIndividualDoubleData();
         }
@@ -174,9 +174,9 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      * @param indyPos    may contain the decoded individual position
      */
     protected void addConstraints(AbstractEAIndividual individual, double[] indyPos) {
-        AbstractConstraint[] contraints = getConstraints();
-        for (AbstractConstraint contraint : contraints) {
-            contraint.addViolation(individual, indyPos);
+        AbstractConstraint[] constraints = getConstraints();
+        for (AbstractConstraint constraint : constraints) {
+            constraint.addViolation(individual, indyPos);
         }
     }
 
@@ -205,7 +205,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 
     @Override
     public void initializePopulation(Population population) {
-        initTemplate();
+        initializeTemplate();
         AbstractOptimizationProblem.defaultInitializePopulation(population, template, this);
     }
 
@@ -257,7 +257,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
 
     @Override
     public void initializeProblem() {
-        initTemplate();
+        initializeTemplate();
         if (isDoRotation()) {
             rotation = initializeDefaultRotationMatrix(rotAngle, getProblemDimension());
         } else {
@@ -339,7 +339,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      */
     public void setDefaultRange(double defaultRange) {
         this.defaultRange = defaultRange;
-        initTemplate();
+        initializeTemplate();
     }
 
     public String defaultRangeTipText() {
