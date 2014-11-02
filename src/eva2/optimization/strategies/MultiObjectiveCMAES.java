@@ -100,7 +100,7 @@ public class MultiObjectiveCMAES extends AbstractOptimizer implements Serializab
     /*
      * (non-Javadoc)
      * 
-     * @see eva2.optimization.strategies.InterfaceOptimizer#init()
+     * @see eva2.optimization.strategies.InterfaceOptimizer#initialize()
      */
     @Override
     public void initialize() {

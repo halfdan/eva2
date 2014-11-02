@@ -110,12 +110,12 @@ public class TestESCrossover implements java.io.Serializable {
             tmpIndyD.setDoubleRange(newRange);
             for (int i = 0; i < partners.getTargetSize(); i++) {
                 tmpIndyEA = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
-                tmpIndyEA.init(optimizationProblem);
+                tmpIndyEA.initialize(optimizationProblem);
                 partners.add(tmpIndyEA);
             }
             partners.init();
             daddy = (AbstractEAIndividual) ((AbstractEAIndividual) tmpIndyD).clone();
-            daddy.init(optimizationProblem);
+            daddy.initialize(optimizationProblem);
             plot.clearAll();
             plot.setUnconnectedPoint(-2, -2, 0);
             plot.setUnconnectedPoint(2, 2, 0);

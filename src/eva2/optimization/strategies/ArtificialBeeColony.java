@@ -194,7 +194,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
          */
         AbstractEAIndividual oldestIndy = getOldestIndividual();
         if (oldestIndy.getAge() > this.maxTrials) {
-            oldestIndy.init(this.optimizationProblem);
+            oldestIndy.initialize(this.optimizationProblem);
             this.optimizationProblem.evaluate(oldestIndy);
             this.population.incrFunctionCalls();
         }

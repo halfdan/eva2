@@ -15,6 +15,7 @@ import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.tools.math.StatisticUtils;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 import eva2.util.annotation.Parameter;
 
 import java.util.*;
@@ -602,6 +603,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return historyList;
     }
 
+    @Hidden
     public void setHistory(LinkedList<AbstractEAIndividual> theHist) {
         historyList = theHist;
     }
@@ -684,6 +686,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      *
      * @param d The new number of functioncalls.
      */
+    @Hidden
     public void setFunctionCalls(int d) {
         this.functionCallCount = d;
     }
@@ -738,6 +741,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      *
      * @param gen the value to set as new generation index
      */
+    @Hidden
     public void setGeneration(int gen) {
         this.generationCount = gen;
     }
@@ -2519,11 +2523,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
         return seedCardinality;
     }
 
+    @Parameter(description = "The initial cardinality for binary genotype individuals, given as pair of mean and std.dev.")
     public void setSeedCardinality(Pair<Integer, Integer> seedCardinality) {
         this.seedCardinality = seedCardinality;
-    }
-
-    public String seedCardinalityTipText() {
-        return "The initial cardinality for binary genotype individuals, given as pair of mean and std.dev.";
     }
 }
