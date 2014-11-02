@@ -13,8 +13,7 @@ public final class ToolBox {
     /**
      * Private constructor to prevent instances of module class.
      */
-    private ToolBox() {
-    }
+    private ToolBox() {}
 
     /**
      * Convert all items of an enum to a String array and append the given String array at the end.

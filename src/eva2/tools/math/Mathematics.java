@@ -10,7 +10,9 @@ import eva2.tools.math.interpolation.SplineInterpolation;
 import java.util.Arrays;
 import java.util.List;
 
-public class Mathematics {
+public final class Mathematics {
+    private Mathematics() {}
+
     /**
      * Computes the full adjoint matrix.
      *

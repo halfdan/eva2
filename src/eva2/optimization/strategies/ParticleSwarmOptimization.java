@@ -1422,7 +1422,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
     /**
      * Randomly assign groups of size groupSize.
      *
-     * @param links
+     * @param pop
      * @param groupSize
      */
     private Vector<int[]> regroupSwarm(Population pop, int groupSize) {
@@ -1680,7 +1680,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
     /**
      * This method allows you to choose the topology type.
      *
-     * @param s The type.
+     * @param t The type.
      */
     public void setTopology(PSOTopology t) {
         this.topology = t;
