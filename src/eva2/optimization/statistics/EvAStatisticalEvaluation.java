@@ -6,11 +6,12 @@ import eva2.optimization.enums.StatisticsOnTwoSampledData;
 import eva2.tools.ReflectPackage;
 import eva2.tools.StringTools;
 import eva2.tools.math.Mathematics;
-import org.apache.commons.math3.stat.ranking.NaNStrategy;
-import org.apache.commons.math3.stat.ranking.TiesStrategy;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -257,19 +258,15 @@ public class EvAStatisticalEvaluation {
     private static String calculateMannWhitney(String field, OptimizationJob job1, OptimizationJob job2) {
         double[] dat1 = job1.getDoubleDataColumn(field);
         double[] dat2 = job2.getDoubleDataColumn(field);
-        org.apache.commons.math3.stat.inference.MannWhitneyUTest mU = new org.apache.commons.math3.stat.inference.MannWhitneyUTest(NaNStrategy.FAILED, TiesStrategy.AVERAGE);
         double t = Double.NaN;
         if (dat1 != null && dat2 != null) {
-
-            return "" + mU.mannWhitneyUTest(dat1, dat2);
-            /*
             Object obj = ReflectPackage.instantiateWithParams("jsc.independentsamples.MannWhitneyTest", new Object[]{dat1, dat2}, null);
             if (obj != null) {
                 Object sp = BeanInspector.callIfAvailable(obj, "getSP", new Object[]{});
                 t = (Double) sp;
             } else {
                 LOGGER.warning("For the MannWhitney test, the JSC package is required on the class path!");
-            }*/
+            }
         }
         return "" + t;
     }

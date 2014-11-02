@@ -1,7 +1,5 @@
 package eva2.tools;
 
-import com.google.gson.Gson;
-
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;

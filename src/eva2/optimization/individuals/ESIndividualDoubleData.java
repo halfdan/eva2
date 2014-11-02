@@ -105,9 +105,6 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         }
     }
 
-/************************************************************************************
- * InterfaceDataTypeDouble methods
- */
     /**
      * This method allows you to request a certain amount of double data
      *
@@ -235,9 +232,6 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         System.arraycopy(doubleData, 0, this.genotype, 0, doubleData.length);
     }
 
-/************************************************************************************
- * AbstractEAIndividual methods
- */
     /**
      * This method will allow a default initialisation of the individual
      *
@@ -304,9 +298,6 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
         return strB.toString();
     }
 
-/************************************************************************************
- * InterfaceESIndividual methods
- */
     /**
      * This method will allow the user to read the ES 'genotype'
      *

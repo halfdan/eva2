@@ -10,6 +10,7 @@ import eva2.optimization.operator.mutation.MutateGAUniform;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.util.BitSet;
 
@@ -229,10 +230,6 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         }
     }
 
-/************************************************************************************
- * AbstractEAIndividual methods
- */
-
     /**
      * This method will initialize the individual with a given value for the
      * phenotype.
@@ -373,6 +370,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
      *
      * @param coding The used genotype coding method
      */
+    @Parameter(name = "coding", description = "Choose the coding to use.")
     public void setGACoding(InterfaceGADoubleCoding coding) {
         this.doubleCoding = coding;
     }
@@ -381,25 +379,18 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         return this.doubleCoding;
     }
 
-    public String gADoubleCodingTipText() {
-        return "Choose the coding to use.";
-    }
-
     /**
      * This method allows you to set the number of mulitruns that are to be performed,
      * necessary for stochastic optimizers to ensure reliable results.
      *
      * @param precision The number of multiruns that are to be performed
      */
+    @Parameter(description = "Gives the number of bits to be used to code a double.")
     public void setPrecision(int precision) {
         this.precision = precision;
     }
 
     public int getPrecision() {
         return this.precision;
-    }
-
-    public String precisionTipText() {
-        return "Gives the number of bits to be used to code a double.";
     }
 }
