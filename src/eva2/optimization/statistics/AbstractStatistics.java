@@ -12,6 +12,7 @@ import eva2.tools.StringSelection;
 import eva2.tools.StringTools;
 import eva2.tools.ToolBox;
 import eva2.tools.math.Mathematics;
+import eva2.yaml.BeanSerializer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -195,7 +196,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      *
      * @param infoString
      */
-    protected void initOutput(String infoString) {
+    protected void initializeOutput(String infoString) {
         String startDate = getDateString();
         // open the result file:
         if (doFileOutput()  // not "text-window only"
@@ -271,15 +272,11 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             if (saveParams) {
                 statisticsParameter.saveInstance();
             }
-            initOutput(infoString);
+            initializeOutput(infoString);
             bestIndyAllRuns = null;
             bestFeasibleAllRuns = null;
-//			meanBestOfRunFitness = null;
-//			meanBestFeasibleFit = null;
             runBestFeasibleList = new ArrayList<>();
             runBestFitList = new ArrayList<>();
-//			if (refineMultiRuns) meanCollection = new ArrayList<double[][]>();
-//			else meanCollection = null;
             if (refineMultiRuns) {
                 sumDataCollection = new ArrayList<>();
             } else {
@@ -289,7 +286,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             finalObjectData = null;
 
             statDataSumOverAll = null;
-//			lastAdditionalInfoSums = null;
             feasibleFoundAfterSum = -1;
             numOfRunsFeasibleFound = 0;
 
@@ -305,14 +301,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if (printRunIntroVerbosity()) {
             printToTextListener("\n****** Multirun " + runNumber);
         }
-        /*
-        ToDo: Figure out if we need this. Right now it is just spamming the text output
         if (params != null) {
             if (printRunIntroVerbosity()) {
-                printToTextListener("\nOptimization parameters: ");
-                printToTextListener(BeanInspector.niceToString(params));
+                printToTextListener("\nOptimization parameters: \n");
+                printToTextListener(BeanSerializer.serializeObject(params));
             }
         }
+        /*
+        ToDo: Figure out if we need this. Right now it is just spamming the text output
         if (printRunIntroVerbosity()) {
             printToTextListener("\nStatistics parameters: ");
             printToTextListener(BeanInspector.niceToString(getStatisticsParameter()) + '\n');

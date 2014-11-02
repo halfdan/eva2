@@ -3,18 +3,18 @@ package eva2.optimization.modules;
 import eva2.gui.BeanInspector;
 import eva2.optimization.go.InterfaceNotifyOnInformers;
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.operator.postprocess.InterfacePostProcessParams;
 import eva2.optimization.operator.postprocess.PostProcessParams;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
+import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
-import eva2.optimization.strategies.InterfaceOptimizer;
-import eva2.tools.Serializer;
 import eva2.util.annotation.Parameter;
+import eva2.yaml.BeanSerializer;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -121,15 +121,17 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
     public void saveInstance(String fileName) {
         try {
             FileOutputStream fileStream = new FileOutputStream(fileName);
-            Serializer.storeObject(fileStream, this);
-        } catch (FileNotFoundException ex) {
+            String yaml = BeanSerializer.serializeObject(this);
+            fileStream.write(yaml.getBytes());
+            fileStream.close();
+        } catch (IOException ex) {
             LOGGER.log(Level.WARNING, "Could not store instance object.", ex);
         }
     }
 
     @Override
     public void saveInstance() {
-        String fileName = this.getClass().getSimpleName() + ".ser";
+        String fileName = this.getClass().getSimpleName() + ".yml";
         saveInstance(fileName);
     }
 

@@ -1,4 +1,4 @@
-package eva2.json;
+package eva2.yaml;
 
 import java.util.ArrayList;
 import java.util.List;

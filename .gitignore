@@ -1,6 +1,7 @@
 /build/
 out/
 *.ser
+*.yml
 .settings/
 .project
 .classpath
