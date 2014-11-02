@@ -5,10 +5,12 @@ import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This is a discrete n-point crossover between m ES individuals.")
 public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Serializable {
     private InterfaceOptimizationProblem optimizationProblem;
     private int numberOfCrossovers = 3;
@@ -126,9 +128,6 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
         return this.getName();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -137,15 +136,6 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
      */
     public String getName() {
         return "ES discrete n-point crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is a discrete n-point crossover between m ES individuals.";
     }
 
     /**

@@ -4,14 +4,12 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 03.12.2003
- * Time: 14:27:59
- * To change this template use Options | File Templates.
+ *
  */
+@Description("This is an intermediate crossover between m ES individuals.")
 public class CrossoverESIntermediate implements InterfaceCrossover, java.io.Serializable {
     private InterfaceOptimizationProblem optimizationProblem;
 
@@ -116,9 +114,6 @@ public class CrossoverESIntermediate implements InterfaceCrossover, java.io.Seri
         return this.getName();
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -127,14 +122,5 @@ public class CrossoverESIntermediate implements InterfaceCrossover, java.io.Seri
      */
     public String getName() {
         return "ES intermediate crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an intermediate crossover between m ES individuals.";
     }
 }

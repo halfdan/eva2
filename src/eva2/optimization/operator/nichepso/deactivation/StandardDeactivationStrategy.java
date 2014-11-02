@@ -5,6 +5,7 @@ import eva2.optimization.population.Population;
 import eva2.optimization.strategies.NichePSO;
 import eva2.optimization.strategies.ParticleSubSwarmOptimization;
 import eva2.tools.EVAERROR;
+import eva2.util.annotation.Description;
 
 import java.util.Vector;
 
@@ -14,6 +15,7 @@ import java.util.Vector;
  * over the last 3 iterations is less or equal a given threshold epsilon
  * Experiments showed good results using epsilon = 0.0001.
  */
+@Description("Strategy to deactivate subswarms")
 public class StandardDeactivationStrategy implements InterfaceDeactivationStrategy, java.io.Serializable {
 
     private double epsilon = 0.0001;
@@ -46,28 +48,11 @@ public class StandardDeactivationStrategy implements InterfaceDeactivationStrate
         return new StandardDeactivationStrategy(this);
     }
 
-    public String globalInfo() {
-        return "Strategy to deactivate subswarms";
-    }
-
-/**********************************************************************************************************************
- * shouldDeactivateSubswarm
- */
     /**
      * @param pop
      * @return
      * @tested
      */
-//	public boolean areAllConverged(Population pop){
-//		for (int i = 0; i < pop.size(); ++i){
-//			AbstractEAIndividual currentindy = pop.getEAIndividual(i);
-//			Double sd = (Double)currentindy.getData(NichePSO.stdDevKey);
-//			if (sd.doubleValue() > getEpsilon()){
-//				return false; // particle not converged...
-//			}
-//		}
-//		return true;
-//	}
     public boolean areAllConverged(Population pop) {
         for (int i = 0; i < pop.size(); ++i) {
             AbstractEAIndividual currentindy = pop.getEAIndividual(i);

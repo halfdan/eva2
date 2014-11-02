@@ -5,14 +5,12 @@ import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 02.12.2003
- * Time: 14:50:03
- * To change this template use Options | File Templates.
  */
+@Description("The BLX crossover inits the values within the extreme values plus an additional alpha range (BLX-0.0 equals flat crossover).")
 public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializable {
 
     private InterfaceOptimizationProblem optimizationProblem;
@@ -130,9 +128,6 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
         return this.getName();
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -144,20 +139,12 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
     }
 
     /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "The BLX crossover inits the values within the extreme values plus an additional alpha range (BLX-0.0 equals flat crossover).";
-    }
-
-    /**
      * This method allows you to set the number of crossovers that occur in the
      * genotype.
      *
      * @param a The number of crossovers.
      */
+    @Parameter(description = "The alpha of BLX.")
     public void setAlpha(double a) {
         if (a < 0) {
             a = 0;
@@ -167,9 +154,5 @@ public class CrossoverESBLXAlpha implements InterfaceCrossover, java.io.Serializ
 
     public double getAlpha() {
         return this.alpha;
-    }
-
-    public String alphaTipText() {
-        return "The alpha of BLX.";
     }
 }

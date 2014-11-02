@@ -5,15 +5,15 @@ import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
 /**
  * This crossover-Method performs an \"intersection\" of the selected Individuals
  * It only mates 2 Individuals, not more
- *
- * @author Alex
  */
+@Description("This is a Crossover Method for Binary Individuals which just forms the \"intersection\" of the individuals")
 public class CM2 implements InterfaceCrossover, java.io.Serializable {
 
     private InterfaceOptimizationProblem optimizationProblem;
@@ -66,16 +66,7 @@ public class CM2 implements InterfaceCrossover, java.io.Serializable {
         return getName();
     }
 
-    /**
-     * **************************************************
-     * GUI
-     */
-
     public String getName() {
         return "Combination Method 2";
-    }
-
-    public static String globalInfo() {
-        return "This is a Crossover Method for Binary Individuals which just forms the \"intersection\" of the individuals";
     }
 }

@@ -4,11 +4,13 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.util.annotation.Description;
 
 /**
  * Overall Non-Dom. Vector Generation calculates simply the number of
- * non-dominated solutions in the current soltuion set.
+ * non-dominated solutions in the current solution set.
  */
+@Description("Calculating the number of non dominated individuals.")
 public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMetric, java.io.Serializable {
 
     private ArchivingAllDominating dominating = new ArchivingAllDominating();
@@ -57,9 +59,6 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
         return tmpPop.size();
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -68,14 +67,5 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
      */
     public String getName() {
         return "Overall Non-Dominated Vectors";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "Calculating the number of non dominated individuals.";
     }
 }

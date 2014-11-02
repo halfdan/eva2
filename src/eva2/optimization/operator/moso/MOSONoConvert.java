@@ -2,14 +2,12 @@ package eva2.optimization.operator.moso;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 05.03.2004
- * Time: 11:02:21
- * To change this template use File | Settings | File Templates.
+ *
  */
+@Description("This method leaves everything the same.")
 public class MOSONoConvert implements InterfaceMOSOConverter, java.io.Serializable {
 
     public MOSONoConvert() {
@@ -50,8 +48,6 @@ public class MOSONoConvert implements InterfaceMOSOConverter, java.io.Serializab
 
         tmpFit = indy.getFitness();
         indy.putData("MOFitness", tmpFit);
-//        resultFit[0]    = tmpFit[RNG.randomInt(0, tmpFit.length)];
-//        indy.SetFitness(resultFit);
     }
 
     /**
@@ -76,10 +72,6 @@ public class MOSONoConvert implements InterfaceMOSOConverter, java.io.Serializab
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -90,14 +82,4 @@ public class MOSONoConvert implements InterfaceMOSOConverter, java.io.Serializab
     public String getName() {
         return "No Convert";
     }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method leaves everything the same.";
-    }
-
 }

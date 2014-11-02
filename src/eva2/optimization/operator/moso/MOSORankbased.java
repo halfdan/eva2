@@ -3,14 +3,11 @@ package eva2.optimization.operator.moso;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 14.06.2005
- * Time: 14:18:58
- * To change this template use File | Settings | File Templates.
  */
+@Description("This method calcuates the Pareto rank of each individual and uses the rank as fitness.")
 public class MOSORankbased implements InterfaceMOSOConverter, java.io.Serializable {
 
     public MOSORankbased() {
@@ -80,10 +77,6 @@ public class MOSORankbased implements InterfaceMOSOConverter, java.io.Serializab
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -93,14 +86,5 @@ public class MOSORankbased implements InterfaceMOSOConverter, java.io.Serializab
     @Override
     public String getName() {
         return "Rank Based";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method calcuates the Pareto rank of each individual and uses the rank as fitness.";
     }
 }

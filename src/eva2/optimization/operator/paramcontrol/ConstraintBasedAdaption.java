@@ -4,6 +4,7 @@ import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.constraint.AbstractConstraint;
 import eva2.optimization.population.Population;
 import eva2.tools.math.Mathematics;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -14,11 +15,10 @@ import java.util.LinkedList;
  * if it was always infeasible, the penalty factor is increased. For other cases, the penalty remains the same.
  * This is plausible for the typical case that the optimum lies near the constraint boundary, however it makes
  * the fitness function change dynamically based only on the positions of last best indidivuals.
- * <p/>
+ * </p><p>
  * The authors advise to select betaInc != 1./betaDec to avoid cycling.
- *
- * @author mkron
  */
+@Description("Adapt a constraint's penalty factor (esp. fitness based) if the population contained only valid or only invalid individuals for some generations.")
 public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
     private double betaInc = 1.5;
     private double betaDec = 0.7;
@@ -137,10 +137,6 @@ public class ConstraintBasedAdaption implements ParamAdaption, Serializable {
 
     public String genGapTipText() {
         return "The number of generations regarded.";
-    }
-
-    public static String globalInfo() {
-        return "Adapt a constraint's penalty factor (esp. fitness based) if the population contained only valid or only invalid individuals for some generations.";
     }
 
     @Override

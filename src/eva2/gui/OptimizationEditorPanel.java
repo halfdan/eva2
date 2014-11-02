@@ -17,8 +17,6 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -342,21 +340,10 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
             Class[] classParams = new Class[]{};
 
             String tip = null;
-            try {
-                Method giMeth = instances.get(i).getDeclaredMethod("globalInfo", classParams);
-                if (Modifier.isStatic(giMeth.getModifiers())) {
-                    tip = (String) giMeth.invoke(null, (Object[]) null);
-                }
-            } catch (Exception e) {
-                LOGGER.finer(e.getMessage());
-            }
 
-            // If the globalInfo method doesn't exist try to use the Annotation
-            if (tip == null || tip.isEmpty()) {
-                Description description = instances.get(i).getAnnotation(Description.class);
-                if (description != null) {
-                    tip = description.value();
-                }
+            Description description = instances.get(i).getAnnotation(Description.class);
+            if (description != null) {
+                tip = description.value();
             }
 
             if (tip != null) {

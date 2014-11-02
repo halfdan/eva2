@@ -5,6 +5,7 @@ import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.strategies.ParticleSubSwarmOptimization;
+import eva2.util.annotation.Description;
 
 import java.util.Vector;
 
@@ -17,18 +18,11 @@ import java.util.Vector;
  * In Proceedings of the 4th Asia-Pacific Conference on Simulated Evolution and Learning (SEAL'02),
  * 2002, 2, 692-696
  */
+@Description("Strategy to merge subswarms")
 public class StandardMergingStrategy implements InterfaceMergingStrategy, java.io.Serializable {
 
     private double mu = 0.001; // "experimentally found to be effective" according to "a niching particle swarm optimizer" by Brits et al.
 
-    public String globalInfo() {
-        return "Strategy to merge subswarms";
-    }
-
-    /**
-     * *******************************************************************************************************************
-     * ctors
-     */
     public StandardMergingStrategy() {
 
     }
@@ -46,9 +40,6 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
         return new StandardMergingStrategy(this);
     }
 
-/**********************************************************************************************************************
- * shouldMergeSubswarms
- */
     /**
      * @tested the subswarms are merged, if they overlap (or are very close) and if they are of equal state
      * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceMergingStrategie#shouldMergeSubswarms(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)

@@ -3,14 +3,12 @@ package eva2.optimization.operator.moso;
 import eva2.gui.PropertyEpsilonConstraint;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 14.07.2005
- * Time: 16:13:17
- * To change this template use File | Settings | File Templates.
+ *
  */
+@Description("This method uses n-1 objected as hard constraints.")
 public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Serializable {
 
     private PropertyEpsilonConstraint epsilonConstraint = null;
@@ -107,10 +105,6 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -120,15 +114,6 @@ public class MOSOEpsilonConstraint implements InterfaceMOSOConverter, java.io.Se
     @Override
     public String getName() {
         return "Epsilon Constraint";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method uses n-1 objected as hard constraints.";
     }
 
     /**

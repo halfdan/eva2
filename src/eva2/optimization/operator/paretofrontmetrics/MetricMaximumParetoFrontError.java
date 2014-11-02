@@ -7,6 +7,7 @@ import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.tools.FileTools;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
  * Maximum Pareto Front Error gives the maximum distance of all minimum distances of each
  * element in the current solution to the true Pareto front.
  */
+@Description("This method calculates the maximum distance to the reference.")
 public class MetricMaximumParetoFrontError implements eva2.optimization.operator.paretofrontmetrics.InterfaceParetoFrontMetric, java.io.Serializable {
     private PropertyFilePath inputFilePath = PropertyFilePath.getFilePathFromResource("MOPReference/T1_250.txt");
     private String[] titles;
@@ -126,9 +128,6 @@ public class MetricMaximumParetoFrontError implements eva2.optimization.operator
         return result;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -137,15 +136,6 @@ public class MetricMaximumParetoFrontError implements eva2.optimization.operator
      */
     public String getName() {
         return "Maximum Pareto Front Error";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method calculates the maximum distance to the reference.";
     }
 
     /**

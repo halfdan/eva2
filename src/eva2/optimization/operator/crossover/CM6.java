@@ -6,6 +6,7 @@ import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.BinaryScatterSearch;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.BitSet;
 
@@ -13,9 +14,8 @@ import java.util.BitSet;
  * Score driven Crossover-Method. It uses the same score as the BinaryScatterSearch.
  * Only the first individual of the given Population in the mate method is used. the rest is only for calculating the score
  * It only mates 2 Individuals, not more
- *
- * @author Alex
  */
+@Description("Score driven crossover method")
 public class CM6 implements InterfaceCrossover, java.io.Serializable {
     private InterfaceOptimizationProblem optimizationProblem;
 
@@ -68,17 +68,7 @@ public class CM6 implements InterfaceCrossover, java.io.Serializable {
         return getName();
     }
 
-    /**
-     * **************************************************
-     * GUI
-     */
-
     public String getName() {
         return "Combination Method 6";
     }
-
-    public static String globalInfo() {
-        return "score driven crossover method";
-    }
-
 }

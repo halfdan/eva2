@@ -3,14 +3,11 @@ package eva2.optimization.operator.moso;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 14.06.2005
- * Time: 13:44:20
- * To change this template use File | Settings | File Templates.
  */
+@Description("This method calcuates a randomly weighted sum over all fitness values [Murata95MOGA].")
 public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Serializable {
 
     public MOSORandomWeight() {
@@ -95,10 +92,6 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -108,14 +101,5 @@ public class MOSORandomWeight implements InterfaceMOSOConverter, java.io.Seriali
     @Override
     public String getName() {
         return "Randomly Weighted Sum";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method calcuates a randomly weighted sum over all fitness values [Murata95MOGA].";
     }
 }

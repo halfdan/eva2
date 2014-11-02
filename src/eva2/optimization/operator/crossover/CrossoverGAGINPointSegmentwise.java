@@ -1,14 +1,14 @@
 package eva2.optimization.operator.crossover;
 
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * A variation of the GA n-point crossover. Restricts crossover to segment bounds
  * of fixed length, so crossings occur at multiples of the segment length only. Segments
  * will not be destroyed.
- *
- * @author mkron
  */
+@Description("This is an n-point crossover between m individuals which also splits at certain segment limits. Crossover points are selected from multiples of the segment length.")
 public class CrossoverGAGINPointSegmentwise extends CrossoverGAGINPoint {
     int segmentLength = 8;
 
@@ -54,10 +54,6 @@ public class CrossoverGAGINPointSegmentwise extends CrossoverGAGINPoint {
     @Override
     public String getName() {
         return "GA-GI N-Point segment-wise crossover";
-    }
-
-    public static String globalInfo() {
-        return "This is an n-point crossover between m individuals which also splits at certain segment limits. Crossover points are selected from multiples of the segment length.";
     }
 
     public int getSegmentLength() {

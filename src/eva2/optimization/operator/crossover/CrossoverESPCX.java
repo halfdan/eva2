@@ -10,12 +10,14 @@ import eva2.problems.F1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
 
 /**
  *
  */
+@Description("This is the Parent Centric Crossover (PCX).")
 public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable {
 
     private InterfaceOptimizationProblem optimizationProblem;
@@ -296,9 +298,6 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
         return this.getName();
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -307,15 +306,6 @@ public class CrossoverESPCX implements InterfaceCrossover, java.io.Serializable 
      */
     public String getName() {
         return "ES PCX crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is the Parent Centric Crossover (PCX).";
     }
 
     public void setEta(double a) {

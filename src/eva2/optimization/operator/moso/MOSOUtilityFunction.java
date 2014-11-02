@@ -3,10 +3,12 @@ package eva2.optimization.operator.moso;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This method allows you to progamm an individual utility function.")
 public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Serializable {
 
     private int outputDimension = 2;
@@ -98,14 +100,4 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
     public String getName() {
         return "Utility Function";
     }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method allows you to progamm an individual utility function.";
-    }
-
 }

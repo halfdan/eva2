@@ -5,6 +5,7 @@ import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 
 /**
  * The children are randomized intermediate combinations of the parents,
@@ -12,6 +13,7 @@ import eva2.tools.math.RNG;
  * where r_i are uniform random numbers normed to the sum of one and
  * p_ji is the i-th component of parent j.
  */
+@Description("This is an arithmetical crossover between m ES individuals.")
 public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Serializable {
 
     private InterfaceOptimizationProblem optimizationProblem;
@@ -124,9 +126,6 @@ public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Seri
         return this.getName();
     }
 
-    /**********************************************************************************************************************
-     * These are for GUI
-     */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -135,14 +134,5 @@ public class CrossoverESArithmetical implements InterfaceCrossover, java.io.Seri
      */
     public String getName() {
         return "ES arithmetical crossover";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This is an arithmetical crossover between m ES individuals.";
     }
 }

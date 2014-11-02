@@ -4,6 +4,7 @@ package eva2.optimization.operator.paramcontrol;
 //
 //import java.io.Serializable;
 //
+//import eva2.util.annotation.Description;
 //import eva2.tools.Mathematics;
 //
 ///**
@@ -15,6 +16,7 @@ package eva2.optimization.operator.paramcontrol;
 // * @author mkron
 // *
 // */
+//@Description("A single parameter may be adapted using linear interpolation or exponential decrease.")
 //public class SingleParamAdaption extends AbstractAdaptiveParameters implements Serializable {
 //	protected String[] params = null;
 //	private double startV;
@@ -85,10 +87,6 @@ package eva2.optimization.operator.paramcontrol;
 //
 //	public String adpTypeTipText() {
 //		return "Select type of adaption.";
-//	}
-//	
-//	public static String globalInfo() {
-//		return "A single parameter may be adapted using linear interpolation or exponential decrease.";
 //	}
 //	
 //	@Override

@@ -2,6 +2,7 @@ package eva2.optimization.operator.nichepso.absorption;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.strategies.ParticleSubSwarmOptimization;
+import eva2.util.annotation.Description;
 
 /**
  * Particles are absorbed into a subswarm when they move into an area
@@ -12,24 +13,13 @@ import eva2.optimization.strategies.ParticleSubSwarmOptimization;
  * In Proceedings of the 4th Asia-Pacific Conference on Simulated Evolution and Learning (SEAL'02),
  * 2002, 2, 692-696
  */
+@Description("Strategy to absorb main swarm particles into a subswarm")
 public class StandardAbsorptionStrategy implements InterfaceAbsorptionStrategy, java.io.Serializable {
 
-    /**
-     * *******************************************************************************************************************
-     * ctors, initialize, clone
-     */
     @Override
     public Object clone() {
         return new StandardAbsorptionStrategy();
     }
-
-    public String globalInfo() {
-        return "Strategy to absorb main swarm particles into a subswarm";
-    }
-
-/**********************************************************************************************************************
- * shouldAbsorbParticleIntoSubswarm
- */
 
     /**
      * @tested true if

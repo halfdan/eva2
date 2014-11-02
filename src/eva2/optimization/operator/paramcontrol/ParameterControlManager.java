@@ -4,6 +4,7 @@ import eva2.gui.BeanInspector;
 import eva2.optimization.modules.Processor;
 import eva2.optimization.population.Population;
 import eva2.tools.Pair;
+import eva2.util.annotation.Description;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,11 +20,11 @@ import java.util.Vector;
  * one fewer window layer) but there must be an additional method getParamControl implemented
  * which returns the ParameterControlManager to make it available to the Processor.
  *
- * @author mkron
  * @see ParamAdaption
  * @see Processor
  * @see AbstractParameterControl
  */
+@Description("Define a list of dynamically adapted parameters.")
 public class ParameterControlManager implements InterfaceParameterControl, Serializable {
     public Object[] initialValues = null;
     private ParamAdaption[] singleAdapters = new ParamAdaption[]{};
@@ -187,10 +188,6 @@ public class ParameterControlManager implements InterfaceParameterControl, Seria
             newP[newP.length - 1] = pa;
             setSingleAdapters(newP);
         }
-    }
-
-    public static String globalInfo() {
-        return "Define a list of dynamically adapted parameters.";
     }
 
     public String getName() {

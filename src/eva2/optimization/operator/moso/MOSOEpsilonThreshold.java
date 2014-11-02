@@ -3,10 +3,12 @@ package eva2.optimization.operator.moso;
 import eva2.gui.PropertyEpsilonThreshold;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This method uses n-1 objected as soft constraints.")
 public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Serializable {
 
     private PropertyEpsilonThreshold epsilonThreshold = null;
@@ -135,10 +137,6 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
         return this.getName() + "\n";
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -148,15 +146,6 @@ public class MOSOEpsilonThreshold implements InterfaceMOSOConverter, java.io.Ser
     @Override
     public String getName() {
         return "Epsilon Threshold";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method uses n-1 objected as soft constraints.";
     }
 
     /**

@@ -3,10 +3,12 @@ package eva2.optimization.operator.moso;
 import eva2.gui.PropertyWeightedLPTchebycheff;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
+import eva2.util.annotation.Description;
 
 /**
  *
  */
+@Description("This method implements the Lp-problem and the Tchebycheff metric, the weighted version is also known as compromise programming.")
 public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.io.Serializable {
 
     private PropertyWeightedLPTchebycheff weightedLPTchebycheff = null;
@@ -133,10 +135,6 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
         return result;
     }
 
-
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -146,15 +144,6 @@ public class MOSOWeightedLPTchebycheff implements InterfaceMOSOConverter, java.i
     @Override
     public String getName() {
         return "Lp/Tchebycheff";
-    }
-
-    /**
-     * This method returns a global info string
-     *
-     * @return description
-     */
-    public static String globalInfo() {
-        return "This method implements the Lp-problem and the Tchebycheff metric, the weighted version is also known as compromise programming.";
     }
 
     /**
