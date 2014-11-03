@@ -3,7 +3,9 @@ package eva2.optimization.tools;
 import eva2.gui.BeanInspector;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.StringTools;
+import org.yaml.snakeyaml.Yaml;
 
+import javax.swing.filechooser.FileFilter;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -112,12 +114,13 @@ public class FileTools {
      * @param parentComponent the parent component
      * @param object          The object to save.
      */
-    public static boolean saveObjectWithFileChooser(Component parentComponent, Object object) {
+    public static boolean saveObjectWithFileChooser(Component parentComponent, Object object, FileFilter filter) {
         int returnVal;
         File sFile;
         boolean finished = false;
         do {
             JFileChooser fc = createFileChooser();
+            fc.setFileFilter(filter);
             returnVal = fc.showSaveDialog(parentComponent);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 sFile = fc.getSelectedFile();
@@ -169,16 +172,15 @@ public class FileTools {
      *
      * @return the loaded object, or null if the operation was cancelled
      */
-    public static Object openObject(Component parentComponent, Class clazz) {
+    public static Object openObject(Component parentComponent, Class clazz, FileFilter filter) {
         Object obj = null;
         JFileChooser fc = createFileChooser();
+        fc.setFileFilter(filter);
         int returnVal = fc.showOpenDialog(parentComponent);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File selected = fc.getSelectedFile();
             try {
-                ObjectInputStream oi = new ObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
-                obj = oi.readObject();
-                oi.close();
+                obj = new Yaml().load(new FileInputStream(selected.getAbsolutePath()));
                 if (!clazz.isAssignableFrom(obj.getClass())) {
                     throw new Exception("Object not of type: " + clazz.getName());
                 }
@@ -204,7 +206,7 @@ public class FileTools {
     }
 
     public static boolean saveObjectToFolder(Object object, File folder, boolean forceOverwrite, Component parentComponent) {
-        String predefName = null;
+        String predefName;
         try {
             predefName = (String) BeanInspector.callIfAvailable(object, "getName", null);
             predefName = StringTools.simplifySymbols(predefName) + ".yml";
