@@ -6,8 +6,11 @@ import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
 import eva2.util.annotation.Description;
+import eva2.yaml.BeanSerializer;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -110,7 +113,8 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         openButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
-                Object object = FileTools.openObject(openButton, genericObjectEditor.getClassType());
+                FileFilter filter = new FileNameExtensionFilter("YAML file", "yml", "yaml");
+                Object object = FileTools.openObject(openButton, genericObjectEditor.getClassType(), filter);
                 if (object != null) {
                     // setValue takes care of: Making sure obj is of right type,
                     // and firing property change.
@@ -128,7 +132,8 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent event) {
-                FileTools.saveObjectWithFileChooser(saveButton, genericObjectEditor.getValue());
+                FileFilter filter = new FileNameExtensionFilter("YAML file", "yml", "yaml");
+                FileTools.saveObjectWithFileChooser(saveButton, BeanSerializer.serializeObject(genericObjectEditor.getValue()), filter);
             }
         });
 

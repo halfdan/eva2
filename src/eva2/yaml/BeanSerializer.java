@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Created by becker on 02.11.2014.
+ *
  */
 public class BeanSerializer {
 
@@ -25,6 +25,7 @@ public class BeanSerializer {
         options.setAllowReadOnlyProperties(false);
         options.setIndent(4);
         Yaml yaml = new Yaml(new OptimizationRepresenter(), options);
+
         return yaml.dump(obj);
     }
 
