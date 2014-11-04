@@ -1,6 +1,22 @@
 %% LyX 2.0.2 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[11pt,oneside,english]{amsbook}
+\documentclass[
+  BCOR12mm,
+  letterpaper,
+  11pt,
+  headsepline,
+  pointlessnumbers,
+  tablecaptionabove,
+  onelinecaption,
+  headinclude,
+  appendixprefix,
+  idxtotoc,
+  bibtotoc,
+  twoside,
+  titlepage
+]{scrreprt}
+
+\usepackage{UT}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \setlength{\parskip}{\medskipamount}
@@ -10,6 +26,9 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}   %stellt den Befehl \newcolumntype bereit
 \PassOptionsToPackage{normalem}{ulem}
 \usepackage{ulem}
 
@@ -104,16 +123,55 @@ stringstyle=\color{gray}\ttfamily,
 
 \usepackage{babel}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gestaltung der Titelseite     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\newcolumntype{L}[1]{>{\centering\arraybackslash}p{#1}}
+
+\titlehead{\centering\includegraphics[width=0.75\textwidth]{img/UT_WBMW_mathnat_4C}}
+%\subject{User's Guide}
+\title{
+\centering
+\begin{tabular}{rl}
+%\includegraphics[width=.2\columnwidth]{../logo/Logo.pdf} &
+SBMLsimulator
+\end{tabular}
+}
+\subtitle{Evolutionary Algorithms Workbench, Version 2}
+
+\hypersetup{
+              bookmarks={true},
+              bookmarksopen={true},
+              bookmarksopenlevel={0},
+              bookmarksnumbered={true},
+              breaklinks={true},
+              colorlinks={false},
+              pdfpagemode={UseOutlines},
+              pdftitle={SBMLsimulator},
+              pdfauthor={Fabian Becker} {Marcel Kronfeld}, 
+              pdfsubject={User's Guide}, pdfkeywords={Key word 1} {Key word 1} {...} {Key word n}
+              pdftex, pdffitwindow={true},
+              pdfstartview={FitV},
+              pdfnewwindow={false},
+              pdfdisplaydoctitle={true},
+              pdfhighlight={/P},
+              plainpages={false},
+              unicode={true},
+              urlcolor={blue}
+}
+
 \begin{document}
 
-\title{EvA2 Short Documentation}
+\title{EvA2 Documentation}
 
 \author{Fabian Becker, Marcel Kronfeld}
 
 
-\dedicatory{~\\~\\~\\Dept. of Cognitive Systems, \\Prof. Dr. Andreas Zell,
-\\University of Tübingen\\~\\~\\URL: \url{http://www.cogsys.cs.uni-tuebingen.de/software/EvA2}\\~\\~\\Last
-updated: \ddmmyyyydate \today}
+%\dedicatory{~\\~\\~\\Dept. of Cognitive Systems, \\Prof. Dr. Andreas Zell,
+%\\University of Tübingen\\~\\~\\URL: \url{http://www.cogsys.cs.uni-tuebingen.de/software/EvA2}\\~\\~\\Last
+%updated: \ddmmyyyydate \today}
 
 \maketitle
 \newpage{}
