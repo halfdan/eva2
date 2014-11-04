@@ -179,7 +179,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      * Return true if the population measure did not exceed the
      * threshold for convergence since the last saved state.
      *
-     * @param curFit
+     * @param pop
      * @return
      */
     protected boolean isStillConverged(PopulationInterface pop) {

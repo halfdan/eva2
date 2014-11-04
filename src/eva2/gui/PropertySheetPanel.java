@@ -986,7 +986,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
     }
 }
 
-class PropertyCellRenderer implements TableCellRenderer {
+final class PropertyCellRenderer implements TableCellRenderer {
     private Logger LOGGER = Logger.getLogger(PropertyCellRenderer.class.getName());
     JLabel empty = new JLabel();
 
@@ -1028,7 +1028,7 @@ class PropertyCellRenderer implements TableCellRenderer {
     }
 }
 
-class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
+final class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
     private Logger LOGGER = Logger.getLogger(PropertyCellEditor.class.getName());
     private JLabel empty = new JLabel();
     private Object value;
