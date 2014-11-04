@@ -123,8 +123,8 @@ public class ANPSO extends NichePSO implements InterfaceAdditionalPopulationInfo
         getMainSwarm().setPhi1(2.05);
         getMainSwarm().setPhi2(2.05);
         getMainSwarm().setInertnessOrChi(0.7298437881283576);
-//		setMainSwarmInertness(new NoParameterAging(0.7298437881283576));
-        setMainSwarmAlgoType(getMainSwarm().getAlgoType().setSelectedTag("Constriction")); // constriction
+        getMainSwarm().setAlgoType(ParticleSwarmOptimization.PSOType.Constriction);
+        setMainSwarmAlgoType(ParticleSwarmOptimization.PSOType.Constriction); // constriction
         setMaxInitialSubSwarmSize(0); // deactivate early reinits
         setMainSwarmTopology(PSOTopology.grid);
         setMainSwarmTopologyRange(1);
@@ -905,7 +905,8 @@ public class ANPSO extends NichePSO implements InterfaceAdditionalPopulationInfo
         anpso.getMainSwarm().setPhi1(2.05);
         anpso.getMainSwarm().setPhi2(2.05);
         anpso.getMainSwarm().setInertnessOrChi(0.7298437881283576);
-        anpso.setMainSwarmAlgoType(anpso.getMainSwarm().getAlgoType().setSelectedTag("Constriction")); // constriction
+        anpso.getMainSwarm().setAlgoType(ParticleSwarmOptimization.PSOType.Constriction);
+        anpso.setMainSwarmAlgoType(ParticleSwarmOptimization.PSOType.Constriction); // constriction
         anpso.setMaxInitialSubSwarmSize(0); // deactivate early reinits
         anpso.setMainSwarmTopology(PSOTopology.grid);
         anpso.setMainSwarmTopologyRange(1);
@@ -924,7 +925,8 @@ public class ANPSO extends NichePSO implements InterfaceAdditionalPopulationInfo
         anpso.getMainSwarm().setParameterControl(new ParamAdaption[]{new LinearParamAdaption("inertnessOrChi", 0.7, 0.2)});
 //		anpso.setMainSwarmInertness(new LinearParameterAging(0.7, 0.2, evalCnt/anpso.getMainSwarmSize()));
 
-        anpso.setMainSwarmAlgoType(anpso.getMainSwarm().getAlgoType().setSelectedTag("Inertness"));
+        anpso.getMainSwarm().setAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
+        anpso.setMainSwarmAlgoType(ParticleSwarmOptimization.PSOType.Inertness); // inertness
         anpso.getMainSwarm().setPhi1(1.2);
         anpso.getMainSwarm().setPhi2(0.6);  // ANPSO uses communication in the main swarm
         //Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" in that order starting by 0.
@@ -944,7 +946,8 @@ public class ANPSO extends NichePSO implements InterfaceAdditionalPopulationInfo
 
         anpso.getMainSwarm().setParameterControl(new ParamAdaption[]{new LinearParamAdaption("inertnessOrChi", 0.7, 0.2)});
 
-        anpso.setMainSwarmAlgoType(anpso.getMainSwarm().getAlgoType().setSelectedTag("Inertness"));
+        anpso.getMainSwarm().setAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
+        anpso.setMainSwarmAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
         anpso.getMainSwarm().setPhi1(1.2);
         anpso.getMainSwarm().setPhi2(1.2);  // ANPSO uses communication in the main swarm
         //Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree", "HPSO", "Random" in that order starting by 0.

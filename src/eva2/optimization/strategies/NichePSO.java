@@ -94,7 +94,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 //	protected double mainSwarmPhi2 = 0; // by default no communication in the mainswarm
     protected PSOTopology mainSwarmTopology = PSOTopology.grid; // = 1;
     protected int mainSwarmTopologyRange = 0;
-    private int mainSwarmAlgoType = 0; // 0: inertness, 1: constriction
+    private ParticleSwarmOptimization.PSOType mainSwarmAlgoType = ParticleSwarmOptimization.PSOType.Inertness; // 0: inertness, 1: constriction
     //	private InterfaceParameterAging mainSwarmParamAging = new LinearParameterAging();
     protected ParameterControlManager paramControl = new ParameterControlManager();
     boolean returnRepresentativeSolutionsOnly = true; // if true only the representatives of every subswarm are returned, else every particles pbest 
@@ -237,7 +237,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         getMainSwarm().setGcpso(false);
 //		getMainSwarm().setAlgoType(new SelectedTag("Inertness"));
         getMainSwarm().setParameterControl(new ParamAdaption[]{getDefaultInertnessAdaption()});
-        setMainSwarmAlgoType(getMainSwarm().getAlgoType().setSelectedTag(mainSwarmAlgoType)); // set algo type, may influence aging
+        getMainSwarm().setAlgoType(mainSwarmAlgoType);
+        setMainSwarmAlgoType(mainSwarmAlgoType); // set algo type, may influence aging
 
 //		getMainSwarm().setPhi1(mainSwarmPhi1); // cognitive component "tendency to return to the best position visited so far"
 //		getMainSwarm().setPhi2(mainSwarmPhi2); // social component "tendency to be attracted towards the best position found in its neighbourhood."
@@ -263,7 +264,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         // choose PSO-type for the subswarmoptimizer
         getSubswarmOptimizerTemplate().setGcpso(true);
         getSubswarmOptimizerTemplate().setRho(0.1); // on 2D Problems empirically better than default value 1
-        getSubswarmOptimizerTemplate().getAlgoType().setSelectedTag("Constriction");//setAlgoType(new SelectedTag("Inertness"));
+        getSubswarmOptimizerTemplate().setAlgoType(ParticleSwarmOptimization.PSOType.Constriction);
 
         //"Several studies propose different values for these parameters" (http://tracer.uc3m.es/tws/pso/parameters.html)
         //Bergh2002 p.87
@@ -974,16 +975,16 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         this.mainSwarmTopologyRange = mainSwarmTopologyRange;
     }
 
-    public SelectedTag getMainSwarmAlgoType() {
-        if (mainSwarmAlgoType != getMainSwarm().getAlgoType().getSelectedTagID()) {
+    public ParticleSwarmOptimization.PSOType getMainSwarmAlgoType() {
+        if (mainSwarmAlgoType != getMainSwarm().getAlgoType()) {
             System.err.println("Error in NichePSO:getMainSwarmAlgoType() !!");
         }
         return getMainSwarm().getAlgoType();
     }
 
-    public void setMainSwarmAlgoType(SelectedTag st) {
+    public void setMainSwarmAlgoType(ParticleSwarmOptimization.PSOType st) {
         getMainSwarm().setAlgoType(st);
-        mainSwarmAlgoType = st.getSelectedTagID();
+        mainSwarmAlgoType = st;
 //		mainSwarmParamAging.setStartValue(getMainSwarm().getInertnessOrChi());
     }
 
@@ -2048,12 +2049,12 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         npso.setMaxAllowedSwarmRadius(0.0001); // formally limits the swarm radius of the subswarms
 
         // Parameter for the mainswarm
-        npso.getMainSwarmAlgoType().setSelectedTag("Inertness");
+        npso.setMainSwarmAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
         npso.getMainSwarm().setPhi1(1.2);
         npso.getMainSwarm().setPhi2(0); // by default no communication in the mainswarm
         npso.setMainSwarmTopologyTag(0); // this doesnt have any effect due to no communication
         npso.setMainSwarmTopologyRange(0);
-        npso.mainSwarmAlgoType = 0;
+        npso.mainSwarmAlgoType = ParticleSwarmOptimization.PSOType.Inertness;
         npso.getMainSwarm().setParameterControl(new ParamAdaption[]{getDefaultInertnessAdaption()});
 //		npso.getMainSwarm().setSpeedLimit(avgRange/2.);
 //		npso.getMainSwarm().setCheckSpeedLimit(true);
@@ -2062,7 +2063,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         npso.getSubswarmOptimizerTemplate().setGcpso(true);
         npso.getSubswarmOptimizerTemplate().setRho(0.1); // on 2D Problems empirically better than default value 1
 //		npso.getSubswarmOptimizerTemplate().setAlgoType(new SelectedTag("Constriction"));
-        npso.getSubswarmOptimizerTemplate().setAlgoType(npso.getSubswarmOptimizerTemplate().getAlgoType().setSelectedTag("Constriction")); // constriction
+        npso.getSubswarmOptimizerTemplate().setAlgoType(ParticleSwarmOptimization.PSOType.Constriction); // constriction
         npso.getSubswarmOptimizerTemplate().setConstriction(2.05, 2.05);
 //		npso.getSubswarmOptimizerTemplate().setInertnessAging(new LinearParameterAging(0.7, 0.2, evalCnt/(10*popSize))); // expect shorter 
 
@@ -2103,12 +2104,13 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         npso.setMaxAllowedSwarmRadius(0.0001); // formally limits the swarm radius of the subswarms
 
         // Parameter for the mainswarm
-        npso.setMainSwarmAlgoType(npso.getMainSwarm().getAlgoType().setSelectedTag("Inertness")); // constriction
+        npso.getMainSwarm().setAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
+        npso.setMainSwarmAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
         npso.getMainSwarm().setPhi1(1.2);
 //		npso.SetMainSwarmPhi2(0); // by default no communication in the mainswarm
         npso.setMainSwarmTopologyTag(0); // this doesnt have any effect due to no communication
         npso.setMainSwarmTopologyRange(0);
-        npso.mainSwarmAlgoType = 0;
+        npso.mainSwarmAlgoType = ParticleSwarmOptimization.PSOType.Inertness;
         npso.getMainSwarm().setParameterControl(new ParamAdaption[]{getDefaultInertnessAdaption()});
 //		npso.setMainSwarmInertness(new LinearParameterAging(0.7, 0.2, evalCnt/popSize));
 //		npso.getMainSwarm().setSpeedLimit(avgRange/2.);
@@ -2117,7 +2119,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         // parameters for the subswarms
         npso.getSubswarmOptimizerTemplate().setGcpso(true);
         npso.getSubswarmOptimizerTemplate().setRho(0.01);
-        npso.getSubswarmOptimizerTemplate().setAlgoType(new SelectedTag("Constriction"));
+        npso.getSubswarmOptimizerTemplate().setAlgoType(ParticleSwarmOptimization.PSOType.Constriction);
 
         npso.getSubswarmOptimizerTemplate().setConstriction(2.05, 2.05);
 //		npso.getSubswarmOptimizerTemplate().setInertnessAging(new NoParameterAging(npso.getSubswarmOptimizerTemplate().getInertnessOrChi()));

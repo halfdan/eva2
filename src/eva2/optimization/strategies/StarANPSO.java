@@ -10,7 +10,8 @@ public class StarANPSO extends ANPSO {
         super();
 
         NichePSO.starNPSO(this, defaultEvalCnt);
-        setMainSwarmAlgoType(getMainSwarm().getAlgoType().setSelectedTag("Inertness"));
+        getMainSwarm().setAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
+        setMainSwarmAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
         getMainSwarm().setParameterControl(new ParamAdaption[]{new LinearParamAdaption("inertnessOrChi", 0.7, 0.2)});
 //		setMainSwarmInertness(new LinearParameterAging(0.7, 0.2, defaultEvalCnt/getMainSwarmSize()));
 
