@@ -192,7 +192,7 @@ public abstract class AbstractOptimizationParameters implements InterfaceOptimiz
 
     private List<InterfaceAdditionalPopulationInformer> getInformerList() {
         LinkedList<InterfaceAdditionalPopulationInformer> ret = new LinkedList<>();
-        if (problem instanceof InterfaceAdditionalPopulationInformer) {
+        if (problem != null) {
             ret.add(problem);
         }
         if (optimizer instanceof InterfaceAdditionalPopulationInformer) {

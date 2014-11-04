@@ -57,7 +57,7 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
      */
     public static StatisticsParameters getInstance(boolean loadDefaultSerFile) {
         if (loadDefaultSerFile) {
-            return getInstance("Statistics.ser");
+            return getInstance("Statistics.yml");
         } else {
             return new StatisticsParameters();
         }
@@ -149,6 +149,7 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
      *
      */
     @Override
+    @Parameter(name = "runs", description = "Number of independent optimization runs to evaluate.")
     public void setMultiRuns(int x) {
         multiRuns = x;
     }
@@ -159,14 +160,6 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     @Override
     public int getMultiRuns() {
         return multiRuns;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public String multiRunsTipText() {
-        return "Number of independent optimization runs to evaluate.";
     }
 
     /**
@@ -181,12 +174,9 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
      * Activate or deactivate averaged graph for multi-run plots
      */
     @Override
+    @Parameter(description = "Plotting each fitness graph separately if multiruns > 1.")
     public void setUseStatPlot(boolean x) {
         useStatPlot = x;
-    }
-
-    public String useStatPlotTipText() {
-        return "Plotting each fitness graph separately if multiruns > 1.";
     }
 
     /**

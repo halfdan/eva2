@@ -187,7 +187,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             LOGGER.log(Level.SEVERE, errMsg, e);
             try {
                 JOptionPane.showMessageDialog(null, StringTools.wrapLine(errMsg, 60, 0.2), "Error in Optimization", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception | Error ex) {
+            } catch (Exception | Error ignored) {
             }
             //statistics.stopOptimizationPerformed(false);
             setOptimizationRunning(false); // normal finish
@@ -221,10 +221,13 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             }
         }
 
-        optimizationParameters.getOptimizer().addPopulationChangedEventListener(this);
-
         runCounter = 0;
 
+        InterfaceTerminator terminator = this.optimizationParameters.getTerminator();
+        InterfaceOptimizer optimizer = this.optimizationParameters.getOptimizer();
+        InterfaceOptimizationProblem problem = this.optimizationParameters.getProblem();
+
+        optimizer.addPopulationChangedEventListener(this);
         /**
          * We keep the optimization running until it is aborted by the user or
          * the number of multiple runs has been reached.
@@ -233,16 +236,17 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             LOGGER.info(String.format("Starting Optimization %d/%d", runCounter + 1, statistics.getStatisticsParameter().getMultiRuns()));
             statistics.startOptimizationPerformed(getInfoString(), runCounter, optimizationParameters, getInformerList());
 
-            this.optimizationParameters.getProblem().initializeProblem();
-            this.optimizationParameters.getOptimizer().setProblem(this.optimizationParameters.getProblem());
-            this.optimizationParameters.getTerminator().initialize(this.optimizationParameters.getProblem());
+            problem.initializeProblem();
+            optimizer.setProblem(problem);
+            terminator.initialize(problem);
+
             maybeInitParamCtrl(optimizationParameters);
             if (this.createInitialPopulations) {
-                this.optimizationParameters.getOptimizer().initialize();
+                optimizer.initialize();
             }
 
             if (optimizationStateListener != null) {
-                optimizationStateListener.updateProgress(getStatusPercent(optimizationParameters.getOptimizer().getPopulation(), runCounter, statistics.getStatisticsParameter().getMultiRuns()), null);
+                optimizationStateListener.updateProgress(getStatusPercent(optimizer.getPopulation(), runCounter, statistics.getStatisticsParameter().getMultiRuns()), null);
             }
 
             /**
@@ -253,23 +257,23 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             do {
                 maybeUpdateParamCtrl(optimizationParameters);
 
-                this.optimizationParameters.getOptimizer().optimize();
-            } while (isOptimizationRunning() && !this.optimizationParameters.getTerminator().isTerminated(this.optimizationParameters.getOptimizer().getAllSolutions()));
+                optimizer.optimize();
+            } while (isOptimizationRunning() && !terminator.isTerminated(optimizer.getAllSolutions()));
 
             runCounter++;
             maybeFinishParamCtrl(optimizationParameters);
             userAborted = !isOptimizationRunning(); // stop is "normal" if opt wasnt set false by the user (and thus still true)
             //////////////// Default stats
-            statistics.stopOptimizationPerformed(!userAborted, optimizationParameters.getTerminator().lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
+            statistics.stopOptimizationPerformed(!userAborted, terminator.lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
 
             //////////////// PP or set results without further PP
             if (!userAborted) {
                 resultPop = performPostProcessing();
                 if (resultPop == null) { // post processing disabled, so use opt. solutions
-                    resultPop = optimizationParameters.getOptimizer().getAllSolutions().getSolutions();
+                    resultPop = optimizer.getAllSolutions().getSolutions();
                 }
             } else {
-                resultPop = optimizationParameters.getOptimizer().getAllSolutions().getSolutions();
+                resultPop = optimizer.getAllSolutions().getSolutions();
             }
             statistics.postProcessingPerformed(resultPop);
 
@@ -281,7 +285,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         if (optimizationStateListener != null) {
             optimizationStateListener.updateProgress(0, null);
         }
-        optimizationParameters.getOptimizer().removePopulationChangedEventListener(this);
+        optimizer.removePopulationChangedEventListener(this);
         return resultPop;
     }
 
@@ -334,11 +338,10 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             args = new Object[]{optimizer};
         }
 
-        if (args != null) { // only if iteration counting is available
-            iterateParamCtrl(optimizer, "updateParameters", args);
-            args[0] = goParams.getProblem();
-            iterateParamCtrl(goParams.getProblem(), "updateParameters", args);
-        }
+        // only if iteration counting is available
+        iterateParamCtrl(optimizer, "updateParameters", args);
+        args[0] = goParams.getProblem();
+        iterateParamCtrl(goParams.getProblem(), "updateParameters", args);
     }
 
     /**

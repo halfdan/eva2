@@ -17,9 +17,6 @@ public interface InterfaceStatisticsParameters {
 
     int getMultiRuns();
 
-    String multiRunsTipText();
-
-
     /**
      * Use averaged graph for multi-run plots or not.
      *
