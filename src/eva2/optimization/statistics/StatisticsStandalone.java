@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This eva2.problems.simple statistics implementation can collect all Object data available during runs.
+ * This simple statistics implementation can collect all Object data available during runs.
  * Be aware that the memory requirements can be excessive depending on the data produced by
  * the additional informers, and depending on the selected fields to be collected.
  * Therefore, the default is not to log the data but just print it using the super class.
@@ -51,7 +51,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
     }
 
     @Override
-    protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
+    protected void initializePlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
         if (collectData) {
             resultData = new ArrayList<>(statisticsParameter.getMultiRuns());
             List<String> description = getOutputHeaderFieldNames(informerList);
@@ -80,7 +80,7 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
         double[] specificData = pop.getSpecificData();
         if (specificData != null) {
             for (int i = 0; i < specificData.length; i++) {
-                resultData.get(optRunsPerformed).add(new Object[]{new Double(functionCalls), specificData});
+                resultData.get(optRunsPerformed).add(new Object[]{(double) functionCalls, specificData});
             }
         }
     }
