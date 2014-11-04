@@ -28,9 +28,8 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
 
     /**
      * Should be removed and replaced by a more solid
-     * serialization. (EvAScript?)
+     * serialization.
      *
-     * @deprecated
      * @return
      */
     public static OptimizationParameters getInstance() {
