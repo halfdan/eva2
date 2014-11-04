@@ -7,6 +7,7 @@ import eva2.util.annotation.Hidden;
 import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
+import javax.swing.plaf.InsetsUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -514,7 +515,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
 
     private JPanel makeInfoPanel(String infoText, Object targ, int rowHeight) {
         className = targ.getClass().getName();
-        helpButton = new JButton("Help");
+        helpButton = new JButton("?");
         helpButton.setToolTipText("More information about " + className);
         helpButton.addActionListener(new ActionListener() {
 
@@ -523,6 +524,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 openHelpFrame();
             }
         });
+        helpButton.putClientProperty("JButton.buttonType", "help");
 
         JTextArea infoTextArea = new JTextArea();
         infoTextArea.setText(infoText);
@@ -999,10 +1001,19 @@ class PropertyCellRenderer implements TableCellRenderer {
             JComponent component = new JPanel();
             component.setLayout(new BorderLayout());
             component.add((PropertyPanel) value, BorderLayout.CENTER);
-            final JButton dialogButton = new JButton("...");
-            dialogButton.setMargin(new Insets(0,0,0,0));
+            final JButton dialogButton = new JButton("...") {
+                @Override
+                public void paint(Graphics g) {
+                    Color old = g.getColor();
+                    g.setColor(Color.WHITE);
+                    g.fillRect(0,0,100,100);
+                    g.setColor(old);
+                    super.paint(g);
+                }
+            };
+            dialogButton.setMargin(new Insets(0, 0, 0, 0));
+            dialogButton.putClientProperty("JButton.buttonType", "bevel");
             dialogButton.setBackground(Color.WHITE);
-
             component.add(dialogButton, BorderLayout.LINE_END);
             return component;
         } else if (value instanceof PropertyText) {
@@ -1035,8 +1046,18 @@ class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
             component = new JPanel();
             component.setLayout(new BorderLayout());
             component.add((PropertyPanel) value, BorderLayout.CENTER);
-            final JButton dialogButton = new JButton("...");
-            dialogButton.setMargin(new Insets(0,0,0,0));
+            final JButton dialogButton = new JButton("...") {
+                @Override
+                public void paint(Graphics g) {
+                    Color old = g.getColor();
+                    g.setColor(Color.WHITE);
+                    g.fillRect(0,0,100,100);
+                    g.setColor(old);
+                    super.paint(g);
+                }
+            };
+            dialogButton.setMargin(new Insets(0, 0, 0, 0));
+            dialogButton.putClientProperty("JButton.buttonType", "bevel");
             dialogButton.setBackground(Color.WHITE);
             dialogButton.addActionListener(new ActionListener() {
                 @Override

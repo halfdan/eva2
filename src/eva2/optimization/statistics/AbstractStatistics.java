@@ -565,7 +565,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 //		String header = getOutputHeader(lastInformerList, bestPop);
         List<Object> vals = getOutputValues(lastInformerList, bestPop);
 
-        StringBuilder sbuf = new StringBuilder("Overall best statistical data: ");
+        StringBuilder sbuf = new StringBuilder("Overall best statistical data: \n");
         sbuf.append(additionalFields);
         sbuf.append('\n');
         sbuf.append(StringTools.concatValues(vals, textFieldDelimiter));
