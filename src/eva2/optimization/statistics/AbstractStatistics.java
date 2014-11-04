@@ -956,7 +956,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         currentMeanFit = null;
 
         if (firstPlot) {
-            initPlots(null, null);
+            initializePlots(null, null);
             firstPlot = false;
         }
         if ((iterationCounter == 0) && printHeaderByVerbosity()) {
@@ -1013,7 +1013,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     /**
      * Called at the very first (multirun mode) plot of a fitness curve.
      */
-    protected abstract void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList);
+    protected abstract void initializePlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList);
 
     /**
      * To set a list of informers (even before the actual run is started).
@@ -1120,7 +1120,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             resultOut.flush();
         }
         if (firstPlot) {
-            initPlots(pop, informerList);
+            initializePlots(pop, informerList);
             firstPlot = false;
             currentBestFeasibleFit = null;
         }

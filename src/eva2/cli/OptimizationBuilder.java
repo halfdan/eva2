@@ -3,6 +3,8 @@ package eva2.cli;
 import eva2.gui.BeanInspector;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.statistics.InterfaceStatisticsParameters;
+import eva2.optimization.statistics.StatisticsParameters;
 import eva2.tools.ReflectPackage;
 import eva2.util.annotation.Hidden;
 import eva2.util.annotation.Parameter;
@@ -50,18 +52,26 @@ class ArgumentTree extends LinkedHashMap<String, Object> {
 public final class OptimizationBuilder {
     private OptimizationBuilder() {}
 
-    public static InterfaceOptimizationParameters parseArguments(String[] args) {
+    public static InterfaceOptimizationParameters parseOptimizerArguments(String[] args) {
+        ArgumentTree argumentTree = parseArguments(args);
+        return constructFromArgumentTree(OptimizationParameters.class, argumentTree);
+    }
+
+    public static InterfaceStatisticsParameters parseStatisticsArguments(String[] args) {
+        ArgumentTree argumentTree = parseArguments(args);
+        return constructFromArgumentTree(StatisticsParameters.class, argumentTree);
+    }
+
+    private static ArgumentTree parseArguments(String[] args) {
         HashMap<String, String> argumentMap = new HashMap<>(args.length/2);
         int i = 0;
         while (i < args.length) {
             // Is it a parameter?
             if (args[i].startsWith("--")) {
                 String key = args[i].substring(2);
-                String value = null;
                 // Is the next a value?
                 if (i < args.length - 1 && !args[i+1].startsWith("--")) {
-                    value = args[i + 1];
-                    argumentMap.put(key, value);
+                    argumentMap.put(key, args[i + 1]);
                     i = i + 2;
                 } else {
                     argumentMap.put(key, null);
@@ -76,7 +86,7 @@ public final class OptimizationBuilder {
         }
         System.out.println(argumentTree.toString());
 
-        return constructFromArgumentTree(OptimizationParameters.class, argumentTree);
+        return argumentTree;
     }
 
     private static void insertIntoArgumentTree(ArgumentTree tree, String key, String value) {

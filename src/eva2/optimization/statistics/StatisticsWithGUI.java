@@ -9,7 +9,6 @@ import eva2.gui.plot.Plot;
 import eva2.gui.plot.PlotInterface;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
-import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
 
 import java.io.Serializable;
@@ -20,7 +19,7 @@ import java.util.logging.Logger;
 /**
  * A statistics class to plot fitness curves in client-server mode. Mainly,
  * arrays of GraphWindows and Graphs are managed and the selected data fields
- * are plotted. TODO: this could finally be cleanly reduced to an
+ * are plotted. TODO: this could eventually be cleanly reduced to an
  * InterfaceStatisticsListener - without inheriting from AbstractStatistics.
  */
 public class StatisticsWithGUI extends AbstractStatistics implements Serializable, InterfaceStatistics {
@@ -39,7 +38,6 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
      * some time.
      */
     private transient List<Pair<String, Integer>> graphDesc = null;
-    protected static String hostName = null;
 
     /**
      *
@@ -112,12 +110,12 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
     }
 
     @Override
-    protected void initPlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
+    protected void initializePlots(PopulationInterface pop, List<InterfaceAdditionalPopulationInformer> informerList) {
         if (statisticsParameter instanceof StatisticsParameters) {
             graphDesc = lastFieldSelection.getSelectedWithIndex();
         } else {
             graphDesc = null;
-            System.err.println("Error in StatisticsWithGUI.initPlots()!");
+            System.err.println("Error in StatisticsWithGUI.initializePlots()!");
         }
 
         maybeShowProxyPrinter();
@@ -130,7 +128,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
         fitnessGraph = new Graph[windowCount][];
         // contains one graph for every value to be plotted (best / worst / best+worst)
-        // TODO Im really not sure why this is a 2-dimensional array. shouldnt one be enough?
+        // TODO Im really not sure why this is a 2-dimensional array. shouldn't one be enough?
         for (int i = 0; i < fitnessGraph.length; i++) {
             fitnessGraph[i] = new Graph[graphCount];
             for (int j = 0; j < fitnessGraph[i].length; j++) {
@@ -156,11 +154,11 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
 
     private void plotFitnessPoint(int graph, int subGraph, int x, double y) {
         if (fitnessGraph == null) {
-            EVAERROR.WARNING("fitness graph is null! (StatisticsWithGUI)");
+            LOGGER.warning("fitness graph is null! (StatisticsWithGUI)");
             return;
         }
         if (graph >= fitnessGraph.length || subGraph >= fitnessGraph[graph].length) {
-            EVAERROR.WARNING("tried to plot to invalid graph! (StatisticsWithGUI)");
+            LOGGER.warning("tried to plot to invalid graph! (StatisticsWithGUI)");
             return;
         }
         boolean isValidGraph = fitnessFrame[graph].isValid();
