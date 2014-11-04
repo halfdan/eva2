@@ -3,30 +3,28 @@ package eva2.optimization.operator.terminators;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceOptimizationProblem;
-import eva2.tools.SelectedTag;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 
 @Description("Boolean combination of two terminators.")
 public class CombinedTerminator implements InterfaceTerminator, Serializable {
+
+    public enum LogicalOperator { AND, OR }
     /**
      *
      */
     private static final long serialVersionUID = -4748749151972645021L;
     private InterfaceTerminator t1 = new FitnessConvergenceTerminator();
     private InterfaceTerminator t2 = new EvaluationTerminator();
-    private SelectedTag andOrTag = new SelectedTag("OR", "AND");
+    private LogicalOperator logicalOperator = LogicalOperator.AND;
     private String msg = null;
-
-    public static final boolean AND = true;
-    public static final boolean OR = false;
 
     /**
      *
      */
-    public CombinedTerminator() {
-    }
+    public CombinedTerminator() { }
 
     /**
      * Convenience constructor combining the given terminators in the expected way.
@@ -34,7 +32,7 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
     public CombinedTerminator(InterfaceTerminator t1, InterfaceTerminator t2, boolean bAnd) {
         this.t1 = t1;
         this.t2 = t2;
-        andOrTag.setSelectedTag(bAnd ? "AND" : "OR");
+        logicalOperator = bAnd ? LogicalOperator.AND : LogicalOperator.OR;
     }
 
     @Override
@@ -90,7 +88,7 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
             return ret;
         }
 
-        if (andOrTag.isSelectedString("AND")) {
+        if (logicalOperator == LogicalOperator.AND) {
             // make sure that both terminators are triggered by every call, because some judge
             // time-dependently and store information on the population.
             ret = getTermState(t1, curPopOrSols);
@@ -122,21 +120,18 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
     }
 
     /**
-     * @return the andOrTag
+     * @return the logicalOperator
      */
-    public SelectedTag getAndOrTag() {
-        return andOrTag;
+    public LogicalOperator getLogicalOperator() {
+        return logicalOperator;
     }
 
     /**
-     * @param andOrTag the andOrTag to set
+     * @param logicalOperator the logicalOperator to set
      */
-    public void setAndOrTag(SelectedTag andOrTag) {
-        this.andOrTag = andOrTag;
-    }
-
-    public String andOrTagTipText() {
-        return "Set the boolean operator to be used to combine the two terminators.";
+    @Parameter(description = "Set the boolean operator to be used to combine the two terminators.")
+    public void setLogicalOperator(LogicalOperator logicalOperator) {
+        this.logicalOperator = logicalOperator;
     }
 
     /**
@@ -149,12 +144,9 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
     /**
      * @param t1 the t1 to set
      */
+    @Parameter(description = "The first terminator to be combined.")
     public void setTerminatorOne(InterfaceTerminator t1) {
         this.t1 = t1;
-    }
-
-    public String terminatorOneTipText() {
-        return "The first terminator to be combined.";
     }
 
     /**
@@ -167,12 +159,8 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
     /**
      * @param t2 the t2 to set
      */
+    @Parameter(description = "The second terminator to be combined.")
     public void setTerminatorTwo(InterfaceTerminator t2) {
         this.t2 = t2;
     }
-
-    public String terminatorTwoTipText() {
-        return "The second terminator to be combined.";
-    }
-
 }
