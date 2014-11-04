@@ -256,7 +256,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
             for (int i = 0; i < lastVelocity.length; i++) {
                 // the component from the old velocity
                 curVelocity[i] = this.inertnessOrChi * lastVelocity[i];
-                if (algType.getSelectedTag().getID() == 1) {
+                if (algType == PSOType.Constriction) {
                     chi = inertnessOrChi;
                 } else {
                     chi = 1.;

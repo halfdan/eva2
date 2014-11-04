@@ -24,6 +24,7 @@ import eva2.tools.math.Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,10 +43,7 @@ import java.util.Vector;
 @Description("Particle Swarm Optimization by Kennedy and Eberhart.")
 public class ParticleSwarmOptimization extends AbstractOptimizer implements java.io.Serializable, InterfaceAdditionalPopulationInformer {
 
-    /**
-     * Generated serial version uid.
-     */
-    private static final long serialVersionUID = -149996122795669589L;
+    public enum PSOType { Inertness, Constriction }
     Object[] sortedPop = null;
     protected AbstractEAIndividual bestIndividual = null;
     protected boolean checkRange = true;
@@ -56,7 +54,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      * Defines which version of PSO is applied, classical inertness or
      * constriction (using chi)
      */
-    protected SelectedTag algType;
+    protected PSOType algType;
     protected int topologyRange = 2;
     protected double initialVelocity = 0.2;
     protected double speedLimit = 0.1;
@@ -92,7 +90,6 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
     transient final static String sortedIndexKey = "sortedParticleIndex";
     transient final static String dmsGroupIndexKey = "dmsGroupIndex";
     protected String indentifier = "";
-    transient private Vector<InterfacePopulationChangedEventListener> changeListener;
     transient private TopoPlot topoPlot = null;
     /// sleep time so that visual plot can be followed easier
     protected int sleepTime = 0;
@@ -109,8 +106,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
 
     public ParticleSwarmOptimization() {
         topology = PSOTopology.grid;
-        algType = new SelectedTag("Inertness", "Constriction");
-        algType.setSelectedTag(1);
+        algType = PSOType.Constriction;
 
         setConstriction(getPhi1(), getPhi2());
         hideHideable();
@@ -118,9 +114,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
 
     public ParticleSwarmOptimization(ParticleSwarmOptimization a) {
         topology = a.topology;
-        if (a.algType != null) {
-            this.algType = (SelectedTag) a.algType.clone();
-        }
+        this.algType =  a.algType;
         this.population = (Population) a.population.clone();
         this.optimizationProblem = a.optimizationProblem;
         this.indentifier = a.indentifier;
@@ -145,7 +139,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      */
     public ParticleSwarmOptimization(int popSize, double p1, double p2, PSOTopology topo, int topoRange) {
         this();
-        algType.setSelectedTag(1); // set to constriction
+        algType = PSOType.Constriction; // set to constriction
         population = new Population(popSize);
         setPhiValues(p1, p2);
         topologyRange = topoRange;
@@ -292,7 +286,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      * @param requiredType   optional required type identifier of the individual.
      * @return double array containing the vectorial sum of particle velocities
      *         or an array containing the average absolute speed
-     * @see AbstractEAIndividual.getData(String)
+     * @see AbstractEAIndividual#getData(String)
      */
     public static double[] getPopulationVelSpeed(Population pop, int calcModeSwitch, final String velocityKey, final String typeString, final Object requiredType) {
         AbstractEAIndividual indy = (AbstractEAIndividual) pop.get(0);
@@ -742,7 +736,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         for (int i = 0; i < personalBestPos.length; i++) {
             // the component from the old velocity
             accel[i] = 0;
-            if (algType.getSelectedTag().getID() == 1) {
+            if (algType == PSOType.Constriction) {
                 chi = inertnessOrChi;
             } else {
                 chi = 1.;
@@ -1582,7 +1576,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         if (pSum <= 4) {
             System.err.println("error, invalid tauSum value in PSO::setConstriction");
         } else {
-            if (!getAlgoType().isSelectedString("Constriction")) {
+            if (getAlgoType() != PSOType.Constriction) {
                 System.err.println("Warning, PSO algorithm variant constriction expected!");
             }
             phi1 = tau1;
@@ -1613,9 +1607,10 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      *
      * @param l
      */
+    @Parameter(description = "Acceleration for the cognition model.")
     public void setPhi1(double l) {
         this.phi1 = l;
-        if (algType.getSelectedTag().getID() == 1) {
+        if (algType == PSOType.Constriction) {
             setConstriction(getPhi1(), getPhi2());
         }
     }
@@ -1624,28 +1619,21 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         return this.phi1;
     }
 
-    public String phi1TipText() {
-        return "Acceleration for the cognition model.";
-    }
-
     /**
      * This method will set greediness to move towards the best social
      *
      * @param l
      */
+    @Parameter(description = "Acceleration for the social model.")
     public void setPhi2(double l) {
         this.phi2 = l;
-        if (algType.getSelectedTag().getID() == 1) {
+        if (algType == PSOType.Constriction) {
             setConstriction(getPhi1(), getPhi2());
         }
     }
 
     public double getPhi2() {
         return this.phi2;
-    }
-
-    public String phi2TipText() {
-        return "Acceleration for the social model.";
     }
 
     /**
@@ -1658,7 +1646,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
     public void setPhiValues(double phi1, double phi2) {
         this.phi1 = phi1;
         this.phi2 = phi2;
-        if (algType.isSelectedString("Constriction")) {
+        if (algType == PSOType.Constriction) {
             setConstriction(phi1, phi2);
         }
     }
@@ -1682,6 +1670,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      *
      * @param t The type.
      */
+    @Parameter(description = "Choose the topology type")
     public void setTopology(PSOTopology t) {
         this.topology = t;
         setGOEShowProperties(getClass());
@@ -1709,28 +1698,21 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         return topology;
     }
 
-    public String topologyTipText() {
-        return "Choose the topology type";
-    }
-
     /**
      * This method allows you to choose the algorithm type.
      *
      * @param s The type.
      */
-    public void setAlgoType(SelectedTag s) {
+    public void setAlgoType(PSOType s) {
         this.algType = s;
-        if (s.getSelectedTag().getID() == 1) {
+        if (algType == PSOType.Constriction) {
             setConstriction(getPhi1(), getPhi2());
         }
     }
 
-    public SelectedTag getAlgoType() {
+    @Parameter(description = "Choose the inertness or constriction method. Chi is calculated automatically in constriction.")
+    public PSOType getAlgoType() {
         return this.algType;
-    }
-
-    public String algoTypeTipText() {
-        return "Choose the inertness or constriction method. Chi is calculated automatically in constriction.";
     }
 
     /**
@@ -1738,6 +1720,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      *
      * @param s The range.
      */
+    @Parameter(description = "The range of the neighborhood topology.")
     public void setTopologyRange(int s) {
         this.topologyRange = s;
     }
@@ -1746,25 +1729,18 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         return this.topologyRange;
     }
 
-    public String topologyRangeTipText() {
-        return "The range of the neighborhood topology.";
-    }
-
     /**
      * Toggle Check Constraints.
      *
      * @param s Check Constraints.
      */
+    @Parameter(description = "Toggle whether particles are allowed to leave the range.")
     public void setCheckRange(boolean s) {
         this.checkRange = s;
     }
 
     public boolean isCheckRange() {
         return this.checkRange;
-    }
-
-    public String checkRangeTipText() {
-        return "Toggle whether particles are allowed to leave the range.";
     }
 
     /**

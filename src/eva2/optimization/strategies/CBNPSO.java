@@ -33,17 +33,6 @@ public class CBNPSO extends ClusterBasedNichingEA implements Serializable {
 
     public CBNPSO(boolean threshAdaption) {
         this(10, 15, 0.001, 1e-10, 15, 100, threshAdaption);
-//		super();
-//		setDifferentiationCA(new ClusteringDensityBased(getClusterDiffDist(), 10, new IndividualDataMetric(ParticleSwarmOptimization.partBestPosKey)));
-//		setMergingCA(new ClusteringDensityBased(0.001, 3, new IndividualDataMetric(ParticleSwarmOptimization.partBestPosKey)));
-//		setEpsilonBound(1e-10);
-//		setHaltingWindow(15);
-//		setMaxSpeciesSize(15);
-//		setOptimizer(new ParticleSwarmOptimization(100, 2.05, 2.05, PSOTopologyEnum.grid, 2));
-//		ParamAdaption[] defAdpt = new ParamAdaption[]{getDefaultSinusoidalAdaption()};
-//		setParameterControl(defAdpt);
-//		if (threshAdaption) addParameterControl(getDefaultThreshAdaption());
-//		setPopulationSize(100);
     }
 
     public CBNPSO(int minSpecSize, int maxSpecSize, double sigmaMerge, double epsilonConv, int haltingWindow, int popSize, boolean threshAdaption) {
