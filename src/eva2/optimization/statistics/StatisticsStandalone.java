@@ -17,8 +17,6 @@ import java.util.List;
  * @see AbstractStatistics
  */
 public class StatisticsStandalone extends AbstractStatistics implements InterfaceStatistics, Serializable {
-    private static final long serialVersionUID = -8451652609212653368L;
-
     private ArrayList<ArrayList<Object[]>> resultData = null;
     private ArrayList<String> resultHeaderStrings = null;
     private boolean collectData = false;
@@ -30,19 +28,19 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
     }
 
     public StatisticsStandalone(String resultFileName) {
-        this(resultFileName, 1, resultFileName == null ? StatisticsParameters.VERBOSITY_NONE : StatisticsParameters.VERBOSITY_FINAL, false);
+        this(resultFileName, 1, resultFileName == null ? InterfaceStatisticsParameters.OutputVerbosity.NONE : InterfaceStatisticsParameters.OutputVerbosity.FINAL, false);
     }
 
-    public StatisticsStandalone(String resultFileName, int multiRuns, int verbosity, boolean outputAllFieldsAsText) {
+    public StatisticsStandalone(String resultFileName, int multiRuns, InterfaceStatisticsParameters.OutputVerbosity verbosity, boolean outputAllFieldsAsText) {
         this(StatisticsParameters.getInstance(false));
         statisticsParameter.setMultiRuns(multiRuns);
-        statisticsParameter.setOutputVerbosity(statisticsParameter.getOutputVerbosity().setSelectedTag(verbosity));
+        statisticsParameter.setOutputVerbosity(verbosity);
         statisticsParameter.setResultFilePrefix(resultFileName);
         statisticsParameter.setOutputAllFieldsAsText(outputAllFieldsAsText);
         if (resultFileName == null) {
-            statisticsParameter.getOutputTo().setSelectedTag(StatisticsParameters.OUTPUT_WINDOW);
+            statisticsParameter.setOutputTo(InterfaceStatisticsParameters.OutputTo.WINDOW);
         } else {
-            statisticsParameter.setOutputTo(statisticsParameter.getOutputTo().setSelectedTag(StatisticsParameters.OUTPUT_FILE));
+            statisticsParameter.setOutputTo(InterfaceStatisticsParameters.OutputTo.FILE);
         }
     }
 

@@ -14,6 +14,7 @@ import eva2.optimization.operator.selection.SelectBestIndividuals;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
+import eva2.optimization.statistics.InterfaceStatisticsParameters;
 import eva2.optimization.statistics.StatisticsStandalone;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
@@ -88,7 +89,7 @@ public class ERPStarter {
         if (startGUI) {
             Main.initClientGUI(params, null, null, null);
         } else {
-            OptimizerRunnable rnbl = new OptimizerRunnable(params, new StatisticsStandalone(outputFilePrefix, 1, 3, true), false);
+            OptimizerRunnable rnbl = new OptimizerRunnable(params, new StatisticsStandalone(outputFilePrefix, 1, InterfaceStatisticsParameters.OutputVerbosity.ALL, true), false);
             // actually start the optimization
             OptimizerFactory.optimize(rnbl);
 

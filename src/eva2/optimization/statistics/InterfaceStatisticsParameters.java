@@ -1,6 +1,5 @@
 package eva2.optimization.statistics;
 
-import eva2.tools.SelectedTag;
 import eva2.tools.StringSelection;
 
 /**
@@ -51,15 +50,43 @@ public interface InterfaceStatisticsParameters {
 
     void setOutputAllFieldsAsText(boolean bShowFullText);
 
-    void setOutputVerbosity(SelectedTag sTag);
+    void setOutputVerbosity(OutputVerbosity sTag);
 
-    SelectedTag getOutputVerbosity();
+    OutputVerbosity getOutputVerbosity();
 
     int getOutputVerbosityK();
 
     void setOutputVerbosityK(int k);
 
-    void setOutputTo(SelectedTag sTag);
+    void setOutputTo(OutputTo sTag);
 
-    SelectedTag getOutputTo();
+    OutputTo getOutputTo();
+
+    public enum OutputVerbosity {
+        NONE, FINAL, KTH_IT, ALL;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case NONE: return "No output";
+                case FINAL: return "Final Results";
+                case KTH_IT: return "K-th iterations";
+                case ALL: return "All iterations";
+                default: return this.name();
+            }
+        }
+    }
+
+    public enum OutputTo {
+        FILE, WINDOW, BOTH;
+
+        public String toString() {
+            switch (this) {
+                case FILE: return "File (current dir.)";
+                case WINDOW: return "Text-window";
+                case BOTH: return "Both file and text-window";
+                default: return name();
+            }
+        }
+    }
 }

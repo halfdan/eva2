@@ -3,6 +3,7 @@ package eva2.problems;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.optimization.statistics.InterfaceStatisticsParameters;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -45,7 +46,7 @@ final class WaitForEvARunnable implements Runnable {
                 mp.log("reported results.\n");
                 mp.notifyFinished();
                 mp.log("notified finish.\n");
-                if (mp.verbosityLevel > 0) {
+                if (mp.verbosityLevel != InterfaceStatisticsParameters.OutputVerbosity.NONE) {
                     System.out.println("Optimization finished: " + mp.getInfoString());
                 }
             } catch (Exception e) {

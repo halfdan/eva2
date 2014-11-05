@@ -200,7 +200,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         String startDate = getDateString();
         // open the result file:
         if (doFileOutput()  // not "text-window only"
-                && (statisticsParameter.getOutputVerbosity().getSelectedTagID() > StatisticsParameters.VERBOSITY_NONE)) { // verbosity accordingly high
+                && (statisticsParameter.getOutputVerbosity() != InterfaceStatisticsParameters.OutputVerbosity.NONE)) { // verbosity accordingly high
             //!resFName.equalsIgnoreCase("none") && !resFName.equals("")) {
             String fnameBase = makeOutputFileName(statisticsParameter.getResultFilePrefix(), infoString, startDate);
             int cnt = 0;
@@ -233,7 +233,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     protected boolean doFileOutput() {
-        return (statisticsParameter.getOutputTo().getSelectedTagID() != 1);  // not "text-window only"
+        return (statisticsParameter.getOutputTo() != InterfaceStatisticsParameters.OutputTo.WINDOW);  // not "text-window only"
     }
 
     private String makeOutputFileName(String prefix, String infoString, String startDate) {
@@ -648,7 +648,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             resultOut.print(s);
         }
         for (InterfaceTextListener l : textListeners) {
-            if (statisticsParameter.getOutputTo().getSelectedTagID() >= 1) {
+            if (statisticsParameter.getOutputTo() != InterfaceStatisticsParameters.OutputTo.FILE) {
                 l.print(s);
             }
         }
@@ -1205,22 +1205,24 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * @return
      */
     private boolean printLineByVerbosity(int iteration) {
-        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() > StatisticsParameters.VERBOSITY_KTH_IT)
-                || ((statisticsParameter.getOutputVerbosity().getSelectedTagID() == StatisticsParameters.VERBOSITY_KTH_IT)
+        return (statisticsParameter.getOutputVerbosity() == InterfaceStatisticsParameters.OutputVerbosity.ALL)
+                || ((statisticsParameter.getOutputVerbosity() == InterfaceStatisticsParameters.OutputVerbosity.KTH_IT)
                 && (isKthRun(iteration, statisticsParameter.getOutputVerbosityK())));
     }
 
     private boolean printRunIntroVerbosity() {
-        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() >= StatisticsParameters.VERBOSITY_KTH_IT)
-                || (optRunsPerformed == 0 && (statisticsParameter.getOutputVerbosity().getSelectedTagID() >= StatisticsParameters.VERBOSITY_FINAL));
+        return (statisticsParameter.getOutputVerbosity() == InterfaceStatisticsParameters.OutputVerbosity.ALL) ||
+                (statisticsParameter.getOutputVerbosity() == InterfaceStatisticsParameters.OutputVerbosity.KTH_IT)
+                || (optRunsPerformed == 0 && (statisticsParameter.getOutputVerbosity() != InterfaceStatisticsParameters.OutputVerbosity.NONE));
     }
 
     private boolean printRunStoppedVerbosity() {
-        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() >= StatisticsParameters.VERBOSITY_KTH_IT);
+        return statisticsParameter.getOutputVerbosity() == InterfaceStatisticsParameters.OutputVerbosity.KTH_IT ||
+               statisticsParameter.getOutputVerbosity() == InterfaceStatisticsParameters.OutputVerbosity.ALL;
     }
 
     private boolean printFinalVerbosity() {
-        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() > StatisticsParameters.VERBOSITY_NONE);
+        return (statisticsParameter.getOutputVerbosity() != InterfaceStatisticsParameters.OutputVerbosity.NONE);
     }
 
     private boolean isKthRun(int i, int k) {
@@ -1240,7 +1242,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     private boolean printHeaderByVerbosity() {
-        return (statisticsParameter.getOutputVerbosity().getSelectedTagID() >= StatisticsParameters.VERBOSITY_KTH_IT);
+        return (statisticsParameter.getOutputVerbosity() == InterfaceStatisticsParameters.OutputVerbosity.ALL) ||
+                (statisticsParameter.getOutputVerbosity() == InterfaceStatisticsParameters.OutputVerbosity.KTH_IT);
     }
 
     private static void divideMean(Double[] mean, double d) {
