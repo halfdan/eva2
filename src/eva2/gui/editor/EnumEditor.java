@@ -9,11 +9,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyEditorSupport;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.06.2003
- * Time: 11:41:01
- * To change this template use Options | File Templates.
+ *
  */
 public class EnumEditor extends PropertyEditorSupport {
     /**
@@ -92,4 +88,10 @@ public class EnumEditor extends PropertyEditorSupport {
     }
 }
 
-enum TestEnum {asdf, sdf, asdfa}
+enum TestEnum {
+    asdf, sdf, asdfa;
+
+    public String toString() {
+        return "Foo";
+    }
+}
