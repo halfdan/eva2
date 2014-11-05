@@ -1,9 +1,4 @@
 package eva2.gui;
-/*
- * Title: EvA2 Description: Copyright: Copyright (c) 2003 Company: University of Tuebingen, Computer
- * Architecture @author Holger Ulmer, Felix Streichert, Hannes Planatscher @version: $Revision: 14 $
- * $Date: 2006-12-18 16:32:23 +0100 (Mon, 18 Dec 2006) $ $Author: marcekro $
- */
 
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
@@ -11,6 +6,7 @@ import eva2.tools.EVAHELP;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyEditor;
 
 /**
@@ -61,5 +57,21 @@ public class PropertyDialog extends JDialog {
      */
     public PropertyEditor getEditor() {
         return propertyEditor;
+    }
+
+    @Override
+    protected JRootPane createRootPane() {
+        JRootPane rootPane = new JRootPane();
+        KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+        Action actionListener = new AbstractAction() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                setVisible(false);
+            }
+        } ;
+        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(stroke, "ESCAPE");
+        rootPane.getActionMap().put("ESCAPE", actionListener);
+
+        return rootPane;
     }
 }
