@@ -4,7 +4,6 @@ import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.modules.OptimizationParameters;
@@ -12,6 +11,7 @@ import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.operator.postprocess.PostProcess;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
@@ -19,11 +19,11 @@ import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.F1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
-import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
+import eva2.util.annotation.Parameter;
 
 import java.util.ArrayList;
 
@@ -45,6 +45,8 @@ import java.util.ArrayList;
 @Description("A scatter search variant after Rodiguez-Fernandez, J.Egea and J.Banga: Novel metaheuristic for parameter estimation in nonlinear dynamic biological systems, BMC Bioinf. 2006")
 public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, InterfacePopulationChangedEventListener {
 
+    public enum LocalSearchMethod { HillClimber, NelderMead }
+
     transient private InterfacePopulationChangedEventListener listener = null;
     private String identifier = "ScatterSearch";
     private AbstractOptimizationProblem optimizationProblem = new F1Problem();
@@ -61,7 +63,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     private int probDim = -1;
     private boolean firstTime = true;
     private int lastImprovementCount = 0;
-    private SelectedTag localSearchMethod = new SelectedTag(1, "Hill-Climber", "Nelder-Mead");
+    private LocalSearchMethod localSearchMethod = LocalSearchMethod.NelderMead;
     // simulate an EvA generational cycle
     private int generationCycle = 50;
     private int fitCrit = -1;
@@ -372,7 +374,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     }
 
     private Pair<AbstractEAIndividual, Integer> localSolver(AbstractEAIndividual cand, int hcSteps) {
-        if (localSearchMethod.getSelectedTagID() == 0) {
+        if (localSearchMethod == LocalSearchMethod.HillClimber) {
             return localSolverHC(cand, hcSteps);
         } else {
             return PostProcess.localSolverNMS(cand, hcSteps, nelderMeadInitPerturbation, optimizationProblem);
@@ -715,7 +717,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     }
 
     private boolean useLSHC() {
-        return localSearchMethod.getSelectedTagID() == 0;
+        return localSearchMethod == LocalSearchMethod.NelderMead;
     }
 
     /**
@@ -728,6 +730,7 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     /**
      * @param doLocalSearch the doLocalSearch to set
      */
+    @Parameter(description = "Perform a local search step")
     public void setDoLocalSearch(boolean doLocalSearch) {
         this.doLocalSearch = doLocalSearch;
         setLSShowProps();
@@ -741,10 +744,6 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
         GenericObjectEditor.setShowProperty(this.getClass(), "localSearchMethod", doLocalSearch);
     }
 
-    public String doLocalSearchTipText() {
-        return "Perform a local search step";
-    }
-
     /**
      * @return the refSetSize
      */
@@ -755,12 +754,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     /**
      * @param refSetSize the refSetSize to set
      */
+    @Parameter(description = "Size of the reference set from which new candidates are created (similar to population size)")
     public void setRefSetSize(int refSetSize) {
         this.refSetSize = refSetSize;
-    }
-
-    public String refSetSizeTipText() {
-        return "Size of the reference set from which new candidates are created (similar to population size)";
     }
 
     /**
@@ -773,12 +769,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     /**
      * @param localSearchSteps the localSearchSteps to set
      */
+    @Parameter(description = "Define the number of evaluations performed for one local search.")
     public void setLocalSearchSteps(int localSearchSteps) {
         this.localSearchSteps = localSearchSteps;
-    }
-
-    public String localSearchStepsTipText() {
-        return "Define the number of evaluations performed for one local search.";
     }
 
     /**
@@ -791,15 +784,10 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     /**
      * @param localSearchFitnessFilter the localSearchFitnessFilter to set
      */
+    @Parameter(description = "Local search is performed only if the fitness is better than this value (absolute crit) or by this factor * (worst-best) fitness (relative).")
     public void setLocalSearchFitnessFilter(double localSearchFitnessFilter) {
         this.localSearchFitnessFilter = localSearchFitnessFilter;
     }
-
-    public String localSearchFitnessFilterTipText() {
-        return "Local search is performed only if the fitness is better than this value (absolute crit) or by this factor * (worst-best) fitness (relative).";
-    }
-
-    ////////////////////////////////////////////7
 
     /**
      * This method performs a scatter search runnable.
@@ -861,12 +849,9 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     /**
      * @param relativeFitCriterion the relativeFitCriterion to set
      */
+    @Parameter(description = "If selected, local search will be triggered by relative fitness, else by absolute")
     public void setLocalSearchRelativeFilter(boolean relativeFitCriterion) {
         this.relativeFitCriterion = relativeFitCriterion;
-    }
-
-    public String localSearchRelativeFilterTipText() {
-        return "If selected, local search will be triggered by relative fitness, else by absolute";
     }
 
     /**
@@ -879,31 +864,25 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     /**
      * @param nelderMeadInitPerturbation the nelderMeadInitPerturbation to set
      */
+    @Parameter(description = "The relative range of the initial perturbation for creating the initial Nelder-Mead-Simplex")
     public void setNelderMeadInitPerturbation(double nelderMeadInitPerturbation) {
         this.nelderMeadInitPerturbation = nelderMeadInitPerturbation;
-    }
-
-    public String nelderMeadInitPerturbationTipText() {
-        return "The relative range of the initial perturbation for creating the initial Nelder-Mead-Simplex";
     }
 
     /**
      * @return the localSearchMethod
      */
-    public SelectedTag getLocalSearchMethod() {
+    public LocalSearchMethod getLocalSearchMethod() {
         return localSearchMethod;
     }
 
     /**
      * @param localSearchMethod the localSearchMethod to set
      */
-    public void setLocalSearchMethod(SelectedTag localSearchMethod) {
+    @Parameter(description = "The local search method to use")
+    public void setLocalSearchMethod(LocalSearchMethod localSearchMethod) {
         this.localSearchMethod = localSearchMethod;
         setLSShowProps();
-    }
-
-    public String localSearchMethodTipText() {
-        return "The local search method to use";
     }
 
     /**
@@ -916,35 +895,26 @@ public class ScatterSearch implements InterfaceOptimizer, java.io.Serializable, 
     /**
      * @param poolSize the poolSize to set
      */
+    @Parameter(description = "The number of individuals created in the diversification step")
     public void setPoolSize(int poolSize) {
         this.poolSize = poolSize;
-    }
-
-    public String poolSizeTipText() {
-        return "The number of individuals created in the diversification step";
     }
 
     public double getImprovementEpsilon() {
         return improvementEpsilon;
     }
 
+    @Parameter(description = "Minimal relative fitness improvement for a candidate to enter the refSet - set to zero to deactivate.")
     public void setImprovementEpsilon(double improvementEpsilon) {
         this.improvementEpsilon = improvementEpsilon;
-    }
-
-    public String improvementEpsilonTipText() {
-        return "Minimal relative fitness improvement for a candidate to enter the refSet - set to zero to deactivate.";
     }
 
     public double getMinDiversityEpsilon() {
         return minDiversityEpsilon;
     }
 
+    @Parameter(description = "Minimal distance to other individuals in the refSet for a candidate to enter the refSet - set to zero to deactivate.")
     public void setMinDiversityEpsilon(double minDiversityEpsilon) {
         this.minDiversityEpsilon = minDiversityEpsilon;
-    }
-
-    public String minDiversityEpsilonTipText() {
-        return "Minimal distance to other individuals in the refSet for a candidate to enter the refSet - set to zero to deactivate.";
     }
 }
