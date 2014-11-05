@@ -254,12 +254,8 @@ public class OptimizerRunnable implements Runnable {
      *
      * @param vLev
      */
-    public void setVerbosityLevel(int vLev) {
-        if (vLev >= 0 && vLev < proc.getStatistics().getStatisticsParameter().getOutputVerbosity().getTags().length) {
-            proc.getStatistics().getStatisticsParameter().getOutputVerbosity().setSelectedTag(vLev);
-        } else {
-            System.err.println("Invalid verbosity leveln in OptimizerRunnable.setVerbosityLevel!");
-        }
+    public void setVerbosityLevel(InterfaceStatisticsParameters.OutputVerbosity vLev) {
+        proc.getStatistics().getStatisticsParameter().setOutputVerbosity(vLev);
     }
 
     /**
@@ -267,7 +263,7 @@ public class OptimizerRunnable implements Runnable {
      *
      * @param outp
      */
-    public void setOutputTo(int outp) {
+    public void setOutputTo(InterfaceStatisticsParameters.OutputTo outp) {
         ((StatisticsParameters) proc.getStatistics().getStatisticsParameter()).setOutputTo(outp);
     }
 

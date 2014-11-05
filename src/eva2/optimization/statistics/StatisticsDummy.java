@@ -21,13 +21,13 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     public StatisticsDummy() {
         bestIndividualAllover = null;
         sParams = new StatisticsParameters();
-        sParams.setOutputVerbosityK(StatisticsParameters.VERBOSITY_NONE);
+        sParams.setOutputVerbosityK(0);
     }
 
     public StatisticsDummy(boolean doConsoleOut) {
         bestIndividualAllover = null;
         sParams = new StatisticsParameters();
-        sParams.setOutputVerbosityK(StatisticsParameters.VERBOSITY_NONE);
+        sParams.setOutputVerbosityK(0);
         consoleOut = doConsoleOut;
     }
 

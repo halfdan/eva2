@@ -13,6 +13,7 @@ import eva2.optimization.operator.terminators.PopulationMeasureTerminator.Change
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
 import eva2.optimization.population.Population;
+import eva2.optimization.statistics.InterfaceStatisticsParameters;
 import eva2.optimization.statistics.InterfaceTextListener;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.util.annotation.Description;
@@ -40,7 +41,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
     transient PrintStream dos = null;
     private double range[][] = null;
     private static String defTestOut = "matlabproblem-debug.log";
-    int verbosityLevel = 0;
+    InterfaceStatisticsParameters.OutputVerbosity verbosityLevel = InterfaceStatisticsParameters.OutputVerbosity.NONE;
     boolean outputAllStatsField = true;
     private MatlabEvalMediator handler = null;
     private MatlabProblemDataTypeEnum dataType = MatlabProblemDataTypeEnum.typeDouble;
@@ -216,14 +217,6 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
         }
     }
 
-    public void setStatsOutput(int verboLevel) {
-        if ((verboLevel >= 0) && (verboLevel <= 3)) {
-            verbosityLevel = verboLevel;
-        } else {
-            System.err.println("Error, invalid verbosity level for statistics output!");
-        }
-    }
-
     public String jmiInterfaceNameTipText() {
         return "Name of the JEInterface instance in Matlab";
     }
@@ -322,11 +315,11 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
             log("Setting text listener, verbo " + verbosityLevel + "\n");
             runnable.setTextListener(this);
             runnable.setVerbosityLevel(verbosityLevel);
-            if (verbosityLevel > 0) {
-                runnable.setOutputTo(2);
+            if (verbosityLevel != InterfaceStatisticsParameters.OutputVerbosity.NONE) {
+                runnable.setOutputTo(InterfaceStatisticsParameters.OutputTo.BOTH);
             } // both file + window
             else {
-                runnable.setOutputTo(1);
+                runnable.setOutputTo(InterfaceStatisticsParameters.OutputTo.WINDOW);
             } // only window
             runnable.setOutputFullStatsToText(outputAllStatsField);
 
@@ -535,7 +528,7 @@ public class MatlabProblem extends AbstractOptimizationProblem implements Interf
 
     @Override
     public void print(String str) {
-        if (verbosityLevel > 0) {
+        if (verbosityLevel != InterfaceStatisticsParameters.OutputVerbosity.NONE) {
             // matlab displays sysout output in the command window, so we simply use this channel
             System.out.print(str);
         }

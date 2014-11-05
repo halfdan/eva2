@@ -33,15 +33,9 @@ import java.util.logging.Logger;
 @Description(value = "Configure statistics and output of the optimization run. Changes to the data selection state will not take effect during a run.")
 public class StatisticsParameters implements InterfaceStatisticsParameters, InterfaceNotifyOnInformers, Serializable {
     private static final Logger LOGGER = Logger.getLogger(StatisticsParameters.class.getName());
-    public final static int VERBOSITY_NONE = 0;
-    public final static int VERBOSITY_FINAL = 1;
-    public final static int VERBOSITY_KTH_IT = 2;
-    public final static int VERBOSITY_ALL = 3;
-    SelectedTag outputVerbosity = new SelectedTag("No output", "Final results", "K-th iterations", "All iterations");
-    public final static int OUTPUT_FILE = 0;
-    public final static int OUTPUT_WINDOW = 1;
-    public final static int OUTPUT_FILE_WINDOW = 2;
-    SelectedTag outputTo = new SelectedTag("File (current dir.)", "Text-window", "Both file and text-window");
+
+    private OutputVerbosity outputVerbosity;
+    private OutputTo outputTo;
     private int verbosityK = 10;
     private int textOutput = 0;
     private int multiRuns = 1;
@@ -88,8 +82,9 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
      */
     public StatisticsParameters() {
         name = "Statistics";
-        outputVerbosity.setSelectedTag(VERBOSITY_KTH_IT);
-        outputTo.setSelectedTag(1);
+
+        outputVerbosity = OutputVerbosity.KTH_IT;
+        outputTo = OutputTo.WINDOW;
     }
 
     /**
@@ -99,8 +94,8 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     public String toString() {
         String ret = "\r\nStatisticsParameter (" + super.toString() + "):\r\nmultiRuns=" + multiRuns
                 + ", textOutput=" + textOutput
-                + ", verbosity= " + outputVerbosity.getSelectedString()
-                + "\nTo " + outputTo.getSelectedString()
+                + ", verbosity= " + outputVerbosity
+                + "\nTo " + outputTo
                 + ", " + BeanInspector.toString(graphSel.getStrings());
         return ret;
     }
@@ -202,17 +197,17 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     @Override
     public void setShowTextOutput(boolean show) {
         // activate if not activated
-        if (show && outputTo.getSelectedTagID() == 0) {
-            outputTo.setSelectedTag(2);
+        if (show && outputTo == OutputTo.FILE) {
+            outputTo = OutputTo.BOTH;
         } // deactivate if activated
-        else if (!show && outputTo.getSelectedTagID() > 0) {
-            outputTo.setSelectedTag(0);
+        else if (!show) {
+            outputTo = OutputTo.FILE;
         }
     }
 
     @Override
     public boolean isShowTextOutput() {
-        return outputTo.getSelectedTagID() > 0;
+        return outputTo == OutputTo.WINDOW || outputTo == OutputTo.BOTH;
     }
 
     /**
@@ -248,23 +243,15 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     }
 
     @Override
-    public void setOutputVerbosity(SelectedTag sTag) {
+    @Parameter(description = "Set the data output level.")
+    public void setOutputVerbosity(OutputVerbosity sTag) {
         outputVerbosity = sTag;
-        GenericObjectEditor.setHideProperty(this.getClass(), "outputVerbosityK", sTag.getSelectedTagID() != VERBOSITY_KTH_IT);
-    }
-
-    public void setOutputVerbosity(int i) {
-        outputVerbosity.setSelectedTag(i);
-        GenericObjectEditor.setHideProperty(this.getClass(), "outputVerbosityK", outputVerbosity.getSelectedTagID() != VERBOSITY_KTH_IT);
+        GenericObjectEditor.setHideProperty(this.getClass(), "outputVerbosityK", sTag != OutputVerbosity.KTH_IT);
     }
 
     @Override
-    public SelectedTag getOutputVerbosity() {
+    public OutputVerbosity getOutputVerbosity() {
         return outputVerbosity;
-    }
-
-    public String outputVerbosityTipText() {
-        return "Set the data output level.";
     }
 
     @Override
@@ -279,20 +266,15 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     }
 
     @Override
-    public SelectedTag getOutputTo() {
+    public OutputTo getOutputTo() {
         return outputTo;
     }
 
     @Override
-    public void setOutputTo(SelectedTag tag) {
+    @Parameter(description = "Set the output destination; to deactivate output, set verbosity to none.")
+    public void setOutputTo(OutputTo tag) {
         outputTo = tag;
     }
-
-    @Parameter(description = "Set the output destination; to deactivate output, set verbosity to none.")
-    public void setOutputTo(int i) {
-        outputTo.setSelectedTag(i);
-    }
-
 
     @Override
     public StringSelection getFieldSelection() {
