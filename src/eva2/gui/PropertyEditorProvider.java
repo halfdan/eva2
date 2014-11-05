@@ -21,8 +21,7 @@ public class PropertyEditorProvider {
      * So better use the one based on PropertyDescriptor if possible.
      */
     public static PropertyEditor findEditor(Class<?> cls) {
-        PropertyEditor editor = null;
-        editor = PropertyEditorManager.findEditor(cls);
+        PropertyEditor editor = PropertyEditorManager.findEditor(cls);
 
         if ((editor == null) && useDefaultGOE) {
             if (cls.isArray()) {
@@ -46,6 +45,7 @@ public class PropertyEditorProvider {
         PropertyEditor editor = null;
         Class pec = prop.getPropertyEditorClass();
         Class type = prop.getPropertyType();
+
         try {
             if (pec != null) {
                 editor = (PropertyEditor) pec.newInstance();
@@ -56,7 +56,13 @@ public class PropertyEditorProvider {
 
         if (editor == null) {
             if (value != null) {
-                editor = PropertyEditorManager.findEditor(value.getClass());
+
+                // ToDo: This should be handled by the registerEditor below. findEditor however always returns the sun.beans.editor stuff.
+                if (value instanceof Enum) {
+                    editor = new EnumEditor();
+                } else {
+                    editor = PropertyEditorManager.findEditor(value.getClass());
+                }
             }
             if (editor == null && (BeanInspector.isJavaPrimitive(value.getClass()))) {
                 Class<?> prim = BeanInspector.getBoxedType(value.getClass());
@@ -103,6 +109,9 @@ public class PropertyEditorProvider {
     /**
      */
     public static void installEditors() {
+        // First unregister the default EnumEditor provided by sun.*
+        PropertyEditorManager.registerEditor(Enum.class, null);
+
         PropertyEditorManager.registerEditor(SelectedTag.class, TagEditor.class);
         PropertyEditorManager.registerEditor(Enum.class, EnumEditor.class);
         PropertyEditorManager.registerEditor(int[].class, GenericArrayEditor.class);
