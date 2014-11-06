@@ -3,9 +3,8 @@ package eva2.problems;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.population.Population;
-import eva2.tools.SelectedTag;
-import eva2.tools.Tag;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 
@@ -15,16 +14,16 @@ import java.io.Serializable;
 @Description("Sphere Model, changing Environment.")
 public class F7Problem extends AbstractProblemDoubleOffset implements Serializable {
 
+    public enum TimeIntervalType {
+        FunctionCalls, Generation
+    }
     private double t = 250;
     private double change = 4;
-    protected SelectedTag timeIntervalType;
+    protected TimeIntervalType timeIntervalType;
     private int currentTimeStamp;
 
     public F7Problem() {
-        Tag[] tag = new Tag[2];
-        tag[0] = new Tag(0, "Function Calls");
-        tag[1] = new Tag(1, "Generation");
-        this.timeIntervalType = new SelectedTag(0, tag);
+        this.timeIntervalType = TimeIntervalType.FunctionCalls;
         this.template = new ESIndividualDoubleData();
     }
 
@@ -32,7 +31,7 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         super(b);
         this.change = b.change;
         this.t = b.t;
-        this.timeIntervalType = (SelectedTag) b.timeIntervalType.clone();
+        this.timeIntervalType = b.timeIntervalType;
     }
 
     /**
@@ -59,7 +58,7 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         for (int i = 0; i < population.size(); i++) {
             tmpIndy = (AbstractEAIndividual) population.get(i);
             tmpIndy.resetConstraintViolation();
-            if (this.timeIntervalType.getSelectedTag().getID() == 0) {
+            if (this.timeIntervalType == TimeIntervalType.FunctionCalls) {
                 this.currentTimeStamp = population.getFunctionCalls();
             } else {
                 this.currentTimeStamp = population.getGeneration();
@@ -126,6 +125,7 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
      *
      * @param d The mutation operator.
      */
+    @Parameter(description = "Set the time interval for environmental change.")
     public void sett(double d) {
         if (d < 1) {
             d = 1;
@@ -137,15 +137,12 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         return this.t;
     }
 
-    public String tTipText() {
-        return "Set the time interval for environmental change.";
-    }
-
     /**
      * Set the value for tau1 with this method.
      *
      * @param d The mutation operator.
      */
+    @Parameter(description = "Set the amount of environmental change (x[i]-b).")
     public void setChange(double d) {
         this.change = d;
     }
@@ -154,24 +151,17 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
         return this.change;
     }
 
-    public String changeTipText() {
-        return "Set the amount of environmental change (x[i]-b).";
-    }
-
     /**
      * Set the value for tau1 with this method.
      *
      * @param d The mutation operator.
      */
-    public void setTimeIntervalType(SelectedTag d) {
+    @Parameter(description = "Choose the timeinterval type.")
+    public void setTimeIntervalType(TimeIntervalType d) {
         this.timeIntervalType = d;
     }
 
-    public SelectedTag getTimeIntervalType() {
+    public TimeIntervalType getTimeIntervalType() {
         return this.timeIntervalType;
-    }
-
-    public String timeIntervalTypeTipText() {
-        return "Choose the timeinterval type.";
     }
 }

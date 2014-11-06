@@ -7,17 +7,30 @@ import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.InterfaceOptimizationProblem;
-import eva2.tools.SelectedTag;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
+import eva2.util.annotation.Parameter;
 
 /**
  * This extends our particle swarm implementation to dynamic optimization problems.
  */
 @Description("Particle Swarm Optimization tuned for tracking a dynamic target")
 public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization {
+
+    public enum ChangeDetectionStrategy { RandomAnchor, AssumeChange, AssumeNoChange;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case RandomAnchor: return "Random Anchor";
+                case AssumeChange: return "Assume Change";
+                case AssumeNoChange: return "Assume no change";
+                default: return name();
+            }
+        }
+    }
 
     private boolean envHasChanged = false;
     /**
@@ -36,7 +49,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     /**
      * the change detection strategy
      */
-    protected SelectedTag changeDetectStrategy;
+    protected ChangeDetectionStrategy changeDetectStrategy;
 
     private double maxSpeedLimit = 0.1;
     private double minSpeedLimit = .003;
@@ -54,7 +67,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      */
     public DynamicParticleSwarmOptimization() {
         super();
-        this.changeDetectStrategy = new SelectedTag("Random Anchor", "Assume change", "Assume no change");
+        this.changeDetectStrategy = ChangeDetectionStrategy.RandomAnchor;
     }
 
     /**
@@ -75,7 +88,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         detectFit = a.detectFit;
         maxSpeedLimit = a.maxSpeedLimit;
         minSpeedLimit = a.minSpeedLimit;
-        changeDetectStrategy.setSelectedAs(a.changeDetectStrategy);
+        changeDetectStrategy = a.changeDetectStrategy;
     }
 
     @Override
@@ -378,9 +391,6 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
                 throw new RuntimeException("Could not perform PSO update, because individual is not instance of InterfaceESIndividual!");
             }
         }
-        //if (AbstractEAIndividual.getDoublePosition(indy)[0]<500000) {
-        //	System.err.println(indy.getStringRepresentation());
-        //}
     }
 
     /**
@@ -399,16 +409,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
 
         envHasChanged = detectChange(this.population);
 
-//	    if (envHasChanged) {
-//	    	System.out.println("environmental change detected!");
-//	    }
-
         if (doSpeedAdaptation) {
             adaptTrackingSpeed(((InterfaceDataTypeDouble) population.get(0)).getDoubleRange());
         }
-//        if (problem instanceof DynLocalizationProblem) {
-//        	((DynLocalizationProblem)problem).adaptPSOByPopulation(population, this);
-//        }
     }
 
     @Override
@@ -427,8 +430,6 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         }
     }
 
-    /////////////////////////////// end optimize loop
-
     /**
      * Checks for env change depending on the detection strategy.
      * For anchor detection, if detectAnchor is a valid ID, it returns true if the anchor individuals fitness has changed.
@@ -438,17 +439,17 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
      * @return true if the population has changed as to the detect strategy, else false
      */
     protected boolean detectChange(Population population) {
-        switch (changeDetectStrategy.getSelectedTag().getID()) {
-            case 0:
+        switch (changeDetectStrategy) {
+            case RandomAnchor:
                 if (detectAnchor >= 0) {
                     return !(java.util.Arrays.equals(detectFit, this.population.getIndividual(detectAnchor).getFitness()));
                 } else {
                     System.err.println("warning, inconsistency in detectChange");
                 }
                 break;
-            case 1:
+            case AssumeChange:
                 return true;
-            case 2:
+            case AssumeNoChange:
                 return false;
         }
         System.err.println("warning, inconsistency in detectChange");
@@ -626,24 +627,20 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     /**
      * @return the changeDetectStrategy
      */
-    public SelectedTag getChangeDetectStrategy() {
+    public ChangeDetectionStrategy getChangeDetectStrategy() {
         return changeDetectStrategy;
     }
 
     /**
      * @param changeDetectStrategy the changeDetectStrategy to set
      */
-    public void setChangeDetectStrategy(SelectedTag changeDetectStrategy) {
+    public void setChangeDetectStrategy(ChangeDetectionStrategy changeDetectStrategy) {
         this.changeDetectStrategy = changeDetectStrategy;
-        if (changeDetectStrategy.getSelectedTag().getID() == 0) { // random anchor
+        if (changeDetectStrategy == ChangeDetectionStrategy.RandomAnchor) { // random anchor
             detectAnchor = 0; // this will be set to a random individual
         } else {
             detectAnchor = -1;
         }
-    }
-
-    public String phi0TipText() {
-        return "the random perturbation factor in relation to the problem range";
     }
 
     /**
@@ -656,6 +653,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     /**
      * @param phi0 the phi0 to set
      */
+    @Parameter(description = "The random perturbation factor in relation to the problem range")
     public void setPhi0(double phi0) {
         this.phi0 = phi0;
     }
@@ -670,12 +668,9 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
     /**
      * @param phi3 the phi3 to set
      */
+    @Parameter(description = "Acceleration of the problem specific attractor")
     public void setPhi3(double phi3) {
         this.phi3 = phi3;
-    }
-
-    public String phi3TipText() {
-        return "Acceleration of the problem specific attractor";
     }
 
     public Plot getPlot() {

@@ -26,10 +26,8 @@ public class EnumEditor extends PropertyEditorSupport {
     public void setValue(Object value) {
         if (value instanceof Enum) {
             enumConstants = ((Enum) value).getClass().getEnumConstants();
-//			enumType = ((Enum)value);
             super.setValue(value);
         } else if (value.getClass().isArray() && value.getClass().getComponentType().isEnum()) {
-//			values = value.getClass().getComponentType().getEnumConstants();
             Enum<?>[] e = (Enum[]) (value);
             enumConstants = (Enum[]) e.getClass().getComponentType().getEnumConstants();
             super.setValue(value);
@@ -92,6 +90,6 @@ enum TestEnum {
     asdf, sdf, asdfa;
 
     public String toString() {
-        return "Foo";
+        return "Foo" + name();
     }
 }
