@@ -238,47 +238,11 @@ public class JMatLink extends Thread {
     // ************** load JMatLink library into memory **********************
 
     static {
-        // System.out.println("loading !!");
-        try { // System.out.println("loading");
-
+        try {
             System.loadLibrary("JMatLink");
-
-            // String
-            // path="../lib/"+SystemHelper.getOperationSystemName()+"/JMatLink.dll";
-
-            // System.out.println("load: "+path);
-
-            // System.loadLibrary(path);
-
-            // String libPath = "." + System.getProperty("file.separator", "/");
-
-            // //libPath += SystemHelper.getOperationSystemName() +
-            // System.getProperty("file.separator", "/");
-
-            // libPath += System.mapLibraryName("JMatLink");
-
-            //
-
-            // // make sure that we have the absolute path
-
-            // libPath = new File(libPath).getAbsolutePath();
-
-            //
-
-            // System.out.println("load: "+"d:/workingAt/JCompChem/lib/windows/JMatLink.dll");
-
-            // System.loadLibrary("../lib/windows/JMatLink_old.dll");
-
-            // System.out.println("loaded");
-
-        } catch (UnsatisfiedLinkError e) {
-
-            System.err.println("ERROR: Could not load the JMatLink library");
-
-            e.printStackTrace();
+        } catch (UnsatisfiedLinkError ignored) {
 
         }
-        // System.out.println("loading !! end");
 
     }
 
