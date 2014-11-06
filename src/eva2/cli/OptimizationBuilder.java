@@ -84,7 +84,6 @@ public final class OptimizationBuilder {
         for (String key : argumentMap.keySet()) {
             insertIntoArgumentTree(argumentTree, key, argumentMap.get(key));
         }
-        System.out.println(argumentTree.toString());
 
         return argumentTree;
     }
@@ -150,7 +149,6 @@ public final class OptimizationBuilder {
                 if (getter == null || setter == null || setter.isAnnotationPresent(Hidden.class)) {
                     continue;
                 }
-                System.out.println(name + " = " + " type = " + type);
 
                 // We use the name of the descriptor or if possible
                 // one that is given by the @Parameter annotation.
