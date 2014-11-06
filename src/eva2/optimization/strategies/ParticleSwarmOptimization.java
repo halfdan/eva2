@@ -1478,23 +1478,24 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
     @Override
     public void setPopulation(Population pop) {
         this.population = pop;
-        if (pop.size() != pop.getTargetSize()) { // new particle count!
+        if (pop.size() > 0 && pop.size() != pop.getTargetSize()) { // new particle count!
             tracedVelocity = null;
             initializeByPopulation(null, false);
+            bestIndividual = pop.getBestEAIndividual();
         } else {
             for (int i = 0; i < pop.size(); i++) {
                 AbstractEAIndividual indy = pop.getEAIndividual(i);
                 if (indy == null) {
                     System.err.println("Error in PSO.setPopulation!");
-                } else if (!indy.hasData(partTypeKey)) {
+                } else if (!indy.hasData(this.partTypeKey)) {
                     initIndividualDefaults(indy, initialVelocity);
                     initIndividualMemory(indy);
                     indy.putData(indexKey, i);
                     indy.setIndividualIndex(i);
                 }
             }
+            bestIndividual = pop.getBestEAIndividual();
         }
-        bestIndividual = pop.getBestEAIndividual();
     }
 
     @Override
