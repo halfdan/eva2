@@ -152,14 +152,14 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
             numTmp = (AbstractEAIndividual) this.getNumbers();
             numPop = new Population();
             for (int i = 0; i < partners.size(); i++) {
-                numPop.add(((GAESIndividualBinaryDoubleData) partners.get(i)).getNumbers());
+                numPop.add((AbstractEAIndividual) ((GAESIndividualBinaryDoubleData) partners.get(i)).getNumbers());
             }
             resNum = numTmp.mateWith(numPop);
 
             binTmp = (AbstractEAIndividual) this.getBitSet();
             binPop = new Population();
             for (int i = 0; i < partners.size(); i++) {
-                binPop.add(((GAESIndividualBinaryDoubleData) partners.get(i)).getBitSet());
+                binPop.add((AbstractEAIndividual) ((GAESIndividualBinaryDoubleData) partners.get(i)).getBitSet());
             }
             resBin = binTmp.mateWith(binPop);
 
@@ -185,7 +185,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
             result = new AbstractEAIndividual[partners.size() + 1];
             result[0] = (AbstractEAIndividual) this.clone();
             for (int i = 0; i < partners.size(); i++) {
-                result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
+                result[i + 1] = (AbstractEAIndividual) (partners.get(i)).clone();
             }
         }
         for (int i = 0; i < result.length; i++) {

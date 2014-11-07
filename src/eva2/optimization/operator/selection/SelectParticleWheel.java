@@ -108,7 +108,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
                 selIndex++;
                 sum += ((AbstractEAIndividual) population.getIndividual(selIndex)).getSelectionProbability(0);
             }
-            result.add(((AbstractEAIndividual) population.get(selIndex)).clone());
+            result.add((AbstractEAIndividual) (population.get(selIndex)).clone());
             ((AbstractEAIndividual) result.getIndividual(i)).setAge(0);
         }
     }
@@ -126,7 +126,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
                 selIndex++;
                 selFitSum += ((AbstractEAIndividual) population.getIndividual(selIndex)).getSelectionProbability(0);
             }
-            result.add(((AbstractEAIndividual) population.get(selIndex)).clone());
+            result.add((AbstractEAIndividual) (population.get(selIndex)).clone());
             ((AbstractEAIndividual) result.getIndividual(i)).setAge(0);
             selPoint += segment;
         }
@@ -145,9 +145,6 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
         return this.selectFrom(availablePartners, size);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.

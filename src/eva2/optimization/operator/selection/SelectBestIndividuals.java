@@ -57,11 +57,11 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
         Population result = new Population();
         int currentCriteria = 0, critSize;
 
-        critSize = ((AbstractEAIndividual) population.get(0)).getFitness().length;
+        critSize = (population.get(0)).getFitness().length;
 
-        ArrayList[] bestIndividuals = new ArrayList[critSize];
+        ArrayList<AbstractEAIndividual>[] bestIndividuals = new ArrayList[critSize];
         for (int i = 0; i < critSize; i++) {
-            bestIndividuals[i] = new ArrayList();
+            bestIndividuals[i] = new ArrayList<>();
             // select the best individuals regarding crit i
             for (int j = 0; j < size; j++) {
                 bestIndividuals[i].add(this.getBestIndividualExcept(population, bestIndividuals[i], i));
@@ -87,7 +87,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
      * @param crit The criterion
      * @return Object the individual
      */
-    private Object getBestIndividualExcept(Population pop, ArrayList tabu, int crit) {
+    private AbstractEAIndividual getBestIndividualExcept(Population pop, ArrayList tabu, int crit) {
         int index = -1;
         double bestProb = Double.POSITIVE_INFINITY;
         boolean member;
@@ -95,7 +95,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
 
         if (this.obeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {
-                indy = (AbstractEAIndividual) pop.get(i);
+                indy = pop.get(i);
                 // check if indy is tabu
                 member = false;
                 for (int j = 0; j < tabu.size(); j++) {
@@ -115,7 +115,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
                 // darn all individuals seem to violate the constraints
                 // so lets select the guy with the least worst constraint violation
                 for (int i = 0; i < pop.size(); i++) {
-                    indy = (AbstractEAIndividual) pop.get(i);
+                    indy = pop.get(i);
                     // check if indy is tabu
                     member = false;
                     for (int j = 0; j < tabu.size(); j++) {
@@ -137,7 +137,7 @@ public class SelectBestIndividuals implements InterfaceSelection, java.io.Serial
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
-                indy = (AbstractEAIndividual) pop.get(i);
+                indy = pop.get(i);
                 // check if indy is tabu
                 member = false;
                 for (int j = 0; j < tabu.size(); j++) {

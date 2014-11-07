@@ -300,7 +300,7 @@ public class BinaryScatterSearch extends AbstractOptimizer implements java.io.Se
             }
             dblIndy.setBinaryGenotype(data);
             if (!contains(dblIndy, pop)) {
-                pop.add(dblIndy);
+                pop.add((AbstractEAIndividual) dblIndy);
                 evaluate(indy);
             }
         }
@@ -328,7 +328,7 @@ public class BinaryScatterSearch extends AbstractOptimizer implements java.io.Se
             }
             dblIndy.setBinaryGenotype(data);
             if (!contains(dblIndy, pop)) {
-                pop.add(dblIndy);
+                pop.add((AbstractEAIndividual) dblIndy);
                 evaluate(indy);
             }
         }

@@ -1477,7 +1477,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
 
     @Override
     public void setPopulation(Population pop) {
-        this.population = pop;
+        super.setPopulation(pop);
         if (pop.size() > 0 && pop.size() != pop.getTargetSize()) { // new particle count!
             tracedVelocity = null;
             initializeByPopulation(null, false);

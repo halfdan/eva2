@@ -668,7 +668,7 @@ public class PostProcess {
 
             prob.evaluate(subPop);
             stepsPerf += subPop.size();
-            subPop.add(candidates.getEAIndividual(i).clone());
+            subPop.add((AbstractEAIndividual) candidates.getEAIndividual(i).clone());
             nmPops.add(subPop);
         }
 

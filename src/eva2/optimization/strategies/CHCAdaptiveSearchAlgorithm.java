@@ -189,7 +189,7 @@ public class CHCAdaptiveSearchAlgorithm extends AbstractOptimizer implements jav
                 }
             }
             mutant.setBGenotype(tmpBitSet);
-            this.population.add(mutant);
+            this.population.add((AbstractEAIndividual) mutant);
         }
         if (best instanceof InterfaceGAIndividual) {
             this.differenceThreshold = (int) (this.divergenceRate * (1 - this.divergenceRate) * ((InterfaceGAIndividual) best).getGenotypeLength());

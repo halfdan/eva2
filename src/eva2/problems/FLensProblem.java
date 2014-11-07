@@ -149,8 +149,8 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
                 newFrame.setVisible(true);
             }
         } else {
-            InterfaceDataTypeDouble best = (InterfaceDataTypeDouble) pop.getBestIndividual();
-            if (indiesToPaint.size() == 0 || ((AbstractEAIndividual) best).isDominant(indiesToPaint.getBestIndividual())) {
+            AbstractEAIndividual best = (AbstractEAIndividual) pop.getBestIndividual();
+            if (indiesToPaint.size() == 0 || (best).isDominant(indiesToPaint.getBestIndividual())) {
                 if (indiesToPaint.size() == 1) {
                     indiesToPaint.set(0, best);
                 } else {
