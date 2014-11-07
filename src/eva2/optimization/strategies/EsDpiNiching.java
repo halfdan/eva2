@@ -416,7 +416,7 @@ public class EsDpiNiching extends AbstractOptimizer implements Serializable, Int
                     // if an association was found, there is a peak close to an archived solution, so reset it.
                     if (!archive.getEAIndividual(i).isDominating(peakPopSet[assoc[i]].getBestEAIndividual())) {
                         // the new found species is actually better than the archived solution
-                        archive.set(i, peakPopSet[assoc[i]].getBestEAIndividual().clone()); // replace archived indy
+                        archive.set(i, (AbstractEAIndividual) peakPopSet[assoc[i]].getBestEAIndividual().clone()); // replace archived indy
                     }
                     peakPopSet[assoc[i]] = initRandomPeakPop(getMuPerPeak());
                 }

@@ -102,7 +102,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             Population subset = selectorPlug.selectFrom(gop, subsetsize);
             Population subsetclone = new Population();
             for (int i = 0; i < subset.size(); i++) {
-                subsetclone.add(((AbstractEAIndividual) subset.get(i)).clone());
+                subsetclone.add((AbstractEAIndividual) (subset.get(i)).clone());
             }
             if (subset.size() != subsetsize) {
                 System.err.println("ALERT! identical individual instances in subset");
@@ -110,8 +110,8 @@ public class MemeticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
             Hashtable antilamarckismcache = new Hashtable();
             if (!this.lamarckism) {
                 for (int i = 0; i < subset.size(); i++) {
-                    AbstractEAIndividual indy = (AbstractEAIndividual) subset.get(i);
-                    AbstractEAIndividual indyclone = (AbstractEAIndividual) subsetclone
+                    AbstractEAIndividual indy = subset.get(i);
+                    AbstractEAIndividual indyclone = subsetclone
                             .get(i);
                     antilamarckismcache.put(indy, indyclone);
                 }
@@ -140,7 +140,7 @@ public class MemeticAlgorithm implements InterfaceOptimizer, java.io.Serializabl
                 gop.addPopulation(subsetclone);
             } else {
                 for (int i = 0; i < subset.size(); i++) {
-                    AbstractEAIndividual indy = (AbstractEAIndividual) subset.get(i);
+                    AbstractEAIndividual indy = subset.get(i);
                     try {
                         AbstractEAIndividual newindy = (AbstractEAIndividual) antilamarckismcache
                                 .get(indy);

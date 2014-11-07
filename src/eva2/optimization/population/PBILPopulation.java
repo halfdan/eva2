@@ -94,7 +94,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
                 }
             }
             tmpIndy.setBGenotype(tmpBitSet);
-            super.add(tmpIndy);
+            super.add((AbstractEAIndividual) tmpIndy);
         }
     }
 

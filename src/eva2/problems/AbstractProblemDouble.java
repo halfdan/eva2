@@ -413,7 +413,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         if (!Mathematics.isInRange(pos, prob.makeRange())) {
             System.err.println("Warning, add optimum which is out of range!");
         }
-        optimas.add(tmpIndy);
+        optimas.add((AbstractEAIndividual) tmpIndy);
     }
 
     /**
@@ -431,7 +431,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
                 .clone();
         tmpIndy.setDoubleGenotype(pos);
         ((AbstractEAIndividual) tmpIndy).setFitness(prob.evaluate(pos));
-        pop.add(tmpIndy);
+        pop.add((AbstractEAIndividual) tmpIndy);
         FitnessConvergenceTerminator convTerm = new FitnessConvergenceTerminator(
                 1e-25, 10, StagnationTypeEnum.generationBased,
                 ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decrease);

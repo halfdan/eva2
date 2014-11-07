@@ -100,9 +100,9 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
         Population result = new Population();
         int currentCriteria = 0, critSize;
 
-        critSize = ((AbstractEAIndividual) population.get(0)).getFitness().length;
+        critSize = (population.get(0)).getFitness().length;
 
-        ArrayList[] bestIndividuals = new ArrayList[critSize];
+        ArrayList<AbstractEAIndividual>[] bestIndividuals = new ArrayList[critSize];
         for (int i = 0; i < critSize; i++) {
             bestIndividuals[i] = new ArrayList();
             // select the best individuals regarding crit i
@@ -130,14 +130,14 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
      * @param crit The criterion
      * @return Object the individual
      */
-    private Object getBestIndividualExcept(Population pop, ArrayList tabu, int crit) {
+    private AbstractEAIndividual getBestIndividualExcept(Population pop, ArrayList tabu, int crit) {
         int index = -1;
         int mostVictories = -1;
         boolean member;
         AbstractEAIndividual indy;
 
         for (int i = 0; i < pop.size(); i++) {
-            indy = (AbstractEAIndividual) pop.get(i);
+            indy = pop.get(i);
             // check if indy is tabu
             member = false;
             for (int j = 0; j < tabu.size(); j++) {

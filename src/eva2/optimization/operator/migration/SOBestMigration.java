@@ -67,7 +67,7 @@ public class SOBestMigration implements InterfaceMigration, java.io.Serializable
             newIPOP[i].removeNIndividuals(comSet.length * this.n);
             for (int j = 0; j < comSet.length; j++) {
                 selected = this.selection.selectFrom(comSet[j], this.n);
-                newIPOP[i].add(((AbstractEAIndividual) selected.get(0)).clone());
+                newIPOP[i].add((AbstractEAIndividual) (selected.get(0)).clone());
             }
         }
 

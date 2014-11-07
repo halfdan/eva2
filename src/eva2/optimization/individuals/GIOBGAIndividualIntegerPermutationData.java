@@ -148,14 +148,14 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
             numTmp = (AbstractEAIndividual) this.getIntegers();
             numPop = new Population();
             for (int i = 0; i < partners.size(); i++) {
-                numPop.add(((GIOBGAIndividualIntegerPermutationData) partners.get(i)).getIntegers());
+                numPop.add((AbstractEAIndividual) ((GIOBGAIndividualIntegerPermutationData) partners.get(i)).getIntegers());
             }
             resNum = numTmp.mateWith(numPop);
 
             binTmp = (AbstractEAIndividual) this.getPermutations();
             binPop = new Population();
             for (int i = 0; i < partners.size(); i++) {
-                binPop.add(((GIOBGAIndividualIntegerPermutationData) partners.get(i)).getPermutations());
+                binPop.add((AbstractEAIndividual) ((GIOBGAIndividualIntegerPermutationData) partners.get(i)).getPermutations());
             }
             resBin = binTmp.mateWith(binPop);
 
@@ -170,7 +170,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
             result = new AbstractEAIndividual[partners.size() + 1];
             result[0] = (AbstractEAIndividual) this.clone();
             for (int i = 0; i < partners.size(); i++) {
-                result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
+                result[i + 1] = (AbstractEAIndividual) (partners.get(i)).clone();
             }
         }
         for (int i = 0; i < result.length; i++) {

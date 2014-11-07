@@ -144,14 +144,14 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
             numTmp = (AbstractEAIndividual) this.getNumbers();
             numPop = new Population();
             for (int i = 0; i < partners.size(); i++) {
-                numPop.add(((GAPIndividualProgramData) partners.get(i)).getNumbers());
+                numPop.add((AbstractEAIndividual) ((GAPIndividualProgramData) partners.get(i)).getNumbers());
             }
             resNum = numTmp.mateWith(numPop);
 
             binTmp = (AbstractEAIndividual) this.getProgramRepresentation();
             binPop = new Population();
             for (int i = 0; i < partners.size(); i++) {
-                binPop.add(((GAPIndividualProgramData) partners.get(i)).getProgramRepresentation());
+                binPop.add((AbstractEAIndividual) ((GAPIndividualProgramData) partners.get(i)).getProgramRepresentation());
             }
             resBin = binTmp.mateWith(binPop);
 
@@ -166,7 +166,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
             result = new AbstractEAIndividual[partners.size() + 1];
             result[0] = (AbstractEAIndividual) this.clone();
             for (int i = 0; i < partners.size(); i++) {
-                result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
+                result[i + 1] = (AbstractEAIndividual) (partners.get(i)).clone();
             }
         }
         for (int i = 0; i < result.length; i++) {

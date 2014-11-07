@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  * random latin hypercube implementation for InterfaceDataTypeDouble individuals.
  */
 @Description("A population stores the individuals of a generation.")
-public class Population extends ArrayList implements PopulationInterface, Cloneable, java.io.Serializable {
+public class Population extends ArrayList<AbstractEAIndividual> implements PopulationInterface, Cloneable, java.io.Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(Population.class.getName());
 
@@ -124,9 +124,9 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
     public Population(Population population) {
         LOGGER.log(Level.FINER, "New population has been created.");
         setSameParams(population);
-        for (Object individual : population) {
+        for (AbstractEAIndividual individual : population) {
             if (individual != null) {
-                this.add((((AbstractEAIndividual) individual)).clone());
+                this.add((AbstractEAIndividual) individual.clone());
             }
         }
         copyHistAndArchive(population);
@@ -1418,7 +1418,7 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
             return this;
         }
         Population pop = new Population();
-        for (Object o : this) {
+        for (AbstractEAIndividual o : this) {
             if (!exclude.contains(o)) {
                 pop.add(o);
             }
@@ -1684,8 +1684,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * seen as "structural change"?
      */
     @Override
-    public Object set(int index, Object element) {
-        Object prev = super.set(index, element);
+    public AbstractEAIndividual set(int index, AbstractEAIndividual element) {
+        AbstractEAIndividual prev = super.set(index, element);
         modCount++;
         return prev;
     }
@@ -1695,14 +1695,14 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * the internally sorted array in synch to minimize complete resorting
      * events.
      */
-    public Object set(int index, Object element, int fitIndex) {
-        Object prev = super.set(index, element);
+    public AbstractEAIndividual set(int index, AbstractEAIndividual element, int fitIndex) {
+        AbstractEAIndividual prev = super.set(index, element);
         modCount++;
         return prev;
     }
 
     public boolean addIndividual(IndividualInterface ind) {
-        super.add(ind);
+        super.add((AbstractEAIndividual) ind);
         return true;
     }
 
@@ -1730,8 +1730,8 @@ public class Population extends ArrayList implements PopulationInterface, Clonea
      * @param ind
      * @return
      */
-    public IndividualInterface replaceIndividualAt(int index, IndividualInterface ind) {
-        return (IndividualInterface) set(index, ind);
+    public IndividualInterface replaceIndividualAt(int index, AbstractEAIndividual ind) {
+        return set(index, ind);
     }
 
     /**

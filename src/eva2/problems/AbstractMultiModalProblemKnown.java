@@ -145,12 +145,12 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
      * @param point
      */
     protected void addOptimum(double[] point) {
-        InterfaceDataTypeDouble tmpIndy;
-        tmpIndy = (InterfaceDataTypeDouble) this.template.clone();
-        tmpIndy.setDoubleGenotype(point);
-        ((AbstractEAIndividual) tmpIndy).setFitness(evalUnnormalized(point));
-        if (((AbstractEAIndividual) tmpIndy).getFitness(0) >= globalOptimum) {
-            globalOptimum = ((AbstractEAIndividual) tmpIndy).getFitness(0);
+        AbstractEAIndividual tmpIndy;
+        tmpIndy = (AbstractEAIndividual) template.clone();
+        ((InterfaceDataTypeDouble) tmpIndy).setDoubleGenotype(point);
+        tmpIndy.setFitness(evalUnnormalized(point));
+        if ((tmpIndy).getFitness(0) >= globalOptimum) {
+            globalOptimum = (tmpIndy).getFitness(0);
             if (makeGlobalOptUnreachable) {
                 double tmp = globalOptimum;
                 double dx = 1e-30;
@@ -165,7 +165,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
         }
         if (isDoRotation()) {
             point = inverseRotateMaybe(point); // theres an inverse rotation required
-            tmpIndy.setDoubleGenotype(point);
+            ((InterfaceDataTypeDouble) tmpIndy).setDoubleGenotype(point);
         }
         this.listOfOptima.add(tmpIndy);
     }
@@ -244,7 +244,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
      * <p/>
      * This is in analogy to the original implementation by F.Streichert.
      *
-     * @param mmProb
+     * @param realOpts
      * @param pop
      * @param epsilon
      * @return
