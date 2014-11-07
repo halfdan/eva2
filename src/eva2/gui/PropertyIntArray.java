@@ -1,11 +1,7 @@
 package eva2.gui;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 12.09.2005
- * Time: 10:18:50
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PropertyIntArray implements java.io.Serializable {
     public int[] intArray;

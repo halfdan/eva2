@@ -1,11 +1,7 @@
 package eva2.gui;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.07.2005
- * Time: 10:16:10
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PropertyWeightedLPTchebycheff implements java.io.Serializable {
 

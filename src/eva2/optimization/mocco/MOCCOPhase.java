@@ -8,11 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.10.2005
- * Time: 14:43:49
- * To change this template use File | Settings | File Templates.
+ *
  */
 public abstract class MOCCOPhase implements InterfaceProcessElement {
 

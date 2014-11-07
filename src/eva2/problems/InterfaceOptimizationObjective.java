@@ -1,11 +1,7 @@
 package eva2.problems;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 23.08.2005
- * Time: 13:53:00
- * To change this template use File | Settings | File Templates.
+ *
  */
 public interface InterfaceOptimizationObjective {
     public Object clone();

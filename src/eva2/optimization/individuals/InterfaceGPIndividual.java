@@ -5,11 +5,6 @@ import eva2.optimization.individuals.codings.gp.AbstractGPNode;
 /**
  * This interface gives access to a tree-based genotype and should
  * only be used by mutation and crossover operators.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 03.04.2003
- * Time: 17:36:46
- * To change this template use Options | File Templates.
  */
 public interface InterfaceGPIndividual {
 

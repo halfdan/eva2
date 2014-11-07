@@ -10,11 +10,7 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 14.07.2005
- * Time: 16:33:45
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEditor {
 

@@ -6,11 +6,6 @@ import java.util.BitSet;
  * This interface gives access to a binary phenotype and except
  * for problem specific operators should only be used by the
  * optimization problem.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 10:57:31
- * To change this template use Options | File Templates.
  */
 public interface InterfaceDataTypeBinary {
 

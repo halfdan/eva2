@@ -1,11 +1,7 @@
 package eva2.optimization.operator.selection;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.02.2005
- * Time: 16:29:35
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOSolution {
 

@@ -20,13 +20,6 @@ public interface InterfaceESIndividual {
      * @param b The new genotype of the Individual
      */
     public void setDGenotype(double[] b);
-//
-//    /** This method will set the range of the double attributes.
-//     * Note: range[d][0] gives the lower bound and range[d] gives the upper bound
-//     * for dimension d.
-//     * @param range     The new range for the double data.
-//     */
-//    public void setDoubleRange(double[][] range);
 
     /**
      * This method will return the range for all double attributes.

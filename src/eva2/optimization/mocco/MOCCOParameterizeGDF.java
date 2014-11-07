@@ -23,11 +23,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.10.2005
- * Time: 18:42:04
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcessElement {
 

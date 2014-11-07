@@ -5,18 +5,6 @@ package eva2.optimization.individuals;
  * This interface gives access to a permutation phenotype and except
  * for problemspecific operators should only be used by the
  * optimization problem.
- * <p>Title: EvA2</p>
- * <p/>
- * <p>Description: </p>
- * <p/>
- * <p>Copyright:
- * (c) 2003</p>
- * <p/>
- * <p>Company: </p>
- * Defines an interface for a datatype of a permutation.
- *
- * @author planatsc
- * @version 1.0
  */
 public interface InterfaceDataTypePermutation {
 

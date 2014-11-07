@@ -5,11 +5,6 @@ import eva2.problems.InterfaceProgramProblem;
 
 /**
  * A substraction node using two arguments.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 15:49:47
- * To change this template use Options | File Templates.
  */
 public class GPNodeSub extends AbstractGPNode implements java.io.Serializable {
 

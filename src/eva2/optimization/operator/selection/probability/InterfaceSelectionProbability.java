@@ -7,11 +7,6 @@ import eva2.optimization.population.Population;
  * probability from the fitness values. While the fitness
  * is typically to be minimized the selection probability
  * is within [0,1] sums up to one and is to be maximizes.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 16:54:02
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceSelectionProbability {
 

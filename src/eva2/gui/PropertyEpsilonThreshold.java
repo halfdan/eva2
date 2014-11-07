@@ -1,11 +1,7 @@
 package eva2.gui;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 05.03.2004
- * Time: 14:56:58
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PropertyEpsilonThreshold implements java.io.Serializable {
 

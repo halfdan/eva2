@@ -209,10 +209,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     }
 
     /**
-     * *******************************************************************************************************************
-     * These are for InterfaceDataTypeDouble
-     * <p/>
-     * /** This method allows you to request a certain amount of double data
+     * This method allows you to request a certain amount of double data
      *
      * @param length The lenght of the double[] that is to be optimized
      */

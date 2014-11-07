@@ -5,11 +5,6 @@ import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 
 /**
  * Interface for general Pareto front methods.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 08.06.2005
- * Time: 14:27:08
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceParetoFrontMetric {
 

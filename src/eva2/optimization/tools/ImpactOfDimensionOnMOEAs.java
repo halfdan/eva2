@@ -13,11 +13,7 @@ import eva2.tools.chart2d.DPoint;
 import java.io.*;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 12.08.2005
- * Time: 11:26:22
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class ImpactOfDimensionOnMOEAs {
 

@@ -5,11 +5,6 @@ import eva2.problems.InterfaceProgramProblem;
 
 /**
  * A multiplicator node taking two arguments.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 16:00:16
- * To change this template use Options | File Templates.
  */
 public class GPNodeMult extends AbstractGPNode implements java.io.Serializable {
 

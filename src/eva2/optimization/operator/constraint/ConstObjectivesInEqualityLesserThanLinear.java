@@ -4,12 +4,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 
 /**
  * This area constraint for parallelization is based on
- * a line constraint
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.09.2004
- * Time: 19:24:35
- * To change this template use File | Settings | File Templates.
+ * a line constraint.
  */
 public class ConstObjectivesInEqualityLesserThanLinear implements InterfaceConstraint, java.io.Serializable {
 

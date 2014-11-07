@@ -1,14 +1,6 @@
 package eva2.gui;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 12.05.2003
- * Time: 18:30:44
- * To change this template use Options | File Templates.
- */
-
-/**
  *
  */
 class Mnemonic {

@@ -6,11 +6,6 @@ import eva2.optimization.individuals.codings.gp.InterfaceProgram;
  * This interface gives access to a program phenotype and except
  * for problemspecific operators should only be used by the
  * optimization problem.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 16:28:29
- * To change this template use Options | File Templates.
  */
 public interface InterfaceDataTypeProgram {
 

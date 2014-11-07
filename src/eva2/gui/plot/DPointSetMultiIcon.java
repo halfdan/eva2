@@ -8,14 +8,9 @@ import java.util.ArrayList;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.04.2004
- * Time: 16:17:35
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class DPointSetMultiIcon extends DComponent {
-    //~ Instance fields ////////////////////////////////////////////////////////
 
     /**
      * this class stores the jump positions (see this.jump)

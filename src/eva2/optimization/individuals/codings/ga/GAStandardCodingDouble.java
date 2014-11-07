@@ -6,11 +6,6 @@ import java.util.BitSet;
  * This is the traditional binary coding for double value, which allows arbitrary number of
  * bits per variable. But i guess currently the GUI only allows to set the number of bits for
  * all variables at the same time.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.03.2003
- * Time: 16:37:11
- * To change this template use Options | File Templates.
  */
 public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.Serializable {
     private double lastMaxVal = 1;

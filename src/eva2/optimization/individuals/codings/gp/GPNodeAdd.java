@@ -5,11 +5,6 @@ import eva2.problems.InterfaceProgramProblem;
 
 /**
  * A eva2.problems.simple add node with two arguments.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 04.04.2003
- * Time: 15:44:01
- * To change this template use Options | File Templates.
  */
 public class GPNodeAdd extends AbstractGPNode implements java.io.Serializable {
 
@@ -63,10 +58,10 @@ public class GPNodeAdd extends AbstractGPNode implements java.io.Serializable {
         for (int i = 0; i < this.nodes.length; i++) {
             tmpObj = this.nodes[i].evaluate(environment);
             if (tmpObj instanceof Double) {
-                result += ((Double) tmpObj).doubleValue();
+                result += (Double) tmpObj;
             }
         }
-        return new Double(result);
+        return result;
     }
 
     @Override

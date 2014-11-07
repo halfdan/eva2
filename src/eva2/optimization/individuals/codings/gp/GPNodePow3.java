@@ -4,11 +4,6 @@ import eva2.problems.InterfaceProgramProblem;
 
 /**
  * This argument puts the argument to the power of three.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.09.2003
- * Time: 14:33:03
- * To change this template use Options | File Templates.
  */
 public class GPNodePow3 extends AbstractGPNode implements java.io.Serializable {
 

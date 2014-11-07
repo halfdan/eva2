@@ -5,11 +5,6 @@ import eva2.optimization.population.Population;
 /**
  * This interface gives the necessary methods for an information
  * retrieval algorithm.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 11.03.2004
- * Time: 14:54:06
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceInformationRetrieval {
 

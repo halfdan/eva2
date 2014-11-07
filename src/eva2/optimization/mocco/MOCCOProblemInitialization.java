@@ -11,11 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 25.10.2005
- * Time: 09:49:20
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceProcessElement {
 

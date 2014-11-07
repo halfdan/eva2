@@ -6,11 +6,7 @@ import eva2.problems.InterfaceOptimizationProblem;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 18.03.2003
- * Time: 11:24:54
- * To change this template use Options | File Templates.
+ *
  */
 public interface InterfaceCrossover {
 

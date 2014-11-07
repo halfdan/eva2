@@ -4,11 +4,6 @@ import eva2.problems.InterfaceProgramProblem;
 
 /**
  * An exponent node with one argument.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.06.2003
- * Time: 16:50:36
- * To change this template use Options | File Templates.
  */
 public class GPNodeExp extends AbstractGPNode implements java.io.Serializable {
 

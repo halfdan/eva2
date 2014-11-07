@@ -5,11 +5,6 @@ import eva2.optimization.population.Population;
 
 /**
  * Replacement schemes for the steady-state GA.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 19.07.2005
- * Time: 14:38:46
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceReplacement {
 

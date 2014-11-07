@@ -19,11 +19,7 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 20.05.2005
- * Time: 13:56:36
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PropertyMutationMixerEditor extends JPanel implements PropertyEditor, java.beans.PropertyChangeListener {
 

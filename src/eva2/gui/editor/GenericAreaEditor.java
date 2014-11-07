@@ -4,11 +4,7 @@ import eva2.optimization.individuals.codings.gp.AbstractGPNode;
 import eva2.optimization.individuals.codings.gp.GPArea;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.06.2003
- * Time: 11:41:01
- * To change this template use Options | File Templates.
+ *
  */
 public class GenericAreaEditor extends AbstractListSelectionEditor {
     /**
