@@ -399,7 +399,7 @@ public final class StringTools {
      * @return Readable String representation of input word
      */
     public static String humaniseCamelCase(final String word) {
-        Pattern pattern = Pattern.compile("([A-Z]|[a-z])[a-z]*");
+        Pattern pattern = Pattern.compile("([A-Z]|[a-z])[a-z0-9]*");
 
         List<String> tokens = new ArrayList<>();
         Matcher matcher = pattern.matcher(word);

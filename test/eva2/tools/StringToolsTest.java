@@ -37,6 +37,8 @@ public class StringToolsTest {
 		map.put("thisIsAwesome", "This Is Awesome");
 		map.put("THQIsNice", "THQ Is Nice");
 		map.put("iLikeABC", "I Like ABC");
+        map.put("foo2Bar", "Foo2 Bar");
+        map.put("phi1", "Phi1");
 
 		String key, value;
         for (Object o : map.entrySet()) {
