@@ -1,6 +1,5 @@
 package eva2.optimization.operator.selection.probability;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
 
@@ -71,7 +70,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
                 }
 
                 for (int i = 0; i < population.size(); i++) {
-                    ((AbstractEAIndividual) population.get(i)).setSelectionProbability(x, result[i] / sum);
+                    population.get(i).setSelectionProbability(x, result[i] / sum);
                 }
             }
         } else {
@@ -80,7 +79,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
             sum = 0;
             // iterating over the individuals
             for (int i = 0; i < data.length; i++) {
-                result[i] = Math.exp(-((AbstractEAIndividual) population.get(i)).getConstraintViolation());
+                result[i] = Math.exp(-population.get(i).getConstraintViolation());
             }
             for (int i = 0; i < data.length; i++) {
                 sum += result[i];
@@ -88,7 +87,7 @@ public class SelProbInvertByMax extends AbstractSelProb {
             for (int i = 0; i < population.size(); i++) {
                 double[] tmpD = new double[1];
                 tmpD[0] = result[i] / sum;
-                ((AbstractEAIndividual) population.get(i)).setSelectionProbability(tmpD);
+                population.get(i).setSelectionProbability(tmpD);
             }
         }
     }

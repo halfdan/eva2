@@ -187,14 +187,13 @@ public class MultiObjectiveCMAES extends AbstractOptimizer implements Serializab
             if (population.getEAIndividual(j) != parent) { // Eltern nicht mit
                 // sich selber
                 // vergleichen
-                int parentParetoLevel = ((Integer) parent
-                        .getData("ParetoLevel")).intValue();
-                double parentSMeasure = ((Double) parent.getData("HyperCube"))
-                        .doubleValue();
-                int childParetoLevel = ((Integer) population.getEAIndividual(
-                        j).getData("ParetoLevel")).intValue();
-                double childSMeasure = ((Double) population
-                        .getEAIndividual(j).getData("HyperCube")).doubleValue();
+                int parentParetoLevel = (Integer) parent
+                        .getData("ParetoLevel");
+                double parentSMeasure = (Double) parent.getData("HyperCube");
+                int childParetoLevel = (Integer) population.getEAIndividual(
+                        j).getData("ParetoLevel");
+                double childSMeasure = (Double) population
+                        .getEAIndividual(j).getData("HyperCube");
                 if (childParetoLevel < parentParetoLevel
                         || ((childParetoLevel == parentParetoLevel) && childSMeasure > parentSMeasure)) {
                     SuccessCounterMap.get(parent.getIndyID()).value++;
@@ -218,15 +217,14 @@ public class MultiObjectiveCMAES extends AbstractOptimizer implements Serializab
             } else { // die besten aus der aktuellen Front heraussuchen bis voll
                 while (store[i].size() > 0 && population.size() < lambdaMO) {
                     AbstractEAIndividual indy = store[i].getEAIndividual(0);
-                    double bestMeasure = ((Double) indy.getData("HyperCube"))
-                            .doubleValue(); // TODO mal noch effizient machen
+                    double bestMeasure = (Double) indy.getData("HyperCube"); // TODO mal noch effizient machen
                     // (sortieren und die besten n
                     // herausholen)
                     for (int j = 1; j < store[i].size(); j++) {
-                        if (bestMeasure < ((Double) store[i].getEAIndividual(j)
-                                .getData("HyperCube")).doubleValue()) {
-                            bestMeasure = ((Double) store[i].getEAIndividual(j)
-                                    .getData("HyperCube")).doubleValue();
+                        if (bestMeasure < (Double) store[i].getEAIndividual(j)
+                                .getData("HyperCube")) {
+                            bestMeasure = (Double) store[i].getEAIndividual(j)
+                                    .getData("HyperCube");
                             indy = store[i].getEAIndividual(j);
                         }
                     }

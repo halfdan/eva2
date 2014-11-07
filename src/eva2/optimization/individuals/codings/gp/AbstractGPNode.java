@@ -123,7 +123,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
                 // try to read constant
                 Pair<Double, String> nextState = readDouble(str, true);
                 if (nextState != null) {
-                    return new Pair<AbstractGPNode, String>(new GPNodeConst(nextState.head().doubleValue()), nextState.tail());
+                    return new Pair<AbstractGPNode, String>(new GPNodeConst(nextState.head()), nextState.tail());
                 } else {
                     System.err.println("String has unknown prefix: " + str);
                 }

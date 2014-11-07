@@ -102,10 +102,10 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
 
         // Build the connection Matrix
         for (int i = 0; i < pop.size(); i++) {
-            tmpIndy1 = (AbstractEAIndividual) pop.get(i);
+            tmpIndy1 = pop.get(i);
             connectionMatrix[i][i] = true;
             for (int j = i + 1; j < pop.size(); j++) {
-                tmpIndy2 = (AbstractEAIndividual) pop.get(j);
+                tmpIndy2 = pop.get(j);
                 if (tmpIndy1 == null || (tmpIndy2 == null)) {
                     System.err.println("Warning: Individual should not be null (ClusteringDensityBased)!");
                 }

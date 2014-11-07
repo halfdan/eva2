@@ -112,7 +112,7 @@ public class GradientDescentAlgorithm extends AbstractOptimizer implements java.
 //      if ((this.indyhash == null) || (this.indyhash.size() <1)) initialize();
 
         for (int i = 0; i < this.population.size(); i++) {
-            indy = ((AbstractEAIndividual) this.population.get(i));
+            indy = this.population.get(i);
             if (!indy.hasData(gradientKey)) {
                 //System.out.println("new indy to hash");
 //        Hashtable history = new Hashtable();
@@ -126,8 +126,8 @@ public class GradientDescentAlgorithm extends AbstractOptimizer implements java.
                 }
                 double fitness = 0;
                 indy.putData(lockKey, lock);
-                indy.putData(lastFitnessKey, new Double(fitness));
-                indy.putData(stepSizeKey, new Double(globalinitstepsize));
+                indy.putData(lastFitnessKey, fitness);
+                indy.putData(stepSizeKey, globalinitstepsize);
                 indy.putData(wStepSizeKey, wstepsize);
 //        indyhash.put(indy, history);
             } else {
@@ -137,13 +137,13 @@ public class GradientDescentAlgorithm extends AbstractOptimizer implements java.
         // System.out.println("hashtable built");
         for (int i = 0; i < this.population.size(); i++) {
 
-            indy = ((AbstractEAIndividual) this.population.get(i));
+            indy = this.population.get(i);
             double[][] range = ((InterfaceDataTypeDouble) indy).getDoubleRange();
             double[] params = ((InterfaceDataTypeDouble) indy).getDoubleData();
             indy.putData(oldParamsKey, params);
 
             int[] lock = (int[]) indy.getData(lockKey);
-            double indystepsize = ((Double) indy.getData(stepSizeKey)).doubleValue();
+            double indystepsize = (Double) indy.getData(stepSizeKey);
 
             if ((this.optimizationProblem instanceof InterfaceFirstOrderDerivableProblem) && (indy instanceof InterfaceDataTypeDouble)) {
                 for (int iterations = 0; iterations < this.iterations; iterations++) {
@@ -233,7 +233,7 @@ public class GradientDescentAlgorithm extends AbstractOptimizer implements java.
 
         if (this.recovery) {
             for (int i = 0; i < this.population.size(); i++) {
-                indy = ((AbstractEAIndividual) this.population.get(i));
+                indy = this.population.get(i);
                 if (indy.getFitness()[0] > recoverythreshold) {
 
                     ((InterfaceDataTypeDouble) indy).setDoublePhenotype((double[]) indy.getData(oldParamsKey));
@@ -261,11 +261,11 @@ public class GradientDescentAlgorithm extends AbstractOptimizer implements java.
 
             //System.out.println("gsa main");
             for (int i = 0; i < this.population.size(); i++) {
-                indy = ((AbstractEAIndividual) this.population.get(i));
+                indy = this.population.get(i);
 
                 if (indy.getData(lastFitnessKey) != null) {
-                    double lastfit = ((Double) indy.getData(lastFitnessKey)).doubleValue();
-                    double indystepsize = ((Double) indy.getData(stepSizeKey)).doubleValue();
+                    double lastfit = (Double) indy.getData(lastFitnessKey);
+                    double indystepsize = (Double) indy.getData(stepSizeKey);
 
                     if (lastfit < indy.getFitness()[0]) { // GLOBAL adaption
                         indystepsize *= wDecreaseStepSize;

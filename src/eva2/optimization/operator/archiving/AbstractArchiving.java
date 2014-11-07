@@ -38,13 +38,13 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
     public boolean isDominant(AbstractEAIndividual indy, Population pop) {
         if (this.obeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual) pop.get(i)).isDominatingDebConstraints(indy))) {
+                if (!(indy.equals(pop.get(i))) && (pop.get(i).isDominatingDebConstraints(indy))) {
                     return false;
                 }
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual) pop.get(i)).isDominating(indy))) {
+                if (!(indy.equals(pop.get(i))) && (pop.get(i).isDominating(indy))) {
                     return false;
                 }
             }
@@ -65,7 +65,7 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
 
         for (int i = 0; i < archive.size(); i++) {
             isDominating = true;
-            tmpFitness = ((AbstractEAIndividual) archive.get(i)).getFitness();
+            tmpFitness = archive.get(i).getFitness();
             try {
                 for (int j = 0; j < indyFitness.length; j++) {
                     isDominating &= indyFitness[j] <= tmpFitness[j];
@@ -120,7 +120,7 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
         // first prepare the tmpFit
         tmpFit = new double[pop.size()][];
         for (int j = 0; j < pop.size(); j++) {
-            tmpIndy = ((AbstractEAIndividual) pop.get(j));
+            tmpIndy = pop.get(j);
             if (tmpIndy.getFitness().length <= 1) {
                 tmpD = (double[]) tmpIndy.getData("MOFitness");
                 tmpFit[j] = new double[tmpD.length];

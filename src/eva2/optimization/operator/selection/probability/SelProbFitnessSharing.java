@@ -51,12 +51,12 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
         double distance, sharing, sum = 0;
         AbstractEAIndividual tmpIndy1, tmpIndy2;
         for (int i = 0; i < population.size(); i++) {
-            tmpIndy1 = ((AbstractEAIndividual) population.get(i));
+            tmpIndy1 = population.get(i);
             selProb[i] = tmpIndy1.getSelectionProbability()[0];
             sharing = 0;
             for (int j = 0; j < population.size(); j++) {
                 if (i != j) {
-                    distance = this.distanceMetric.distance(tmpIndy1, ((AbstractEAIndividual) population.get(i)));
+                    distance = this.distanceMetric.distance(tmpIndy1, population.get(i));
                     if (distance < this.sharingDistance) {
                         sharing += (1 - distance / this.sharingDistance);
                     }
@@ -66,7 +66,7 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
             sum += selProb[i];
         }
         for (int i = 0; i < population.size(); i++) {
-            tmpIndy1 = ((AbstractEAIndividual) population.get(i));
+            tmpIndy1 = population.get(i);
             tmpIndy1.setSelectionProbability(0, (selProb[i] / sum));
         }
     }

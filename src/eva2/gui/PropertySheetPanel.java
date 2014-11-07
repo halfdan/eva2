@@ -7,7 +7,6 @@ import eva2.util.annotation.Hidden;
 import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
-import javax.swing.plaf.InsetsUIResource;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;

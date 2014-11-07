@@ -78,8 +78,8 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         double[][] tmpList = new double[p.size()][];
 
         for (int i = 0; i < p.size(); i++) {
-            tmpList[i] = new double[((AbstractEAIndividual) (p.get(i))).getSelectionProbability().length];
-            System.arraycopy(((AbstractEAIndividual) (p.get(i))).getSelectionProbability(), 0, tmpList[i], 0, tmpList[i].length);
+            tmpList[i] = new double[p.get(i).getSelectionProbability().length];
+            System.arraycopy(p.get(i).getSelectionProbability(), 0, tmpList[i], 0, tmpList[i].length);
             if (i > 0) {
                 for (int j = 0; j < tmpList[i].length; j++) {
                     tmpList[i][j] += tmpList[i - 1][j];
@@ -107,12 +107,12 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
     private AbstractEAIndividual selectTree(Population population) {
         int currentCriteria = 0, critSize;
 
-        critSize = ((AbstractEAIndividual) population.get(0)).getSelectionProbability().length;
+        critSize = population.get(0).getSelectionProbability().length;
         currentCriteria = RNG.randomInt(0, critSize - 1);
         double d = RNG.randomDouble();
         int index = this.treeRoot[currentCriteria].getIndexFor(d);
         //System.out.println("Looking for: " + d + " found " +index);
-        return ((AbstractEAIndividual) (population.get(index)));
+        return population.get(index);
     }
 
     private AbstractEAIndividual selectStandard(Population population) {
@@ -120,17 +120,17 @@ public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Ser
         double sum = 1, random, tmpD;
         int currentCriteria = 0, critSize;
 
-        critSize = ((AbstractEAIndividual) population.get(0)).getSelectionProbability().length;
+        critSize = population.get(0).getSelectionProbability().length;
         currentCriteria = RNG.randomInt(0, critSize - 1);
         String logger = "";
         while (sum > 0) {
             sum = 0;
             random = RNG.randomDouble();
             for (int i = 0; i < population.size(); i++) {
-                tmpD = ((AbstractEAIndividual) (population.get(i))).getSelectionProbability(currentCriteria);
+                tmpD = population.get(i).getSelectionProbability(currentCriteria);
                 logger += tmpD + "; ";
                 if (random < (sum + tmpD)) {
-                    return ((AbstractEAIndividual) (population.get(i)));
+                    return population.get(i);
                 } else {
                     sum += tmpD;
                 }

@@ -58,7 +58,7 @@ public class SelectHomologousMate extends SelectTournament implements java.io.Se
         // first select all possible partners for daddy
         // to be honest daddy himself is not omitted....
         for (int i = 0; i < availablePartners.size(); i++) {
-            if (this.metric.distance(dad, (AbstractEAIndividual) availablePartners.get(i)) < this.matingRadius) {
+            if (this.metric.distance(dad, availablePartners.get(i)) < this.matingRadius) {
                 possibleMates.add(availablePartners.get(i));
             }
         }

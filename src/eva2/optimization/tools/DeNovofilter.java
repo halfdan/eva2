@@ -30,7 +30,7 @@ public class DeNovofilter {
         System.out.println("Archive    " + a.size());
         for (int i = 0; i < a.size(); i++) {
             String s = "";
-            double[] d = ((AbstractEAIndividual) a.get(i)).getFitness();
+            double[] d = a.get(i).getFitness();
             for (int j = 0; j < d.length; j++) {
                 s += "" + d[j];
                 if (j < d.length - 1) {
@@ -59,7 +59,7 @@ public class DeNovofilter {
                 String[] tmpS = currentLine.split(" ");
                 double[] tmpD = new double[tmpS.length - 2];
                 for (int i = 2; i < tmpS.length; i++) {
-                    tmpD[i - 2] = new Double(tmpS[i]).doubleValue();
+                    tmpD[i - 2] = new Double(tmpS[i]);
                 }
                 indy = new ESIndividualDoubleData();
                 indy.setFitness(tmpD);

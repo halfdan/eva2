@@ -138,16 +138,16 @@ public class MutateESGlobal implements InterfaceMutation, java.io.Serializable, 
         if (crossoverType != MutateESCrossoverType.none) {
             ArrayList<Double> tmpList = new ArrayList<>();
             if (indy1.getMutationOperator() instanceof MutateESGlobal) {
-                tmpList.add(new Double(((MutateESGlobal) indy1.getMutationOperator()).mutationStepSize));
+                tmpList.add(((MutateESGlobal) indy1.getMutationOperator()).mutationStepSize);
             }
             for (int i = 0; i < partners.size(); i++) {
-                if (((AbstractEAIndividual) partners.get(i)).getMutationOperator() instanceof MutateESGlobal) {
-                    tmpList.add(new Double(((MutateESGlobal) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).mutationStepSize));
+                if (partners.get(i).getMutationOperator() instanceof MutateESGlobal) {
+                    tmpList.add(((MutateESGlobal) partners.get(i).getMutationOperator()).mutationStepSize);
                 }
             }
             double[] list = new double[tmpList.size()];
             for (int i = 0; i < tmpList.size(); i++) {
-                list[i] = tmpList.get(i).doubleValue();
+                list[i] = tmpList.get(i);
             }
             if (list.length <= 1) {
                 return;

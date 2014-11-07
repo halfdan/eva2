@@ -65,7 +65,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
         if (population.size() == 0) {
             return population;
         } // trivial
-        critSize = ((AbstractEAIndividual) population.get(0)).getFitness().length;
+        critSize = population.get(0).getFitness().length;
         result.setTargetSize(size);
         if (this.obeyDebsConstViolationPrinciple) {
             for (int i = 0; i < size; i++) {
@@ -73,18 +73,18 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
                 currentBestValue = Double.POSITIVE_INFINITY;
                 tmpIndy = null;
                 for (int j = 0; j < population.size(); j++) {
-                    if ((!((AbstractEAIndividual) population.get(j)).violatesConstraint()) && (((AbstractEAIndividual) population.get(j)).getFitness(currentCriteria) < currentBestValue)) {
-                        currentBestValue = ((AbstractEAIndividual) population.get(j)).getFitness(currentCriteria);
-                        tmpIndy = (AbstractEAIndividual) population.get(j);
+                    if ((!population.get(j).violatesConstraint()) && (population.get(j).getFitness(currentCriteria) < currentBestValue)) {
+                        currentBestValue = population.get(j).getFitness(currentCriteria);
+                        tmpIndy = population.get(j);
                     }
                 }
                 if (tmpIndy == null) {
                     // darn all individuals violate the constraints
                     // so select the guy with the least worst constraint violation
                     for (int j = 0; j < population.size(); j++) {
-                        if (((AbstractEAIndividual) population.get(j)).getConstraintViolation() < currentBestValue) {
-                            currentBestValue = ((AbstractEAIndividual) population.get(j)).getConstraintViolation();
-                            tmpIndy = (AbstractEAIndividual) population.get(j);
+                        if (population.get(j).getConstraintViolation() < currentBestValue) {
+                            currentBestValue = population.get(j).getConstraintViolation();
+                            tmpIndy = population.get(j);
                         }
                     }
                 }
@@ -95,9 +95,9 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
                 currentCriteria = RNG.randomInt(0, critSize - 1);
                 currentBestValue = Double.POSITIVE_INFINITY;
                 for (int j = 0; j < population.size(); j++) {
-                    if (((AbstractEAIndividual) population.get(j)).getFitness(currentCriteria) < currentBestValue) {
-                        currentBestValue = ((AbstractEAIndividual) population.get(j)).getFitness(currentCriteria);
-                        tmpIndy = (AbstractEAIndividual) population.get(j);
+                    if (population.get(j).getFitness(currentCriteria) < currentBestValue) {
+                        currentBestValue = population.get(j).getFitness(currentCriteria);
+                        tmpIndy = population.get(j);
                     }
                 }
                 result.add(tmpIndy);

@@ -100,7 +100,7 @@ public class SteadyStateGA extends AbstractOptimizer implements java.io.Serializ
         this.parentSelection.prepareSelection(this.population);
         this.partnerSelection.prepareSelection(this.population);
         Population parents = this.parentSelection.selectFrom(this.population, 1);
-        AbstractEAIndividual mother = (AbstractEAIndividual) parents.get(0);
+        AbstractEAIndividual mother = parents.get(0);
         parents = this.partnerSelection.findPartnerFor(mother, this.population, this.numberOfPartners);
         AbstractEAIndividual[] offSprings = mother.mateWith(parents);
         offSprings[0].mutate();

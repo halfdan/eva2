@@ -108,7 +108,7 @@ public class MetricErrorRatio implements eva2.optimization.operator.paretofrontm
         dom.addElementsToArchive(tmpPPO);
         tmpPPO = tmpPPO.getArchive();
         for (int i = 0; i < tmpPPO.size(); i++) {
-            if (this.inReference((AbstractEAIndividual) tmpPPO.get(i))) {
+            if (this.inReference(tmpPPO.get(i))) {
                 result++;
             }
         }

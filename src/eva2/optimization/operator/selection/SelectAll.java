@@ -55,7 +55,7 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
         if (this.obeyDebsConstViolationPrinciple) {
             int index = 0;
             while (result.size() < size) {
-                if (!((AbstractEAIndividual) population.get(index % population.size())).violatesConstraint()) {
+                if (!population.get(index % population.size()).violatesConstraint()) {
                     result.add(population.get(index % population.size()));
                 }
                 index++;

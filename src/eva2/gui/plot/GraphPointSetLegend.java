@@ -35,7 +35,7 @@ public class GraphPointSetLegend {
             int comp = o1.car().compareTo(o2.car());
             // Same text; let us see if the color is also identical.
             return comp == 0 ? comp = Integer.valueOf(o1.cdr().getRGB())
-                    .compareTo(Integer.valueOf(o2.cdr().getRGB())) : comp;
+                    .compareTo(o2.cdr().getRGB()) : comp;
         }
 
     }

@@ -79,7 +79,7 @@ public class PBILPopulation extends Population implements Cloneable, java.io.Ser
      * This method creates a new population based on the bit probability vector.
      */
     public void initPBIL() {
-        InterfaceGAIndividual tmpIndy, template = (InterfaceGAIndividual) ((AbstractEAIndividual) this.get(0)).clone();
+        InterfaceGAIndividual tmpIndy, template = (InterfaceGAIndividual) this.get(0).clone();
         BitSet tmpBitSet;
 
         this.clear();

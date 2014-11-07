@@ -528,7 +528,7 @@ public class ANPSO extends NichePSO implements InterfaceAdditionalPopulationInfo
                 Population pop = new Population(connSet.size());
                 for (String indexStr : connSet) {
                     Integer index = Integer.valueOf(indexStr);
-                    AbstractEAIndividual indy = getIndyByParticleIndex(index.intValue()); // may be taken from a main swarm or current subwarm
+                    AbstractEAIndividual indy = getIndyByParticleIndex(index); // may be taken from a main swarm or current subwarm
                     if (indy == null) {
                         System.err.println("createNichesFromNicheGraph problem -> getIndyByParticleIndex returned null");
                     }
@@ -555,7 +555,7 @@ public class ANPSO extends NichePSO implements InterfaceAdditionalPopulationInfo
             } else { // move particles corresponding to unconnected vertices to the mainswarm
                 Iterator<String> it = connSet.iterator();
                 Integer index = Integer.valueOf(it.next());
-                AbstractEAIndividual indy = getIndyByParticleIndex(index.intValue());
+                AbstractEAIndividual indy = getIndyByParticleIndex(index);
                 newMainPop.add(indy);
             }
         }

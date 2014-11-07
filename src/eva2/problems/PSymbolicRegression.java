@@ -190,7 +190,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
 
         evaluatePopulationStart(population);
         for (int i = 0; i < population.size(); i++) {
-            tmpIndy = (AbstractEAIndividual) population.get(i);
+            tmpIndy = population.get(i);
             tmpIndy.resetConstraintViolation();
             if ((this.useLocalHillClimbing) && (tmpIndy instanceof GAPIndividualProgramData)) {
                 AbstractEAIndividual tmpBestConst = (AbstractEAIndividual) ((GAPIndividualProgramData) tmpIndy).getNumbers();

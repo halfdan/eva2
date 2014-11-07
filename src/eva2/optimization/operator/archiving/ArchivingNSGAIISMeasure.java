@@ -36,13 +36,13 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
     public boolean isDominant(AbstractEAIndividual indy, Population pop) {
         if (this.obeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i)) || indy.equalFitness((AbstractEAIndividual) pop.get(i))) && (((AbstractEAIndividual) pop.get(i)).isDominatingDebConstraints(indy))) {
+                if (!(indy.equals(pop.get(i)) || indy.equalFitness(pop.get(i))) && (pop.get(i).isDominatingDebConstraints(indy))) {
                     return false;
                 }
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i)) || indy.equalFitness((AbstractEAIndividual) pop.get(i))) && (((AbstractEAIndividual) pop.get(i)).isDominating(indy))) {
+                if (!(indy.equals(pop.get(i)) || indy.equalFitness(pop.get(i))) && (pop.get(i).isDominating(indy))) {
                     return false;
                 }
             }
@@ -99,7 +99,7 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
                 }
             }
             assigned[minIndex] = true;
-            ((AbstractEAIndividual) frontArray[minIndex]).putData("HyperCube", new Double(e));
+            ((AbstractEAIndividual) frontArray[minIndex]).putData("HyperCube", (double) e);
         }
 
 

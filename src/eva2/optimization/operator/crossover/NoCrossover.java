@@ -42,7 +42,7 @@ public class NoCrossover implements InterfaceCrossover, java.io.Serializable {
         result = new AbstractEAIndividual[1 + partners.size()]; /// by MK
         result[0] = (AbstractEAIndividual) (indy1).clone();
         for (int i = 0; i < partners.size(); i++) {
-            result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
+            result[i + 1] = (AbstractEAIndividual) partners.get(i).clone();
         }
         //in case the crossover was successful lets give the mutation operators a chance to mate the strategy parameters
         for (int i = 0; i < result.length; i++) {

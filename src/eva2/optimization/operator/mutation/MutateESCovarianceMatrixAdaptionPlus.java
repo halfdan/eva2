@@ -171,8 +171,8 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
                 // population as
                 // well in case of
                 // plus strategy
-                MutateESCovarianceMatrixAdaptionPlus mutator = (MutateESCovarianceMatrixAdaptionPlus) ((AbstractEAIndividual) selectedPop
-                        .get(i)).getMutationOperator();
+                MutateESCovarianceMatrixAdaptionPlus mutator = (MutateESCovarianceMatrixAdaptionPlus) selectedPop
+                        .get(i).getMutationOperator();
                 updateMutator(rate, mutator);
                 if (selectedPop.getEAIndividual(i).getFitness(0) <= parentPop
                         .getEAIndividual(0).getFitness(0)) {
@@ -184,8 +184,8 @@ public class MutateESCovarianceMatrixAdaptionPlus extends
             }
         }
         for (int i = 0; i < newPop.size(); i++) {
-            MutateESCovarianceMatrixAdaptionPlus mutator = (MutateESCovarianceMatrixAdaptionPlus) ((AbstractEAIndividual) newPop
-                    .get(i)).getMutationOperator();
+            MutateESCovarianceMatrixAdaptionPlus mutator = (MutateESCovarianceMatrixAdaptionPlus) newPop
+                    .get(i).getMutationOperator();
             updateMutator(rate, mutator);
             if (newPop.getEAIndividual(i).getFitness(0) <= parentPop
                     .getEAIndividual(0).getFitness(0)) {

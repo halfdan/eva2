@@ -1,6 +1,5 @@
 package eva2.optimization.operator.archiving;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.chart2d.Chart2DDPointIconCross;
 import eva2.tools.chart2d.DPointIcon;
@@ -111,8 +110,8 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
             tmpDom = new Population();
             tmpNonDom = new Population();
             for (int i = 0; i < tmpPop.size(); i++) {
-                if (this.isDominant((AbstractEAIndividual) tmpPop.get(i), tmpPop)) {
-                    ((AbstractEAIndividual) tmpPop.get(i)).putData("ParetoLevel", new Integer(level));
+                if (this.isDominant(tmpPop.get(i), tmpPop)) {
+                    tmpPop.get(i).putData("ParetoLevel", level);
                     tmpDom.add(tmpPop.get(i));
 
                 } else {
@@ -124,7 +123,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
                 System.out.println("Problem NSGA II at level " + level + ".");
                 tmpDom.addPopulation(tmpNonDom);
                 for (int i = 0; i < tmpDom.size(); i++) {
-                    ((AbstractEAIndividual) tmpDom.get(i)).putData("ParetoLevel", new Integer(level));
+                    tmpDom.get(i).putData("ParetoLevel", level);
                 }
                 tmpPop.clear();
 //                System.out.println(""+tmpPop.getStringRepresentation());
@@ -154,11 +153,11 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
             fitness = new double[fronts[i].size()][];
             hyperCube = new double[fronts[i].size()];
             for (int j = 0; j < fronts[i].size(); j++) {
-                fitness[j] = ((AbstractEAIndividual) fronts[i].get(j)).getFitness();
+                fitness[j] = fronts[i].get(j).getFitness();
             }
             hyperCube = heidi.calculateHyperCubeVolumes(fitness);
             for (int j = 0; j < fronts[i].size(); j++) {
-                ((AbstractEAIndividual) fronts[i].get(j)).putData("HyperCube", new Double(hyperCube[j]));
+                fronts[i].get(j).putData("HyperCube", hyperCube[j]);
             }
         }
     }

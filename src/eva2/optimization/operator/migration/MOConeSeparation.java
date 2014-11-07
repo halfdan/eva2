@@ -96,13 +96,13 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         }
         memory = (Population) collector.clone();
 
-        if (((AbstractEAIndividual) collector.get(0)).getFitness().length == 2) {
+        if (collector.get(0).getFitness().length == 2) {
             this.coneSeparation2D(collector, newIPOP, islands);
         } else {
-            if (((AbstractEAIndividual) collector.get(0)).getFitness().length == 3) {
+            if (collector.get(0).getFitness().length == 3) {
                 this.coneSeparation3D(collector, newIPOP, islands);
             } else {
-                if (((AbstractEAIndividual) collector.get(0)).getFitness().length >= 4) {
+                if (collector.get(0).getFitness().length >= 4) {
                     System.out.println("*Pff*");
                 }
             }
@@ -174,18 +174,18 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         }
 
         for (int i = 1; i < ref.size(); i++) {
-            if (((AbstractEAIndividual) ref.get(i)).getFitness()[0] > ((AbstractEAIndividual) ref.get(y1Big)).getFitness()[0]) {
+            if (ref.get(i).getFitness()[0] > ref.get(y1Big).getFitness()[0]) {
                 y1Big = i;
             }
-            if (((AbstractEAIndividual) ref.get(i)).getFitness()[1] > ((AbstractEAIndividual) ref.get(y2Big)).getFitness()[1]) {
+            if (ref.get(i).getFitness()[1] > ref.get(y2Big).getFitness()[1]) {
                 y2Big = i;
             }
         }
         double[] r = new double[2];
         double alpha = 90.0 / (double) islands.length;
         double[][] boundaries = new double[islands.length - 1][2];
-        r[0] = ((AbstractEAIndividual) ref.get(y1Big)).getFitness()[0];
-        r[1] = ((AbstractEAIndividual) ref.get(y2Big)).getFitness()[1];
+        r[0] = ref.get(y1Big).getFitness()[0];
+        r[1] = ref.get(y2Big).getFitness()[1];
         for (int i = 0; i < boundaries.length; i++) {
             boundaries[i][0] = 1 / Math.tan(Math.toRadians(alpha * (i + 1)));
             boundaries[i][1] = r[1] - boundaries[i][0] * r[0];
@@ -197,7 +197,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         // Now i got the cone's let's separate
         for (int i = 0; i < boundaries.length; i++) {
             for (int j = 0; j < collector.size(); j++) {
-                indy = (AbstractEAIndividual) collector.get(j);
+                indy = collector.get(j);
                 if (indy.getFitness()[1] < boundaries[i][0] * indy.getFitness()[0] + boundaries[i][1]) {
                     // this guy belongs to cone i
                     newIPOP[i].add(indy);
@@ -229,7 +229,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
                 mySet = new GraphPointSet(10 + i, plot.getFunctionArea());
                 mySet.setConnectedMode(false);
                 for (int j = 0; j < newIPOP[i].size(); j++) {
-                    indy = (AbstractEAIndividual) newIPOP[i].get(j);
+                    indy = newIPOP[i].get(j);
                     myPoint = new DPoint(indy.getFitness()[0], indy.getFitness()[1]);
                     tmp = new Chart2DDPointIconText("" + i);
                     if (i % 2 == 0) {
@@ -312,13 +312,13 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         }
 
         for (int i = 1; i < ref.size(); i++) {
-            if (((AbstractEAIndividual) ref.get(i)).getFitness()[0] > ((AbstractEAIndividual) ref.get(y1Big)).getFitness()[0]) {
+            if (ref.get(i).getFitness()[0] > ref.get(y1Big).getFitness()[0]) {
                 y1Big = i;
             }
-            if (((AbstractEAIndividual) ref.get(i)).getFitness()[1] > ((AbstractEAIndividual) ref.get(y2Big)).getFitness()[1]) {
+            if (ref.get(i).getFitness()[1] > ref.get(y2Big).getFitness()[1]) {
                 y2Big = i;
             }
-            if (((AbstractEAIndividual) ref.get(i)).getFitness()[2] > ((AbstractEAIndividual) ref.get(y3Big)).getFitness()[2]) {
+            if (ref.get(i).getFitness()[2] > ref.get(y3Big).getFitness()[2]) {
                 y3Big = i;
             }
         }
@@ -327,9 +327,9 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         double[][] normals = new double[islands.length][3];
         double angIncr = 360.0 / (double) islands.length;
 
-        distopian[0] = ((AbstractEAIndividual) ref.get(y1Big)).getFitness()[0];
-        distopian[1] = ((AbstractEAIndividual) ref.get(y2Big)).getFitness()[1];
-        distopian[2] = ((AbstractEAIndividual) ref.get(y3Big)).getFitness()[2];
+        distopian[0] = ref.get(y1Big).getFitness()[0];
+        distopian[1] = ref.get(y2Big).getFitness()[1];
+        distopian[2] = ref.get(y3Big).getFitness()[2];
 
         zE[0] = 0;
         zE[1] = 0;
@@ -362,7 +362,7 @@ public class MOConeSeparation implements InterfaceMigration, java.io.Serializabl
         // Now i got the cone's let's separate
         for (int i = 0; i < normals.length; i++) {
             for (int j = 0; j < collector.size(); j++) {
-                indy = (AbstractEAIndividual) collector.get(j);
+                indy = collector.get(j);
                 fitness = indy.getFitness();
                 if ((this.getScalarProduct(curBoundingPlane[1], this.getVectorSub(fitness, curBoundingPlane[0])) < 0) &&
                         (this.getScalarProduct(lastBoundingPlane[1], this.getVectorSub(fitness, lastBoundingPlane[0])) >= 0)) {

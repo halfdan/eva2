@@ -180,12 +180,12 @@ public class WingedMultiObjectiveEA extends AbstractOptimizer implements java.io
         double tmpF1, tmpF2;
         // for each dimension find the best
         for (int i = 0; i < this.outputDimension; i++) {
-            bestIndys[i] = (AbstractEAIndividual) ((AbstractEAIndividual) this.population.get(0)).clone();
+            bestIndys[i] = (AbstractEAIndividual) this.population.get(0).clone();
             tmpF1 = bestIndys[i].getFitness(i);
             // for each individual find the best
             for (int j = 0; j < this.population.size(); j++) {
-                if (((AbstractEAIndividual) this.population.get(j)).getFitness(i) < tmpF1) {
-                    bestIndys[i] = (AbstractEAIndividual) ((AbstractEAIndividual) this.population.get(j)).clone();
+                if (this.population.get(j).getFitness(i) < tmpF1) {
+                    bestIndys[i] = (AbstractEAIndividual) this.population.get(j).clone();
                     tmpF1 = bestIndys[i].getFitness(i);
                 }
             }

@@ -78,7 +78,7 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
         int currentCriteria = 0, critSize = 0;
 
         try {
-            critSize = ((AbstractEAIndividual) population.get(0)).getFitness().length;
+            critSize = population.get(0).getFitness().length;
             currentCriteria = RNG.randomInt(0, critSize - 1);
             if (this.obeyDebsConstViolationPrinciple) {
                 Population tournamentGroup = new Population();
@@ -87,11 +87,11 @@ public class SelectTournament implements InterfaceSelection, java.io.Serializabl
                 }
                 SelectBestIndividuals best = new SelectBestIndividuals();
                 best.setObeyDebsConstViolationPrinciple(true);
-                result = (AbstractEAIndividual) best.selectFrom(tournamentGroup, 1).get(0);
+                result = best.selectFrom(tournamentGroup, 1).get(0);
             } else {
-                result = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size() - 1));
+                result = population.get(RNG.randomInt(0, population.size() - 1));
                 for (int i = 1; i < this.tournamentSize; i++) {
-                    tmpIndy = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size() - 1));
+                    tmpIndy = population.get(RNG.randomInt(0, population.size() - 1));
                     if (tmpIndy.getFitness(currentCriteria) < result.getFitness(currentCriteria)) {
                         result = tmpIndy;
                     }

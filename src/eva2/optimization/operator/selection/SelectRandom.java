@@ -64,7 +64,7 @@ public class SelectRandom implements InterfaceSelection, java.io.Serializable {
             int index = 0, rand;
             while (result.size() < size) {
                 rand = RNG.randomInt(0, population.size() - 1);
-                if (!((AbstractEAIndividual) population.get(rand)).violatesConstraint()) {
+                if (!population.get(rand).violatesConstraint()) {
                     result.add(population.get(rand));
                 }
                 index++;

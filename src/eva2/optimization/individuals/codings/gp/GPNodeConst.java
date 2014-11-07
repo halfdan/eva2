@@ -57,7 +57,7 @@ public class GPNodeConst extends AbstractGPNode implements java.io.Serializable 
      */
     @Override
     public Object evaluate(InterfaceProgramProblem environment) {
-        return new Double(value);
+        return value;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class GPNodeProd extends AbstractGPNode implements java.io.Serializable {
                 result = (Double) tmpObj;
             }
         }
-        return new Double(result);
+        return result;
     }
 
     @Override

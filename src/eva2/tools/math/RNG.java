@@ -134,7 +134,7 @@ public final class RNG {
         ArrayList<Integer> intList = new ArrayList<>(length);
         int[] result = new int[length];
         for (int i = 0; i < length; i++) {
-            intList.add(new Integer(i));
+            intList.add(i);
         }
         for (int i = 0; i < length - 1; i++) {
             int index = randomInt(intList.size());

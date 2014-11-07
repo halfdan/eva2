@@ -357,7 +357,7 @@ public class DynamicParticleSwarmOptimization extends ParticleSwarmOptimization 
         // do what the usual function does plus announce quantum particles
         if (quantumRatio > 0.) {
             for (int i = 0; i < this.population.size(); i++) {
-                AbstractEAIndividual indy = (AbstractEAIndividual) population.get(i);
+                AbstractEAIndividual indy = population.get(i);
                 if (i >= quantumCount) {
                     indy.putData(partTypeKey, quantumType);
                     quantumCount += 1. / quantumRatio;

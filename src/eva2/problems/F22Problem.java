@@ -1,7 +1,6 @@
 package eva2.problems;
 
 import eva2.optimization.strategies.InterfaceOptimizer;
-import eva2.tools.math.Mathematics;
 import eva2.util.annotation.Description;
 
 /**

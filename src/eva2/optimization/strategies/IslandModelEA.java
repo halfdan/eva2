@@ -254,7 +254,7 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
         }
 //        System.out.println("Fitnesscalls :" + this.population.getFunctionCalls());
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED, this.optimizer.getPopulation());
-        double plotValue = (this.optimizationProblem.getDoublePlotValue(this.population)).doubleValue();
+        double plotValue = this.optimizationProblem.getDoublePlotValue(this.population);
         if (this.show) {
             this.plot.setConnectedPoint(this.population.getFunctionCalls(), plotValue, 0);
         }

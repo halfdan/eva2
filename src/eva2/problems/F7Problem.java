@@ -56,7 +56,7 @@ public class F7Problem extends AbstractProblemDoubleOffset implements Serializab
 
         evaluatePopulationStart(population);
         for (int i = 0; i < population.size(); i++) {
-            tmpIndy = (AbstractEAIndividual) population.get(i);
+            tmpIndy = population.get(i);
             tmpIndy.resetConstraintViolation();
             if (this.timeIntervalType == TimeIntervalType.FunctionCalls) {
                 this.currentTimeStamp = population.getFunctionCalls();

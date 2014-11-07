@@ -338,7 +338,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
-                data[i] = ((AbstractEAIndividual) pop.get(i)).getFitness();
+                data[i] = pop.get(i).getFitness();
             }
         }
         return data;

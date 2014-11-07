@@ -376,7 +376,7 @@ public class MultirunRefiner {
         }
         output = new double[i];
         for (int j = 0; j < i; j++) {
-            output[j] = ((Double) tmpOutput.elementAt(j)).doubleValue();
+            output[j] = (Double) tmpOutput.elementAt(j);
         }
         return output;
     }

@@ -784,7 +784,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     public Population addPopulation(Population pop, boolean avoidDuplicatePointers) {
         if (pop != null) {
             for (int i = 0; i < pop.size(); i++) {
-                AbstractEAIndividual indy = (AbstractEAIndividual) pop.get(i);
+                AbstractEAIndividual indy = pop.get(i);
                 if (avoidDuplicatePointers && this.contains(indy)) {
                     System.err.println("Warning, duplicate indy avoided in Population.addPopulation! Index of " + this.indexOf(indy));
                 } else {
@@ -813,7 +813,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
             int[] perm = RNG.randomPerm(fromPop.size());
             int i = 0;
             while ((i < perm.length) && (this.size() < upTo)) { // until instance is filled or no more indys can be selected
-                AbstractEAIndividual indy = (AbstractEAIndividual) fromPop.get(perm[i]);
+                AbstractEAIndividual indy = fromPop.get(perm[i]);
 //				System.out.println("checking " + indy.getStringRepresentation());
                 if ((indy != null) && (!containsByPosition(indy))) {
                     this.add(indy);
@@ -1136,7 +1136,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
             System.err.println("This shouldnt happen!");
             return null;
         } else {
-            AbstractEAIndividual result = (AbstractEAIndividual) this.get(best);
+            AbstractEAIndividual result = this.get(best);
             if (result == null) {
                 System.err.println("Serious Problem! Population Size: " + this.size());
             }
@@ -1499,7 +1499,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     public void removeRedundantIndiesUsingFitness() {
         for (int i = 0; i < this.size(); i++) {
             for (int j = i + 1; j < this.size(); j++) {
-                if (((AbstractEAIndividual) this.get(i)).equalFitness((AbstractEAIndividual) this.get(j))) {
+                if (this.get(i).equalFitness(this.get(j))) {
                     this.remove(j);
                     j--;
                 }
@@ -1515,7 +1515,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     public Population getMarkedIndividuals() {
         Population result = new Population();
         for (int i = 0; i < this.size(); i++) {
-            if (((AbstractEAIndividual) this.get(i)).isMarked()) {
+            if (this.get(i).isMarked()) {
                 result.add(this.get(i));
             }
         }
@@ -1527,7 +1527,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      */
     public void unmarkAllIndividuals() {
         for (int i = 0; i < this.size(); i++) {
-            ((AbstractEAIndividual) this.get(i)).unmark();
+            this.get(i).unmark();
         }
     }
 
@@ -1586,7 +1586,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
         strB.append(this.generationCount);
         strB.append("\n");
         for (int i = 0; i < this.size(); i++) {
-            strB.append(((AbstractEAIndividual) this.get(i)).getStringRepresentation());
+            strB.append(this.get(i).getStringRepresentation());
             strB.append("\n");
         }
         return strB.toString();
@@ -1651,7 +1651,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     }
 
     public AbstractEAIndividual getEAIndividual(int i) {
-        return (AbstractEAIndividual) this.get(i);
+        return this.get(i);
     }
 
     /**
@@ -1662,7 +1662,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     }
 
     public IndividualInterface getIndividual(int i) {
-        return (IndividualInterface) this.get(i);
+        return this.get(i);
     }
 
     public boolean add(IndividualInterface o) {
@@ -1794,7 +1794,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
         tmp = this.getBestFitness();
         result = new double[tmp.length];
         for (int i = 0; i < this.size(); i++) {
-            tmp = ((AbstractEAIndividual) this.get(i)).getFitness();
+            tmp = this.get(i).getFitness();
             for (int j = 0; j < result.length; j++) {
                 result[j] += tmp[j];
             }

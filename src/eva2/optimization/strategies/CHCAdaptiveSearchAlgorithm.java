@@ -57,7 +57,7 @@ public class CHCAdaptiveSearchAlgorithm extends AbstractOptimizer implements jav
     @Override
     public void initialize() {
         this.optimizationProblem.initializePopulation(this.population);
-        AbstractEAIndividual tmpIndy = ((AbstractEAIndividual) (this.population.get(0)));
+        AbstractEAIndividual tmpIndy = this.population.get(0);
         if (tmpIndy instanceof InterfaceGAIndividual) {
             this.differenceThreshold = (int) (((InterfaceGAIndividual) tmpIndy).getGenotypeLength() * this.initialDifferenceThreshold);
         } else {
@@ -80,7 +80,7 @@ public class CHCAdaptiveSearchAlgorithm extends AbstractOptimizer implements jav
         if (reset) {
             this.population.initialize();
         }
-        AbstractEAIndividual tmpIndy = ((AbstractEAIndividual) (this.population.get(0)));
+        AbstractEAIndividual tmpIndy = this.population.get(0);
         if (tmpIndy instanceof InterfaceGAIndividual) {
             this.differenceThreshold = (int) (((InterfaceGAIndividual) tmpIndy).getGenotypeLength() * this.initialDifferenceThreshold);
         } else {
@@ -119,7 +119,7 @@ public class CHCAdaptiveSearchAlgorithm extends AbstractOptimizer implements jav
         //System.out.println("Parents:"+parents.getSolutionRepresentationFor());
 
         for (int i = 0; i < parents.size(); i++) {
-            tmpIndy = ((AbstractEAIndividual) parents.get(i));
+            tmpIndy = parents.get(i);
             if (tmpIndy == null) {
                 System.out.println("Individual null " + i);
             }

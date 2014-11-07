@@ -36,13 +36,13 @@ public class ReplaceDeterministicCrowding implements InterfaceReplacement, java.
         double distance = Double.POSITIVE_INFINITY, tmpD;
 
         for (int i = 0; i < sub.size(); i++) {
-            tmpD = this.metric.distance(indy, (AbstractEAIndividual) sub.get(i));
+            tmpD = this.metric.distance(indy, sub.get(i));
             if (tmpD < distance) {
                 index = i;
                 distance = tmpD;
             }
         }
-        if (indy.isDominatingDebConstraints((AbstractEAIndividual) sub.get(index))) {
+        if (indy.isDominatingDebConstraints(sub.get(index))) {
             if (pop.remove(sub.get(index))) {
                 pop.addIndividual(indy);
             }

@@ -65,14 +65,14 @@ public class SelectEPTournaments implements InterfaceSelection, java.io.Serializ
                 // perform tournament
                 for (int k = 0; k < this.tournamentSize; k++) {
                     rand = RNG.randomInt(0, population.size() - 1);
-                    tmpIndy = ((AbstractEAIndividual) population.get(rand));
+                    tmpIndy = population.get(rand);
                     for (int l = 0; l < best.length; l++) {
                         if (this.obeyDebsConstViolationPrinciple) {
-                            if ((!tmpIndy.violatesConstraint()) && (tmpIndy.getFitness(l) < ((AbstractEAIndividual) population.get(best[l])).getFitness(l))) {
+                            if ((!tmpIndy.violatesConstraint()) && (tmpIndy.getFitness(l) < population.get(best[l]).getFitness(l))) {
                                 best[l] = rand;
                             }
                         } else {
-                            if (tmpIndy.getFitness(l) < ((AbstractEAIndividual) population.get(best[l])).getFitness(l)) {
+                            if (tmpIndy.getFitness(l) < population.get(best[l]).getFitness(l)) {
                                 best[l] = rand;
                             }
                         }

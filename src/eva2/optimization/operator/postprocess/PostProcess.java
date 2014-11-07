@@ -24,7 +24,6 @@ import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.statistics.InterfaceStatisticsParameters;
-import eva2.optimization.statistics.StatisticsParameters;
 import eva2.problems.*;
 import eva2.optimization.statistics.InterfaceTextListener;
 import eva2.optimization.strategies.EvolutionStrategies;
@@ -89,9 +88,9 @@ public class PostProcess {
         }
 
         for (int i = 0; i < pop.size(); i++) {
-            candidate = (AbstractEAIndividual) pop.get(i);
+            candidate = pop.get(i);
             for (int j = 0; j < optima.size(); j++) {
-                opt = (AbstractEAIndividual) optima.get(j);
+                opt = optima.get(j);
                 indDist = metric.distance(candidate, opt);
                 if (found[j] == null) { // current optimum has not been found yet
                     if (indDist < epsilon) {
@@ -340,7 +339,7 @@ public class PostProcess {
         int bestIndex = -1;
         AbstractEAIndividual opt;
         for (int j = 0; j < pop.size(); j++) {
-            opt = (AbstractEAIndividual) pop.get(j);
+            opt = pop.get(j);
             tmpDist = metric.distance(indy, opt);    // distance current indy to current optimum
             if (bestDist < 0 || (tmpDist < bestDist)) { // we have a better hit
                 bestIndex = j;

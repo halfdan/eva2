@@ -1,6 +1,5 @@
 package eva2.optimization.operator.selection.probability;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
 
@@ -47,7 +46,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
             // first check if anyone holds the constraints
             boolean isFeasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
+                if (!population.get(i).violatesConstraint()) {
                     isFeasible = true;
                 }
             }
@@ -66,7 +65,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                         }
                     }
                     for (int i = 0; i < data.length; i++) {
-                        if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
+                        if (!population.get(i).violatesConstraint()) {
                             result[i] = -data[i][x];
                         } else {
                             result[i] = -worst;
@@ -84,7 +83,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                     }
                     sum = 0;
                     for (int i = 0; i < data.length; i++) {
-                        if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
+                        if (!population.get(i).violatesConstraint()) {
                             result[i] = Math.exp((this.q * -data[i][x]) / dev);
                         } else {
                             result[i] = Math.exp((this.q * -worst) / dev);
@@ -120,7 +119,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                     }
 
                     for (int i = 0; i < population.size(); i++) {
-                        ((AbstractEAIndividual) population.get(i)).setSelectionProbability(x, result[i]);
+                        population.get(i).setSelectionProbability(x, result[i]);
                     }
                 }
             } else {
@@ -129,7 +128,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                 mean = 0;
                 dev = 0;
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = -((AbstractEAIndividual) population.get(i)).getConstraintViolation();
+                    result[i] = -population.get(i).getConstraintViolation();
                     sum += result[i];
                 }
                 mean = sum / ((double) data.length);
@@ -142,7 +141,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                 }
                 sum = 0;
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = Math.exp((this.q * -((AbstractEAIndividual) population.get(i)).getConstraintViolation()) / dev);
+                    result[i] = Math.exp((this.q * -population.get(i).getConstraintViolation()) / dev);
                     sum += result[i];
                 }
 
@@ -171,7 +170,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                 for (int i = 0; i < population.size(); i++) {
                     double[] tmpD = new double[1];
                     tmpD[0] = result[i] / sum;
-                    ((AbstractEAIndividual) population.get(i)).setSelectionProbability(tmpD);
+                    population.get(i).setSelectionProbability(tmpD);
                 }
             }
         } else {
@@ -221,7 +220,7 @@ public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializ
                 }
 
                 for (int i = 0; i < population.size(); i++) {
-                    ((AbstractEAIndividual) population.get(i)).setSelectionProbability(x, result[i]);
+                    population.get(i).setSelectionProbability(x, result[i]);
                 }
             }
         }

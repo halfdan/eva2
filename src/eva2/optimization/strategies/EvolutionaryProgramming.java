@@ -85,7 +85,7 @@ public class EvolutionaryProgramming extends AbstractOptimizer implements java.i
 
         result.clear();
         for (int i = 0; i < this.population.size(); i++) {
-            mutant = (AbstractEAIndividual) ((AbstractEAIndividual) this.population.get(i)).clone();
+            mutant = (AbstractEAIndividual) this.population.get(i).clone();
             double tmpD = mutant.getMutationProbability();
             mutant.setMutationProbability(1.0);
             mutant.mutate();

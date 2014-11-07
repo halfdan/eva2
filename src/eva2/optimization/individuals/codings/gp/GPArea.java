@@ -61,7 +61,7 @@ public class GPArea implements java.io.Serializable {
      */
     public void add2CompleteList(AbstractGPNode n, boolean b) {
         this.completeList.add(n);
-        this.blackList.add(Boolean.valueOf(b));
+        this.blackList.add(b);
     }
 
     /**
@@ -89,7 +89,7 @@ public class GPArea implements java.io.Serializable {
      * @param b the boolean value
      */
     public void setBlackListElement(int i, boolean b) {
-        this.blackList.set(i, Boolean.valueOf(b));
+        this.blackList.set(i, b);
     }
 
     /**
@@ -126,7 +126,7 @@ public class GPArea implements java.io.Serializable {
     public void compileReducedList() {
         this.reducedList = new ArrayList<>();
         for (int i = 0; i < this.completeList.size(); i++) {
-            if (this.blackList.get(i).booleanValue()) {
+            if (this.blackList.get(i)) {
                 this.reducedList.add(this.completeList.get(i));
             }
         }

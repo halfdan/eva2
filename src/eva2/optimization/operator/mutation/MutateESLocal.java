@@ -158,9 +158,9 @@ public class MutateESLocal implements InterfaceMutation, InterfaceAdditionalPopu
             tmpListB.add(((MutateESLocal) indy1.getMutationOperator()).sigmas);
         }
         for (int i = 0; i < partners.size(); i++) {
-            if (((AbstractEAIndividual) partners.get(i)).getMutationOperator() instanceof MutateESLocal) {
-                tmpListA.add(((MutateESLocal) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).mutationStepSize);
-                tmpListB.add(((MutateESLocal) ((AbstractEAIndividual) partners.get(i)).getMutationOperator()).sigmas);
+            if (partners.get(i).getMutationOperator() instanceof MutateESLocal) {
+                tmpListA.add(((MutateESLocal) partners.get(i).getMutationOperator()).mutationStepSize);
+                tmpListB.add(((MutateESLocal) partners.get(i).getMutationOperator()).sigmas);
             }
         }
         double[] listA = new double[tmpListA.size()];

@@ -323,7 +323,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             result = new AbstractEAIndividual[partners.size() + 1];
             result[0] = (AbstractEAIndividual) this.clone();
             for (int i = 0; i < partners.size(); i++) {
-                result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
+                result[i + 1] = (AbstractEAIndividual) partners.get(i).clone();
             }
             if (logParents) {
                 result[0].setParent(this);

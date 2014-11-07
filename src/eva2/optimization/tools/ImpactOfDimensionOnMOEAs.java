@@ -125,7 +125,7 @@ public class ImpactOfDimensionOnMOEAs {
                     fitness[j] = 1 / fitness[j] + x[j % objectives] + x[(j + 1) % objectives];
                 }
             }
-            ((AbstractEAIndividual) pop.get(i)).setFitness(fitness);
+            pop.get(i).setFitness(fitness);
         }
     }
 

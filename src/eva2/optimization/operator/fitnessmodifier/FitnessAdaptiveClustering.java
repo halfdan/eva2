@@ -1,6 +1,5 @@
 package eva2.optimization.operator.fitnessmodifier;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;
 import eva2.optimization.operator.cluster.InterfaceClustering;
 import eva2.optimization.population.Population;
@@ -26,7 +25,7 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
         // prepare the calculation
         double[][] data = new double[population.size()][];
         for (int i = 0; i < data.length; i++) {
-            data[i] = ((AbstractEAIndividual) population.get(i)).getFitness();
+            data[i] = population.get(i).getFitness();
         }
         double min = Double.POSITIVE_INFINITY;
         double[] result = new double[data.length];
@@ -58,7 +57,7 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
             }
 
             for (int i = 0; i < population.size(); i++) {
-                ((AbstractEAIndividual) population.get(i)).SetFitness(x, result[i]);
+                population.get(i).SetFitness(x, result[i]);
             }
         }
     }

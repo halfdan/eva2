@@ -161,7 +161,7 @@ public class EvolutionStrategies extends AbstractOptimizer implements java.io.Se
         parents = this.parentSelection.selectFrom(fromPopulation, lambda);
 
         for (int i = 0; i < parents.size(); i++) {
-            tmpIndy = (AbstractEAIndividual) parents.get(i);
+            tmpIndy = parents.get(i);
             offSprings = tmpIndy.mateWith(this.partnerSelection.findPartnerFor(tmpIndy, fromPopulation, this.numberOfPartners));
             offSprings[0].mutate();
             result.add(i, offSprings[0]);

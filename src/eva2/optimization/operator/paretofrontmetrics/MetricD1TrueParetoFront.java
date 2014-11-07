@@ -2,7 +2,6 @@ package eva2.optimization.operator.paretofrontmetrics;
 
 
 import eva2.gui.PropertyFilePath;
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
@@ -110,7 +109,7 @@ public class MetricD1TrueParetoFront implements eva2.optimization.operator.paret
         for (int j = 0; j < this.reference.length; j++) {
             min = Double.POSITIVE_INFINITY;
             for (int i = 0; i < tmpPPO.size(); i++) {
-                min = Math.min(min, distance(((AbstractEAIndividual) tmpPPO.get(i)).getFitness(), this.reference[j]));
+                min = Math.min(min, distance(tmpPPO.get(i).getFitness(), this.reference[j]));
             }
             result += min;
         }

@@ -183,7 +183,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         }
         int bestFitLen = pop.getBestFitness().length, tmpFitLen;
         for (int i = 0; i < pop.size(); i++) {
-            tmpFitLen = ((AbstractEAIndividual) pop.get(i)).getFitness().length;
+            tmpFitLen = pop.get(i).getFitness().length;
             if (tmpFitLen <= 1) {
                 return false;
             }
@@ -217,7 +217,7 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
         for (int i = 0; i < population.size(); i++) {
             // check and update border if necessary
-            AbstractEAIndividual tmpIndy = (AbstractEAIndividual) population.get(i);
+            AbstractEAIndividual tmpIndy = population.get(i);
             fitness = tmpIndy.getFitness();
             // check and update border if necessary
             if (border == null) {
@@ -331,12 +331,12 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
                 mySet.setConnectedMode(false);
                 for (int i = 0; i < archive.size(); i++) {
                     icon = new Chart2DDPointIconCircle();
-                    tmpD = ((AbstractEAIndividual) archive.get(i)).getFitness();
+                    tmpD = archive.get(i).getFitness();
                     if (tmpD.length < 2) {
                         throw new RuntimeException("Error, problem seems not to be multi-objective, pareto front plot not possible!");
                     }
                     myPoint = new DPoint(tmpD[0], tmpD[1]);
-                    if (((AbstractEAIndividual) archive.get(i)).getConstraintViolation() > 0) {
+                    if (archive.get(i).getConstraintViolation() > 0) {
                         icon.setBorderColor(Color.RED);
                         icon.setFillColor(Color.RED);
                     } else {
@@ -399,9 +399,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
         // for example plot the current population
         plot.clearGraph(index);
         for (int i = 0; i < pop.size(); i++) {
-            tmpFitness = ((AbstractEAIndividual) pop.get(i)).getFitness();
+            tmpFitness = pop.get(i).getFitness();
             if (tmpFitness.length <= 1) {
-                tmpFitness = (double[]) ((AbstractEAIndividual) pop.get(i)).getData("MOFitness");
+                tmpFitness = (double[]) pop.get(i).getData("MOFitness");
             }
             plot.setUnconnectedPoint(tmpFitness[0], tmpFitness[1], index);
         }
@@ -429,16 +429,16 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
         trueFitness = new double[pop.size()][];
         constraint = new double[pop.size()];
-        if (((AbstractEAIndividual) pop.get(0)).hasData("MOFitness")) {
+        if (pop.get(0).hasData("MOFitness")) {
             moFitness = new double[pop.size()][];
         } else {
             moFitness = null;
         }
         for (int i = 0; i < pop.size(); i++) {
-            constraint[i] = ((AbstractEAIndividual) pop.get(i)).getConstraintViolation();
-            trueFitness[i] = ((AbstractEAIndividual) pop.get(i)).getFitness();
+            constraint[i] = pop.get(i).getConstraintViolation();
+            trueFitness[i] = pop.get(i).getFitness();
             if (moFitness != null) {
-                moFitness[i] = (double[]) ((AbstractEAIndividual) pop.get(i)).getData("MOFitness");
+                moFitness[i] = (double[]) pop.get(i).getData("MOFitness");
             }
         }
         mySet.setConnectedMode(false);

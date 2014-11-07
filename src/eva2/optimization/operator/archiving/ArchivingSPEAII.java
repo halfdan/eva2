@@ -126,7 +126,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 
         double[][] fitness = new double[tmp.size()][];
         for (int i = 0; i < tmp.size(); i++) {
-            fitness[i] = ((AbstractEAIndividual) tmp.get(i)).getFitness();
+            fitness[i] = tmp.get(i).getFitness();
         }
         double[] minY, maxY;
         minY = fitness[0];
@@ -162,9 +162,9 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         for (int i = 0; i < pop.size(); i++) {
             result[i] = 0;
             SPEAStrength[i] = 0;
-            tmpIndy = (AbstractEAIndividual) pop.get(i);
+            tmpIndy = pop.get(i);
             for (int j = 0; j < pop.size(); j++) {
-                if ((i != j) && (!this.isEqualTo(tmpIndy, (AbstractEAIndividual) pop.get(j))) && (tmpIndy.isDominating((AbstractEAIndividual) pop.get(j)))) {
+                if ((i != j) && (!this.isEqualTo(tmpIndy, pop.get(j))) && (tmpIndy.isDominating(pop.get(j)))) {
                     SPEAStrength[i]++;
                 }
             }
@@ -178,13 +178,13 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         // now calculate the SPEAFitness
         for (int i = 0; i < pop.size(); i++) {
             for (int j = 0; j < pop.size(); j++) {
-                if ((i != j) && (!this.isEqualTo((AbstractEAIndividual) pop.get(i), (AbstractEAIndividual) pop.get(j))) && (((AbstractEAIndividual) pop.get(i)).isDominating(((AbstractEAIndividual) pop.get(j))))) {
+                if ((i != j) && (!this.isEqualTo(pop.get(i), pop.get(j))) && (pop.get(i).isDominating(pop.get(j)))) {
                     result[j] += SPEAStrength[i];
                     if (this.soutDebug) {
                         if (i == 14) {
                             double[] f1, f2;
-                            f1 = ((AbstractEAIndividual) pop.get(i)).getFitness();
-                            f2 = ((AbstractEAIndividual) pop.get(j)).getFitness();
+                            f1 = pop.get(i).getFitness();
+                            f2 = pop.get(j).getFitness();
                             for (int n = 0; n < f1.length; n++) {
                                 System.out.println("" + Math.abs(f1[n] - f2[n]));
                             }
@@ -205,7 +205,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
             double[][] trueFitness;
             trueFitness = new double[pop.size()][];
             for (int i = 0; i < pop.size(); i++) {
-                trueFitness[i] = ((AbstractEAIndividual) pop.get(i)).getFitness();
+                trueFitness[i] = pop.get(i).getFitness();
                 System.out.println("Fitness: (" + trueFitness[i][0] + "/" + trueFitness[i][1] + ")");
             }
             DPoint myPoint;
@@ -250,7 +250,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         for (int i = 0; i < pop.size(); i++) {
             distMatrix[i][i] = 0.0;
             for (int j = i + 1; j < pop.size(); j++) {
-                distMatrix[i][j] = this.metric.distance((AbstractEAIndividual) pop.get(i), (AbstractEAIndividual) pop.get(j));
+                distMatrix[i][j] = this.metric.distance(pop.get(i), pop.get(j));
                 distMatrix[j][i] = distMatrix[i][j];
             }
         }
@@ -311,13 +311,13 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
 
         // first calculate the SPEAStrength
         for (int i = 0; i < pop.size(); i++) {
-            tmpIndy = (AbstractEAIndividual) pop.get(i);
+            tmpIndy = pop.get(i);
             trueFitness[i] = tmpIndy.getFitness();
             for (int j = i + 1; j < pop.size(); j++) {
-                if (tmpIndy.isDominating((AbstractEAIndividual) pop.get(j))) {
+                if (tmpIndy.isDominating(pop.get(j))) {
                     SPEAStrength[i]++;
                 } else {
-                    if (((AbstractEAIndividual) pop.get(j)).isDominating(tmpIndy)) {
+                    if (pop.get(j).isDominating(tmpIndy)) {
                         SPEAStrength[j]++;
                     }
                 }
@@ -328,7 +328,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         for (int i = 0; i < pop.size(); i++) {
             for (int j = 0; j < pop.size(); j++) {
                 if (i != j) {
-                    if (((AbstractEAIndividual) pop.get(i)).isDominating(((AbstractEAIndividual) pop.get(j)))) {
+                    if (pop.get(i).isDominating(pop.get(j))) {
                         SPEAFitness[j] += SPEAStrength[i];
                     }
                 }
@@ -342,7 +342,7 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
         for (int i = 0; i < pop.size(); i++) {
             distMatrix[i][i] = 0.0;
             for (int j = i + 1; j < pop.size(); j++) {
-                distMatrix[i][j] = this.metric.distance((AbstractEAIndividual) pop.get(i), (AbstractEAIndividual) pop.get(j));
+                distMatrix[i][j] = this.metric.distance(pop.get(i), pop.get(j));
                 distMatrix[j][i] = distMatrix[i][j];
             }
         }
@@ -373,8 +373,8 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
                 System.out.println("d " + 1 / (2 + D[i]));
             }
             SPEAResult[i] = SPEAFitness[i] + (1 / (2 + D[i]));
-            ((AbstractEAIndividual) pop.get(i)).putData("RawFit", new Double(SPEAFitness[i]));
-            ((AbstractEAIndividual) pop.get(i)).putData("SPEAFit", new Double(SPEAResult[i]));
+            pop.get(i).putData("RawFit", (double) SPEAFitness[i]);
+            pop.get(i).putData("SPEAFit", SPEAResult[i]);
         }
 
         // Puh!

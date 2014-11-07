@@ -386,7 +386,7 @@ public class BeanInspector {
                 Object value = getter.invoke(obj, args);
                 System.out.println("Inspecting name = " + name);
                 if (value instanceof Integer) {
-                    Object args2[] = {new Integer(999)};
+                    Object args2[] = {999};
                     setter.invoke(obj, args2);
                 }
                 showInfo(value);

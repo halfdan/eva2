@@ -32,7 +32,7 @@ class PropertySlider extends JPanel {
         //s.getAccessibleContext().setAccessibleName(getString("SliderDemo.plain"));
         //s.getAccessibleContext().setAccessibleDescription(getString("SliderDemo.a_plain_slider"));
         slider.addChangeListener(new SliderListener());
-        slider.setValue(((Integer) propertyEditor.getValue()).intValue());
+        slider.setValue((Integer) propertyEditor.getValue());
         slider.setPaintTicks(true);
         slider.setMajorTickSpacing(20);
         slider.setMinorTickSpacing(5);
@@ -68,7 +68,7 @@ class PropertySlider extends JPanel {
     protected void updateUs() {
         try {
             //String x = editor.getAsText();
-            slider.setValue(((Integer) propertyEditor.getValue()).intValue());
+            slider.setValue((Integer) propertyEditor.getValue());
         } catch (IllegalArgumentException ex) {
         }
     }
@@ -78,7 +78,7 @@ class PropertySlider extends JPanel {
      */
     protected void updateEditor() {
         try {
-            propertyEditor.setValue(new Integer(slider.getValue()));
+            propertyEditor.setValue(slider.getValue());
         } catch (IllegalArgumentException ex) {
         }
     }

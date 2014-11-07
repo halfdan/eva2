@@ -165,7 +165,7 @@ public class JTextEditorInternalFrame extends JDocFrame {
         }
         a.putValue(Action.SMALL_ICON, new ImageIcon("images/EditCut.gif"));
         a.putValue(ExtAction.CAPTION, "Ausschneiden");
-        a.putValue(ExtAction.MNEMONIC, new Character('a'));
+        a.putValue(ExtAction.MNEMONIC, 'a');
         a.putValue(ExtAction.TOOLTIP, "Schneidet den markierten Text aus und setzt ihn in die Zwischenablage");
         mnuEdit.add(a);
         barEdit.add(a);
@@ -177,7 +177,7 @@ public class JTextEditorInternalFrame extends JDocFrame {
         }
         a.putValue(Action.SMALL_ICON, new ImageIcon("images/EditCopy.gif"));
         a.putValue(ExtAction.CAPTION, "Kopieren");
-        a.putValue(ExtAction.MNEMONIC, new Character('k'));
+        a.putValue(ExtAction.MNEMONIC, 'k');
         a.putValue(ExtAction.TOOLTIP, "Kopiert den markierten Text in die Zwischenablage");
         mnuEdit.add(a);
         barEdit.add(a);
@@ -189,7 +189,7 @@ public class JTextEditorInternalFrame extends JDocFrame {
         }
         a.putValue(Action.SMALL_ICON, new ImageIcon("images/EditPaste.gif"));
         a.putValue(ExtAction.CAPTION, "Einf�gen");
-        a.putValue(ExtAction.MNEMONIC, new Character('e'));
+        a.putValue(ExtAction.MNEMONIC, 'e');
         a.putValue(ExtAction.TOOLTIP, "F�gt Text aus der Zwischenablage ein");
         mnuEdit.add(a);
         barEdit.add(a);
@@ -202,7 +202,7 @@ public class JTextEditorInternalFrame extends JDocFrame {
             a.putValue(ExtAction.KEYSTROKE, keyActions[0]);
         }
         a.putValue(ExtAction.CAPTION, "Alles markieren");
-        a.putValue(ExtAction.MNEMONIC, new Character('m'));
+        a.putValue(ExtAction.MNEMONIC, 'm');
         a.putValue(ExtAction.TOOLTIP, "Markiert das ganze Dokument");
         mnuEdit.add(a);
     }

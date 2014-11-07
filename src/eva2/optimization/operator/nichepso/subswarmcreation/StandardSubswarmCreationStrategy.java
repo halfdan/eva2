@@ -47,7 +47,7 @@ public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreati
         }
 
         // check for stddev < delta condition
-        double stddev = (((Double) indy.getData(NichePSO.stdDevKey))).doubleValue();
+        double stddev = (Double) indy.getData(NichePSO.stdDevKey);
         if (stddev >= getDelta()) {
             return false;
         }

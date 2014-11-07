@@ -41,7 +41,7 @@ public class MOSODynamicallyWeightedFitness implements InterfaceMOSOConverter, j
     public void convertMultiObjective2SingleObjective(Population pop) {
         this.currentGeneration = pop.getGeneration();
         for (int i = 0; i < pop.size(); i++) {
-            this.convertSingleIndividual((AbstractEAIndividual) pop.get(i));
+            this.convertSingleIndividual(pop.get(i));
         }
     }
 

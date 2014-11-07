@@ -50,7 +50,7 @@ public class CrossoverESNPointDiscrete implements InterfaceCrossover, java.io.Se
         result = new AbstractEAIndividual[partners.size() + 1];
         result[0] = (AbstractEAIndividual) (indy1).clone();
         for (int i = 0; i < partners.size(); i++) {
-            result[i + 1] = (AbstractEAIndividual) ((AbstractEAIndividual) partners.get(i)).clone();
+            result[i + 1] = (AbstractEAIndividual) partners.get(i).clone();
         }
         //for (int i = 0; i < result.length; i++) System.out.println("Before Crossover: " +result[i].getSolutionRepresentationFor());
 

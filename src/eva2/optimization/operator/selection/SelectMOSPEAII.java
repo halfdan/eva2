@@ -64,10 +64,10 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
         double[][] orgFit = new double[population.size()][];
         double[] newFit = new double[1];
         for (int i = 0; i < population.size(); i++) {
-            orgFit[i] = ((AbstractEAIndividual) population.get(i)).getFitness();
+            orgFit[i] = population.get(i).getFitness();
             newFit = new double[1];
             newFit[0] = this.SPEAFitness[i];
-            ((AbstractEAIndividual) population.get(i)).setFitness(newFit);
+            population.get(i).setFitness(newFit);
         }
 
         // then select
@@ -75,7 +75,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
 
         // finally replace the fitness with the original
         for (int i = 0; i < population.size(); i++) {
-            ((AbstractEAIndividual) population.get(i)).setFitness(orgFit[i]);
+            population.get(i).setFitness(orgFit[i]);
         }
 
         if (false) {
@@ -103,7 +103,7 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
 
             // Now plot the selection
             for (int i = 0; i < result.size(); i++) {
-                tmpD = ((AbstractEAIndividual) result.get(i)).getFitness();
+                tmpD = result.get(i).getFitness();
                 plot.setUnconnectedPoint(tmpD[0], tmpD[1], 11);
             }
         }

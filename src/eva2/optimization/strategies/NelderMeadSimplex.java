@@ -54,7 +54,7 @@ public class NelderMeadSimplex extends AbstractOptimizer implements Serializable
     public boolean setProblemAndPopSize(InterfaceOptimizationProblem problem) {
         setProblem(problem);
         if (optimizationProblem instanceof AbstractProblemDouble) {
-            setPopulationSize(((AbstractProblemDouble) problem).getProblemDimension() + 1);
+            setPopulationSize(problem.getProblemDimension() + 1);
             return true;
         } else {
             Object ret = BeanInspector.callIfAvailable(problem, "getProblemDimension", null);

@@ -96,7 +96,7 @@ public class GPNodeInput extends AbstractGPNode implements java.io.Serializable 
             return this.identifier;
         } else {
             if (this.lastValue instanceof Double) {
-                double tmpD = ((Double) this.lastValue).doubleValue();
+                double tmpD = (Double) this.lastValue;
                 tmpD = ((long) (tmpD * 10000.0 + ((tmpD >= 0.0) ? 0.5 : -0.5))) / 10000.0;
                 return ("S:" + this.identifier + " = " + tmpD);
             } else {
