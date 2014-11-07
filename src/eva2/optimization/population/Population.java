@@ -1633,6 +1633,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     @Parameter(name = "size", description = "The initial population size.")
     public final void setTargetSize(int size) {
         this.targetPopSize = size;
+        ensureCapacity(size);
     }
 
     /**
