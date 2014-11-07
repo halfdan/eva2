@@ -16,11 +16,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 21.10.2005
- * Time: 14:40:44
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class MOCCOState {
 

@@ -5,11 +5,6 @@ import eva2.optimization.population.Population;
 /**
  * The fitness modifier are defunct and are to be moved to
  * the selection operators...
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 17:08:17
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceFitnessModifier {
 

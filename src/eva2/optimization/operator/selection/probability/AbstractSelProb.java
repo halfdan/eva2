@@ -10,11 +10,6 @@ import java.util.ArrayList;
 /**
  * This abstract implementation gives some general
  * methods for retrieving and cleaning fitness values.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.03.2004
- * Time: 16:55:14
- * To change this template use File | Settings | File Templates.
  */
 public abstract class AbstractSelProb implements InterfaceSelectionProbability, java.io.Serializable {
 

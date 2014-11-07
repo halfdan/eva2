@@ -5,11 +5,6 @@ import eva2.problems.InterfaceProgramProblem;
 /**
  * A square root node taking one argument. Secure operation is guaranteed
  * by using the absolute value only.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 30.09.2003
- * Time: 14:33:13
- * To change this template use Options | File Templates.
  */
 public class GPNodeSqrt extends AbstractGPNode implements java.io.Serializable {
 

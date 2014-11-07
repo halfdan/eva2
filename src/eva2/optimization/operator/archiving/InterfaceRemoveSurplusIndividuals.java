@@ -5,11 +5,6 @@ import eva2.optimization.population.Population;
 /**
  * This interface gives the method necessary for an aglorithm
  * which is use to reduce the size of an archive.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 13.05.2004
- * Time: 14:35:20
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceRemoveSurplusIndividuals {
 

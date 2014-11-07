@@ -21,11 +21,7 @@ import java.beans.PropertyEditor;
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: Dante Alighieri
- * Date: 21.05.2005
- * Time: 17:34:33
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEditor, java.beans.PropertyChangeListener {
 

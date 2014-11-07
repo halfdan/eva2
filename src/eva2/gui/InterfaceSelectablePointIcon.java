@@ -4,11 +4,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefSolutionListener;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 25.08.2005
- * Time: 17:16:33
- * To change this template use File | Settings | File Templates.
+ *
  */
 public interface InterfaceSelectablePointIcon {
 

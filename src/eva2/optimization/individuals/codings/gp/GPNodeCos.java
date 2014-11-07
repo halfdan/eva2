@@ -4,11 +4,6 @@ import eva2.problems.InterfaceProgramProblem;
 
 /**
  * A cos node with on argument.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.06.2003
- * Time: 16:50:24
- * To change this template use Options | File Templates.
  */
 public class GPNodeCos extends AbstractGPNode implements java.io.Serializable {
 

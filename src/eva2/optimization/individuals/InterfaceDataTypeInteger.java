@@ -4,11 +4,6 @@ package eva2.optimization.individuals;
  * This interface gives access to a integer phenotype and except
  * for problemspecific operators should only be used by the
  * optimization problem.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 15.04.2004
- * Time: 17:16:23
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceDataTypeInteger {
 

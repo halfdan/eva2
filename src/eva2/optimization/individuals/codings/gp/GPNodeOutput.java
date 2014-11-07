@@ -7,11 +7,6 @@ import eva2.problems.InterfaceProgramProblem;
  * in the enviroment simulated in the problem. The type of action is given
  * by the identifier and has to be implemented by the problem definition.
  * See the artificial ant problem for an example.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 16.06.2003
- * Time: 13:32:40
- * To change this template use Options | File Templates.
  */
 public class GPNodeOutput extends AbstractGPNode implements java.io.Serializable {
 

@@ -2,11 +2,6 @@ package eva2.optimization.operator.classification;
 
 /**
  * An interface for classification methods, currently under construction.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 09.12.2004
- * Time: 15:10:18
- * To change this template use File | Settings | File Templates.
  */
 public interface InterfaceClassification {
     /**          x

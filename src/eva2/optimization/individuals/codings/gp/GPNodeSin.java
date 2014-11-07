@@ -4,11 +4,6 @@ import eva2.problems.InterfaceProgramProblem;
 
 /**
  * A sinus node taking one argument.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 27.06.2003
- * Time: 16:50:14
- * To change this template use Options | File Templates.
  */
 public class GPNodeSin extends AbstractGPNode implements java.io.Serializable {
 

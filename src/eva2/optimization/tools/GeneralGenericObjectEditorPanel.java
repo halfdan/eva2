@@ -16,11 +16,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 24.08.2004
- * Time: 13:38:56
- * To change this template use File | Settings | File Templates.
+ *
  */
 public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListener {
 

@@ -4,12 +4,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 
 /**
  * This area constraint for parallelization is based on
- * a surface constraint
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 01.02.2005
- * Time: 16:57:24
- * To change this template use File | Settings | File Templates.
+ * a surface constraint.
  */
 public class ConstObjectivesInEqualityBiggerThanSurface implements InterfaceConstraint, java.io.Serializable {
 

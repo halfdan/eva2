@@ -4,11 +4,6 @@ import eva2.problems.InterfaceProgramProblem;
 
 /**
  * This nodes executes both arguments.
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 16.06.2003
- * Time: 13:35:55
- * To change this template use Options | File Templates.
  */
 public class GPNodeFlowExec2 extends AbstractGPNode implements java.io.Serializable {
 

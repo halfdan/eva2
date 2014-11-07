@@ -3,11 +3,7 @@ package eva2.optimization.individuals.codings.ga;
 import java.util.BitSet;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 13.05.2004
- * Time: 11:24:43
- * To change this template use File | Settings | File Templates.
+ *
  */
 public interface InterfaceGAIntegerCoding {
 

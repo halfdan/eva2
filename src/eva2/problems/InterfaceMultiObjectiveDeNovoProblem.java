@@ -5,12 +5,7 @@ import eva2.optimization.mocco.paretofrontviewer.MOCCOViewer;
 
 /**
  * This is a general interface to access a multi-objective optimization
- * problem which enables de novo programming and thus MOCCO
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 23.08.2005
- * Time: 13:53:30
- * To change this template use File | Settings | File Templates.
+ * problem which enables de novo programming and thus MOCCO.
  */
 public interface InterfaceMultiObjectiveDeNovoProblem {
 

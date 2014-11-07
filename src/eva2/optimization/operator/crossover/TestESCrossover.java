@@ -18,11 +18,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Created by IntelliJ IDEA.
- * User: streiche
- * Date: 03.12.2003
- * Time: 18:00:14
- * To change this template use Options | File Templates.
+ *
  */
 public class TestESCrossover implements java.io.Serializable {
     private JFrame frame;
