@@ -82,7 +82,7 @@ public class FloodAlgorithm extends AbstractOptimizer implements java.io.Seriali
         double[] fitness;
 
         for (int i = 0; i < this.population.size(); i++) {
-            indy = ((AbstractEAIndividual) this.population.get(i));
+            indy = this.population.get(i);
             double tmpD = indy.getMutationProbability();
             indy.setMutationProbability(1.0);
             indy.mutate();
@@ -90,7 +90,7 @@ public class FloodAlgorithm extends AbstractOptimizer implements java.io.Seriali
         }
         this.optimizationProblem.evaluate(this.population);
         for (int i = 0; i < this.population.size(); i++) {
-            fitness = ((AbstractEAIndividual) this.population.get(i)).getFitness();
+            fitness = this.population.get(i).getFitness();
             if (fitness[0] > this.currentFloodPeak) {
                 this.population.remove(i);
                 this.population.add(i, original.get(i));

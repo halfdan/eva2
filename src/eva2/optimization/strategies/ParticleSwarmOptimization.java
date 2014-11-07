@@ -5,7 +5,6 @@ import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.Plot;
 import eva2.gui.plot.TopoPlot;
 import eva2.optimization.enums.PSOTopology;
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
@@ -288,7 +287,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      * @see AbstractEAIndividual#getData(String)
      */
     public static double[] getPopulationVelSpeed(Population pop, int calcModeSwitch, final String velocityKey, final String typeString, final Object requiredType) {
-        AbstractEAIndividual indy = (AbstractEAIndividual) pop.get(0);
+        AbstractEAIndividual indy = pop.get(0);
         if (!(indy instanceof InterfaceDataTypeDouble)) {
             System.err.println("error, PSO needs individuals with double data!");
         }
@@ -323,7 +322,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
             int indCnt = 0;
 
             for (int i = 0; i < pop.size(); i++) {
-                indy = (AbstractEAIndividual) pop.get(i);
+                indy = pop.get(i);
 
                 if (indy.hasData(velocityKey)) {
                     velocity = (double[]) (indy.getData(velocityKey));
@@ -374,7 +373,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
     }
 
     protected boolean isParticleTypeByIndex(int index, int type) {
-        return isParticleType((AbstractEAIndividual) population.get(index), type);
+        return isParticleType(population.get(index), type);
     }
 
     protected boolean isParticleType(AbstractEAIndividual indy, int type) {
@@ -431,7 +430,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         }
 
         for (int i = 0; i < this.population.size(); i++) {
-            indy = (AbstractEAIndividual) this.population.get(i);
+            indy = this.population.get(i);
             if (indy instanceof InterfaceDataTypeDouble) {
                 initIndividualMemory(indy);
             }
@@ -473,7 +472,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
     protected void initDefaults(Population pop) {
         AbstractEAIndividual indy;
         for (int i = 0; i < pop.size(); i++) {
-            indy = (AbstractEAIndividual) pop.get(i);
+            indy = pop.get(i);
             if (indy instanceof InterfaceDataTypeDouble) {
                 if (!externalInitialPop || (!defaultsDone(indy))) {
                     initIndividualDefaults(indy, initialVelocity);
@@ -658,7 +657,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      */
     protected void updateSwarmMemory(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
-            AbstractEAIndividual indy = (AbstractEAIndividual) pop.get(i);
+            AbstractEAIndividual indy = pop.get(i);
             if (isIndividualToUpdate(indy)) {
                 updateIndProps(indy, indy);
                 indy.putData(lastSuccessKey, indy.getData(partVelKey));
@@ -876,7 +875,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                     }
 
                     if ((x != 0) && (tmpIndex >= 0) && (tmpIndex < pop.size())) {
-                        this.compareAndSetAttractor(localBestFitness, localBestPosition, (AbstractEAIndividual) pop.get(tmpIndex), useHistoric);
+                        this.compareAndSetAttractor(localBestFitness, localBestPosition, pop.get(tmpIndex), useHistoric);
                     }
                 }
                 break;
@@ -890,7 +889,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                             tmpIndex = (tmpIndex + pop.size()) % pop.size(); // wrap the grid toroidal
                         }
                         if ((x != index) && (tmpIndex >= 0) && (tmpIndex < pop.size())) {
-                            this.compareAndSetAttractor(localBestFitness, localBestPosition, (AbstractEAIndividual) pop.get(tmpIndex), useHistoric);
+                            this.compareAndSetAttractor(localBestFitness, localBestPosition, pop.get(tmpIndex), useHistoric);
                         }
                     }
                 }
@@ -954,7 +953,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                 if (index >= 0) {
                     k = getParentIndex(topologyRange, index, pop.size());
 //				compareAndSet(localBestFitness, localBestPosition, (AbstractEAIndividual)pop.get(k), useHistoric);
-                    indy = (AbstractEAIndividual) pop.get(k);
+                    indy = pop.get(k);
                     System.arraycopy(indy.getData(partBestFitKey), 0, localBestFitness, 0, localBestFitness.length);
                     System.arraycopy(indy.getData(partBestPosKey), 0, localBestPosition, 0, localBestPosition.length);
 
@@ -963,7 +962,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
             case random: // topologyRange random informants, may be the same several times
                 for (int i = 0; i < topologyRange; i++) {
                     // select random informant
-                    indy = (AbstractEAIndividual) pop.get(RNG.randomInt(0, pop.size() - 1));
+                    indy = pop.get(RNG.randomInt(0, pop.size() - 1));
                     // set local values
                     compareAndSetAttractor(localBestFitness, localBestPosition, indy, useHistoric);
                 }
@@ -1264,7 +1263,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         updateTopology(this.population);
 
         for (int i = 0; i < this.population.size(); i++) {
-            this.updateIndividual(i, (AbstractEAIndividual) population.get(i), this.population);
+            this.updateIndividual(i, population.get(i), this.population);
         }
 
         if (show) {
@@ -1296,7 +1295,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
         for (int i = 0; i < pop.size(); i++) {
             // cross-link the sorted list for faster access
             origIndex = (Integer) ((AbstractEAIndividual) sortedPopulation[i]).getData(indexKey);
-            ((AbstractEAIndividual) pop.get(origIndex)).putData(sortedIndexKey, new Integer(i));
+            pop.get(origIndex).putData(sortedIndexKey, i);
         }
     }
 
@@ -1339,7 +1338,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                             found = true;
                             // assign to leader, update swarm size
                             ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwTypeKey, leaders.get(i));
-                            ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwSizeKey, new Integer(-1));
+                            ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwSizeKey, -1);
                             leaders.get(i).putData(multiSwSizeKey, 1 + sSize);
                             break;
                         }
@@ -1348,12 +1347,12 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                 if (!found) { // new leader is found
                     leaders.add(((AbstractEAIndividual) sortedPop[cur]));
                     ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwTypeKey, sortedPop[cur]);
-                    ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwSizeKey, new Integer(1));
+                    ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwSizeKey, 1);
                 } else if (superfluous) {
                     //System.out.println("reinitializing " + cur);
                     ((AbstractEAIndividual) sortedPop[cur]).putData(partTypeKey, resetType);
                     ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwTypeKey, sortedPop[cur]);
-                    ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwSizeKey, new Integer(1));
+                    ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwSizeKey, 1);
                 }
                 cur++;
             }
@@ -1378,7 +1377,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                 parentIndex = getParentIndex(topologyRange, i, pop.size());
                 if (comp.compare(pop.get(i), pop.get(parentIndex)) < 0) { // sibling is dominant!
                     // so switch them
-                    indy = (AbstractEAIndividual) pop.get(i);
+                    indy = pop.get(i);
                     pop.set(i, pop.get(parentIndex));
                     pop.set(parentIndex, indy);
                 }

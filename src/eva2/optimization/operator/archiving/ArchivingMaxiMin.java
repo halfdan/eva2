@@ -1,6 +1,5 @@
 package eva2.optimization.operator.archiving;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.moso.MOSOMaxiMin;
 import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectBestIndividuals;
@@ -65,8 +64,8 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
 
         // now unconvert from SO to MO
         for (int i = 0; i < archive.size(); i++) {
-            tmpD = (double[]) ((AbstractEAIndividual) archive.get(i)).getData("MOFitness");
-            ((AbstractEAIndividual) archive.get(i)).setFitness(tmpD);
+            tmpD = (double[]) archive.get(i).getData("MOFitness");
+            archive.get(i).setFitness(tmpD);
         }
 
         pop.SetArchive(archive);

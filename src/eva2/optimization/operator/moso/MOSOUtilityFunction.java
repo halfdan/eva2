@@ -38,7 +38,7 @@ public class MOSOUtilityFunction implements InterfaceMOSOConverter, java.io.Seri
     @Override
     public void convertMultiObjective2SingleObjective(Population pop) {
         for (int i = 0; i < pop.size(); i++) {
-            this.convertSingleIndividual((AbstractEAIndividual) pop.get(i));
+            this.convertSingleIndividual(pop.get(i));
         }
     }
 

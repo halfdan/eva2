@@ -1,6 +1,5 @@
 package eva2.optimization.operator.selection.probability;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
 
@@ -44,7 +43,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
             // first check if anyone holds the constraints
             boolean isFeasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
+                if (!population.get(i).violatesConstraint()) {
                     isFeasible = true;
                 }
             }
@@ -64,7 +63,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                         result[i] = 0;
                     }
                     for (int i = 0; i < data.length; i++) {
-                        if (!(((AbstractEAIndividual) population.get(i)).violatesConstraint())) {
+                        if (!(population.get(i).violatesConstraint())) {
                             fitness[i] = data[i][x];
                         } else {
                             fitness[i] = worst;
@@ -92,7 +91,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                     // set the selection propability
                     for (int i = 0; i < data.length; i++) {
                         temp = (1 / (double) size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus) * ((double) (i) / (double) (size - 1))));
-                        ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(x, temp);
+                        population.get(rank_index[i]).setSelectionProbability(x, temp);
                     }
                 }
             } else {
@@ -103,7 +102,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                     result[i] = 0;
                 }
                 for (int i = 0; i < data.length; i++) {
-                    fitness[i] = -((AbstractEAIndividual) population.get(i)).getConstraintViolation();
+                    fitness[i] = -population.get(i).getConstraintViolation();
                     rank_index[i] = i;
                 }
 
@@ -128,7 +127,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                 for (int i = 0; i < data.length; i++) {
                     double[] tmpD = new double[1];
                     tmpD[0] = (1 / (double) size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus) * ((double) (i) / (double) (size - 1))));
-                    ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(tmpD);
+                    population.get(rank_index[i]).setSelectionProbability(tmpD);
                 }
             }
         } else {
@@ -163,7 +162,7 @@ public class SelProbLinearRanking extends AbstractSelProb implements java.io.Ser
                 // set the selection propability
                 for (int i = 0; i < data.length; i++) {
                     temp = (1 / (double) size) * (this.nappaPlus - ((this.nappaPlus - this.nappaMinus) * ((double) (i) / (double) (size - 1))));
-                    ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(x, temp);
+                    population.get(rank_index[i]).setSelectionProbability(x, temp);
                 }
             }
         }

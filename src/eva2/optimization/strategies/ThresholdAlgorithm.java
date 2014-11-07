@@ -77,7 +77,7 @@ public class ThresholdAlgorithm extends AbstractOptimizer implements java.io.Ser
         double delta;
 
         for (int i = 0; i < this.population.size(); i++) {
-            indy = ((AbstractEAIndividual) this.population.get(i));
+            indy = this.population.get(i);
             double tmpD = indy.getMutationProbability();
             indy.setMutationProbability(1.0);
             indy.mutate();
@@ -85,7 +85,7 @@ public class ThresholdAlgorithm extends AbstractOptimizer implements java.io.Ser
         }
         this.optimizationProblem.evaluate(this.population);
         for (int i = 0; i < this.population.size(); i++) {
-            delta = this.calculateDelta(((AbstractEAIndividual) original.get(i)), ((AbstractEAIndividual) this.population.get(i)));
+            delta = this.calculateDelta(original.get(i), this.population.get(i));
             if (delta < this.currentT) {
                 this.population.remove(i);
                 this.population.add(i, original.get(i));

@@ -1,6 +1,5 @@
 package eva2.optimization.operator.paretofrontmetrics;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
@@ -52,8 +51,8 @@ public class MetricOverallNonDominatedVectors implements InterfaceParetoFrontMet
             tmpPPO.addPopulation(pop.getArchive());
         }
         for (int i = 0; i < tmpPPO.size(); i++) {
-            if (this.dominating.isDominant((AbstractEAIndividual) tmpPPO.get(i), tmpPop)) {
-                this.dominating.addIndividualToArchive((AbstractEAIndividual) tmpPPO.get(i), tmpPop);
+            if (this.dominating.isDominant(tmpPPO.get(i), tmpPop)) {
+                this.dominating.addIndividualToArchive(tmpPPO.get(i), tmpPop);
             }
         }
         return tmpPop.size();

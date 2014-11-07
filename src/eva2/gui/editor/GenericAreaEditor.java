@@ -29,7 +29,7 @@ public class GenericAreaEditor extends AbstractListSelectionEditor {
 
     @Override
     protected boolean isElementSelected(int i) {
-        return areaObject.getBlackList().get(i).booleanValue();
+        return areaObject.getBlackList().get(i);
     }
 
     @Override

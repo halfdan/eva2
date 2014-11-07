@@ -1,6 +1,5 @@
 package eva2.optimization.operator.archiving;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
 
@@ -41,7 +40,7 @@ public class RemoveSurplusIndividualsDynamicHyperCube implements InterfaceRemove
             fitness = new double[archive.size()][];
             space = new double[archive.size()];
             for (int i = 0; i < archive.size(); i++) {
-                fitness[i] = ((AbstractEAIndividual) archive.get(i)).getFitness();
+                fitness[i] = archive.get(i).getFitness();
             }
             space = this.calculateHyperCubeVolumes(fitness);
             // now find the individual with the smallest hypervolume

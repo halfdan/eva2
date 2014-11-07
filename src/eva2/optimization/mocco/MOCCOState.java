@@ -1,6 +1,5 @@
 package eva2.optimization.mocco;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
@@ -106,12 +105,12 @@ public class MOCCOState {
             if (tmpObj != null) {
                 double[] tmoF = new double[tmpObj.length];
                 for (int k = 0; k < tmpObj.length; k++) {
-                    tmoF[k] = ((Double) ((AbstractEAIndividual) newPop[newPop.length - 1].get(j)).getData(tmpObj[k].getIdentName())).doubleValue();
+                    tmoF[k] = (Double) newPop[newPop.length - 1].get(j).getData(tmpObj[k].getIdentName());
                 }
                 objectives.add(tmoF);
             }
-            fitness.add(((AbstractEAIndividual) newPop[newPop.length - 1].get(j)).getFitness());
-            constraint.add(new Double(((AbstractEAIndividual) newPop[newPop.length - 1].get(j)).getConstraintViolation()));
+            fitness.add(newPop[newPop.length - 1].get(j).getFitness());
+            constraint.add(newPop[newPop.length - 1].get(j).getConstraintViolation());
         }
         if (this.objectiveCache != null) {
             this.objectiveCache.add(objectives);
@@ -218,15 +217,15 @@ public class MOCCOState {
                         if (tmpObj[k] == null) {
                             System.out.println("Objective " + k + " == null!");
                         }
-                        if (((AbstractEAIndividual) this.populationHistory[i].get(j)).getData(tmpObj[k].getIdentName()) == null) {
+                        if (this.populationHistory[i].get(j).getData(tmpObj[k].getIdentName()) == null) {
                             System.out.println("User Data " + k + " " + tmpObj[k].getIdentName() + " == null!");
                         }
-                        tmoF[k] = ((Double) ((AbstractEAIndividual) this.populationHistory[i].get(j)).getData(tmpObj[k].getIdentName())).doubleValue();
+                        tmoF[k] = (Double) this.populationHistory[i].get(j).getData(tmpObj[k].getIdentName());
                     }
                     objectives.add(tmoF);
                 }
-                fitness.add(((AbstractEAIndividual) this.populationHistory[i].get(j)).getFitness());
-                constraint.add(new Double(((AbstractEAIndividual) this.populationHistory[i].get(j)).getConstraintViolation()));
+                fitness.add(this.populationHistory[i].get(j).getFitness());
+                constraint.add(this.populationHistory[i].get(j).getConstraintViolation());
             }
             if (this.objectiveCache != null) {
                 this.objectiveCache.add(objectives);

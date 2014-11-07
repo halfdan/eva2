@@ -259,7 +259,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
         System.out.println("d.length   = " + d.length);
         for (int i = 0; i < obj.length; i++) {
             if (obj[i].getOptimizationMode().contains("Objective")) {
-                tmpA.add(new Double(d[i]));
+                tmpA.add(d[i]);
             }
         }
 

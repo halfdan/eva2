@@ -1,7 +1,6 @@
 package eva2.optimization.strategies;
 
 import eva2.optimization.population.InterfacePopulationChangedEventListener;
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
 import eva2.optimization.operator.archiving.InformationRetrievalInserting;
@@ -136,7 +135,7 @@ public class MultiObjectiveEA implements InterfaceOptimizer, java.io.Serializabl
 
         double[][] fitness = new double[tmp.size()][];
         for (int i = 0; i < tmp.size(); i++) {
-            fitness[i] = ((AbstractEAIndividual) tmp.get(i)).getFitness();
+            fitness[i] = tmp.get(i).getFitness();
         }
         double[] minY, maxY;
         minY = fitness[0];

@@ -1,6 +1,5 @@
 package eva2.optimization.operator.selection.probability;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
 
@@ -47,7 +46,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
             // first check if anyone holds the constraints
             boolean isFeasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
+                if (!population.get(i).violatesConstraint()) {
                     isFeasible = true;
                 }
             }
@@ -67,7 +66,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                         result[i] = 0;
                     }
                     for (int i = 0; i < data.length; i++) {
-                        if (!(((AbstractEAIndividual) population.get(i)).violatesConstraint())) {
+                        if (!(population.get(i).violatesConstraint())) {
                             fitness[i] = data[i][x];
                         } else {
                             fitness[i] = worst;
@@ -99,7 +98,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                         sum += result[i];
                     }
                     for (int i = 0; i < data.length; i++) {
-                        ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(x, result[i] / sum);
+                        population.get(rank_index[i]).setSelectionProbability(x, result[i] / sum);
                     }
                 }
             } else {
@@ -110,7 +109,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                     result[i] = 0;
                 }
                 for (int i = 0; i < data.length; i++) {
-                    fitness[i] = -((AbstractEAIndividual) population.get(i)).getConstraintViolation();
+                    fitness[i] = -population.get(i).getConstraintViolation();
                     rank_index[i] = i;
                 }
 
@@ -140,7 +139,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                 for (int i = 0; i < data.length; i++) {
                     double[] tmpD = new double[1];
                     tmpD[0] = result[i] / sum;
-                    ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(tmpD);
+                    population.get(rank_index[i]).setSelectionProbability(tmpD);
                 }
             }
         } else {
@@ -179,7 +178,7 @@ public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.
                     sum += result[i];
                 }
                 for (int i = 0; i < data.length; i++) {
-                    ((AbstractEAIndividual) population.get(rank_index[i])).setSelectionProbability(x, result[i] / sum);
+                    population.get(rank_index[i]).setSelectionProbability(x, result[i] / sum);
                 }
             }
         }

@@ -1218,7 +1218,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         double[] res = new double[getMainSwarm().getPopulation().size()];
         for (int i = 0; i < getMainSwarm().getPopulation().size(); ++i) {
             AbstractEAIndividual indy = getMainSwarm().getPopulation().getEAIndividual(i);
-            res[i] = ((Double) indy.getData(NichePSO.stdDevKey)).doubleValue();
+            res[i] = (Double) indy.getData(NichePSO.stdDevKey);
         }
         return res;
     }
@@ -1462,7 +1462,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
             AbstractEAIndividual indy = pop.getEAIndividual(i);
             //Integer tmp = (Integer)indy.getData("particleIndex"); // here getData was a cpu-time hotspot ->  AbstractEAIndividual now has an index as "direct member"
             //if (index.equals(tmp)) return indy;
-            if (index.intValue() == indy.getIndividualIndex()) {
+            if (index == indy.getIndividualIndex()) {
                 return indy;
             }
         }
@@ -1504,14 +1504,14 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         int minindex = 0;
         AbstractEAIndividual tmpIndy1;
         for (int i = 0; i < mainpop.size(); ++i) {
-            tmpIndy1 = (AbstractEAIndividual) mainpop.get(i);
+            tmpIndy1 = mainpop.get(i);
             Double da = (Double) ((tmpIndy1).getData(NichePSO.stdDevKey));
-            if (da.doubleValue() < min) {
-                min = da.doubleValue();
+            if (da < min) {
+                min = da;
                 minindex = i;
             }
         }
-        return (AbstractEAIndividual) mainpop.get(minindex);
+        return mainpop.get(minindex);
     }
 
     /**
@@ -1564,7 +1564,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
             tmpIndy1 = (InterfaceDataTypeDouble) mainpop.get(i);
             DPoint point = new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]);
             Double da = (Double) (((AbstractEAIndividual) tmpIndy1).getData(NichePSO.stdDevKey));
-            double d = da.doubleValue();
+            double d = da;
             String ds = String.format("%6.2f", d);
             DPointIcon icon = new Chart2DDPointIconText(id + ds);
             ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
@@ -1582,7 +1582,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         AbstractEAIndividual indy = getIndyWithMinStdDev();
         tmpIndy1 = (InterfaceDataTypeDouble) indy;
         Double da = (Double) ((indy).getData(NichePSO.stdDevKey));
-        double min = da.doubleValue();
+        double min = da;
         DPoint point = new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]);
         String ds = String.format("%6.2f", min);
         DPointIcon icon = new Chart2DDPointIconText(ds);
@@ -1607,7 +1607,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
             tmpIndy1 = (InterfaceDataTypeDouble) mainpop.get(i);
             DPoint point = new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]);
             Double da = (Double) (((AbstractEAIndividual) tmpIndy1).getData(NichePSO.stdDevKey));
-            double d = da.doubleValue();
+            double d = da;
             String ds = String.format("%6.2f", d);
             DPointIcon icon = new Chart2DDPointIconText(id + ds);
             ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
@@ -1624,7 +1624,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
      * @tested plots a circle around the individual and adds some information
      */
     protected void plotCircleForIndy(int index, String text) {
-        AbstractEAIndividual indy = getIndyByParticleIndex(new Integer(index));
+        AbstractEAIndividual indy = getIndyByParticleIndex(index);
         InterfaceDataTypeDouble tmpIndy1 = (InterfaceDataTypeDouble) indy;
         DPoint point = new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]);
         DPointIcon icon = new Chart2DDPointIconText(text);
@@ -1818,7 +1818,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         for (int i = 0; i < swarm.getPopulation().size(); ++i) {
             AbstractEAIndividual currentindy = swarm.getPopulation().getEAIndividual(i);
             Double da = (Double) ((currentindy).getData(NichePSO.stdDevKey));
-            double d = da.doubleValue();
+            double d = da;
             if (d > max) {
                 max = d;
             }
@@ -1880,7 +1880,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
      * @tested @param particleIndex
      */
     protected void plotTraceIndy(int particleIndex) {
-        AbstractEAIndividual indy = getIndyByParticleIndex(new Integer(particleIndex));
+        AbstractEAIndividual indy = getIndyByParticleIndex(particleIndex);
 
         // collect Information to be printed
         String text = "";

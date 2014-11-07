@@ -490,7 +490,7 @@ public final class StatisticUtils {
             for (int i = 0; i < X.getRowDimension(); ++i) {
                 for (int j = 0; j < X.getColumnDimension(); ++j) {
                     double v = X.get(i, j);
-                    v = (v) / (samples - 1);
+                    v /= (samples - 1);
                     X.set(i, j, v);
                 }
             }

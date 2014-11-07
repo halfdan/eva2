@@ -38,17 +38,17 @@ public class MOSOMOGARankBased implements InterfaceMOSOConverter, java.io.Serial
         for (int i = 0; i < pop.size() - 1; i++) {
             for (int j = 0; j < pop.size(); j++) {
                 if (i != j) {
-                    if (((AbstractEAIndividual) pop.get(j)).isDominatingDebConstraints((AbstractEAIndividual) pop.get(i))) {
+                    if (pop.get(j).isDominatingDebConstraints(pop.get(i))) {
                         MOGARank[i] += 1;
                     }
                 }
             }
         }
         for (int i = 0; i < pop.size(); i++) {
-            ((AbstractEAIndividual) pop.get(i)).putData("MOGARank", new Integer(MOGARank[i]));
+            pop.get(i).putData("MOGARank", MOGARank[i]);
         }
         for (int i = 0; i < pop.size(); i++) {
-            this.convertSingleIndividual((AbstractEAIndividual) pop.get(i));
+            this.convertSingleIndividual(pop.get(i));
         }
     }
 

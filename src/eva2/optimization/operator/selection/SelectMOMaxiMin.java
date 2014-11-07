@@ -65,8 +65,8 @@ public class SelectMOMaxiMin implements InterfaceSelection, java.io.Serializable
 
         // now unconvert from SO to MO
         for (int i = 0; i < result.size(); i++) {
-            tmpD = (double[]) ((AbstractEAIndividual) result.get(i)).getData("MOFitness");
-            ((AbstractEAIndividual) result.get(i)).setFitness(tmpD);
+            tmpD = (double[]) result.get(i).getData("MOFitness");
+            result.get(i).setFitness(tmpD);
         }
         return result;
     }

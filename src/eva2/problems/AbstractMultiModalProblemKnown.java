@@ -349,7 +349,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
             }
             // check if the opt. was found and store the corr. found fitness
             if (optsFound[i] != null) {
-                foundFits[i] = new Double(optsFound[i].getFitness(fitCrit));
+                foundFits[i] = optsFound[i].getFitness(fitCrit);
             } else {
                 foundFits[i] = fitThreshold; // note that it wasnt found -- will result in zero
             }

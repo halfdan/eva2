@@ -57,7 +57,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
      */
     public DifferentialEvolution() {
         // sets DE2 as default
-        DEType = eva2.optimization.enums.DEType.DE2_CurrentToBest;
+        DEType = eva2.optimization.enums.DEType.CurrentToBest;
     }
 
     public DifferentialEvolution(int popSize, eva2.optimization.enums.DEType type, double f, double cr, double lambda, double mt) {
@@ -310,7 +310,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
         vX = oX.clone();
         nX = new double[oX.length];
         switch (this.DEType) {
-            case DE1_Rand_1: {
+            case RandOne: {
                 // this is DE1 or DE/rand/1
                 double[] delta = this.fetchDeltaRandom(population);
                 if (parents != null) {
@@ -321,7 +321,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
                 }
                 break;
             }
-            case DE_CurrentToRand: {
+            case CurrentToRand: {
                 // this is DE/current-to-rand/1
                 double[] rndDelta = this.fetchDeltaRandom(population);
                 double[] bestDelta = this.fetchDeltaCurrentRandom(population, esIndy);
@@ -333,7 +333,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
                 }
                 break;
             }
-            case DE2_CurrentToBest: {
+            case CurrentToBest: {
                 // this is DE2 or DE/current-to-best/1
                 double[] rndDelta = this.fetchDeltaRandom(population);
                 double[] bestDelta = this.fetchDeltaBest(population, esIndy);
@@ -345,7 +345,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
                 }
                 break;
             }
-            case DE_Best_1: {
+            case BestOne: {
                 // DE/best/1
                 AbstractEAIndividual bestIndy = getBestIndy(population);
                 oX = getGenotype(bestIndy);
@@ -358,7 +358,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
                 }
                 break;
             }
-            case DE_Best_2: {
+            case BestTwo: {
                 // DE/best/2
                 AbstractEAIndividual bestIndy = getBestIndy(population);
                 oX = getGenotype(bestIndy);
@@ -372,7 +372,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
                 }
                 break;
             }
-            case TrigonometricDE: {
+            case Trigonometric: {
                 // this is trigonometric mutation
                 if (parents != null) {
                     parents.add(population.getEAIndividual(parentIndex));
@@ -533,9 +533,9 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
         if (isReEvaluate()) {
             for (int i = 0; i < this.population.size(); i++) {
 
-                if (((AbstractEAIndividual) population.get(i)).getAge() >= maximumAge) {
-                    this.optimizationProblem.evaluate(((AbstractEAIndividual) population.get(i)));
-                    ((AbstractEAIndividual) population.get(i)).setAge(0);
+                if (population.get(i).getAge() >= maximumAge) {
+                    this.optimizationProblem.evaluate(population.get(i));
+                    population.get(i).setAge(0);
                     population.incrFunctionCalls();
                 }
             }
@@ -560,7 +560,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
                     if (!compareToParent) {
                         parentIndex = RNG.randomInt(0, this.population.size() - 1);
                     }
-                    AbstractEAIndividual orig = (AbstractEAIndividual) this.population.get(parentIndex);
+                    AbstractEAIndividual orig = this.population.get(parentIndex);
                     if (indy.isDominatingDebConstraints(orig)) {
                         this.population.replaceIndividualAt(parentIndex, indy);
                     }
@@ -588,9 +588,9 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
             nextDoomed = -1;
             for (int i = 0; i < this.population.size(); i++) {
 
-                if (((AbstractEAIndividual) population.get(i)).getAge() >= maximumAge) {
-                    this.optimizationProblem.evaluate(((AbstractEAIndividual) population.get(i)));
-                    ((AbstractEAIndividual) population.get(i)).setAge(0);
+                if (population.get(i).getAge() >= maximumAge) {
+                    this.optimizationProblem.evaluate(population.get(i));
+                    population.get(i).setAge(0);
                     population.incrFunctionCalls();
                 }
             }
@@ -622,7 +622,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
                     if (!compareToParent) {
                         index = RNG.randomInt(0, this.population.size() - 1);
                     }
-                    orig = (AbstractEAIndividual) this.population.get(index);
+                    orig = this.population.get(index);
                     if (indy.isDominatingDebConstraints(orig)) {
                         this.population.replaceIndividualAt(index, indy);
                     }
@@ -648,7 +648,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
     protected int getNextDoomed(Population pop, int startIndex) {
         if (maximumAge > 0) {
             for (int i = startIndex; i < pop.size(); i++) {
-                if (((AbstractEAIndividual) pop.get(i)).getAge() >= maximumAge) {
+                if (pop.get(i).getAge() >= maximumAge) {
                     return i;
                 }
             }
@@ -778,8 +778,8 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
     public void setDEType(eva2.optimization.enums.DEType s) {
         this.DEType = s;
         // show mt for trig. DE only
-        GenericObjectEditor.setShowProperty(this.getClass(), "lambda", s == eva2.optimization.enums.DEType.DE2_CurrentToBest);
-        GenericObjectEditor.setShowProperty(this.getClass(), "mt", s == eva2.optimization.enums.DEType.TrigonometricDE);
+        GenericObjectEditor.setShowProperty(this.getClass(), "lambda", s == eva2.optimization.enums.DEType.CurrentToBest);
+        GenericObjectEditor.setShowProperty(this.getClass(), "mt", s == eva2.optimization.enums.DEType.Trigonometric);
     }
 
     public eva2.optimization.enums.DEType getDEType() {

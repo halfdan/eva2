@@ -787,7 +787,7 @@ public class EsDpiNiching extends AbstractOptimizer implements Serializable, Int
         pop.clear();
         for (int i = 0; i < esses.length; i++) {
             Population pi = esses[i].getPopulation();
-            pi.putDataAllIndies(originalPeakPop, new Integer(i));
+            pi.putDataAllIndies(originalPeakPop, i);
             // (few) duplicates may happen because parents are copied to another peak population
             // if a cluster had a size of 1 AND parents may survive due to elitism.
             pop.addPopulation(pi, false);

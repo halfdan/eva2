@@ -100,7 +100,7 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
                 gbc.gridx = 2;
                 gbc.gridy = i + 1;
                 gbc.weightx = 1;
-                textA = new JTextField("" + ((Double) referenceSolution.getData(obj[i].getIdentName())).doubleValue());
+                textA = new JTextField("" + (Double) referenceSolution.getData(obj[i].getIdentName()));
                 textA.setEditable(false);
                 tmpP.add(textA, gbc);
 
@@ -145,7 +145,7 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
     public void individualSelected(AbstractEAIndividual indy) {
         Population pop = this.mocco.state.paretoFront.getMarkedIndividuals();
         if (pop.size() == 1) {
-            this.referenceSolution = (AbstractEAIndividual) pop.get(0);
+            this.referenceSolution = pop.get(0);
         } else {
             this.referenceSolution = null;
         }

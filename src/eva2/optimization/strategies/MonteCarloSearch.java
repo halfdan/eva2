@@ -1,6 +1,5 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.GAIndividualBinaryData;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
@@ -79,7 +78,7 @@ public class MonteCarloSearch extends AbstractOptimizer implements java.io.Seria
         this.population.setFunctionCalls(original.getFunctionCalls());
         this.optimizationProblem.evaluate(this.population);
         for (int i = 0; i < this.population.size(); i++) {
-            if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.population.get(i)))) {
+            if (original.get(i).isDominatingDebConstraints(this.population.get(i))) {
                 this.population.remove(i);
                 this.population.add(i, original.get(i));
             }

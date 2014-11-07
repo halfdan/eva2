@@ -40,8 +40,8 @@ public class ArchivingNSGA extends AbstractArchiving implements java.io.Serializ
         // test for each element in population if it
         // is dominating a element in the archive
         for (int i = 0; i < pop.size(); i++) {
-            if (this.isDominant((AbstractEAIndividual) pop.get(i), pop.getArchive())) {
-                this.addIndividualToArchive((AbstractEAIndividual) ((AbstractEAIndividual) pop.get(i)).clone(), pop.getArchive());
+            if (this.isDominant(pop.get(i), pop.getArchive())) {
+                this.addIndividualToArchive((AbstractEAIndividual) pop.get(i).clone(), pop.getArchive());
             }
         }
 

@@ -64,12 +64,12 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
 
         tmpObj = this.nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
-            result = ((Double) tmpObj).doubleValue();
+            result = (Double) tmpObj;
         }
         for (int i = 1; i < this.nodes.length; i++) {
             tmpObj = this.nodes[i].evaluate(environment);
             if (tmpObj instanceof Double) {
-                tmpValue = ((Double) tmpObj).doubleValue();
+                tmpValue = (Double) tmpObj;
             }
             if (Math.abs(tmpValue) < this.lowerBorderForSec) {
                 if (tmpValue < 0) {
@@ -80,7 +80,7 @@ public class GPNodeDiv extends AbstractGPNode implements java.io.Serializable {
             }
             result /= tmpValue;
         }
-        return new Double(result);
+        return result;
     }
 
     @Override

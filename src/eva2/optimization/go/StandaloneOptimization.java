@@ -476,8 +476,8 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 singleRun = (ArrayList) multiRuns.get(j);
                 for (int p = 0; p < data.length; p++) {
                     tmpD = (Double[]) singleRun.get(p);
-                    data[p][0] = tmpD[0].doubleValue();
-                    data[p][1] += tmpD[1].doubleValue() / multiRuns.size();
+                    data[p][0] = tmpD[0];
+                    data[p][1] += tmpD[1] / multiRuns.size();
                 }
             }
             // Second run to determine variance
@@ -485,7 +485,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 singleRun = (ArrayList) multiRuns.get(j);
                 for (int p = 0; p < data.length; p++) {
                     tmpD = (Double[]) singleRun.get(p);
-                    data[p][2] += Math.pow(data[p][1] - tmpD[1].doubleValue(), 2) / multiRuns.size();
+                    data[p][2] += Math.pow(data[p][1] - tmpD[1], 2) / multiRuns.size();
                 }
             }
             // Now enter this stuff into the graph
@@ -564,7 +564,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
             tmpLine.append(population.getBestEAIndividual().getFitness(0));
             tmpLine.append("\t");
             for (int i = 0; i < population.size(); i++) {
-                tmpd += ((AbstractEAIndividual) population.get(i)).getFitness(0) / (double) population.size();
+                tmpd += population.get(i).getFitness(0) / (double) population.size();
             }
             tmpLine.append("\t");
             tmpLine.append(tmpd);
@@ -575,12 +575,12 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
             this.writeToFile(tmpLine.toString());
 
             Double[] tmpData = new Double[2];
-            tmpData[0] = new Double(population.getFunctionCalls());
+            tmpData[0] = (double) population.getFunctionCalls();
             // instead of adding simply the best fitness value i'll ask the problem what to show
             tmpData[1] = this.optimizationParameters.getProblem().getDoublePlotValue(population);
             if (this.plot != null) {
                 if (this.continueFlag) {
-                    this.plot.setConnectedPoint(tmpData[0].doubleValue() + this.recentFunctionCalls, tmpData[1].doubleValue(), 1000 + this.currentRun);
+                    this.plot.setConnectedPoint(tmpData[0] + this.recentFunctionCalls, tmpData[1].doubleValue(), 1000 + this.currentRun);
                 } else {
                     this.plot.setConnectedPoint(tmpData[0].doubleValue(), tmpData[1].doubleValue(), 1000 + this.currentRun);
                 }

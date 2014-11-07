@@ -99,7 +99,7 @@ public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Seria
         }
 
         for (int i = 0; i < parents.size(); i++) {
-            tmpIndy = ((AbstractEAIndividual) parents.get(i));
+            tmpIndy = parents.get(i);
             if (tmpIndy == null) {
                 System.out.println("Individual null " + i + " Population size: " + parents.size());
             }

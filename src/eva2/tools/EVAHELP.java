@@ -108,12 +108,12 @@ public class EVAHELP {
     public static void freeMemory() {
         Runtime currR = Runtime.getRuntime();
         long freeM = currR.freeMemory();
-        freeM = freeM / 1024;
+        freeM /= 1024;
         //System.out.println("Available memory : "+freeM+" Kbytes");
         System.gc();
         currR = Runtime.getRuntime();
         freeM = currR.freeMemory();
-        freeM = freeM / 1024;
+        freeM /= 1024;
         //System.out.println("after gc:Available memory : "+freeM+" bytes");
     }
 

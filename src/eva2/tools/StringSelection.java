@@ -218,7 +218,7 @@ public class StringSelection implements Serializable {
         if (selIndex == null) {
             return -1;
         } else {
-            return selIndex.intValue();
+            return selIndex;
         }
     }
 

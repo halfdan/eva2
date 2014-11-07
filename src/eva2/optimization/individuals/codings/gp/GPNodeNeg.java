@@ -57,15 +57,15 @@ public class GPNodeNeg extends AbstractGPNode implements java.io.Serializable {
 
         tmpObj = this.nodes[0].evaluate(environment);
         if (tmpObj instanceof Double) {
-            result += ((Double) tmpObj).doubleValue();
+            result += (Double) tmpObj;
         }
         for (int i = 1; i < this.nodes.length; i++) {
             tmpObj = this.nodes[i].evaluate(environment);
             if (tmpObj instanceof Double) {
-                result -= ((Double) tmpObj).doubleValue();
+                result -= (Double) tmpObj;
             }
         }
-        return new Double(result);
+        return result;
     }
 
     @Override

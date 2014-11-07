@@ -80,7 +80,7 @@ public class SelectMOPESA implements InterfaceSelection, java.io.Serializable {
                     winner = tmp;
                 }
             }
-            resultIndy = (AbstractEAIndividual) population.get(winner);
+            resultIndy = population.get(winner);
         } catch (java.lang.IndexOutOfBoundsException e) {
             System.out.println("Tournament Selection produced IndexOutOfBoundsException!");
             resultIndy = population.getBestEAIndividual();

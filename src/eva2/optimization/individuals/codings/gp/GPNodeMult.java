@@ -58,12 +58,12 @@ public class GPNodeMult extends AbstractGPNode implements java.io.Serializable {
         for (int i = 0; i < this.nodes.length; i++) {
             tmpObj = this.nodes[i].evaluate(environment);
             if (tmpObj instanceof Double) {
-                result *= ((Double) tmpObj).doubleValue();
+                result *= (Double) tmpObj;
             } else {
                 System.err.println("Unexpected type returned in evaluate for " + this.getClass().getSimpleName());
             }
         }
-        return new Double(result);
+        return result;
     }
 
     @Override

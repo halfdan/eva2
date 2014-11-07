@@ -156,7 +156,7 @@ public class MOClusteringSeparation implements InterfaceMigration, java.io.Seria
                 mySet = new GraphPointSet(10 + 1, plot.getFunctionArea());
                 mySet.setConnectedMode(false);
                 for (int j = 0; j < newIPOP[i].size(); j++) {
-                    indy = (AbstractEAIndividual) newIPOP[i].get(j);
+                    indy = newIPOP[i].get(j);
                     myPoint = new DPoint(indy.getFitness()[0], indy.getFitness()[1]);
                     tmp = new Chart2DDPointIconText("" + i);
                     //if (i % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());

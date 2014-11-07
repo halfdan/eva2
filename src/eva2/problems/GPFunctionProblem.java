@@ -89,7 +89,7 @@ public class GPFunctionProblem extends AbstractProblemDouble implements Interfac
         pos = x;
         Double res = (Double) gpProblem.evaluate(this);
         double[] fit = new double[1];
-        fit[0] = scaleFit(res.doubleValue());
+        fit[0] = scaleFit(res);
         return fit;
     }
 

@@ -167,7 +167,7 @@ public class ParticleFilterOptimization extends AbstractOptimizer implements jav
             drawPop(pop, 0, false);
         }
         for (int i = 0; i < pop.getTargetSize(); i++) {
-            applyMotionModel((AbstractEAIndividual) pop.get(i), 0.);
+            applyMotionModel(pop.get(i), 0.);
             indCount++;
         }
         if (withShow) {

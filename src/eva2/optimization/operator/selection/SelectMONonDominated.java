@@ -57,7 +57,7 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
         if (this.obeyDebsConstViolationPrinciple) {
             boolean feasible = false;
             for (int i = 0; i < population.size(); i++) {
-                if (((AbstractEAIndividual) population.get(i)).getConstraintViolation() == 0) {
+                if (population.get(i).getConstraintViolation() == 0) {
                     feasible = true;
                 }
             }
@@ -69,8 +69,8 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
                         System.out.println("Pop.Size(): " + population.size());
                         tmpI = 0;
                     }
-                    if ((((AbstractEAIndividual) population.get(tmpI)).getConstraintViolation() == 0) && (this.isDominant((AbstractEAIndividual) population.get(tmpI), population))) {
-                        result.addIndividual((AbstractEAIndividual) population.get(index % population.size()));
+                    if ((population.get(tmpI).getConstraintViolation() == 0) && (this.isDominant(population.get(tmpI), population))) {
+                        result.addIndividual(population.get(index % population.size()));
                     }
                     index++;
                 }
@@ -86,8 +86,8 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
                     System.out.println("Pop.Size(): " + population.size());
                     tmpI = 0;
                 }
-                if (this.isDominant((AbstractEAIndividual) population.get(tmpI), population)) {
-                    result.addIndividual((AbstractEAIndividual) population.get(index % population.size()));
+                if (this.isDominant(population.get(tmpI), population)) {
+                    result.addIndividual(population.get(index % population.size()));
                 }
                 index++;
             }
@@ -119,13 +119,13 @@ public class SelectMONonDominated implements InterfaceSelection, java.io.Seriali
     public boolean isDominant(AbstractEAIndividual indy, Population pop) {
         if (this.obeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual) pop.get(i)).isDominatingDebConstraintsEqual(indy))) {
+                if (!(indy.equals(pop.get(i))) && (pop.get(i).isDominatingDebConstraintsEqual(indy))) {
                     return false;
                 }
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
-                if (!(indy.equals(pop.get(i))) && (((AbstractEAIndividual) pop.get(i)).isDominatingEqual(indy))) {
+                if (!(indy.equals(pop.get(i))) && (pop.get(i).isDominatingEqual(indy))) {
                     return false;
                 }
             }

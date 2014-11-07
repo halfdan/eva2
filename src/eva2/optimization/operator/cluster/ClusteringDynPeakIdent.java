@@ -178,7 +178,7 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
         int i = 0;
         Population peaks = new Population(q);
         while (i < sortedPop.size() && (peaks.size() < q)) {
-            if ((peaks.size() == 0) || (!peaks.isWithinPopDist((AbstractEAIndividual) sortedPop.get(i), rho, metric))) {
+            if ((peaks.size() == 0) || (!peaks.isWithinPopDist(sortedPop.get(i), rho, metric))) {
                 peaks.add(sortedPop.get(i));
             }
             i++;

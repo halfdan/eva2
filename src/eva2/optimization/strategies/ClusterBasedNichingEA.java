@@ -247,7 +247,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
             DPoint point;
             mySet.setConnectedMode(false);
             for (int i = 0; i < this.undifferentiatedPopulation.size(); i++) {
-                AbstractEAIndividual indy = (AbstractEAIndividual) this.undifferentiatedPopulation.get(i);
+                AbstractEAIndividual indy = this.undifferentiatedPopulation.get(i);
                 double[] d = indy.getFitness();
                 point = new DPoint(d[0], d[1]);
                 point.setIcon(new Chart2DDPointIconCircle());
@@ -260,7 +260,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
 //                ArchivingAllDomiating arch = new ArchivingAllDomiating();
 //                arch.plotParetoFront(pop, plot);
                 for (int j = 0; j < pop.size(); j++) {
-                    AbstractEAIndividual indy = (AbstractEAIndividual) pop.get(j);
+                    AbstractEAIndividual indy = pop.get(j);
                     double[] d = indy.getFitness();
                     point = new DPoint(d[0], d[1]);
                     point.setIcon(new Chart2DDPointIconText("P" + j));
@@ -601,7 +601,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
                 for (int i = undifferentiatedPopulation.size() - 1; i >= 0; i--) { // backwards or die!
                     if (assocSpec[i] >= 0) {
                         // loner i should be merged to species assocSpec[i]
-                        AbstractEAIndividual tmpIndy = (AbstractEAIndividual) this.undifferentiatedPopulation.get(i);
+                        AbstractEAIndividual tmpIndy = this.undifferentiatedPopulation.get(i);
                         if (topologyPlot != null) {
                             plotLine(topologyPlot, tmpIndy, species.get(assocSpec[i]).getBestEAIndividual());
                         }

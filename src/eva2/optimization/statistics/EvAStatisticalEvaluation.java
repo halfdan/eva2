@@ -299,7 +299,7 @@ public class EvAStatisticalEvaluation {
             Collections.sort(sortedValues);
             double tA = 0.0;
             for (Double value : dat1) {
-                tA += (sortedValues.indexOf(value) + 1.0 + sortedValues.lastIndexOf(value) + 1.0) / 2.0;;
+                tA += (sortedValues.indexOf(value) + 1.0 + sortedValues.lastIndexOf(value) + 1.0) / 2.0;
             }
             double tB = 0.0;
             for (Double value : dat2) {

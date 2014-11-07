@@ -58,7 +58,7 @@ public class StandardDeactivationStrategy implements InterfaceDeactivationStrate
             AbstractEAIndividual currentindy = pop.getEAIndividual(i);
             double value;
             if (stdDevHorizon == NichePSO.defaultFitStdDevHorizon) {
-                value = ((Double) currentindy.getData(NichePSO.stdDevKey)).doubleValue();
+                value = (Double) currentindy.getData(NichePSO.stdDevKey);
             } else {
                 Vector<Double> fitArch = (Vector<Double>) currentindy.getData(NichePSO.fitArchiveKey);
                 value = ParticleSubSwarmOptimization.stdDev(fitArch, stdDevHorizon);

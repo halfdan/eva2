@@ -124,7 +124,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
             ExecutorService pool = Executors.newFixedThreadPool(parallelThreads);
             int cntIndies = 0;
             for (; cntIndies < population.size(); cntIndies++) {
-                AbstractEAIndividual tmpindy = (AbstractEAIndividual) population.get(cntIndies);
+                AbstractEAIndividual tmpindy = population.get(cntIndies);
                 tmpindy.resetConstraintViolation();
                 EvalThread evalthread = new EvalThread(this, tmpindy, population, sema);
                 pool.execute(evalthread);
@@ -139,7 +139,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
         } else {
 
             for (int i = 0; i < population.size(); i++) {
-                tmpIndy = (AbstractEAIndividual) population.get(i);
+                tmpIndy = population.get(i);
                 tmpIndy.putData(OLD_FITNESS_KEY, tmpIndy.getFitness());
                 synchronized (tmpIndy) {
                     tmpIndy.resetConstraintViolation();

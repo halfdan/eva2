@@ -27,7 +27,7 @@ public class FitnessSharing implements java.io.Serializable, InterfaceFitnessMod
         // prepare the calculation
         double[][] data = new double[population.size()][];
         for (int i = 0; i < data.length; i++) {
-            data[i] = ((AbstractEAIndividual) population.get(i)).getFitness();
+            data[i] = population.get(i).getFitness();
         }
         double min = Double.POSITIVE_INFINITY, fitnessSharing;
         double[] result = new double[data.length];
@@ -50,18 +50,18 @@ public class FitnessSharing implements java.io.Serializable, InterfaceFitnessMod
             }
 
             for (int i = 0; i < population.size(); i++) {
-                tmpIndy = (AbstractEAIndividual) population.get(i);
+                tmpIndy = population.get(i);
                 fitnessSharing = 0;
                 for (int j = 0; j < population.size(); j++) {
-                    if (this.sharingDistance < this.distanceMetric.distance(tmpIndy, (AbstractEAIndividual) population.get(j))) {
-                        fitnessSharing += 1 - (this.distanceMetric.distance(tmpIndy, (AbstractEAIndividual) population.get(j)) / this.sharingDistance);
+                    if (this.sharingDistance < this.distanceMetric.distance(tmpIndy, population.get(j))) {
+                        fitnessSharing += 1 - (this.distanceMetric.distance(tmpIndy, population.get(j)) / this.sharingDistance);
                     }
                 }
                 result[i] /= fitnessSharing;
             }
 
             for (int i = 0; i < population.size(); i++) {
-                ((AbstractEAIndividual) population.get(i)).SetFitness(x, result[i]);
+                population.get(i).SetFitness(x, result[i]);
             }
         }
     }

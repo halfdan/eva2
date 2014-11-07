@@ -77,7 +77,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
 
         result = new double[population.size()][];
         for (int i = 0; i < population.size(); i++) {
-            tmpIndy = (AbstractEAIndividual) population.get(i);
+            tmpIndy = population.get(i);
             tmpList = new ArrayList();
             for (int j = 0; j < inputs.length; j++) {
                 obj = tmpIndy.getData(inputs[j]);
@@ -86,7 +86,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
                 }
                 if (obj instanceof double[]) {
                     for (int m = 0; m < ((double[]) obj).length; m++) {
-                        tmpList.add(new Double(((double[]) obj)[m]));
+                        tmpList.add(((double[]) obj)[m]);
                     }
                     continue;
                 }
@@ -96,7 +96,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
                 }
                 if (obj instanceof float[]) {
                     for (int m = 0; m < ((float[]) obj).length; m++) {
-                        tmpList.add(new Double(((float[]) obj)[m]));
+                        tmpList.add((double) ((float[]) obj)[m]);
                     }
                     continue;
                 }
@@ -106,7 +106,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
                 }
                 if (obj instanceof long[]) {
                     for (int m = 0; m < ((long[]) obj).length; m++) {
-                        tmpList.add(new Double(((long[]) obj)[m]));
+                        tmpList.add((double) ((long[]) obj)[m]);
                     }
                     continue;
                 }
@@ -116,7 +116,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
                 }
                 if (obj instanceof int[]) {
                     for (int m = 0; m < ((int[]) obj).length; m++) {
-                        tmpList.add(new Double(((int[]) obj)[m]));
+                        tmpList.add((double) ((int[]) obj)[m]);
                     }
                     continue;
                 }
@@ -127,7 +127,7 @@ public abstract class AbstractSelProb implements InterfaceSelectionProbability, 
             // now we got a complete ArrayList
             tmpD = new double[tmpList.size()];
             for (int j = 0; j < tmpD.length; j++) {
-                tmpD[j] = ((Double) tmpList.get(j)).doubleValue();
+                tmpD[j] = (Double) tmpList.get(j);
             }
             result[i] = tmpD;
         }

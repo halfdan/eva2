@@ -3,7 +3,6 @@ package eva2.optimization.mocco.paretofrontviewer;
 import eva2.gui.plot.FunctionArea;
 import eva2.gui.plot.GraphPointSet;
 import eva2.gui.plot.InterfaceDPointWithContent;
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.problems.InterfaceOptimizationObjective;
@@ -200,7 +199,7 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                         for (int j = 0; j < ((ArrayList) this.moccoViewer.moccoStandalone.state.fitnessCache.get(i)).size(); j++) {
                             fitness = (double[]) ((ArrayList) this.moccoViewer.moccoStandalone.state.fitnessCache.get(i)).get(j);
                             myPoint = new DPoint(fitness[indexX], fitness[indexY]);
-                            if (((Double) ((ArrayList) this.moccoViewer.moccoStandalone.state.constraintCache.get(i)).get(j)).doubleValue() == 0) {
+                            if ((Double) ((ArrayList) this.moccoViewer.moccoStandalone.state.constraintCache.get(i)).get(j) == 0) {
                                 myPoint.setIcon(new Chart2DDPointIconCross());
                             } else {
                                 myPoint.setIcon(new Chart2DDPointIconPoint());
@@ -223,7 +222,7 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                         for (int j = 0; j < ((ArrayList) this.moccoViewer.moccoStandalone.state.objectiveCache.get(i)).size(); j++) {
                             fitness = (double[]) ((ArrayList) this.moccoViewer.moccoStandalone.state.objectiveCache.get(i)).get(j);
                             myPoint = new DPoint(fitness[indexX], fitness[indexY]);
-                            if (((Double) ((ArrayList) this.moccoViewer.moccoStandalone.state.constraintCache.get(i)).get(j)).doubleValue() == 0) {
+                            if ((Double) ((ArrayList) this.moccoViewer.moccoStandalone.state.constraintCache.get(i)).get(j) == 0) {
                                 myPoint.setIcon(new Chart2DDPointIconCross());
                             } else {
                                 myPoint.setIcon(new Chart2DDPointIconPoint());
@@ -256,12 +255,12 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
             mySet.setColor(Color.BLACK);
             for (int i = 0; i < pf.size(); i++) {
                 if (this.fitObjective.getSelectedIndex() == 0) {
-                    fitness = ((AbstractEAIndividual) pf.get(i)).getFitness();
+                    fitness = pf.get(i).getFitness();
                 } else {
                     InterfaceOptimizationObjective[] tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.moccoViewer.moccoStandalone.state.currentProblem).getProblemObjectives();
                     fitness = new double[tmpObj.length];
                     for (int k = 0; k < tmpObj.length; k++) {
-                        fitness[k] = (Double) ((AbstractEAIndividual) pf.get(i)).getData(tmpObj[k].getIdentName());
+                        fitness[k] = (Double) pf.get(i).getData(tmpObj[k].getIdentName());
                     }
                 }
                 point = new DPoint(fitness[indexX], fitness[indexY]);
@@ -270,7 +269,7 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                     ((Chart2DDPointContentSelectable) icon).addSelectionListener(this.moccoViewer);
                 }
                 ((InterfaceDPointWithContent) icon).setProblem(this.moccoViewer.moccoStandalone.state.currentProblem);
-                ((InterfaceDPointWithContent) icon).setEAIndividual((AbstractEAIndividual) pf.get(i));
+                ((InterfaceDPointWithContent) icon).setEAIndividual(pf.get(i));
                 point.setIcon(icon);
                 mySet.addDPoint(point);
                 if (fitness[indexX] < xmin) {

@@ -1,6 +1,5 @@
 package eva2.optimization.operator.archiving;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
 
@@ -40,20 +39,20 @@ public class RemoveSurplusIndividualsStaticHyperCube extends RemoveSurplusIndivi
         fitness = new double[archive.size()][];
         space = new double[archive.size()];
         for (int i = 0; i < archive.size(); i++) {
-            fitness[i] = ((AbstractEAIndividual) archive.get(i)).getFitness();
+            fitness[i] = archive.get(i).getFitness();
         }
         space = this.calculateHyperCubeVolumes(fitness);
         for (int i = 0; i < archive.size(); i++) {
-            ((AbstractEAIndividual) archive.get(i)).putData("HyperCube", new Double(space[i]));
+            archive.get(i).putData("HyperCube", space[i]);
         }
 
         while (archive.targetSizeExceeded()) {
             // select the individual with the least space around him
             // to do this i got to find the next smaller and the next bigger one
-            smallestHyperCube = ((Double) ((AbstractEAIndividual) archive.get(0)).getData("HyperCube")).doubleValue();
+            smallestHyperCube = (Double) archive.get(0).getData("HyperCube");
             indexSmallHyperCube = 0;
             for (int i = 1; i < archive.size(); i++) {
-                tmpS = ((Double) ((AbstractEAIndividual) archive.get(i)).getData("HyperCube")).doubleValue();
+                tmpS = (Double) archive.get(i).getData("HyperCube");
                 if (tmpS < smallestHyperCube) {
                     smallestHyperCube = tmpS;
                     indexSmallHyperCube = i;

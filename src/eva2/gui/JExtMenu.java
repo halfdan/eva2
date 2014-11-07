@@ -76,21 +76,28 @@ public class JExtMenu extends JMenu {
                     return;
                 }
                 String propertyName = e.getPropertyName();
-                if (propertyName.equals(Action.NAME)) {
-                    menuItem.setText((String) e.getNewValue());
-                } else if (propertyName.equals("enabled")) {
-                    menuItem.setEnabled(((Boolean) e.getNewValue()).booleanValue());
-                } else if (propertyName.equals(Action.SMALL_ICON)) {
-                    Icon icon = (Icon) e.getNewValue();
-                    menuItem.setIcon(icon);
-                    menuItem.invalidate();
-                    menuItem.repaint();
-                } else if (propertyName.equals(ExtAction.MNEMONIC)) {
-                    menuItem.setMnemonic(((Character) e.getNewValue()).charValue());
-                } else if (propertyName.equals(ExtAction.TOOLTIP)) {
-                    menuItem.setToolTipText((String) e.getNewValue());
-                } else if (propertyName.equals(ExtAction.KEYSTROKE)) {
-                    menuItem.setAccelerator((KeyStroke) e.getNewValue());
+                switch (propertyName) {
+                    case Action.NAME:
+                        menuItem.setText((String) e.getNewValue());
+                        break;
+                    case "enabled":
+                        menuItem.setEnabled(((Boolean) e.getNewValue()).booleanValue());
+                        break;
+                    case Action.SMALL_ICON:
+                        Icon icon = (Icon) e.getNewValue();
+                        menuItem.setIcon(icon);
+                        menuItem.invalidate();
+                        menuItem.repaint();
+                        break;
+                    case ExtAction.MNEMONIC:
+                        menuItem.setMnemonic(((Character) e.getNewValue()).charValue());
+                        break;
+                    case ExtAction.TOOLTIP:
+                        menuItem.setToolTipText((String) e.getNewValue());
+                        break;
+                    case ExtAction.KEYSTROKE:
+                        menuItem.setAccelerator((KeyStroke) e.getNewValue());
+                        break;
                 }
             }
         };

@@ -156,10 +156,10 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
             } catch (java.io.IOException e) {
             }
             for (int i = 0; i < pop.size(); i++) {
-                if (!((AbstractEAIndividual) pop.get(i)).violatesConstraint()) {
+                if (!pop.get(i).violatesConstraint()) {
                     // write
                     tmp = "";
-                    double[] fit = ((AbstractEAIndividual) pop.get(i)).getFitness();
+                    double[] fit = pop.get(i).getFitness();
                     for (int j = 0; j < fit.length; j++) {
                         tmp += fit[j] + "\t";
                     }
@@ -195,10 +195,10 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
             } catch (java.io.IOException e) {
             }
             for (int i = 0; i < pop.size(); i++) {
-                if (!((AbstractEAIndividual) pop.get(i)).violatesConstraint()) {
+                if (!pop.get(i).violatesConstraint()) {
                     // write
                     tmp = "";
-                    double[] fit = ((AbstractEAIndividual) pop.get(i)).getFitness();
+                    double[] fit = pop.get(i).getFitness();
                     for (int j = 0; j < fit.length; j++) {
                         tmp += fit[j] + "\t";
                     }
@@ -234,10 +234,10 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
             } catch (java.io.IOException e) {
             }
             for (int i = 0; i < pop.size(); i++) {
-                if (((AbstractEAIndividual) pop.get(i)).violatesConstraint()) {
+                if (pop.get(i).violatesConstraint()) {
                     // write
                     tmp = "";
-                    double[] fit = ((AbstractEAIndividual) pop.get(i)).getFitness();
+                    double[] fit = pop.get(i).getFitness();
                     for (int j = 0; j < fit.length; j++) {
                         tmp += fit[j] + "\t";
                     }
@@ -272,7 +272,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
             for (int i = 0; i < pop.size(); i++) {
                 // write
                 tmp = "";
-                double[] fit = ((AbstractEAIndividual) pop.get(i)).getFitness();
+                double[] fit = pop.get(i).getFitness();
                 for (int j = 0; j < fit.length; j++) {
                     tmp += fit[j] + "\t";
                 }
@@ -490,7 +490,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
     public void setRefPointSelectable(boolean t) {
         this.refPointSelectable = t;
         if (this.refPointSelectable) {
-            int dim = ((AbstractEAIndividual) this.moccoStandalone.state.paretoFront.get(0)).getFitness().length;
+            int dim = this.moccoStandalone.state.paretoFront.get(0).getFitness().length;
             this.referencePoint = new double[dim];
             for (int i = 0; i < dim; i++) {
                 this.referencePoint[i] = 0;

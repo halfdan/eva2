@@ -57,7 +57,7 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
 
         // first build the hashtable
         for (int i = 0; i < population.size(); i++) {
-            tmpIndy = (AbstractEAIndividual) population.get(i);
+            tmpIndy = population.get(i);
             gridBox = (int[]) tmpIndy.getData("GridBox");
             tmpString = "";
             for (int j = 0; j < gridBox.length; j++) {
@@ -111,8 +111,8 @@ public class SelectMOPESAII implements InterfaceSelection, java.io.Serializable 
         try {
             box1 = (ArrayList) this.gridBoxes.get(RNG.randomInt(0, this.gridBoxes.size() - 1));
             box2 = (ArrayList) this.gridBoxes.get(RNG.randomInt(0, this.gridBoxes.size() - 1));
-            if (((Integer) ((AbstractEAIndividual) box1.get(0)).getData("SqueezeFactor")).intValue()
-                    < ((Integer) ((AbstractEAIndividual) box2.get(0)).getData("SqueezeFactor")).intValue()) {
+            if ((Integer) ((AbstractEAIndividual) box1.get(0)).getData("SqueezeFactor")
+                    < (Integer) ((AbstractEAIndividual) box2.get(0)).getData("SqueezeFactor")) {
                 resultIndy = (AbstractEAIndividual) (box1.get(RNG.randomInt(0, box1.size() - 1)));
             } else {
                 resultIndy = (AbstractEAIndividual) (box2.get(RNG.randomInt(0, box2.size() - 1)));

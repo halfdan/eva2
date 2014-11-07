@@ -92,8 +92,8 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
             }
         } else {
             InterfaceOptimizationObjective[] tmpObj = ((InterfaceMultiObjectiveDeNovoProblem) this.paretoFrontViewScatterPlot.moccoViewer.moccoStandalone.state.currentProblem).getProblemObjectives();
-            result[0] = ((Double) indy.getData(tmpObj[this.object1].getIdentName())).doubleValue();
-            result[1] = ((Double) indy.getData(tmpObj[this.object2].getIdentName())).doubleValue();
+            result[0] = (Double) indy.getData(tmpObj[this.object1].getIdentName());
+            result[1] = (Double) indy.getData(tmpObj[this.object2].getIdentName());
         }
         return result;
     }
@@ -123,14 +123,14 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
                 mySet.setConnectedMode(false);
                 mySet.setColor(Color.BLACK);
                 for (int i = 0; i < pf.size(); i++) {
-                    plotValue = this.fetchPlotValueFor((AbstractEAIndividual) pf.get(i));
+                    plotValue = this.fetchPlotValueFor(pf.get(i));
                     point = new DPoint(plotValue[0], plotValue[1]);
                     icon = new Chart2DDPointContentSelectable();
                     if (this.paretoFrontViewScatterPlot.moccoViewer.refSolutionSelectable) {
                         ((Chart2DDPointContentSelectable) icon).addSelectionListener(this.paretoFrontViewScatterPlot.moccoViewer);
                     }
                     ((InterfaceDPointWithContent) icon).setProblem(this.paretoFrontViewScatterPlot.moccoViewer.moccoStandalone.state.currentProblem);
-                    ((InterfaceDPointWithContent) icon).setEAIndividual((AbstractEAIndividual) pf.get(i));
+                    ((InterfaceDPointWithContent) icon).setEAIndividual(pf.get(i));
                     point.setIcon(icon);
                     mySet.addDPoint(point);
                     if (plotValue[0] < xmin) {

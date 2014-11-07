@@ -127,7 +127,7 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
             }
             gbc.gridx = 2;
             gbc.gridy = i + 1;
-            this.refSolTextField[i] = new JTextField("" + ((Double) refSolution.getData(obj[i].getIdentName())).doubleValue());
+            this.refSolTextField[i] = new JTextField("" + (Double) refSolution.getData(obj[i].getIdentName()));
             this.refSolTextField[i].setEditable(false);
             panelSTEP.add(this.refSolTextField[i], gbc);
             gbc.gridx = 3;
@@ -269,10 +269,10 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
                     weights[i] = 0;
                     if (obj[i].is2BMinimized()) {
                         // check this sounds wierd => sounds correct if objectives are used above stupid!
-                        relax[i] = ((Double) refSolution.getData(obj[i].getIdentName())).doubleValue()
+                        relax[i] = (Double) refSolution.getData(obj[i].getIdentName())
                                 + Math.abs(relax[i]);
                     } else {
-                        relax[i] = ((Double) refSolution.getData(obj[i].getIdentName())).doubleValue()
+                        relax[i] = (Double) refSolution.getData(obj[i].getIdentName())
                                 - Math.abs(relax[i]);
                     }
                     obj[i].SetConstraintGoal(relax[i]);
@@ -330,7 +330,7 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
         System.out.println("d.length   = " + d.length);
         for (int i = 0; i < obj.length; i++) {
             if (obj[i].getOptimizationMode().contains("Objective")) {
-                tmpA.add(new Double(d[i]));
+                tmpA.add(d[i]);
             }
         }
 

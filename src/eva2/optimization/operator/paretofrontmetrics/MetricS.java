@@ -102,7 +102,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
         double[][] f = new double[archive.size()][dim];
         double[] tmpF, redF;
         for (int i = 0; i < f.length; i++) {
-            tmpF = ((AbstractEAIndividual) archive.get(i)).getFitness();
+            tmpF = archive.get(i).getFitness();
             System.arraycopy(tmpF, 0, f[i], 0, dim);
             if (smPop != null) {
                 redF = new double[tmpF.length - 1];
@@ -155,7 +155,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
                     double[][] tmpBorder;
                     double tmpS;
                     for (int j = 0; j < archive.size(); j++) {
-                        if (((AbstractEAIndividual) archive.get(j)).getFitness(dim - 1) < f[tmpIndex][dim - 1]) {
+                        if (archive.get(j).getFitness(dim - 1) < f[tmpIndex][dim - 1]) {
                             // this one is small enough to join the next level
                             tmpPop.add(smPop.get(j));
                         }
@@ -186,7 +186,7 @@ public class MetricS implements InterfaceParetoFrontMetric, java.io.Serializable
             double[][] tmpBorder;
             double tmpS;
             for (int j = 0; j < archive.size(); j++) {
-                if (((AbstractEAIndividual) archive.get(j)).getFitness(dim - 1) <= lastValue[dim - 1]) {
+                if (archive.get(j).getFitness(dim - 1) <= lastValue[dim - 1]) {
                     // this one is small enough to join the next level
                     tmpPop.add(smPop.get(j));
                 }

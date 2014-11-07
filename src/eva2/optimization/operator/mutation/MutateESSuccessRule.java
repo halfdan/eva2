@@ -1,6 +1,5 @@
 package eva2.optimization.operator.mutation;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
 
@@ -163,13 +162,13 @@ public class MutateESSuccessRule extends MutateESFixedStepSize implements Interf
 
         if (updateSelected) {
             for (int i = 0; i < selectedPop.size(); i++) { // applied to the old population as well in case of plus strategy
-                MutateESSuccessRule mutator = (MutateESSuccessRule) ((AbstractEAIndividual) selectedPop.get(i)).getMutationOperator();
+                MutateESSuccessRule mutator = (MutateESSuccessRule) selectedPop.get(i).getMutationOperator();
                 updateMutator(rate, mutator);
 //            System.out.println("old pop step size " + mutator.getSigma()+ " (" + mutator+ ")");
             }
         }
         for (int i = 0; i < newPop.size(); i++) {
-            MutateESSuccessRule mutator = (MutateESSuccessRule) ((AbstractEAIndividual) newPop.get(i)).getMutationOperator();
+            MutateESSuccessRule mutator = (MutateESSuccessRule) newPop.get(i).getMutationOperator();
             updateMutator(rate, mutator);
 //            System.out.println("new pop step size " + mutator.getSigma()+ " (" + mutator+ ")");
         }

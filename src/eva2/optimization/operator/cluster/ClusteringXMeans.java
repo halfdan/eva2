@@ -2,7 +2,6 @@ package eva2.optimization.operator.cluster;
 
 import eva2.gui.plot.GraphPointSet;
 import eva2.gui.plot.Plot;
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.Population;
@@ -228,7 +227,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
             }
         } else {
             for (int i = 0; i < pop.size(); i++) {
-                data[i] = ((AbstractEAIndividual) pop.get(i)).getFitness();
+                data[i] = pop.get(i).getFitness();
             }
         }
         return data;

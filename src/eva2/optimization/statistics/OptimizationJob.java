@@ -1,6 +1,5 @@
 package eva2.optimization.statistics;
 
-import eva2.gui.BeanInspector;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.tools.StringSelection;
 

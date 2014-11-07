@@ -102,7 +102,7 @@ public class OptimizerFactory {
         DifferentialEvolution de = new DifferentialEvolution();
         de.setProblem(problem);
         de.getPopulation().setTargetSize(popsize);
-        de.setDEType(DEType.DE2_CurrentToBest);
+        de.setDEType(DEType.CurrentToBest);
         de.setDifferentialWeight(f);
         de.setCrossoverRate(CR);
         de.setLambda(lambda);
@@ -1443,7 +1443,7 @@ public class OptimizerFactory {
     public static OptimizationParameters standardDE(
             AbstractOptimizationProblem problem) {
         DifferentialEvolution de = new DifferentialEvolution();
-        de.setDEType(DEType.DE2_CurrentToBest); // this sets current-to-best
+        de.setDEType(DEType.CurrentToBest); // this sets current-to-best
         de.setDifferentialWeight(0.8);
         de.setCrossoverRate(0.6);
         de.setLambda(0.6);

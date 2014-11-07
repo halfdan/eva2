@@ -80,8 +80,8 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
 
         try {
             for (int i = 0; i < this.tournamentSize; i++) {
-                tmpIndy = (AbstractEAIndividual) population.get(RNG.randomInt(0, population.size() - 1));
-                tmpL = ((Integer) tmpIndy.getData("ParetoLevel")).intValue();
+                tmpIndy = population.get(RNG.randomInt(0, population.size() - 1));
+                tmpL = (Integer) tmpIndy.getData("ParetoLevel");
                 if (tmpL < smallestLevel) {
                     smallestLevel = tmpL;
                 }
@@ -95,39 +95,39 @@ public class SelectMONSGAIICrowedTournament implements InterfaceSelection, java.
                 // choose the least infeasible one
                 int best = 0;
                 for (int i = 1; i < infeasiblePop.size(); i++) {
-                    if (((AbstractEAIndividual) infeasiblePop.get(i)).getConstraintViolation() < ((AbstractEAIndividual) infeasiblePop.get(best)).getConstraintViolation()) {
+                    if (infeasiblePop.get(i).getConstraintViolation() < infeasiblePop.get(best).getConstraintViolation()) {
                         best = i;
                     }
                 }
-                return (AbstractEAIndividual) infeasiblePop.get(best);
+                return infeasiblePop.get(best);
             }
             // recalculate the smallest level for the feasible solutions
             smallestLevel = Integer.MAX_VALUE;
             for (int i = 0; i < feasiblePop.size(); i++) {
-                tmpIndy = (AbstractEAIndividual) feasiblePop.get(i);
-                tmpL = ((Integer) tmpIndy.getData("ParetoLevel")).intValue();
+                tmpIndy = feasiblePop.get(i);
+                tmpL = (Integer) tmpIndy.getData("ParetoLevel");
                 if (tmpL < smallestLevel) {
                     smallestLevel = tmpL;
                 }
             }
             // first remove all individual from tmpPop which are not of smallestLevel
             for (int i = 0; i < feasiblePop.size(); i++) {
-                if (((Integer) ((AbstractEAIndividual) feasiblePop.get(i)).getData("ParetoLevel")).intValue() > smallestLevel) {
+                if ((Integer) feasiblePop.get(i).getData("ParetoLevel") > smallestLevel) {
                     feasiblePop.remove(i);
                     i--;
                 }
             }
             if (feasiblePop.size() == 1) {
-                return (AbstractEAIndividual) feasiblePop.get(0);
+                return feasiblePop.get(0);
             } else {
                 // now find the one with the biggest crowding distance
-                result = (AbstractEAIndividual) feasiblePop.get(0);
-                curCrowdingDistance = ((Double) (result.getData("HyperCube"))).doubleValue();
+                result = feasiblePop.get(0);
+                curCrowdingDistance = (Double) (result.getData("HyperCube"));
                 for (int i = 1; i < feasiblePop.size(); i++) {
-                    tmpCrowdingDistance = ((Double) ((AbstractEAIndividual) feasiblePop.get(i)).getData("HyperCube")).doubleValue();
+                    tmpCrowdingDistance = (Double) feasiblePop.get(i).getData("HyperCube");
                     if (tmpCrowdingDistance > curCrowdingDistance) {
                         curCrowdingDistance = tmpCrowdingDistance;
-                        result = (AbstractEAIndividual) feasiblePop.get(i);
+                        result = feasiblePop.get(i);
                     }
                 }
             }

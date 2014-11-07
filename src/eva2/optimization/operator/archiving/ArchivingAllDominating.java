@@ -42,9 +42,9 @@ public class ArchivingAllDominating extends AbstractArchiving implements java.io
         if (this.obeyDebsConstViolationPrinciple) {
             for (int i = 0; i < pop.size(); i++) {
                 //System.out.println("i:"+ i+" "+pop.size()+"_"+((AbstractEAIndividual)pop.get(0)).getFitness().length);
-                if ((((AbstractEAIndividual) pop.get(i)).getConstraintViolation() == 0) && (this.isDominant((AbstractEAIndividual) pop.get(i), pop.getArchive()))) {
+                if ((pop.get(i).getConstraintViolation() == 0) && (this.isDominant(pop.get(i), pop.getArchive()))) {
                     //System.out.println("Adding ("+((AbstractEAIndividual)pop.get(i)).getFitness()[0] +"/"+((AbstractEAIndividual)pop.get(i)).getFitness()[1]+") to archive.");
-                    this.addIndividualToArchive((AbstractEAIndividual) ((AbstractEAIndividual) pop.get(i)).clone(), pop.getArchive());
+                    this.addIndividualToArchive((AbstractEAIndividual) pop.get(i).clone(), pop.getArchive());
                 }
             }
             if ((pop.getArchive().size() == 0) && (pop.size() > 0)) {
@@ -57,9 +57,9 @@ public class ArchivingAllDominating extends AbstractArchiving implements java.io
             // is dominating a element in the archive
             for (int i = 0; i < pop.size(); i++) {
                 //System.out.println("i:"+ i+" "+pop.size()+"_"+((AbstractEAIndividual)pop.get(0)).getFitness().length);
-                if (this.isDominant((AbstractEAIndividual) pop.get(i), pop.getArchive())) {
+                if (this.isDominant(pop.get(i), pop.getArchive())) {
                     //System.out.println("Adding ("+((AbstractEAIndividual)pop.get(i)).getFitness()[0] +"/"+((AbstractEAIndividual)pop.get(i)).getFitness()[1]+") to archive.");
-                    this.addIndividualToArchive((AbstractEAIndividual) ((AbstractEAIndividual) pop.get(i)).clone(), pop.getArchive());
+                    this.addIndividualToArchive((AbstractEAIndividual) pop.get(i).clone(), pop.getArchive());
                 }
             }
         }

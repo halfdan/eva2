@@ -1,6 +1,5 @@
 package eva2.optimization.operator.selection.probability;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
 
@@ -46,7 +45,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
             boolean isFeasible = false;
             int k = 0;
             while ((k < population.size()) && !isFeasible) {
-                if (!((AbstractEAIndividual) population.get(k)).violatesConstraint()) {
+                if (!population.get(k).violatesConstraint()) {
                     isFeasible = true;
                 }
                 k++;
@@ -65,7 +64,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                         }
                     }
                     for (int i = 0; i < data.length; i++) {
-                        if (!((AbstractEAIndividual) population.get(i)).violatesConstraint()) {
+                        if (!population.get(i).violatesConstraint()) {
                             result[i] = -data[i][x];
                         } else {
                             result[i] = -worst;
@@ -91,7 +90,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                     }
 
                     for (int i = 0; i < population.size(); i++) {
-                        ((AbstractEAIndividual) population.get(i)).setSelectionProbability(x, result[i] / sum);
+                        population.get(i).setSelectionProbability(x, result[i] / sum);
                     }
                 }
             } else {
@@ -99,7 +98,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                 sum = 0;
                 min = Double.POSITIVE_INFINITY;
                 for (int i = 0; i < data.length; i++) {
-                    result[i] = -((AbstractEAIndividual) population.get(i)).getConstraintViolation();
+                    result[i] = -population.get(i).getConstraintViolation();
                 }
                 for (int i = 0; i < data.length; i++) {
                     if (result[i] < min) {
@@ -122,7 +121,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                 for (int i = 0; i < population.size(); i++) {
                     double[] tmpD = new double[1];
                     tmpD[0] = result[i] / sum;
-                    ((AbstractEAIndividual) population.get(i)).setSelectionProbability(tmpD);
+                    population.get(i).setSelectionProbability(tmpD);
                 }
             }
         } else {
@@ -152,7 +151,7 @@ public class SelProbStandardScaling extends AbstractSelProb implements java.io.S
                 }
 
                 for (int i = 0; i < population.size(); i++) {
-                    ((AbstractEAIndividual) population.get(i)).setSelectionProbability(x, result[i] / sum);
+                    population.get(i).setSelectionProbability(x, result[i] / sum);
                 }
             }
         }

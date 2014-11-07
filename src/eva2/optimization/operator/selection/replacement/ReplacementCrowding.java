@@ -53,13 +53,13 @@ public class ReplacementCrowding implements InterfaceReplacement, java.io.Serial
         double distance = Double.POSITIVE_INFINITY, tmpD;
         Population tmp = random.selectFrom(pop, this.C);
         for (int i = 0; i < tmp.size(); i++) {
-            tmpD = this.metric.distance(indy, (AbstractEAIndividual) tmp.get(i));
+            tmpD = this.metric.distance(indy, tmp.get(i));
             if (tmpD < distance) {
                 index = i;
                 distance = tmpD;
             }
         }
-        if (indy.isDominatingDebConstraints((AbstractEAIndividual) tmp.get(index))) {
+        if (indy.isDominatingDebConstraints(tmp.get(index))) {
             if (pop.remove(tmp.get(index))) {
                 pop.addIndividual(indy);
             }

@@ -319,7 +319,7 @@ public class TribesSwarm implements java.io.Serializable {
         int size = 0;
         int n;
         for (n = 0; n < tribeNb; n++) {
-            size = size + tribes[n].getNumExplorers() + tribes[n].getNumMemories();
+            size += tribes[n].getNumExplorers() + tribes[n].getNumMemories();
         }
         return size;
     }

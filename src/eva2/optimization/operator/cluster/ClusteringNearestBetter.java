@@ -296,7 +296,7 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
         Double refDat = (Double) referenceSet.getData(initializedRefData);
         if (refDat != null) {
 
-            currentMeanDistance = refDat.doubleValue();
+            currentMeanDistance = refDat;
             return true;
         } else {
             System.err.println("Warning, missing reference data - forgot reference set initialization? " + this.getClass());

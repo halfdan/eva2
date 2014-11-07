@@ -124,7 +124,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     public static void initFitnessArchiveOf(AbstractEAIndividual indy) {
         Vector<Double> vec = new Vector<>();
         double scalarFitness = sum(indy.getFitness()); // if multiobjective, use the sum of all fitnessvalues (dont use the norm because fitnessvalues may be negative)
-        vec.add(new Double(scalarFitness));
+        vec.add(scalarFitness);
         indy.putData(NichePSO.fitArchiveKey, vec);
     }
 
@@ -135,11 +135,11 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      */
     public static void initFitnessStdDevOf(AbstractEAIndividual indy) {
         // initialize stddev to inf, dont want immediate convergence...
-        indy.putData(NichePSO.stdDevKey, new Double(Double.POSITIVE_INFINITY));
+        indy.putData(NichePSO.stdDevKey, Double.POSITIVE_INFINITY);
     }
 
     public static void initPBestImprInARowOf(AbstractEAIndividual indy) {
-        indy.putData("PBestImprovementsInARow", new Integer(0));
+        indy.putData("PBestImprovementsInARow", 0);
     }
 
     /**
@@ -206,7 +206,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
             AbstractEAIndividual indy = pop.getEAIndividual(i);
 //    		Integer tmp = (Integer)indy.getData("particleIndex"); // CPU-Time Hotspot
 //    		if (index.equals(tmp)) return indy;
-            if (index.intValue() == indy.getIndividualIndex()) {
+            if (index == indy.getIndividualIndex()) {
                 return indy;
             }
         }
@@ -226,7 +226,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
             // population does not necessarily match the individual index)
             origIndex = ((AbstractEAIndividual) sortedPopulation[i]).getIndividualIndex();
             AbstractEAIndividual indy = getIndyByParticleIndexAndPopulation(pop, origIndex);
-            indy.putData(sortedIndexKey, new Integer(i));
+            indy.putData(sortedIndexKey, i);
         }
     }
 
@@ -281,7 +281,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
             AbstractEAIndividual indy = population.getEAIndividual(i);
             Vector<Double> fitArchive_old = (Vector<Double>) (indy.getData(NichePSO.fitArchiveKey));
             double scalarFitness = sum(indy.getFitness()); // if multiobjective, use the sum of all fitnessvalues (dont use the norm because fitnessvalues may be negative)
-            Double fitness = new Double(scalarFitness);
+            Double fitness = scalarFitness;
 
             Vector<Double> fitArchive_new = new Vector<>();
             int end = fitArchive_old.size();
@@ -310,7 +310,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
             // the stddev is computed over 3 values as suggested in
             // "a niching particle swarm optimizer" by Brits et al.
             double sd = stdDev(fitnessArchive, NichePSO.defaultFitStdDevHorizon);
-            currentindy.putData(NichePSO.stdDevKey, new Double(sd));
+            currentindy.putData(NichePSO.stdDevKey, sd);
         }
     }
 
@@ -327,7 +327,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
                 //PBestImprovementsInARow
                 Integer counter = (Integer) currentindy.getData("PBestImprovementsInARow");
-                counter = new Integer(counter.intValue() + 1);
+                counter = counter.intValue() + 1;
                 currentindy.putData("PBestImprovementsInARow", counter);
             } else {
                 initPBestImprInARowOf(currentindy);
@@ -407,7 +407,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         }
         double sum = 0;
         for (int i = vec.size() - range; i < vec.size(); ++i) {
-            sum += vec.get(i).doubleValue();
+            sum += vec.get(i);
         }
         return sum / range;
     }
@@ -426,7 +426,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         } // not enough values, dont risk early convergence
         double mean = mean(vec, range);
         for (int i = vec.size() - range; i < vec.size(); ++i) {
-            ssum += Math.pow(vec.get(i).doubleValue() - mean, 2);
+            ssum += Math.pow(vec.get(i) - mean, 2);
         }
         double result = Math.sqrt(ssum / (range - 1));
         return result;

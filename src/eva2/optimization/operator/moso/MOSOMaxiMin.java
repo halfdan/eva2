@@ -41,13 +41,13 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
         double[] result, tmpFit, resultFit;
         double tmpResult;
 
-        tmpIndy = (AbstractEAIndividual) pop.get(0);
+        tmpIndy = pop.get(0);
         fitnessArray = new double[pop.size()][tmpIndy.getFitness().length];
         minArray = new double[pop.size()][tmpIndy.getFitness().length];
         result = new double[pop.size()];
         resultFit = new double[1];
         for (int i = 0; i < pop.size(); i++) {
-            fitnessArray[i] = ((AbstractEAIndividual) pop.get(i)).getFitness();
+            fitnessArray[i] = pop.get(i).getFitness();
         }
         for (int i = 0; i < fitnessArray.length; i++) {
             result[i] = Double.NEGATIVE_INFINITY;
@@ -61,7 +61,7 @@ public class MOSOMaxiMin implements InterfaceMOSOConverter, java.io.Serializable
                 }
             }
             // write the result to the individuals
-            tmpIndy = (AbstractEAIndividual) pop.get(i);
+            tmpIndy = pop.get(i);
             tmpFit = tmpIndy.getFitness();
             tmpIndy.putData("MOFitness", tmpFit);
             resultFit = new double[1];

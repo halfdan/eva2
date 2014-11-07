@@ -115,8 +115,8 @@ public class AdaptiveDifferentialEvolution extends AbstractOptimizer {
              * Compare each individual in the child population with the corresponding
              * one from the parent population.
              */
-            indy = (AbstractEAIndividual) this.children.get(i);
-            orig = (AbstractEAIndividual) this.population.get(i);
+            indy = this.children.get(i);
+            orig = this.population.get(i);
             if (indy.isDominatingDebConstraints(orig)) {
                 this.population.replaceIndividualAt(i, indy);
             }

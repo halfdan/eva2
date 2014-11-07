@@ -67,7 +67,7 @@ public class HillClimbing extends AbstractOptimizer implements java.io.Serializa
         InterfaceMutation tmpMut;
 
         for (int i = 0; i < this.population.size(); i++) {
-            indy = ((AbstractEAIndividual) this.population.get(i));
+            indy = this.population.get(i);
             tmpD = indy.getMutationProbability();
             indy.setMutationProbability(1.0);
             if (mutator == null) {
@@ -79,7 +79,7 @@ public class HillClimbing extends AbstractOptimizer implements java.io.Serializa
         }
         this.optimizationProblem.evaluate(this.population);
         for (int i = 0; i < this.population.size(); i++) {
-            if (((AbstractEAIndividual) original.get(i)).isDominatingDebConstraints(((AbstractEAIndividual) this.population.get(i)))) {
+            if (original.get(i).isDominatingDebConstraints(this.population.get(i))) {
                 // throw away mutated one and replace by old one 
                 this.population.set(i, original.get(i));
             } else {

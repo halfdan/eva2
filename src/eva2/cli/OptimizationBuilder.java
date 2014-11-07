@@ -72,7 +72,7 @@ public final class OptimizationBuilder {
                 // Is the next a value?
                 if (i < args.length - 1 && !args[i+1].startsWith("--")) {
                     argumentMap.put(key, args[i + 1]);
-                    i = i + 2;
+                    i += 2;
                 } else {
                     argumentMap.put(key, null);
                     i++;
