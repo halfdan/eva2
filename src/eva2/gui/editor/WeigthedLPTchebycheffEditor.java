@@ -1,6 +1,6 @@
 package eva2.gui.editor;
 
-import eva2.gui.PropertyIntArray;
+import eva2.gui.PropertyWeightedLPTchebycheff;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,12 +15,12 @@ import java.beans.PropertyEditor;
 /**
  *
  */
-public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
+public class WeigthedLPTchebycheffEditor extends JPanel implements PropertyEditor {
 
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
     /**
      * The label for when we can't edit that type
      */
@@ -28,16 +28,17 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /**
      * The filePath that is to be edited
      */
-    private PropertyIntArray intArray;
+    private PropertyWeightedLPTchebycheff propertyWeightedLPTchebycheff;
 
     /**
      * The gaphix stuff
      */
-    private JPanel customEditor, dataPanel, buttonPanel;
-    private JTextField[] inputTextField;
+    private JPanel customEditor, dataPanel, buttonPanel, targetPanel;
+    private JTextField[] idealTextField, weightTextField;
+    private JTextField pvalueTextField;
     private JButton okButton;
 
-    public GenericIntArrayEditor() {
+    public WeigthedLPTchebycheffEditor() {
         // compiled code
     }
 
@@ -48,7 +49,14 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
         this.customEditor = new JPanel();
         this.customEditor.setLayout(new BorderLayout());
 
-        this.customEditor.add(new JLabel("Current Int Array:"), BorderLayout.NORTH);
+        // target panel
+        this.targetPanel = new JPanel();
+        this.targetPanel.setLayout(new GridLayout(1, 2));
+        this.targetPanel.add(new JLabel("Choose P:"));
+        this.pvalueTextField = new JTextField("" + this.propertyWeightedLPTchebycheff.p);
+        this.targetPanel.add(this.pvalueTextField);
+        this.pvalueTextField.addKeyListener(this.readDoubleAction);
+        this.customEditor.add(this.targetPanel, BorderLayout.NORTH);
 
         // initialize data panel
         this.dataPanel = new JPanel();
@@ -77,7 +85,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     /**
      * This action listener reads all values
      */
-    KeyListener readIntArrayAction = new KeyListener() {
+    KeyListener readDoubleAction = new KeyListener() {
         @Override
         public void keyPressed(KeyEvent event) {
         }
@@ -88,18 +96,52 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
 
         @Override
         public void keyReleased(KeyEvent event) {
-            int[] tmpD = new int[inputTextField.length];
+            try {
+                int d = Integer.parseInt(pvalueTextField.getText());
+                propertyWeightedLPTchebycheff.p = d;
+            } catch (Exception e) {
 
-            for (int i = 0; i < tmpD.length; i++) {
+            }
+        }
+    };
+
+    /**
+     * This action listener reads all values
+     */
+    KeyListener readDoubleArrayAction = new KeyListener() {
+        @Override
+        public void keyPressed(KeyEvent event) {
+        }
+
+        @Override
+        public void keyTyped(KeyEvent event) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent event) {
+            double[] tmpT = propertyWeightedLPTchebycheff.idealValue;
+            double[] tmpP = propertyWeightedLPTchebycheff.weights;
+
+            for (int i = 0; i < tmpT.length; i++) {
+
                 try {
-                    int d = 0;
-                    d = Integer.parseInt(inputTextField[i].getText());
-                    tmpD[i] = d;
+                    double d = 0;
+                    d = Double.parseDouble(idealTextField[i].getText());
+                    tmpT[i] = d;
+                } catch (Exception e) {
+
+                }
+                try {
+                    double d = 0;
+                    d = Double.parseDouble(weightTextField[i].getText());
+                    tmpP[i] = d;
                 } catch (Exception e) {
 
                 }
             }
-            intArray.setIntArray(tmpD);
+
+            propertyWeightedLPTchebycheff.idealValue = tmpT;
+            propertyWeightedLPTchebycheff.weights = tmpP;
         }
     };
 
@@ -118,18 +160,29 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      * This method updates the data panel
      */
     private void updateDataPanel() {
-        int[] tmpD = this.intArray.getIntArray();
+        double[] tmpT = this.propertyWeightedLPTchebycheff.idealValue;
+        double[] tmpP = this.propertyWeightedLPTchebycheff.weights;
+        int obj = this.propertyWeightedLPTchebycheff.p;
 
+        this.pvalueTextField.setText("" + obj);
         this.dataPanel.removeAll();
-        this.dataPanel.setLayout(new GridLayout(tmpD.length, 2));
-        this.inputTextField = new JTextField[tmpD.length];
-        for (int i = 0; i < tmpD.length; i++) {
-            JLabel label = new JLabel("Value X" + i + ": ");
+        this.dataPanel.setLayout(new GridLayout(tmpT.length + 1, 3));
+        this.dataPanel.add(new JLabel());
+        this.dataPanel.add(new JLabel("Ideal Value"));
+        this.dataPanel.add(new JLabel("Weights"));
+        this.idealTextField = new JTextField[tmpT.length];
+        this.weightTextField = new JTextField[tmpT.length];
+        for (int i = 0; i < tmpT.length; i++) {
+            JLabel label = new JLabel("Objective " + i + ": ");
             this.dataPanel.add(label);
-            this.inputTextField[i] = new JTextField();
-            this.inputTextField[i].setText("" + tmpD[i]);
-            this.inputTextField[i].addKeyListener(this.readIntArrayAction);
-            this.dataPanel.add(this.inputTextField[i]);
+            this.idealTextField[i] = new JTextField();
+            this.idealTextField[i].setText("" + tmpT[i]);
+            this.idealTextField[i].addKeyListener(this.readDoubleArrayAction);
+            this.dataPanel.add(this.idealTextField[i]);
+            this.weightTextField[i] = new JTextField();
+            this.weightTextField[i].setText("" + tmpP[i]);
+            this.weightTextField[i].addKeyListener(this.readDoubleArrayAction);
+            this.dataPanel.add(this.weightTextField[i]);
         }
     }
 
@@ -141,8 +194,8 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      */
     @Override
     public void setValue(Object o) {
-        if (o instanceof PropertyIntArray) {
-            this.intArray = (PropertyIntArray) o;
+        if (o instanceof PropertyWeightedLPTchebycheff) {
+            this.propertyWeightedLPTchebycheff = (PropertyWeightedLPTchebycheff) o;
             this.updateEditor();
         }
     }
@@ -154,7 +207,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
      */
     @Override
     public Object getValue() {
-        return this.intArray;
+        return this.propertyWeightedLPTchebycheff;
     }
 
     @Override
@@ -188,18 +241,18 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (propertyChangeSupport == null) {
-            propertyChangeSupport = new PropertyChangeSupport(this);
+        if (support == null) {
+            support = new PropertyChangeSupport(this);
         }
-        propertyChangeSupport.addPropertyChangeListener(l);
+        support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (propertyChangeSupport == null) {
-            propertyChangeSupport = new PropertyChangeSupport(this);
+        if (support == null) {
+            support = new PropertyChangeSupport(this);
         }
-        propertyChangeSupport.removePropertyChangeListener(l);
+        support.removePropertyChangeListener(l);
     }
 
     /**
@@ -240,7 +293,7 @@ public class GenericIntArrayEditor extends JPanel implements PropertyEditor {
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
-        String rep = "Edit int[]";
+        String rep = "Edit the ideal vector, p and ev. the weights.";
         gfx.drawString(rep, 2, fm.getHeight() + vpad - 3);
     }
 

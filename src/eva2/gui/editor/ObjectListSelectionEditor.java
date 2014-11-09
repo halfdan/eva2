@@ -5,10 +5,10 @@ import eva2.gui.PropertySelectableList;
 /**
  * An editor for a selectable List.
  */
-public class GenericObjectListSelectionEditor extends AbstractListSelectionEditor {
+public class ObjectListSelectionEditor extends AbstractListSelectionEditor {
     private PropertySelectableList objList;
 
-    public GenericObjectListSelectionEditor() {
+    public ObjectListSelectionEditor() {
     }
 
     @Override

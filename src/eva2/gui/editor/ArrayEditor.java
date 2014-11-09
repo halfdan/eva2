@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GenericArrayEditor extends JPanel implements PropertyEditor {
+public class ArrayEditor extends JPanel implements PropertyEditor {
 
-    private final static Logger LOGGER = Logger.getLogger(GenericArrayEditor.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ArrayEditor.class.getName());
     /**
      * Handles property change notification
      */
@@ -126,7 +126,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                     }
                     propChangeSupport.firePropertyChange("", null, null);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(GenericArrayEditor.this, "Could not create an object copy", null, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ArrayEditor.this, "Could not create an object copy", null, JOptionPane.ERROR_MESSAGE);
                 }
             } else if (e.getSource() == setAllButton) {
                 Object addObj = elementEditor.getValue();
@@ -134,7 +134,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                     try {
                         listModel.setElementAt(new SerializedObject(addObj).getObject(), i);
                     } catch (Exception e1) {
-                        JOptionPane.showMessageDialog(GenericArrayEditor.this, "Could not create an object copy", null, JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(ArrayEditor.this, "Could not create an object copy", null, JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 propChangeSupport.firePropertyChange("", null, null);
@@ -145,7 +145,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                     try {
                         listModel.setElementAt(new SerializedObject(addObj).getObject(), selected);
                     } catch (Exception e1) {
-                        JOptionPane.showMessageDialog(GenericArrayEditor.this, "Could not create an object copy", null, JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(ArrayEditor.this, "Could not create an object copy", null, JOptionPane.ERROR_MESSAGE);
                     }
                     propChangeSupport.firePropertyChange("", null, null);
                 }
@@ -193,7 +193,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     /**
      * Sets up the array editor.
      */
-    public GenericArrayEditor() {
+    public ArrayEditor() {
         setLayout(new BorderLayout());
         add(cantEditLabel, BorderLayout.CENTER);
         deleteButton.addActionListener(innerActionListener);
@@ -213,9 +213,9 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
     private class ActionJList extends MouseAdapter {
 
         protected JList list;
-        GenericArrayEditor gae = null;
+        ArrayEditor gae = null;
 
-        public ActionJList(JList l, GenericArrayEditor genAE) {
+        public ActionJList(JList l, ArrayEditor genAE) {
             list = l;
             gae = genAE;
         }
@@ -628,7 +628,7 @@ public class GenericArrayEditor extends JPanel implements PropertyEditor {
                         for (JMenuItem item : popupItemList) {
                             popupMenu.add(item);
                         }
-                        popupMenu.show(GenericArrayEditor.this, e.getX(), e.getY());
+                        popupMenu.show(ArrayEditor.this, e.getX(), e.getY());
                     }
                 }
             });

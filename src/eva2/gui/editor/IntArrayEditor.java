@@ -1,6 +1,6 @@
 package eva2.gui.editor;
 
-import eva2.gui.PropertyWeightedLPTchebycheff;
+import eva2.gui.PropertyIntArray;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,30 +15,25 @@ import java.beans.PropertyEditor;
 /**
  *
  */
-public class GenericWeigthedLPTchebycheffEditor extends JPanel implements PropertyEditor {
+public class IntArrayEditor extends JPanel implements PropertyEditor {
 
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport support = new PropertyChangeSupport(this);
-    /**
-     * The label for when we can't edit that type
-     */
-    private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     /**
      * The filePath that is to be edited
      */
-    private PropertyWeightedLPTchebycheff propertyWeightedLPTchebycheff;
+    private PropertyIntArray intArray;
 
     /**
      * The gaphix stuff
      */
-    private JPanel customEditor, dataPanel, buttonPanel, targetPanel;
-    private JTextField[] idealTextField, weightTextField;
-    private JTextField pvalueTextField;
+    private JPanel customEditor, dataPanel, buttonPanel;
+    private JTextField[] inputTextField;
     private JButton okButton;
 
-    public GenericWeigthedLPTchebycheffEditor() {
+    public IntArrayEditor() {
         // compiled code
     }
 
@@ -49,14 +44,7 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
         this.customEditor = new JPanel();
         this.customEditor.setLayout(new BorderLayout());
 
-        // target panel
-        this.targetPanel = new JPanel();
-        this.targetPanel.setLayout(new GridLayout(1, 2));
-        this.targetPanel.add(new JLabel("Choose P:"));
-        this.pvalueTextField = new JTextField("" + this.propertyWeightedLPTchebycheff.p);
-        this.targetPanel.add(this.pvalueTextField);
-        this.pvalueTextField.addKeyListener(this.readDoubleAction);
-        this.customEditor.add(this.targetPanel, BorderLayout.NORTH);
+        this.customEditor.add(new JLabel("Current Int Array:"), BorderLayout.NORTH);
 
         // initialize data panel
         this.dataPanel = new JPanel();
@@ -85,7 +73,7 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
     /**
      * This action listener reads all values
      */
-    KeyListener readDoubleAction = new KeyListener() {
+    KeyListener readIntArrayAction = new KeyListener() {
         @Override
         public void keyPressed(KeyEvent event) {
         }
@@ -96,52 +84,18 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
 
         @Override
         public void keyReleased(KeyEvent event) {
-            try {
-                int d = Integer.parseInt(pvalueTextField.getText());
-                propertyWeightedLPTchebycheff.p = d;
-            } catch (Exception e) {
+            int[] tmpD = new int[inputTextField.length];
 
-            }
-        }
-    };
-
-    /**
-     * This action listener reads all values
-     */
-    KeyListener readDoubleArrayAction = new KeyListener() {
-        @Override
-        public void keyPressed(KeyEvent event) {
-        }
-
-        @Override
-        public void keyTyped(KeyEvent event) {
-        }
-
-        @Override
-        public void keyReleased(KeyEvent event) {
-            double[] tmpT = propertyWeightedLPTchebycheff.idealValue;
-            double[] tmpP = propertyWeightedLPTchebycheff.weights;
-
-            for (int i = 0; i < tmpT.length; i++) {
-
+            for (int i = 0; i < tmpD.length; i++) {
                 try {
-                    double d = 0;
-                    d = Double.parseDouble(idealTextField[i].getText());
-                    tmpT[i] = d;
-                } catch (Exception e) {
-
-                }
-                try {
-                    double d = 0;
-                    d = Double.parseDouble(weightTextField[i].getText());
-                    tmpP[i] = d;
+                    int d = 0;
+                    d = Integer.parseInt(inputTextField[i].getText());
+                    tmpD[i] = d;
                 } catch (Exception e) {
 
                 }
             }
-
-            propertyWeightedLPTchebycheff.idealValue = tmpT;
-            propertyWeightedLPTchebycheff.weights = tmpP;
+            intArray.setIntArray(tmpD);
         }
     };
 
@@ -160,29 +114,18 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      * This method updates the data panel
      */
     private void updateDataPanel() {
-        double[] tmpT = this.propertyWeightedLPTchebycheff.idealValue;
-        double[] tmpP = this.propertyWeightedLPTchebycheff.weights;
-        int obj = this.propertyWeightedLPTchebycheff.p;
+        int[] tmpD = this.intArray.getIntArray();
 
-        this.pvalueTextField.setText("" + obj);
         this.dataPanel.removeAll();
-        this.dataPanel.setLayout(new GridLayout(tmpT.length + 1, 3));
-        this.dataPanel.add(new JLabel());
-        this.dataPanel.add(new JLabel("Ideal Value"));
-        this.dataPanel.add(new JLabel("Weights"));
-        this.idealTextField = new JTextField[tmpT.length];
-        this.weightTextField = new JTextField[tmpT.length];
-        for (int i = 0; i < tmpT.length; i++) {
-            JLabel label = new JLabel("Objective " + i + ": ");
+        this.dataPanel.setLayout(new GridLayout(tmpD.length, 2));
+        this.inputTextField = new JTextField[tmpD.length];
+        for (int i = 0; i < tmpD.length; i++) {
+            JLabel label = new JLabel("Value X" + i + ": ");
             this.dataPanel.add(label);
-            this.idealTextField[i] = new JTextField();
-            this.idealTextField[i].setText("" + tmpT[i]);
-            this.idealTextField[i].addKeyListener(this.readDoubleArrayAction);
-            this.dataPanel.add(this.idealTextField[i]);
-            this.weightTextField[i] = new JTextField();
-            this.weightTextField[i].setText("" + tmpP[i]);
-            this.weightTextField[i].addKeyListener(this.readDoubleArrayAction);
-            this.dataPanel.add(this.weightTextField[i]);
+            this.inputTextField[i] = new JTextField();
+            this.inputTextField[i].setText("" + tmpD[i]);
+            this.inputTextField[i].addKeyListener(this.readIntArrayAction);
+            this.dataPanel.add(this.inputTextField[i]);
         }
     }
 
@@ -194,8 +137,8 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      */
     @Override
     public void setValue(Object o) {
-        if (o instanceof PropertyWeightedLPTchebycheff) {
-            this.propertyWeightedLPTchebycheff = (PropertyWeightedLPTchebycheff) o;
+        if (o instanceof PropertyIntArray) {
+            this.intArray = (PropertyIntArray) o;
             this.updateEditor();
         }
     }
@@ -207,7 +150,7 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
      */
     @Override
     public Object getValue() {
-        return this.propertyWeightedLPTchebycheff;
+        return this.intArray;
     }
 
     @Override
@@ -241,18 +184,18 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (support == null) {
-            support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (support == null) {
-            support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 
     /**
@@ -293,7 +236,7 @@ public class GenericWeigthedLPTchebycheffEditor extends JPanel implements Proper
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
-        String rep = "Edit the ideal vector, p and ev. the weights.";
+        String rep = "Edit int[]";
         gfx.drawString(rep, 2, fm.getHeight() + vpad - 3);
     }
 

@@ -1,6 +1,6 @@
 package eva2.gui.editor;
 
-import eva2.gui.PropertyEpsilonConstraint;
+import eva2.gui.PropertyDoubleArray;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,14 +10,47 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
 /**
+ * A eva2.problems.simple focus listener with an object ID and callback.
  *
+ * @author mkron
  */
-public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEditor {
+class MyFocusListener implements FocusListener {
+    private int myID = -1;
+    private DoubleArrayEditor arrEditor = null;
 
+    public MyFocusListener(int id, DoubleArrayEditor gdae) {
+        myID = id;
+        this.arrEditor = gdae;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+     */
+    @Override
+    public void focusLost(FocusEvent e) {
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+     */
+    @Override
+    public void focusGained(FocusEvent e) {
+        arrEditor.notifyFocusID(myID);
+    }
+
+}
+
+
+/**
+ * A generic editor for PropertyDoubleArray.
+ */
+public class DoubleArrayEditor extends JPanel implements PropertyEditor {
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
     /**
      * The label for when we can't edit that type
      */
@@ -25,17 +58,21 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
     /**
      * The filePath that is to be edited
      */
-    private PropertyEpsilonConstraint epsilonConstraint;
+    private PropertyDoubleArray doubleArray;
 
     /**
      * The gaphix stuff
      */
-    private JPanel customEditor, dataPanel, buttonPanel, targetPanel;
-    private JTextField[] targetTextField;
-    private JComboBox objectiveComboBox;
-    private JButton okButton;
+    private JPanel customEditor, dataPanel, buttonPanel;
+    private JTextField[][] inputTextFields;
+    private JButton okButton, addButton, deleteButton, normalizeButton;
 
-    public GenericEpsilonConstraintEditor() {
+    /**
+     * Which columns has the focus? *
+     */
+    private int lastFocussedRow = -1;
+
+    public DoubleArrayEditor() {
         // compiled code
     }
 
@@ -46,17 +83,7 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
         this.customEditor = new JPanel();
         this.customEditor.setLayout(new BorderLayout());
 
-        // target panel
-        this.targetPanel = new JPanel();
-        this.targetPanel.setLayout(new GridLayout(1, 2));
-        this.targetPanel.add(new JLabel("Optimize:"));
-        this.objectiveComboBox = new JComboBox();
-        for (int i = 0; i < this.epsilonConstraint.targetValue.length; i++) {
-            this.objectiveComboBox.addItem("Objective " + i);
-        }
-        this.targetPanel.add(this.objectiveComboBox);
-        this.objectiveComboBox.addItemListener(this.objectiveAction);
-        this.customEditor.add(this.targetPanel, BorderLayout.NORTH);
+        this.customEditor.add(new JLabel("Current Double Array:"), BorderLayout.NORTH);
 
         // initialize data panel
         this.dataPanel = new JPanel();
@@ -65,6 +92,12 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
 
         // initialize button panel
         this.buttonPanel = new JPanel();
+        this.addButton = new JButton("Add");
+        this.addButton.addActionListener(this.addAction);
+        this.deleteButton = new JButton("Delete");
+        this.deleteButton.addActionListener(this.deleteAction);
+        this.normalizeButton = new JButton("Normalize");
+        this.normalizeButton.addActionListener(this.normalizeAction);
         this.okButton = new JButton("OK");
         this.okButton.setEnabled(true);
         this.okButton.addActionListener(new ActionListener() {
@@ -77,6 +110,9 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
                 }
             }
         });
+        this.buttonPanel.add(this.addButton);
+        this.buttonPanel.add(this.deleteButton);
+        this.buttonPanel.add(this.normalizeButton);
         this.buttonPanel.add(this.okButton);
         this.customEditor.add(this.buttonPanel, BorderLayout.SOUTH);
         this.updateEditor();
@@ -85,10 +121,36 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
     /**
      * This action listener adds an element to DoubleArray
      */
-    ItemListener objectiveAction = new ItemListener() {
+    ActionListener addAction = new ActionListener() {
         @Override
-        public void itemStateChanged(ItemEvent event) {
-            epsilonConstraint.optimizeObjective = objectiveComboBox.getSelectedIndex();
+        public void actionPerformed(ActionEvent event) {
+            doubleArray.addRowCopy(lastFocussedRow); // copy the last focussed row
+            updateEditor();
+        }
+    };
+
+    /**
+     * This action listener removes an element from the DoubleArray.
+     */
+    ActionListener deleteAction = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            if (!doubleArray.isValidRow(lastFocussedRow)) {
+                doubleArray.deleteRow(doubleArray.getNumRows() - 1);
+            } else {
+                doubleArray.deleteRow(lastFocussedRow);
+            }
+            updateEditor();
+        }
+    };
+
+    /**
+     * This action listener nomalizes each columng of the values of the DoubleArray.
+     */
+    ActionListener normalizeAction = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            doubleArray.normalizeColumns();
             updateEditor();
         }
     };
@@ -107,22 +169,24 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
 
         @Override
         public void keyReleased(KeyEvent event) {
-            double[] tmpT = epsilonConstraint.targetValue;
+            double[][] tmpDD = new double[inputTextFields.length][inputTextFields[0].length];
 
-            for (int i = 0; i < tmpT.length; i++) {
-
-                try {
-                    double d = 0;
-                    d = Double.parseDouble(targetTextField[i].getText());
-                    tmpT[i] = d;
-                } catch (Exception e) {
-
+            for (int i = 0; i < tmpDD.length; i++) {
+                for (int j = 0; j < tmpDD[0].length; j++) {
+                    try {
+                        double d = 0;
+                        d = Double.parseDouble(inputTextFields[i][j].getText());
+                        tmpDD[i][j] = d;
+                    } catch (Exception e) {
+                    }
                 }
             }
 
-            epsilonConstraint.targetValue = tmpT;
+            doubleArray.setDoubleArray(tmpDD);
+            //updateEditor();
         }
     };
+
 
     /**
      * The object may have changed update the editor.
@@ -135,29 +199,34 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
         }
     }
 
+
     /**
      * This method updates the data panel
      */
     private void updateDataPanel() {
-        double[] tmpT = this.epsilonConstraint.targetValue;
-        int obj = this.epsilonConstraint.optimizeObjective;
-
+        int numRows = doubleArray.getNumRows();
+        int numCols = doubleArray.getNumCols();
         this.dataPanel.removeAll();
-        this.dataPanel.setLayout(new GridLayout(tmpT.length + 1, 2));
-        this.dataPanel.add(new JLabel());
-        this.dataPanel.add(new JLabel("Target Value"));
-        this.targetTextField = new JTextField[tmpT.length];
-        for (int i = 0; i < tmpT.length; i++) {
-            JLabel label = new JLabel("Objective " + i + ": ");
+        this.dataPanel.setLayout(new GridLayout(numRows, numCols + 1));
+        this.inputTextFields = new JTextField[numRows][numCols];
+        for (int i = 0; i < numRows; i++) {
+            JLabel label = new JLabel("Value X" + i + ": ");
             this.dataPanel.add(label);
-            this.targetTextField[i] = new JTextField();
-            this.targetTextField[i].setText("" + tmpT[i]);
-            this.targetTextField[i].addKeyListener(this.readDoubleArrayAction);
-            this.dataPanel.add(this.targetTextField[i]);
+            for (int j = 0; j < numCols; j++) {
+                this.inputTextFields[i][j] = new JTextField();
+                this.inputTextFields[i][j].setText("" + doubleArray.getValue(i, j));
+                this.inputTextFields[i][j].addKeyListener(this.readDoubleArrayAction);
+                this.inputTextFields[i][j].addFocusListener(new MyFocusListener(i, this));
+                this.dataPanel.add(this.inputTextFields[i][j]);
+            }
         }
-        this.targetTextField[obj].setEditable(false);
     }
 
+    public void notifyFocusID(int id) {
+        // notification of which column has the focus
+        lastFocussedRow = id;
+//    	System.out.println("Focus now on " + id);
+    }
 
     /**
      * This method will set the value of object that is to be edited.
@@ -166,8 +235,8 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
      */
     @Override
     public void setValue(Object o) {
-        if (o instanceof PropertyEpsilonConstraint) {
-            this.epsilonConstraint = (PropertyEpsilonConstraint) o;
+        if (o instanceof PropertyDoubleArray) {
+            this.doubleArray = (PropertyDoubleArray) o;
             this.updateEditor();
         }
     }
@@ -179,7 +248,7 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
      */
     @Override
     public Object getValue() {
-        return this.epsilonConstraint;
+        return this.doubleArray;
     }
 
     @Override
@@ -213,18 +282,18 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (propertyChangeSupport == null) {
-            propertyChangeSupport = new PropertyChangeSupport(this);
+        if (support == null) {
+            support = new PropertyChangeSupport(this);
         }
-        propertyChangeSupport.addPropertyChangeListener(l);
+        support.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (propertyChangeSupport == null) {
-            propertyChangeSupport = new PropertyChangeSupport(this);
+        if (support == null) {
+            support = new PropertyChangeSupport(this);
         }
-        propertyChangeSupport.removePropertyChangeListener(l);
+        support.removePropertyChangeListener(l);
     }
 
     /**
@@ -265,7 +334,7 @@ public class GenericEpsilonConstraintEditor extends JPanel implements PropertyEd
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
-        String rep = "Edit Epsilon Constraint";
+        String rep = "Edit double array...";
         gfx.drawString(rep, 2, fm.getHeight() + vpad - 3);
     }
 

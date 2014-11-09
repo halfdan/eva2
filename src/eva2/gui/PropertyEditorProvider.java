@@ -25,7 +25,7 @@ public class PropertyEditorProvider {
 
         if ((editor == null) && useDefaultGOE) {
             if (cls.isArray()) {
-                editor = new GenericArrayEditor();
+                editor = new ArrayEditor();
             } else if (cls.isEnum()) {
                 editor = new EnumEditor();
             } else {
@@ -84,7 +84,7 @@ public class PropertyEditorProvider {
 
             if ((editor == null) && useDefaultGOE) {
                 if (type.isArray()) {
-                    editor = new GenericArrayEditor();
+                    editor = new ArrayEditor();
                 } else if (type.isEnum()) {
                     editor = new EnumEditor();
                 } else {
@@ -114,25 +114,25 @@ public class PropertyEditorProvider {
 
         PropertyEditorManager.registerEditor(SelectedTag.class, TagEditor.class);
         PropertyEditorManager.registerEditor(Enum.class, EnumEditor.class);
-        PropertyEditorManager.registerEditor(int[].class, GenericArrayEditor.class);
-        PropertyEditorManager.registerEditor(double[].class, GenericArrayEditor.class);
-        PropertyEditorManager.registerEditor(InterfaceTerminator[].class, GenericArrayEditor.class);
+        PropertyEditorManager.registerEditor(int[].class, ArrayEditor.class);
+        PropertyEditorManager.registerEditor(double[].class, ArrayEditor.class);
+        PropertyEditorManager.registerEditor(InterfaceTerminator[].class, ArrayEditor.class);
 
 
         // The Editor for the new GO
 
         PropertyEditorManager.registerEditor(StringSelection.class, StringSelectionEditor.class);
         // Traveling Salesman problem
-        PropertyEditorManager.registerEditor(GPArea.class, GenericAreaEditor.class);
-        PropertyEditorManager.registerEditor(PropertyDoubleArray.class, GenericDoubleArrayEditor.class);
-        PropertyEditorManager.registerEditor(PropertyIntArray.class, GenericIntArrayEditor.class);
-        PropertyEditorManager.registerEditor(PropertyEpsilonThreshold.class, GenericEpsilonThresholdEditor.class);
-        PropertyEditorManager.registerEditor(PropertyEpsilonConstraint.class, GenericEpsilonConstraintEditor.class);
-        PropertyEditorManager.registerEditor(PropertyWeightedLPTchebycheff.class, GenericWeigthedLPTchebycheffEditor.class);
-        PropertyEditorManager.registerEditor(PropertyFilePath.class, GenericFilePathEditor.class);
-        PropertyEditorManager.registerEditor(PropertyOptimizationObjectives.class, GenericOptimizationObjectivesEditor.class);
-        PropertyEditorManager.registerEditor(PropertyOptimizationObjectivesWithParam.class, GenericOptimizationObjectivesWithParamEditor.class);
+        PropertyEditorManager.registerEditor(GPArea.class, AreaEditor.class);
+        PropertyEditorManager.registerEditor(PropertyDoubleArray.class, DoubleArrayEditor.class);
+        PropertyEditorManager.registerEditor(PropertyIntArray.class, IntArrayEditor.class);
+        PropertyEditorManager.registerEditor(PropertyEpsilonThreshold.class, EpsilonThresholdEditor.class);
+        PropertyEditorManager.registerEditor(PropertyEpsilonConstraint.class, EpsilonConstraintEditor.class);
+        PropertyEditorManager.registerEditor(PropertyWeightedLPTchebycheff.class, WeigthedLPTchebycheffEditor.class);
+        PropertyEditorManager.registerEditor(PropertyFilePath.class, FilePathEditor.class);
+        PropertyEditorManager.registerEditor(PropertyOptimizationObjectives.class, OptimizationObjectivesEditor.class);
+        PropertyEditorManager.registerEditor(PropertyOptimizationObjectivesWithParam.class, OptimizationObjectivesWithParamEditor.class);
         PropertyEditorManager.registerEditor(eva2.gui.MultiLineString.class, MultiLineStringEditor.class);
-        PropertyEditorManager.registerEditor(PropertySelectableList.class, GenericArrayEditor.class);
+        PropertyEditorManager.registerEditor(PropertySelectableList.class, ArrayEditor.class);
     }
 }

@@ -6,13 +6,13 @@ import eva2.optimization.individuals.codings.gp.GPArea;
 /**
  *
  */
-public class GenericAreaEditor extends AbstractListSelectionEditor {
+public class AreaEditor extends AbstractListSelectionEditor {
     /**
      * The GPArea that is to be edited
      */
     private GPArea areaObject;
 
-    public GenericAreaEditor() {
+    public AreaEditor() {
         // compiled code
     }
 
