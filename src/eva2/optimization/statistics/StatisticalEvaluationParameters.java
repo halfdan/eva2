@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @eva2.util.annotation.Description(value = "Select statistical values to be calculated and tests to be performed.")
-public class EvAStatisticalEvaluationParams implements Serializable {
+public class StatisticalEvaluationParameters implements Serializable {
 
     private StringSelection singleStats = new StringSelection(StatisticsOnSingleDataSet.mean, StatisticsOnSingleDataSet.getInfoStrings());
     private StringSelection twoSampledStats = new StringSelection(StatisticsOnTwoSampledData.tTestUneqLenEqVar, StatisticsOnTwoSampledData.getInfoStrings());

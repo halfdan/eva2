@@ -18,10 +18,10 @@ import java.util.logging.Logger;
  * Do some statistical tests on a set of job results. Note that the plausibility (comparability of the
  * jobs) is not tested here.
  */
-public class EvAStatisticalEvaluation {
+public class StatisticalEvaluation {
 
-    private static Logger LOGGER = Logger.getLogger(EvAStatisticalEvaluation.class.getName());
-    public static EvAStatisticalEvaluationParams statsParams = new EvAStatisticalEvaluationParams();
+    private static Logger LOGGER = Logger.getLogger(StatisticalEvaluation.class.getName());
+    public static StatisticalEvaluationParameters statsParams = new StatisticalEvaluationParameters();
 
 
     public static void evaluate(InterfaceTextListener textout, OptimizationJob[] jobList, int[] selectedIndices,
@@ -189,7 +189,7 @@ public class EvAStatisticalEvaluation {
         double mean = Double.NaN;
         if (dat != null) {
             mean = Mathematics.mean(dat);
-            mean = EvAStatisticalEvaluation.formatOutput(mean);
+            mean = StatisticalEvaluation.formatOutput(mean);
         }
         return "" + mean;
     }
@@ -199,7 +199,7 @@ public class EvAStatisticalEvaluation {
         double median = Double.NaN;
         if (dat != null) {
             median = Mathematics.median2(dat, true);
-            median = EvAStatisticalEvaluation.formatOutput(median);
+            median = StatisticalEvaluation.formatOutput(median);
         }
 
         return "" + median;
@@ -210,7 +210,7 @@ public class EvAStatisticalEvaluation {
         double variance = Double.NaN;
         if (dat != null) {
             variance = Mathematics.variance(dat);
-            variance = EvAStatisticalEvaluation.formatOutput(variance);
+            variance = StatisticalEvaluation.formatOutput(variance);
         }
         return "" + variance;
     }
@@ -220,7 +220,7 @@ public class EvAStatisticalEvaluation {
         double stdDev = Double.NaN;
         if (dat != null) {
             stdDev = Mathematics.stdDev(dat);
-            stdDev = EvAStatisticalEvaluation.formatOutput(stdDev);
+            stdDev = StatisticalEvaluation.formatOutput(stdDev);
         }
         return "" + stdDev;
     }

@@ -162,9 +162,9 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                EvAStatisticalEvaluation.evaluate(jobList, jobList.getObjects(), genericArrayEditor.getSelectedIndices(),
-                        (StatisticsOnSingleDataSet[]) EvAStatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatisticsOnSingleDataSet.values()),
-                        (StatisticsOnTwoSampledData[]) EvAStatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatisticsOnTwoSampledData.values()));
+                StatisticalEvaluation.evaluate(jobList, jobList.getObjects(), genericArrayEditor.getSelectedIndices(),
+                        (StatisticsOnSingleDataSet[]) StatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatisticsOnSingleDataSet.values()),
+                        (StatisticsOnTwoSampledData[]) StatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatisticsOnTwoSampledData.values()));
             }
         };
         ActionListener sl = new ActionListener() {
@@ -193,7 +193,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
     }
 
     private static JComponent createStatsPanel(final OptimizationJobList jobList, final GenericArrayEditor edi) {
-        JParaPanel pan = new JParaPanel(EvAStatisticalEvaluation.statsParams, "Statistics");
+        JParaPanel pan = new JParaPanel(StatisticalEvaluation.statsParams, "Statistics");
         return pan.makePanel();
     }
 
