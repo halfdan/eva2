@@ -2,7 +2,7 @@ package eva2.optimization.statistics;
 
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertySelectableList;
-import eva2.gui.editor.GenericArrayEditor;
+import eva2.gui.editor.ArrayEditor;
 import eva2.optimization.enums.StatisticsOnSingleDataSet;
 import eva2.optimization.enums.StatisticsOnTwoSampledData;
 import eva2.optimization.go.InterfaceOptimizationParameters;
@@ -155,14 +155,14 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
      * @return
      */
     public static PropertyEditor makeEditor(final Component parent, final OptimizationJobList jobList) {
-        final GenericArrayEditor genericArrayEditor = new GenericArrayEditor();
-        genericArrayEditor.setWithAddButton(false);
-        genericArrayEditor.setWithSetButton(false);
+        final ArrayEditor arrayEditor = new ArrayEditor();
+        arrayEditor.setWithAddButton(false);
+        arrayEditor.setWithSetButton(false);
         ActionListener al = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                StatisticalEvaluation.evaluate(jobList, jobList.getObjects(), genericArrayEditor.getSelectedIndices(),
+                StatisticalEvaluation.evaluate(jobList, jobList.getObjects(), arrayEditor.getSelectedIndices(),
                         (StatisticsOnSingleDataSet[]) StatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatisticsOnSingleDataSet.values()),
                         (StatisticsOnTwoSampledData[]) StatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatisticsOnTwoSampledData.values()));
             }
@@ -171,28 +171,28 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                genericArrayEditor.selectDeselectAll();
+                arrayEditor.selectDeselectAll();
             }
         };
         ActionListener sal = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                jobList.saveSelectedJobs(genericArrayEditor);
+                jobList.saveSelectedJobs(arrayEditor);
             }
         };
-        genericArrayEditor.addUpperActionButton("(De-)Sel. all", sl);
-        genericArrayEditor.addUpperActionButton("Test Stats", al);
-        genericArrayEditor.addLowerActionButton("Save selected", sal);
+        arrayEditor.addUpperActionButton("(De-)Sel. all", sl);
+        arrayEditor.addUpperActionButton("Test Stats", al);
+        arrayEditor.addLowerActionButton("Save selected", sal);
 
-        genericArrayEditor.addPopupItem("Reuse as current settings", getReuseActionListener(parent, jobList));
-        genericArrayEditor.setAdditionalCenterPane(createStatsPanel(jobList, genericArrayEditor));
-        genericArrayEditor.setValue(jobList);
+        arrayEditor.addPopupItem("Reuse as current settings", getReuseActionListener(parent, jobList));
+        arrayEditor.setAdditionalCenterPane(createStatsPanel(jobList, arrayEditor));
+        arrayEditor.setValue(jobList);
 
-        return genericArrayEditor;
+        return arrayEditor;
     }
 
-    private static JComponent createStatsPanel(final OptimizationJobList jobList, final GenericArrayEditor edi) {
+    private static JComponent createStatsPanel(final OptimizationJobList jobList, final ArrayEditor edi) {
         JParaPanel pan = new JParaPanel(StatisticalEvaluation.statsParams, "Statistics");
         return pan.makePanel();
     }

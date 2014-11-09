@@ -14,16 +14,12 @@ import java.io.File;
 /**
  *
  */
-public class GenericFilePathEditor extends JPanel implements PropertyEditor {
+public class FilePathEditor extends JPanel implements PropertyEditor {
 
     /**
      * Handles property change notification
      */
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-    /**
-     * The label for when we can't edit that type
-     */
-    private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
     /**
      * The filePath that is to be edited
      */
@@ -35,7 +31,7 @@ public class GenericFilePathEditor extends JPanel implements PropertyEditor {
     private JFileChooser fileChooser;
     private JPanel panel;
 
-    public GenericFilePathEditor() {
+    public FilePathEditor() {
         // compiled code
     }
 

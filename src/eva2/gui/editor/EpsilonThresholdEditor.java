@@ -1,6 +1,6 @@
 package eva2.gui.editor;
 
-import eva2.gui.PropertyDoubleArray;
+import eva2.gui.PropertyEpsilonThreshold;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,71 +10,28 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
 /**
- * A eva2.problems.simple focus listener with an object ID and callback.
  *
- * @author mkron
  */
-class MyFocusListener implements FocusListener {
-    private int myID = -1;
-    private GenericDoubleArrayEditor arrEditor = null;
+public class EpsilonThresholdEditor extends JPanel implements PropertyEditor {
 
-    public MyFocusListener(int id, GenericDoubleArrayEditor gdae) {
-        myID = id;
-        this.arrEditor = gdae;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-     */
-    @Override
-    public void focusLost(FocusEvent e) {
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
-     */
-    @Override
-    public void focusGained(FocusEvent e) {
-        arrEditor.notifyFocusID(myID);
-    }
-
-}
-
-
-/**
- * A generic editor for PropertyDoubleArray.
- */
-public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
-
-    private static final long serialVersionUID = 7749892624600018812L;
     /**
      * Handles property change notification
      */
-    private PropertyChangeSupport support = new PropertyChangeSupport(this);
-    /**
-     * The label for when we can't edit that type
-     */
-    private JLabel label = new JLabel("Can't edit", SwingConstants.CENTER);
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     /**
      * The filePath that is to be edited
      */
-    private PropertyDoubleArray doubleArray;
+    private PropertyEpsilonThreshold epsilonThreshhold;
 
     /**
      * The gaphix stuff
      */
-    private JPanel customEditor, dataPanel, buttonPanel;
-    private JTextField[][] inputTextFields;
-    private JButton okButton, addButton, deleteButton, normalizeButton;
+    private JPanel customEditor, dataPanel, buttonPanel, targetPanel;
+    private JTextField[] targetTextField, punishTextField;
+    private JComboBox objectiveComboBox;
+    private JButton okButton;
 
-    /**
-     * Which columns has the focus? *
-     */
-    private int lastFocussedRow = -1;
-
-    public GenericDoubleArrayEditor() {
+    public EpsilonThresholdEditor() {
         // compiled code
     }
 
@@ -85,7 +42,17 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
         this.customEditor = new JPanel();
         this.customEditor.setLayout(new BorderLayout());
 
-        this.customEditor.add(new JLabel("Current Double Array:"), BorderLayout.NORTH);
+        // target panel
+        this.targetPanel = new JPanel();
+        this.targetPanel.setLayout(new GridLayout(1, 2));
+        this.targetPanel.add(new JLabel("Optimize:"));
+        this.objectiveComboBox = new JComboBox();
+        for (int i = 0; i < this.epsilonThreshhold.targetValue.length; i++) {
+            this.objectiveComboBox.addItem("Objective " + i);
+        }
+        this.targetPanel.add(this.objectiveComboBox);
+        this.objectiveComboBox.addItemListener(this.objectiveAction);
+        this.customEditor.add(this.targetPanel, BorderLayout.NORTH);
 
         // initialize data panel
         this.dataPanel = new JPanel();
@@ -94,12 +61,6 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
 
         // initialize button panel
         this.buttonPanel = new JPanel();
-        this.addButton = new JButton("Add");
-        this.addButton.addActionListener(this.addAction);
-        this.deleteButton = new JButton("Delete");
-        this.deleteButton.addActionListener(this.deleteAction);
-        this.normalizeButton = new JButton("Normalize");
-        this.normalizeButton.addActionListener(this.normalizeAction);
         this.okButton = new JButton("OK");
         this.okButton.setEnabled(true);
         this.okButton.addActionListener(new ActionListener() {
@@ -112,9 +73,6 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
                 }
             }
         });
-        this.buttonPanel.add(this.addButton);
-        this.buttonPanel.add(this.deleteButton);
-        this.buttonPanel.add(this.normalizeButton);
         this.buttonPanel.add(this.okButton);
         this.customEditor.add(this.buttonPanel, BorderLayout.SOUTH);
         this.updateEditor();
@@ -123,36 +81,10 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     /**
      * This action listener adds an element to DoubleArray
      */
-    ActionListener addAction = new ActionListener() {
+    ItemListener objectiveAction = new ItemListener() {
         @Override
-        public void actionPerformed(ActionEvent event) {
-            doubleArray.addRowCopy(lastFocussedRow); // copy the last focussed row
-            updateEditor();
-        }
-    };
-
-    /**
-     * This action listener removes an element from the DoubleArray.
-     */
-    ActionListener deleteAction = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            if (!doubleArray.isValidRow(lastFocussedRow)) {
-                doubleArray.deleteRow(doubleArray.getNumRows() - 1);
-            } else {
-                doubleArray.deleteRow(lastFocussedRow);
-            }
-            updateEditor();
-        }
-    };
-
-    /**
-     * This action listener nomalizes each columng of the values of the DoubleArray.
-     */
-    ActionListener normalizeAction = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            doubleArray.normalizeColumns();
+        public void itemStateChanged(ItemEvent event) {
+            epsilonThreshhold.optimizeObjective = objectiveComboBox.getSelectedIndex();
             updateEditor();
         }
     };
@@ -171,24 +103,31 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
 
         @Override
         public void keyReleased(KeyEvent event) {
-            double[][] tmpDD = new double[inputTextFields.length][inputTextFields[0].length];
+            double[] tmpT = epsilonThreshhold.targetValue;
+            double[] tmpP = epsilonThreshhold.punishment;
 
-            for (int i = 0; i < tmpDD.length; i++) {
-                for (int j = 0; j < tmpDD[0].length; j++) {
-                    try {
-                        double d = 0;
-                        d = Double.parseDouble(inputTextFields[i][j].getText());
-                        tmpDD[i][j] = d;
-                    } catch (Exception e) {
-                    }
+            for (int i = 0; i < tmpT.length; i++) {
+
+                try {
+                    double d = 0;
+                    d = Double.parseDouble(targetTextField[i].getText());
+                    tmpT[i] = d;
+                } catch (Exception e) {
+
+                }
+                try {
+                    double d = 0;
+                    d = Double.parseDouble(punishTextField[i].getText());
+                    tmpP[i] = d;
+                } catch (Exception e) {
+
                 }
             }
 
-            doubleArray.setDoubleArray(tmpDD);
-            //updateEditor();
+            epsilonThreshhold.targetValue = tmpT;
+            epsilonThreshhold.punishment = tmpP;
         }
     };
-
 
     /**
      * The object may have changed update the editor.
@@ -201,34 +140,37 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
         }
     }
 
-
     /**
      * This method updates the data panel
      */
     private void updateDataPanel() {
-        int numRows = doubleArray.getNumRows();
-        int numCols = doubleArray.getNumCols();
+        double[] tmpT = this.epsilonThreshhold.targetValue;
+        double[] tmpP = this.epsilonThreshhold.punishment;
+        int obj = this.epsilonThreshhold.optimizeObjective;
+
         this.dataPanel.removeAll();
-        this.dataPanel.setLayout(new GridLayout(numRows, numCols + 1));
-        this.inputTextFields = new JTextField[numRows][numCols];
-        for (int i = 0; i < numRows; i++) {
-            JLabel label = new JLabel("Value X" + i + ": ");
+        this.dataPanel.setLayout(new GridLayout(tmpT.length + 1, 3));
+        this.dataPanel.add(new JLabel());
+        this.dataPanel.add(new JLabel("Target Value"));
+        this.dataPanel.add(new JLabel("Punishment"));
+        this.targetTextField = new JTextField[tmpT.length];
+        this.punishTextField = new JTextField[tmpT.length];
+        for (int i = 0; i < tmpT.length; i++) {
+            JLabel label = new JLabel("Objective " + i + ": ");
             this.dataPanel.add(label);
-            for (int j = 0; j < numCols; j++) {
-                this.inputTextFields[i][j] = new JTextField();
-                this.inputTextFields[i][j].setText("" + doubleArray.getValue(i, j));
-                this.inputTextFields[i][j].addKeyListener(this.readDoubleArrayAction);
-                this.inputTextFields[i][j].addFocusListener(new MyFocusListener(i, this));
-                this.dataPanel.add(this.inputTextFields[i][j]);
-            }
+            this.targetTextField[i] = new JTextField();
+            this.targetTextField[i].setText("" + tmpT[i]);
+            this.targetTextField[i].addKeyListener(this.readDoubleArrayAction);
+            this.dataPanel.add(this.targetTextField[i]);
+            this.punishTextField[i] = new JTextField();
+            this.punishTextField[i].setText("" + tmpP[i]);
+            this.punishTextField[i].addKeyListener(this.readDoubleArrayAction);
+            this.dataPanel.add(this.punishTextField[i]);
         }
+        this.targetTextField[obj].setEditable(false);
+        this.punishTextField[obj].setEditable(false);
     }
 
-    public void notifyFocusID(int id) {
-        // notification of which column has the focus
-        lastFocussedRow = id;
-//    	System.out.println("Focus now on " + id);
-    }
 
     /**
      * This method will set the value of object that is to be edited.
@@ -237,8 +179,8 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      */
     @Override
     public void setValue(Object o) {
-        if (o instanceof PropertyDoubleArray) {
-            this.doubleArray = (PropertyDoubleArray) o;
+        if (o instanceof PropertyEpsilonThreshold) {
+            this.epsilonThreshhold = (PropertyEpsilonThreshold) o;
             this.updateEditor();
         }
     }
@@ -250,7 +192,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
      */
     @Override
     public Object getValue() {
-        return this.doubleArray;
+        return this.epsilonThreshhold;
     }
 
     @Override
@@ -284,18 +226,18 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener l) {
-        if (support == null) {
-            support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        support.addPropertyChangeListener(l);
+        propertyChangeSupport.addPropertyChangeListener(l);
     }
 
     @Override
     public void removePropertyChangeListener(PropertyChangeListener l) {
-        if (support == null) {
-            support = new PropertyChangeSupport(this);
+        if (propertyChangeSupport == null) {
+            propertyChangeSupport = new PropertyChangeSupport(this);
         }
-        support.removePropertyChangeListener(l);
+        propertyChangeSupport.removePropertyChangeListener(l);
     }
 
     /**
@@ -336,7 +278,7 @@ public class GenericDoubleArrayEditor extends JPanel implements PropertyEditor {
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
-        String rep = "Edit double array...";
+        String rep = "Edit Epsilon Threshhold";
         gfx.drawString(rep, 2, fm.getHeight() + vpad - 3);
     }
 
