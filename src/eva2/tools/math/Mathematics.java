@@ -631,9 +631,15 @@ public final class Mathematics {
         for (int i = 0; i < vector.length; i++) {
             result += Math.pow(vector[i] - mean, 2);
         }
-        return result;
+        return result / (vector.length - 1);
     }
 
+    /**
+     * Computes the sample standard deviation.
+     *
+     * @param vector
+     * @return
+     */
     public static double stdDev(double[] vector) {
         double result = variance(vector);
         result = Math.sqrt(result);
@@ -749,8 +755,8 @@ public final class Mathematics {
      */
     public static double product(double[] vals) {
         double prod = 1.;
-        for (int i = 0; i < vals.length; i++) {
-            prod *= vals[i];
+        for (double val : vals) {
+            prod *= val;
         }
         return prod;
     }
