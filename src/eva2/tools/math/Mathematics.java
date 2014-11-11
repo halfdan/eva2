@@ -646,6 +646,15 @@ public final class Mathematics {
         return result;
     }
 
+    /**
+     * Performs two-sample unpaired t test and returns t critical value.
+     *
+     * Both samples have to have the same size and equal variance.
+     *
+     * @param vector1
+     * @param vector2
+     * @return
+     */
     public static double tTestEqSizeEqVar(double[] vector1, double[] vector2) {
         double n = (double) vector1.length;
         double mean1 = mean(vector1);

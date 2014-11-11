@@ -108,4 +108,12 @@ public class MathematicsTest {
     public void testScale() throws Exception {
 
     }
+
+    @Test
+    public void testTTestEqSizeEqVar() {
+        double[] values1 = {6,6,2,7,8,8,2,3,5,7,10,5,4,7,5,7,4,5,2,5,3,4,4,4,4};
+        double[] values2 = {6,11,8,5,11,8,10,7,4,3,7,6,10,10,6,5,10,11,13,8,5,11,7,8,5};
+
+        assertEquals(-4.05593, Mathematics.tTestEqSizeEqVar(values1, values2), 0.00001);
+    }
 }
