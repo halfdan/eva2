@@ -369,7 +369,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         }
 //		min.setDoubleGenotype(minValInDim); // set all dimensions to min
 //		max.setDoubleGenotype(maxValInDim); // set all dimensions to max
-        this.maxPosDist = Mathematics.euclidianDist(minValInDim, maxValInDim);
+        this.maxPosDist = Mathematics.euclideanDist(minValInDim, maxValInDim);
     }
 
 //	/**

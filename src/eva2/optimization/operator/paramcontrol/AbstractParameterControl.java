@@ -8,7 +8,7 @@ import eva2.optimization.population.Population;
  * the first one to retrieve an array of strings with the canonical names of the controlled parameters,
  * and the second one to produce an object array of the same length with the values to be assigned
  * at the iteration. If there is no iteration known, iteration counts will be set to -1.
- * <p/>
+ * <p>
  * This class can be used to implement strategies to adapt multiple parameters within one strategy.
  * For single parameter adaption, better use the ParamAdaption inheritance tree and the ParameterControlManager class.
  *

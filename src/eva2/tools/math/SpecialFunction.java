@@ -36,7 +36,7 @@ package eva2.tools.math;
  * Like the java.lang.Math class this class is final and cannot be
  * subclassed.
  * All physical constants are in cgs units.
- * <p/>
+ * <p>
  * <B>NOTE:</B> These special functions do not necessarily use the fastest
  * or most accurate algorithms.
  *
@@ -527,7 +527,7 @@ public final class SpecialFunction {
     /**
      * @param x a double value
      * @return the Gamma function of the value.
-     *         <p/>
+     *         <p>
      *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
@@ -662,7 +662,7 @@ public final class SpecialFunction {
      * @param a double value
      * @param x double value
      * @return the Complemented Incomplete Gamma function.
-     *         <p/>
+     *         <p>
      *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
@@ -737,7 +737,7 @@ public final class SpecialFunction {
      * @param a double value
      * @param x double value
      * @return the Incomplete Gamma function.
-     *         <p/>
+     *         <p>
      *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
@@ -811,7 +811,7 @@ public final class SpecialFunction {
      * @param df degrees of freedom
      * @param x  double value
      * @return the Chi-Square function.
-     *         <p/>
+     *         <p>
      */
 
     static public double chisqc(double df, double x)
@@ -893,7 +893,7 @@ public final class SpecialFunction {
     /**
      * @param a double value
      * @return The complementary Error function
-     *         <p/>
+     *         <p>
      *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
@@ -997,7 +997,7 @@ public final class SpecialFunction {
     /**
      * @param a double value
      * @return The Error function
-     *         <p/>
+     *         <p>
      *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
@@ -1174,7 +1174,7 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
      * @param bb double value
      * @param xx double value
      * @return The Incomplete Beta Function evaluated from zero to xx.
-     *         <p/>
+     *         <p>
      *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.3:  July, 1995<BR>

@@ -45,8 +45,8 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
     /**
      * This adds a new job to the list.
      *
-     * @param params
-     * @param stats
+     * @param params Optimization parameters
+     * @param stats Statistics instance
      */
     public OptimizationJob addJob(InterfaceOptimizationParameters params, AbstractStatistics stats) {
         OptimizationJob job = new OptimizationJob((InterfaceOptimizationParameters) Serializer.deepClone(params), stats);
@@ -76,7 +76,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
     /**
      * Return the last job in the list, which is also the last one added.
      *
-     * @return
+     * @return The last job added
      */
     public OptimizationJob lastJob() {
         OptimizationJob[] curArr = getObjects();
@@ -90,7 +90,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
     /**
      * Return a list of the currently selected jobs.
      *
-     * @return
+     * @return A List of selected jobs
      */
     public ArrayList<OptimizationJob> getSelectedJobs() {
         OptimizationJob[] selected = getSelectedObjects();

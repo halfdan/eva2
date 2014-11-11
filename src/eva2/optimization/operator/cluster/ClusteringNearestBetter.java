@@ -18,7 +18,7 @@ import java.util.Vector;
 /**
  * Hierarchical clustering after Preuss et al., "Counteracting Genetic Drift and Disruptive Recombination
  * in (mu+,lambda)-EA on Multimodal Fitness Landscapes", GECCO '05.
- * <p/>
+ * <p>
  * A tree is produced by assigning each individual the closest individual with better fitness.
  * Connections with a distance above a certain threshold are cut. After that, each interconnected subtree forms a cluster.
  * In the paper, the threshold is deduced as 2*d_p for d_p: the mean distance in the population.

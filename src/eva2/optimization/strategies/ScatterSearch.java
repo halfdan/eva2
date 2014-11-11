@@ -37,7 +37,7 @@ import java.util.ArrayList;
  * values in the reference set or as an absolute value (in both cases only the
  * first fitness criterion is regarded).
  *
- *         <p/>
+ *         <p>
  *         [1] M.Rodiguez-Fernandez, J.Egea, J.Banga: Novel metaheuristic for parameter
  *         estimation in nonlinear dynamic biological systems. BMC Bioinformatics 2006,
  *         7:483. BioMed Central 2006.

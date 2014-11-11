@@ -34,12 +34,12 @@ import java.util.*;
 /**
  * The infamous clustering based niching EA, still under construction. It should
  * be able to identify and track multiple global/local optima at the same time.
- * <p/>
+ * <p>
  * Notes: For std. GA, the mutation rate may have to reduced, because the
  * initial step size tends to be rel. large and easily disperse clustered
  * species (so that they fall below the minimum swarm size and the local optimum
  * is lost).
- * <p/>
+ * <p>
  * For the CBN-PSO remember to use the IndividualDataMetric so that the
  * remembered positions are used for clustering (which are rel. stable - so that
  * species clustering actually makes sense).
@@ -1179,7 +1179,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
      * Calculate the clustering parameter in such a way that about one q-th part
      * of the range of the given problem is within one hyper sphere of the
      * clustering parameter.
-     * <p/>
+     * <p>
      * For certain types of parameter adaption schemes, this automatically sets
      * the upper limit if the clustering parameter is controlled.
      *

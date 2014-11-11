@@ -33,7 +33,7 @@ public interface InterfaceProblemDouble {
      * Get the upper bound of the double range in the given dimension. Override
      * this to implement non-symmetric ranges. User setDefaultRange for symmetric ranges.
      *
-     * @param dim
+     * @param dim Dimension
      * @return the upper bound of the double range in the given dimension
      * @see #makeRange()
      * @see #getRangeLowerBound(int dim)
@@ -44,7 +44,7 @@ public interface InterfaceProblemDouble {
      * Get the lower bound of the double range in the given dimension. Override
      * this to implement non-symmetric ranges. Use setDefaultRange for symmetric ranges.
      *
-     * @param dim
+     * @param dim Dimension
      * @return the lower bound of the double range in the given dimension
      * @see #makeRange()
      * @see #getRangeUpperBound(int dim)

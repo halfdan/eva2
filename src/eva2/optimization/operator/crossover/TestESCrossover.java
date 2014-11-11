@@ -240,13 +240,10 @@ public class TestESCrossover implements java.io.Serializable {
 
     /**
      * This method will test the crossover operator
-     *
-     * @param args
      */
     public static void main(String[] args) {
         TestESCrossover t = new TestESCrossover();
         t.initFrame();
-
     }
 
     public void setCrossover(InterfaceCrossover NumberOfCrossovers) {

@@ -202,7 +202,7 @@ public class DMeasures implements Serializable {
      * they differ if there are scale functions selected which are not the identity
      * if the given rectangle does not belong to the image area of the scale
      * functions, the method returns <code>null</code>
-     * <p/>
+     * <p>
      * Tuning: rect must not be empty
      *
      * @param rect the image rectangle

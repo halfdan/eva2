@@ -5,6 +5,7 @@ import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 /**
  * The fitness modifier are defunct and are to be moved to
@@ -69,34 +70,28 @@ public class FitnessSharing implements java.io.Serializable, InterfaceFitnessMod
     /**
      * These methods allows you to set/get the Sharing Distance
      *
-     * @param SharingDistance
+     * @param sharingDistance The sharing distance
      */
-    public void setSharingDistance(double SharingDistance) {
-        this.sharingDistance = SharingDistance;
+    @Parameter(description = "The threshold for the similarity penalty.")
+    public void setSharingDistance(double sharingDistance) {
+        this.sharingDistance = sharingDistance;
     }
 
     public double getSharingDistance() {
         return this.sharingDistance;
     }
 
-    public String sharingDistanceTipText() {
-        return "The threshold for the similarity penalty.";
-    }
-
     /**
      * These methods allows you to set/get the type of Distance Metric.
      *
-     * @param Metric
+     * @param metric The distance metric to use
      */
-    public void setMetric(InterfaceDistanceMetric Metric) {
-        this.distanceMetric = Metric;
+    @Parameter(name = "metric", description = "The distance metric used. Note: This depends on the type of EAIndividual used!")
+    public void setMetric(InterfaceDistanceMetric metric) {
+        this.distanceMetric = metric;
     }
 
     public InterfaceDistanceMetric getMetric() {
         return this.distanceMetric;
-    }
-
-    public String metricTipText() {
-        return "The distance metric used. Note: This depends on the type of EAIndividual used!";
     }
 }

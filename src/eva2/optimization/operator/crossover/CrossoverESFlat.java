@@ -12,7 +12,7 @@ import eva2.util.annotation.Description;
  * The flat crossover inits values randomly within the extreme values of
  * all parents, namely
  * c[i]=rand(min_j(p_ij), max_j(p_ij)).
- * </p><p>
+ * <p>
  * where c[i] is the i-th child component and p_ij is the i-th component
  * of parent j.
  */

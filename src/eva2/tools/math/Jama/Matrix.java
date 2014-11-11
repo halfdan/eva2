@@ -19,7 +19,7 @@ import java.util.Vector;
 
 /**
  * Jama = Java Matrix class.
- * <p/>
+ * <p>
  * The Java Matrix Class provides the fundamental operations of numerical
  * linear algebra.  Various constructors create Matrices from two dimensional
  * arrays of double precision floating point numbers.  Various "gets" and
@@ -29,7 +29,7 @@ import java.util.Vector;
  * Methods for reading and printing matrices are also included.  All the
  * operations in this version of the Matrix Class involve real matrices.
  * Complex matrices may be handled in a future version.
- * <p/>
+ * <p>
  * Five fundamental matrix decompositions, which consist of pairs or triples
  * of matrices, permutation vectors, and the like, produce results in five
  * decomposition classes.  These decompositions are accessed by the Matrix
@@ -44,7 +44,7 @@ import java.util.Vector;
  * </UL>
  * <DL>
  * <DT><B>Example of use:</B></DT>
- * <p/>
+ * <p>
  * <DD>Solve a linear system A x = b and compute the residual norm, ||b - A x||.
  * <P><PRE>
  * double[][] vals = {{1.,2.,3},{4.,5.,6.},{7.,8.,10.}};
@@ -1428,7 +1428,7 @@ public class Matrix implements Cloneable, Serializable {
     /**
      * Given two vectors, ``[a0, a1, ..., aM]`` and ``[b0, b1, ..., bN]``,
      * the outer product becomes::
-     * <p/>
+     * <p>
      * [[a0*b0  a0*b1 ... a0*bN ]
      * [a1*b0    .
      * [ ...          .

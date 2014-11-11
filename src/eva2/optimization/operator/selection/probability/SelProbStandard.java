@@ -5,7 +5,7 @@ import eva2.util.annotation.Description;
 
 /**
  * A eva2.problems.simple sum to calculate the selection probability.
- * <p/>
+ * <p>
  * p(i is selected) = exp(-fitness(i))/sum_j(exp(-fitness(j)))
  */
 @Description("This is a standard normation method using the exp function.")

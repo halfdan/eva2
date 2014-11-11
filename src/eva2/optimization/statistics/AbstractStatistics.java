@@ -26,17 +26,17 @@ import java.util.*;
  * updated per iteration in createNextGenerationPerformed and reported to listeners in stopOptimizationPerformed.
  * Several different verbosity levels are regarded.
  * The method plotCurrentResults should be implemented to plot further results per iteration.
- * <p/>
+ * <p>
  * All displayable data is now routed through a single pipeline, which consists in a
  * list of Objects assembled in the getOutputValues method. This allows all eva2.problems.simple data types which are
  * provided by the external informer instances to be handled uniformly to the internally collected data, and
  * thus they can be plotted and text-dumped in the same manner.
  * Basic fields are identified by the enum GraphSelectionEnum and are available independently of additional
  * informer instances.
- * <p/>
+ * <p>
  * Depending on the field selection state and the informers, the list of data fields is dynamically altered,
  * however changes during a multi-run are ignored, since the potential of inconsistencies is too high.
- * <p/>
+ * <p>
  * Listeners implementing InterfaceTextListener receive String output (human readable).
  * Listeners implementing InterfaceStatisticsListener receive the raw data per iteration.
  */

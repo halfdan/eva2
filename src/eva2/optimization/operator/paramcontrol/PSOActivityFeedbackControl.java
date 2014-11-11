@@ -13,7 +13,7 @@ import java.io.Serializable;
  * here is simply the average relative velocity of the particles.
  * The target activity decreases with time, and if the current activity is too low (high), the
  * inertia is increased (decreased) so that the activity approximates the target activity.
- * <p/>
+ * <p>
  * The original authors used an absolute velocity measure and FIPS which is not implemented in EvA2 so far.
  * However, after some initial tests, this version seems
  * to work ok, although it depends on the defined target activity. I am not convinced that in general it is

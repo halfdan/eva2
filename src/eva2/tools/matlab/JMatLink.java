@@ -250,12 +250,12 @@ public class JMatLink extends Thread {
 
     /**
      * This is the constructor for the JMatLink library.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   <b>JMatLink</b> engine = new <b>JMatLink()</b>;
@@ -297,14 +297,14 @@ public class JMatLink extends Thread {
 
     /**
      * Open engine. This command is used to open a <b>single</b> connection
-     * <p/>
+     * <p>
      * to matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   JMatLink engine = new JMatLink();
@@ -330,18 +330,18 @@ public class JMatLink extends Thread {
 
     /**
      * Open engine. This command is used to open a <b>single</b> connection
-     * <p/>
+     * <p>
      * to matlab.
-     * <p/>
+     * <p>
      * This command is only useful on unix systems. On windows
-     * <p/>
+     * <p>
      * the optional parameter <b>must</b> be NULL.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   JMatLink engine = new JMatLink();
@@ -382,14 +382,14 @@ public class JMatLink extends Thread {
 
     /**
      * Open engine for single use. This command is used to open
-     * <p/>
+     * <p>
      * <b>multiple</b> connections to matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   int a,b;
@@ -424,14 +424,14 @@ public class JMatLink extends Thread {
 
     /**
      * Open engine for single use. This command is used to open
-     * <p/>
+     * <p>
      * <b>multiple</b> connections to matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   int a,b;
@@ -478,12 +478,12 @@ public class JMatLink extends Thread {
 
     /**
      * Close the connection to matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *  JMatLink engine = new JMatLink();
@@ -510,12 +510,12 @@ public class JMatLink extends Thread {
 
     /**
      * Close a specified connection to an instance of matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *  int a,b;
@@ -564,11 +564,11 @@ public class JMatLink extends Thread {
 
     /**
      * Evaluate an expression in matlab's workspace.
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   JMatLink engine = new JMatLink();
@@ -595,12 +595,12 @@ public class JMatLink extends Thread {
 
     /**
      * Evaluate an expression in a specified workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *  int a,b;
@@ -653,12 +653,12 @@ public class JMatLink extends Thread {
 
     /**
      * Get a scalar value from matlab's workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *  double a;
@@ -689,12 +689,12 @@ public class JMatLink extends Thread {
 
     /**
      * Get a scalar value from a specified workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   double a;
@@ -749,12 +749,12 @@ public class JMatLink extends Thread {
 
     /**
      * Get an array (1 * n) from matlab's workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   double[] array;
@@ -785,12 +785,12 @@ public class JMatLink extends Thread {
 
     /**
      * Get an array (1 * n) from a specified workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   int b;
@@ -839,12 +839,12 @@ public class JMatLink extends Thread {
 
     /**
      * Get an array from matlab's workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   int b;
@@ -877,12 +877,12 @@ public class JMatLink extends Thread {
 
     /**
      * Get an array from a specified instance/workspace of matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   int b;
@@ -931,12 +931,12 @@ public class JMatLink extends Thread {
 
     /**
      * Get an 'char' array (string) from matlab's workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   String array;
@@ -983,12 +983,12 @@ public class JMatLink extends Thread {
 
     /**
      * Put an array into a specified workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   int array = 1;
@@ -1027,12 +1027,12 @@ public class JMatLink extends Thread {
 
     /**
      * Put an array into matlab's workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   double array = 1;
@@ -1061,12 +1061,12 @@ public class JMatLink extends Thread {
 
     /**
      * Put an array into a specified instance/workspace of matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   int b;
@@ -1101,14 +1101,14 @@ public class JMatLink extends Thread {
 
     /**
      * Put an array (1 dimensional) into a specified instance/workspace of
-     * <p/>
+     * <p>
      * matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   double[] array = {1.0 , 2.0 , 3.0};
@@ -1137,14 +1137,14 @@ public class JMatLink extends Thread {
 
     /**
      * Put an array (1 dimensional) into a specified instance/workspace of
-     * <p/>
+     * <p>
      * matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   int b;
@@ -1184,12 +1184,12 @@ public class JMatLink extends Thread {
 
     /**
      * Put an array (2 dimensional) into matlab's workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   double[][] array={{1.0 , 2.0 , 3.0},
@@ -1220,14 +1220,14 @@ public class JMatLink extends Thread {
 
     /**
      * Put an array (2 dimensional) into a specified instance/workspace of
-     * <p/>
+     * <p>
      * matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      * int b;
@@ -1279,12 +1279,12 @@ public class JMatLink extends Thread {
 
     /**
      * Return the outputs of previous commands from matlab's workspace.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   String buffer;
@@ -1317,14 +1317,14 @@ public class JMatLink extends Thread {
 
     /**
      * Return the outputs of previous commands from a specified instance/
-     * <p/>
+     * <p>
      * workspace form matlab.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   String buffer;
@@ -1357,16 +1357,16 @@ public class JMatLink extends Thread {
 
     /**
      * Return the ouputs of previous commands in matlab's workspace.
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
      * Right now the parameter <i>buflen</i> is not supported.
-     * <p/>
-     * <p/>
-     * <p/>
-     * <p/>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
      * E.g.:<br>
-     * <p/>
+     * <p>
      * <pre>
      *
      *   String buffer;

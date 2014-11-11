@@ -117,10 +117,9 @@ public final class Mathematics {
      * @return the distance of x and y
      * @throws Exception if x and y have different dimensions an exception is thrown.
      */
-    public static double euclidianDist(double[] x, double[] y) {
+    public static double euclideanDist(double[] x, double[] y) {
         if (x.length != y.length) {
-            throw new RuntimeException(
-                    "The vectors x and y must have the same dimension");
+            throw new IllegalArgumentException("The vectors x and y must have the same dimension");
         }
         double d = 0;
         for (int i = 0; i < x.length; i++) {
@@ -647,7 +646,7 @@ public final class Mathematics {
     }
 
     /**
-     * Performs two-sample unpaired t test and returns t critical value.
+     * Performs two-sample unpaired t test and returns t value.
      *
      * Both samples have to have the same size and equal variance.
      *
@@ -662,8 +661,7 @@ public final class Mathematics {
         double stdDev1 = stdDev(vector1);
         double stdDev2 = stdDev(vector2);
         double sX1X2 = Math.sqrt((Math.pow(stdDev1, 2) + Math.pow(stdDev2, 2)) / 2);
-        double result = (mean1 - mean2) / (Math.sqrt(2 / n) * sX1X2);
-        return result;
+        return (mean1 - mean2) / (Math.sqrt(2 / n) * sX1X2);
     }
 
     public static double tTestUnEqSizeEqVar(double[] vector1, double[] vector2) {
@@ -674,8 +672,7 @@ public final class Mathematics {
         double stdDev1 = stdDev(vector1);
         double stdDev2 = stdDev(vector2);
         double sX1X2 = Math.sqrt(((n1 - 1) * Math.pow(stdDev1, 2) + (n2 - 1) * Math.pow(stdDev2, 2)) / (n1 + n2 - 2));
-        double result = (mean1 - mean2) / (sX1X2 * Math.sqrt(1 / n1 + 1 / n2));
-        return result;
+        return (mean1 - mean2) / (sX1X2 * Math.sqrt(1 / n1 + 1 / n2));
     }
 
     public static double tTestUnEqSizeUnEqVar(double[] vector1, double[] vector2) {
@@ -686,8 +683,7 @@ public final class Mathematics {
         double stdDev1 = stdDev(vector1);
         double stdDev2 = stdDev(vector2);
         double sX1X2 = Math.sqrt((Math.pow(stdDev1, 2) / n1) + (Math.pow(stdDev2, 2) / n2));
-        double result = (mean1 - mean2) / sX1X2;
-        return result;
+        return (mean1 - mean2) / sX1X2;
     }
 
     public static double min(double[] vals) {
@@ -706,8 +702,8 @@ public final class Mathematics {
      */
     public static double norm(double[] d) {
         double sqSum = 0;
-        for (int i = 0; i < d.length; i++) {
-            sqSum += d[i] * d[i];
+        for (double value : d) {
+            sqSum += value * value;
         }
         return Math.sqrt(sqSum);
     }
@@ -716,7 +712,7 @@ public final class Mathematics {
      * Normalizes the doubles in the array by their sum, so that they add up to
      * one.
      *
-     * @param d the array of double
+     * @param v the array of double
      * @throws IllegalArgumentException if sum is Zero or NaN
      */
     public static double[] normalizeSum(double[] v) {
@@ -784,8 +780,7 @@ public final class Mathematics {
     public static int projectToRange(double[] x, double[][] range) {
         int viols = 0;
         if (x.length > range.length) {
-            System.err
-                    .println("Invalid vector length, x is longer than range! (Mathematics.projectToRange)");
+            System.err.println("Invalid vector length, x is longer than range! (Mathematics.projectToRange)");
         }
         for (int i = 0; i < x.length; i++) {
             if (x[i] < range[i][0]) {
@@ -845,7 +840,7 @@ public final class Mathematics {
      */
     public static int reflectBounds(double[] x, double[][] range) {
         int viols = 0;
-        double d = 0.;
+        double d;
         for (int i = 0; i < x.length; i++) {
             double dimLen = range[i][1] - range[i][0];
             if (dimLen <= 0.) {
@@ -1121,8 +1116,8 @@ public final class Mathematics {
      */
     public static double sum(double[] doubles) {
         double sum = 0;
-        for (int i = 0; i < doubles.length; i++) {
-            sum += doubles[i];
+        for (double value : doubles) {
+            sum += value;
         }
         return sum;
     }
@@ -1137,8 +1132,8 @@ public final class Mathematics {
 
         int sum = 0;
 
-        for (int i = 0; i < ints.length; i++) {
-            sum += ints[i];
+        for (int value : ints) {
+            sum += value;
         }
         return sum;
     }

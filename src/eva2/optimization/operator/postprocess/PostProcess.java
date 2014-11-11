@@ -641,7 +641,7 @@ public class PostProcess {
      * At the moment, the function calls are distributed evenly between all candidate solutions. This could be
      * improved by checking the convergence state in the future. The given terminator will be applied to each
      * candidate sub-population anew. If the terminator is null, 10*n steps will be performed on each candidate.
-     * <p/>
+     * <p>
      * A double value is added to each solution individual that replaces its ancestor candidate, using the key
      * PostProcess.movedDistanceKey.
      * It indicates the phenotype distance the found solution has moved relatively to the original candidate.
@@ -1123,7 +1123,7 @@ public class PostProcess {
      * epsilon[k] and discarded. The number of solutions
      * which are accurate by epsilon[k] are returned in the integer array. Optionally, the refined solutions
      * are added to an array of histograms.
-     * <p/>
+     * <p>
      * For refining, either known optima are used or {@link AbstractOptimizationProblem}.extractPotentialOptima()
      * is called.
      *

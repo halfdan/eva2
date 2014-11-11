@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 /**
  * Basic implementation of the Bayesian Optimization Algorithm
- * <p/>
+ * <p>
  * Martin Pelikan, David E. Goldberg and Erick Cantu-Paz: 'BOA: The Bayesian
  * Optimization Algorithm' the works by Martin Pelikan and David E. Goldberg.
  * Genetic and Evolutionary Computation Conference (GECCO-99), pp. 525-532

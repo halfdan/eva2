@@ -28,8 +28,8 @@ class SplashScreen extends JWindow {
 
     /**
      * Show the splash screen to the end user.
-     * <p/>
-     * <P>Once this method returns, the splash screen is realized, which means
+     * <p>
+     * Once this method returns, the splash screen is realized, which means
      * that almost all work on the splash screen should proceed through the
      * event dispatch thread. In particular, any call to
      * <code>dispose</code> for the splash screen must be performed in the event

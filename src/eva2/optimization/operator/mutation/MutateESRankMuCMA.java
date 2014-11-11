@@ -24,7 +24,7 @@ import java.io.Serializable;
  * - N.Hansen & S.Kern 2004: Evaluating the CMA Evolution Strategy on Multimodal Test Functions.
  * Parallel Problem Solving from Nature 2004.
  * - For the stopping criteria: Auger&Hansen, CEC '05, A Restart CMA ES with increasing population size.
- * <p/>
+ * <p>
  * The implementation uses a structure for keeping all adaptive parameters, CMAParamSet, which is stored
  * in the populations, so that in principle, multi-modal optimization with several populations becomes possible.
  * This of course requires proper handling of the generational cycle, i.e., new generations should be cloned from

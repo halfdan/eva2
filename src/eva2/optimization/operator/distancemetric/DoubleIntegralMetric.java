@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Calculate the euclidean difference between discrete integrals, which is
  * d(x,y)=sqrt(sum_i=1^n(((sum_j=1^i(x_j))-(sum_j=1^i(y_j)))^2)).
- * <p/>
+ * <p>
  * This can be used with any individual type that implements getDoublePositionShallow.
  *
  * @see AbstractEAIndividual#getDoublePositionShallow(AbstractEAIndividual)

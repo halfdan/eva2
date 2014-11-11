@@ -8,8 +8,12 @@ import static org.junit.Assert.assertTrue;
 public class MathematicsTest {
 
     @Test
-    public void testEuclidianDist() throws Exception {
+    public void testEuclideanDist() throws Exception {
+        double[] values1 = {6.0, 51.0, 3.0};
+        double[] values2 = {1.9, 99.0, 2.9};
 
+        assertEquals(48.174889, Mathematics.euclideanDist(values1, values2), 0.00001);
+        assertEquals(48.174889, Mathematics.euclideanDist(values2, values1), 0.00001);
     }
 
     @Test

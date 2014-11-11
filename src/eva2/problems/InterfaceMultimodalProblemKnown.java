@@ -4,7 +4,7 @@ import eva2.optimization.population.Population;
 
 /**
  * A multimodal problem which has knowledge of its optima.
- * <p/>
+ * <p>
  * User: streiche
  * Date: 23.04.2003
  * Time: 10:57:47
