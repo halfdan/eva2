@@ -7,6 +7,7 @@ import eva2.problems.AbstractProblemDouble;
 import eva2.tools.EVAERROR;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 /**
  * An abstract constraint contains a penalty factor with control strategy (for dynamic penalties)
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * @author mkron
  */
 public abstract class AbstractConstraint implements InterfaceDoubleConstraint, Serializable {
-    //	private transient GPFunctionProblem func = null;
+    private static final Logger LOGGER = Logger.getLogger(AbstractConstraint.class.getName());
     protected ConstraintRelationEnum relation = ConstraintRelationEnum.lessEqZero;
     protected ConstraintHandlingEnum handling = ConstraintHandlingEnum.specificTag;
 
@@ -104,7 +105,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
      * Some constraints require further information on the individual or work on the
      * raw fitness which can be requested using this method.
      *
-     * @return
+     * @return The individuals raw fitness
      */
     protected double[] getIndyRawFit(String key) {
         return getIndyDblData(AbstractProblemDouble.rawFitKey);
@@ -115,7 +116,8 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
      * additional individual data. This method uses getData of AbstractEAIndividual
      * to try to retrieve a double array.
      *
-     * @return
+     * @param key The key used for the data
+     * @return A specific double array identified by key
      */
     protected double[] getIndyDblData(String key) {
         if (currentIndy != null) {
@@ -123,11 +125,11 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
             if (dat != null && (dat instanceof double[])) {
                 return (double[]) dat;
             } else {
-                System.err.println("Error, invalid call to AbstractConstraint.getRawFitness(). Individual had no raw fitness set.");
+                LOGGER.finest("Error, invalid call to AbstractConstraint.getRawFitness(). Individual had no raw fitness set.");
                 return null;
             }
         } else {
-            System.err.println("Error, invalid call to AbstractConstraint.getRawFitness(). Individual was unknown.");
+            LOGGER.finest("Error, invalid call to AbstractConstraint.getRawFitness(). Individual was unknown.");
             return null;
         }
     }
@@ -137,22 +139,20 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
      * additional individual data. This method uses getData of AbstractEAIndividual
      * to try to retrieve a stored object.
      *
-     * @return
+     * @return An object identified by the key
      */
     protected Object getIndyData(String key) {
         if (currentIndy != null) {
             return currentIndy.getData(key);
         } else {
-            System.err.println("Error, invalid call to AbstractConstraint.getRawFitness(). Individual was unknown.");
+            LOGGER.finest("Error, invalid call to AbstractConstraint.getRawFitness(). Individual was unknown.");
             return null;
         }
     }
 
     private double getViolationConsideringRelation(double val) {
-//		System.out.println("Penalty is " + penaltyFactor);
         val *= penaltyFactor;
         switch (relation) {
-//		case linearLessEqZero:
             case lessEqZero:
                 return (val <= 0.) ? 0 : val;
             case eqZero:

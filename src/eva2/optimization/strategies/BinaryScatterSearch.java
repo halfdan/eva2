@@ -22,7 +22,7 @@ import java.util.BitSet;
 /**
  * A BinaryScatterSearch implementation taken mainly from [i].
  *
- *         <p/>
+ *         <p>
  *         F. Gortazar, A. Duarte, M. Laguna and R. Marti: Black Box Scatter Search for
  *         General Classes of Binary Optimization Problems Computers and Operations
  *         research, vol. 37, no. 11, pp. 1977-1986 (2010)

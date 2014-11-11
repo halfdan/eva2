@@ -196,7 +196,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
     /**
      * *******************************************************************************************************************
      * These are for InterfaceDataTypeInteger
-     * <p/>
+     * <p>
      * /** This method allows you to request a certain amount of int data
      *
      * @param length The lenght of the int[] that is to be optimized

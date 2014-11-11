@@ -15,7 +15,7 @@ import java.util.LinkedList;
  * if it was always infeasible, the penalty factor is increased. For other cases, the penalty remains the same.
  * This is plausible for the typical case that the optimum lies near the constraint boundary, however it makes
  * the fitness function change dynamically based only on the positions of last best indidivuals.
- * </p><p>
+ * <p>
  * The authors advise to select betaInc != 1./betaDec to avoid cycling.
  */
 @Description("Adapt a constraint's penalty factor (esp. fitness based) if the population contained only valid or only invalid individuals for some generations.")

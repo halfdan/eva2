@@ -33,7 +33,7 @@ import java.util.List;
  * the CEC 2005 benchmarks (see the corresponding class) - I widely kept the
  * original comments, except for places I changed the code so much that they
  * might mislead - thats all, I think
- * <p/>
+ * <p>
  * I could produce similar results as Clerc's on Rosenbrock and Griewank, (in
  * his book on p. 148), I couldnt reproduce the 100% success rate on Ackley,
  * though.
@@ -43,7 +43,7 @@ import java.util.List;
  *         {@link http://clerc.maurice.free.fr/pso/}
  * @version 2006-02 21
  * @date 2007-09-13
- * <p/>
+ * <p>
  * Original notes:
  */
 /* Last updates (M.Clerc)

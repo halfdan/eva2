@@ -19,7 +19,7 @@ import java.util.BitSet;
  * integer individuals, it allows to control the number of occurrences of a certain integer
  * per segment. It may also be used to initialize with subsets of integers (by setting 0
  * elements to a certain type and all to a subset of the range).
- * </p><p>
+ * <p>
  * The initialization may be parameterized in two ways, where each takes a fixed
  * segment length s. Firstly, a fixed number of bits (k<=s) is set per segment,
  * so each segment has equal cardinality.

@@ -34,7 +34,7 @@ import java.util.Vector;
  * range constraints on the decision variables. I've implemented 'brakes' before
  * an individual is updated it is checked whether the new individual would
  * violate range constraints, if so the velocity vector is reduced.
- * <p/>
+ * <p>
  * Possible topologies are: "Linear", "Grid", "Star", "Multi-Swarm", "Tree",
  * "HPSO", "Random" in that order starting by 0.
  */

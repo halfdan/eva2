@@ -299,7 +299,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
     /**
      * *******************************************************************************************************************
      * These are for   InterfaceDataTypeBinary
-     * <p/>
+     * <p>
      * /** This method allows you to request a certain amount of binary data
      *
      * @param length The lenght of the BitSet that is to be optimized

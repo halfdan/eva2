@@ -24,7 +24,7 @@ import eva2.util.annotation.Hidden;
  * to allow fast and reliable computation. This is still usefull, since it is
  * less prone to premature convergence and also an heterogenuous island model
  * can be used.
- * <p/>
+ * <p>
  * A population of the same size is sent to all nodes and evaluated there
  * independently for a cycle (more precisely: for MigrationRate generations)
  * after which a communication step is performed according to the migration

@@ -43,17 +43,17 @@ import java.util.Vector;
  * search space. Subswarms are formed from that main swarm to refine and
  * represent single niches which are assumed to correspond to local or global
  * optima.
- * <p/>
+ * <p>
  * Different strategies are employed in order to: create subswarms from the main
  * swarm merge subswarms if they converge to the same solution absorb main swarm
  * particles into a subswarm in case a particle enters the area covered by the
  * subswarm deactivate subswarms when all containing particles converged on a
  * solution
- * <p/>
+ * <p>
  * Some implementations of these strategies and the deactivation strategy itself
  * extend the original algorithm. As proposed in [1], NichePSO uses the
  * "cognition only" model of the "inertness weight" PSO to train the main swarm.
- * <p/>
+ * <p>
  * mainSwarmInertness sets the inertia weight omega and weights the particles
  * tendency to follow its former movement. This controls exploration (favored by
  * larger values) against exploitation (favored by smaller values).
@@ -67,7 +67,7 @@ import java.util.Vector;
  * NichePSO. Experiments showed a good performance for relatively small values
  * of maxAllowedSwarmRadius <= 0.0001 on lower dimensional problems. For higher
  * dimensional problems, larger values may be preferable.
- * <p/>
+ * <p>
  * [1] R. Brits, A. P. Engelbrecht and B. Bergh. A Niching Particle Swarm
  * Optimizer In Proceedings of the 4th Asia-Pacific Conference on Simulated
  * Evolution and Learning (SEAL'02), 2002, 2, 692-696 [2] E. �zcan and M.
@@ -594,15 +594,10 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * ********************************************************************************************************************
-     * Absorbtion
-     */
-    /**
+     * Adds indy to an active subswarm, then removes indy from the mainswarm.
+     *
      * @param indy
      * @param subswarm
-     * @return
-     * @tested adds indy to an active subswarm, then removes indy from the
-     * mainswarm.
      */
     protected void absorbtionEventFor(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm) {
         if (isVerbose()) {
@@ -613,7 +608,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested junit absorbs the mainswarm particles into the subswarm according
+     * junit absorbs the mainswarm particles into the subswarm according
      * to the absorbtion strategy
      */
     protected void absorbParticlesIfPossible() {
@@ -1999,7 +1994,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
      * Create a Niche PSO with parameters as to Brits, Engelbrecht & Bergh: A
      * Niching Particle Swarm Optimizer. SEAL 2002. Exeption: the swarm size is
      * 200 by default, because 30 (of the orig. paper) seems way too low.
-     * <p/>
+     * <p>
      * The evaluation count is required currently due to the
      * generation-dependent intertness decay used by the std. variant. To alter
      * the terminator, use OptimizationParameters.setTerminator(), and mind the intertness

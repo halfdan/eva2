@@ -37,11 +37,11 @@ import java.util.BitSet;
 import java.util.List;
 
 /**
- * <p> The OptimizerFactory allows quickly creating some optimizers without
+ * The OptimizerFactory allows quickly creating some optimizers without
  * thinking much about parameters. You can access a runnable Optimization thread
  * and directly start it, or access its fully prepared OptimizationParameter instance,
  * change some parameters, and start it then.
- * </p> <p>
+ * <p>
  * On the other hand this
  * class provides an almost complete list of all currently available
  * optimization procedures in EvA2. The arguments passed to the methods
@@ -51,7 +51,7 @@ import java.util.List;
  * InterfaceOptimizer optimizer = OptimizerFactory.createCertainOptimizer(arguments);
  * EvaluationTerminator terminator = new EvaluationTerminator(numOfFitnessCalls);
  * while (!terminator.isTerminated(optimizer.getPopulation())) optimizer.optimize();
- * </code> </p>
+ * </code>
  */
 public class OptimizerFactory {
 

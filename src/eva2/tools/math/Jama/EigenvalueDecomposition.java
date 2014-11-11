@@ -5,12 +5,12 @@ import eva2.tools.math.Jama.util.Maths;
 
 /**
  * Eigenvalues and eigenvectors of a real matrix.
- * <p/>
+ * <p>
  * If A is symmetric, then A = V*D*V' where the eigenvalue matrix D is
  * diagonal and the eigenvector matrix V is orthogonal.
  * I.e. A = V.times(D.times(V.transpose())) and
  * V.times(V.transpose()) equals the identiCty matrix.
- * <p/>
+ * <p>
  * If A is not symmetric, then the eigenvalue matrix D is block diagonal
  * with the real eigenvalues in 1-by-1 blocks and any complex eigenvalues,
  * lambda + i*mu, in 2-by-2 blocks, [lambda, mu; -mu, lambda].  The

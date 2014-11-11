@@ -29,18 +29,18 @@ import eva2.util.annotation.Parameter;
  * {@link #getProblemDimension()} must return the problem dimension, while
  * {@link #evaluate(double[])} is to evaluate a single double vector into the result
  * fitness vector.
- * <p/>
+ * <p>
  * To define the problem range, you may use the default range parameter
  * resulting in a symmetric double range [-defaultRange,defaulRange] in all
  * dimensions. Or you may implement {@link #getRangeLowerBound(int)} and
  * {@link #getRangeUpperBound(int)} to define an arbitrary problem range. In
  * that case, the default range parameter is not used.
- * <p/>
+ * <p>
  * Anything you want to do before any optimization is started on the problem
  * should go into {@link #initializeProblem()}, but remember to call the super-method
  * in your implementation. The individual template will be initialized to an
  * ESIndividualDoubleData by then.
- * <p/>
+ * <p>
  * For the GUI, it is also convenient to implement the {@link eva2.util.annotation.Description}
  * annotation and {@link #getName()} method to provide some distinctive information for the
  * user.
@@ -445,7 +445,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
      * Refine a candidate solution vector regarding rotations. Saves the new
      * solution vector in pos and returns the number of dimensions that had to
      * be modified after rotation due to range restrictions.
-     * <p/>
+     * <p>
      * The given position is expected to be unrotated! The returned solution is
      * unrotated as well.
      *

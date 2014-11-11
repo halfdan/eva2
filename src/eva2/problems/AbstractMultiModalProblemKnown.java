@@ -241,7 +241,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
      * based on the full list of known optima.
      * This assumes that the realOpts have fitness values assigned as for maximization and the
      * population has fitness values assigned for minimization (mirrored by maximum fitness within realOpts).
-     * <p/>
+     * <p>
      * This is in analogy to the original implementation by F.Streichert.
      *
      * @param realOpts

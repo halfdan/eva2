@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * updates the velocity by rotation and scaling, and then mutates the individual
  * by adding the velocity. This was used for a particle filter localization problem
  * and is less useful in general.
- * </p><p>
+ * <p>
  * Rotation vectors are normal distributed with mean zero, scaling factors are
  * log-normally distributed around mean 1. This means that the averaged expected change
  * of the mutation vector is zero. The smaller the deviations, the higher the correlations

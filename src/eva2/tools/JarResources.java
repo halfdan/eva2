@@ -138,7 +138,7 @@ public final class JarResources {
     /**
      * Is a test driver. Given a jar file and a resource name, it tries to
      * extract the resource and then tells us whether it could or not.
-     * <p/>
+     * <p>
      * <strong>Example</strong>
      * Let's say you have a JAR file which jarred up a bunch of gif image
      * files. Now, by using JarResources, you could extract, create, and display

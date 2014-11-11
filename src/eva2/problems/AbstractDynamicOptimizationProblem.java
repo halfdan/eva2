@@ -245,7 +245,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
     /**
      * Called to indicate a change in the problem environment. To be implemented.
      *
-     * @param problemTime
+     * @param problemTime The time at which the problem changes
      */
     protected abstract void changeProblemAt(double problemTime);
 

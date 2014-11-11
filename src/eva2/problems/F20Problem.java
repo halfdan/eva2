@@ -13,7 +13,7 @@ import java.io.Serializable;
  * There are diagonal ridges across the search space and the optima are close to the bounds.
  * The minimum fitness f(x*) is close to (n-1)*r for dimension n and default range r, by which
  * this implementation may be shifted to the positive domain.
- * <p/>
+ * <p>
  * For gnuplot: x *sin(sqrt(abs(-x+y+1)))*cos(sqrt(abs(x+y+1)))+(y+1)*cos(sqrt(abs(-x+y+1)))*sin(sqrt(abs(x+y+1)))
  */
 @Description("The Rana function is non-separable, highly multi-modal and multi-funnel." +

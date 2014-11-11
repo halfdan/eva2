@@ -24,14 +24,14 @@ import java.util.LinkedList;
  * Stagnation is for this implementation defined by a FitnessConvergenceTerminator instance
  * which terminates if the absolute change in fitness is below a threshold (default 10e-12) for a
  * certain number of generations (default: 10+floor(30*n/lambda) for problem dimension n).
- * <p/>
+ * <p>
  * If the MutateESRankMuCMA mutation operator is used, additional criteria are used for restarts,
  * such as numeric conditions of the covariance matrix.
  * Lambda is increased multiplicatively for every restart, and typical initial values are
  * mu=5, lambda=10, incFact=2.
  * The IPOP-CMA-ES won the CEC 2005 benchmark challenge.
  * Refer to Auger&Hansen 05 for more details.
- * <p/>
+ * <p>
  * A.Auger & N.Hansen. A Restart CMA Evolution Strategy With Increasing Population Size. CEC 2005.
  */
 @Description("An ES with increasing population size.")

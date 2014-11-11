@@ -25,7 +25,7 @@ import java.io.Serializable;
  * a cluster, only a subset of representatives of the cluster is taken over to
  * the next HC step while the rest is discarded. This means that the population
  * size may be reduced.
- * <p/>
+ * <p>
  * As soon as the improvement by HC lies below a threshold, the mutation step
  * size is decreased. If the step size is decreased below a certain threshold,
  * the current population is stored to an archive and reinitialized. Thus, the

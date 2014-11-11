@@ -5,16 +5,17 @@ import eva2.tools.StringSelection;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * An OptimizationJob is a set of optimization parameters and potential results from the statistics class.
  * Each job has a unique ID and may have been completely finished or not. Once finished, the
  * framework should guarantee that the job is removed as a statistics listener.
- * <p/>
+ * <p>
  * A job contains data fields of a multi-run experiment and header strings describing the data.
  */
 public class OptimizationJob implements Serializable, InterfaceStatisticsListener {
-
+    private static final Logger LOGGER = Logger.getLogger(OptimizationJob.class.getName());
     private InterfaceOptimizationParameters params = null;
     private String[] fieldHeaders = null;
     private List<Object[]> multiRunFinalObjectData = null;
@@ -52,20 +53,16 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
         multiRunFinalObjectData = null;
     }
 
-    public InterfaceOptimizationParameters getParams() {
-        return params;
-    }
-
     /**
-     * Set the GO parameters for this instance.
+     * Set the optimization parameters for this instance.
      *
-     * @param params
+     * @param params An instance of OptimizationParameters
      */
-    public void setParams(InterfaceOptimizationParameters params) {
+    public void setOptimizationParameters(InterfaceOptimizationParameters params) {
         // how should this be treated? In case the run is already finished, changing
         // the parameters will be evil, so avoid that case.
         if (state == StateEnum.complete) {
-            System.err.println("Warning, ignoring changed parameters for finished job!");
+            LOGGER.warning("Ignoring changed parameters for finished job!");
         } else {
             this.params = params;
         }
@@ -166,8 +163,8 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
      * Retrieve the index of a data field within the data lines.
      * Returns -1 if the field has not been found.
      *
-     * @param field
-     * @return
+     * @param field Field name
+     * @return The index of the field
      */
     public int getFieldIndex(String field) {
         if (fieldHeaders != null) {
@@ -222,8 +219,8 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
      * Retrieve a single column of data indicated by a field name. If the field is unknown
      * or there is no data, null is returned.
      *
-     * @param field
-     * @return
+     * @param field Field name
+     * @return An array of objects from the field provided
      */
     public Object[] getDataColumn(String field) {
         int index = getFieldIndex(field);
@@ -247,7 +244,7 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
                 curSelection.setSelected(field, true);
             }
         } else {
-            System.err.println("Warning, empty field selection in job " + this);
+            LOGGER.warning("Empty field selection in job " + this);
         }
         return newSel;
     }

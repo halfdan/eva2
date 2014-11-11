@@ -50,7 +50,7 @@ public class StatisticalEvaluation {
                     }
                     textout.println("");
                     for (int i = 0; i < jobsToWorkWith.size(); i++) {
-                        textout.print(jobsToWorkWith.get(i).getParams().getOptimizer().getName());
+                        textout.print(jobsToWorkWith.get(i).getOptimizationParameters().getOptimizer().getName());
                         for (int j = 0; j < singleStats.length; j++) {
                             switch (singleStats[j]) {
                                 case mean:
@@ -115,7 +115,7 @@ public class StatisticalEvaluation {
             InterfaceTextListener textout, ArrayList<OptimizationJob> jobsToWorkWith,
             String field) {
         for (int i = 0; i < jobsToWorkWith.size(); i++) {
-            textout.print(jobsToWorkWith.get(i).getParams().getOptimizer().getName());
+            textout.print(jobsToWorkWith.get(i).getOptimizationParameters().getOptimizer().getName());
             for (int j = 0; j < jobsToWorkWith.size(); j++) {
                 textout.print("\t" + calculateTTestUnEqSizeUnEqVar(field, jobsToWorkWith.get(i), jobsToWorkWith.get(j)));
             }
@@ -131,7 +131,7 @@ public class StatisticalEvaluation {
     private static void writeUnEqSizeEqVar(InterfaceTextListener textout,
                                            ArrayList<OptimizationJob> jobsToWorkWith, String field) {
         for (int i = 0; i < jobsToWorkWith.size(); i++) {
-            textout.print(jobsToWorkWith.get(i).getParams().getOptimizer().getName());
+            textout.print(jobsToWorkWith.get(i).getOptimizationParameters().getOptimizer().getName());
             for (int j = 0; j < jobsToWorkWith.size(); j++) {
                 textout.print("\t" + calculateTTestUnEqSizeEqVar(field, jobsToWorkWith.get(i), jobsToWorkWith.get(j)));
             }
@@ -147,7 +147,7 @@ public class StatisticalEvaluation {
     private static void writeTTestEqSizeEqVar(InterfaceTextListener textout,
                                               ArrayList<OptimizationJob> jobsToWorkWith, String field) {
         for (int i = 0; i < jobsToWorkWith.size(); i++) {
-            textout.print(jobsToWorkWith.get(i).getParams().getOptimizer().getName());
+            textout.print(jobsToWorkWith.get(i).getOptimizationParameters().getOptimizer().getName());
             for (int j = 0; j < jobsToWorkWith.size(); j++) {
                 textout.print("\t" + calculateTTestEqSizeEqVar(field, jobsToWorkWith.get(i), jobsToWorkWith.get(j)));
             }
@@ -157,7 +157,7 @@ public class StatisticalEvaluation {
 
     private static void writeMannWhitney(InterfaceTextListener textout, ArrayList<OptimizationJob> jobsToWorkWith, String field) {
         for (int i = 0; i < jobsToWorkWith.size(); i++) {
-            textout.print(jobsToWorkWith.get(i).getParams().getOptimizer().getName());
+            textout.print(jobsToWorkWith.get(i).getOptimizationParameters().getOptimizer().getName());
             for (int j = 0; j < jobsToWorkWith.size(); j++) {
                 textout.print("\t" + calculateMannWhitney(field, jobsToWorkWith.get(i), jobsToWorkWith.get(j)));
             }
@@ -172,7 +172,7 @@ public class StatisticalEvaluation {
     private static void writeTwoSampleFirstLine(InterfaceTextListener textout,
                                                 ArrayList<OptimizationJob> jobsToWorkWith) {
         for (int i = 0; i < jobsToWorkWith.size(); i++) {
-            textout.print("\t" + jobsToWorkWith.get(i).getParams().getOptimizer().getName());
+            textout.print("\t" + jobsToWorkWith.get(i).getOptimizationParameters().getOptimizer().getName());
         }
         textout.println("");
     }

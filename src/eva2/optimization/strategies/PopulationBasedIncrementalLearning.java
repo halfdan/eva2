@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * also allows to simulate ant systems due to the flexible update rule of V. But
  * both are limited to binary genotypes. This is a eva2.problems.simple implementation of
  * Population Based Incremental Learning.
- * <p/>
+ * <p>
  * Nicolas Monmarché , Eric Ramat , Guillaume Dromel , Mohamed Slimane , Gilles
  * Venturini: On the similarities between AS, BSC and PBIL: toward the birth of
  * a new meta-heuristic. TecReport 215. Univ. de Tours, 1999.

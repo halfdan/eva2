@@ -192,7 +192,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
     /**
      * *******************************************************************************************************************
      * These are for InterfaceDataTypeDouble
-     * <p/>
+     * <p>
      * /** This method allows you to request a certain amount of double data
      *
      * @param length The lenght of the double[] that is to be optimized

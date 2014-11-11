@@ -67,7 +67,6 @@ public final class StatisticUtils {
         double seA = 0.0;
         double seB = 0.0;
         double seAB = 0.0;
-        double c = 0.0;
         int AB;
         int allSum = countsSum1 + countsSum2;
         for (int i = 0; i < n; i++) {
@@ -77,9 +76,7 @@ public final class StatisticUtils {
             seAB -= xlogx(((double) AB) / ((double) allSum));
         }
 
-        c = seAB - 0.5 * (seA + seB);
-
-        return c;
+        return seAB - 0.5 * (seA + seB);
     }
 
     /**
@@ -124,7 +121,6 @@ public final class StatisticUtils {
      * @param a a double
      */
     public static double log2(double a) {
-
         return Math.log(a) / log2;
     }
 
@@ -230,9 +226,9 @@ public final class StatisticUtils {
         if (n <= 1) {
             return 0;
         }
-        for (int i = 0; i < n; i++) {
-            sum += vector[i];
-            sumSquared += (vector[i] * vector[i]);
+        for (double value : vector) {
+            sum += value;
+            sumSquared += (value * value);
         }
         double denom;
         if (finiteSet) {
@@ -240,14 +236,7 @@ public final class StatisticUtils {
         } else {
             denom = (n - 1);
         }
-        double result = (sumSquared - (sum * sum / (double) n)) / denom;
-
-        // We don't like negative variance
-        if (result < 0) {
-            return 0;
-        } else {
-            return result;
-        }
+        return (sumSquared - (sum * sum / (double) n)) / denom;
     }
 
     /**
@@ -354,7 +343,7 @@ public final class StatisticUtils {
 
     /**
      * Returns the correlation coefficient r^2.
-     * <p/>
+     * <p>
      * Correlation ("Statistik", 7 Aufl., Hartung, 1989, Kapitel 9 und 10, S.546-608):
      * a=yMess[i];
      * b=yWahr[i];
@@ -364,8 +353,6 @@ public final class StatisticUtils {
      * numerator=sumAB-(sumA*sumB/n);
      * denominator=sqrt[(sumAA-(sumA*sumA/n))*(sumBB-(sumB*sumB/n))];
      * R=correlationcoefficient=numerator/denominator;
-     *
-     * @author Joerg K. Wegner
      */
     public static double getCorrelationCoefficient(double array1[], double array2[]) {
         if ((array1 == null) || (array2 == null)) {

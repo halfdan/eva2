@@ -6,7 +6,7 @@ import java.awt.*;
  * <code>DComponent</code> is the mother of all objects which can be displayed
  * by a <code>DArea</code> object, even when it would be also enough to
  * implement the <code>DElement</code> interface to an class
- * </p>
+ * <p>
  * DComponent is abstract because the paint method has to be overridden
  */
 public abstract class DComponent implements DElement {
@@ -30,7 +30,7 @@ public abstract class DComponent implements DElement {
 
 
     /**
-     * this border respresents the additional space around the clip of the
+     * this border represents the additional space around the clip of the
      * graphics context, which is calculated by the union of all DRectangles of
      * the components. For example it is used by DPointIcons or DLabels.
      */
@@ -41,8 +41,7 @@ public abstract class DComponent implements DElement {
      * this constructor is necessary to avoid infinite loops in constructing
      * DRectangles
      */
-    DComponent(boolean is_rect) {
-    }
+    DComponent(boolean is_rect) {}
 
     public DComponent() {
         rectangle = DRectangle.getEmpty();

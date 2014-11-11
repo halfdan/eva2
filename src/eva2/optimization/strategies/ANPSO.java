@@ -41,7 +41,7 @@ import java.util.Vector;
  * perfom a local search on its own. This results in a high exploration ability of the main swarm and
  * potentially leads to a good amount of identified optima.
  * Larger values for mainSwarmPhi2 on the other hand might help to concentrate on fewer optima with superior fitness values.
- * <p/>
+ * <p>
  * To avoid further parameters and the need to specify adequate values, which are often difficult to decide,
  * the following adaption mechanism is employed:
  * ANPSO adaptively determines a threshold parameter r during every generation by computing the average
@@ -53,7 +53,7 @@ import java.util.Vector;
  * The implemented version uses a strategy to deactivate subswarms when all containing particles converged on a solution.
  * Furthermore, different neighborhood topologies can be choosen for the main swarm.
  * In case the Multi-Swarm topology is used, the species radius is adaptively determined as well.
- * <p/>
+ * <p>
  * [1] S. Bird and X. Li:
  * Adaptively choosing niching parameters in a PSO.
  * In: GECCO '06: Proceedings of the 8th annual conference on Genetic and evolutionary computation,

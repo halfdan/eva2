@@ -12,11 +12,8 @@ public class ConsiderPBestAbsorptionStrategy extends StandardAbsorptionStrategy 
 
 
     /**
-     * @tested true if
-     * the subswarm is active and
-     * the particle lies in the radius of the subswarm and
+     * True if the subswarm is active and the particle lies in the radius of the subswarm and
      * the particles pbest is not better than the subswarms gbest (this would "pull the subswarm away")
-     * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.StandardAbsorptionStrategy#shouldAbsorbParticleIntoSubswarm(javaeva.server.oa.go.EAIndividuals.AbstractEAIndividual, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
      */
     @Override
     public boolean shouldAbsorbParticleIntoSubswarm(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm, ParticleSubSwarmOptimization mainswarm) {
@@ -30,7 +27,6 @@ public class ConsiderPBestAbsorptionStrategy extends StandardAbsorptionStrategy 
      * @param indy
      * @param subswarm
      * @return
-     * @tested
      */
     private boolean absorbtionConstraintViolation(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm) {
         AbstractEAIndividual indysPBest = (AbstractEAIndividual) indy.getData("PersonalBestKey");

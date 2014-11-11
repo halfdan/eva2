@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 /**
  * The Processor may run as a thread permanently (GenericModuleAdapter) and is
  * then stopped and started by a switch in startOptimization/stopOptimization.
- * <p/>
+ * <p>
  * Processor also handles adaptive parameter control by checking for the method
  * getParamControl in (so far) Optimizer and Problem instances. The return-value
  * may be InterfaceParameterControl or an array of Objects. If it is a control

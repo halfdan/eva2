@@ -15,7 +15,7 @@ import eva2.util.annotation.Description;
 /**
  * A gradient descent algorithm by hannes planatscher don't expect any
  * descriptions here... *big sigh*
- * <p/>
+ * <p>
  * mkron added some!
  *
  */

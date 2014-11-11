@@ -38,7 +38,7 @@ import java.util.Formatter;
  * iteration. Thus, in relation to the standard ES, some new parameters are due.
  * On the other hand, the selection schemes are predefined. This is done
  * according to Shir&Bäck, Niching in Evolution Strategies, Tec.Report 2005.
- * <p/>
+ * <p>
  * Unfortunately the algorithm was not described in every detail. It remained
  * unclear how exactly the peak population where filled and esp. what happens if
  * DPI returns less than q peaks. In this implementation, this is solved by
@@ -46,43 +46,43 @@ import java.util.Formatter;
  * population, only the best muPerPeak remain and the rest is assigned to the
  * unclustered set. From these, pseudo-peaks are then formed until the expected
  * number of peak populations is produced.
- * <p/>
+ * <p>
  * Also, they gave a general rule for setting the niche radius depending on the
  * optimizationProblem domain, however in their experiments, they were able to identify
  * optima which were much closer (i.e., on Ackley's), so it is unclear which
  * niche radius was actually used there
- * <p/>
+ * <p>
  * Due to the "non-standard" environmental selection mechanism (a fixed
  * proportion is chosen from the children, the rest from the parents), a
  * preselection mechanism was implemented here, slightly breaking the ES
  * framework which is still used to optimize the single peak populations.
- * <p/>
+ * <p>
  * This class should also cover "Dynamic niching in evolution strategies with
  * covariance matrix adaptation" by Shir & Bäck, CEC 2005, when employing
  * SelectBest as parent selection and muPerPeak=1.
- * <p/>
+ * <p>
  * Some notes:
- * <p/>
+ * <p>
  * If strictNiching is deactivated, niches are disappearing because they are
  * sometimes assigned the global opt. and in that niche are very bad so they get
  * thrown away due to the maximum niche count if strictNiching is activated,
  * niches are very small - or even empty. Why is that? This can hardly be
  * sensible esp. with a very small niche radius for F8. This would mean that in
  * the beginning, nearly all offspring are created from very few pairs of peaks.
- * <p/>
+ * <p>
  * The mu/lambda information was lost on the way to the MutateESRankMuCMA
  * class... I added it now as additional pop.data which is only loaded if the
  * mu/lambda ratio deduced from the orig/selected population sizes does not make
  * sense.
- * <p/>
+ * <p>
  * With the explorer peaks reinited every 100 generations or so, the course of
  * the MPR for a *single* run will not be a clear logistic function, because
  * "finding" additional peaks produces small steps in the MPR.
- * <p/>
+ * <p>
  * The Niching ES is now using the Population to catch the generational events,
  * not producing it itself, similar to Tribes, ScatterSearch or IPOP-ES. Thus it
  * could be used with a dynamic population size without too much hassle.
- * <p/>
+ * <p>
  * TODO Add adaptive niche radius. Add parameter to every indy which is adapted
  * after all new peaks have been found.
  */

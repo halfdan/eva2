@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * @author becker
+ * The About dialog used in the EvA2 GUI.
  */
 class AboutDialog extends JDialog {
     private JLabel imageLabel;

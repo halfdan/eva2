@@ -19,20 +19,9 @@ public class GenerateNeighborSubswarmCreationStrategy extends
 
     private double mu = 0.1;
 
-/**********************************************************************************************************************
- * shouldCreateSubswarm
- */
-
-    // same as in StandardSubswarmCreationStrategy
-
-/**********************************************************************************************************************
- * createSubswarm
- */
-
     /**
      * @tested creates a subswarm from the given particle and its neighbor in the mainswarm.
      * If the neighbors pbest is better than the particles pbest, a new neighbor is generated.
-     * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.StandardSubswarmCreationStrategy#createSubswarm(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization, javaeva.server.oa.go.EAIndividuals.AbstractEAIndividual, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
      */
     @Override
     public void createSubswarm(ParticleSubSwarmOptimization preparedSubswarm, AbstractEAIndividual indy, ParticleSubSwarmOptimization mainSwarm) {

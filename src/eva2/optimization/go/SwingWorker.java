@@ -7,11 +7,11 @@ import javax.swing.*;
  * SwingWorker 3), an abstract class that you subclass to
  * perform GUI-related work in a dedicated thread.  For
  * instructions on using this class, see:
- * </p><p>
+ * <p>
  * http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
  * or
  * http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html
- * </p><p>
+ * <p>
  * Note that the API changed slightly in the 3rd version:
  * You must now invoke start() on the SwingWorker after
  * creating it.
