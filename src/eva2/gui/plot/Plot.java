@@ -119,58 +119,21 @@ public class Plot implements PlotInterface, Serializable {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    Robot robot = new Robot();
-                    Rectangle area;
-                    area = internalFrame.getBounds();
-                    BufferedImage bufferedImage = robot.createScreenCapture(area);
-                    JFileChooser fc = new JFileChooser();
-                    if (fc.showSaveDialog(internalFrame) != JFileChooser.APPROVE_OPTION) {
-                        return;
-                    }
-                    // System.out.println("Name " + outfile);
-                    try {
-                        /*
-                         * Old version FileOutputStream fos = new
-                         * FileOutputStream
-                         * (fc.getSelectedFile().getAbsolutePath()+".jpeg");
-                         * BufferedOutputStream bos = new
-                         * BufferedOutputStream(fos); JPEGImageEncoder encoder =
-                         * JPEGCodec.createJPEGEncoder(bos);
-                         * encoder.encode(bufferedImage); bos.close();
-                         */
-                        File file = new File(fc.getSelectedFile().getAbsolutePath()
-                                + ".png");
-                        ImageIO.write(bufferedImage, "png", file);
-                        /*
-                         * JPEG version with javax.imageio float compression =
-                         * 0.8f; FileImageOutputStream out = new
-                         * FileImageOutputStream(new
-                         * File(fc.getSelectedFile().getAbsolutePath
-                         * ()+".jpeg")); ImageWriter encoder =
-                         * (ImageWriter)ImageIO
-                         * .getImageWritersByFormatName("JPEG").next();
-                         * JPEGImageWriteParam param = new
-                         * JPEGImageWriteParam(null);
-                         *
-                         *
-                         * param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT
-                         * ); param.setCompressionQuality(compression);
-                         *
-                         * encoder.setOutput(out); encoder.write((IIOMetadata)
-                         * null, new IIOImage(bufferedImage,null,null), param);
-                         *
-                         * out.close();
-                         */
+                FunctionArea fArea = getFunctionArea();
+                BufferedImage bImg = new BufferedImage(fArea.getWidth(), fArea.getWidth(), BufferedImage.TYPE_INT_RGB);
 
-                    } catch (Exception eee) {
-                        System.err.println("Error on exporting PNG: "
-                                + eee.getMessage());
-                    }
-                } catch (AWTException ee) {
-                    System.err.println("Error on creating PNG: "
-                            + ee.getMessage());
-                    ee.printStackTrace();
+                Graphics2D g = bImg.createGraphics();
+                fArea.paintAll(g);
+
+                JFileChooser fc = new JFileChooser();
+                if (fc.showSaveDialog(internalFrame) != JFileChooser.APPROVE_OPTION) {
+                    return;
+                }
+                try {
+                    File file = new File(fc.getSelectedFile().getAbsolutePath() + ".png");
+                    ImageIO.write(bImg, "png", file);
+                } catch (Exception eee) {
+                    System.err.println("Error on exporting PNG: " + eee.getMessage());
                 }
             }
         });
@@ -264,9 +227,8 @@ public class Plot implements PlotInterface, Serializable {
      * Draw an individual to the Plot instance. It is annotated with the given
      * prefix and its fitness with short scientific notation.
      *
-     * @param prefix
-     * @param pop
-     * @see FunctionArea.drawIcon
+     * @param prefix Prefix
+     * @see FunctionArea#drawIcon
      */
     public void drawIndividual(int iconType, int graphID, String prefix, AbstractEAIndividual indy) {
         StringBuffer sb = new StringBuffer();
