@@ -1,4 +1,4 @@
-package eva2.gui;
+package eva2.gui.plot;
 
 import eva2.tools.chart2d.DFunction;
 
