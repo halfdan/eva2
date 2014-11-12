@@ -1,6 +1,5 @@
 package eva2.gui.plot;
 
-import eva2.gui.Exp;
 import eva2.gui.InterfaceSelectablePointIcon;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefPointListener;

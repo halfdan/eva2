@@ -1,12 +1,13 @@
 package eva2.optimization.statistics;
 
 import eva2.gui.BeanInspector;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
-import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.Pair;
 import eva2.tools.StringSelection;
 import eva2.tools.StringTools;
@@ -61,7 +62,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     protected String[] currentStatHeader = null; // the header Strings of the currently provided data
     protected String[] currentStatMetaInfo = null; // meta information on the statistical data
     private Double[] statDataSumOverAll = null;
-//	, lastAdditionalInfoSums=null;
 
     // say whether the object should be written to a file every time
     private boolean saveParams = true;
@@ -228,8 +228,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      */
     public static String getDateString() {
         SimpleDateFormat formatter = new SimpleDateFormat("E'_'yyyy.MM.dd'_at_'HH.mm.ss");
-        String dt = formatter.format(new Date());
-        return dt;
+        return formatter.format(new Date());
     }
 
     protected boolean doFileOutput() {
@@ -251,7 +250,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     @Override
-    public void startOptimizationPerformed(String infoString, int runNumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList) {
+    public void startOptimizationPerformed(String infoString, int runNumber, InterfaceOptimizationParameters params, List<InterfaceAdditionalPopulationInformer> informerList) {
 
         if (runNumber == 0) {
             // store the initial graph selection state, so that modifications during runtime cannot cause inconsistencies

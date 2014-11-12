@@ -6,11 +6,15 @@ import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.statistics.InterfaceStatisticsParameters;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.InterfaceOptimizationProblem;
+import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  *
@@ -25,15 +29,27 @@ public class Main {
         InterfaceOptimizer optimizer = parameters.getOptimizer();
         InterfaceOptimizationProblem problem = parameters.getProblem();
 
-        OutputStream fileStream = null;
+        LinkedHashMap<String, Object> optimizationLog = new LinkedHashMap<>();
+        // Meta parameters
+        optimizationLog.put("population_size", parameters.getOptimizer().getPopulation().getTargetSize());
+        optimizationLog.put("number_of_runs", statisticsParameters.getMultiRuns());
+        optimizationLog.put("seed", parameters.getRandomSeed());
+
+        // Container for individual runs
+        List<LinkedHashMap<String, Object>> runs = new ArrayList<>();
+        optimizationLog.put("runs", runs);
+
+        FileWriter fw;
+        BufferedWriter bw = null;
         try {
-            fileStream = new FileOutputStream("derp.yml");
+            fw = new FileWriter("derp.yml");
+            bw = new BufferedWriter(fw);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             System.exit(0);
         }
 
-        optimizer.addPopulationChangedEventListener(new OptimizationLogger(parameters, fileStream));
+        //optimizer.addPopulationChangedEventListener(new OptimizationLogger(parameters, ));
         for (int i = 0; i < statisticsParameters.getMultiRuns(); i++) {
 
             problem.initializeProblem();
@@ -52,6 +68,13 @@ public class Main {
             } while (!terminator.isTerminated(optimizer.getAllSolutions()));
 
             System.out.println(Arrays.toString(((InterfaceDataTypeDouble)optimizer.getPopulation().getBestEAIndividual()).getDoubleData()));
+        }
+
+        try {
+            bw.write(new Yaml().dump(optimizationLog));
+            bw.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

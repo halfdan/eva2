@@ -69,20 +69,6 @@ public class GraphPointSet {
         public int getSize() {
             return x.length;
         }
-
-        // /**
-        // *
-        // */
-        // public DPointSet printPoints() {
-        // for (int i = 0; i < connectedPointSet.getSize();i++) {
-        // DPoint p = connectedPointSet.getDPoint(i);
-        // double x = p.x;
-        // double y = p.y;
-        // //System.out.println("point "+i+ " x= "+x+"y= "+y);
-        // }
-        // return connectedPointSet.getDPointSet();
-        // }
-
     }
 
     private int colorOffset = 0;
@@ -104,8 +90,7 @@ public class GraphPointSet {
     /**
      *
      */
-    public GraphPointSet(/* int size */int GraphLabel, DArea Area) {
-        // System.out.println("Constructor GraphPointSet "+ GraphLabel);
+    public GraphPointSet(int GraphLabel, DArea Area) {
         cachex = new double[cacheSize];
         cachey = new double[cacheSize];
         area = Area;
@@ -143,7 +128,6 @@ public class GraphPointSet {
      * @param y
      */
     public void addDPoint(double x, double y) {
-        // System.out.println(" "+x+" "+y);
         if (cacheIndex == cacheSize) {
             for (int i = 0; i < cacheSize; i++) {
                 connectedPointSet.addDPoint(cachex[i], cachey[i]);
@@ -176,10 +160,8 @@ public class GraphPointSet {
     public void addGraph(GraphPointSet set, DMeasures measures, boolean useForce) {
         if (set.connectedPointSet.getSize() != connectedPointSet.getSize()
                 && connectedPointSet.getSize() != 0 && !useForce) {
-            System.err
-                    .println("WARNING addGraph not possible, lost last graph");
-            System.err.println(" connectedPointSet.getSize() "
-                    + connectedPointSet.getSize());
+            System.err.println("WARNING addGraph not possible, lost last graph");
+            System.err.println(" connectedPointSet.getSize() " + connectedPointSet.getSize());
             return;
         }
         if (set.getPointSet().getSize() == 0) {

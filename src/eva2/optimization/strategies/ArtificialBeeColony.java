@@ -127,7 +127,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
         this.population.incrFunctionCallsBy(this.population.size());
 
         /**
-         * Send onlooker bees to food sources based on fitness proportional probablity
+         * Send onlooker bees to food sources based on fitness proportional probability
          */
         int t = 0, i = 0;
         double sumFitness = 0.0;
