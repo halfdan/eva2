@@ -3,8 +3,8 @@ package eva2.gui;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.tools.FileTools;
 import eva2.tools.BasicResourceLoader;
-import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
+import eva2.tools.StringTools;
 import eva2.util.annotation.Description;
 import eva2.yaml.BeanSerializer;
 
@@ -320,7 +320,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         if (classesLongNames.size() > 1) {
             classNameMap = new HashMap<>();
             for (String className : classesLongNames) {
-                classNameMap.put(EVAHELP.cutClassName(className), className);
+                classNameMap.put(StringTools.cutClassName(className), className);
             }
             Vector<String> classesList = new Vector<>(classesLongNames);
             objectChooser.setModel(new DefaultComboBoxModel(classesList));
@@ -415,7 +415,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
                                 + "from the current classpath. Is the resource folder at the right place?\nIs the class abstract or the default constructor missing?",
                         "GenericObjectEditor",
                         JOptionPane.ERROR_MESSAGE);
-                EVAHELP.getSystemPropertyString();
             }
         }
     }

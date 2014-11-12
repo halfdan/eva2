@@ -1,7 +1,7 @@
 package eva2.gui;
 
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.tools.EVAHELP;
+import eva2.tools.StringTools;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
 import eva2.util.annotation.Parameter;
@@ -664,7 +664,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      * @return
      */
     protected String getHelpFileName() {
-        return EVAHELP.cutClassName(className) + ".html";
+        return StringTools.cutClassName(className) + ".html";
     }
 
     /**

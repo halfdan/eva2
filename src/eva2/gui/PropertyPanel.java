@@ -1,6 +1,6 @@
 package eva2.gui;
 
-import eva2.tools.EVAHELP;
+import eva2.tools.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +37,7 @@ public class PropertyPanel extends JPanel {
     public final void showDialog() {
         Window parent = (Window)this.getRootPane().getParent();
         if (propertyDialog == null) {
-            propertyDialog = new PropertyDialog(parent, propertyEditor, EVAHELP.cutClassName(propertyEditor.getClass().getName()));
+            propertyDialog = new PropertyDialog(parent, propertyEditor, StringTools.cutClassName(propertyEditor.getClass().getName()));
             propertyDialog.setPreferredSize(new Dimension(500, 300));
             propertyDialog.setModal(true);
             propertyDialog.setVisible(true);

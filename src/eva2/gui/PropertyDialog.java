@@ -2,7 +2,7 @@ package eva2.gui;
 
 import eva2.EvAInfo;
 import eva2.tools.BasicResourceLoader;
-import eva2.tools.EVAHELP;
+import eva2.tools.StringTools;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,9 +37,9 @@ public class PropertyDialog extends JDialog {
 
     protected static String getFrameNameFromEditor(PropertyEditor editor) {
         if (editor.getValue().getClass().isArray()) {
-            return "Array of " + EVAHELP.cutClassName(editor.getValue().getClass().getComponentType().getName());
+            return "Array of " + StringTools.cutClassName(editor.getValue().getClass().getComponentType().getName());
         } else {
-            return EVAHELP.cutClassName(editor.getValue().getClass().getName());
+            return StringTools.cutClassName(editor.getValue().getClass().getName());
         }
     }
 

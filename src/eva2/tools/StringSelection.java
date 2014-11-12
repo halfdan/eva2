@@ -194,10 +194,6 @@ public class StringSelection implements Serializable {
             return false;
         }
         return isSelected(selIndex);
-//		for (int i=0; i<strObjects.length; i++) {
-//			if (strObjects[i].equals(str)) return isSelected(i);
-//		}
-//		return false;
     }
 
     /**

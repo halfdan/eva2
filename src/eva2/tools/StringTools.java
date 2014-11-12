@@ -477,5 +477,18 @@ public final class StringTools {
     public static String upcaseFirst(final String word) {
         return word.substring(0, 1).toUpperCase() + word.substring(1);
     }
+
+    /**
+     * @param value The string to cut
+     * @return Returns the class Name without package.
+     */
+    public static String cutClassName(final String value) {
+        final int dotPos = value.lastIndexOf('.');
+        String className = value;
+        if (dotPos != -1) {
+            className = className.substring(dotPos + 1);
+        }
+        return className; // now is shortName
+    }
 }
 
