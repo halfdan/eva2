@@ -2,7 +2,6 @@ package eva2.optimization.tools;
 
 
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.tools.EVAHELP;
 
 import javax.swing.*;
 import java.awt.*;
@@ -330,7 +329,6 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
                                 + "from the current classpath",
                         "GenericObjectEditor",
                         JOptionPane.ERROR_MESSAGE);
-                EVAHELP.getSystemPropertyString();
             }
         }
     }

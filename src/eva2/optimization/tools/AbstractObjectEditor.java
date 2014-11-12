@@ -6,7 +6,7 @@ import eva2.gui.HtmlDemo;
 import eva2.gui.PropertyEditorProvider;
 import eva2.gui.PropertySheetPanel;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.tools.EVAHELP;
+import eva2.tools.StringTools;
 import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
@@ -20,7 +20,6 @@ import java.util.Hashtable;
  * TODO
  * This class should be unified with GenericObjectEditor.
  */
-
 public abstract class AbstractObjectEditor implements PropertyEditor, java.beans.PropertyChangeListener {
     /**
      * Handles property change notification
@@ -63,7 +62,6 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
         propertyChangeSupport.firePropertyChange("", backupObject, object);
     }
 
-    /********************************* PropertyEditor *************************/
     /**
      * Returns true since the Object can be shown
      *
@@ -153,8 +151,6 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      */
     abstract public Class getClassType();
 
-//    abstract public Vector getClassesFromProperties();
-
     /**
      * This method returns a property panel to
      * edit the parameters
@@ -169,7 +165,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
 
         result.setLayout(new BorderLayout());
         result.setVisible(true);
-        // Define the upper area containing the desription and the help button
+        // Define the upper area containing the description and the help button
         String globalInfo = this.getGlobalInfo();
         JTextArea jt = new JTextArea();
         StringBuffer helpText;
@@ -184,7 +180,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent a) {
-                HtmlDemo temp = new HtmlDemo(EVAHELP.cutClassName(object.getClass().getName()) + ".html");
+                HtmlDemo temp = new HtmlDemo(StringTools.cutClassName(object.getClass().getName()) + ".html");
                 temp.show();
             }
         });
@@ -222,7 +218,7 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
     }
 
     public String getHelpFileName() {
-        return EVAHELP.cutClassName(object.getClass().getName()) + ".html";
+        return StringTools.cutClassName(object.getClass().getName()) + ".html";
     }
 
     /**

@@ -80,4 +80,10 @@ public class StringToolsTest {
 		assertEquals("Camel", StringTools.upcaseFirst("camel"));
 		assertEquals("UpWeGo", StringTools.upcaseFirst("upWeGo"));
 	}
+
+    @Test
+    public void testCutClassName() {
+        assertEquals("StringTools", StringTools.cutClassName("eva2.tools.StringTools"));
+        assertEquals("RandomClass", StringTools.cutClassName("eva2.optimization.operator.RandomClass"));
+    }
 }

@@ -1,8 +1,8 @@
 package eva2.gui.editor;
 
 import eva2.gui.*;
-import eva2.tools.EVAHELP;
 import eva2.tools.SerializedObject;
+import eva2.tools.StringTools;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -689,7 +689,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
         if (listModel.getSize() == 0) {
             rep = "Empty";
         } else {
-            rep = listModel.getSize() + " of " + EVAHELP.cutClassName(elementClass.getName());
+            rep = listModel.getSize() + " of " + StringTools.cutClassName(elementClass.getName());
             Object maybeName = BeanInspector.callIfAvailable(listModel.get(0), "getName", new Object[]{});
             if (maybeName != null) {
                 rep = rep + " (" + maybeName + "...)";
