@@ -25,8 +25,7 @@ public class Graph implements Serializable {
     }
 
     /**
-     * @param Info
-     * @param stroke
+     *
      */
     public String getInfo() {
         return infoString;
@@ -77,7 +76,7 @@ public class Graph implements Serializable {
      *
      * @return true if the graph could be added directly or false if the graph was added by force
      *         losing some data points
-     * @see PlotInterface.addGraph
+     * @see PlotInterface#addGraph
      */
     public boolean addGraph(Graph x) {
         boolean useForce = false;

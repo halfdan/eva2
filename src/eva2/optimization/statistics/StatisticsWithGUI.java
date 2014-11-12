@@ -7,6 +7,7 @@ import eva2.gui.plot.Graph;
 import eva2.gui.plot.GraphWindow;
 import eva2.gui.plot.Plot;
 import eva2.gui.plot.PlotInterface;
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.Pair;
@@ -52,7 +53,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
      *
      */
     @Override
-    public synchronized void startOptimizationPerformed(String infoString, int runNumber, Object goParams, List<InterfaceAdditionalPopulationInformer> informerList) {
+    public synchronized void startOptimizationPerformed(String infoString, int runNumber, InterfaceOptimizationParameters goParams, List<InterfaceAdditionalPopulationInformer> informerList) {
         super.startOptimizationPerformed(infoString, runNumber, goParams, informerList);
         graphInfoString = infoString;
 

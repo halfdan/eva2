@@ -22,14 +22,6 @@ public class EVAERROR {
     /**
      *
      */
-    public static void EXIT(String message, Exception ex) {
-        LOGGER.log(Level.SEVERE, message, ex);
-        System.exit(-1);
-    }
-
-    /**
-     *
-     */
     public static void WARNING(String message) {
         LOGGER.log(Level.WARNING, message);
     }

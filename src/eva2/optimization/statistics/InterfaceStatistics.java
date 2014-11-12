@@ -1,10 +1,11 @@
 package eva2.optimization.statistics;
 
+import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
-import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface InterfaceStatistics {
     /**
      * Initialize statistics computations.
      */
-    void startOptimizationPerformed(String infoString, int runNumber, Object params, List<InterfaceAdditionalPopulationInformer> informerList); // called from processor
+    void startOptimizationPerformed(String infoString, int runNumber, InterfaceOptimizationParameters params, List<InterfaceAdditionalPopulationInformer> informerList); // called from processor
 
     /**
      * Finalize statistics computations.

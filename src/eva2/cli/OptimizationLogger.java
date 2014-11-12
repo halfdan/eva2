@@ -5,6 +5,7 @@ import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.population.InterfacePopulationChangedEventListener;
 
 import java.io.OutputStream;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -12,10 +13,12 @@ import java.io.OutputStream;
 public class OptimizationLogger implements InterfacePopulationChangedEventListener, OptimizationStateListener {
     private final OutputStream outputStream;
     private final InterfaceOptimizationParameters optimizationParameters;
+    private LinkedHashMap<String, Object> optimizationData;
 
     public OptimizationLogger(InterfaceOptimizationParameters optimizationParameters, OutputStream outputStream) {
         this.optimizationParameters = optimizationParameters;
         this.outputStream = outputStream;
+        this.optimizationData = new LinkedHashMap<>(5);
     }
 
     @Override
