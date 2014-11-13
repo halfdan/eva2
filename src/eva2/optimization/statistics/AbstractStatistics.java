@@ -80,10 +80,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     protected int optRunsPerformed;
     protected double[] currentBestFit;
     protected double[] currentBestFeasibleFit;
-    //	protected double[] meanBestFeasibleFit;
     protected double[] currentMeanFit;
     protected double[] currentWorstFit;
-    //	protected double[] meanBestOfRunFitness;
     protected double currentAvgEucDistInPop, currentMaxEucDistInPop;
     protected double currentAvgPopDistMetric, currentMaxPopDistMetric;
     protected IndividualInterface bestCurrentIndy, bestOfRunIndy, bestOfRunFeasibleIndy, bestFeasibleAllRuns, bestIndyAllRuns;
@@ -166,14 +164,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if (dataListeners != null) {
             for (InterfaceStatisticsListener l : dataListeners) {
                 if (start) {
-                    l.notifyRunStarted(runNumber, statisticsParameter.getMultiRuns(),
-                            currentStatHeader, currentStatMetaInfo);
+                    l.notifyRunStarted(runNumber, statisticsParameter.getMultiRuns(), currentStatHeader, currentStatMetaInfo);
                 } else {
                     l.notifyRunStopped(optRunsPerformed, normal);
-//					if (optRunsPerformed > 1) {
-                    l.finalMultiRunResults(currentStatHeader,
-                            finalObjectData);
-//					}
+                    l.finalMultiRunResults(currentStatHeader, finalObjectData);
                 }
             }
         }
@@ -351,9 +345,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             if (printRunStoppedVerbosity()) {
                 printIndy("Run best", bestOfRunIndy);
             }
-//			if (meanBestOfRunFitness==null) {
-//				meanBestOfRunFitness=bestRunIndividual.getFitness().clone();
-//			} else addSecond(meanBestOfRunFitness, bestRunIndividual.getFitness());
         }
         if (feasibleFoundAfter > 0) {
             if (printRunStoppedVerbosity()) {

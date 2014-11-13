@@ -8,6 +8,7 @@ import eva2.tools.EVAERROR;
 import eva2.tools.Serializer;
 import eva2.tools.StringSelection;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Hidden;
 import eva2.util.annotation.Parameter;
 
 import java.io.FileInputStream;
@@ -194,6 +195,7 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     }
 
     @Override
+    @Hidden
     public void setShowTextOutput(boolean show) {
         // activate if not activated
         if (show && outputTo == OutputTo.FILE) {
