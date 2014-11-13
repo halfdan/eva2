@@ -3,7 +3,7 @@ package eva2.optimization.individuals.codings.gp;
 import eva2.problems.InterfaceProgramProblem;
 
 /**
- * A eva2.problems.simple constant node with the value 1.
+ * A simple constant node with the value 1.
  */
 public class GPNodeConst extends AbstractGPNode implements java.io.Serializable {
     double value = 1.;

@@ -8,7 +8,7 @@ import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
 
 /**
- * The eva2.problems.simple random or Monte-Carlo search, eva2.problems.simple but useful to evaluate the
+ * The simple random or Monte-Carlo search, simple but useful to evaluate the
  * complexity of the search space. This implements a Random Walk Search using
  * the initialization method of the problem instance, meaning that the random
  * characteristics may be problem dependent.
@@ -115,7 +115,7 @@ public class MonteCarloSearch extends AbstractOptimizer implements java.io.Seria
     }
 
     /**
-     * This main method will start a eva2.problems.simple hillclimber. No arguments necessary.
+     * This main method will start a simple hillclimber. No arguments necessary.
      *
      * @param args
      */

@@ -2182,7 +2182,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     /**
      * Calculate the average of the distance of each individual to its closest
      * neighbor in the population. The boolean parameter switches between
-     * range-normalized and eva2.problems.simple euclidian distance. If calcVariance is true,
+     * range-normalized and simple euclidian distance. If calcVariance is true,
      * the variance is calculated and returned as second entry
      *
      * @param normalizedPhenoMetric

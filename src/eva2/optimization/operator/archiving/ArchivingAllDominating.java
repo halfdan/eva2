@@ -6,7 +6,7 @@ import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
 
 /**
- * This eva2.problems.simple strategy simply archives all Pareto optimal solutions. This method is
+ * This simple strategy simply archives all Pareto optimal solutions. This method is
  * very prone to OutOfMemory errors!
  */
 @Description("This is a straightforward strategy, which selects all dominating individuals (very prone to generate OutOfMemory errors).")

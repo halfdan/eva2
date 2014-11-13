@@ -10,7 +10,7 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyEditor;
 
 /**
- * A eva2.problems.simple focus listener with an object ID and callback.
+ * A simple focus listener with an object ID and callback.
  *
  * @author mkron
  */

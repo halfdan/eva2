@@ -1,20 +1,26 @@
 package eva2.cli;
 
 import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.optimization.individuals.IndividualInterface;
+import eva2.optimization.modules.Processor;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
+import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
+import eva2.optimization.statistics.InterfaceStatistics;
+import eva2.optimization.statistics.InterfaceStatisticsListener;
 import eva2.optimization.statistics.InterfaceStatisticsParameters;
+import eva2.optimization.statistics.InterfaceTextListener;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
@@ -49,32 +55,91 @@ public class Main {
             System.exit(0);
         }
 
-        //optimizer.addPopulationChangedEventListener(new OptimizationLogger(parameters, ));
-        for (int i = 0; i < statisticsParameters.getMultiRuns(); i++) {
+        Processor optimizationProcessor = new Processor(new YamlStatistics(statisticsParameters), parameters);
+        optimizationProcessor.setSaveParams(false);
+        optimizationProcessor.startOptimization();
 
-            problem.initializeProblem();
-            problem.initializePopulation(optimizer.getPopulation());
 
-            optimizer.setProblem(problem);
-            terminator.initialize(problem);
+        optimizationProcessor.runOptimizationOnce();
+    }
+}
 
-            /**
-             * This is the main optimization loop. We keep calling
-             * optimize() until a termination criterion is met or
-             * the user aborts the optimization manually.
-             */
-            do {
-                optimizer.optimize();
-            } while (!terminator.isTerminated(optimizer.getAllSolutions()));
+final class YamlStatistics implements InterfaceStatistics {
+    private static final Logger LOGGER = Logger.getLogger(YamlStatistics.class.getName());
+    private InterfaceStatisticsParameters statisticsParameters;
 
-            System.out.println(Arrays.toString(((InterfaceDataTypeDouble)optimizer.getPopulation().getBestEAIndividual()).getDoubleData()));
-        }
+    public YamlStatistics(InterfaceStatisticsParameters statisticsParameters) {
+        super();
+        this.statisticsParameters = statisticsParameters;
+    }
 
-        try {
-            bw.write(new Yaml().dump(optimizationLog));
-            bw.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+    @Override
+    public void startOptimizationPerformed(String infoString, int runNumber, InterfaceOptimizationParameters params, List<InterfaceAdditionalPopulationInformer> informerList) {
+
+    }
+
+    @Override
+    public void stopOptimizationPerformed(boolean normal, String stopMessage) {
+
+    }
+
+    @Override
+    public void addDataListener(InterfaceStatisticsListener listener) {
+
+    }
+
+    @Override
+    public boolean removeDataListener(InterfaceStatisticsListener listener) {
+        return false;
+    }
+
+    @Override
+    public void addTextListener(InterfaceTextListener listener) {
+
+    }
+
+    @Override
+    public boolean removeTextListener(InterfaceTextListener listener) {
+        return false;
+    }
+
+    @Override
+    public void printToTextListener(String s) {
+        System.out.println(s);
+    }
+
+    @Override
+    public void createNextGenerationPerformed(PopulationInterface Pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList) {
+
+    }
+
+    @Override
+    public void createNextGenerationPerformed(double[] bestFit, double[] worstFit, int calls) {
+
+    }
+
+    @Override
+    public InterfaceStatisticsParameters getStatisticsParameters() {
+        return statisticsParameters;
+    }
+
+    @Override
+    public IndividualInterface getRunBestSolution() {
+        return null;
+    }
+
+    @Override
+    public IndividualInterface getBestSolution() {
+        return null;
+    }
+
+    @Override
+    public double[] getBestFitness() {
+        return new double[0];
+    }
+
+    @Override
+    public void postProcessingPerformed(Population resultPop) {
+
     }
 }

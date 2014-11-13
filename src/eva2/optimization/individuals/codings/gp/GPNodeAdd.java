@@ -4,7 +4,7 @@ package eva2.optimization.individuals.codings.gp;
 import eva2.problems.InterfaceProgramProblem;
 
 /**
- * A eva2.problems.simple add node with two arguments.
+ * A simple add node with two arguments.
  */
 public class GPNodeAdd extends AbstractGPNode implements java.io.Serializable {
 

@@ -317,7 +317,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
                 break;
             }
             case 1: {
-                // use the eva2.problems.simple ES Local
+                // use the simple ES Local
                 this.outputFileName = "X360_StandardES";
                 EvolutionStrategies es = new EvolutionStrategies();
                 this.optimizationParameters.setOptimizer(es);

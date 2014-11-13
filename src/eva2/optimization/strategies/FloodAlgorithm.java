@@ -145,7 +145,7 @@ public class FloodAlgorithm extends AbstractOptimizer implements java.io.Seriali
     }
 
     /**
-     * This main method will start a eva2.problems.simple hillclimber. No arguments necessary.
+     * This main method will start a simple hillclimber. No arguments necessary.
      */
     public static void main() {
         FloodAlgorithm program = new FloodAlgorithm();

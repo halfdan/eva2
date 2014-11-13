@@ -208,8 +208,8 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                     AbstractOptimizationParameters curParams = (AbstractOptimizationParameters) ((AbstractModuleAdapter) jobList.module).getOptimizationParameters();
                     curParams.setSameParams((AbstractOptimizationParameters) job.getOptimizationParameters());
                     ((GenericModuleAdapter) jobList.module).setOptimizationParameters(curParams);
-                    ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().setMultiRuns(job.getNumRuns());
-                    ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().setFieldSelection(job.getFieldSelection(((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameter().getFieldSelection()));
+                    ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameters().setMultiRuns(job.getNumRuns());
+                    ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameters().setFieldSelection(job.getFieldSelection(((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameters().getFieldSelection()));
                 } else {
                     JOptionPane.showMessageDialog(parent, "Select exactly one job to reuse!", "Error", JOptionPane.ERROR_MESSAGE);
                 }

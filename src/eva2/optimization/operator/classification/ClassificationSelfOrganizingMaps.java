@@ -10,7 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Self-organizing maps, a eva2.problems.simple, but easy to visualize method
+ * Self-organizing maps, a simple, but easy to visualize method
  * for classification. The Dikel flag is an undocumented extension,
  * which seems to work but is not published.
  */

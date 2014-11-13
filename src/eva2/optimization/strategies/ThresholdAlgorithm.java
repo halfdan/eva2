@@ -140,7 +140,7 @@ public class ThresholdAlgorithm extends AbstractOptimizer implements java.io.Ser
     }
 
     /**
-     * This main method will start a eva2.problems.simple hillclimber. No arguments necessary.
+     * This main method will start a simple hillclimber. No arguments necessary.
      *
      * @param args
      */

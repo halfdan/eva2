@@ -303,7 +303,7 @@ public class ESIndividualIntegerData extends AbstractEAIndividual implements Int
     }
 
     /**
-     * This method performs a eva2.problems.simple one element mutation on the double vector
+     * This method performs a simple one element mutation on the double vector
      */
     @Override
     public void defaultMutate() {

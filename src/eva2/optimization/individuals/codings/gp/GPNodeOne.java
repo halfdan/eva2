@@ -2,7 +2,7 @@ package eva2.optimization.individuals.codings.gp;
 
 
 /**
- * A eva2.problems.simple constant node with the value 1.
+ * A simple constant node with the value 1.
  */
 public class GPNodeOne extends GPNodeConst implements java.io.Serializable {
     public GPNodeOne() {

@@ -602,7 +602,7 @@ public class Main extends JFrame implements OptimizationStateListener {
         // GUI is ready
         evaClient.addWindowListener(windowListener);
         // modify initial settings and activate output of all data:
-        evaClient.getStatistics().getStatisticsParameter().setOutputAllFieldsAsText(true);
+        evaClient.getStatistics().getStatisticsParameters().setOutputAllFieldsAsText(true);
         // add a data listener instance:
         evaClient.getStatistics().addDataListener(statisticsListener);
 
@@ -759,7 +759,7 @@ public class Main extends JFrame implements OptimizationStateListener {
     }
 
     public InterfaceStatisticsParameters getStatisticsParameter() {
-        return ((GenericModuleAdapter) currentModuleAdapter).getStatistics().getStatisticsParameter();
+        return ((GenericModuleAdapter) currentModuleAdapter).getStatistics().getStatisticsParameters();
     }
 
     private void loadSpecificModule(String selectedModule, InterfaceOptimizationParameters optimizationParameters) {

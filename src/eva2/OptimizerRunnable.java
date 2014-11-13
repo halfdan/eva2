@@ -20,7 +20,7 @@ import java.util.BitSet;
 
 
 /**
- * This Runnable class just encapsulates the Processor class with some eva2.problems.simple ways to access a solution.
+ * This Runnable class just encapsulates the Processor class with some simple ways to access a solution.
  *
  * @author mkron
  */
@@ -255,7 +255,7 @@ public class OptimizerRunnable implements Runnable {
      * @param vLev
      */
     public void setVerbosityLevel(InterfaceStatisticsParameters.OutputVerbosity vLev) {
-        proc.getStatistics().getStatisticsParameter().setOutputVerbosity(vLev);
+        proc.getStatistics().getStatisticsParameters().setOutputVerbosity(vLev);
     }
 
     /**
@@ -264,7 +264,7 @@ public class OptimizerRunnable implements Runnable {
      * @param outp
      */
     public void setOutputTo(InterfaceStatisticsParameters.OutputTo outp) {
-        proc.getStatistics().getStatisticsParameter().setOutputTo(outp);
+        proc.getStatistics().getStatisticsParameters().setOutputTo(outp);
     }
 
     /**
@@ -273,7 +273,7 @@ public class OptimizerRunnable implements Runnable {
      * @param multis
      */
     public void setMultiRuns(int multis) {
-        proc.getStatistics().getStatisticsParameter().setMultiRuns(multis);
+        proc.getStatistics().getStatisticsParameters().setMultiRuns(multis);
     }
 
     /**
@@ -282,6 +282,6 @@ public class OptimizerRunnable implements Runnable {
      * @param addInfo
      */
     public void setOutputFullStatsToText(boolean addInfo) {
-        proc.getStatistics().getStatisticsParameter().setOutputAllFieldsAsText(addInfo);
+        proc.getStatistics().getStatisticsParameters().setOutputAllFieldsAsText(addInfo);
     }
 }
