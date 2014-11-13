@@ -209,7 +209,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     /**
-     * Return a eva2.problems.simple String describing the current date and time.
+     * Return a simple String describing the current date and time.
      *
      * @return
      */
@@ -297,7 +297,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         ToDo: Figure out if we need this. Right now it is just spamming the text output
         if (printRunIntroVerbosity()) {
             printToTextListener("\nStatistics parameters: ");
-            printToTextListener(BeanInspector.niceToString(getStatisticsParameter()) + '\n');
+            printToTextListener(BeanInspector.niceToString(getStatisticsParameters()) + '\n');
         }
         */
         functionCalls = 0;
@@ -645,7 +645,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     @Override
-    public InterfaceStatisticsParameters getStatisticsParameter() {
+    public InterfaceStatisticsParameters getStatisticsParameters() {
         return statisticsParameter;
     }
 
@@ -780,7 +780,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     /**
-     * Return all eva2.problems.simple data fields collected internally. This must correspond to the
+     * Return all simple data fields collected internally. This must correspond to the
      * method {@link #getSimpleOutputHeader()}.
      *
      * @return
@@ -1151,7 +1151,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
                 } // this adds up data of a single iteration across multiple runs
             }
         }
-
         plotCurrentResults();
         fireDataListeners();
         if (resultOut != null) {

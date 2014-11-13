@@ -130,7 +130,7 @@ public class GAStandardCodingDouble implements InterfaceGADoubleCoding, java.io.
     }
 
     /**
-     * A eva2.problems.simple test function without arguments
+     * A simple test function without arguments
      */
     public static void main() {
         GAStandardCodingDouble t = new GAStandardCodingDouble();

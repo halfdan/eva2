@@ -10,7 +10,7 @@ import eva2.util.annotation.Description;
 
 
 /**
- * Another eva2.problems.simple archiving strategy not based on dominance but on the MaxiMin
+ * Another simple archiving strategy not based on dominance but on the MaxiMin
  * criterion. Doesn't work well on non-convex Pareto fronts.
  */
 @Description("Maxi Min Archiving.")

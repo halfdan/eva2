@@ -5,7 +5,7 @@ import eva2.problems.InterfaceProgramProblem;
 import eva2.tools.math.Mathematics;
 
 /**
- * A eva2.problems.simple sum node with a single, possibly vectorial (array), argument.
+ * A simple sum node with a single, possibly vectorial (array), argument.
  */
 public class GPNodeSum extends AbstractGPNode implements java.io.Serializable {
 

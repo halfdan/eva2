@@ -8,7 +8,7 @@ package eva2.tools;
 
 import javax.swing.filechooser.FileFilter;
 
-/**A eva2.problems.simple File Filter for *.txt files.
+/**A simple File Filter for *.txt files.
  */
 
 public class TXTFileFilter extends FileFilter {

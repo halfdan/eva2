@@ -73,9 +73,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
         // the statistics want to be informed if the strategy or the optimizer (which provide statistical data as InterfaceAdditionalInformer) change.
         if (statistics != null && (optimizationParameters != null)) {
-            if (statistics.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) {
+            if (statistics.getStatisticsParameters() instanceof InterfaceNotifyOnInformers) {
                 // 	addition for the statistics revision with selectable strings - make sure the go parameters are represented within the statistics
-                optimizationParameters.addInformableInstance((InterfaceNotifyOnInformers) (statistics.getStatisticsParameter()));
+                optimizationParameters.addInformableInstance((InterfaceNotifyOnInformers) (statistics.getStatisticsParameters()));
             }
         }
     }
@@ -232,8 +232,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
          * We keep the optimization running until it is aborted by the user or
          * the number of multiple runs has been reached.
          */
-        while (isOptimizationRunning() && (runCounter < statistics.getStatisticsParameter().getMultiRuns())) {
-            LOGGER.info(String.format("Starting Optimization %d/%d", runCounter + 1, statistics.getStatisticsParameter().getMultiRuns()));
+        while (isOptimizationRunning() && (runCounter < statistics.getStatisticsParameters().getMultiRuns())) {
+            LOGGER.info(String.format("Starting Optimization %d/%d", runCounter + 1, statistics.getStatisticsParameters().getMultiRuns()));
             statistics.startOptimizationPerformed(getInfoString(), runCounter, optimizationParameters, getInformerList());
 
             problem.initializeProblem();
@@ -246,7 +246,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             }
 
             if (optimizationStateListener != null) {
-                optimizationStateListener.updateProgress(getStatusPercent(optimizer.getPopulation(), runCounter, statistics.getStatisticsParameter().getMultiRuns()), null);
+                optimizationStateListener.updateProgress(getStatusPercent(optimizer.getPopulation(), runCounter, statistics.getStatisticsParameters().getMultiRuns()), null);
             }
 
             /**
@@ -388,7 +388,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                         getStatusPercent(
                                 optimizationParameters.getOptimizer().getPopulation(),
                                 runCounter,
-                                statistics.getStatisticsParameter().getMultiRuns()),
+                                statistics.getStatisticsParameters().getMultiRuns()),
                         null);
             }
         }
@@ -442,7 +442,12 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     }
 
     public Population performPostProcessing() {
-        return performPostProcessing((PostProcessParams) optimizationParameters.getPostProcessParams(), (InterfaceTextListener) statistics);
+        PostProcessParams ppp = (PostProcessParams)optimizationParameters.getPostProcessParams();
+        if (ppp.isDoPostProcessing()) {
+            return performPostProcessing(ppp, (InterfaceTextListener) statistics);
+        } else {
+            return null;
+        }
     }
 
     /**

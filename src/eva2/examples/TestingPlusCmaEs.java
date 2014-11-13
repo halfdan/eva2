@@ -12,7 +12,7 @@ import eva2.problems.FM0Problem;
 public class TestingPlusCmaEs {
 
     public static void main(String[] args) {
-        // a eva2.problems.simple bimodal target function, two optima near (1.7,0) and (-1.44/0)
+        // a simple bimodal target function, two optima near (1.7,0) and (-1.44/0)
         FM0Problem fm0 = new FM0Problem();
         AbstractEAIndividual bestIndy;
         // create standard ES parameters                

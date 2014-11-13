@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Vector;
 
 /**
- * Himmelblau's nonlinear optimization problem with 5 eva2.problems.simple boundary constraints and 3 nonlinear boundary constraints.
+ * Himmelblau's nonlinear optimization problem with 5 simple boundary constraints and 3 nonlinear boundary constraints.
  */
 @Description("Himmelblau's nonlinear optimization problem")
 public class ConstrHimmelblauProblem extends AbstractProblemDouble implements Serializable {

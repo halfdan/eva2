@@ -4,7 +4,7 @@ import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
 
 /**
- * A eva2.problems.simple sum with a scaling factor.
+ * A simple sum with a scaling factor.
  */
 @Description("This is a standard normation method with scaling.")
 public class SelProbStandardScaling extends AbstractSelProb implements java.io.Serializable {

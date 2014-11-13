@@ -74,7 +74,7 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     }
 
     @Override
-    public InterfaceStatisticsParameters getStatisticsParameter() {
+    public InterfaceStatisticsParameters getStatisticsParameters() {
         return sParams;
     }
 
