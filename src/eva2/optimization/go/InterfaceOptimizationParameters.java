@@ -2,9 +2,9 @@ package eva2.optimization.go;
 
 import eva2.optimization.operator.postprocess.InterfacePostProcessParams;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
+import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
-import eva2.optimization.strategies.InterfaceOptimizer;
 
 /**
  *

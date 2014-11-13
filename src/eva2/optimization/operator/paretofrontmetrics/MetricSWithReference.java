@@ -6,8 +6,8 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.operator.archiving.ArchivingAllDominating;
 import eva2.optimization.population.Population;
-import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.optimization.tools.FileTools;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.util.annotation.Description;
 
 import java.util.ArrayList;

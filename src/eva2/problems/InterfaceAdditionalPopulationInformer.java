@@ -7,8 +7,6 @@ import eva2.optimization.population.PopulationInterface;
  * This may be statistics depending on specific optimization methods or a specific application
  * problem.
  * For every additional field, a field name (header) and a value at every iteration must be provided.
- *
- * @author mkron
  */
 public interface InterfaceAdditionalPopulationInformer {
     /**

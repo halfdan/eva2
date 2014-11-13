@@ -3,8 +3,8 @@ package eva2.optimization.operator.crossover;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.population.Population;
-import eva2.problems.InterfaceOptimizationProblem;
 import eva2.optimization.strategies.BinaryScatterSearch;
+import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 

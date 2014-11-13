@@ -2,18 +2,15 @@ package eva2.optimization.strategies;
 
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.enums.PostProcessMethod;
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.operator.mutation.MutateESFixedStepSize;
 import eva2.optimization.operator.postprocess.PostProcess;
-import eva2.optimization.population.InterfaceSolutionSet;
-import eva2.optimization.population.Population;
-import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.population.SolutionSet;
+import eva2.optimization.population.*;
 import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.Pair;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 
@@ -200,7 +197,6 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
         tmp.addPopulation(population);
         tmp.setFunctionCalls(population.getFunctionCalls());
         tmp.setGeneration(population.getGeneration());
-//    	tmp = PostProcessInterim.clusterBest(tmp, sigma, 0, PostProcessInterim.KEEP_LONERS, PostProcessInterim.BEST_ONLY);
         return new SolutionSet(population, tmp);
     }
 
@@ -236,12 +232,9 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
     /**
      * @param hcEvalCycle the hcEvalCycle to set
      */
+    @Parameter(description = "The number of evaluations between two clustering/adaption steps.")
     public void setEvalCycle(int hcEvalCycle) {
         this.hcEvalCycle = hcEvalCycle;
-    }
-
-    public String evalCycleTipText() {
-        return "The number of evaluations between two clustering/adaption steps.";
     }
 
     /**
@@ -254,12 +247,9 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
     /**
      * @param initialPopSize the initialPopSize to set
      */
+    @Parameter(description = "Population size at the start and at reinitialization times.")
     public void setInitialPopSize(int initialPopSize) {
         this.initialPopSize = initialPopSize;
-    }
-
-    public String initialPopSizeTipText() {
-        return "Population size at the start and at reinitialization times.";
     }
 
     /**
@@ -272,12 +262,9 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
     /**
      * @param sigma the sigma to set
      */
+    @Parameter(description = "Defines the sigma distance parameter for density based clustering.")
     public void setSigmaClust(double sigma) {
         this.sigmaClust = sigma;
-    }
-
-    public String sigmaClustTipText() {
-        return "Defines the sigma distance parameter for density based clustering.";
     }
 
     /**
@@ -290,12 +277,9 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
     /**
      * @param notifyGuiEvery the notifyGuiEvery to set
      */
+    @Parameter(description = "How often to notify the GUI to plot the fitness etc.")
     public void setNotifyGuiEvery(int notifyGuiEvery) {
         this.notifyGuiEvery = notifyGuiEvery;
-    }
-
-    public String notifyGuiEveryTipText() {
-        return "How often to notify the GUI to plot the fitness etc.";
     }
 
     /**
@@ -308,12 +292,9 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
     /**
      * @param minImprovement the minImprovement to set
      */
+    @Parameter(description = "Improvement threshold below which the mutation step size is reduced or the population reinitialized.")
     public void setMinImprovement(double minImprovement) {
         this.minImprovement = minImprovement;
-    }
-
-    public String minImprovementTipText() {
-        return "Improvement threshold below which the mutation step size is reduced or the population reinitialized.";
     }
 
     /**
@@ -326,12 +307,9 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
     /**
      * @param reinitForStepSize the reinitForStepSize to set
      */
+    @Parameter(description = "Threshold for the mutation step size below which the population is seen as converged and reinitialized.")
     public void setStepSizeThreshold(double reinitForStepSize) {
         this.stepSizeThreshold = reinitForStepSize;
-    }
-
-    public String stepSizeThresholdTipText() {
-        return "Threshold for the mutation step size below which the population is seen as converged and reinitialized.";
     }
 
     /**
@@ -344,26 +322,20 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
     /**
      * @param initialStepSize the initialStepSize to set
      */
+    @Parameter(description = "Initial mutation step size for hill climbing, relative to the problem range.")
     public void setStepSizeInitial(double initialStepSize) {
         this.initialStepSize = initialStepSize;
-    }
-
-    public String stepSizeInitialTipText() {
-        return "Initial mutation step size for hill climbing, relative to the problem range.";
     }
 
     public PostProcessMethod getLocalSearchMethod() {
         return localSearchMethod;
     }
 
+    @Parameter(description = "Set the method to be used for the hill climbing as local search")
     public void setLocalSearchMethod(PostProcessMethod localSearchMethod) {
         this.localSearchMethod = localSearchMethod;
         GenericObjectEditor.setShowProperty(this.getClass(), "stepSizeInitial", localSearchMethod == PostProcessMethod.hillClimber);
         GenericObjectEditor.setShowProperty(this.getClass(), "stepSizeThreshold", localSearchMethod == PostProcessMethod.hillClimber);
-    }
-
-    public String localSearchMethodTipText() {
-        return "Set the method to be used for the hill climbing as local search";
     }
 
     @Override
@@ -385,12 +357,9 @@ public class ClusteringHillClimbing extends AbstractOptimizer implements Interfa
         return doReinitialization;
     }
 
+    @Parameter(description = "Activate reinitialization if no improvement was achieved.")
     public void setDoReinitialization(boolean doReinitialization) {
         this.doReinitialization = doReinitialization;
         GenericObjectEditor.setShowProperty(this.getClass(), "minImprovement", doReinitialization);
-    }
-
-    public String doReinitializationTipText() {
-        return "Activate reinitialization if no improvement was achieved.";
     }
 }

@@ -1,12 +1,12 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.EAIndividualComparator;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
 import eva2.optimization.operator.archiving.InformationRetrievalInserting;
 import eva2.optimization.operator.archiving.InterfaceArchiving;
 import eva2.optimization.operator.archiving.InterfaceInformationRetrieval;
 import eva2.optimization.operator.selection.SelectMONonDominated;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;

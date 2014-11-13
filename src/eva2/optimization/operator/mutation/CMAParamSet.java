@@ -1,7 +1,7 @@
 package eva2.optimization.operator.mutation;
 
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.tools.EVAERROR;
