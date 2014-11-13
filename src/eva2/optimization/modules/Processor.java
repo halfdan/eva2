@@ -158,11 +158,11 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             } catch (Exception e) {
                 System.err.println("There was an error in sleep Processor.run()" + e);
             }
-            runOptOnce();
+            runOptimizationOnce();
         }
     }
 
-    public Population runOptOnce() {
+    public Population runOptimizationOnce() {
         try {
             EVAERROR.clearMsgCache();
             while (isOptimizationRunning()) {
@@ -179,7 +179,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             }
         } catch (Exception e) {
             String errMsg = e.toString();
-            if ((errMsg == null) || (errMsg.length() == 0)) {
+            if (errMsg.length() == 0) {
                 errMsg = "check console output for error messages.";
             }
             errMsg = "Exception in Processor: " + errMsg;

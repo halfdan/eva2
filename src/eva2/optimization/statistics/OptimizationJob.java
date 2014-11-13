@@ -99,8 +99,6 @@ public class OptimizationJob implements Serializable, InterfaceStatisticsListene
                 tag = "!";
                 break;
         }
-
-        tag = tag + numRuns + " ";
         return tag;
     }
 
