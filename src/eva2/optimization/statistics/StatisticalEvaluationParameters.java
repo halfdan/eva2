@@ -3,6 +3,7 @@ package eva2.optimization.statistics;
 import eva2.optimization.enums.StatisticsOnSingleDataSet;
 import eva2.optimization.enums.StatisticsOnTwoSampledData;
 import eva2.tools.StringSelection;
+import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
 import java.io.Serializable;
@@ -23,24 +24,18 @@ public class StatisticalEvaluationParameters implements Serializable {
         return twoSampledStats;
     }
 
+    @Parameter(description = "Statistical tests on two-sampled data")
     public void setTwoSampledStats(StringSelection twoSStats) {
         this.twoSampledStats = twoSStats;
-    }
-
-    public String twoSampledStatsTipText() {
-        return "Statistical tests on two-sampled data";
     }
 
     public StringSelection getOneSampledStats() {
         return singleStats;
     }
 
+    @Parameter(description = "Statistical tests on one-sampled data")
     public void setOneSampledStats(StringSelection singleStats) {
         this.singleStats = singleStats;
-    }
-
-    public String oneSampledStatsTipText() {
-        return "Statistical tests on one-sampled data";
     }
 
     public String getName() {

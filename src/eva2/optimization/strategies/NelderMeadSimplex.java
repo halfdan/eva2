@@ -12,6 +12,7 @@ import eva2.problems.AbstractProblemDouble;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.Mathematics;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 
@@ -271,16 +272,13 @@ public class NelderMeadSimplex extends AbstractOptimizer implements Serializable
     /**
      * @param populationSize the populationSize to set
      */
+    @Parameter(description = "The population size should be adapted to the dimensions of the problem (e.g. n+1)")
     public void setPopulationSize(int populationSize) {
         this.populationSize = populationSize;
         if (population != null) {
             population.setTargetSize(populationSize);
             population.setNotifyEvalInterval(population.getTargetSize());
         }
-    }
-
-    public String populationSizeTipText() {
-        return "The population size should be adapted to the dimensions of the problem (e.g. n+1)";
     }
 
     @Override
@@ -416,23 +414,17 @@ public class NelderMeadSimplex extends AbstractOptimizer implements Serializable
         return checkConstraints;
     }
 
+    @Parameter(description = "Mark to check range constraints by reflection/projection")
     public void setCheckRange(boolean checkRange) {
         this.checkConstraints = checkRange;
-    }
-
-    public String checkRangeTipText() {
-        return "Mark to check range constraints by reflection/projection";
     }
 
     public int getCritIndex() {
         return fitIndex;
     }
 
+    @Parameter(description = "For multi-criterial problems, set the index of the fitness to be used in 0..n-1. Default is 0")
     public void setCritIndex(int fitIndex) {
         this.fitIndex = fitIndex;
-    }
-
-    public String critIndexTipText() {
-        return "For multi-criterial problems, set the index of the fitness to be used in 0..n-1. Default is 0";
     }
 }
