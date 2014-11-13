@@ -921,37 +921,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     /**
-     * @deprecated The method {@link #createNextGenerationPerformed(eva2.optimization.population.PopulationInterface, eva2.optimization.strategies.InterfaceOptimizer, java.util.List)} should be used instead.
-     */
-    @Override
-    public synchronized void createNextGenerationPerformed(double[] bestFit,
-                                                           double[] worstFit, int calls) {
-        functionCalls = calls;
-        currentBestFit = bestFit;
-        currentWorstFit = worstFit;
-        currentBestFeasibleFit = null;
-        currentMeanFit = null;
-
-        if (firstPlot) {
-            initializePlots(null, null);
-            firstPlot = false;
-        }
-        if ((iterationCounter == 0) && printHeaderByVerbosity()) {
-            printToTextListener(getOutputHeaderFieldNamesAsString(null) + '\n');
-        }
-
-        if (doTextOutput() && printLineByVerbosity(calls)) {
-            Pair<String, Object[]> addInfo = getOutputData(null, null);
-            printToTextListener(addInfo.head() + '\n');
-            if (addInfo.tail() != null) {
-                statDataSumOverAll = updateSum(statDataSumOverAll, ToolBox.parseDoubles(addInfo.tail()));
-            }
-        }
-        plotCurrentResults();
-        iterationCounter++;
-    }
-
-    /**
      * Add the given array to the member array. Do some checks etc.
      * If a resultSum array is provided, it is used to add the info and returned. Otherwise
      * a new array is allocated.

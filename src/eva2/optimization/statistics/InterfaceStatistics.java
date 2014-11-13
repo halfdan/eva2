@@ -35,8 +35,6 @@ public interface InterfaceStatistics {
 
     void createNextGenerationPerformed(PopulationInterface Pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList);
 
-    void createNextGenerationPerformed(double[] bestFit, double[] worstFit, int calls);
-
     InterfaceStatisticsParameters getStatisticsParameters(); // called from moduleadapter
 
     IndividualInterface getRunBestSolution(); // return the best fitness of the last run (may not be equal to the last population)

@@ -67,6 +67,8 @@ public class Main {
 final class YamlStatistics implements InterfaceStatistics {
     private static final Logger LOGGER = Logger.getLogger(YamlStatistics.class.getName());
     private InterfaceStatisticsParameters statisticsParameters;
+    private List<LinkedHashMap<String, Object>> runs = new ArrayList<>();
+
 
     public YamlStatistics(InterfaceStatisticsParameters statisticsParameters) {
         super();
@@ -110,11 +112,6 @@ final class YamlStatistics implements InterfaceStatistics {
 
     @Override
     public void createNextGenerationPerformed(PopulationInterface Pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList) {
-
-    }
-
-    @Override
-    public void createNextGenerationPerformed(double[] bestFit, double[] worstFit, int calls) {
 
     }
 

@@ -50,11 +50,6 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     }
 
     @Override
-    public void createNextGenerationPerformed(double[] bestFit,
-                                              double[] worstFit, int calls) {
-    }
-
-    @Override
     public double[] getBestFitness() {
         if (bestIndividualAllover != null) {
             return bestCurrentIndividual.getFitness();
