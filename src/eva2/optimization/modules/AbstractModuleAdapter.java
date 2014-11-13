@@ -92,10 +92,6 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
         }
     }
 
-    public boolean isOptRunning() {
-        return (processor != null) && (processor instanceof Processor) && ((Processor) processor).isOptimizationRunning();
-    }
-
     /**
      * Adds a remote state listener.
      */

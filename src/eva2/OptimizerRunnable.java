@@ -155,7 +155,7 @@ public class OptimizerRunnable implements Runnable {
                 } else {
                     proc.startOptimization();
                 }
-                proc.runOptOnce();
+                proc.runOptimizationOnce();
             }
         } catch (Exception e) {
             proc.getStatistics().printToTextListener("Exception in OptimizeThread::run: " + e.getMessage() + "\n");

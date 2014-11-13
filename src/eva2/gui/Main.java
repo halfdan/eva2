@@ -762,15 +762,6 @@ public class Main extends JFrame implements OptimizationStateListener {
         return ((GenericModuleAdapter) currentModuleAdapter).getStatistics().getStatisticsParameter();
     }
 
-    /**
-     * Check if there is an optimization currently running.
-     *
-     * @return
-     */
-    public boolean isOptimizationRunning() {
-        return (currentModuleAdapter != null) && (currentModuleAdapter instanceof AbstractModuleAdapter) && ((AbstractModuleAdapter) currentModuleAdapter).isOptRunning();
-    }
-
     private void loadSpecificModule(String selectedModule, InterfaceOptimizationParameters optimizationParameters) {
         ModuleAdapter newModuleAdapter = null;
         //

@@ -116,27 +116,6 @@ public class PropertySelectableList<T> implements java.io.Serializable {
         propertyChangeSupport.firePropertyChange("PropertySelectableList", null, this);
     }
 
-//	/**
-//	 * Append an object at the end of the list and immediately select it.
-//	 * @param o
-//	 */
-//	public void addObject(T o) {
-//		if (objects==null) {
-//			objects=(T[]) new Object[]{o};
-//			selections = new boolean[1];
-//		} else {
-//			T[] newOs = (T[])new Object[objects.length+1];
-//			boolean[] newSs = new boolean[selections.length+1];
-//			System.arraycopy(objects, 0, newOs, 0, this.objects.length);
-//			System.arraycopy(selections, 0, newSs, 0, this.selections.length);
-//			newOs[objects.length]=o;
-//			newSs[objects.length]=true;
-//			objects=newOs;
-//			selections=newSs;
-//		}
-//		propertyChangeSupport.firePropertyChange("PropertySelectableList", null, this);
-//	}
-
     public void addPropertyChangeListener(PropertyChangeListener l) {
         if (propertyChangeSupport == null) {
             propertyChangeSupport = new PropertyChangeSupport(this);

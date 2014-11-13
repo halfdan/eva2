@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * An abstract class handling statistics. Most important stuff happens in startOptimizationPerformed, stopOptimizationPerformed
@@ -29,7 +30,7 @@ import java.util.*;
  * The method plotCurrentResults should be implemented to plot further results per iteration.
  * <p>
  * All displayable data is now routed through a single pipeline, which consists in a
- * list of Objects assembled in the getOutputValues method. This allows all eva2.problems.simple data types which are
+ * list of Objects assembled in the getOutputValues method. This allows all simple data types which are
  * provided by the external informer instances to be handled uniformly to the internally collected data, and
  * thus they can be plotted and text-dumped in the same manner.
  * Basic fields are identified by the enum GraphSelectionEnum and are available independently of additional
@@ -90,8 +91,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     private ArrayList<IndividualInterface> runBestFeasibleList;
     private ArrayList<IndividualInterface> runBestFitList;
 
-    private transient ArrayList<InterfaceTextListener> textListeners;
-    private transient List<InterfaceStatisticsListener> dataListeners = null;
+    private transient Set<InterfaceTextListener> textListeners;
+    private transient Set<InterfaceStatisticsListener> dataListeners = null;
 
     private List<InterfaceAdditionalPopulationInformer> lastInformerList = null;
     private PopulationInterface lastSols = null;
@@ -108,26 +109,18 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         convergenceCnt = 0;
         optRunsPerformed = 0;
         iterationCounter = 0;
-        textListeners = new ArrayList<>();
+        textListeners = new CopyOnWriteArraySet<>();
+        dataListeners = new CopyOnWriteArraySet<>();
     }
 
     @Override
     public void addDataListener(InterfaceStatisticsListener l) {
-        if (dataListeners == null) {
-            dataListeners = new LinkedList<>();
-        }
-        if (l != null && !dataListeners.contains(l)) {
-            dataListeners.add(l);
-        }
+        dataListeners.add(l);
     }
 
     @Override
     public boolean removeDataListener(InterfaceStatisticsListener l) {
-        if (dataListeners == null) {
-            return false;
-        } else {
-            return dataListeners.remove(l);
-        }
+        return dataListeners.remove(l);
     }
 
     private void fireDataListeners() {
@@ -496,7 +489,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
         if (optRunsPerformed > 1) {
             if (runBestFitList.size() > 0) {
-//				Mathematics.svDiv((double)optRunsPerformed, meanBestOfRunFitness, meanBestOfRunFitness);
                 if (printFinalVerbosity()) {
                     double[] meanBestFit = getMeanBestFit(false);
                     printToTextListener(" MultiRun stats: Mean best fitness: " + BeanInspector.toString(meanBestFit) + "\n");
@@ -509,7 +501,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             if (printFinalVerbosity() && (bestFeasibleAllRuns != null)) {
                 printIndy("Overall best feasible", bestFeasibleAllRuns);
             }
-//			if ((runBestFeasibleList.size()>0) && (!equalLists(runBestFeasibleList, runBestFitList))) { // is there a difference between best feasibles and best fit?
             if (runBestFeasibleList.size() > 0) { // always output feasible stats even if theyre equal
                 if (printFinalVerbosity()) {
                     double[] meanBestFeasibleFit = getMeanBestFit(true);
@@ -550,22 +541,18 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     private String getFinalAdditionalInfo() {
         PopulationInterface bestPop = makeStatsPop();
-//		List<String> additionalFields = getAdditionalInfoHeader(lastInformerList, bestPop);
         String additionalFields = getOutputHeaderFieldNamesAsString(lastInformerList);
-//		String header = getOutputHeader(lastInformerList, bestPop);
         List<Object> vals = getOutputValues(lastInformerList, bestPop);
 
         StringBuilder sbuf = new StringBuilder("Overall best statistical data: \n");
         sbuf.append(additionalFields);
         sbuf.append('\n');
         sbuf.append(StringTools.concatValues(vals, textFieldDelimiter));
-//		appendAdditionalInfo(lastInformerList, bestPop, sbuf);
-//		getOutputLine(lastInformerList, makeStatsPop());
         return sbuf.toString();
     }
 
     private double[] calcStdDevVar(ArrayList<IndividualInterface> list, double meanFit) {
-        double tmp = 0, sum = 0;
+        double tmp, sum = 0;
         for (Iterator<IndividualInterface> iter = list.iterator(); iter.hasNext(); ) {
             IndividualInterface indy = iter.next();
             tmp = indy.getFitness()[0] - meanFit;
@@ -1050,7 +1037,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
                 currentBestFeasibleFit = curBestFeasible.getFitness().clone();
                 if ((bestOfRunFeasibleIndy == null) || (secondIsBetter(bestOfRunFeasibleIndy, curBestFeasible))) {
                     bestOfRunFeasibleIndy = (AbstractEAIndividual) curBestFeasible.clone();
-//					System.out.println("New best feasible: " + AbstractEAIndividual.getDefaultStringRepresentation((AbstractEAIndividual)bestRunFeasibleIndy));
                 }
                 if ((bestFeasibleAllRuns == null) || (secondIsBetter(bestFeasibleAllRuns, bestOfRunFeasibleIndy))) {
                     bestFeasibleAllRuns = bestOfRunFeasibleIndy;
@@ -1102,8 +1088,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * Do some data collection on the population.
      */
     @Override
-    public synchronized void createNextGenerationPerformed(PopulationInterface
-                                                                   pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList) {
+    public synchronized void createNextGenerationPerformed(PopulationInterface pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList) {
         lastInformerList = informerList;
 
         if (resultOut != null) {
@@ -1150,7 +1135,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             if ((optRunsPerformed == 0) && (sumDataCollection.size() <= iterationCounter)) {
                 // in the first run, newly allocate the arrays
                 // assume that all later data sets will have the same format
-//				means = new double[4][currentBestFit.length]; // this only fits fitness vectors! of course this is sensible for multi-crit fitnesses...
                 sumDataEntry = currentStatDoubleData.clone();
                 sumDataCollection.add(sumDataEntry);
             } else {
@@ -1168,17 +1152,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             }
         }
 
-//		if (doTextOutput()) {
-//			Pair<String,Double[]> addInfo = getOutputLine(informerList, lastSols);
-//
-//			if (printLineByVerbosity(runIterCnt)) {
-//				printToTextListener(addInfo.head()+'\n');
-//			}
-//			currentAdditionalInfo = addInfo.tail();
-//			if (addInfo.tail()!=null) {
-//				additionalInfoSums = updateAdditionalInfo(additionalInfoSums, addInfo.tail());
-//			}
-//		}
         plotCurrentResults();
         fireDataListeners();
         if (resultOut != null) {
