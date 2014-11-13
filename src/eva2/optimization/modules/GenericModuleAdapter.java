@@ -41,10 +41,6 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
         processor = new Processor(statisticsModule, params);
         processor.addListener(this);
 
-        // the statistics want to be informed if the strategy or the optimizer (which provide statistical data as InterfaceAdditionalInformer) change.
-        // THIS is now done directly in the constructor of a Processor
-//        if (m_StatisticsModul.getStatisticsParameter() instanceof InterfaceNotifyOnInformers) 
-//        	params.addInformableInstance((InterfaceNotifyOnInformers)m_StatisticsModul.getStatisticsParameter());
         // this prevents the optimizer property to be shown by the GOE if optimizerExpert is true
         GenericObjectEditor.setExpertProperty(params.getClass(), "optimizer", optimizerExpert);
 
@@ -116,6 +112,7 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
     @Override
     public void performedStop() {
         super.performedStop();
+        jobPanel.getEditor().getCustomEditor().repaint();
     }
 
     public static String getName() {
