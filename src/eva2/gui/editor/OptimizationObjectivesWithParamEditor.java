@@ -3,9 +3,9 @@ package eva2.gui.editor;
 
 import eva2.gui.PropertyEditorProvider;
 import eva2.gui.PropertyOptimizationObjectivesWithParam;
-import eva2.problems.InterfaceOptimizationObjective;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralOptimizationEditorProperty;
+import eva2.problems.InterfaceOptimizationObjective;
 import eva2.tools.BasicResourceLoader;
 
 import javax.swing.*;

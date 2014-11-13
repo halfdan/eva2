@@ -9,9 +9,9 @@ import eva2.optimization.operator.moso.MOSOWeightedFitness;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.Population;
-import eva2.problems.*;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.strategies.IslandModelEA;
+import eva2.problems.*;
 
 import javax.swing.*;
 import java.awt.*;

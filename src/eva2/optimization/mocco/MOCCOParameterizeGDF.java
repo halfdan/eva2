@@ -8,13 +8,13 @@ import eva2.optimization.go.MOCCOStandalone;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.moso.MOSOWeightedFitness;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
-import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
-import eva2.problems.InterfaceMultiObjectiveDeNovoProblem;
-import eva2.problems.InterfaceOptimizationObjective;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.optimization.tools.AbstractObjectEditor;
 import eva2.optimization.tools.GeneralOptimizationEditorProperty;
+import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
+import eva2.problems.InterfaceMultiObjectiveDeNovoProblem;
+import eva2.problems.InterfaceOptimizationObjective;
 
 import javax.swing.*;
 import java.awt.*;

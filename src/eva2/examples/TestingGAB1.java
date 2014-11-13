@@ -5,8 +5,8 @@ import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.selection.SelectXProbRouletteWheel;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;
-import eva2.problems.B1Problem;
 import eva2.optimization.strategies.GeneticAlgorithm;
+import eva2.problems.B1Problem;
 
 import java.util.BitSet;
 

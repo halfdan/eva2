@@ -1,14 +1,10 @@
 package eva2.optimization.strategies;
 
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceGAIndividual;
 import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectBestIndividuals;
-import eva2.optimization.population.InterfaceSolutionSet;
-import eva2.optimization.population.PBILPopulation;
-import eva2.optimization.population.Population;
-import eva2.optimization.population.SolutionSet;
+import eva2.optimization.population.*;
 import eva2.problems.AbstractOptimizationProblem;
 import eva2.problems.B1Problem;
 import eva2.problems.InterfaceOptimizationProblem;

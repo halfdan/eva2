@@ -276,11 +276,13 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      */
     @Override
     public String[] getAdditionalDataInfo() {
-        String[] info = null;
+        String[] info;
         if (this instanceof InterfaceInterestingHistogram) {
-            info = new String[]{"Representation of the current best individual",
-                    "Fitness histogram of the current population",
-                    "Fitness threshold based score of the current population"};
+            info = new String[]{
+                "Representation of the current best individual",
+                "Fitness histogram of the current population",
+                "Fitness threshold based score of the current population"
+            };
         } else {
             info = new String[]{"Representation of the current best individual"};
         }

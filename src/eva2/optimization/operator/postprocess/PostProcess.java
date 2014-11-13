@@ -24,12 +24,12 @@ import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.statistics.InterfaceStatisticsParameters;
-import eva2.problems.*;
 import eva2.optimization.statistics.InterfaceTextListener;
 import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.optimization.strategies.GradientDescentAlgorithm;
 import eva2.optimization.strategies.HillClimbing;
 import eva2.optimization.strategies.NelderMeadSimplex;
+import eva2.problems.*;
 import eva2.tools.Pair;
 import eva2.tools.math.Mathematics;
 

@@ -6,8 +6,8 @@ import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
 import eva2.optimization.operator.mutation.MutateESCovarianceMatrixAdaption;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
-import eva2.problems.FM0Problem;
 import eva2.optimization.strategies.EvolutionStrategies;
+import eva2.problems.FM0Problem;
 
 public class TestingPlusCmaEs {
 

@@ -1,18 +1,18 @@
 package eva2.gui;
 
 import eva2.EvAInfo;
-import eva2.optimization.modules.*;
-import eva2.optimization.statistics.InterfaceStatisticsParameters;
-import eva2.util.ClassPreloader;
-import eva2.util.EvAComAdapter;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.go.InterfaceOptimizationParameters;
+import eva2.optimization.modules.*;
 import eva2.optimization.statistics.AbstractStatistics;
 import eva2.optimization.statistics.InterfaceStatisticsListener;
+import eva2.optimization.statistics.InterfaceStatisticsParameters;
 import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;
 import eva2.tools.StringTools;
+import eva2.util.ClassPreloader;
+import eva2.util.EvAComAdapter;
 
 import javax.help.HelpSet;
 import javax.help.JHelpContentViewer;

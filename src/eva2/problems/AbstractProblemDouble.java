@@ -516,8 +516,7 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     public String[] getAdditionalDataHeader() {
         String[] superHeader = super.getAdditionalDataHeader();
         if (isWithConstraints()) {
-            return ToolBox.appendArrays(superHeader, new String[]{"rawFit",
-                    "numViol", "sumViol"});
+            return ToolBox.appendArrays(superHeader, new String[]{"rawFit","numViol", "sumViol"});
         } else {
             return superHeader;
         }
@@ -527,13 +526,11 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
     public String[] getAdditionalDataInfo() {
         String[] superInfo = super.getAdditionalDataInfo();
         if (isWithConstraints()) {
-            return ToolBox
-                    .appendArrays(
-                            superInfo,
-                            new String[]{
-                                    "Raw fitness (unpenalized) of the current best individual",
-                                    "The number of constraints violated by the current best individual",
-                                    "The sum of constraint violations of the current best individual"});
+            return ToolBox.appendArrays(superInfo,new String[]{
+                "Raw fitness (unpenalized) of the current best individual",
+                "The number of constraints violated by the current best individual",
+                "The sum of constraint violations of the current best individual"}
+            );
         } else {
             return superInfo;
         }

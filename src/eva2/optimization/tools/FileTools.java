@@ -5,8 +5,8 @@ import eva2.tools.BasicResourceLoader;
 import eva2.tools.StringTools;
 import org.yaml.snakeyaml.Yaml;
 
-import javax.swing.filechooser.FileFilter;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;

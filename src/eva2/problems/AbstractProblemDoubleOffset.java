@@ -1,5 +1,7 @@
 package eva2.problems;
 
+import eva2.util.annotation.Parameter;
+
 /**
  *
  */
@@ -48,6 +50,7 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
      *
      * @param XOffset The offset for the decision variables.
      */
+    @Parameter(description = "Choose an offset for the decision variables.")
     public void setXOffset(double XOffset) {
         this.xOffset = XOffset;
     }
@@ -56,26 +59,19 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
         return this.xOffset;
     }
 
-    public String XOffsetTipText() {
-        return "Choose an offset for the decision variables.";
-    }
-
     /**
      * This method allows you to set/get the offset for the
      * objective value.
      *
      * @param YOffset The offset for the objective value.
      */
+    @Parameter(description = "Choose an offset for the objective value.")
     public void setYOffset(double YOffset) {
         this.yOffset = YOffset;
     }
 
     public double getYOffset() {
         return this.yOffset;
-    }
-
-    public String YOffsetTipText() {
-        return "Choose an offset for the objective value.";
     }
 
     /**

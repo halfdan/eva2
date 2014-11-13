@@ -150,7 +150,15 @@ public class F8Problem extends AbstractProblemDoubleOffset
     public String[] getAdditionalDataHeader() {
         String[] superHd = super.getAdditionalDataHeader();
         return ToolBox.appendArrays(new String[]{"numOptimaFound", "maxPeakRatio"}, superHd);
-//		return "#Optima found \tMaximum Peak Ratio \t" + super.getAdditionalDataHeader(population);
+    }
+
+    @Override
+    public final String[] getAdditionalDataInfo() {
+        String[] superHd = super.getAdditionalDataInfo();
+        return ToolBox.appendArrays(new String[]{
+                "The number of optima found",
+                "Ratio of maximum peaks"
+        }, superHd);
     }
 
     @Override

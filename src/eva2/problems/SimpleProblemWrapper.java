@@ -6,12 +6,12 @@ import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.*;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
-import eva2.tools.math.RNG;
-import eva2.util.annotation.Description;
 import eva2.problems.simple.InterfaceSimpleProblem;
 import eva2.problems.simple.SimpleF1;
 import eva2.problems.simple.SimpleProblemBinary;
 import eva2.problems.simple.SimpleProblemDouble;
+import eva2.tools.math.RNG;
+import eva2.util.annotation.Description;
 import eva2.util.annotation.Parameter;
 
 import java.util.BitSet;

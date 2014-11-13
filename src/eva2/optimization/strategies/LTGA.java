@@ -1,10 +1,10 @@
 package eva2.optimization.strategies;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeBinary;
 import eva2.optimization.individuals.InterfaceGAIndividual;
+import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;

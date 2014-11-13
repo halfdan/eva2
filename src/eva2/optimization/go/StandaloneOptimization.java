@@ -16,10 +16,10 @@ import eva2.optimization.operator.selection.SelectTournament;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.Population;
-import eva2.problems.F1Problem;
 import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;
+import eva2.problems.F1Problem;
 import eva2.tools.math.RNG;
 
 import javax.swing.*;

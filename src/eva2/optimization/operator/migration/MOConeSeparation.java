@@ -12,9 +12,9 @@ import eva2.optimization.operator.constraint.ConstObjectivesInEqualitySmallerTha
 import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectRandom;
 import eva2.optimization.population.Population;
+import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.problems.InterfaceOptimizationProblem;
-import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.chart2d.Chart2DDPointIconCircle;
 import eva2.tools.chart2d.Chart2DDPointIconText;
 import eva2.tools.chart2d.DPoint;
