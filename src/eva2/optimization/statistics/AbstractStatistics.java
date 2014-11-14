@@ -21,6 +21,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An abstract class handling statistics. Most important stuff happens in startOptimizationPerformed, stopOptimizationPerformed
@@ -43,6 +45,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * Listeners implementing InterfaceStatisticsListener receive the raw data per iteration.
  */
 public abstract class AbstractStatistics implements InterfaceTextListener, InterfaceStatistics {
+    private static final Logger LOGGER = Logger.getLogger(AbstractStatistics.class.getName());
     private transient PrintWriter resultOut;
     protected InterfaceStatisticsParameters statisticsParameter;
 
@@ -181,14 +184,13 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     /**
      * Collect start date and time of the run and if indicated, open a file output stream.
      *
-     * @param infoString
+     * @param infoString Info string for the optimization run
      */
     protected void initializeOutput(String infoString) {
         String startDate = getDateString();
         // open the result file:
         if (doFileOutput()  // not "text-window only"
                 && (statisticsParameter.getOutputVerbosity() != InterfaceStatisticsParameters.OutputVerbosity.NONE)) { // verbosity accordingly high
-            //!resFName.equalsIgnoreCase("none") && !resFName.equals("")) {
             String fnameBase = makeOutputFileName(statisticsParameter.getResultFilePrefix(), infoString, startDate);
             int cnt = 0;
             String fname = fnameBase;
@@ -199,10 +201,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             try {
                 resultOut = new PrintWriter(new FileOutputStream(fname));
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Error: " + e);
+                LOGGER.log(Level.WARNING, "Error while opening log file", e);
             }
-            resultOut.println("StartDate:" + startDate);
         } else {
             resultOut = null;
         }
@@ -211,10 +211,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     /**
      * Return a simple String describing the current date and time.
      *
-     * @return
+     * @return A string containing current date and time
      */
     public static String getDateString() {
-        SimpleDateFormat formatter = new SimpleDateFormat("E'_'yyyy.MM.dd'_at_'HH.mm.ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
         return formatter.format(new Date());
     }
 
@@ -223,14 +223,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     private String makeOutputFileName(String prefix, String infoString, String startDate) {
-        return (prefix + "_" + infoString).replace(' ', '_') + "_" + startDate + ".txt";
+        return (prefix + "_" + infoString).replace(' ', '_') + "_" + startDate + ".log";
     }
 
     /**
      * If set to true, before every run the parameters will be stored to a file at the start
      * of each run. Default is true.
      *
-     * @param doSave
+     * @param doSave Whether to save a serialized version of the optimization parameters or not.
      */
     public void setSaveParams(boolean doSave) {
         saveParams = doSave;
@@ -307,7 +307,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     @Override
     public void stopOptimizationPerformed(boolean normal, String stopMessage) {
         if (lastSols == null) {
-            System.err.println("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptimizationPerformed (AbstractStatistics).");
+            LOGGER.warning("WARNING, possibly there was no call to createNextGenerationPerformed before calling stopOptimizationPerformed (AbstractStatistics).");
         }
 
         if (iterationCounter < sumDataCollection.size()) {
@@ -377,9 +377,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if (!printRunStoppedVerbosity() && printFinalVerbosity()) {
             printToTextListener(".");
         }
-//		if (currentBestFit!= null) {
-//			if (printRunStoppedVerbosity()) printToTextListener(" Best Fitness: " + BeanInspector.toString(currentBestFit) + "\n");
-//		}
         fireDataListenersStartStop(optRunsPerformed, normal, false);
     }
 
@@ -406,9 +403,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     private PopulationInterface makeStatsPop() {
         Population pop = new Population(1);
 
-//		if (bestCurrentIndy!=null) pop.add(bestCurrentIndy);
-//		if (bestOfRunIndy!=null) pop.add(bestOfRunIndy);
-//		if (bestOfRunFeasibleIndy!=null) pop.add(bestOfRunFeasibleIndy);
         if (bestIndyAllRuns != null) {
             pop.add(bestIndyAllRuns);
         }
@@ -434,19 +428,19 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     /**
      * Calculate the mean fitness of final best individuals over the last series of multi-runs.
      *
-     * @return
+     * @return Mean fitness
      */
-    public double[] getMeanBestFit(boolean requireFeasible) {
-        return calcMeanFit(requireFeasible ? runBestFeasibleList : runBestFitList);
+    public double[] getMeanBestFitness(boolean requireFeasible) {
+        return calculateMeanFitness(requireFeasible ? runBestFeasibleList : runBestFitList);
     }
 
     /**
      * Calculate the median fitness of final best individuals over the last series of multi-runs.
      *
-     * @return
+     * @return Median fitness
      */
-    public double[] getMedianBestFit(boolean requireFeasible) {
-        return calcMedianFit(requireFeasible ? runBestFeasibleList : runBestFitList);
+    public double[] getMedianBestFitness(boolean requireFeasible) {
+        return calculateMedianFitness(requireFeasible ? runBestFeasibleList : runBestFitList);
     }
 
     protected void finalizeOutput() {
@@ -476,7 +470,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
                     printToTextListener(textFieldDelimiter + (lastSum[i] / optRunsPerformed));
                 }
             }
-//			for (int i=0; i<lastAdditionalInfoSums.length; i++) if (lastAdditionalInfoSums[i]!=null) printToTextListener(" \t"+(lastAdditionalInfoSums[i]/optRunsPerformed));
             printToTextListener("\n");
         }
 
@@ -490,25 +483,25 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if (optRunsPerformed > 1) {
             if (runBestFitList.size() > 0) {
                 if (printFinalVerbosity()) {
-                    double[] meanBestFit = getMeanBestFit(false);
+                    double[] meanBestFit = getMeanBestFitness(false);
                     printToTextListener(" MultiRun stats: Mean best fitness: " + BeanInspector.toString(meanBestFit) + "\n");
                     if (meanBestFit.length == 1) {
                         printToTextListener(" MultiRun stats: Variance/Std.Dev.: " + BeanInspector.toString(calcStdDevVar(runBestFitList, meanBestFit[0])) + "\n");
                     }
-                    printToTextListener(" MultiRun stats: Median best fitn.: " + BeanInspector.toString(getMedianBestFit(false)) + "\n");
+                    printToTextListener(" MultiRun stats: Median best fitn.: " + BeanInspector.toString(getMedianBestFitness(false)) + "\n");
                 }
             }
             if (printFinalVerbosity() && (bestFeasibleAllRuns != null)) {
                 printIndy("Overall best feasible", bestFeasibleAllRuns);
             }
-            if (runBestFeasibleList.size() > 0) { // always output feasible stats even if theyre equal
+            if (runBestFeasibleList.size() > 0) { // always output feasible stats even if they're equal
                 if (printFinalVerbosity()) {
-                    double[] meanBestFeasibleFit = getMeanBestFit(true);
+                    double[] meanBestFeasibleFit = getMeanBestFitness(true);
                     printToTextListener(" MultiRun stats: Mean best feasible fitness (" + numOfRunsFeasibleFound + " runs): " + BeanInspector.toString(meanBestFeasibleFit) + "\n");
                     if (meanBestFeasibleFit.length == 1) {
                         printToTextListener(" MultiRun stats: Variance/Std.Dev.: " + BeanInspector.toString(calcStdDevVar(runBestFeasibleList, meanBestFeasibleFit[0])) + "\n");
                     }
-                    printToTextListener(" MultiRun stats: Median best feasible fitn. (: " + numOfRunsFeasibleFound + " runs): " + BeanInspector.toString(getMedianBestFit(true)) + "\n");
+                    printToTextListener(" MultiRun stats: Median best feasible fitn. (: " + numOfRunsFeasibleFound + " runs): " + BeanInspector.toString(getMedianBestFitness(true)) + "\n");
                 }
             }
             if (refineMultiRuns && (sumDataCollection != null)) {
@@ -553,8 +546,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     private double[] calcStdDevVar(ArrayList<IndividualInterface> list, double meanFit) {
         double tmp, sum = 0;
-        for (Iterator<IndividualInterface> iter = list.iterator(); iter.hasNext(); ) {
-            IndividualInterface indy = iter.next();
+        for (IndividualInterface indy : list) {
             tmp = indy.getFitness()[0] - meanFit;
             sum += (tmp * tmp);
         }
@@ -567,10 +559,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     /**
      * Calculate the mean fitness of a list of individuals.
      *
-     * @param list
-     * @return
+     * @param list List of individuals
+     * @return Mean fitness of individuals in list
      */
-    public static double[] calcMeanFit(List<IndividualInterface> list) {
+    public static double[] calculateMeanFitness(List<IndividualInterface> list) {
         double[] sumFit = list.get(0).getFitness().clone();
         for (int i = 1; i < list.size(); i++) {
             Mathematics.vvAdd(sumFit, list.get(i).getFitness(), sumFit);
@@ -580,10 +572,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         return sumFit;
     }
 
-    public static double[] calcMedianFit(List<IndividualInterface> list) {
+    public static double[] calculateMedianFitness(List<IndividualInterface> list) {
         ArrayList<double[]> dblAList = new ArrayList<>(list.size());
-        for (int i = 0; i < list.size(); i++) {
-            dblAList.add(list.get(i).getFitness());
+        for (IndividualInterface indy : list) {
+            dblAList.add(indy.getFitness());
         }
         return Mathematics.median(dblAList, false);
     }
@@ -631,13 +623,11 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         }
     }
 
-    ////////////// InterfaceTextListener
     @Override
     public void print(String str) {
         printToTextListener(str);
     }
 
-    ////////////// InterfaceTextListener
     @Override
     public void println(String str) {
         printToTextListener(str);
@@ -793,7 +783,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         ret[0] = functionCalls;
         for (int i = 1; i <= selEnumVals.length; i++) {
             switch (selEnumVals[i - 1]) { // the field i+1 contains enum value i, because field 0 is reserved for the number of function calls
-//			currentBest, currentWorst, runBest, currentBestFeasible, runBestFeasible, avgPopDistance, maxPopDistance;
                 case currentBest:
                     ret[i] = currentBestFit[defaultFitCriterion];
                     break;
