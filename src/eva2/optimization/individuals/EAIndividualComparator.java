@@ -73,7 +73,7 @@ public class EAIndividualComparator implements Comparator<Object>, Serializable 
     public boolean equals(Object other) {
         if (other instanceof EAIndividualComparator) {
             EAIndividualComparator o = (EAIndividualComparator) other;
-            if ((indyDataKey == o.indyDataKey) || (indyDataKey != null && (indyDataKey.equals(o.indyDataKey)))) {
+            if ((indyDataKey.equals(o.indyDataKey)) || (indyDataKey != null && (indyDataKey.equals(o.indyDataKey)))) {
                 if ((fitCriterion == o.fitCriterion) && (preferFeasible == o.preferFeasible)) {
                     return true;
                 }

@@ -138,7 +138,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
 
         for (int i = 0; i < parents.length; i++) {
             tmpVec = Mathematics.vvSub(parents[i], mean);
-            if (Mathematics.isValidVec(tmpVec)) {
+            if (Mathematics.isValidVector(tmpVec)) {
                 if (result.size() == 0) {
                     result.add(tmpVec);
                 } else {
@@ -149,7 +149,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
                         toro = Mathematics.svMult(tmpD, toro);
                         tmpVec = Mathematics.vvSub(tmpVec, toro);
                     }
-                    if (Mathematics.isValidVec(tmpVec)) {
+                    if (Mathematics.isValidVector(tmpVec)) {
                         result.add(tmpVec);
                     }
                 }
@@ -171,7 +171,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
 
         while (completeList.size() < mean.length) {
             tmpVec = RNG.gaussianVector(mean.length, 1., true);
-            if (Mathematics.isValidVec(tmpVec)) {
+            if (Mathematics.isValidVector(tmpVec)) {
                 // apply the infamous Gram-Schmidt
                 for (int j = 0; j < completeList.size(); j++) {
                     toro = (double[]) completeList.get(j);
@@ -179,7 +179,7 @@ public class CrossoverESUNDX implements InterfaceCrossover, java.io.Serializable
                     toro = Mathematics.svMult(tmpD, toro);
                     tmpVec = Mathematics.vvSub(tmpVec, toro);
                 }
-                if (Mathematics.isValidVec(tmpVec)) {
+                if (Mathematics.isValidVector(tmpVec)) {
                     Mathematics.normVect(tmpVec, tmpVec);
                     tmpVec = Mathematics.svMult(Mathematics.vvMult(theOther, tmpVec), tmpVec);
                     result.add(tmpVec);

@@ -31,7 +31,7 @@ public interface IndividualInterface {
      * Check whether the instance is dominating the given other individual and return
      * true in this case.
      *
-     * @param other a second individual of the same type
+     * @param fitness other a second individual of the same type
      * @return true if the instance dominates the other individual, else false
      */
     boolean isDominant(double[] fitness);

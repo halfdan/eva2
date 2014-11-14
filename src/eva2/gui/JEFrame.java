@@ -4,8 +4,8 @@ import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 public class JEFrame extends JInternalFrame {
@@ -62,7 +62,7 @@ public class JEFrame extends JInternalFrame {
             }
         });
         this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK),
+                KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK),
                 "ctrlFpressed"
         );
         this.getRootPane().getActionMap().put(
@@ -75,7 +75,7 @@ public class JEFrame extends JInternalFrame {
                 }
         );
         this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK),
+                KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK),
                 "ctrlOpressed"
         );
         this.getRootPane().getActionMap().put(
@@ -91,7 +91,7 @@ public class JEFrame extends JInternalFrame {
                 }
         );
         this.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_LESS, Event.CTRL_MASK),
+                KeyStroke.getKeyStroke(KeyEvent.VK_LESS, InputEvent.CTRL_MASK),
                 "ctrlSmallerpressed"
         );
         final JEFrame self = this;

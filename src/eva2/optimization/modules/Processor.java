@@ -183,13 +183,12 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 errMsg = "check console output for error messages.";
             }
             errMsg = "Exception in Processor: " + errMsg;
-            e.printStackTrace();
             LOGGER.log(Level.SEVERE, errMsg, e);
+            e.printStackTrace();
             try {
                 JOptionPane.showMessageDialog(null, StringTools.wrapLine(errMsg, 60, 0.2), "Error in Optimization", JOptionPane.ERROR_MESSAGE);
             } catch (Exception | Error ignored) {
             }
-            //statistics.stopOptimizationPerformed(false);
             setOptimizationRunning(false); // normal finish
             if (optimizationStateListener != null) {
                 optimizationStateListener.performedStop(); // is only needed in client server mode

@@ -265,7 +265,7 @@ public class MOCCOParameterizeGDF extends MOCCOPhase implements InterfaceProcess
 
         double[] result = new double[tmpA.size()];
         for (int i = 0; i < result.length; i++) {
-            result[i] = ((Double) tmpA.get(i)).doubleValue();
+            result[i] = (Double) tmpA.get(i);
         }
         return result;
     }

@@ -42,7 +42,7 @@ public abstract class AbstractDynTransProblem extends AbstractSynchronousOptimiz
      * Evaluate the function at the individuals position using an arbitrary translation which may be dynamically changing.
      *
      * @param individual the individual to be evaluated
-     * @param t          timestamp of the evaluation
+     * @param time       timestamp of the evaluation
      */
     @Override
     public void evaluateAt(AbstractEAIndividual individual, double time) {

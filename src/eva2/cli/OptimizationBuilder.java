@@ -120,7 +120,7 @@ public final class OptimizationBuilder {
             Class<?>[] params = new Class[0];
             try {
                 Constructor constructor = clazz.getConstructor(params);
-                instance = (T)constructor.newInstance(new Object[]{});
+                instance = (T)constructor.newInstance();
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
                 ex.printStackTrace();
             }

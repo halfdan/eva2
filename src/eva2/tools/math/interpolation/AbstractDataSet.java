@@ -58,7 +58,7 @@ public abstract class AbstractDataSet {
     /**
      * Modifies the X data.
      *
-     * @param the data modifier
+     * @param modifier the data modifier
      */
     public void modifyXData(AbstractDataModifier modifier) {
         modifier.modifyX(xDoubleData);
@@ -67,7 +67,7 @@ public abstract class AbstractDataSet {
     /**
      * Modifies the Y data.
      *
-     * @param the data modifier
+     * @param modifier the data modifier
      */
     public void modifyYData(AbstractDataModifier modifier) {
         modifier.modifyY(yDoubleData);
@@ -76,7 +76,7 @@ public abstract class AbstractDataSet {
     /**
      * Modifies the data.
      *
-     * @param the data modifier
+     * @param modifier the data modifier
      */
     public void modifyData(AbstractDataModifier modifier) {
         modifier.modify(xDoubleData, yDoubleData);

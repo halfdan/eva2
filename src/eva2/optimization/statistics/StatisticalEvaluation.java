@@ -345,9 +345,7 @@ public class StatisticalEvaluation {
         for (OptimizationJob j : jobList) {
             if (lSoFar == null) {
                 lSoFar = new LinkedList<>();
-                for (String f : j.getFieldHeaders()) {
-                    lSoFar.add(f);
-                }
+                Collections.addAll(lSoFar, j.getFieldHeaders());
             } else {
                 for (String f : lSoFar) {
                     if (j.getFieldIndex(f) >= 0) {

@@ -10,8 +10,8 @@ import javax.swing.text.Keymap;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
-import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.util.Hashtable;
@@ -26,7 +26,7 @@ public class JTextEditorInternalFrame extends JDocFrame {
     private class UndoAction extends ExtAction {
         public UndoAction() {
             super("R�ckg�ngig", new ImageIcon("images/EditUndo.gif"), "Macht die letzte Aktion r�ckg�ngig",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
             setEnabled(false);
         }
 
@@ -57,7 +57,7 @@ public class JTextEditorInternalFrame extends JDocFrame {
     ///////////////////////////////////////////
     private class RedoAction extends ExtAction {
         public RedoAction() {
-            super("Wiederholen", "Wiederholt die letzte Aktion", KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK | Event.SHIFT_MASK));
+            super("Wiederholen", "Wiederholt die letzte Aktion", KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
             setEnabled(false);
         }
 

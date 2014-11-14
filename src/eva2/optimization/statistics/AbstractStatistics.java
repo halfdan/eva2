@@ -601,9 +601,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
                 printedIteration++;
                 meanData = data.get(i - 1);
                 sbuf.append(i);
-                for (int k = 0; k < meanData.length; k++) {
+                for (Double value : meanData) {
                     sbuf.append(delim);
-                    sbuf.append(BeanInspector.toString(meanData[k]));
+                    sbuf.append(BeanInspector.toString(value));
                 }
                 sbuf.append("\n");
             }
@@ -777,7 +777,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * @see #getSimpleOutputHeader()
      */
     protected Object[] getSimpleOutputValues() {
-        GraphSelectionEnum[] selEnumVals = null;
+        GraphSelectionEnum[] selEnumVals;
         selEnumVals = GraphSelectionEnum.values();
         Object[] ret = new Object[1 + selEnumVals.length];
         ret[0] = functionCalls;
@@ -1121,8 +1121,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
      * Returns true if the given iteration is a verbose one according to StatsParameter - meaning
      * that full iteration data should be plotted.
      *
-     * @param iteration
-     * @return
+     * @param iteration Iteration number
+     * @return true if current iteration is verbose
      */
     private boolean printLineByVerbosity(int iteration) {
         return (statisticsParameter.getOutputVerbosity() == InterfaceStatisticsParameters.OutputVerbosity.ALL)
@@ -1177,8 +1177,8 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     /**
      * Compare two individual interfaces and return true if the second one is dominant.
      *
-     * @param indy1
-     * @param indy2
+     * @param indy1 First individual
+     * @param indy2 Second individual
      * @return true if the second individual is dominant, else false
      */
     public static boolean secondIsBetter(IndividualInterface indy1, IndividualInterface indy2) {
@@ -1191,7 +1191,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if (indy1 instanceof AbstractEAIndividual) {
             return ((AbstractEAIndividual) indy2).isDominatingDebConstraints((AbstractEAIndividual) indy1);
         }
-        return (indy2.isDominant(indy1));
+        return indy2.isDominant(indy1);
     }
 
     @Override

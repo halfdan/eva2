@@ -29,6 +29,7 @@ import eva2.problems.*;
 import eva2.tools.chart2d.*;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
+import eva2.util.annotation.Parameter;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -435,7 +436,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
      * Schedule new particles to be added to this swarm, rndly inited over the
      * search space by the problem
      *
-     * @param size            number of particles to be created
      * @param particleIndices set of indices that should be used for the added
      *                        particles, if null new indices are created
      */
@@ -2016,15 +2016,15 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * Set parameters as to Brits, Engelbrecht & Bergh: A Niching Particle Swarm
-     * Optimizer. SEAL 2002. Exeption: the swarm size is 100 by default, because
+     * Optimizer. SEAL 2002. Exception: the swarm size is 100 by default, because
      * 30 (of the orig. paper) seems way too low.
      *
-     * @param an       already existing NichePSO instance or null to create a new one
+     * @param npso  an already existing NichePSO instance or null to create a new one
      * @param problem
      * @param randSeed
      * @param evalCnt
      * @return
-     * @see #stdNPSO(AbstractOptimizer, long, int)
+     * @see #stdNPSO(eva2.problems.AbstractOptimizationProblem, long, int)
      */
     public static OptimizationParameters stdNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         if (npso == null) {
@@ -2074,7 +2074,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
      * @param randSeed
      * @param evalCnt
      * @return
-     * @see #stdNPSO(AbstractOptimizer, long, int)
+     * @see #stdNPSO(eva2.problems.AbstractOptimizationProblem, long, int)
      */
     public static OptimizationParameters starNPSO(NichePSO npso, AbstractOptimizationProblem problem, long randSeed, int evalCnt) {
         starNPSO(npso, evalCnt);
@@ -2087,7 +2087,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         }
         int popSize = 200;
         npso.setMainSwarmSize(popSize);
-//		double avgRange = Mathematics.getAvgRange(((InterfaceDataTypeDouble)problem.getIndividualTemplate()).getDoubleRange());
 
         // set strategies
         npso.setDeactivationStrategy(new StandardDeactivationStrategy());
@@ -2101,14 +2100,10 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         npso.getMainSwarm().setAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
         npso.setMainSwarmAlgoType(ParticleSwarmOptimization.PSOType.Inertness);
         npso.getMainSwarm().setPhi1(1.2);
-//		npso.SetMainSwarmPhi2(0); // by default no communication in the mainswarm
         npso.setMainSwarmTopologyTag(0); // this doesnt have any effect due to no communication
         npso.setMainSwarmTopologyRange(0);
         npso.mainSwarmAlgoType = ParticleSwarmOptimization.PSOType.Inertness;
         npso.getMainSwarm().setParameterControl(new ParamAdaption[]{getDefaultInertnessAdaption()});
-//		npso.setMainSwarmInertness(new LinearParameterAging(0.7, 0.2, evalCnt/popSize));
-//		npso.getMainSwarm().setSpeedLimit(avgRange/2.);
-//		npso.getMainSwarm().setCheckSpeedLimit(true);
 
         // parameters for the subswarms
         npso.getSubswarmOptimizerTemplate().setGcpso(true);
@@ -2116,8 +2111,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         npso.getSubswarmOptimizerTemplate().setAlgoType(ParticleSwarmOptimization.PSOType.Constriction);
 
         npso.getSubswarmOptimizerTemplate().setConstriction(2.05, 2.05);
-//		npso.getSubswarmOptimizerTemplate().setInertnessAging(new NoParameterAging(npso.getSubswarmOptimizerTemplate().getInertnessOrChi()));
-//		System.out.println(BeanInspector.niceToString(npso));
         return npso;
     }
 
@@ -2128,13 +2121,15 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     @Override
     public String[] getAdditionalDataInfo() {
-        return new String[]{"Size of the main swarm of explorers",
-                "Number of sub-swarms currently active",
-                "Average sub-swarm size",
-                "The number of stored potential local optima",
-                "The median correlation of stored solutions",
-                "The mean distance of stored solutions",
-                "Current inertness of the main swarm"};
+        return new String[]{
+            "Size of the main swarm of explorers",
+            "Number of sub-swarms currently active",
+            "Average sub-swarm size",
+            "The number of stored potential local optima",
+            "The median correlation of stored solutions",
+            "The mean distance of stored solutions",
+            "Current inertness of the main swarm"
+        };
     }
 
     @Override
@@ -2179,11 +2174,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         return paramControl.getSingleAdapters();
     }
 
+    @Parameter(description = "You may define dynamic paramter control strategies using the parameter name.")
     public void setParameterControl(ParamAdaption[] paramControl) {
         this.paramControl.setSingleAdapters(paramControl);
-    }
-
-    public String parameterControlTipText() {
-        return "You may define dynamic paramter control strategies using the parameter name.";
     }
 }

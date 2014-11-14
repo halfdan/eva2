@@ -127,7 +127,7 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
             }
             gbc.gridx = 2;
             gbc.gridy = i + 1;
-            this.refSolTextField[i] = new JTextField("" + (Double) refSolution.getData(obj[i].getIdentName()));
+            this.refSolTextField[i] = new JTextField("" + refSolution.getData(obj[i].getIdentName()));
             this.refSolTextField[i].setEditable(false);
             panelSTEP.add(this.refSolTextField[i], gbc);
             gbc.gridx = 3;
@@ -336,7 +336,7 @@ public class MOCCOParameterizeSTEP extends MOCCOPhase implements InterfaceProces
 
         double[] result = new double[tmpA.size()];
         for (int i = 0; i < result.length; i++) {
-            result[i] = ((Double) tmpA.get(i)).doubleValue();
+            result[i] = (Double) tmpA.get(i);
         }
         return result;
     }

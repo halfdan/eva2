@@ -215,7 +215,7 @@ public final class BayNet {
      * @param j edge to this node
      */
     public void addEdge(Integer i, Integer j) {
-        if (i != j) {
+        if (!i.equals(j)) {
             if (!this.network[i][j]) {
                 this.network[i][j] = true;
                 this.rootNodes.remove(j);
@@ -253,7 +253,8 @@ public final class BayNet {
     /**
      * find the next value where all the parents are already set
      *
-     * @param data
+     * @param probabilities
+     * @param nodes
      * @return
      */
     private int findNext(double[] probabilities, List<BayNode> nodes) {
@@ -358,7 +359,6 @@ public final class BayNet {
      * calculate the next probability
      *
      * @param data          the already calculated data
-     * @param probabilities the already calculated probabilities
      * @param toCalculate   the Nodes that have yet to be calculated
      * @param next          the node for which to calculate the probability
      * @return the new probabilities array
@@ -463,10 +463,9 @@ public final class BayNet {
     /**
      * check if the given Network is acyclic
      *
-     * @param net the Network
-     * @return is the net acyclic
+     * @return true if the net is acyclic
      */
-    public boolean isACyclic() {
+    public boolean isAcyclic() {
         List<Pair<Integer, Integer>> deletedEdges = new LinkedList<>();
         List<BayNode> nodes = getRootNodes();
         boolean res = false;

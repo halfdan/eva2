@@ -44,7 +44,6 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
      * values of the individual will be set inside this method.
      *
      * @param b The BitSet that is to be evaluated.
-     * @param l The length of the BitSet.
      * @return Double[]
      */
     @Override
@@ -63,7 +62,7 @@ public class B1Problem extends AbstractProblemBinary implements java.io.Serializ
 
     /**
      * This method allows you to output a string that describes a found solution
-     * in a way that is most suiteable for a given problem.
+     * in a way that is most suitable for a given problem.
      *
      * @param individual The individual that is to be shown.
      * @return The description.

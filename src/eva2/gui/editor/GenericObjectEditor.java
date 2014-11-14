@@ -48,8 +48,7 @@ public class GenericObjectEditor implements PropertyEditor {
                     }
                     classes.add(current);
                 } catch (ClassNotFoundException ex) {
-                    LOGGER.log(Level.WARNING,
-                            String.format("Requesting className: %1$s, Couldn't load: %2%s", className, current), ex);
+                    LOGGER.log(Level.WARNING, String.format("Requesting className: %1$s, Couldn't load: %2$s", className, current), ex);
                 }
             }
             return classes;

@@ -81,7 +81,7 @@ public class MutateGIOrdinal implements InterfaceMutation, java.io.Serializable 
                 mutInd = RNG.randomInt(0, x.length - 1);
                 mutate = RNG.gaussianDouble(this.stepSize);
                 // ToDo: WTF?
-                mutate *= (range[mutInd][1] - range[mutInd][1]);
+                mutate *= (0);
                 mut = (int) Math.round(mutate);
                 if (mut == 0) {
                     if (RNG.flipCoin(0.5)) {
