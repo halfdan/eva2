@@ -37,7 +37,7 @@ class ArgumentTree extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * If there are no key, value pairs present and the value is unset,
+     * If there are no key/value pairs present and the value is unset,
      * this tree belongs to a flag.
      *
      * @return

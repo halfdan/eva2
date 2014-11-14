@@ -61,6 +61,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         optimizationStateListener = module;
     }
 
+
     /**
      * Construct a Processor instance and make statistics instance informable of
      * the parameters, such they can by dynamically show additional information.
@@ -165,13 +166,14 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     public Population runOptimizationOnce() {
         try {
             EVAERROR.clearMsgCache();
+            this.setName(getInfoString());
             while (isOptimizationRunning()) {
                 setPriority(3);
                 if (saveParams) {
                     try {
                         optimizationParameters.saveInstance();
                     } catch (Exception e) {
-                        System.err.println("Error on saveInstance!");
+                        LOGGER.log(Level.WARNING, "Could not save optimization instance!", e);
                     }
                 }
                 resultPopulation = this.optimize();
@@ -194,6 +196,8 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
                 optimizationStateListener.performedStop(); // is only needed in client server mode
                 optimizationStateListener.updateProgress(0, errMsg);
             }
+        } finally {
+            this.setName("Optimization Processor");
         }
         return resultPopulation;
     }
