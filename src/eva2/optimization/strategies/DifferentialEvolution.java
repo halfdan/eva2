@@ -693,7 +693,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
      *
      * @param f
      */
-    @Parameter(name = "F", description = "Differential Weight")
+    @Parameter(name = "F", description = "F is a real and constant factor which controls the amplification of the differential variation.")
     public void setDifferentialWeight(double f) {
         this.differentialWeight = f;
     }
@@ -702,17 +702,13 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
         return this.differentialWeight;
     }
 
-    public String differentialWeightTipText() {
-        return "F is a real and constant factor which controls the amplification of the differential variation.";
-    }
-
     /**
      * Probability of alteration through DE (something like a discrete uniform
      * crossover is performed here)
      *
      * @param k
      */
-    @Parameter(name = "CR", description = "Crossover Rate")
+    @Parameter(name = "CR", description = "Probability of alteration through DE (a.k.a. CR, similar to discrete uniform crossover).")
     public void setCrossoverRate(double k) {
         if (k < 0) {
             k = 0;
@@ -725,10 +721,6 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
 
     public double getCrossoverRate() {
         return this.crossoverRate;
-    }
-
-    public String crossoverrateTipText() {
-        return "Probability of alteration through DE (a.k.a. CR, similar to discrete uniform crossover).";
     }
 
     /**
@@ -751,6 +743,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
      *
      * @param l
      */
+    @Parameter(description = "In case of trigonometric mutation DE, the TMO is applied with probability Mt.")
     public void setMt(double l) {
         this.mt = l;
         if (this.mt < 0) {
@@ -765,16 +758,12 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
         return this.mt;
     }
 
-    public String mtTipText() {
-        return "In case of trigonometric mutation DE, the TMO is applied with probability Mt.";
-    }
-
     /**
      * This method allows you to choose the type of Differential Evolution.
      *
      * @param s The type.
      */
-    @Parameter(name = "type", description = "Mutation type for DE")
+    @Parameter(name = "type", description = "Choose the type of Differential Evolution.")
     public void setDEType(eva2.optimization.enums.DEType s) {
         this.DEType = s;
         // show mt for trig. DE only
@@ -784,10 +773,6 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
 
     public eva2.optimization.enums.DEType getDEType() {
         return this.DEType;
-    }
-
-    public String dETypeTipText() {
-        return "Choose the type of Differential Evolution.";
     }
 
     /**
@@ -800,12 +785,9 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
     /**
      * @param maximumAge the maximumAge to set
      */
+    @Parameter(description = "The maximum age of individuals, older ones are discarded. Set to -1 (or 0) to deactivate")
     public void setMaximumAge(int maximumAge) {
         this.maximumAge = maximumAge;
-    }
-
-    public String maximumAgeTipText() {
-        return "The maximum age of individuals, older ones are discarded. Set to -1 (or 0) to deactivate";
     }
 
     /**
@@ -820,60 +802,45 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
     /**
      * @param forceRange the forceRange to set
      */
+    @Parameter(description = "Set whether to enforce the problem range.")
     public void setCheckRange(boolean forceRange) {
         this.forceRange = forceRange;
-    }
-
-    public String checkRangeTipText() {
-        return "Set whether to enforce the problem range.";
     }
 
     public boolean isRandomizeFKLambda() {
         return randomizeFKLambda;
     }
 
+    @Parameter(description = "If true, values for k, f, lambda are randomly sampled around +/- 20% of the given values.")
     public void setRandomizeFKLambda(boolean randomizeFK) {
         this.randomizeFKLambda = randomizeFK;
-    }
-
-    public String randomizeFKLambdaTipText() {
-        return "If true, values for k, f, lambda are randomly sampled around +/- 20% of the given values.";
     }
 
     public boolean isCompareToParent() {
         return compareToParent;
     }
 
+    @Parameter(description = "Compare a challenge individual to its original parent instead of a random one.")
     public void setCompareToParent(boolean compareToParent) {
         this.compareToParent = compareToParent;
-    }
-
-    public String compareToParentTipText() {
-        return "Compare a challenge individual to its original parent instead of a random one.";
     }
 
     public boolean isGenerational() {
         return generational;
     }
 
+    @Parameter(description = "Switch to generational DE as opposed to standard steady-state DE")
     public void setGenerational(boolean generational) {
         this.generational = generational;
-    }
-
-    public String generationalTipText() {
-        return "Switch to generational DE as opposed to standard steady-state DE";
     }
 
     public boolean isCyclePop() {
         return cyclePop;
     }
 
+    @Parameter(description = "if true, individuals are used as parents in a cyclic sequence - otherwise randomly ")
     public void setCyclePop(boolean cycle) {
         this.cyclePop = cycle;
-    }
-
-    public String cyclePopTipText() {
-        return "if true, individuals are used as parents in a cyclic sequence - otherwise randomly ";
     }
 
     /**
@@ -885,11 +852,8 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
 
     /**
      */
+    @Parameter(description = "Re-evaluates individuals which are older than maximum age instead of discarding them")
     public void setReEvaluate(boolean reEvaluate) {
         this.reEvaluate = reEvaluate;
-    }
-
-    public String reEvaluateTipText() {
-        return "Re-evaluates individuals which are older than maximum age instead of discarding them";
     }
 }
