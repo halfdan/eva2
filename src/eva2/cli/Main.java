@@ -96,7 +96,12 @@ final class YamlStatistics implements InterfaceStatistics {
     public void stopOptimizationPerformed(boolean normal, String stopMessage) {
         this.currentRun.put("stopMessage", stopMessage);
         this.currentRun.put("totalFunctionCalls", this.currentParameters.getOptimizer().getPopulation().getFunctionCalls());
-        this.currentRun.put("generations", currentGenerations);
+        // ToDo: Figure out a sane way to do this. Having multirun > 1 increases SnakeYAML memory consumption to beyond infinity
+        //this.currentRun.put("generations", currentGenerations);
+        Population pop = this.currentParameters.getOptimizer().getAllSolutions().getSolutions();
+        this.currentRun.put("solution", pop.getBestEAIndividual().getDoublePosition().clone());
+        this.currentRun.put("bestFitness", pop.getBestFitness().clone());
+        this.currentRun.put("meanFitness", pop.getMeanFitness().clone());
         this.runs.add(currentRun);
     }
 

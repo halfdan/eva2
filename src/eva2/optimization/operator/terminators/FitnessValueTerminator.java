@@ -5,6 +5,7 @@ import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class FitnessValueTerminator implements InterfaceTerminator,
      *
      */
     public FitnessValueTerminator() {
-        fitnessValue = new double[]{0.1};
+        fitnessValue = new double[]{10E-4};
     }
 
     @Override
@@ -70,6 +71,7 @@ public class FitnessValueTerminator implements InterfaceTerminator,
     /**
      *
      */
+    @Parameter(name = "fitness", description = "Set the fitness objective value.")
     public void setFitnessValue(double[] x) {
         fitnessValue = x;
     }
@@ -79,9 +81,5 @@ public class FitnessValueTerminator implements InterfaceTerminator,
      */
     public double[] getFitnessValue() {
         return fitnessValue;
-    }
-
-    public String fitnessValueTipText() {
-        return "Set the fitness objective value.";
     }
 }

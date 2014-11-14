@@ -129,7 +129,7 @@ public class CombinedTerminator implements InterfaceTerminator, Serializable {
     /**
      * @param logicalOperator the logicalOperator to set
      */
-    @Parameter(description = "Set the boolean operator to be used to combine the two terminators.")
+    @Parameter(name = "operator", description = "Set the boolean operator to be used to combine the two terminators.")
     public void setLogicalOperator(LogicalOperator logicalOperator) {
         this.logicalOperator = logicalOperator;
     }

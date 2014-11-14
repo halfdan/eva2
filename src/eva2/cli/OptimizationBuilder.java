@@ -168,9 +168,10 @@ public final class OptimizationBuilder {
                     if (type.isPrimitive() && ((ArgumentTree)tree.get(name)).getValue() != null) {
                         obj = BeanInspector.stringToPrimitive((String) ((ArgumentTree) tree.get(name)).getValue(), type);
                     } else if (type.isArray() && ((ArgumentTree)tree.get(name)).getValue() != null) {
-
+                        // ToDo: Implement array parsing
                     } else if (type.isEnum() && ((ArgumentTree)tree.get(name)).getValue() != null) {
                         int enumIndex = Integer.parseInt((String)((ArgumentTree)tree.get(name)).getValue());
+
                         // ToDo: Properly check
                         obj = type.getEnumConstants()[enumIndex];
                     } else {
@@ -180,7 +181,11 @@ public final class OptimizationBuilder {
                         Class subType;
                         if (className != null) {
                             // Try to get the actual class from its name
-                            subType = getClassFromName(className, type);
+                            if (className.endsWith("Problem")) {
+                                subType = getClassFromName("eva2.problems", className, type);
+                            } else {
+                                subType = getClassFromName("eva2.optimization", className, type);
+                            }
                         } else {
                             subType = type;
                         }
@@ -207,8 +212,8 @@ public final class OptimizationBuilder {
         return instance;
     }
 
-    private static Class<?> getClassFromName(String name, Class type) {
-        Class<?>[] classes = ReflectPackage.getAssignableClassesInPackage("eva2", type, true, true);
+    private static Class<?> getClassFromName(String packageName, String name, Class type) {
+        Class<?>[] classes = ReflectPackage.getAssignableClassesInPackage(packageName, type, true, true);
         for (Class clazz : classes) {
             // We allow both the fully qualified name (eva2.optimization.strategies.GeneticAlgorithm
             // and the simple name (GeneticAlgorithm)
