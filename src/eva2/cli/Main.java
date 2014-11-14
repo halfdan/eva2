@@ -13,15 +13,13 @@ import eva2.optimization.statistics.InterfaceTextListener;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  *
@@ -38,35 +36,38 @@ public class Main {
 
         LinkedHashMap<String, Object> optimizationLog = new LinkedHashMap<>();
         // Meta parameters
-        optimizationLog.put("population_size", parameters.getOptimizer().getPopulation().getTargetSize());
-        optimizationLog.put("number_of_runs", statisticsParameters.getMultiRuns());
+        optimizationLog.put("populationSize", parameters.getOptimizer().getPopulation().getTargetSize());
+        optimizationLog.put("numberOfRuns", statisticsParameters.getMultiRuns());
         optimizationLog.put("seed", parameters.getRandomSeed());
 
-        // Container for individual runs
-        List<LinkedHashMap<String, Object>> runs = new ArrayList<>();
-        optimizationLog.put("runs", runs);
+        YamlStatistics yamlStatistics = new YamlStatistics(statisticsParameters);
 
-        FileWriter fw;
-        BufferedWriter bw = null;
-        try {
-            fw = new FileWriter("derp.yml");
-            bw = new BufferedWriter(fw);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            System.exit(0);
-        }
-
-        Processor optimizationProcessor = new Processor(new YamlStatistics(statisticsParameters), parameters);
+        /**
+         * Runs optimization
+         */
+        Processor optimizationProcessor = new Processor(yamlStatistics, parameters);
         optimizationProcessor.setSaveParams(false);
         optimizationProcessor.startOptimization();
-
-
         optimizationProcessor.runOptimizationOnce();
+
+        /**
+         * Get run statistics
+         */
+        optimizationLog.put("runs", yamlStatistics.getRuns());
+
+        /**
+         * Yaml configuration
+         */
+        DumperOptions options = new DumperOptions();
+        options.setExplicitStart(true);
+        options.setExplicitEnd(true);
+        Yaml yaml = new Yaml();
+
+        System.out.println(yaml.dump(optimizationLog));
     }
 }
 
 final class YamlStatistics implements InterfaceStatistics {
-    private static final Logger LOGGER = Logger.getLogger(YamlStatistics.class.getName());
     private InterfaceStatisticsParameters statisticsParameters;
     private List<LinkedHashMap<String, Object>> runs;
     private LinkedHashMap<String, Object> currentRun;
@@ -127,10 +128,10 @@ final class YamlStatistics implements InterfaceStatistics {
     @Override
     public void createNextGenerationPerformed(PopulationInterface pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList) {
         LinkedHashMap<String, Object> generation = new LinkedHashMap<>();
-        generation.put("bestFitness", pop.getBestFitness());
-        generation.put("meanFitness", pop.getMeanFitness());
-        generation.put("functionCalls", pop.getFunctionCalls());
         generation.put("generation", currentGeneration);
+        generation.put("bestFitness", pop.getBestFitness().clone());
+        generation.put("meanFitness", pop.getMeanFitness().clone());
+        generation.put("functionCalls", pop.getFunctionCalls());
         this.currentGenerations.add(generation);
         this.currentGeneration++;
     }
@@ -158,5 +159,9 @@ final class YamlStatistics implements InterfaceStatistics {
     @Override
     public void postProcessingPerformed(Population resultPop) {
 
+    }
+
+    public List<LinkedHashMap<String, Object>> getRuns() {
+        return this.runs;
     }
 }
