@@ -192,15 +192,7 @@ public class DPointSetMultiIcon extends DComponent {
     }
 
     public int getSize() {
-        int size = Math.min(xMI.getSize(), yMI.getSize());
-
-        //    int size = x.getSize();
-        //    if( size != y.getSize() ) throw
-        //      new ArrayStoreException(
-        //        "The number of x-values is not equal to the number of y-values.\n"
-        //        +"The size of the DPointSet isn�t clear."
-        //      );
-        return size;
+        return Math.min(xMI.getSize(), yMI.getSize());
     }
 
     /**

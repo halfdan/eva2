@@ -288,7 +288,7 @@ public class MultirunRefiner {
      */
     public static String refineToText(ArrayList<double[]> result) {
         double[] mean;
-        StringBuffer sbuf = new StringBuffer("Event\tBest\tMean\tWorst\n");
+        StringBuilder sbuf = new StringBuilder("Event\tBest\tMean\tWorst\n");
 
         for (int i = 0; i < result.size(); i++) {
             mean = result.get(i);

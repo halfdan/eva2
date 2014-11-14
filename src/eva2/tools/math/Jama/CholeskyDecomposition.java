@@ -37,16 +37,16 @@ public class CholeskyDecomposition implements java.io.Serializable {
     /**
      * Cholesky algorithm for symmetric and positive definite matrix.
      *
-     * @param A Square, symmetric matrix.
+     * @param arg A square, symmetric matrix.
      * @return Structure to access L and isspd flag.
      */
 
-    public CholeskyDecomposition(Matrix Arg) {
+    public CholeskyDecomposition(Matrix matrix) {
         // Initialize.
-        double[][] A = Arg.getArray();
-        n = Arg.getRowDimension();
+        double[][] A = matrix.getArray();
+        n = matrix.getRowDimension();
         L = new double[n][n];
-        isspd = (Arg.getColumnDimension() == n);
+        isspd = (matrix.getColumnDimension() == n);
         // Main loop.
         for (int j = 0; j < n; j++) {
             double[] Lrowj = L[j];

@@ -160,14 +160,14 @@ public class FilePathEditor extends JPanel implements PropertyEditor {
     ActionListener fileChooserAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            if (event.getActionCommand() == "ApproveSelection") {
+            if (event.getActionCommand().equals("ApproveSelection")) {
                 filePath.setCompleteFilePath(fileChooser.getSelectedFile().getAbsolutePath());
                 propertyChangeSupport.firePropertyChange("", filePath, null);
                 Window w = (Window) fileChooser.getTopLevelAncestor();
                 w.dispose();
                 panel = null;
             }
-            if (event.getActionCommand() == "CancelSelection") {
+            if (event.getActionCommand().equals("CancelSelection")) {
                 filePath.setCompleteFilePath(fileChooser.getSelectedFile().getAbsolutePath());
                 propertyChangeSupport.firePropertyChange("", filePath, null);
                 Window w = (Window) fileChooser.getTopLevelAncestor();

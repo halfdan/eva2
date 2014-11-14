@@ -942,19 +942,11 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                             }
                         }
                     }
-                    // this was the binary variant
-//				k = (2*sortedIndex+1);
-//				if (k < pop.size()) {
-//					compareAndSet(localBestFitness, localBestPosition, (AbstractEAIndividual)sortedPop[k], useHistoric);
-//					k++;
-//					if (k < pop.size()) compareAndSet(localBestFitness, localBestPosition, (AbstractEAIndividual)sortedPop[k], useHistoric);
-//				}
                 }
                 break;
             case hpso: // Hierarchical PSO
                 if (index >= 0) {
                     k = getParentIndex(topologyRange, index, pop.size());
-//				compareAndSet(localBestFitness, localBestPosition, (AbstractEAIndividual)pop.get(k), useHistoric);
                     indy = pop.get(k);
                     System.arraycopy(indy.getData(partBestFitKey), 0, localBestFitness, 0, localBestFitness.length);
                     System.arraycopy(indy.getData(partBestPosKey), 0, localBestPosition, 0, localBestPosition.length);
@@ -1488,7 +1480,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                 AbstractEAIndividual indy = pop.getEAIndividual(i);
                 if (indy == null) {
                     System.err.println("Error in PSO.setPopulation!");
-                } else if (!indy.hasData(this.partTypeKey)) {
+                } else if (!indy.hasData(partTypeKey)) {
                     initIndividualDefaults(indy, initialVelocity);
                     initIndividualMemory(indy);
                     indy.putData(indexKey, i);

@@ -100,7 +100,7 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
                 gbc.gridx = 2;
                 gbc.gridy = i + 1;
                 gbc.weightx = 1;
-                textA = new JTextField("" + (Double) referenceSolution.getData(obj[i].getIdentName()));
+                textA = new JTextField("" + referenceSolution.getData(obj[i].getIdentName()));
                 textA.setEditable(false);
                 tmpP.add(textA, gbc);
 

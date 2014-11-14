@@ -454,7 +454,7 @@ public final class Mathematics {
      */
     public static boolean isValidVec(double[][] d) {
         for (int i = 0; i < d.length; i++) {
-            if (!isValidVec(d[i])) {
+            if (!isValidVector(d[i])) {
                 return false;
             }
         }
@@ -468,7 +468,7 @@ public final class Mathematics {
      * @param d
      * @return
      */
-    public static boolean isValidVec(double[] d) {
+    public static boolean isValidVector(double[] d) {
         double sum = 0;
         for (int i = 0; i < d.length; i++) {
             if (Double.isNaN(d[i])) {
@@ -479,7 +479,7 @@ public final class Mathematics {
         if (Double.isNaN(sum)) {
             return false;
         }
-        return Math.abs(sum) >= 0.000000000000000001;
+        return Math.abs(sum) >= 10E-18;
     }
 
     /**

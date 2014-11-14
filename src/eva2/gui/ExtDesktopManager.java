@@ -2,6 +2,7 @@ package eva2.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,11 +51,11 @@ public class ExtDesktopManager extends DefaultDesktopManager {
         for (i = index; i < Math.min(WINDOW_LIST_START + 9, desktop.getWindowMenu().getItemCount()); i++) {
             JMenuItem m = desktop.getWindowMenu().getItem(i);
             JInternalFrame frame = (JInternalFrame) m.getClientProperty(FRAME);
-            frame.putClientProperty(INDEX, ((Integer) frame.getClientProperty(INDEX)).intValue() - 1);
+            frame.putClientProperty(INDEX, (Integer) frame.getClientProperty(INDEX) - 1);
             int winIndex = i - WINDOW_LIST_START + 1;
             m.setText((winIndex) + " " + frame.getTitle());
             m.setMnemonic((char) (0x30 + winIndex));
-            m.setAccelerator(KeyStroke.getKeyStroke(0x30 + winIndex, Event.ALT_MASK));
+            m.setAccelerator(KeyStroke.getKeyStroke(0x30 + winIndex, InputEvent.ALT_MASK));
         }
 
         if (internalFrame.isSelected()) {

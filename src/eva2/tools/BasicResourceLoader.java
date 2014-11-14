@@ -529,7 +529,7 @@ public class BasicResourceLoader implements ResourceLoader {
     /**
      * Gets the byte data from a file.
      *
-     * @param fileName Description of the Parameter
+     * @param stream Stream to read from
      * @return the byte array of the file.
      */
     private byte[] getBytesFromStream(InputStream stream) {

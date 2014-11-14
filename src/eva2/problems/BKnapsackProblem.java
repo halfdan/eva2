@@ -262,7 +262,6 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
      * values of the individual will be set inside this method.
      *
      * @param b The BitSet that is to be evaluated.
-     * @param l The length of the BitSet.
      * @return Double[]
      */
     @Override

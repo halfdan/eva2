@@ -42,7 +42,7 @@ public class JExtToolBar extends JToolBar {
         if (k != null) {
             int modifiers = k.getModifiers();
             if (modifiers > 0) {
-                result.append(KeyEvent.getKeyModifiersText(modifiers) + "+");
+                result.append(KeyEvent.getKeyModifiersText(modifiers)).append("+");
             }
             result.append(KeyEvent.getKeyText(k.getKeyCode()));
         }

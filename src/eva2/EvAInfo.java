@@ -77,8 +77,7 @@ public class EvAInfo {
     }
 
     public static String getProperty(String key) {
-        String myVal = evaProperties.getProperty(key);
-        return myVal;
+        return evaProperties.getProperty(key);
     }
 
     public static Properties getProperties() {
@@ -98,7 +97,6 @@ public class EvAInfo {
     }
 
     public static String propDefaultModule() {
-        String defaultModule = getProperty("DefaultModule");
-        return defaultModule;
+        return getProperty("DefaultModule");
     }
 }

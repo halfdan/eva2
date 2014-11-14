@@ -49,8 +49,8 @@ public abstract class AbstractProblemBinary extends AbstractOptimizationProblem 
      * Evaluate a BitSet representing a possible solution. This is the target
      * function implementation.
      *
-     * @param x a BitSet representing a possible
-     * @return
+     * @param bs a BitSet representing a possible solution
+     * @return Fitness
      */
     public abstract double[] evaluate(BitSet bs);
 

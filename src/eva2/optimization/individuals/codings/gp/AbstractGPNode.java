@@ -350,9 +350,7 @@ public abstract class AbstractGPNode implements InterfaceProgram, java.io.Serial
             try {
                 node = (AbstractGPNode) c.newInstance();
                 ret = ret + " (" + node.getOpIdentifier() + "," + node.getArity() + ")";
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         }

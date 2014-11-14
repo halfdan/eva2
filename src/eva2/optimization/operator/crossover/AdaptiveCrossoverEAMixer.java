@@ -34,7 +34,7 @@ public class AdaptiveCrossoverEAMixer extends CrossoverEAMixer implements Interf
     /**
      * Create a mutation mixer with equal weights of the given mutation operators.
      *
-     * @param mutators
+     * @param crossovers
      */
     public AdaptiveCrossoverEAMixer(InterfaceCrossover... crossovers) {
         this.crossoverMixer = new PropertyCrossoverMixer(crossovers);

@@ -284,7 +284,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
      * based on the full list of known optima. Assumes that both realOpts and population have fitness
      * values assigned as in a maximization problem. This is the standard formulation of MPR.
      *
-     * @param mmProb
+     * @param realOpts
      * @param pop
      * @param epsilon
      * @return
