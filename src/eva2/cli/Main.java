@@ -67,10 +67,11 @@ public class Main {
             System.out.println("Options:");
 
             for (Parameter key : parameters) {
-                System.out.printf("\t--%s\t%s\n", key.getName(), key.getType().toString());
+                System.out.printf("\t\033[1m--%s\033[0m \033[4m%s\033[0m\n", key.getName(), key.getType().getName());
                 System.out.printf("\t\t%s\n", key.getDescription());
             }
         }
+        System.out.print("\n\n");
     }
 
     private static void executeArguments(String[] args) {

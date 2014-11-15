@@ -9,12 +9,8 @@ import java.util.*;
  * An array of Strings that can be selected and deselected. May be created directly from an Enum.
  * An analogous set of descriptive strings may be added for each field, for example to produce
  * tool tips in a GUI.
- *
- * @author mkron
  */
 public class StringSelection implements Serializable {
-
-    private static final long serialVersionUID = -1512329288445831907L;
     private String[] strObjects;
     private String[] toolTips;
     boolean[] selStates;
@@ -158,9 +154,6 @@ public class StringSelection implements Serializable {
      * @return
      */
     public boolean isSelected(Enum<?> e) {
-//		if (isSelected(e.ordinal())) {
-//			return e.toString().equals(strObjects[e.ordinal()]);
-//		} else return false;
         if (enumClass != null) {
             if (e.getClass().equals(enumClass)) {
                 return isSelected(e.ordinal());
