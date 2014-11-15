@@ -10,11 +10,10 @@ import eva2.tools.StringSelection;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
 import eva2.util.annotation.Parameter;
+import eva2.yaml.BeanSerializer;
+import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,13 +61,13 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
      *
      * @return A loaded (from file) or new instance of the class.
      */
-    public static StatisticsParameters getInstance(String serFileName) {
+    public static StatisticsParameters getInstance(String yamlFile) {
         StatisticsParameters instance = null;
         try {
-            FileInputStream fileStream = new FileInputStream(serFileName);
-            instance = (StatisticsParameters) Serializer.loadObject(fileStream);
-        } catch (FileNotFoundException ex) {
-            LOGGER.log(Level.WARNING, "Could not store instance object.", ex);
+            FileInputStream fileStream = new FileInputStream(yamlFile);
+            instance = (StatisticsParameters) new Yaml().load(fileStream);
+        } catch (Exception ex) {
+            LOGGER.log(Level.WARNING, "Could not load Statistics.yml.", ex);
         }
 
         if (instance == null) {
@@ -106,9 +105,11 @@ public class StatisticsParameters implements InterfaceStatisticsParameters, Inte
     @Override
     public void saveInstance() {
         try {
-            FileOutputStream fileStream = new FileOutputStream("Statistics.ser");
-            Serializer.storeObject(fileStream, this);
-        } catch (FileNotFoundException ex) {
+            FileOutputStream fileStream = new FileOutputStream("Statistics.yml");
+            String yaml = BeanSerializer.serializeObject(this);
+            fileStream.write(yaml.getBytes());
+            fileStream.close();
+        } catch (IOException ex) {
             LOGGER.log(Level.WARNING, "Could not store instance object.", ex);
         }
     }
