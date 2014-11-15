@@ -201,7 +201,7 @@ public class Main extends JFrame implements OptimizationStateListener {
 
         this.comAdapter = EvAComAdapter.getInstance();
         splashScreenTime = 2500;
-        SwingUtilities.invokeLater(initRunnable = new Runnable() {
+        initRunnable = new Runnable() {
 
             @Override
             public void run() {
@@ -219,7 +219,7 @@ public class Main extends JFrame implements OptimizationStateListener {
                                 if (wait < splashScreenTime) {
                                     Thread.sleep(splashScreenTime - wait);
                                 }
-                            } catch (Exception e) {
+                            } catch (Exception ignored) {
                             }
                         }
                     } else {
@@ -242,7 +242,41 @@ public class Main extends JFrame implements OptimizationStateListener {
                     notifyAll();
                 }
             }
-        });
+        };
+        SwingUtilities.invokeLater(initRunnable);
+    }
+
+    private void initLookAndFeel() {
+        // Properties for Mac OS X support.
+        if ((System.getProperty("mrj.version") != null)
+                || (System.getProperty("os.name").toLowerCase().contains("mac"))) {
+            /*
+             * Note: the xDock name property must be set before parsing
+             * command-line arguments! See above!
+             */
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", EvAInfo.productName);
+
+            System.setProperty("apple.awt.graphics.EnableQ2DX", "true");
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("com.apple.macos.smallTabs", "true");
+            System.setProperty("com.apple.macos.useScreenMenuBar", "true");
+
+            System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
+            System.setProperty("com.apple.mrj.application.live-resize", "true");
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
+            }
+        } else {
+            /* Set Look and Feel */
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+            } catch (Exception ex) {
+                LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
+            }
+        }
     }
 
     /**
@@ -321,6 +355,9 @@ public class Main extends JFrame implements OptimizationStateListener {
         }
 
         if (withGUI) {
+            // Initialize look and feel for EvA2
+            initLookAndFeel();
+
             GridBagConstraints gbConstraints = new GridBagConstraints();
 
             /* Create main frame with GridBagLayout */
@@ -511,37 +548,6 @@ public class Main extends JFrame implements OptimizationStateListener {
      * @param args command line parameters
      */
     public static void main(String[] args) {
-        // Properties for Mac OS X support.
-        if ((System.getProperty("mrj.version") != null)
-                || (System.getProperty("os.name").toLowerCase().contains("mac"))) {
-            /*
-             * Note: the xDock name property must be set before parsing
-             * command-line arguments! See above!
-             */
-            System.setProperty("com.apple.mrj.application.apple.menu.about.name", EvAInfo.productName);
-
-            System.setProperty("apple.awt.graphics.EnableQ2DX", "true");
-            System.setProperty("apple.laf.useScreenMenuBar", "true");
-            System.setProperty("com.apple.macos.smallTabs", "true");
-            System.setProperty("com.apple.macos.useScreenMenuBar", "true");
-
-            System.setProperty("com.apple.mrj.application.growbox.intrudes", "false");
-            System.setProperty("com.apple.mrj.application.live-resize", "true");
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-                LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
-            }
-        } else {
-            /* Set Look and Feel */
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-            } catch (Exception ex) {
-                LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
-            }
-        }
-
         /* Available command-line parameters */
         String[] keys = new String[]{
             "--help", "--autorun", "--nosplash", "--nogui", "--params", "--treeView"
