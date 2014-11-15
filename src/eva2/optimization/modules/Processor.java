@@ -167,15 +167,17 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         try {
             EVAERROR.clearMsgCache();
             this.setName(getInfoString());
+            if (isOptimizationRunning() && saveParams) {
+                try {
+                    optimizationParameters.saveInstance();
+
+                } catch (Exception e) {
+                    LOGGER.log(Level.WARNING, "Could not save optimization instance!", e);
+                }
+            }
+
             while (isOptimizationRunning()) {
                 setPriority(3);
-                if (saveParams) {
-                    try {
-                        optimizationParameters.saveInstance();
-                    } catch (Exception e) {
-                        LOGGER.log(Level.WARNING, "Could not save optimization instance!", e);
-                    }
-                }
                 resultPopulation = this.optimize();
                 setPriority(1);
             }

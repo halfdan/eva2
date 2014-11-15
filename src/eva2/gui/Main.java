@@ -496,7 +496,7 @@ public class Main extends JFrame implements OptimizationStateListener {
                 }
             });
 
-            LOGGER.log(Level.FINE, "Working directory is: {0}", System.getProperty("user.dir"));
+            LOGGER.log(Level.INFO, "Working directory is: {0}", System.getProperty("user.dir"));
             LOGGER.log(Level.FINE, "Class path is: {0}", System.getProperty("java.class.path", "."));
 
             if (!(configurationPane.isVisible())) {
