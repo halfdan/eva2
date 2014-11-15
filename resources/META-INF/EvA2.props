@@ -13,4 +13,4 @@ ModulePackage = eva2.optimization.modules
 ModuleFilterClass = eva2.optimization.modules.AbstractModuleAdapter
 
 # Full EvA2 version number
-EvA2Version = 3.0-rc1
+EvA2Version = 2.2.0-rc1
