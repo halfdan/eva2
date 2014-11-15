@@ -1,25 +1,22 @@
 package eva2.cli;
 
+import eva2.EvAInfo;
 import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.individuals.IndividualInterface;
+import eva2.optimization.modules.OptimizationParameters;
 import eva2.optimization.modules.Processor;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
-import eva2.optimization.statistics.InterfaceStatistics;
-import eva2.optimization.statistics.InterfaceStatisticsListener;
-import eva2.optimization.statistics.InterfaceStatisticsParameters;
-import eva2.optimization.statistics.InterfaceTextListener;
+import eva2.optimization.statistics.*;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
+import eva2.util.annotation.Description;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -27,6 +24,56 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
+        if (args.length == 0 || (args.length == 1 && args[0].equals("--help"))) {
+            /* Show help for empty argument list or --help */
+            printHelp();
+            System.exit(-1);
+        } else if (args.length == 2 && args[0].equals("--help")) {
+            /* Show help for specific class */
+            String className = args[1];
+            try {
+                Class<?> clazz = Class.forName(className);
+                printHelpFor(clazz);
+            } catch (ClassNotFoundException e) {
+                System.out.printf("Class %s does not exist.\n", className);
+            }
+            System.exit(-1);
+        } else {
+            executeArguments(args);
+        }
+    }
+
+    private static void printHelp() {
+        System.out.printf("EvA2 version \"%s\"\n", EvAInfo.getVersion());
+        System.out.println("Usage: java -cp EvA2.jar eva2.cli.Main [args...]\n");
+
+        printHelpFor(OptimizationParameters.class);
+        printHelpFor(StatisticsParameters.class);
+    }
+
+    private static void printHelpFor(Class<?> clazz) {
+        System.out.println(clazz.getName() + "\n");
+        if (clazz.isAnnotationPresent(Description.class)) {
+            Description description = clazz.getAnnotation(Description.class);
+            System.out.println(description.value());
+        }
+
+        ParameterGenerator generator = new ParameterGenerator(clazz, false);
+        generator.generate();
+        Map<String, List<Parameter>> paramList = generator.getParameterList();
+
+        List<Parameter> parameters = paramList.get(clazz.getName());
+        if (parameters.size() > 0) {
+            System.out.println("Options:");
+
+            for (Parameter key : parameters) {
+                System.out.printf("\t--%s\t%s\n", key.getName(), key.getType().toString());
+                System.out.printf("\t\t%s\n", key.getDescription());
+            }
+        }
+    }
+
+    private static void executeArguments(String[] args) {
         InterfaceOptimizationParameters parameters = OptimizationBuilder.parseOptimizerArguments(args);
         InterfaceStatisticsParameters statisticsParameters = OptimizationBuilder.parseStatisticsArguments(args);
 
