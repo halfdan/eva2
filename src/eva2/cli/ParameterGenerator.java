@@ -79,7 +79,7 @@ public class ParameterGenerator {
                     }
                     parameter = new Parameter(name, param.description(), type);
                 } else {
-                    parameter = new Parameter(name, "No description available", type);
+                    parameter = new Parameter(name, "No description available.", type);
                 }
 
                 parameters.add(parameter);

@@ -170,10 +170,8 @@ public final class OptimizationBuilder {
                     } else if (type.isArray() && ((ArgumentTree)tree.get(name)).getValue() != null) {
                         // ToDo: Implement array parsing
                     } else if (type.isEnum() && ((ArgumentTree)tree.get(name)).getValue() != null) {
-                        int enumIndex = Integer.parseInt((String)((ArgumentTree)tree.get(name)).getValue());
-
-                        // ToDo: Properly check
-                        obj = type.getEnumConstants()[enumIndex];
+                        String enumName = (String)((ArgumentTree)tree.get(name)).getValue();
+                        obj = Enum.valueOf((Class<Enum>)type, enumName);
                     } else {
                         // The subtree has the name of the class
                         String className = (String)((ArgumentTree)tree.get(name)).getValue();
