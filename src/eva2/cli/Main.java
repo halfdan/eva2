@@ -30,6 +30,9 @@ public class Main {
             /* Show help for empty argument list or --help */
             printHelp();
             System.exit(-1);
+        } else if (args.length == 1 && args[0].equals("--version")) {
+            printVersion();
+            System.exit(-1);
         } else if (args.length == 2 && args[0].equals("--help")) {
             /* Show help for specific class */
             String className = args[1];
@@ -45,8 +48,14 @@ public class Main {
         }
     }
 
-    private static void printHelp() {
+    /**
+     * Print current version number.
+     */
+    private static void printVersion() {
         System.out.printf("EvA2 version \"%s\"\n", EvAInfo.getVersion());
+    }
+
+    private static void printHelp() {
         System.out.println("Usage: java -cp EvA2.jar eva2.cli.Main [args...]\n");
 
         printHelpFor(OptimizationParameters.class);
@@ -147,6 +156,7 @@ public class Main {
         optimizationLog.put("populationSize", parameters.getOptimizer().getPopulation().getTargetSize());
         optimizationLog.put("numberOfRuns", statisticsParameters.getMultiRuns());
         optimizationLog.put("seed", parameters.getRandomSeed());
+        optimizationLog.put("problem", parameters.getProblem());
 
         CommandLineStatistics yamlStatistics = new CommandLineStatistics(statisticsParameters);
 
