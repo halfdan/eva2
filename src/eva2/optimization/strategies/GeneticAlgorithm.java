@@ -10,6 +10,7 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.SolutionSet;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 /**
  * The traditional genetic algorithms as devised by Holland. To only special
@@ -195,6 +196,7 @@ public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Seria
      *
      * @param selection
      */
+    @Parameter(description = "Choose a parent selection method.")
     public void setParentSelection(InterfaceSelection selection) {
         this.parentSelection = selection;
     }
@@ -203,15 +205,12 @@ public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Seria
         return this.parentSelection;
     }
 
-    public String parentSelectionTipText() {
-        return "Choose a parent selection method.";
-    }
-
     /**
      * Enable/disable elitism.
      *
      * @param elitism
      */
+    @Parameter(description = "Enable/disable elitism.")
     public void setElitism(boolean elitism) {
         this.useElitism = elitism;
     }
@@ -220,15 +219,12 @@ public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Seria
         return this.useElitism;
     }
 
-    public String elitismTipText() {
-        return "Enable/disable elitism.";
-    }
-
     /**
      * The number of mating partners needed to create offsprings.
      *
      * @param partners
      */
+    @Parameter(name = "partners", description = "The number of mating partners needed to create offsprings.")
     public void setNumberOfPartners(int partners) {
         if (partners < 0) {
             partners = 0;
@@ -240,25 +236,18 @@ public class GeneticAlgorithm extends AbstractOptimizer implements java.io.Seria
         return this.numberOfPartners;
     }
 
-    public String numberOfPartnersTipText() {
-        return "The number of mating partners needed to create offsprings.";
-    }
-
     /**
      * Choose a selection method for selecting recombination partners for given
      * parents.
      *
      * @param selection
      */
+    @Parameter(description = "Choose a selection method for selecting recombination partners for given parents.")
     public void setPartnerSelection(InterfaceSelection selection) {
         this.partnerSelection = selection;
     }
 
     public InterfaceSelection getPartnerSelection() {
         return this.partnerSelection;
-    }
-
-    public String partnerSelectionTipText() {
-        return "Choose a selection method for selecting recombination partners for given parents.";
     }
 }
