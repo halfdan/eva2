@@ -1,9 +1,13 @@
 package eva2.yaml;
 
+import eva2.optimization.population.Population;
 import eva2.util.annotation.Hidden;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.introspector.Property;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
 import java.beans.BeanInfo;
@@ -33,6 +37,10 @@ public class BeanSerializer {
 }
 
 class OptimizationRepresenter extends Representer {
+    public OptimizationRepresenter() {
+        this.representers.put(Population.class, new RepresentPopulation());
+    }
+
     @Override
     protected Set<Property> getProperties(Class<?> type)
             throws IntrospectionException {
@@ -58,5 +66,16 @@ class OptimizationRepresenter extends Representer {
             }
         }
         return filtered;
+    }
+
+    private class RepresentPopulation implements Represent {
+        public Node representData(Object data) {
+            try {
+
+                return representJavaBean(getProperties(data.getClass()), data);
+            } catch (IntrospectionException var3) {
+                throw new YAMLException(var3);
+            }
+        }
     }
 }
