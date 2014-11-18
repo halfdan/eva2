@@ -57,7 +57,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
      */
     public DifferentialEvolution() {
         // sets DE2 as default
-        DEType = eva2.optimization.enums.DEType.CurrentToBest;
+        DEType = eva2.optimization.enums.DEType.RandToBest;
     }
 
     public DifferentialEvolution(int popSize, eva2.optimization.enums.DEType type, double f, double cr, double lambda, double mt) {
@@ -333,8 +333,20 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
                 }
                 break;
             }
-            case CurrentToBest: {
-                // this is DE2 or DE/current-to-best/1
+            case RandTwo: {
+                // this is DE/current-to-rand/1
+                double[] rndDelta = this.fetchDeltaRandom(population);
+                double[] rndDelta2 = this.fetchDeltaRandom(population);
+                if (parents != null) {
+                    parents.add(population.getEAIndividual(parentIndex));
+                }  // Add wherever oX is used directly
+                for (int i = 0; i < oX.length; i++) {
+                    vX[i] = oX[i] + this.getCurrentF() * rndDelta[i] + this.getCurrentF() * rndDelta2[i];
+                }
+                break;
+            }
+            case RandToBest: {
+                // this is DE2 or DE/rand-to-best/1
                 double[] rndDelta = this.fetchDeltaRandom(population);
                 double[] bestDelta = this.fetchDeltaBest(population, esIndy);
                 if (parents != null) {
@@ -767,7 +779,7 @@ public class DifferentialEvolution extends AbstractOptimizer implements java.io.
     public void setDEType(eva2.optimization.enums.DEType s) {
         this.DEType = s;
         // show mt for trig. DE only
-        GenericObjectEditor.setShowProperty(this.getClass(), "lambda", s == eva2.optimization.enums.DEType.CurrentToBest);
+        GenericObjectEditor.setShowProperty(this.getClass(), "lambda", s == eva2.optimization.enums.DEType.RandToBest);
         GenericObjectEditor.setShowProperty(this.getClass(), "mt", s == eva2.optimization.enums.DEType.Trigonometric);
     }
 

@@ -1527,7 +1527,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      */
     public void unmarkAllIndividuals() {
         for (int i = 0; i < this.size(); i++) {
-            this.get(i).unmark();
+            this.get(i).setMarked(false);
         }
     }
 
