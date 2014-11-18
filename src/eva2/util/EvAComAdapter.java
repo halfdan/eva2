@@ -1,7 +1,6 @@
 package eva2.util;
 
 
-import eva2.gui.LoggingPanel;
 import eva2.optimization.EvAMainAdapter;
 import eva2.optimization.EvAMainAdapterImpl;
 import eva2.optimization.go.InterfaceOptimizationParameters;
@@ -14,7 +13,6 @@ import java.util.logging.Logger;
  */
 public class EvAComAdapter {
     private final static Logger LOGGER = Logger.getLogger(EvAComAdapter.class.getName());
-    private LoggingPanel loggingPanel;
     private EvAMainAdapterImpl localMainAdapter;
     private static EvAComAdapter instance;
 
@@ -58,13 +56,12 @@ public class EvAComAdapter {
      */
     public String[] getModuleNameList() {
         System.exit(1);
-        System.out.println("SAYYYYY WHAAAAAT?");
         String[] list = getLocalMainAdapter().getModuleNameList();
         LOGGER.info("List of modules available:");
 
         if (list != null) {
             for (String item : list) {
-                if (!item.isEmpty() && loggingPanel != null) {
+                if (!item.isEmpty()) {
                     LOGGER.info(item);
                 }
             }

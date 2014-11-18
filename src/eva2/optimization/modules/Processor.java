@@ -170,7 +170,6 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
             if (isOptimizationRunning() && saveParams) {
                 try {
                     optimizationParameters.saveInstance();
-
                 } catch (Exception e) {
                     LOGGER.log(Level.WARNING, "Could not save optimization instance!", e);
                 }
@@ -231,7 +230,6 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         InterfaceTerminator terminator = this.optimizationParameters.getTerminator();
         InterfaceOptimizer optimizer = this.optimizationParameters.getOptimizer();
         InterfaceOptimizationProblem problem = this.optimizationParameters.getProblem();
-
         optimizer.addPopulationChangedEventListener(this);
         /**
          * We keep the optimization running until it is aborted by the user or
@@ -261,7 +259,6 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
              */
             do {
                 maybeUpdateParamCtrl(optimizationParameters);
-
                 optimizer.optimize();
             } while (isOptimizationRunning() && !terminator.isTerminated(optimizer.getAllSolutions()));
 

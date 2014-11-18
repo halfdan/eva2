@@ -457,6 +457,14 @@ public class Main extends JFrame implements OptimizationStateListener {
             progressBar.setStringPainted(true);
             statusBarControls.add(progressBar);
 
+            statusBarControls.add(Box.createHorizontalStrut(5));
+            statusBarControls.add(new JSeparator(JSeparator.VERTICAL));
+            statusBarControls.add(Box.createHorizontalStrut(5));
+            /* Create ProgressBar and add it to the status bar */
+            statusBarControls.add(new JLabel("CPU"));
+            statusBarControls.add(Box.createHorizontalStrut(5));
+            statusBarControls.add(new CPUPanel(100));
+
             statusBar.add(statusBarControls);
 
             gbConstraints.gridx = 0;
