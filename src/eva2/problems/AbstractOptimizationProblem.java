@@ -375,11 +375,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     @Override
     public boolean isMultiObjective() {
         if (this instanceof AbstractMultiObjectiveOptimizationProblem) {
-            if (((AbstractMultiObjectiveOptimizationProblem) this).getMOSOConverter() instanceof MOSONoConvert) {
-                return true;
-            } else {
-                return false;
-            }
+            return ((AbstractMultiObjectiveOptimizationProblem) this).getMOSOConverter() instanceof MOSONoConvert;
         } else {
             return false;
         }

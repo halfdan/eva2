@@ -474,31 +474,19 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
         return this.constraintViolation > 0;
     }
 
+    @Hidden
+    public void setMarked(boolean t) {
+        this.isMarked = t;
+    }
+
     /**
      * This method returns whether or not the individual is marked. This feature
      * is for GUI only and has been especially introduced for the MOCCO GUI.
      *
      * @return true if marked false if not
      */
-    public boolean getMarked() {
-        return this.isMarked;
-    }
-
-    @Hidden
-    public void setMarked(boolean t) {
-        this.isMarked = t;
-    }
-
     public boolean isMarked() {
         return this.isMarked;
-    }
-
-    public void unmark() {
-        this.isMarked = false;
-    }
-
-    public void mark() {
-        this.isMarked = true;
     }
 
     /**

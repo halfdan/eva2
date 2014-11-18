@@ -406,12 +406,12 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
     @Override
     public void individualSelected(AbstractEAIndividual indy) {
         if (indy.isMarked()) {
-            indy.unmark();
+            indy.setMarked(false);
         } else {
             if (this.selectUniqueSolution) {
                 this.moccoStandalone.state.paretoFront.unmarkAllIndividuals();
             }
-            indy.mark();
+            indy.setMarked(true);
         }
         this.paretoFrontView.updateView();
         if (this.refSolutionListener != null) {
