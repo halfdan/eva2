@@ -1,16 +1,19 @@
 \chapter{External Interfaces\label{sec:External-Interfaces}}
 
-
 \section{Optimizing Through an External Command\label{sub:Optimizing-external-cmd}}
 
 \begin{figure}
 \noindent \begin{centering}
 \includegraphics[width=0.4\columnwidth]{pics/screenshot-ExtRun}
 \par\end{centering}
-
 \caption{Screenshot of an external runtime problem configuration.\label{fig:Screenshot-external-runtime}}
 \end{figure}
 
+\begin{algorithm}
+	\lstinputlisting[style=myjavastyle]{listings/external-problem.rb}
+	
+	\caption{Solving an external problem implemented in Ruby.\label{alg:externalProblem}}
+\end{algorithm}
 
 For easy optimization using a runnable program, we provide the \texttt{ExternalRuntimeProblem}
 class. So if you have a runnable function implementation called ``\emph{testEval}''
@@ -18,7 +21,7 @@ class. So if you have a runnable function implementation called ``\emph{testEval
 arguments and produces a result value as output (on \textit{stdout}),
 you can select \texttt{ExternalRuntimeProblem} in the GUI, enter the
 path and program name into the command field, adapt boundaries and
-the problem dimension and just start optimization. For a programm
+the problem dimension and just start optimization. For a program
 called \textit{testEval} with a two-dimensional solution space, which
 you want to optimize within $[-5,10]^{2}$, the configuration can
 be seen in Fig.~\ref{fig:Screenshot-external-runtime}. In the example,
@@ -130,32 +133,32 @@ and the value object must of course be of the correct type.
 \begin{algorithm}
 \begin{mylstenv}
 function z = testfun(x, y) 
-switch y     
-  case 1 % modulated parabola         
-    z(1)=sum(x.*x)+cos(x(1))*sin(x(2));     
-  case 2 % Branin         
-    z(1)=(x(2)-(5/(4*pi^2))*x(1)^2+5*x(1)/pi-6)^2+10*(1-1/(8*pi))*cos(x(1))+10;     
-  case 3 % Himmelblau         
-    z(1)=((x(1)^2 + x(2) - 11)^2 + (x(1) + x(2)^2 - 7)^2);     
-  case 4 % simple binary, minimize bits
-    z(1)=0;
-    for i=1:length(x)          
-      if (x(i)=='1') ; z(1)=z(1)+1; end         
-    end     
-  case 5 % simple parabola         
-    z(1)=sum(x.*x);
+	switch y     
+	case 1 % modulated parabola         
+		z(1)=sum(x.*x)+cos(x(1))*sin(x(2));     
+	case 2 % Branin         
+		z(1)=(x(2)-(5/(4*pi^2))*x(1)^2+5*x(1)/pi-6)^2+10*(1-1/(8*pi))*cos(x(1))+10;     
+	case 3 % Himmelblau         
+		z(1)=((x(1)^2 + x(2) - 11)^2 + (x(1) + x(2)^2 - 7)^2);     
+	case 4 % simple binary, minimize bits
+		z(1)=0;
+		for i=1:length(x)          
+			if (x(i)=='1') ; z(1)=z(1)+1; end         
+		end     
+	case 5 % simple parabola         
+		z(1)=sum(x.*x);
 end
 \end{mylstenv}
-
-\caption{Example m-function for optimization from Matlab\label{alg:Example-m-function}}
+	\caption{Example m-function for optimization from Matlab\label{alg:Example-m-function}}
 \end{algorithm}
 
 
 For further details, check the method overview in the list below.
 Each interface method (except the constructor) has at least a parameter
 \texttt{JI}, designating the JEInterface object to work on.
+%
 \begin{description}
-\item [{\texttt{JI=JEInterface(fHndl,datatype,R,{[}initR{[},fArg{[},optName,optValue{]}{*}{]}{]})}}] JEInterface
+	\item [{\texttt{JI=JEInterface(fHndl,datatype,R,{[}initR{[},fArg{[},optName,optValue{]}{*}{]}{]})}}] JEInterface
 constructor: \emph{fHndl}: handle of the target function. \emph{datatype}:
 give a char 'int', 'binary', or 'double' depending on the desired
 data type. \emph{R}: a 2$\times$dim array defining the solution subspace
@@ -167,7 +170,8 @@ target function as single object (scalar, struct, or list). \emph{optName,
 optValue}: optional name-value pairs defining \emph{MaxFunCalls},
 \emph{TolX} and \emph{TolFun} similar to the Matlab optimset structure.
 The \emph{Display} option may trigger verbose output. 
-\item [{\texttt{showOptimizers(JI)}}] Print a list of optimization strategies
+	
+	\item [{\texttt{showOptimizers(JI)}}] Print a list of optimization strategies
 accessible through JEInterface by ID numbers.
 \item [{\texttt{JI=optimize(JI,optType{[},resultFilePrefix{]})}}] Start
 the optimization using the strategy indicated by the ID \emph{optType}.
@@ -175,13 +179,16 @@ Optionally write verbose results to an output file with prefix \emph{resultFileP
 in the working directory. Returns the modified JEInterface instance.
 The method also opens a message box with a cancel button to stop the
 optimization.
-\item [{\texttt{{[}sol,fit{]}=getResult(JI)}}] After optimization: return
+
+	\item [{\texttt{{[}sol,fit{]}=getResult(JI)}}] After optimization: return
 the final solution and its fitness. During optimization: return the
 current best solution and its fitness.
-\item [{\texttt{getMessage(JI)}}] Return a text message describing the
+
+	\item [{\texttt{getMessage(JI)}}] Return a text message describing the
 termination state of the optimization, e.g. the number of function
 calls performed.
-\item [{\texttt{JI=postProcess(JI,steps,sigmaClust{[},nBest{]})}}] Do post-processing
+
+	\item [{\texttt{JI=postProcess(JI,steps,sigmaClust{[},nBest{]})}}] Do post-processing
 of the last optimization results and export the solution set to the
 interface instance (cf. Sec.~\ref{sub:Post-Processing}). If \emph{sigmaClust}
 > 0 a clustering step is performed (density based clustering), so
@@ -192,53 +199,69 @@ clustering for the given number of evaluations. If \emph{nBest} is
 given, it defines the maximal number of solutions to be exported to
 the interface instance. Post processing can be stopped by \texttt{JI=stopOptimize(JI)}
 just as the optimization itself.
-\item [{\texttt{{[}sols,fits{]}=getMultipleResults(JI)}}] After optimization
+
+	\item [{\texttt{{[}sols,fits{]}=getMultipleResults(JI)}}] After optimization
 or post-processing: retrieve the solution set in a matrix and calculate
 the corresponding fitness values.
-\item [{\texttt{makeOptions(JI{[},optName,optVal{]}{*})}}] Produce an options
+
+	\item [{\texttt{makeOptions(JI{[},optName,optVal{]}{*})}}] Produce an options
 structure with given settings. Notice that you need to use setOptions
 with the returned structure to apply the options for a given JI instance,
 as in: \texttt{JI=setOptions(JI,makeOptions(JI,'TolX',1e-8))}. 
-\item [{\texttt{getOptions(JI)}}] Get the current \emph{optimset} structure
+
+	\item [{\texttt{getOptions(JI)}}] Get the current \emph{optimset} structure
 of the JEInterface instance.
-\item [{\texttt{getOpt(JI,optName)}}] Get the value of a specific option
+
+	\item [{\texttt{getOpt(JI,optName)}}] Get the value of a specific option
 \emph{optName} from the \emph{optimset} structure of the JEInterface
 instance.
-\item [{\texttt{JI=setOpt(JI,optName,optVal)}}] Set a specific option \emph{optName}
+
+	\item [{\texttt{JI=setOpt(JI,optName,optVal)}}] Set a specific option \emph{optName}
 of the \emph{optimset} structure in \texttt{JI} to the value \emph{optVal}.
 Returns the modified JEInterface instance.
-\item [{\texttt{JI=setOptions(JI,optset)}}] Set a whole new \emph{optimset}
+
+	\item [{\texttt{JI=setOptions(JI,optset)}}] Set a whole new \emph{optimset}
 structure \emph{optset}. Returns the modified JEInterface instance.
-\item [{\texttt{getDesc(JI,optTypeOrObject{[},showValues{]})}}] Show information
+
+	\item [{\texttt{getDesc(JI,optTypeOrObject{[},showValues{]})}}] Show information
 about an optimizer class (if \texttt{optType} is an integer ID) or
 any other object together with the parameters that can be modified
 in a standardized way. The available settings are analogous to the
 optimizer options presented by the Java GUI. If \texttt{showValues==1}
 holds, the current values of the given instance are displayed as well.
-\item [{\texttt{optimizeWith(JI,optType{[},outputFilePrefix{]}{[},memName,memVal{]}{*})}}] Optimize
+
+	\item [{\texttt{optimizeWith(JI,optType{[},outputFilePrefix{]}{[},memName,memVal{]}{*})}}] Optimize
 using an optimizer by ID and specific settings for this optimizer.
 The settings given must conform to the options shown by \texttt{getDesc(JI,optType)}.
 The available settings are analogous to the optimizer options presented
 by the Java GUI. The method also opens a message box with a cancel
 button to stop the optimization.
-\item [{\texttt{testEvalFunc(JI)}}] Test the function handle for some basic
+
+	\item [{\texttt{testEvalFunc(JI)}}] Test the function handle for some basic
 conformations with expected output.
-\item [{\texttt{setVerbose(JI,swtch{[},fname{]})}}] Activate debug output
+
+	\item [{\texttt{setVerbose(JI,swtch{[},fname{]})}}] Activate debug output
 if \emph{swtch} is 1, else deactivate it. If \emph{fname} is given,
 that's the filename the debug information is written to.
-\item [{\texttt{JI=stopOptimize(JI{[},'kill'{]})}}] Stop a running optimization
+
+	\item [{\texttt{JI=stopOptimize(JI{[},'kill'{]})}}] Stop a running optimization
 process, which is usually done by the cancel button. In case brute
 force was used (STRG-C), this method may be used with the \texttt{'kill'}
 argument to try to clean up Java threads still running as ``zombies''.
-\item [{\texttt{setResultJE}}] (Internal) Write-back method required internally
+
+	\item [{\texttt{setResultJE}}] (Internal) Write-back method required internally
 by \noun{EvA2}. Calling it by hand may interfere with optimization.
-\item [{\texttt{setResultArrayJE}}] (Internal) Write-back method required
+
+	\item [{\texttt{setResultArrayJE}}] (Internal) Write-back method required
 internally by \noun{EvA2}. Calling it by hand may interfere with optimization.
-\item [{\texttt{getProgress(JI)}}] (Internal) During optimization, return
+
+	\item [{\texttt{getProgress(JI)}}] (Internal) During optimization, return
 the number of fitness calls performed until now.
-\item [{\texttt{runEvalLoopJE}}] (Internal) Start a EvA run, optimization
+
+	\item [{\texttt{runEvalLoopJE}}] (Internal) Start a EvA run, optimization
 or post processing.
 \end{description}
+%
 The methods are listed in about the order a user might require them
 in. The constructor as well as all mutating methods return a JEInterface
 object which is to be assigned to a variable, preferably the same

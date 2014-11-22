@@ -13,7 +13,7 @@ Of course, every expert may have an own notion on what parameters
 are preferable in general. Therefore we give two customization examples
 using the API. In any case, a necessary step is to extend a \noun{EvA2}
 base class constituting the target function. You may, again, use the
-simpleprobs package described in Sec.~\ref{sec:Quickly-Adding-Your-Problem}.
+\texttt{eva2.problems.simple} package described in Sec.~\ref{sec:Quickly-Adding-Your-Problem}.
 However, this makes it necessary to use the wrapper class \texttt{SimpleProblemWrapper},
 which is great for direct GUI usage but may make programming a bit
 more complicated. We therefore, at this point, recommend to go one
@@ -45,7 +45,7 @@ have to assign it the same package tree as its parent class (e.g.
 
 \paragraph*{The class \texttt{AbstractProblemDouble}}
 
-The \texttt{AbstractProblemDouble} class in the package \texttt{eva2.ser\-ver.go.prob\-lems}
+The \texttt{AbstractProblemDouble} class in the package \texttt{eva2.prob\-lems}
 encapsulates methods useful to implement double valued target functions.
 Let's assume you want to implement a function $f_{\mathrm{target}}(x)=y$
 with $f_{\mathrm{target}}:\;\mathbb{R}^{n}\rightarrow\mathbb{R}^{m}$.
@@ -127,19 +127,21 @@ over a \texttt{BitSet}, it is preferable to use the self defined problem
 dimension as index limit instead of \texttt{size()} or \texttt{length()}
 methods of \texttt{BitSet}.%
 } object.
+%
 \begin{description}
-\item [{\texttt{public ~abstract ~double{[}{]} ~evaluate(BitSet ~bs)}}] Essential
+	\item [{\texttt{public ~abstract ~double{[}{]} ~evaluate(BitSet ~bs)}}] Essential
 evaluation method. Override it to implement the desired target function
 $g_{\mathrm{target}}(b)$. Make sure that the delivered solution vector
 is always of the same dimensionality $m$. Even if your problem is
 only one-dimensional, return an array of length 1 with the single
 fitness value as only field.
 \end{description}
+%
 For an example on how to implement binary functions, look at the \texttt{B1Problem}
 class which realizes a simple minimize bits problem.
 
 
-\subsection{The \texttt{OptimizerFactory}\label{sub:The-OptimizerFactory}}
+\subsection{The OptimizerFactory} \label{sub:The-OptimizerFactory}
 
 To access default optimization algorithms easily, we have defined
 an \texttt{OptimizerFactory} class. It allows to specify an optimization
@@ -159,7 +161,7 @@ very close to zero, e.g. absolutely below $10^{-30}{}{}$ in every
 dimension.
 
 \begin{algorithm}
-\lstinputlisting[style=myjavastyle]{../src/eva2/examples/TestingF1PSO.java}
+\lstinputlisting[style=myjavastyle]{../../src/eva2/examples/TestingF1PSO.java}
 
 %\begin{algorithmic}  \IF {$i\geq maxval$}          \STATE $i\gets 0$ \ELSE         \IF {$i+k\leq maxval$}                 
 %\STATE $i\gets i+k$          \ENDIF \ENDIF  \end{algorithmic}
@@ -238,8 +240,8 @@ Parameters:
 \begin{lyxlist}{00.00.0000}
 \item [{\texttt{t1}:}] First terminator to combine.
 \item [{\texttt{t2}:}] Second terminator to combine.
-\item [{\texttt{bAnd}:}] Boolean flag indicating whether to use conjunctive
-(AND, for bAnd == true) or disjunctive (OR, for bAnd == false) combination.
+\item [{\texttt{logicalOperator}:}] Flag indicating whether to use conjunctive
+AND or disjunctive OR combination.
 \end{lyxlist}
 \end{lyxlist}
 \begin{lyxlist}{00.00.0000}
@@ -356,7 +358,7 @@ criteria.
 \begin{algorithm}
 
 
-\lstinputlisting[style=myjavastyle]{../src/eva2/examples/TerminatorExample.java}
+\lstinputlisting[style=myjavastyle]{../../src/eva2/examples/TerminatorExample.java}
 
 \caption{Terminator combination example.\label{alg:Comb-terminator}}
 \end{algorithm}
@@ -386,7 +388,7 @@ operators are implemented and usable, it is again easiest to check
 out in the GUI, where there are also short descriptions available.
 
 \begin{algorithm}
-\lstinputlisting[style=myjavastyle]{../src/eva2/examples/TestingGAB1.java}
+\lstinputlisting[style=myjavastyle]{../../src/eva2/examples/TestingGAB1.java}
 
 \caption{Customized optimization example.\label{alg:Customizing-optimization.}}
 \end{algorithm}
@@ -404,7 +406,7 @@ class, usually in a random distribution over the problem range.
 \subsection{Setting Evolutionary Operators\label{sub:Setting-Evolutionary-Operators}}
 
 \begin{algorithm}
-\lstinputlisting[style=myjavastyle]{../src/eva2/examples/TestingPlusCmaEs.java}
+\lstinputlisting[style=myjavastyle]{../../src/eva2/examples/TestingPlusCmaEs.java}
 
 \caption{Setting up a (1+5) CMA-ES.\label{alg:(1+5)-CMA-ES.}}
 \end{algorithm}
@@ -443,7 +445,7 @@ niching EA (CBN-EA) \cite{streichertClustering03} and post-processing
 to identify both optima of the target function.
 
 \begin{algorithm}
-\lstinputlisting[style=myjavastyle]{../src/eva2/examples/TestingCbnPostProc.java}
+\lstinputlisting[style=myjavastyle]{../../src/eva2/examples/TestingCbnPostProc.java}
 
 \caption{Solving a bimodal function with CBN and post-processing.\label{alg:CBN-pp}}
 \end{algorithm}
