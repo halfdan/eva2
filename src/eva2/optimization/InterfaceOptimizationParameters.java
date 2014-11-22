@@ -1,4 +1,4 @@
-package eva2.optimization.go;
+package eva2.optimization;
 
 import eva2.optimization.operator.postprocess.InterfacePostProcessParams;
 import eva2.optimization.operator.terminators.InterfaceTerminator;

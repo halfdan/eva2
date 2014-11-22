@@ -3,7 +3,7 @@ package eva2.util;
 
 import eva2.optimization.EvAMainAdapter;
 import eva2.optimization.EvAMainAdapterImpl;
-import eva2.optimization.go.InterfaceOptimizationParameters;
+import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.modules.ModuleAdapter;
 
 import java.util.logging.Logger;

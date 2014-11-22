@@ -1,6 +1,7 @@
 package eva2.optimization.modules;
 
-import eva2.optimization.go.InterfaceOptimizationParameters;
+import eva2.optimization.InterfaceOptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 
 import java.io.Serializable;
 

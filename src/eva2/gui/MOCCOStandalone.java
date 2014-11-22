@@ -1,6 +1,5 @@
-package eva2.optimization.go;
+package eva2.gui;
 
-import eva2.gui.PropertyDoubleArray;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.*;
 import eva2.optimization.mocco.paretofrontviewer.MOCCOViewer;
@@ -25,7 +24,7 @@ import java.io.*;
 public class MOCCOStandalone implements InterfaceStandaloneOptimization, InterfacePopulationChangedEventListener, Serializable {
 
     public volatile MOCCOState state;
-    private SwingWorker worker;
+    private eva2.gui.SwingWorker worker;
     private volatile boolean stillWorking = false;
     public int iteration = -1;
     private JFrame mainFrame;
@@ -471,7 +470,7 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
             this.state.optimizer.initialize();
         }
         this.state.optimizer.addPopulationChangedEventListener(this);
-        worker = new SwingWorker() {
+        worker = new eva2.gui.SwingWorker() {
             @Override
             public Object construct() {
                 return doWork();

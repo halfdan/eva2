@@ -9,7 +9,6 @@ package eva2.optimization;
  *            $Author: mkron $
  */
 
-import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.ModuleAdapter;
 
 /**

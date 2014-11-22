@@ -5,7 +5,7 @@ import eva2.optimization.enums.MutateESCrossoverType;
 import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.enums.PostProcessMethod;
 import eva2.optimization.individuals.*;
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.operator.archiving.ArchivingNSGAII;
 import eva2.optimization.operator.archiving.InformationRetrievalInserting;
 import eva2.optimization.operator.archiving.InterfaceArchiving;

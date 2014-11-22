@@ -1,10 +1,10 @@
 package eva2.cli;
 
 import eva2.EvAInfo;
-import eva2.optimization.go.InterfaceOptimizationParameters;
+import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.individuals.IndividualInterface;
-import eva2.optimization.modules.OptimizationParameters;
-import eva2.optimization.modules.Processor;
+import eva2.optimization.OptimizationParameters;
+import eva2.optimization.Processor;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;

@@ -1,7 +1,7 @@
 package eva2.optimization.mocco;
 
 
-import eva2.optimization.go.MOCCOStandalone;
+import eva2.gui.MOCCOStandalone;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.mocco.paretofrontviewer.InterfaceRefSolutionListener;
 import eva2.optimization.population.Population;

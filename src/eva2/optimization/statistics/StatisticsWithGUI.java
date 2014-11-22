@@ -7,7 +7,7 @@ import eva2.gui.plot.Graph;
 import eva2.gui.plot.GraphWindow;
 import eva2.gui.plot.Plot;
 import eva2.gui.plot.PlotInterface;
-import eva2.optimization.go.InterfaceOptimizationParameters;
+import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.population.PopulationInterface;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.Pair;

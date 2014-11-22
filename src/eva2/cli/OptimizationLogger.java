@@ -1,7 +1,7 @@
 package eva2.cli;
 
 import eva2.optimization.OptimizationStateListener;
-import eva2.optimization.go.InterfaceOptimizationParameters;
+import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.population.InterfacePopulationChangedEventListener;
 
 import java.io.OutputStream;

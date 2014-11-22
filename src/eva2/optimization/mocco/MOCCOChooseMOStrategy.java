@@ -1,7 +1,7 @@
 package eva2.optimization.mocco;
 
 
-import eva2.optimization.go.MOCCOStandalone;
+import eva2.gui.MOCCOStandalone;
 import eva2.tools.BasicResourceLoader;
 
 import javax.swing.*;

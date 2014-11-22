@@ -6,7 +6,7 @@ import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.operator.postprocess.PostProcess;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
