@@ -2,11 +2,11 @@ package eva2.problems;
 
 
 import eva2.gui.JEFrame;
-import eva2.optimization.go.StandaloneOptimization;
+import eva2.gui.StandaloneOptimization;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.math.RNG;

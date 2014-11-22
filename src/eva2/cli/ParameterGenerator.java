@@ -1,6 +1,6 @@
 package eva2.cli;
 
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.tools.ReflectPackage;
 
 import java.beans.BeanInfo;

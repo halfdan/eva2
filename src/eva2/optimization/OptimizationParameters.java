@@ -1,6 +1,5 @@
-package eva2.optimization.modules;
+package eva2.optimization;
 
-import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.strategies.DifferentialEvolution;
@@ -11,7 +10,6 @@ import eva2.util.annotation.Description;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.logging.Level;
 

@@ -6,7 +6,7 @@ import eva2.gui.plot.TopoPlot;
 import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.operator.nichepso.absorption.EuclideanDiversityAbsorptionStrategy;
 import eva2.optimization.operator.nichepso.absorption.InterfaceAbsorptionStrategy;
 import eva2.optimization.operator.nichepso.absorption.StandardAbsorptionStrategy;

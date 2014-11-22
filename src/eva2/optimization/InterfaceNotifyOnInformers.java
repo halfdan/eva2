@@ -1,4 +1,4 @@
-package eva2.optimization.go;
+package eva2.optimization;
 
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 

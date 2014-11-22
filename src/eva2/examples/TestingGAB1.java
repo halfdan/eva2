@@ -1,7 +1,7 @@
 package eva2.examples;
 
 import eva2.OptimizerFactory;
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.operator.selection.SelectXProbRouletteWheel;
 import eva2.optimization.operator.terminators.EvaluationTerminator;
 import eva2.optimization.population.Population;

@@ -11,7 +11,6 @@ package eva2.optimization;
  */
 
 import eva2.EvAInfo;
-import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.ModuleAdapter;
 
 /**

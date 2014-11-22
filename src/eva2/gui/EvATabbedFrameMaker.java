@@ -1,6 +1,6 @@
 package eva2.gui;
 
-import eva2.optimization.go.InterfaceNotifyOnInformers;
+import eva2.optimization.InterfaceNotifyOnInformers;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 
 import javax.swing.*;

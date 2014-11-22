@@ -1,6 +1,5 @@
 package eva2.optimization;
 
-import eva2.optimization.go.InterfaceOptimizationParameters;
 import eva2.optimization.modules.ModuleAdapter;
 import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;

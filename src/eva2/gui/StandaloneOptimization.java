@@ -1,13 +1,11 @@
-package eva2.optimization.go;
+package eva2.gui;
 
-import eva2.gui.BeanInspector;
-import eva2.gui.JParaPanel;
 import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.GAIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.operator.crossover.CrossoverGAGINPoint;
 import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateESFixedStepSize;
@@ -45,7 +43,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
     transient private JComponent statusPanel;
     transient private JLabel statusField;
     transient private JProgressBar progressBar;
-    transient private SwingWorker worker;
+    transient private eva2.gui.SwingWorker worker;
     transient private boolean show = false;
     //    transient private InterfaceTest   test = new Test1();
     // Opt. Algorithms and Parameters
@@ -184,7 +182,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
     ActionListener runListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            worker = new SwingWorker() {
+            worker = new eva2.gui.SwingWorker() {
                 @Override
                 public Object construct() {
                     return doWork();
@@ -230,7 +228,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
         @Override
         public void actionPerformed(ActionEvent event) {
             // todo something need to be done here...
-            worker = new SwingWorker() {
+            worker = new eva2.gui.SwingWorker() {
                 @Override
                 public Object construct() {
                     return doWork();

@@ -5,7 +5,7 @@ import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
 import eva2.gui.Main;
 import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
 import eva2.optimization.operator.moso.MOSONoConvert;
 import eva2.optimization.operator.moso.MOSOWeightedFitness;

@@ -2,10 +2,9 @@ package eva2.optimization.statistics;
 
 import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.optimization.go.InterfaceNotifyOnInformers;
+import eva2.optimization.InterfaceNotifyOnInformers;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.EVAERROR;
-import eva2.tools.Serializer;
 import eva2.tools.StringSelection;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;

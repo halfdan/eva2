@@ -1,6 +1,6 @@
 package eva2.optimization.mocco;
 
-import eva2.optimization.go.MOCCOStandalone;
+import eva2.gui.MOCCOStandalone;
 
 import javax.swing.*;
 import java.awt.*;

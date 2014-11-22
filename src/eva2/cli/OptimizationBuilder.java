@@ -1,8 +1,8 @@
 package eva2.cli;
 
 import eva2.gui.BeanInspector;
-import eva2.optimization.go.InterfaceOptimizationParameters;
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.InterfaceOptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.statistics.InterfaceStatisticsParameters;
 import eva2.optimization.statistics.StatisticsParameters;
 import eva2.tools.ReflectPackage;

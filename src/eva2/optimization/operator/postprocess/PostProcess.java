@@ -8,7 +8,7 @@ import eva2.gui.plot.TopoPlot;
 import eva2.optimization.enums.ESMutationInitialSigma;
 import eva2.optimization.enums.PostProcessMethod;
 import eva2.optimization.individuals.*;
-import eva2.optimization.modules.OptimizationParameters;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.operator.cluster.ClusteringDensityBased;
 import eva2.optimization.operator.cluster.InterfaceClustering;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
