@@ -81,6 +81,16 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
         population.incrGeneration();
     }
 
+    protected double getFitnessProportion(AbstractEAIndividual indy) {
+        double fitness = indy.getFitness(0);
+        if (fitness >= 0) {
+            fitness = 1.0 / (1.0 + fitness);
+        } else {
+            fitness = 1.0 + Math.abs(fitness);
+        }
+        return fitness;
+    }
+
     @Override
     public void optimize() {
         /**
@@ -131,8 +141,8 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
          */
         int t = 0, i = 0;
         double sumFitness = 0.0;
-        for (Object individual : this.population) {
-            sumFitness += ((AbstractEAIndividual) individual).getFitness(0);
+        for (AbstractEAIndividual individual : this.population) {
+            sumFitness += getFitnessProportion(individual);
         }
         while (t < this.population.size()) {
             double r = RNG.randomDouble();
@@ -141,7 +151,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
              * Choose a food source depending on its probability to be chosen. The probability
              * is proportional to the
              */
-            double pI = 1 - (this.population.getEAIndividual(i).getFitness(0) / sumFitness);
+            double pI = getFitnessProportion(this.population.getEAIndividual(i))/sumFitness;
             if (r < pI) {
                 t++;
 
