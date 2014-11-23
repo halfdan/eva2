@@ -11,6 +11,7 @@ import eva2.util.annotation.Description;
 import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 /**
  * Artificial Bee Colony
@@ -19,6 +20,7 @@ import java.io.Serializable;
  */
 @Description("Artificial Bee Colony")
 public class ArtificialBeeColony extends AbstractOptimizer implements Serializable {
+    private static final Logger LOGGER = Logger.getLogger(ArtificialBeeColony.class.getName());
 
     /**
      * A food source which could not be improved through "maxTrials" trials is abandoned by its employed bee.
@@ -104,6 +106,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
          * Send onlooker bees to food sources based on fitness proportional probability
          */
         sendOnlookerBees();
+        this.population.incrFunctionCallsBy(this.population.size());
 
         /**
          * Remember best Individual
@@ -126,8 +129,8 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
          * in the algorithm itself (for ABC) so we have to -1 all ages.
          */
         this.population.incrGeneration();
-        for (Object individual : this.population) {
-            ((AbstractEAIndividual) individual).setAge(((AbstractEAIndividual) individual).getAge() - 1);
+        for (AbstractEAIndividual individual : this.population) {
+            individual.setAge(individual.getAge() - 1);
         }
 
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
@@ -136,6 +139,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
     protected void sendScoutBees() {
         AbstractEAIndividual oldestIndy = getOldestIndividual();
         if (oldestIndy.getAge() > this.maxTrials) {
+            LOGGER.finer("Scout bee generated.");
             oldestIndy.initialize(this.optimizationProblem);
             this.optimizationProblem.evaluate(oldestIndy);
             this.population.incrFunctionCalls();
@@ -153,7 +157,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
 
             /**
              * Choose a food source depending on its probability to be chosen. The probability
-             * is proportional to the
+             * is proportional to the inverse fitness
              */
             double pI = getFitnessProportion(this.population.getEAIndividual(i))/sumFitness;
             if (r < pI) {
@@ -162,22 +166,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
                 // The current individual to compare to
                 AbstractEAIndividual indy = this.population.getEAIndividual(i);
 
-                // The new individual which we are generating
-                AbstractEAIndividual newIndividual = (AbstractEAIndividual) indy.getClone();
-                double[] indyDoubleData = ((InterfaceDataTypeDouble) newIndividual).getDoubleData();
-
-                int randomParam = RNG.randomInt(0, indyDoubleData.length - 1);
-                int neighbour = RNG.randomIntWithout(i, 0, this.population.size() - 1);
-                double[] randomIndy = ((InterfaceDataTypeDouble) this.population.get(neighbour)).getDoubleData();
-
-                double phi = RNG.randomDouble(-1.0, 1.0);
-                indyDoubleData[randomParam] += (indyDoubleData[randomParam] - randomIndy[randomParam]) * phi;
-                // Make sure new indy is in range
-                Mathematics.projectToRange(indyDoubleData, ((InterfaceDataTypeDouble) newIndividual).getDoubleRange());
-
-                ((InterfaceDataTypeDouble) newIndividual).setDoubleGenotype(indyDoubleData);
-                this.optimizationProblem.evaluate(newIndividual);
-                this.population.incrFunctionCalls();
+                AbstractEAIndividual newIndividual = moveOnlookerBee(indy, i);
 
                 if (newIndividual.getFitness(0) < indy.getFitness(0)) {
                     newIndividual.setAge(1);
@@ -200,21 +189,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
             // The current individual to compare to
             AbstractEAIndividual indy = this.population.getEAIndividual(i);
 
-            // The new individual which we are generating
-            AbstractEAIndividual newIndividual = (AbstractEAIndividual) indy.getClone();
-            double[] indyDoubleData = ((InterfaceDataTypeDouble) newIndividual).getDoubleData();
-
-            int neighbour = RNG.randomIntWithout(i, 0, this.population.size() - 1);
-            double[] randomIndy = ((InterfaceDataTypeDouble) this.population.get(neighbour)).getDoubleData();
-
-            int randomParam = RNG.randomInt(0, indyDoubleData.length - 1);
-            double r = RNG.randomDouble(-1.0, 1.0);
-            indyDoubleData[randomParam] += (indyDoubleData[randomParam] - randomIndy[randomParam]) * r;
-            // Make sure new indy is in range
-            Mathematics.projectToRange(indyDoubleData, ((InterfaceDataTypeDouble) newIndividual).getDoubleRange());
-
-            ((InterfaceDataTypeDouble) newIndividual).setDoubleGenotype(indyDoubleData);
-            this.optimizationProblem.evaluate(newIndividual);
+            AbstractEAIndividual newIndividual = moveEmployedBee(indy, i);
 
             if (newIndividual.getFitness(0) < indy.getFitness(0)) {
                 newIndividual.setAge(0);
@@ -226,10 +201,47 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
         }
     }
 
+    /**
+     *
+     * @param baseIndividual
+     * @param index
+     * @return
+     */
+    protected AbstractEAIndividual moveEmployedBee(AbstractEAIndividual baseIndividual, int index) {
+        // The new individual which we are generating
+        AbstractEAIndividual newIndividual = (AbstractEAIndividual) baseIndividual.getClone();
+        double[] indyDoubleData = ((InterfaceDataTypeDouble) newIndividual).getDoubleData();
+
+        int randomParam = RNG.randomInt(0, indyDoubleData.length - 1);
+        int neighbour = RNG.randomIntWithout(index, 0, this.population.size() - 1);
+        double[] randomIndy = ((InterfaceDataTypeDouble) this.population.get(neighbour)).getDoubleData();
+
+        double phi = RNG.randomDouble(-1.0, 1.0);
+        indyDoubleData[randomParam] += phi * (indyDoubleData[randomParam] - randomIndy[randomParam]);
+        // Make sure new indy is in range
+        Mathematics.projectToRange(indyDoubleData, ((InterfaceDataTypeDouble) newIndividual).getDoubleRange());
+
+        ((InterfaceDataTypeDouble) newIndividual).setDoubleGenotype(indyDoubleData);
+        this.optimizationProblem.evaluate(newIndividual);
+
+        return newIndividual;
+    }
+
+    /**
+     * In the standard ABC the onlookers behave exaclty like the employed bees.
+     *
+     * @param baseIndividual
+     * @param index
+     * @return A new individual
+     */
+    protected AbstractEAIndividual moveOnlookerBee(AbstractEAIndividual baseIndividual, int index) {
+        return moveEmployedBee(baseIndividual, index);
+    }
+
     private AbstractEAIndividual getOldestIndividual() {
         AbstractEAIndividual oldestIndy = this.population.getEAIndividual(0);
         for(int i = 1; i < this.population.size(); i++) {
-            if (oldestIndy.getAge() > this.population.getEAIndividual(i).getAge()) {
+            if (oldestIndy.getAge() < this.population.getEAIndividual(i).getAge()) {
                 oldestIndy = this.population.getEAIndividual(i);
             }
         }
@@ -247,12 +259,6 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
     @Override
     public String getStringRepresentation() {
         return this.toString();
-    }
-
-
-    @Override
-    public void setPopulation(Population pop) {
-        this.population = pop;
     }
 
     @Parameter(name = "trials", description = "Maximum number of trials until bee abandons the food source")
