@@ -253,7 +253,9 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
         /**
          * ToDo: This should somehow preserve the best found individual.
          */
-        return new SolutionSet(this.population);
+        Population solutions = (Population)this.population.clone();
+        solutions.add(bestIndividual);
+        return new SolutionSet(solutions);
     }
 
     @Override
