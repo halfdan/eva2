@@ -4,7 +4,9 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
+import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
@@ -19,13 +21,15 @@ import java.util.logging.Logger;
  * This optimizer implements the original ABC algorithm proposed by Karaboga et.al.
  */
 @Description("Artificial Bee Colony")
-public class ArtificialBeeColony extends AbstractOptimizer implements Serializable {
+public class ArtificialBeeColony extends AbstractOptimizer implements InterfaceAdditionalPopulationInformer, Serializable {
     private static final Logger LOGGER = Logger.getLogger(ArtificialBeeColony.class.getName());
 
     /**
      * A food source which could not be improved through "maxTrials" trials is abandoned by its employed bee.
      */
     protected int maxTrials = 100;
+
+    protected int scoutCount = 0;
 
     protected AbstractEAIndividual bestIndividual;
 
@@ -51,6 +55,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
 
     @Override
     public void initialize() {
+        this.scoutCount = 0;
         this.optimizationProblem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
@@ -136,6 +141,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
         AbstractEAIndividual oldestIndy = getOldestIndividual();
         if (oldestIndy.getAge() > this.maxTrials) {
             LOGGER.finer("Scout bee generated.");
+            this.scoutCount++;
             oldestIndy.initialize(this.optimizationProblem);
             this.optimizationProblem.evaluate(oldestIndy);
             this.population.incrFunctionCalls();
@@ -266,5 +272,20 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
 
     public int getMaxTrials() {
         return maxTrials;
+    }
+
+    @Override
+    public String[] getAdditionalDataHeader() {
+        return new String[]{"scoutCount"};
+    }
+
+    @Override
+    public String[] getAdditionalDataInfo() {
+        return new String[]{"Number of re-initialized Bees (Scouts)"};
+    }
+
+    @Override
+    public Object[] getAdditionalDataValue(PopulationInterface pop) {
+        return new Object[]{scoutCount};
     }
 }
