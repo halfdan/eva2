@@ -65,6 +65,8 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
     @Override
     public void initializeByPopulation(Population pop, boolean reset) {
         this.population = (Population) pop.clone();
+        // We handle aging ourselves
+        this.population.setAutoAging(false);
         if (reset) {
             this.population.initialize();
             this.evaluatePopulation(this.population);
@@ -111,29 +113,23 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
         /**
          * Remember best Individual
          */
-        if (bestIndividual != null && bestIndividual.getFitness(0) < this.population.getBestEAIndividual().getFitness(0)) {
-            bestIndividual = this.population.getBestEAIndividual();
-        } else {
-            bestIndividual = this.population.getBestEAIndividual();
-        }
+        memorizeBestSolution();
 
         /**
          * Send scout bee
          */
         sendScoutBees();
 
-        /**
-         * ToDo: This is ugly.
-         *
-         * incrGeneration increments the age of all indies. Age management however happens
-         * in the algorithm itself (for ABC) so we have to -1 all ages.
-         */
         this.population.incrGeneration();
-        for (AbstractEAIndividual individual : this.population) {
-            individual.setAge(individual.getAge() - 1);
-        }
-
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
+    }
+
+    protected void memorizeBestSolution() {
+        if (bestIndividual != null && bestIndividual.getFitness(0) < this.population.getBestEAIndividual().getFitness(0)) {
+            bestIndividual = this.population.getBestEAIndividual();
+        } else {
+            bestIndividual = this.population.getBestEAIndividual();
+        }
     }
 
     protected void sendScoutBees() {
@@ -228,7 +224,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements Serializab
     }
 
     /**
-     * In the standard ABC the onlookers behave exaclty like the employed bees.
+     * In the standard ABC the onlookers behave exactly like the employed bees.
      *
      * @param baseIndividual
      * @param index

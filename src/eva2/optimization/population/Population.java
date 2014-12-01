@@ -99,6 +99,12 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     public static final String POPULATION_INITIALIZED = "PopulationReinitOccured";
     public static final String NEXT_GENERATION_PERFORMED = "NextGenerationPerformed";
 
+    /**
+     * With <code>autoAging = true</code> #incrGeneration automatically
+     * ages individuals.
+     */
+    private boolean autoAging = true;
+
     public Population() {
         LOGGER.log(Level.FINER, "New population has been created.");
     }
@@ -575,6 +581,15 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
         return historyMaxLen != 0;
     }
 
+    @Hidden
+    public void setAutoAging(boolean autoAging) {
+        this.autoAging = autoAging;
+    }
+
+    public boolean isAutoAging() {
+        return this.autoAging;
+    }
+
     public void setMaxHistoryLength(int len) {
         historyMaxLen = len;
     }
@@ -711,8 +726,10 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
             }
             this.historyList.add((AbstractEAIndividual) this.getBestEAIndividual().clone());
         }
-        for (AbstractEAIndividual individual : this) {
-            individual.incrAge();
+        if (isAutoAging()) {
+            for (AbstractEAIndividual individual : this) {
+                individual.incrAge();
+            }
         }
         this.generationCount++;
         firePropertyChangedEvent(NEXT_GENERATION_PERFORMED);
