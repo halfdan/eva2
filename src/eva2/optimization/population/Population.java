@@ -637,7 +637,6 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      */
     public void incrFunctionCallsBy(int d) {
         if (doEvalNotify()) {
-//    		System.out.println("checking funcall event...");
             int nextStep; // next interval boundary
             while ((nextStep = calcNextBoundary()) <= (functionCallCount + d)) {
                 // 	the notify interval will be stepped over or hit
@@ -645,7 +644,6 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
                 this.functionCallCount += toHit; // little cheat, notify may be after some more evals
                 firePropertyChangedEvent(FUN_CALL_INTERVAL_REACHED);
                 d -= toHit;
-//    			this.functionCalls += (d-toHit);
             }
             if (d > 0) {
                 this.functionCallCount += d; // add up the rest
