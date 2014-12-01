@@ -68,7 +68,6 @@ public class SerializerTest {
      */
     @Test
     public void testStoreObject() {
-        System.out.println("storeObject");
         OutputStream outStream = null;
         Serializable s = null;
         Serializer.storeObject(outStream, s);
@@ -81,7 +80,6 @@ public class SerializerTest {
      */
     @Test
     public void testLoadObject_InputStream() {
-        System.out.println("loadObject");
         InputStream inputStream = null;
         Object expResult = null;
         Object result = Serializer.loadObject(inputStream);

@@ -28,7 +28,9 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
     }
 
     /**
-     * Ths method allows you to evaluate a double[] to determine the fitness
+     * Evaluates a double vector according to the Step function.
+     *
+     * fitness = sum(floor(x_i + 0.5)^2)
      *
      * @param x The n-dimensional input vector
      * @return The m-dimensional output vector.
@@ -37,9 +39,9 @@ public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Se
     public double[] evaluate(double[] x) {
         x = rotateMaybe(x);
         double[] result = new double[1];
-        result[0] = yOffset + 6 * x.length;
+        result[0] = yOffset;
         for (int i = 0; i < x.length - 1; i++) {
-            result[0] += Math.floor(x[i] - this.xOffset);
+            result[0] += Math.pow(Math.floor(x[i] + 0.5 - this.xOffset), 2);
         }
         return result;
     }
