@@ -56,6 +56,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements InterfaceA
     @Override
     public void initialize() {
         this.scoutCount = 0;
+        this.population.setAutoAging(false);
         this.optimizationProblem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
