@@ -13,7 +13,7 @@ import eva2.util.annotation.Description;
  * criteria is selected randomly for each selection event.
  */
 @Description("This method chooses individuals similar to the roulette wheel. The chance for each individual to be selected depends on the selection probability." +
-        "This is a single objective selecting method, it select with respect to a random criterion.")
+        "This is a single objective selectiog method, it select with respect to a random criterion.")
 public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Serializable {
 
     private transient TreeElement[] treeRoot = null;
