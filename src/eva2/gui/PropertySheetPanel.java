@@ -991,7 +991,6 @@ final class PropertyCellRenderer implements TableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        LOGGER.log(Level.FINEST, "Cell Component: " + value.getClass());
         if (value == null) {
             return empty;
         } else if (value instanceof String) {
@@ -1022,6 +1021,8 @@ final class PropertyCellRenderer implements TableCellRenderer {
         } else if (value instanceof PropertyValueSelector) {
             return (PropertyValueSelector) value;
         }
+
+        LOGGER.log(Level.FINEST, "Cell Component: " + value.getClass());
 
         throw new UnsupportedOperationException("Not supported yet.");
     }
