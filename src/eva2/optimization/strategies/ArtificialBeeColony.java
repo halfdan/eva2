@@ -59,6 +59,7 @@ public class ArtificialBeeColony extends AbstractOptimizer implements InterfaceA
         this.population.setAutoAging(false);
         this.optimizationProblem.initializePopulation(this.population);
         this.evaluatePopulation(this.population);
+        this.bestIndividual = this.population.getBestEAIndividual();
         this.firePropertyChangedEvent(Population.NEXT_GENERATION_PERFORMED);
     }
 
