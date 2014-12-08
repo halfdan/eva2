@@ -248,6 +248,11 @@ public class Main extends JFrame implements OptimizationStateListener {
     }
 
     private void initLookAndFeel() {
+        // The native L&F on Linux looks horrible - don't set it.
+        if (System.getProperty("os.name").equals("Linux")) {
+            return;
+        }
+        
         // Properties for Mac OS X support.
         if ((System.getProperty("mrj.version") != null)
                 || (System.getProperty("os.name").toLowerCase().contains("mac"))) {
