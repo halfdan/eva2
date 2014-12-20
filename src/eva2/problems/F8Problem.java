@@ -11,7 +11,6 @@ import eva2.util.annotation.Description;
 
 import java.util.Arrays;
 
-
 /**
  * Ackley's function.
  */

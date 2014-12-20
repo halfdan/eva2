@@ -9,7 +9,7 @@ import eva2.util.annotation.Parameter;
 import java.io.Serializable;
 
 /**
- *
+ * Sphere with changing environment
  */
 @Description("Sphere Model, changing Environment.")
 public class F7Problem extends AbstractProblemDoubleOffset implements Serializable {

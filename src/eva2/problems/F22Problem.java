@@ -4,7 +4,7 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.util.annotation.Description;
 
 /**
- * F22 Schwefel 2.22 Problem
+ * Schwefel 2.22 function
  */
 @Description(value ="Schwefel 2.22")
 public class F22Problem extends AbstractProblemDoubleOffset implements InterfaceHasInitRange, java.io.Serializable {

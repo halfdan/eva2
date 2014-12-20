@@ -4,7 +4,7 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.util.annotation.Description;
 
 /**
- *
+ * Step function
  */
 @Description("Step function.")
 public class F3Problem extends AbstractProblemDoubleOffset implements java.io.Serializable {
