@@ -79,10 +79,6 @@ public class F23Problem extends AbstractProblemDoubleOffset implements Interface
     }
 
     /**
-     * These are for GUI
-     */
-
-    /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
      *
