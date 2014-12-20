@@ -5,6 +5,9 @@ import eva2.optimization.population.Population;
 import eva2.optimization.strategies.GradientDescentAlgorithm;
 import eva2.util.annotation.Description;
 
+/**
+ * Generalized Rosenbrock's Function
+ */
 @Description(value ="Generalized Rosenbrock's function.")
 @SuppressWarnings("unused")
 public class F2Problem extends AbstractProblemDoubleOffset implements InterfaceLocalSearchable, InterfaceMultimodalProblem, java.io.Serializable, InterfaceFirstOrderDerivableProblem {

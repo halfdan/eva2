@@ -572,24 +572,17 @@ public abstract class AbstractProblemDouble extends AbstractOptimizationProblem 
         return isShowing;
     }
 
+    @Parameter(description = "Produce an exemplary 2D plot of the function (dimensional cut at x_i=0 for n>1).")
     public void setShowPlot(boolean showP) {
         if (!isShowing && showP) {
             TopoPlot plot = new TopoPlot(getName(), "x1", "x2");
-            plot.setParams(60, 60, ColorBarCalculator.BLUE_TO_RED);
+            plot.setParams(100, 100, ColorBarCalculator.BLUE_TO_RED);
             this.initializeProblem();
             plot.setTopology(this, makeRange(), true);
-            if (this instanceof InterfaceMultimodalProblemKnown
-                    && ((InterfaceMultimodalProblemKnown) this)
-                    .fullListAvailable()) {
-                plot.drawPopulation("Opt",
-                        ((InterfaceMultimodalProblemKnown) this)
-                                .getRealOptima());
+            if (this instanceof InterfaceMultimodalProblemKnown && ((InterfaceMultimodalProblemKnown) this).fullListAvailable()) {
+                plot.drawPopulation("Opt", ((InterfaceMultimodalProblemKnown) this).getRealOptima());
             }
         }
         isShowing = showP;
-    }
-
-    public String showPlotTipText() {
-        return "Produce an exemplary 2D plot of the function (dimensional cut at x_i=0 for n>1).";
     }
 }

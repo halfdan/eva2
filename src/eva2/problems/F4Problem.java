@@ -5,7 +5,7 @@ import eva2.util.annotation.Description;
 import java.io.Serializable;
 
 /**
- *
+ * Quadratic function with noise.
  */
 @SuppressWarnings("unused")
 @Description("Quadratic Function with noise.")

@@ -5,7 +5,7 @@ import eva2.tools.math.Mathematics;
 import eva2.util.annotation.Description;
 
 /**
- * F1 Sphere Problem
+ * Sphere Problem
  */
 @Description(value ="Sphere Problem")
 public class F1Problem extends AbstractProblemDoubleOffset implements Interface2DBorderProblem, InterfaceHasInitRange, java.io.Serializable, InterfaceFirstOrderDerivableProblem {

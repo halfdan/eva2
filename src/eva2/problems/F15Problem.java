@@ -6,6 +6,8 @@ import eva2.util.annotation.Description;
 import java.io.Serializable;
 
 /**
+ * Levy function.
+ *
  * The Levy-function, from Levy, A., and Montalvo, A. (1985). Also described in
  * "A Trust-Region Algorithm for Global Optimization", Bernardetta Addisy and Sven Leyfferz, 2004/2006.
  */
@@ -69,6 +71,6 @@ public class F15Problem extends AbstractProblemDouble implements Serializable, I
 
     @Override
     public String getName() {
-        return "F15Problem";
+        return "Levy function";
     }
 }

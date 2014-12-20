@@ -5,7 +5,7 @@ import eva2.util.annotation.Description;
 import java.io.Serializable;
 
 /**
- *
+ * Schwefel's 1.2
  */
 @Description("Schwefel's 1.2 Function.")
 public class F5Problem extends AbstractProblemDoubleOffset implements Serializable {
