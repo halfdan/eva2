@@ -139,7 +139,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
      * This method updates the server list
      */
     private void updateTargetList() {
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes;
         InterfaceMutation[] list = this.mutatorsWithWeights.getSelectedMutators();
         double[] weights = this.mutatorsWithWeights.getWeights();
