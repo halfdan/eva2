@@ -14,7 +14,7 @@ class SplashScreen extends JWindow {
 
     public SplashScreen(String imgLoc) {
         imgLocation = imgLoc;
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes = loader.getBytesFromResourceLocation(imgLocation, true);
         ImageIcon ii = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
         JLabel splashLabel = new JLabel(ii);

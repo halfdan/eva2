@@ -292,7 +292,7 @@ public class ReflectPackage {
      */
     public static InputStream getResourceStreamFromCP(String res) {
 
-        InputStream in = BasicResourceLoader.instance().getStreamFromResourceLocation(res);
+        InputStream in = BasicResourceLoader.getInstance().getStreamFromResourceLocation(res);
         if (in != null) {
             return in;
         }

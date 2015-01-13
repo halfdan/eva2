@@ -234,7 +234,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     private JButton makeIconButton(final String iconSrc, final String title) {
         JButton newButton;
         byte[] bytes;
-        bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
+        bytes = BasicResourceLoader.getInstance().getBytesFromResourceLocation(iconSrc, false);
         if (bytes == null) {
             newButton = new JButton(title);
         } else {

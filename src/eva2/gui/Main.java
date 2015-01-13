@@ -390,7 +390,7 @@ public class Main extends JFrame implements OptimizationStateListener {
             desktopConst.weighty = 1.0;
             desktopPanel.add(desktopPane, desktopConst);
 
-            BasicResourceLoader loader = BasicResourceLoader.instance();
+            BasicResourceLoader loader = BasicResourceLoader.getInstance();
             byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
             // TODO: use setIconImages (for better support of multiple icons when changing programs etc.)
             setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));

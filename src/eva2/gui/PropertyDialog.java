@@ -23,7 +23,7 @@ public class PropertyDialog extends JDialog {
     public PropertyDialog(Window parent, PropertyEditor editor, String title) {
         super(parent, title, ModalityType.APPLICATION_MODAL);
         setTitle(getFrameNameFromEditor(editor));
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());

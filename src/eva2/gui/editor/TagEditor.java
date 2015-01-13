@@ -114,7 +114,7 @@ public class TagEditor extends PropertyEditorSupport {
             ce.setValue(initial);
             PropertyValueSelector ps = new PropertyValueSelector(ce);
             JFrame f = new JFrame();
-            BasicResourceLoader loader = BasicResourceLoader.instance();
+            BasicResourceLoader loader = BasicResourceLoader.getInstance();
             byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
             f.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
             f.addWindowListener(new WindowAdapter() {
