@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
 
     /**
-     * This method will cacluated the NSGAII crowding distance
+     * This method will calculated the NSGAII crowding distance
      * for all individuals
      *
      * @param fronts The pareto fronts
@@ -18,14 +18,14 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
     public void calculateCrowdingDistance(Population[] fronts) {
         //TODO Dimension der Zielfunktion checken
 
-        for (int rank = 0; rank < fronts.length; rank++) {
-            calculateCrowdingDistance(fronts[rank]);
+        for (Population front : fronts) {
+            calculateCrowdingDistance(front);
         }
     }
 
 
     /**
-     * This mehtod will test if a given individual is dominant within
+     * This method will test if a given individual is dominant within
      * a given population
      *
      * @param indy The individual that is to be tested.
@@ -68,7 +68,7 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
         Arrays.sort(frontArray, new EAIndividualComparator(0));
 
 
-        ((AbstractEAIndividual) frontArray[0]).putData("HyperCube", Double.MAX_VALUE); //die beiden aussen bekommen maximal wert als smeasure
+        ((AbstractEAIndividual) frontArray[0]).putData("HyperCube", Double.MAX_VALUE); //die beiden aussen bekommen maximal wert als measure
         ((AbstractEAIndividual) frontArray[frontArray.length - 1]).putData("HyperCube", Double.MAX_VALUE);
         v[0] = Double.MAX_VALUE;
         v[frontArray.length - 1] = Double.MAX_VALUE;
