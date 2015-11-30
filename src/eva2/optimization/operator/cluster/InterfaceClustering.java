@@ -16,7 +16,7 @@ public interface InterfaceClustering {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method allows you to search for clusters in a given population. The method
@@ -37,7 +37,7 @@ public interface InterfaceClustering {
      * @param referenceSet a reference population for dynamic measures
      * @return Population[]
      */
-    public Population[] cluster(Population pop, Population referenceSet);
+    Population[] cluster(Population pop, Population referenceSet);
 
     /**
      * This method allows you to decide if two species are to be merged regarding this clustering algorithm.
@@ -51,7 +51,7 @@ public interface InterfaceClustering {
      * @param referenceSet a reference population for dynamic measures
      * @return True if species converge, else False.
      */
-    public boolean mergingSpecies(Population species1, Population species2, Population referenceSet);
+    boolean mergingSpecies(Population species1, Population species2, Population referenceSet);
 
     /**
      * Do some pre-calculations on a population for clustering. If additional population data
@@ -59,7 +59,7 @@ public interface InterfaceClustering {
      *
      * @param pop
      */
-    public String initClustering(Population pop);
+    String initClustering(Population pop);
 
     /**
      * Try to associate a set of loners with a given set of species. Return a list
@@ -77,5 +77,5 @@ public interface InterfaceClustering {
      * @param referenceSet a reference population for dynamic measures
      * @return associative list matching loners to species.
      */
-    public int[] associateLoners(Population loners, Population[] species, Population referenceSet);
+    int[] associateLoners(Population loners, Population[] species, Population referenceSet);
 }

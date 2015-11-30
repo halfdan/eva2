@@ -4,21 +4,21 @@ package eva2.problems;
  *
  */
 public interface InterfaceOptimizationObjective {
-    public Object clone();
+    Object clone();
 
     /**
      * This Method returns the name for the optimization target
      *
      * @return the name
      */
-    public String getName();
+    String getName();
 
     /**
      * This method allows you to retrieve the name of the optimization target
      *
      * @return The name
      */
-    public String getIdentName();
+    String getIdentName();
 
     /**
      * This method allows you to retrieve the current optimization mode
@@ -30,28 +30,28 @@ public interface InterfaceOptimizationObjective {
      *
      * @return The mode as string
      */
-    public String getOptimizationMode();
+    String getOptimizationMode();
 
-    public void SetOptimizationMode(String d);
+    void SetOptimizationMode(String d);
 
     /**
      * This method allows you to retrieve the constraint/goal
      *
      * @return The cosntraint/goal
      */
-    public double getConstraintGoal();
+    double getConstraintGoal();
 
     /**
      * This method allows you to set the constraint/goal
      *
      * @param d the constraint/goal
      */
-    public void SetConstraintGoal(double d);
+    void SetConstraintGoal(double d);
 
     /**
      * This method returns whether or not the given objective is to be minimized
      *
      * @return True if to be minimized false else.
      */
-    public boolean is2BMinimized();
+    boolean is2BMinimized();
 }

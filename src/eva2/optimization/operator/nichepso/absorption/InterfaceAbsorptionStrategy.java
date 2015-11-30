@@ -16,7 +16,7 @@ public interface InterfaceAbsorptionStrategy {
      * @return
      * @tested decides whether indy should be absorbed into the subswarm according to the absorption strategie
      */
-    public abstract boolean shouldAbsorbParticleIntoSubswarm(
+    boolean shouldAbsorbParticleIntoSubswarm(
             AbstractEAIndividual indy,
             ParticleSubSwarmOptimization subswarm,
             ParticleSubSwarmOptimization mainswarm);
@@ -27,10 +27,10 @@ public interface InterfaceAbsorptionStrategy {
      * @param mainswarm the swarm indy currently belongs to
      * @tested absorbs indy according to the absorbtion strategy
      */
-    public abstract void absorbParticle(
+    void absorbParticle(
             AbstractEAIndividual indy,
             ParticleSubSwarmOptimization subswarm,
             ParticleSubSwarmOptimization mainswarm);
 
-    public abstract Object clone();
+    Object clone();
 }

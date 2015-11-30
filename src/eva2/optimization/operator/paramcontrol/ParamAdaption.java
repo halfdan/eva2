@@ -9,9 +9,9 @@ import eva2.optimization.population.Population;
  */
 public interface ParamAdaption {
 
-    public Object clone();
+    Object clone();
 
-    public String getControlledParam();
+    String getControlledParam();
 
     /**
      * Perform the adaption.
@@ -20,10 +20,10 @@ public interface ParamAdaption {
      * @param maxIteration
      * @return
      */
-    public Object calcValue(Object obj, Population pop, int iteration, int maxIteration);
+    Object calcValue(Object obj, Population pop, int iteration, int maxIteration);
 
-    public void init(Object obj, Population pop, Object[] initialValues);
+    void init(Object obj, Population pop, Object[] initialValues);
 
-    public void finish(Object obj, Population pop);
+    void finish(Object obj, Population pop);
 
 }

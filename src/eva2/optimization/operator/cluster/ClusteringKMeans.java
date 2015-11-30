@@ -354,11 +354,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
     @Override
     public boolean mergingSpecies(Population species1, Population species2, Population referencePop) {
         // TODO i could use the BIC metric from X-means to calculate this
-        if (metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < mergeDist) {
-            return true;
-        } else {
-            return false;
-        }
+        return metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < mergeDist;
     }
 
 //    /** This method decides if a unclustered individual belongs to an already established species.

@@ -8,5 +8,5 @@ public interface InterfaceNotifyOnInformers {
     /**
      * Notify the object about informer instances.
      */
-    public void setInformers(List<InterfaceAdditionalPopulationInformer> informers);
+    void setInformers(List<InterfaceAdditionalPopulationInformer> informers);
 }

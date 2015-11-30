@@ -16,13 +16,13 @@ public interface InterfaceMigration {
     /**
      * The ever present clone method
      */
-    public Object clone();
+    Object clone();
 
     /**
      * Typically i'll need some initialization method for
      * every bit of code i write....
      */
-    public void initializeMigration(InterfaceOptimizer[] islands);
+    void initializeMigration(InterfaceOptimizer[] islands);
 
     /**
      * The migrate method can be called asychnronously or
@@ -35,5 +35,5 @@ public interface InterfaceMigration {
      * you call getPopulation() on an island it is not a reference
      * to the population but a serialized copy of the population!!
      */
-    public void migrate(InterfaceOptimizer[] islands);
+    void migrate(InterfaceOptimizer[] islands);
 }
