@@ -57,10 +57,7 @@ public class GAPIndividualProgramData extends AbstractEAIndividual implements In
             if (!((AbstractEAIndividual) this.numberData).equalGenotypes((AbstractEAIndividual) indy.numberData)) {
                 return false;
             }
-            if (!((AbstractEAIndividual) this.programData).equalGenotypes((AbstractEAIndividual) indy.programData)) {
-                return false;
-            }
-            return true;
+            return ((AbstractEAIndividual) this.programData).equalGenotypes((AbstractEAIndividual) indy.programData);
         } else {
             return false;
         }

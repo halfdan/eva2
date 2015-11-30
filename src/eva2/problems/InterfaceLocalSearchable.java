@@ -12,12 +12,12 @@ public interface InterfaceLocalSearchable extends InterfaceOptimizationProblem {
      *
      * @param pop
      */
-    public void doLocalSearch(Population pop);
+    void doLocalSearch(Population pop);
 
     /**
      * Estimate the cost of one local search step -- more precisely the cost of the doLocalSearch call per one individual.
      *
      * @return
      */
-    public double getLocalSearchStepFunctionCallEquivalent();
+    double getLocalSearchStepFunctionCallEquivalent();
 }

@@ -15,7 +15,7 @@ public interface InterfaceCrossover {
      *
      * @return The clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method performs crossover on two individuals. Note: the genotype of the individuals
@@ -24,7 +24,7 @@ public interface InterfaceCrossover {
      * @param indy1    The first individual
      * @param partners The second individual
      */
-    public AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners);
+    AbstractEAIndividual[] mate(AbstractEAIndividual indy1, Population partners);
 
     /**
      * This method will allow the crossover operator to be initialized depending on the
@@ -35,7 +35,7 @@ public interface InterfaceCrossover {
      * @param individual The individual that will be mutated.
      * @param opt        The optimization problem.
      */
-    public void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt);
+    void init(AbstractEAIndividual individual, InterfaceOptimizationProblem opt);
 
     /**
      * This method allows you to get a string representation of the mutation
@@ -43,7 +43,7 @@ public interface InterfaceCrossover {
      *
      * @return A descriptive string.
      */
-    public String getStringRepresentation();
+    String getStringRepresentation();
 
     /**
      * This method allows you to evaluate wether two crossover operators
@@ -52,5 +52,5 @@ public interface InterfaceCrossover {
      * @param crossover The other crossover operator
      */
     @Override
-    public boolean equals(Object crossover);
+    boolean equals(Object crossover);
 }

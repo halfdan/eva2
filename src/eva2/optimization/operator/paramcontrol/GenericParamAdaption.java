@@ -12,5 +12,5 @@ public interface GenericParamAdaption extends ParamAdaption {
      *
      * @param prm
      */
-    public void setControlledParam(String prm);
+    void setControlledParam(String prm);
 }

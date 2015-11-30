@@ -16,7 +16,7 @@ import eva2.optimization.modules.ModuleAdapter;
  */
 public interface EvAMainAdapter {
 
-    public String[] getModuleNameList();
+    String[] getModuleNameList();
     // returns the corresponding ModuleAdapter
 
     ModuleAdapter getModuleAdapter(String selectedModuleName);

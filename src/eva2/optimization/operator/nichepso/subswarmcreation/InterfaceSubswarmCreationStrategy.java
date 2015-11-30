@@ -14,7 +14,7 @@ public interface InterfaceSubswarmCreationStrategy {
      * @return
      * @tested decides whether a subswarm should be created for the given indy and mainswarm according to the creation strategie
      */
-    public abstract boolean shouldCreateSubswarm(
+    boolean shouldCreateSubswarm(
             AbstractEAIndividual indy,
             ParticleSubSwarmOptimization mainswarm);
 
@@ -26,10 +26,10 @@ public interface InterfaceSubswarmCreationStrategy {
      * @param mainSwarm        the main swarm which contains indy
      * @tested creates a subswarm from indy, the details depend on the concrete strategy.
      */
-    public abstract void createSubswarm(
+    void createSubswarm(
             ParticleSubSwarmOptimization preparedSubswarm,
             AbstractEAIndividual indy,
             ParticleSubSwarmOptimization mainSwarm);
 
-    public abstract Object clone();
+    Object clone();
 }

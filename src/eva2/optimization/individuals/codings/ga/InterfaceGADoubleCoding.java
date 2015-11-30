@@ -17,7 +17,7 @@ public interface InterfaceGADoubleCoding {
      * @param correction Enable automatic correction is enabled.
      * @return The float value.
      */
-    public double decodeValue(BitSet refBitSet, double[] range, int[] locus, boolean correction);
+    double decodeValue(BitSet refBitSet, double[] range, int[] locus, boolean correction);
 
     /**
      * This method codes a given double value directly into a BitSet at
@@ -29,5 +29,5 @@ public interface InterfaceGADoubleCoding {
      * @param refBitSet The BitSet where the questioned value is stored.
      * @param locus     The position and length on the BitSet that is to be coded.
      */
-    public void codeValue(double value, double[] range, BitSet refBitSet, int[] locus);
+    void codeValue(double value, double[] range, BitSet refBitSet, int[] locus);
 }

@@ -14,21 +14,21 @@ public interface InterfaceDataTypeBinary {
      *
      * @param length The lenght of the BitSet that is to be optimized
      */
-    public void setBinaryDataLength(int length);
+    void setBinaryDataLength(int length);
 
     /**
      * This method returns the length of the binary data set
      *
      * @return The number of bits stored
      */
-    public int size();
+    int size();
 
     /**
      * This method allows you to read the binary data
      *
      * @return BitSet representing the binary data.
      */
-    public BitSet getBinaryData();
+    BitSet getBinaryData();
 
     /**
      * This method allows you to read the binary data without
@@ -36,14 +36,14 @@ public interface InterfaceDataTypeBinary {
      *
      * @return BitSet representing the binary data.
      */
-    public BitSet getBinaryDataWithoutUpdate();
+    BitSet getBinaryDataWithoutUpdate();
 
     /**
      * This method allows you to set the binary data.
      *
      * @param binaryData The new binary data.
      */
-    public void setBinaryPhenotype(BitSet binaryData);
+    void setBinaryPhenotype(BitSet binaryData);
 
     /**
      * This method allows you to set the binary data, this can be used for
@@ -51,5 +51,5 @@ public interface InterfaceDataTypeBinary {
      *
      * @param binaryData The new binary data.
      */
-    public void setBinaryGenotype(BitSet binaryData);
+    void setBinaryGenotype(BitSet binaryData);
 }

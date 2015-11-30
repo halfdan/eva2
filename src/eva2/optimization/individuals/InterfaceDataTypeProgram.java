@@ -14,14 +14,14 @@ public interface InterfaceDataTypeProgram {
      *
      * @param length The lenght of the double[] that is to be optimized
      */
-    public void setProgramDataLength(int length);
+    void setProgramDataLength(int length);
 
     /**
      * This method allows you to read the program stored as Koza style node tree
      *
      * @return AbstractGPNode representing the binary data.
      */
-    public InterfaceProgram[] getProgramData();
+    InterfaceProgram[] getProgramData();
 
     /**
      * This method allows you to read the Program data without
@@ -29,33 +29,33 @@ public interface InterfaceDataTypeProgram {
      *
      * @return InterfaceProgram[] representing the Program.
      */
-    public InterfaceProgram[] getProgramDataWithoutUpdate();
+    InterfaceProgram[] getProgramDataWithoutUpdate();
 
     /**
      * This method allows you to set the program.
      *
      * @param program The new program.
      */
-    public void SetProgramPhenotype(InterfaceProgram[] program);
+    void SetProgramPhenotype(InterfaceProgram[] program);
 
     /**
      * This method allows you to set the program.
      *
      * @param program The new program.
      */
-    public void SetProgramGenotype(InterfaceProgram[] program);
+    void SetProgramGenotype(InterfaceProgram[] program);
 
     /**
      * This method allows you to set the function area
      *
      * @param area The area contains functions and terminals
      */
-    public void SetFunctionArea(Object[] area);
+    void SetFunctionArea(Object[] area);
 
     /**
      * This method allows you to get the function area
      *
      * @return The area contains functions and terminals
      */
-    public Object[] getFunctionArea();
+    Object[] getFunctionArea();
 }

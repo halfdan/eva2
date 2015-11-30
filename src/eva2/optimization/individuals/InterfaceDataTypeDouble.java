@@ -14,14 +14,14 @@ public interface InterfaceDataTypeDouble {
      *
      * @param length The lenght of the double[] that is to be optimized
      */
-    public void setDoubleDataLength(int length);
+    void setDoubleDataLength(int length);
 
     /**
      * This method returns the length of the double data set
      *
      * @return The number of doubles stored
      */
-    public int size();
+    int size();
 
     /**
      * This method will set the range of the double attributes.
@@ -31,21 +31,21 @@ public interface InterfaceDataTypeDouble {
      * @param range The new range for the double data.
      */
     @Parameter(name = "range", description = "The initialization range for the individual.")
-    public void setDoubleRange(double[][] range);
+    void setDoubleRange(double[][] range);
 
     /**
      * This method will return the range for all double attributes.
      *
      * @return The range array.
      */
-    public double[][] getDoubleRange();
+    double[][] getDoubleRange();
 
     /**
      * This method allows you to read the double data
      *
      * @return double[] representing the double data.
      */
-    public double[] getDoubleData();
+    double[] getDoubleData();
 
     /**
      * This method allows you to read the double data without
@@ -53,7 +53,7 @@ public interface InterfaceDataTypeDouble {
      *
      * @return double[] representing the double data.
      */
-    public double[] getDoubleDataWithoutUpdate();
+    double[] getDoubleDataWithoutUpdate();
 
     /**
      * This method allows you to set the double data, usually the phenotype data. Consider using
@@ -61,7 +61,7 @@ public interface InterfaceDataTypeDouble {
      *
      * @param doubleData The new double data.
      */
-    public void setDoublePhenotype(double[] doubleData);
+    void setDoublePhenotype(double[] doubleData);
 
     /**
      * This method allows you to set the double data, this can be used for
@@ -69,5 +69,5 @@ public interface InterfaceDataTypeDouble {
      *
      * @param doubleData The new double data.
      */
-    public void setDoubleGenotype(double[] doubleData);
+    void setDoubleGenotype(double[] doubleData);
 }

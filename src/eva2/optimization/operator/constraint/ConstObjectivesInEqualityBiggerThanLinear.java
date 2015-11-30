@@ -41,11 +41,7 @@ public class ConstObjectivesInEqualityBiggerThanLinear implements InterfaceConst
         if (d.length != 2) {
             return true;
         }
-        if ((this.m * d[0] + this.b) < d[1]) {
-            return true;
-        } else {
-            return false;
-        }
+        return (this.m * d[0] + this.b) < d[1];
     }
 }
 

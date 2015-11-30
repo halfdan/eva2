@@ -24,21 +24,21 @@ public interface InterfaceParameterControl {
      *
      * @return Deep copy
      */
-    public Object clone();
+    Object clone();
 
     /**
      * Initialize the parameter control instance before a run.
      *
      * @param obj The controlled object.
      */
-    public void init(Object obj, Population initialPop);
+    void init(Object obj, Population initialPop);
 
     /**
      * After an optimization run, finalizing stuff may be done.
      *
      * @param obj The controlled object.
      */
-    public void finish(Object obj, Population finalPop);
+    void finish(Object obj, Population finalPop);
 
     /**
      * For a given runtime (maxIteration) and current iteration, update the parameters of the object.
@@ -48,7 +48,7 @@ public interface InterfaceParameterControl {
      * @param iteration Iteration
      * @param maxIteration Maximum Iteration
      */
-    public void updateParameters(Object obj, Population pop, int iteration, int maxIteration);
+    void updateParameters(Object obj, Population pop, int iteration, int maxIteration);
 
     /**
      * If no runtime in terms of iterations can be specified, the parameter control may try to infer
@@ -56,5 +56,5 @@ public interface InterfaceParameterControl {
      *
      * @param obj Object
      */
-    public void updateParameters(Object obj);
+    void updateParameters(Object obj);
 }

@@ -142,11 +142,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                         sameGrid = true;
                         for (int k = 0; k < tmpFit.length; k++) {
                             tmpGrid[k] = (int) ((tmpFit[k] - bounds[k][0]) / grid[k]);
-                            if (curGrid[k] == tmpGrid[k]) {
-                                sameGrid &= true;
-                            } else {
-                                sameGrid &= false;
-                            }
+                            sameGrid &= curGrid[k] == tmpGrid[k];
                         }
                         if (sameGrid) {
                             coll.add(j);
@@ -159,7 +155,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                 // now i got all the boogies of the same grid element
                 // lets assign them their squeeze factor
                 for (int j = 0; j < coll.size(); j++) {
-                    result[(int) coll.get(j)] = coll.size();
+                    result[coll.get(j)] = coll.size();
                     tmpIndy = pop.get(((Integer) coll.get(j)).intValue());
                     tmpIndy.putData("SqueezeFactor", coll.size());
                     tmpIndy.putData("GridBox", curGrid);

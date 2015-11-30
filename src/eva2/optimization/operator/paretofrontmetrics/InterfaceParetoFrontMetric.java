@@ -13,11 +13,11 @@ public interface InterfaceParetoFrontMetric {
      *
      * @return the clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method gives a metirc how to evaluate
      * an achieved Pareto-Front
      */
-    public double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem);
+    double calculateMetricOn(Population pop, AbstractMultiObjectiveOptimizationProblem problem);
 }

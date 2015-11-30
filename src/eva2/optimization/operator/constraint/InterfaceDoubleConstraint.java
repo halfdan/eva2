@@ -10,7 +10,7 @@ public interface InterfaceDoubleConstraint {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * Returns the boolean information whether the constraint is satisfied.
@@ -18,7 +18,7 @@ public interface InterfaceDoubleConstraint {
      * @param indyX
      * @return
      */
-    public boolean isSatisfied(double[] indyX);
+    boolean isSatisfied(double[] indyX);
 
     /**
      * Return the absolute (positive) degree of violation or zero if the constraint
@@ -27,5 +27,5 @@ public interface InterfaceDoubleConstraint {
      * @param indyX possibly the decoded individual position
      * @return true if valid false else.
      */
-    public double getViolation(double[] indyX);
+    double getViolation(double[] indyX);
 }

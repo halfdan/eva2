@@ -13,7 +13,7 @@ public interface InterfaceDataTypePermutation {
      *
      * @param length int new length
      */
-    public void setPermutationDataLength(int[] length);
+    void setPermutationDataLength(int[] length);
 
 
     /**
@@ -21,7 +21,7 @@ public interface InterfaceDataTypePermutation {
      *
      * @return int
      */
-    public int[] sizePermutation();
+    int[] sizePermutation();
 
     /**
      * This method allows you to read the permutation data
@@ -36,7 +36,7 @@ public interface InterfaceDataTypePermutation {
      *
      * @return int[] representing the permutation.
      */
-    public int[][] getPermutationDataWithoutUpdate();
+    int[][] getPermutationDataWithoutUpdate();
 
     /**
      * This method allows you to set the permutation.
@@ -53,5 +53,5 @@ public interface InterfaceDataTypePermutation {
      */
     void setPermutationGenotype(int[][] perm);
 
-    public void setFirstindex(int[] firstindex);
+    void setFirstindex(int[] firstindex);
 }

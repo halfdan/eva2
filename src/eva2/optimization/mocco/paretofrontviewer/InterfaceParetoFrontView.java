@@ -10,5 +10,5 @@ public interface InterfaceParetoFrontView {
      * the data has changed most likely due to changes in
      * the problem definition
      */
-    public void updateView();
+    void updateView();
 }

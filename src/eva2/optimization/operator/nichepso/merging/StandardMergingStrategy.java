@@ -54,12 +54,9 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
             return false;
         }
 
-        if (!subswarmsOverlapOrAreVeryClose(subswarm1, subswarm2)) {
-            return false;
-        }
+        return subswarmsOverlapOrAreVeryClose(subswarm1, subswarm2);
 
 
-        return true;
     }
 
     private boolean subswarmsOverlapOrAreVeryClose(ParticleSubSwarmOptimization subswarm1, ParticleSubSwarmOptimization subswarm2) {
@@ -101,10 +98,7 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
         } // normalised distance
 
         //if (Ri == 0 && Rj == 0 && dist_norm < getEpsilon()){ // see "Enhancing the NichePSO" paper
-        if (dist_norm < getMu()) { // Ri und Rj auf null testen sinvoll ?
-            return true;
-        }
-        return false;
+        return dist_norm < getMu();
     }
 
 /**********************************************************************************************************************
