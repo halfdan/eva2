@@ -374,20 +374,12 @@ public class ClusteringNearestBetter implements InterfaceClustering, Serializabl
     public boolean mergingSpecies(Population species1, Population species2, Population referenceSet) {
         getRefData(referenceSet, species1);
         if (testConvergingSpeciesOnBestOnly) {
-            if (this.metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < this.currentDistThreshold()) {
-                return true;
-            } else {
-                return false;
-            }
+            return this.metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < this.currentDistThreshold();
         } else {
             Population tmpPop = new Population(species1.size() + species2.size());
             tmpPop.addPopulation(species1);
             tmpPop.addPopulation(species2);
-            if (this.cluster(tmpPop, referenceSet).length <= 2) {
-                return true;
-            } else {
-                return false;
-            }
+            return this.cluster(tmpPop, referenceSet).length <= 2;
         }
     }
 

@@ -200,10 +200,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             if (!this.mutationOperator.equals(indy.mutationOperator)) {
                 return false;
             }
-            if (!this.crossoverOperator.equals(indy.crossoverOperator)) {
-                return false;
-            }
-            return true;
+            return this.crossoverOperator.equals(indy.crossoverOperator);
         } else {
             return false;
         }

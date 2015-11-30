@@ -14,7 +14,7 @@ public interface InterfaceRemoveSurplusIndividuals {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method will remove surplus individuals
@@ -22,5 +22,5 @@ public interface InterfaceRemoveSurplusIndividuals {
      *
      * @param archive
      */
-    public void removeSurplusIndividuals(Population archive);
+    void removeSurplusIndividuals(Population archive);
 }

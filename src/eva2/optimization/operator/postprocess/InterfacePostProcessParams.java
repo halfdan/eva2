@@ -11,37 +11,37 @@ import eva2.optimization.enums.PostProcessMethod;
  * @author mkron
  */
 public interface InterfacePostProcessParams {
-    public int getPostProcessSteps();
+    int getPostProcessSteps();
 
-    public void setPostProcessSteps(int ppSteps);
+    void setPostProcessSteps(int ppSteps);
 
-    public String postProcessStepsTipText();
+    String postProcessStepsTipText();
 
-    public boolean isDoPostProcessing();
+    boolean isDoPostProcessing();
 
-    public void setDoPostProcessing(boolean postProcess);
+    void setDoPostProcessing(boolean postProcess);
 
-    public String doPostProcessingTipText();
+    String doPostProcessingTipText();
 
-    public double getPostProcessClusterSigma();
+    double getPostProcessClusterSigma();
 
-    public void setPostProcessClusterSigma(double postProcessClusterSigma);
+    void setPostProcessClusterSigma(double postProcessClusterSigma);
 
-    public String postProcessClusterSigmaTipText();
+    String postProcessClusterSigmaTipText();
 
-    public int getPrintNBest();
+    int getPrintNBest();
 
-    public void setPrintNBest(int nBest);
+    void setPrintNBest(int nBest);
 
-    public String printNBestTipText();
+    String printNBestTipText();
 
-    public void setPPMethod(PostProcessMethod meth);
+    void setPPMethod(PostProcessMethod meth);
 
-    public PostProcessMethod getPPMethod();
+    PostProcessMethod getPPMethod();
 
-    public String PPMethodTipText();
+    String PPMethodTipText();
 
-    public boolean isWithPlot();
+    boolean isWithPlot();
 
-    public void setWithPlot(boolean withPlot);
+    void setWithPlot(boolean withPlot);
 }

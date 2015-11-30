@@ -13,5 +13,5 @@ public interface InterfaceRefSolutionListener {
      *
      * @param indy The selected individual
      */
-    public void individualSelected(AbstractEAIndividual indy);
+    void individualSelected(AbstractEAIndividual indy);
 }

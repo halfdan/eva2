@@ -14,14 +14,14 @@ public interface InterfaceTerminator {
      * @param pop the population to test
      * @return true if the population fulfills the termination criterion, else false
      */
-    public boolean isTerminated(PopulationInterface pop);
+    boolean isTerminated(PopulationInterface pop);
 
-    public boolean isTerminated(InterfaceSolutionSet pop);
+    boolean isTerminated(InterfaceSolutionSet pop);
 
     @Override
-    public String toString();
+    String toString();
 
-    public String lastTerminationMessage();
+    String lastTerminationMessage();
 
-    public void initialize(InterfaceOptimizationProblem prob);
+    void initialize(InterfaceOptimizationProblem prob);
 }

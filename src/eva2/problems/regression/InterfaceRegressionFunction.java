@@ -9,7 +9,7 @@ public interface InterfaceRegressionFunction {
      *
      * @return The clone.
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method will return the y value for a given x vector
@@ -17,5 +17,5 @@ public interface InterfaceRegressionFunction {
      * @param x Input vector.
      * @return y the function result.
      */
-    public double evaluateFunction(double[] x);
+    double evaluateFunction(double[] x);
 }

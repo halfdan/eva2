@@ -12,7 +12,7 @@ public interface InterfaceArchiving {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method allows you to merge populations into an archive.
@@ -21,5 +21,5 @@ public interface InterfaceArchiving {
      *
      * @param pop The population that may add Individuals to the archive.
      */
-    public void addElementsToArchive(Population pop);
+    void addElementsToArchive(Population pop);
 }

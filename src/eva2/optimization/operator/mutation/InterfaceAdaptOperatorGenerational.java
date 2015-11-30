@@ -17,7 +17,7 @@ public interface InterfaceAdaptOperatorGenerational {
      * @param oldPop      the initial population for the developmental step
      * @param selectedPop the sup-population selected as parents for the new generation
      */
-    public void adaptAfterSelection(Population oldPop, Population selectedPop);
+    void adaptAfterSelection(Population oldPop, Population selectedPop);
 
     /**
      * Perform adaption of the operator based on the developmental step performed by an EA.
@@ -32,5 +32,5 @@ public interface InterfaceAdaptOperatorGenerational {
      * @param newPop         the new population created by the EA, should already be evaluated
      * @param updateSelected if true, the selected population should be adapted as well
      */
-    public void adaptGenerational(Population oldPop, Population selectedPop, Population newPop, boolean updateSelected);
+    void adaptGenerational(Population oldPop, Population selectedPop, Population newPop, boolean updateSelected);
 }

@@ -32,10 +32,7 @@ public class StandardAbsorptionStrategy implements InterfaceAbsorptionStrategy, 
         if (!subswarm.isActive()) {
             return false; // no interaction between active mainswarmparticle and inactive subswarm
         }
-        if (!particleLiesInSubswarmRadius(indy, subswarm)) {
-            return false;
-        }
-        return true;
+        return particleLiesInSubswarmRadius(indy, subswarm);
     }
 
     private boolean particleLiesInSubswarmRadius(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm) {
@@ -43,11 +40,7 @@ public class StandardAbsorptionStrategy implements InterfaceAbsorptionStrategy, 
         double R = subswarm.getBoundSwarmRadius(); // uses euclidean distance
         AbstractEAIndividual gbest = subswarm.getGBestIndividual();
         double dist = subswarm.distance(indy, gbest); // euclidean distance
-        if (dist <= R) {
-            return true;
-        } else {
-            return false;
-        }
+        return dist <= R;
     }
 
 

@@ -16,7 +16,7 @@ public interface InterfaceDistanceMetric {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method allows you to compute the distance between two individuals.
@@ -27,5 +27,5 @@ public interface InterfaceDistanceMetric {
      * @param indy2 The second individual.
      * @return double
      */
-    public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2);
+    double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2);
 }

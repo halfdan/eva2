@@ -11,7 +11,7 @@ public interface InterfaceReplacement {
     /**
      * The ever present clone method
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method will insert the given individual into the population
@@ -22,5 +22,5 @@ public interface InterfaceReplacement {
      * @param pop  The population
      * @param sub  The subset
      */
-    public void insertIndividual(AbstractEAIndividual indy, Population pop, Population sub);
+    void insertIndividual(AbstractEAIndividual indy, Population pop, Population sub);
 }

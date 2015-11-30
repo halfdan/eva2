@@ -38,11 +38,7 @@ public class ConstObjectivesInEqualitySmallerThanSurface implements InterfaceCon
     @Override
     public boolean isValid(AbstractEAIndividual indy) {
         double[] d = indy.getFitness();
-        if (this.getScalarProduct(norm, this.getSubstraction(d, base)) < 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.getScalarProduct(norm, this.getSubstraction(d, base)) < 0;
     }
 
     private double[] getSubstraction(double[] a, double[] b) {
