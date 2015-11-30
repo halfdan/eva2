@@ -13,14 +13,14 @@ public interface InterfaceSimpleProblem<T> {
      * @param x a double vector to be evaluated
      * @return the fitness vector assigned to x as to the target function
      */
-    public double[] evaluate(T x);
+    double[] evaluate(T x);
 
     /**
      * Return the problem dimension.
      *
      * @return the problem dimension
      */
-    public int getProblemDimension();
+    int getProblemDimension();
 
 }
 

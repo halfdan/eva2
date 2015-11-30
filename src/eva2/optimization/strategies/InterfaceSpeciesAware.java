@@ -10,9 +10,9 @@ import eva2.optimization.population.Population;
  */
 public interface InterfaceSpeciesAware {
     // these can be used to tag a population as explorer or local search population.
-    public final static String populationTagKey = "specAwarePopulationTag";
-    public final static Integer explorerPopTag = 23;
-    public final static Integer localPopTag = 42;
+    String populationTagKey = "specAwarePopulationTag";
+    Integer explorerPopTag = 23;
+    Integer localPopTag = 42;
 
     /**
      * Two species have been merged to the first one.
@@ -20,7 +20,7 @@ public interface InterfaceSpeciesAware {
      * @param p1
      * @param p2
      */
-    public void mergeToFirstPopulationEvent(Population p1, Population p2);
+    void mergeToFirstPopulationEvent(Population p1, Population p2);
 
     /**
      * Notify that a split has occurred separating p2 from p1.
@@ -28,5 +28,5 @@ public interface InterfaceSpeciesAware {
      * @param p1
      * @param p2
      */
-    public void splitFromFirst(Population p1, Population p2);
+    void splitFromFirst(Population p1, Population p2);
 }

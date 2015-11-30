@@ -253,11 +253,7 @@ public class F8Problem extends AbstractProblemDoubleOffset
         } else { // the number of optima is corret - now check different offset or rotation by comparing one fitness value
             AbstractEAIndividual indy = listOfOptima.getEAIndividual(1);
             double[] curFit = evaluate(indy.getDoublePosition());
-            if (Math.abs(Mathematics.dist(curFit, indy.getFitness(), 2)) > 1e-10) {
-                return true;
-            } else {
-                return false;
-            }
+            return Math.abs(Mathematics.dist(curFit, indy.getFitness(), 2)) > 1e-10;
         }
     }
 

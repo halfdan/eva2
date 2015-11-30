@@ -14,19 +14,19 @@ public interface InterfaceSelectablePointIcon {
      *
      * @param a The selection listener
      */
-    public void addSelectionListener(InterfaceRefSolutionListener a);
+    void addSelectionListener(InterfaceRefSolutionListener a);
 
     /**
      * This method allows to remove the selection listner to the PointIcon
      */
-    public void removeSelectionListeners();
+    void removeSelectionListeners();
 
     /**
      * This method returns the selection listner to the PointIcon
      *
      * @return InterfacePointIconSelectionListener
      */
-    public InterfaceRefSolutionListener getSelectionListener();
+    InterfaceRefSolutionListener getSelectionListener();
 
     /**
      * Of course the PointIcon needs a reference to the individual
@@ -34,12 +34,12 @@ public interface InterfaceSelectablePointIcon {
      *
      * @param indy
      */
-    public void setEAIndividual(AbstractEAIndividual indy);
+    void setEAIndividual(AbstractEAIndividual indy);
 
     /**
      * This method allows you to get the EAIndividual the icon stands for
      *
      * @return AbstractEAIndividual
      */
-    public AbstractEAIndividual getEAIndividual();
+    AbstractEAIndividual getEAIndividual();
 }

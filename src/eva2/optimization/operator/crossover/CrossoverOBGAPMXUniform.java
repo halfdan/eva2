@@ -84,11 +84,7 @@ public class CrossoverOBGAPMXUniform implements InterfaceCrossover, java.io.Seri
      */
     @Override
     public boolean equals(Object crossover) {
-        if (crossover instanceof CrossoverOBGAPMXUniform) {
-            return true;
-        } else {
-            return false;
-        }
+        return crossover instanceof CrossoverOBGAPMXUniform;
     }
 
 

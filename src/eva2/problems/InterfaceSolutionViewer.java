@@ -13,17 +13,17 @@ public interface InterfaceSolutionViewer {
      *
      * @param prob
      */
-    public void initView(AbstractOptimizationProblem prob);
+    void initView(AbstractOptimizationProblem prob);
 
     /**
      * Reset the view.
      */
-    public void resetView();
+    void resetView();
 
     /**
      * Update the view by displaying a population of solutions (often only the best one is shown).
      *
      * @param pop
      */
-    public void updateView(Population pop, boolean showAllIfPossible);
+    void updateView(Population pop, boolean showAllIfPossible);
 }

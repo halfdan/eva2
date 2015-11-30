@@ -13,7 +13,7 @@ public interface InterfaceConstraint {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method allows you wether or not a given individual
@@ -22,5 +22,5 @@ public interface InterfaceConstraint {
      * @param indy The individual to check.
      * @return true if valid false else.
      */
-    public boolean isValid(AbstractEAIndividual indy);
+    boolean isValid(AbstractEAIndividual indy);
 }

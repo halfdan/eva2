@@ -18,7 +18,7 @@ public interface InterfaceStatisticsListener {
      * @param statObjects
      * @param statDoubles
      */
-    public void notifyGenerationPerformed(String[] header, Object[] statObjects, Double[] statDoubles);
+    void notifyGenerationPerformed(String[] header, Object[] statObjects, Double[] statDoubles);
 
     /**
      * Method called at the start of a single run.
@@ -28,7 +28,7 @@ public interface InterfaceStatisticsListener {
      * @param header           field names of the data
      * @param metaInfo         additional meta information on the data fields
      */
-    public void notifyRunStarted(int runNumber, int plannedMultiRuns, String[] header, String[] metaInfo);
+    void notifyRunStarted(int runNumber, int plannedMultiRuns, String[] header, String[] metaInfo);
 
     /**
      * Method called at the end of a single run.
@@ -36,7 +36,7 @@ public interface InterfaceStatisticsListener {
      * @param runsPerformed    the number of runs performed
      * @param completedLastRun true, if the last run was stopped normally, otherwise false, e.g. indicating a user break
      */
-    public void notifyRunStopped(int runsPerformed, boolean completedLastRun);
+    void notifyRunStopped(int runsPerformed, boolean completedLastRun);
 
     /**
      * Receive the list of last data lines for a set of multiruns. The data list may be null if no runs were
@@ -47,7 +47,7 @@ public interface InterfaceStatisticsListener {
      * @see InterfaceStatisticsParameters
      * @see AbstractStatistics
      */
-    public void finalMultiRunResults(String[] header, List<Object[]> multiRunFinalObjectData);
+    void finalMultiRunResults(String[] header, List<Object[]> multiRunFinalObjectData);
 
     /**
      * Called after the job is finished. Return true if the listener should be removed after this multi-run.
@@ -55,5 +55,5 @@ public interface InterfaceStatisticsListener {
      * @param header
      * @param multiRunFinalObjectData
      */
-    public boolean notifyMultiRunFinished(String[] header, List<Object[]> multiRunFinalObjectData);
+    boolean notifyMultiRunFinished(String[] header, List<Object[]> multiRunFinalObjectData);
 }

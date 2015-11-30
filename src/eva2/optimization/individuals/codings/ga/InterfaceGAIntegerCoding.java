@@ -18,7 +18,7 @@ public interface InterfaceGAIntegerCoding {
      * @param correction Enable automatic correction is enabled.
      * @return The float value.
      */
-    public int decodeValue(BitSet refBitSet, int[] range, int[] locus, boolean correction);
+    int decodeValue(BitSet refBitSet, int[] range, int[] locus, boolean correction);
 
     /**
      * This method codes a given int value directly into a BitSet at
@@ -30,12 +30,12 @@ public interface InterfaceGAIntegerCoding {
      * @param refBitSet The BitSet where the questioned value is stored.
      * @param locus     The position and length on the BitSet that is to be coded.
      */
-    public void codeValue(int value, int[] range, BitSet refBitSet, int[] locus);
+    void codeValue(int value, int[] range, BitSet refBitSet, int[] locus);
 
     /**
      * This method will calculate how many bits are to be used to code a given value
      *
      * @param range The range for the value.
      */
-    public int calculateNecessaryBits(int[] range);
+    int calculateNecessaryBits(int[] range);
 }

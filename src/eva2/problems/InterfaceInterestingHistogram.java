@@ -13,5 +13,5 @@ public interface InterfaceInterestingHistogram {
      *
      * @return
      */
-    public SolutionHistogram getHistogram();
+    SolutionHistogram getHistogram();
 }

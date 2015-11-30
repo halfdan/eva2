@@ -12,14 +12,14 @@ public interface InterfaceGIIndividual {
      *
      * @param length The lenght of the int[] that is to be optimized
      */
-    public void setIntegerDataLength(int length);
+    void setIntegerDataLength(int length);
 
     /**
      * This method will return the range for all int attributes.
      *
      * @return The range array.
      */
-    public int[][] getIntRange();
+    int[][] getIntRange();
 
     /**
      * This method will set the range of the int attributes.
@@ -28,14 +28,14 @@ public interface InterfaceGIIndividual {
      *
      * @param range The new range for the int data.
      */
-    public void setIntRange(int[][] range);
+    void setIntRange(int[][] range);
 
     /**
      * This method will allow the user to read the GI genotype
      *
      * @return BitSet
      */
-    public int[] getIGenotype();
+    int[] getIGenotype();
 
     /**
      * This method will allow the user to set the current GI genotype.
@@ -45,7 +45,7 @@ public interface InterfaceGIIndividual {
      *
      * @param b The new genotype of the Individual
      */
-    public void setIGenotype(int[] b);
+    void setIGenotype(int[] b);
 
     /**
      * This method allows the user to read the length of the genotype.
@@ -54,5 +54,5 @@ public interface InterfaceGIIndividual {
      *
      * @return The length of the genotype.
      */
-    public int getGenotypeLength();
+    int getGenotypeLength();
 }

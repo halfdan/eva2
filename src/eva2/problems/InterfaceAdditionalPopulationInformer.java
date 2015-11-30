@@ -14,14 +14,14 @@ public interface InterfaceAdditionalPopulationInformer {
      *
      * @return String
      */
-    public String[] getAdditionalDataHeader();
+    String[] getAdditionalDataHeader();
 
     /**
      * Optionally return informative descriptions of the data fields.
      *
      * @return
      */
-    public String[] getAdditionalDataInfo();
+    String[] getAdditionalDataInfo();
 
     /**
      * This method returns additional statistical data.
@@ -29,5 +29,5 @@ public interface InterfaceAdditionalPopulationInformer {
      * @param pop The population that is to be refined.
      * @return String
      */
-    public Object[] getAdditionalDataValue(PopulationInterface pop);
+    Object[] getAdditionalDataValue(PopulationInterface pop);
 }

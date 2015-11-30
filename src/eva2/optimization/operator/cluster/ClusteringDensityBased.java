@@ -180,11 +180,7 @@ public class ClusteringDensityBased implements InterfaceClusteringDistanceParam,
             Population tmpPop = new Population(species1.size() + species2.size());
             tmpPop.addPopulation(species1);
             tmpPop.addPopulation(species2);
-            if (this.cluster(tmpPop, referencePop).length <= 2) {
-                return true;
-            } else {
-                return false;
-            }
+            return this.cluster(tmpPop, referencePop).length <= 2;
         }
     }
 

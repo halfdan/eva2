@@ -17,14 +17,14 @@ public interface InterfaceMultimodalProblemKnown extends InterfaceMultimodalProb
      * if possible and to return quality measures like NumberOfOptimaFound and
      * the MaximumPeakRatio. This method should be called by the user.
      */
-    public void initListOfOptima();
+    void initListOfOptima();
 
     /**
      * Return true if the full list of optima is available, else false.
      *
      * @return
      */
-    public boolean fullListAvailable();
+    boolean fullListAvailable();
 
     /**
      * This method returns a list of all optima as population or null if
@@ -32,7 +32,7 @@ public interface InterfaceMultimodalProblemKnown extends InterfaceMultimodalProb
      *
      * @return population
      */
-    public Population getRealOptima();
+    Population getRealOptima();
 
     /**
      * Return the number of identified optima or -1 if
@@ -41,7 +41,7 @@ public interface InterfaceMultimodalProblemKnown extends InterfaceMultimodalProb
      * @param pop A population of possible solutions.
      * @return int
      */
-    public int getNumberOfFoundOptima(Population pop);
+    int getNumberOfFoundOptima(Population pop);
 
     /**
      * This method returns the Maximum Peak Ratio.
@@ -49,7 +49,7 @@ public interface InterfaceMultimodalProblemKnown extends InterfaceMultimodalProb
      * @param pop A population of possible solutions.
      * @return double
      */
-    public double getMaximumPeakRatio(Population pop);
+    double getMaximumPeakRatio(Population pop);
 
     /**
      * Return the maximum normed distance to a known optimum for which the
@@ -57,5 +57,5 @@ public interface InterfaceMultimodalProblemKnown extends InterfaceMultimodalProb
      *
      * @return
      */
-    public double getDefaultAccuracy();
+    double getDefaultAccuracy();
 }

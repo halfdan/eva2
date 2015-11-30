@@ -6,5 +6,5 @@ package eva2.problems;
  * @author mkron
  */
 public interface InterfaceHasSolutionViewer {
-    public InterfaceSolutionViewer getSolutionViewer();
+    InterfaceSolutionViewer getSolutionViewer();
 }
