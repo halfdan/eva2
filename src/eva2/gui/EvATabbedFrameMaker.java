@@ -123,12 +123,12 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
         }
     }
 
-    public JParaPanel getGOPanel() {
+    public JParaPanel getOptimizationParametersPanel() {
         try {
             JParaPanel sP = (JParaPanel) pmContainer.get(1);
             return sP;
         } catch (Exception e) {
-            System.err.println("Failed to get GO panel from " + this.getClass());
+            System.err.println("Failed to get OptimizationParameters panel from " + this.getClass());
         }
         return null;
     }
