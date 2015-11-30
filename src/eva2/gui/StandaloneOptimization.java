@@ -1,11 +1,11 @@
 package eva2.gui;
 
 import eva2.gui.plot.Plot;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.GAIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.OptimizationParameters;
 import eva2.optimization.operator.crossover.CrossoverGAGINPoint;
 import eva2.optimization.operator.mutation.InterfaceMutation;
 import eva2.optimization.operator.mutation.MutateESFixedStepSize;

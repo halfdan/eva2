@@ -2,9 +2,9 @@ package eva2.cli;
 
 import eva2.EvAInfo;
 import eva2.optimization.InterfaceOptimizationParameters;
-import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.OptimizationParameters;
 import eva2.optimization.Processor;
+import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
@@ -18,7 +18,10 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
