@@ -1,10 +1,10 @@
 package eva2.optimization.mocco;
 
 
+import eva2.gui.MOCCOStandalone;
 import eva2.gui.PropertyDoubleArray;
 import eva2.gui.PropertyEditorProvider;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.gui.MOCCOStandalone;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.moso.MOSOWeightedFitness;
 import eva2.optimization.operator.terminators.InterfaceTerminator;

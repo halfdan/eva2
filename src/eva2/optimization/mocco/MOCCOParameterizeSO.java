@@ -1,9 +1,9 @@
 package eva2.optimization.mocco;
 
 
+import eva2.gui.MOCCOStandalone;
 import eva2.gui.PropertyEditorProvider;
 import eva2.gui.editor.GenericObjectEditor;
-import eva2.gui.MOCCOStandalone;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
 import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.optimization.strategies.InterfaceOptimizer;

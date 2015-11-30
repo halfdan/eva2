@@ -1,10 +1,13 @@
 package eva2.gui;
 
 import eva2.EvAInfo;
+import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.OptimizationParameters;
 import eva2.optimization.OptimizationStateListener;
-import eva2.optimization.InterfaceOptimizationParameters;
-import eva2.optimization.modules.*;
+import eva2.optimization.modules.AbstractModuleAdapter;
+import eva2.optimization.modules.GenericModuleAdapter;
+import eva2.optimization.modules.ModuleAdapter;
+import eva2.optimization.modules.OptimizationModuleAdapter;
 import eva2.optimization.statistics.AbstractStatistics;
 import eva2.optimization.statistics.InterfaceStatisticsListener;
 import eva2.optimization.statistics.InterfaceStatisticsParameters;

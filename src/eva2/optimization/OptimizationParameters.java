@@ -47,7 +47,7 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
             FileInputStream fileStream = new FileInputStream(yamlFile);
             instance = (OptimizationParameters) new Yaml().load(fileStream);
         } catch (Exception ex) {
-            LOGGER.log(Level.WARNING, "Could not load OptimizationParameters.yml.", ex);
+            LOGGER.log(Level.INFO, "Could not load OptimizationParameters.yml.", ex);
         }
 
         if (instance == null) {
@@ -56,6 +56,14 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
         return instance;
     }
 
+    /**
+     * Default instructor that sets up a default optimizer, problem and terminator.
+     *
+     * Currently defaults to:
+     * - Differential Evolution
+     * - F1Problem
+     * - EvaluationTerminator with 5000 evaluations
+     */
     public OptimizationParameters() {
         super(new DifferentialEvolution(), new F1Problem(), new EvaluationTerminator(5000));
     }

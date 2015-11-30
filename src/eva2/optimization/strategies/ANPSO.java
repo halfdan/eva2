@@ -2,10 +2,10 @@ package eva2.optimization.strategies;
 
 import eva2.OptimizerFactory;
 import eva2.gui.editor.GenericObjectEditor;
+import eva2.optimization.OptimizationParameters;
 import eva2.optimization.enums.PSOTopology;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
-import eva2.optimization.OptimizationParameters;
 import eva2.optimization.operator.nichepso.deactivation.StandardDeactivationStrategy;
 import eva2.optimization.operator.paramcontrol.LinearParamAdaption;
 import eva2.optimization.operator.paramcontrol.ParamAdaption;

@@ -17,21 +17,27 @@ public class TerminatorExample {
         double[] sol;
         // A combined terminator for fitness and phenotype convergence
         CombinedTerminator convT = new CombinedTerminator(
-                // fitness-based stagnation period, absolute threshold, consider stagnation 
-                // in both direction (per dim.) or w.r.t. minimization only
-                new FitnessConvergenceTerminator(0.0001, 1000, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decrease),
-                new PhenotypeConvergenceTerminator(0.0001, 1000, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.bidirectional),
-                true);
+            // fitness-based stagnation period, absolute threshold, consider stagnation
+            // in both direction (per dim.) or w.r.t. minimization only
+            new FitnessConvergenceTerminator(0.0001, 1000, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.decrease),
+            new PhenotypeConvergenceTerminator(0.0001, 1000, StagnationTypeEnum.fitnessCallBased, ChangeTypeEnum.absoluteChange, DirectionTypeEnum.bidirectional),
+            true
+        );
+
         // Adding an evaluation terminator with OR to the convergence criterion
         OptimizerFactory.setTerminator(new CombinedTerminator(
-                new EvaluationTerminator(20000),
-                convT,
-                false));
+            new EvaluationTerminator(20000),
+            convT,
+            false
+        ));
+
         sol = OptimizerFactory.optimizeToDouble(OptimizerFactory.PSO, f1, null);
+
         System.out.println(OptimizerFactory.lastEvalsPerformed()
                 + " evals performed. "
                 + OptimizerFactory.terminatedBecause()
                 + " Found solution: ");
+
         for (int i = 0; i < f1.getProblemDimension(); i++) {
             System.out.print(sol[i] + " ");
         }
