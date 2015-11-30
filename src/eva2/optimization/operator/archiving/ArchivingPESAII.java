@@ -8,7 +8,7 @@ import eva2.util.annotation.Description;
 import java.util.ArrayList;
 
 /**
- * The Pareto envelope sorting algorithm using a hybergrid and
+ * The Pareto envelope sorting algorithm using a hypergrid and
  * the so called squeeze factor.
  */
 @Description("Pareto Envelope-based Selection Algorithm revision 2.0.")
@@ -85,7 +85,6 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
         double[][] bounds;
         double[] tmpFit;
         AbstractEAIndividual tmpIndy;
-//        boolean     debug = true;
 
         // first calculate the bounds of the search space
         bounds = new double[pop.get(0).getFitness().length][2];
@@ -93,10 +92,9 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
             bounds[i][0] = Double.POSITIVE_INFINITY;
             bounds[i][1] = Double.NEGATIVE_INFINITY;
         }
-//        if (debug) System.out.println("The individuals:");
+
         for (int i = 0; i < pop.size(); i++) {
             tmpFit = pop.get(i).getFitness();
-//            if (debug) System.out.println("Individual "+i+": "+tmpFit[0] +"/"+tmpFit[1]);
             result[i] = 0;
             for (int j = 0; j < tmpFit.length; j++) {
                 if (tmpFit[j] < bounds[j][0]) {
@@ -107,15 +105,11 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                 }
             }
         }
-//        if (debug) {
-//            System.out.println("The bounds are ("+bounds[0][0]+"/"+bounds[0][1]+")("+bounds[1][0]+"/"+bounds[1][1]+")");
-//            System.out.println("Gridwidth is "+((bounds[0][1] - bounds[0][0])/this.gridSize)+"/"+((bounds[1][1] - bounds[1][0])/this.gridSize));
-//        }
 
         // now that i got the bounds i can calculate the squeeze grid
-        int[] curGrid = new int[bounds.length], tmpGrid = new int[bounds.length];
+        int[] curGrid, tmpGrid = new int[bounds.length];
         double[] grid = new double[bounds.length];
-        ArrayList coll;
+        ArrayList<Integer> coll;
         boolean sameGrid;
         for (int i = 0; i < pop.size(); i++) {
             if (result[i] == 0) {
@@ -123,16 +117,11 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                 // haven't calculated the squeeze factor for this guy yet
                 // first i'll calculate the grid position this guy is in
                 tmpFit = pop.get(i).getFitness();
-                coll = new ArrayList();
+                coll = new ArrayList<>();
                 for (int j = 0; j < tmpFit.length; j++) {
                     grid[j] = (bounds[j][1] - bounds[j][0]) / this.gridSize;
                     curGrid[j] = (int) ((tmpFit[j] - bounds[j][0]) / grid[j]);
                 }
-//                if (debug) {
-//                    System.out.println("Indy "+i+" ("+tmpFit[0] +"/"+tmpFit[1]+") unassigned is in grid ["+curGrid[0]+"/"+curGrid[1]+"]");
-//                    System.out.println("");
-//                    System.out.println("Checking for individuals in the same grid");
-//                }
                 coll.add(i);
                 for (int j = i + 1; j < pop.size(); j++) {
                     if (result[j] == 0) {
@@ -147,16 +136,13 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                         if (sameGrid) {
                             coll.add(j);
                         }
-//                        if (debug) {
-//                            System.out.println("Checking indy "+j+" ("+tmpFit[0] +"/"+tmpFit[1]+") in grid ["+tmpGrid[0]+"/"+tmpGrid[1]+"]");
-//                        }
                     }
                 }
                 // now i got all the boogies of the same grid element
                 // lets assign them their squeeze factor
                 for (int j = 0; j < coll.size(); j++) {
                     result[coll.get(j)] = coll.size();
-                    tmpIndy = pop.get(((Integer) coll.get(j)).intValue());
+                    tmpIndy = pop.get(coll.get(j).intValue());
                     tmpIndy.putData("SqueezeFactor", coll.size());
                     tmpIndy.putData("GridBox", curGrid);
                 }

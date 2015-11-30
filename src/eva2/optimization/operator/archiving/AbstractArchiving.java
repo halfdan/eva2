@@ -158,23 +158,6 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
         p++;
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
-
-//    /** This method allows you to toggle the debug mode.
-//     * @param b     True in case of the debug mode.
-//     */
-//    public void setDebugFront(boolean b) {
-//        this.debug = b;
-//    }
-//    public boolean getDebugFront() {
-//        return this.debug;
-//    }
-//    public String debugFrontTipText() {
-//        return "Toggles the debug mode.";
-//    }
-
     /**
      * Toggle the use of obeying the constraint violation principle
      * of Deb
