@@ -149,6 +149,8 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
         if ((object != null) && (editor != null)) {
             paraPanel.registerEditor(object, editor);
         }
+
+        // Tabs
         this.parameterPanel1 = (paraPanel.makePanel());
         this.optionsPanel = new JTabbedPane();
         JParaPanel paraPanel2 = new JParaPanel(this.optimizationParameters, "MyGUI");

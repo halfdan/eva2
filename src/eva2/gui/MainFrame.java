@@ -12,7 +12,6 @@ import eva2.tools.BasicResourceLoader;
 import eva2.tools.EVAERROR;
 import eva2.tools.ReflectPackage;
 import eva2.util.ClassPreloader;
-import eva2.util.EvAComAdapter;
 
 import javax.help.HelpSet;
 import javax.help.JHelpContentViewer;
@@ -70,8 +69,6 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
     private Window parentWindow;
 
     private java.util.List<OptimizationStateListener> superListenerList = null;
-
-    private EvAComAdapter comAdapter;
 
 
     public void addOptimizationStateListener(OptimizationStateListener l) {
@@ -199,7 +196,6 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
             }
         }
 
-        this.comAdapter = EvAComAdapter.getInstance();
         splashScreenTime = 2500;
         initRunnable = new Runnable() {
 
@@ -699,8 +695,7 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
             if (optimizationParameters == null) {
                 params = OptimizationParameters.getInstance();
             }
-            newModuleAdapter = new GOModuleAdapter(selectedModule, params, withGUI ? null : "EvA2");
-            //newModuleAdapter = comAdapter.getModuleAdapter(selectedModule, optimizationParameters, withGUI ? null : "EvA2");
+            newModuleAdapter = new OptimizationModuleAdapter(selectedModule, params, withGUI ? null : "EvA2");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error loading module.", e);
             EVAERROR.EXIT("Error while comAdapter.GetModuleAdapter Host: " + e.getMessage());
@@ -717,7 +712,6 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
                 System.err.println("adding base dir and trying again...");
                 System.setProperty("java.class.path", cp + System.getProperty("path.separator") + dir);
                 ReflectPackage.resetDynCP();
-                comAdapter.updateLocalMainAdapter();
                 loadSpecificModule(selectedModule, optimizationParameters); // end recursive call! handle with care!
             }
         } else {
@@ -736,9 +730,9 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
                     GridBagConstraints gbConstraints = new GridBagConstraints();
 
                     /* ToDo: Find a way to properly add the TreeView to the GOPanel */
-                    if (withTreeView && (newModuleAdapter instanceof AbstractModuleAdapter)) {
+                    if (false && (newModuleAdapter instanceof AbstractModuleAdapter)) {
                         JComponent tree = null;
-                        tree = getEvATreeView(frameMaker.getGOPanel(), "OptimizationParameters", ((AbstractModuleAdapter) newModuleAdapter).getOptimizationParameters());
+                        tree = getEvATreeView(frameMaker.getOptimizationParametersPanel(), "OptimizationParameters", ((AbstractModuleAdapter) newModuleAdapter).getOptimizationParameters());
                         gbConstraints.gridx = 0;
                         gbConstraints.gridy = 0;
                         gbConstraints.fill = GridBagConstraints.BOTH;
