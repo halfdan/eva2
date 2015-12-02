@@ -251,7 +251,7 @@ final class CommandLineStatistics implements InterfaceStatistics {
     }
 
     @Override
-    public void printToTextListener(String s) {
+    public void printToTextListener(String... s) {
         System.out.println(s);
     }
 

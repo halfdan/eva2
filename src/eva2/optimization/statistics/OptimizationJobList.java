@@ -174,6 +174,14 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                 arrayEditor.selectDeselectAll();
             }
         };
+
+        ActionListener cliButtonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Generating CLI call");
+            }
+        };
+
         ActionListener sal = new ActionListener() {
 
             @Override
@@ -181,8 +189,11 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                 jobList.saveSelectedJobs(arrayEditor);
             }
         };
+
+        arrayEditor.addUpperActionButton("Get CLI", cliButtonListener);
         arrayEditor.addUpperActionButton("(De-)Sel. all", sl);
         arrayEditor.addUpperActionButton("Test Stats", al);
+
         arrayEditor.addLowerActionButton("Save selected", sal);
 
         arrayEditor.addPopupItem("Reuse as current settings", getReuseActionListener(parent, jobList));

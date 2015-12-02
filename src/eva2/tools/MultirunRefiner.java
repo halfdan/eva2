@@ -153,7 +153,7 @@ public class MultirunRefiner {
      */
     public void loadFile() {
         JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle("Select an Multirun.TXT File");
+        fc.setDialogTitle("Select a Multirun.TXT File");
         fc.setFileFilter(new TXTFileFilter());
         int returnVal = fc.showDialog(this.mainFrame, "Load Multirun.TXT");
         if (returnVal == 0) {
