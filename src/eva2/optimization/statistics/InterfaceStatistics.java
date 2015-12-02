@@ -31,7 +31,7 @@ public interface InterfaceStatistics {
 
     boolean removeTextListener(InterfaceTextListener listener);
 
-    void printToTextListener(String s);
+    void printToTextListener(String... s);
 
     void createNextGenerationPerformed(PopulationInterface Pop, InterfaceOptimizer opt, List<InterfaceAdditionalPopulationInformer> informerList);
 

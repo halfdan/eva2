@@ -7,9 +7,6 @@ public class Tag implements java.io.Serializable {
     protected int id;
     protected String text;
 
-    public Tag() {
-    }
-
     /**
      *
      */
