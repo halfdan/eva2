@@ -414,7 +414,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                     }
 
                     // Upper Button Panel
-                    JPanel combiUpperPanel = new JPanel(getButtonLayout(1, upperButtonList));
+                    JPanel combiUpperPanel = new JPanel(getButtonLayout(0, upperButtonList));
                     // ToDo Figure out how to now show this on Job Pane
                     combiUpperPanel.add(view);
                     view.setVisible(withAddButton);

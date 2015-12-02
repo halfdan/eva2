@@ -262,8 +262,7 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
         } else {
             /* Set Look and Feel */
             try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+                UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
             } catch (Exception ex) {
                 LOGGER.log(Level.INFO, "Could not set Look&Feel", ex);
             }
