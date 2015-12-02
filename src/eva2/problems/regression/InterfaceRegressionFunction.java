@@ -5,7 +5,7 @@ package eva2.problems.regression;
 public interface InterfaceRegressionFunction {
 
     /**
-     * This mehtod allows you to get a deep clone
+     * This method allows you to get a deep clone
      *
      * @return The clone.
      */

@@ -13,6 +13,7 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.ReflectPackage;
+import eva2.tools.StringTools;
 import eva2.util.annotation.Description;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -93,7 +94,7 @@ public class Main {
                         continue;
                     }
                     Description description = clazz.getAnnotation(Description.class);
-                    System.out.printf("\t\033[1m%s\033[0m\n", type.getName());
+                    System.out.printf("\t\033[1m%s\033[0m (%s)\n", type.getName(), StringTools.cutClassName(type.getName()));
                     if (description != null) {
                         System.out.printf("\t\t%s", description.value());
                     } else {
