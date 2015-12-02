@@ -47,6 +47,7 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
             FileInputStream fileStream = new FileInputStream(yamlFile);
             instance = (OptimizationParameters) new Yaml().load(fileStream);
         } catch (Exception ex) {
+            System.out.println(ex.getStackTrace() + "\n" + ex.getMessage());
             LOGGER.log(Level.INFO, "Could not load OptimizationParameters.yml.", ex);
         }
 

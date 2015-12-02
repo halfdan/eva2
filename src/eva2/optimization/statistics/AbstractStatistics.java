@@ -238,11 +238,11 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     @Override
     public void startOptimizationPerformed(String infoString, int runNumber, InterfaceOptimizationParameters params, List<InterfaceAdditionalPopulationInformer> informerList) {
-        if (printRunIntroVerbosity()) {
-            printToTextListener("# Optimization");
-        }
-
         if (runNumber == 0) {
+            if (printRunIntroVerbosity()) {
+                printToTextListener("# Optimization");
+            }
+
             // store the initial graph selection state, so that modifications during runtime cannot cause inconsistencies
             lastFieldSelection = (StringSelection) statisticsParameter.getFieldSelection().clone();
             lastIsShowFull = statisticsParameter.isOutputAllFieldsAsText();
@@ -298,7 +298,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if (printRunIntroVerbosity()) {
             printToTextListener("## Multirun " + (runNumber + 1) + "\n");
         }
-        
+
         feasibleFoundAfter = -1;
         bestCurrentIndy = null;
         bestOfRunIndy = null;
@@ -513,7 +513,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             }
             if (refineMultiRuns && (sumDataCollection != null)) {
                 if (printFinalVerbosity()) {
-                    printToTextListener(" Averaged performance:\n");
+                    printToTextListener("#### Averaged performance:\n\n");
                 }
                 // the summed-up values of the mean collection is divided by the number of runs
                 for (int i = 0; i < sumDataCollection.size(); i++) {
@@ -588,11 +588,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     public String refineToText(ArrayList<Double[]> data, int iterationsToShow) {
-        String hd = getOutputHeaderFieldNamesAsString(lastInformerList);
+        List<String> additionalFields = getOutputHeaderFieldNames(lastInformerList);
         StringBuffer sbuf = new StringBuffer("Iteration");
         sbuf.append(textFieldDelimiter);
-        sbuf.append(hd);
+        sbuf.append(StringTools.concatFields(additionalFields, " | "));
         sbuf.append("\n");
+        String[] tableSeparator = new String[additionalFields.size()+1];
+        Arrays.fill(tableSeparator, "---");
+        sbuf.append(StringTools.concatFields(tableSeparator, " | ") + "\n");
         refineToText(data, iterationsToShow, sbuf, textFieldDelimiter);
         return sbuf.toString();
     }

@@ -2,9 +2,9 @@ package eva2.optimization.strategies;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.tools.math.Mathematics;

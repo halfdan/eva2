@@ -365,6 +365,8 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         boolean found = false;
         for (int i = 0; i < comboBoxModel.getSize(); i++) {
             Item element = (Item)comboBoxModel.getElementAt(i);
+
+            System.out.println(objectName + " - " + element.getId());
             if (objectName.equals(element.getId())) {
                 found = true;
                 objectChooser.getModel().setSelectedItem(element);
