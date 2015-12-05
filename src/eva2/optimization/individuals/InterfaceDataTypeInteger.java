@@ -2,7 +2,7 @@ package eva2.optimization.individuals;
 
 /**
  * This interface gives access to a integer phenotype and except
- * for problemspecific operators should only be used by the
+ * for problem specific operators should only be used by the
  * optimization problem.
  */
 public interface InterfaceDataTypeInteger {
@@ -10,7 +10,7 @@ public interface InterfaceDataTypeInteger {
     /**
      * This method allows you to request a certain amount of int data
      *
-     * @param length The lenght of the int[] that is to be optimized
+     * @param length The length of the int[] that is to be optimized
      */
     void setIntegerDataLength(int length);
 
