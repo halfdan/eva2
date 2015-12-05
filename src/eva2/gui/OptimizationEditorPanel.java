@@ -22,7 +22,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -80,19 +79,18 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      *
      */
     public OptimizationEditorPanel(Object target, Object backup, PropertyChangeSupport support, GenericObjectEditor goe, boolean withCancel) {
-        Object object = target;
         backupObject = backup;
         propChangeSupport = support;
         genericObjectEditor = goe;
 
         try {
-            if (!(Proxy.isProxyClass(object.getClass()))) {
-                backupObject = copyObject(object);
+            if (!(Proxy.isProxyClass(target.getClass()))) {
+                backupObject = copyObject(target);
             }
         } catch (OutOfMemoryError err) {
             backupObject = null;
             System.gc();
-            System.err.println("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + object + ")");
+            System.err.println("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + target + ")");
         }
         comboBoxModel = new DefaultComboBoxModel(new Vector<Item>());
         objectChooser = new JComboBox(comboBoxModel);
@@ -225,9 +223,9 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      * This method is duplicated from EvAModuleButtonPanelMaker. ToDo: Refactor
      * this.
      *
-     * @param iconSrc
-     * @param title
-     * @return
+     * @param iconSrc Source path of icon
+     * @param title Title of button
+     * @return A JButton with the title and icon
      */
     private JButton makeIconButton(final String iconSrc, final String title) {
         JButton newButton;
@@ -258,7 +256,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         try {
             SerializedObject so = new SerializedObject(source);
             result = so.getObject();
-            so = null;
         } catch (Exception ex) {
             System.err.println("GenericObjectEditor: Problem making backup object");
             System.err.println(source.getClass().getName());
@@ -324,7 +321,8 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 
                 classesList.add(new Item(className, displayName, toolTips[i++]));
             }
-            objectChooser.setModel(new DefaultComboBoxModel(classesList));
+            comboBoxModel = new DefaultComboBoxModel(classesList);
+            objectChooser.setModel(comboBoxModel);
             objectChooser.setRenderer(new ToolTipComboBoxRenderer());
             GridBagConstraints gbConstraints = new GridBagConstraints();
             gbConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -362,13 +360,10 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 
     public void updateChooser() {
         String objectName = genericObjectEditor.getValue().getClass().getName();
-        boolean found = false;
         for (int i = 0; i < comboBoxModel.getSize(); i++) {
             Item element = (Item)comboBoxModel.getElementAt(i);
 
-            System.out.println(objectName + " - " + element.getId());
             if (objectName.equals(element.getId())) {
-                found = true;
                 objectChooser.getModel().setSelectedItem(element);
                 break;
             }
@@ -431,8 +426,7 @@ class ToolTipComboBoxRenderer extends BasicComboBoxRenderer {
         super.getListCellRendererComponent(list, value, index,
                 isSelected, cellHasFocus);
 
-        if (value != null)
-        {
+        if (value != null) {
             Item item = (Item)value;
             setText(item.getDisplayName());
 
@@ -446,8 +440,7 @@ class ToolTipComboBoxRenderer extends BasicComboBoxRenderer {
             }
         }
 
-        if (index == -1)
-        {
+        if (index == -1) {
             Item item = (Item)value;
             setText(item.getDisplayName());
         }
