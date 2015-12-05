@@ -233,7 +233,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
          * the number of multiple runs has been reached.
          */
         while (isOptimizationRunning() && (runCounter < statistics.getStatisticsParameters().getMultiRuns())) {
-            LOGGER.info(String.format("Starting Optimization %d/%d", runCounter, statistics.getStatisticsParameters().getMultiRuns()));
+            LOGGER.info(String.format("Starting Optimization %d/%d", runCounter + 1, statistics.getStatisticsParameters().getMultiRuns()));
             statistics.startOptimizationPerformed(getInfoString(), runCounter, optimizationParameters, getInformerList());
 
             problem.initializeProblem();
