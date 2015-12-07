@@ -2,23 +2,27 @@ package eva2.cli;
 
 import eva2.EvAInfo;
 import eva2.optimization.InterfaceOptimizationParameters;
-import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.OptimizationParameters;
 import eva2.optimization.Processor;
+import eva2.optimization.individuals.IndividualInterface;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
-import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
+import eva2.optimization.population.Population;
 import eva2.optimization.statistics.*;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.ReflectPackage;
+import eva2.tools.StringTools;
 import eva2.util.annotation.Description;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -90,7 +94,7 @@ public class Main {
                         continue;
                     }
                     Description description = clazz.getAnnotation(Description.class);
-                    System.out.printf("\t\033[1m%s\033[0m\n", type.getName());
+                    System.out.printf("\t\033[1m%s\033[0m (%s)\n", type.getName(), StringTools.cutClassName(type.getName()));
                     if (description != null) {
                         System.out.printf("\t\t%s", description.value());
                     } else {
@@ -247,7 +251,7 @@ final class CommandLineStatistics implements InterfaceStatistics {
     }
 
     @Override
-    public void printToTextListener(String s) {
+    public void printToTextListener(String... s) {
         System.out.println(s);
     }
 

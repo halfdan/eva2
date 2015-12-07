@@ -2,7 +2,7 @@ package eva2.optimization.individuals;
 
 /**
  * This interface gives access to a integer phenotype and except
- * for problemspecific operators should only be used by the
+ * for problem specific operators should only be used by the
  * optimization problem.
  */
 public interface InterfaceDataTypeInteger {
@@ -10,16 +10,16 @@ public interface InterfaceDataTypeInteger {
     /**
      * This method allows you to request a certain amount of int data
      *
-     * @param length The lenght of the int[] that is to be optimized
+     * @param length The length of the int[] that is to be optimized
      */
-    public void setIntegerDataLength(int length);
+    void setIntegerDataLength(int length);
 
     /**
      * This method returns the length of the int data set
      *
      * @return The number of integers stored
      */
-    public int size();
+    int size();
 
     /**
      * This method will set the range of the int attributes.
@@ -28,21 +28,21 @@ public interface InterfaceDataTypeInteger {
      *
      * @param range The new range for the int data.
      */
-    public void setIntRange(int[][] range);
+    void setIntRange(int[][] range);
 
     /**
      * This method will return the range for all int attributes.
      *
      * @return The range array.
      */
-    public int[][] getIntRange();
+    int[][] getIntRange();
 
     /**
      * This method allows you to read the int data
      *
      * @return int[] representing the int data.
      */
-    public int[] getIntegerData();
+    int[] getIntegerData();
 
     /**
      * This method allows you to read the int data without
@@ -50,14 +50,14 @@ public interface InterfaceDataTypeInteger {
      *
      * @return int[] representing the int data.
      */
-    public int[] getIntegerDataWithoutUpdate();
+    int[] getIntegerDataWithoutUpdate();
 
     /**
      * This method allows you to set the int data.
      *
      * @param intData The new int data.
      */
-    public void setIntPhenotype(int[] intData);
+    void setIntPhenotype(int[] intData);
 
     /**
      * This method allows you to set the int data, this can be used for
@@ -65,5 +65,5 @@ public interface InterfaceDataTypeInteger {
      *
      * @param intData The new int data.
      */
-    public void setIntGenotype(int[] intData);
+    void setIntGenotype(int[] intData);
 }

@@ -22,7 +22,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -67,9 +66,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      * Creates the GUI editor component
      */
     private GenericObjectEditor genericObjectEditor = null;
-    private boolean withComboBoxToolTips = true; // should tool tips for the combo box be created?
     private int tipMaxLen = 100; // maximum length of tool tip
-    private HashMap<String, String> classNameMap;
 
     /**
      *
@@ -82,21 +79,20 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      *
      */
     public OptimizationEditorPanel(Object target, Object backup, PropertyChangeSupport support, GenericObjectEditor goe, boolean withCancel) {
-        Object object = target;
         backupObject = backup;
         propChangeSupport = support;
         genericObjectEditor = goe;
 
         try {
-            if (!(Proxy.isProxyClass(object.getClass()))) {
-                backupObject = copyObject(object);
+            if (!(Proxy.isProxyClass(target.getClass()))) {
+                backupObject = copyObject(target);
             }
         } catch (OutOfMemoryError err) {
             backupObject = null;
             System.gc();
-            System.err.println("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + object + ")");
+            System.err.println("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + target + ")");
         }
-        comboBoxModel = new DefaultComboBoxModel(new String[0]);
+        comboBoxModel = new DefaultComboBoxModel(new Vector<Item>());
         objectChooser = new JComboBox(comboBoxModel);
         objectChooser.setEditable(false);
         propertySheetPanel = new PropertySheetPanel();
@@ -227,14 +223,14 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      * This method is duplicated from EvAModuleButtonPanelMaker. ToDo: Refactor
      * this.
      *
-     * @param iconSrc
-     * @param title
-     * @return
+     * @param iconSrc Source path of icon
+     * @param title Title of button
+     * @return A JButton with the title and icon
      */
     private JButton makeIconButton(final String iconSrc, final String title) {
         JButton newButton;
         byte[] bytes;
-        bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
+        bytes = BasicResourceLoader.getInstance().getBytesFromResourceLocation(iconSrc, false);
         if (bytes == null) {
             newButton = new JButton(title);
         } else {
@@ -260,7 +256,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         try {
             SerializedObject so = new SerializedObject(source);
             result = so.getObject();
-            so = null;
         } catch (Exception ex) {
             System.err.println("GenericObjectEditor: Problem making backup object");
             System.err.println(source.getClass().getName());
@@ -318,15 +313,17 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         classesLongNames = GenericObjectEditor.getClassesFromProperties(genericObjectEditor.getClassType().getName(), instances);
         LOGGER.finest("Selected type for OptimizationEditorPanel: " + genericObjectEditor.getClassType().getName());
         if (classesLongNames.size() > 1) {
-            classNameMap = new HashMap<>();
+            Vector<Item> classesList = new Vector<>();
+            String[] toolTips = collectComboToolTips(instances, tipMaxLen);
+            int i = 0;
             for (String className : classesLongNames) {
-                classNameMap.put(StringTools.cutClassName(className), className);
+                String displayName = StringTools.cutClassName(className);
+
+                classesList.add(new Item(className, displayName, toolTips[i++]));
             }
-            Vector<String> classesList = new Vector<>(classesLongNames);
-            objectChooser.setModel(new DefaultComboBoxModel(classesList));
-            if (withComboBoxToolTips) {
-                objectChooser.setRenderer(new ToolTipComboBoxRenderer(collectComboToolTips(instances, tipMaxLen)));
-            }
+            comboBoxModel = new DefaultComboBoxModel(classesList);
+            objectChooser.setModel(comboBoxModel);
+            objectChooser.setRenderer(new ToolTipComboBoxRenderer());
             GridBagConstraints gbConstraints = new GridBagConstraints();
             gbConstraints.fill = GridBagConstraints.HORIZONTAL;
             gbConstraints.gridx = 0;
@@ -342,7 +339,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 
         for (int i = 0; i < tips.length; i++) {
             tips[i] = null;
-            Class[] classParams = new Class[]{};
 
             String tip = null;
 
@@ -363,20 +359,15 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     }
 
     public void updateChooser() {
-        String objectName = /*
-                 * EVAHELP.cutClassName
-                 */ (genericObjectEditor.getValue().getClass().getName());
-        boolean found = false;
+        String objectName = genericObjectEditor.getValue().getClass().getName();
         for (int i = 0; i < comboBoxModel.getSize(); i++) {
-            if (objectName.equals(comboBoxModel.getElementAt(i))) {
-                found = true;
+            Item element = (Item)comboBoxModel.getElementAt(i);
+
+            if (objectName.equals(element.getId())) {
+                objectChooser.getModel().setSelectedItem(element);
                 break;
             }
         }
-        if (!found) {
-            comboBoxModel.addElement(objectName);
-        }
-        objectChooser.getModel().setSelectedItem(objectName);
     }
 
     /**
@@ -398,7 +389,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         String className;
 
         if ((e.getSource() == objectChooser) && (e.getStateChange() == ItemEvent.SELECTED)) {
-            className = (String) objectChooser.getSelectedItem();
+            className = ((Item)objectChooser.getSelectedItem()).getId();
             try {
                 Object n = Class.forName(className).newInstance();
                 genericObjectEditor.setValue(n);
@@ -423,30 +414,71 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 class ToolTipComboBoxRenderer extends BasicComboBoxRenderer {
 
     private static final long serialVersionUID = -5781643352198561208L;
-    String[] toolTips = null;
 
-    public ToolTipComboBoxRenderer(String[] tips) {
+    public ToolTipComboBoxRenderer() {
         super();
-        toolTips = tips;
     }
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value,
                                                   int index, boolean isSelected, boolean cellHasFocus) {
-        if (isSelected) {
-            setBackground(list.getSelectionBackground());
-            setForeground(list.getSelectionForeground());
-            if ((toolTips != null) && (index >= 0)) {
-                if (toolTips[index] != null) {
-                    list.setToolTipText(toolTips[index]);
-                }
+
+        super.getListCellRendererComponent(list, value, index,
+                isSelected, cellHasFocus);
+
+        if (value != null) {
+            Item item = (Item)value;
+            setText(item.getDisplayName());
+
+            if (isSelected) {
+                setBackground(list.getSelectionBackground());
+                setForeground(list.getSelectionForeground());
+                list.setToolTipText(item.getDescription());
+            } else {
+                setBackground(list.getBackground());
+                setForeground(list.getForeground());
             }
-        } else {
-            setBackground(list.getBackground());
-            setForeground(list.getForeground());
         }
+
+        if (index == -1) {
+            Item item = (Item)value;
+            setText(item.getDisplayName());
+        }
+
         setFont(list.getFont());
-        setText((value == null) ? "" : value.toString());
         return this;
+    }
+}
+
+class Item
+{
+    private String id;
+    private String displayName;
+    private String description;
+
+    public Item(String id, String displayName, String description)
+    {
+        this.id = id;
+        this.displayName = displayName;
+        this.description = description;
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String toString()
+    {
+        return id;
     }
 }

@@ -6,7 +6,7 @@ package eva2.optimization.statistics;
  * @author mkron
  */
 public interface InterfaceTextListener {
-    public void print(String str);
+    void print(String str);
 
-    public void println(String str);
+    void println(String str);
 }

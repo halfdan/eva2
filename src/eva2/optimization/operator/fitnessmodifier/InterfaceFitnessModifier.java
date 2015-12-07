@@ -14,6 +14,6 @@ public interface InterfaceFitnessModifier {
      * your problem to store the unaltered fitness somewhere else so that
      * you may still fetch it!
      */
-    public void modifyFitness(Population population);
+    void modifyFitness(Population population);
 
 }

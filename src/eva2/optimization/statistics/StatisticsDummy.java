@@ -74,7 +74,7 @@ public class StatisticsDummy implements InterfaceStatistics, InterfaceTextListen
     }
 
     @Override
-    public void printToTextListener(String s) {
+    public void printToTextListener(String... s) {
         if (consoleOut) {
             System.out.println(s);
         }

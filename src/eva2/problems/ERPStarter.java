@@ -3,9 +3,9 @@ package eva2.problems;
 import eva2.OptimizerFactory;
 import eva2.OptimizerRunnable;
 import eva2.gui.BeanInspector;
-import eva2.gui.Main;
-import eva2.optimization.individuals.AbstractEAIndividual;
+import eva2.gui.MainFrame;
 import eva2.optimization.OptimizationParameters;
+import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
 import eva2.optimization.operator.moso.MOSONoConvert;
 import eva2.optimization.operator.moso.MOSOWeightedFitness;
@@ -87,7 +87,7 @@ public class ERPStarter {
         //	Instantiate optimization
         OptimizationParameters params = new OptimizationParameters(opt, erp, new EvaluationTerminator(maxEvals));
         if (startGUI) {
-            Main.initClientGUI(params, null, null, null);
+            MainFrame.initClientGUI(params, null, null, null);
         } else {
             OptimizerRunnable rnbl = new OptimizerRunnable(params, new StatisticsStandalone(outputFilePrefix, 1, InterfaceStatisticsParameters.OutputVerbosity.ALL, true), false);
             // actually start the optimization

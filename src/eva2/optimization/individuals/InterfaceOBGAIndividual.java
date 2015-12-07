@@ -13,7 +13,7 @@ public interface InterfaceOBGAIndividual {
      *
      * @return int[] genotype
      */
-    public int[][] getOBGenotype();
+    int[][] getOBGenotype();
 
 
     /**
@@ -21,5 +21,5 @@ public interface InterfaceOBGAIndividual {
      *
      * @param b int[] new genotype
      */
-    public void setOBGenotype(int[][] b);
+    void setOBGenotype(int[][] b);
 }

@@ -13,21 +13,21 @@ public interface InterfaceProblemDouble {
      * @param x the vector to evaluate
      * @return the target function value
      */
-    public double[] evaluate(double[] x);
+    double[] evaluate(double[] x);
 
     /**
      * Create a new range array by using the getRangeLowerBound and getRangeUpperBound methods.
      *
      * @return a range array
      */
-    public double[][] makeRange();
+    double[][] makeRange();
 
     /**
      * Get the EA individual template currently used by the problem.
      *
      * @return the EA individual template currently used
      */
-    public InterfaceDataTypeDouble getEAIndividual();
+    InterfaceDataTypeDouble getEAIndividual();
 
     /**
      * Get the upper bound of the double range in the given dimension. Override
@@ -38,7 +38,7 @@ public interface InterfaceProblemDouble {
      * @see #makeRange()
      * @see #getRangeLowerBound(int dim)
      */
-    public double getRangeUpperBound(int dim);
+    double getRangeUpperBound(int dim);
 
     /**
      * Get the lower bound of the double range in the given dimension. Override
@@ -49,5 +49,5 @@ public interface InterfaceProblemDouble {
      * @see #makeRange()
      * @see #getRangeUpperBound(int dim)
      */
-    public double getRangeLowerBound(int dim);
+    double getRangeLowerBound(int dim);
 }

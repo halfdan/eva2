@@ -9,9 +9,9 @@ package eva2.optimization.population;
  * @author mkron
  */
 public interface InterfaceSolutionSet {
-    public Population getSolutions();
+    Population getSolutions();
 
-    public Population getCurrentPopulation();
+    Population getCurrentPopulation();
 
-    public SolutionSet clone();
+    SolutionSet clone();
 }

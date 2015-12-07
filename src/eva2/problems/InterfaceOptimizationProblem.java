@@ -16,12 +16,12 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      *
      * @return the clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method initializes the Problem to log multiruns
      */
-    public void initializeProblem();
+    void initializeProblem();
 
     /**
      * This method will report whether or not this optimization problem is truly
@@ -29,14 +29,14 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      *
      * @return True if multi-objective, else false.
      */
-    public boolean isMultiObjective();
+    boolean isMultiObjective();
 
     /**
      * This method initialized a given population
      *
      * @param population The populations that is to be initialized.
      */
-    public void initializePopulation(Population population);
+    void initializePopulation(Population population);
 
     /**
      * This method evaluates a given population and sets the fitness values
@@ -44,14 +44,14 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      *
      * @param population The population that is to be evaluated.
      */
-    public void evaluate(Population population);
+    void evaluate(Population population);
 
     /**
      * This method evaluate a single individual and sets the fitness values
      *
      * @param individual The individual that is to be evalutated
      */
-    public void evaluate(AbstractEAIndividual individual);
+    void evaluate(AbstractEAIndividual individual);
 
     /**
      * This method allows the GenericObjectEditorPanel to read the
@@ -59,7 +59,7 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      *
      * @return The name.
      */
-    public String getName();
+    String getName();
 
     /**
      * This method allows you to output a string that describes a found solution
@@ -68,7 +68,7 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      * @param individual The individual that is to be shown.
      * @return The description.
      */
-    public String getSolutionRepresentationFor(AbstractEAIndividual individual);
+    String getSolutionRepresentationFor(AbstractEAIndividual individual);
 
     /**
      * This method returns a string describing the optimization problem.
@@ -76,13 +76,13 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      * @param opt The Optimizer that is used or had been used.
      * @return The description.
      */
-    public String getStringRepresentationForProblem(InterfaceOptimizer opt);
+    String getStringRepresentationForProblem(InterfaceOptimizer opt);
 
     /**
      * This method allows you to request a graphical representation for a given
      * individual.
      */
-    public JComponent drawIndividual(int generation, int funCalls, AbstractEAIndividual indy);
+    JComponent drawIndividual(int generation, int funCalls, AbstractEAIndividual indy);
 
     /**
      * This method returns a double value that will be displayed in a fitness
@@ -92,12 +92,12 @@ public interface InterfaceOptimizationProblem extends InterfaceAdditionalPopulat
      * @param pop The population that is to be refined.
      * @return Double value
      */
-    public Double getDoublePlotValue(Population pop);
+    Double getDoublePlotValue(Population pop);
 
     /**
      * This method returns the dimension of the problem. Some problem implementations
      * may add a setProblemDimension() method, but as some problems have a fixed problem
      * dimension this is not added in this interface.
      */
-    public int getProblemDimension();
+    int getProblemDimension();
 }

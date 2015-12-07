@@ -17,7 +17,7 @@ public interface InterfaceMergingStrategy {
      * @param subswarm2
      * @return
      */
-    public abstract boolean shouldMergeSubswarms(
+    boolean shouldMergeSubswarms(
             ParticleSubSwarmOptimization subswarm1,
             ParticleSubSwarmOptimization subswarm2);
 
@@ -32,11 +32,11 @@ public interface InterfaceMergingStrategy {
      * @param subSwarms
      * @param mainSwarm
      */
-    public abstract void mergeSubswarms(
+    void mergeSubswarms(
             int i,
             int j,
             Vector<ParticleSubSwarmOptimization> subSwarms,
             ParticleSubSwarmOptimization mainSwarm);
 
-    public abstract Object clone();
+    Object clone();
 }

@@ -19,9 +19,6 @@ public class JParaPanel implements Serializable, PanelMaker {
      */
     private JPanel tempPanel = new JPanel();
 
-    public JParaPanel() {
-    }
-
     /**
      */
     public JParaPanel(Object Parameter, String name) {

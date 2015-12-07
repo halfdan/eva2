@@ -140,7 +140,7 @@ public class OptimizationObjectivesWithParamEditor extends JPanel implements Pro
      * This method updates the server list
      */
     private void updateTargetList() {
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes;
         InterfaceOptimizationObjective[] list = this.optimizationObjectivesWithWeights.getSelectedTargets();
         double[] weights = this.optimizationObjectivesWithWeights.getWeights();

@@ -62,7 +62,7 @@ public interface InterfaceStatisticsParameters {
 
     OutputTo getOutputTo();
 
-    public enum OutputVerbosity {
+    enum OutputVerbosity {
         NONE, FINAL, KTH_IT, ALL;
 
         @Override
@@ -77,7 +77,7 @@ public interface InterfaceStatisticsParameters {
         }
     }
 
-    public enum OutputTo {
+    enum OutputTo {
         FILE, WINDOW, BOTH;
 
         public String toString() {

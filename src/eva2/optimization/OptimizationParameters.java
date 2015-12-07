@@ -7,6 +7,7 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.F1Problem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.yaml.OptimizationConstructor;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -45,9 +46,10 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
         OptimizationParameters instance = null;
         try {
             FileInputStream fileStream = new FileInputStream(yamlFile);
-            instance = (OptimizationParameters) new Yaml().load(fileStream);
+            instance = (OptimizationParameters) new Yaml(new OptimizationConstructor()).load(fileStream);
         } catch (Exception ex) {
-            LOGGER.log(Level.WARNING, "Could not load OptimizationParameters.yml.", ex);
+            System.out.println(ex.getStackTrace() + "\n" + ex.getMessage());
+            LOGGER.log(Level.INFO, "Could not load OptimizationParameters.yml.", ex);
         }
 
         if (instance == null) {
@@ -56,6 +58,14 @@ public class OptimizationParameters extends AbstractOptimizationParameters imple
         return instance;
     }
 
+    /**
+     * Default instructor that sets up a default optimizer, problem and terminator.
+     *
+     * Currently defaults to:
+     * - Differential Evolution
+     * - F1Problem
+     * - EvaluationTerminator with 5000 evaluations
+     */
     public OptimizationParameters() {
         super(new DifferentialEvolution(), new F1Problem(), new EvaluationTerminator(5000));
     }

@@ -1,8 +1,5 @@
 package eva2.optimization;
 
-import eva2.optimization.OptimizationStateListener;
-
-
 /**
  * Interface for Optimization Processor.
  */

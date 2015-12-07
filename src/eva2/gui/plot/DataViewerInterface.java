@@ -14,7 +14,7 @@ package eva2.gui.plot;
  * IMPORTS
  *==========================================================================*/
 public interface DataViewerInterface {
-    public Graph getNewGraph(String InfoString);
+    Graph getNewGraph(String InfoString);
 
-    public void init();
+    void init();
 }

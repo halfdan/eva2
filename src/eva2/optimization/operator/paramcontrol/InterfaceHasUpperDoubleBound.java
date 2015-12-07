@@ -7,7 +7,7 @@ package eva2.optimization.operator.paramcontrol;
  * @author mkron
  */
 public interface InterfaceHasUpperDoubleBound {
-    public double getUpperBnd();
+    double getUpperBnd();
 
-    public void SetUpperBnd(double u);
+    void SetUpperBnd(double u);
 }

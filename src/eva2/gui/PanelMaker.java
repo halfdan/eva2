@@ -8,5 +8,5 @@ import javax.swing.*;
  * @author mkron
  */
 public interface PanelMaker {
-    public JComponent makePanel();
+    JComponent makePanel();
 }

@@ -16,7 +16,7 @@ public interface InterfaceMOSOConverter {
      *
      * @return the clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method takes a population of individuals with an array of
@@ -27,7 +27,7 @@ public interface InterfaceMOSOConverter {
      *
      * @param pop The population to process.
      */
-    public void convertMultiObjective2SingleObjective(Population pop);
+    void convertMultiObjective2SingleObjective(Population pop);
 
     /**
      * This method allows the problem to set the current output size of
@@ -36,14 +36,14 @@ public interface InterfaceMOSOConverter {
      *
      * @param dim output dimension
      */
-    public void setOutputDimension(int dim);
+    void setOutputDimension(int dim);
 
     /**
      * This method processes a single individual
      *
      * @param indy The individual to process.
      */
-    public void convertSingleIndividual(AbstractEAIndividual indy);
+    void convertSingleIndividual(AbstractEAIndividual indy);
 
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
@@ -51,12 +51,12 @@ public interface InterfaceMOSOConverter {
      *
      * @return The name.
      */
-    public String getName();
+    String getName();
 
     /**
      * This method returns a description of the objective
      *
      * @return A String
      */
-    public String getStringRepresentation();
+    String getStringRepresentation();
 }

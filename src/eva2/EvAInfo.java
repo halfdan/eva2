@@ -55,7 +55,7 @@ public class EvAInfo {
             System.err.println(ex.getMessage());
             System.exit(1);
         }
-        InputStream istr = BasicResourceLoader.instance().getStreamFromResourceLocation(EvAInfo.iconLocation);
+        InputStream istr = BasicResourceLoader.getInstance().getStreamFromResourceLocation(EvAInfo.iconLocation);
         if (istr == null) {
             throw new RuntimeException(resourceNotFoundErrorMessage(EvAInfo.iconLocation) + " (EvAInfo.static)");
         }

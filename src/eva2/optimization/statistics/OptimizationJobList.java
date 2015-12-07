@@ -3,11 +3,11 @@ package eva2.optimization.statistics;
 import eva2.gui.JParaPanel;
 import eva2.gui.PropertySelectableList;
 import eva2.gui.editor.ArrayEditor;
+import eva2.optimization.AbstractOptimizationParameters;
+import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.enums.StatisticsOnSingleDataSet;
 import eva2.optimization.enums.StatisticsOnTwoSampledData;
-import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.modules.AbstractModuleAdapter;
-import eva2.optimization.AbstractOptimizationParameters;
 import eva2.optimization.modules.GenericModuleAdapter;
 import eva2.optimization.modules.ModuleAdapter;
 import eva2.optimization.tools.FileTools;
@@ -174,6 +174,14 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                 arrayEditor.selectDeselectAll();
             }
         };
+
+        ActionListener cliButtonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("Generating CLI call");
+            }
+        };
+
         ActionListener sal = new ActionListener() {
 
             @Override
@@ -181,8 +189,11 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                 jobList.saveSelectedJobs(arrayEditor);
             }
         };
+
+        arrayEditor.addUpperActionButton("Get CLI", cliButtonListener);
         arrayEditor.addUpperActionButton("(De-)Sel. all", sl);
         arrayEditor.addUpperActionButton("Test Stats", al);
+
         arrayEditor.addLowerActionButton("Save selected", sal);
 
         arrayEditor.addPopupItem("Reuse as current settings", getReuseActionListener(parent, jobList));

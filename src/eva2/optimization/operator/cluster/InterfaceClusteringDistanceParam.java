@@ -6,7 +6,7 @@ package eva2.optimization.operator.cluster;
  * @author mkron
  */
 public interface InterfaceClusteringDistanceParam extends InterfaceClustering {
-    public double getClustDistParam();
+    double getClustDistParam();
 
-    public void setClustDistParam(double param);
+    void setClustDistParam(double param);
 }

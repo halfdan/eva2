@@ -45,7 +45,7 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
         JPanel tmpP = new JPanel();
         tmpP.setLayout(new GridBagLayout());
         JButton tmpB;
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes;
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.WEST;

@@ -170,12 +170,8 @@ public class SelectedTag implements java.io.Serializable {
 
         SelectedTag s = (SelectedTag) o;
 
-        if ((s.getTags() == tags) &&
-                (s.getSelectedTag() == tags[selectedId])) {
-            return true;
-        } else {
-            return false;
-        }
+        return (s.getTags() == tags) &&
+                (s.getSelectedTag() == tags[selectedId]);
     }
 
     /**

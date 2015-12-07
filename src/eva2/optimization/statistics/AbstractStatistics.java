@@ -99,7 +99,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     private List<InterfaceAdditionalPopulationInformer> lastInformerList = null;
     private PopulationInterface lastSols = null;
-    private String textFieldDelimiter = "\t";
+    private String textFieldDelimiter = " | ";
     private int defaultFitCriterion = 0; // ToDo this might be a user chosen int - or even more elegantly, a MOSOConverter
 
     protected StringSelection lastFieldSelection = null; // store the graph selection at the beginning of a multi-run
@@ -238,8 +238,11 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
     @Override
     public void startOptimizationPerformed(String infoString, int runNumber, InterfaceOptimizationParameters params, List<InterfaceAdditionalPopulationInformer> informerList) {
-
         if (runNumber == 0) {
+            if (printRunIntroVerbosity()) {
+                printToTextListener("# Optimization");
+            }
+
             // store the initial graph selection state, so that modifications during runtime cannot cause inconsistencies
             lastFieldSelection = (StringSelection) statisticsParameter.getFieldSelection().clone();
             lastIsShowFull = statisticsParameter.isOutputAllFieldsAsText();
@@ -275,7 +278,27 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             feasibleFoundAfterSum = -1;
             numOfRunsFeasibleFound = 0;
 
+            if (params != null) {
+                if (printRunIntroVerbosity()) {
+                    printToTextListener("\n### Optimization parameters \n```\n");
+                    printToTextListener(BeanSerializer.serializeObject(params));
+                    printToTextListener("\n```\n\n");
+                }
+            }
+            /*
+            ToDo: Figure out if we need this. Right now it is just spamming the text output
+            if (printRunIntroVerbosity()) {
+                printToTextListener("\nStatistics parameters: ");
+                printToTextListener(BeanInspector.niceToString(getStatisticsParameters()) + '\n');
+            }
+            */
+
         }
+
+        if (printRunIntroVerbosity()) {
+            printToTextListener("## Multirun " + (runNumber + 1) + "\n");
+        }
+
         feasibleFoundAfter = -1;
         bestCurrentIndy = null;
         bestOfRunIndy = null;
@@ -284,22 +307,6 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         lastInformerList = null;
         lastSols = null;
         iterationCounter = 0;
-        if (printRunIntroVerbosity()) {
-            printToTextListener("\n****** Multirun " + runNumber);
-        }
-        if (params != null) {
-            if (printRunIntroVerbosity()) {
-                printToTextListener("\nOptimization parameters: \n");
-                printToTextListener(BeanSerializer.serializeObject(params));
-            }
-        }
-        /*
-        ToDo: Figure out if we need this. Right now it is just spamming the text output
-        if (printRunIntroVerbosity()) {
-            printToTextListener("\nStatistics parameters: ");
-            printToTextListener(BeanInspector.niceToString(getStatisticsParameters()) + '\n');
-        }
-        */
         functionCalls = 0;
         fireDataListenersStartStop(runNumber, true, true);
     }
@@ -387,9 +394,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         }
         if (printRunStoppedVerbosity()) {
             if (resultPop != null && (resultPop.size() > 0)) {
-                printToTextListener("Resulting population: \n");
+                printToTextListener("### Resulting population \n");
                 for (int i = 0; i < resultPop.size(); i++) {
-                    printToTextListener(AbstractEAIndividual.getDefaultStringRepresentation(resultPop.getEAIndividual(i)));
+                    printToTextListener(AbstractEAIndividual.getDefaultStringRepresentation(resultPop.getEAIndividual(i)) + "  ");
                     printToTextListener("\n");
                 }
             }
@@ -506,7 +513,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
             }
             if (refineMultiRuns && (sumDataCollection != null)) {
                 if (printFinalVerbosity()) {
-                    printToTextListener(" Averaged performance:\n");
+                    printToTextListener("#### Averaged performance:\n\n");
                 }
                 // the summed-up values of the mean collection is divided by the number of runs
                 for (int i = 0; i < sumDataCollection.size(); i++) {
@@ -581,11 +588,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
     }
 
     public String refineToText(ArrayList<Double[]> data, int iterationsToShow) {
-        String hd = getOutputHeaderFieldNamesAsString(lastInformerList);
+        List<String> additionalFields = getOutputHeaderFieldNames(lastInformerList);
         StringBuffer sbuf = new StringBuffer("Iteration");
         sbuf.append(textFieldDelimiter);
-        sbuf.append(hd);
+        sbuf.append(StringTools.concatFields(additionalFields, " | "));
         sbuf.append("\n");
+        String[] tableSeparator = new String[additionalFields.size()+1];
+        Arrays.fill(tableSeparator, "---");
+        sbuf.append(StringTools.concatFields(tableSeparator, " | ") + "\n");
         refineToText(data, iterationsToShow, sbuf, textFieldDelimiter);
         return sbuf.toString();
     }
@@ -612,13 +622,14 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
 
 
     @Override
-    public void printToTextListener(String s) {
+    public void printToTextListener(String... s) {
+        String text = StringTools.concatFields(s, "");
         if ((resultOut != null)) {
-            resultOut.print(s);
+            resultOut.print(text);
         }
         for (InterfaceTextListener l : textListeners) {
             if (statisticsParameter.getOutputTo() != InterfaceStatisticsParameters.OutputTo.FILE) {
-                l.print(s);
+                l.print(text);
             }
         }
     }
@@ -1068,7 +1079,10 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if (iterationCounter == 0) {
             String headerLine = StringTools.concatFields(currentStatHeader, textFieldDelimiter);
             if (printHeaderByVerbosity()) {
-                printToTextListener(headerLine + '\n');
+                printToTextListener("| " + headerLine + " | \n");
+                String[] tableSeparator = new String[currentStatHeader.length];
+                Arrays.fill(tableSeparator, "---");
+                printToTextListener("| " + StringTools.concatFields(tableSeparator, textFieldDelimiter) + " | \n");
             }
         }
 
@@ -1076,7 +1090,7 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         Pair<String, Object[]> addData = getOutputData(informerList, lastSols);
         if (doTextOutput()) { // this is where the text output is actually written
             if (printLineByVerbosity(iterationCounter)) {
-                printToTextListener(addData.head() + '\n');
+                printToTextListener("| " + addData.head() + " | \n");
             }
         }
         currentStatObjectData = addData.tail();

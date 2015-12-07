@@ -1,9 +1,9 @@
 package eva2.optimization.modules;
 
 
+import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.InterfaceProcessor;
 import eva2.optimization.OptimizationStateListener;
-import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.Processor;
 
 import java.io.Serializable;

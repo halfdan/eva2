@@ -15,7 +15,7 @@ public interface InterfaceMutation {
      *
      * @return The clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method allows you to initialize the mutation operator
@@ -23,7 +23,7 @@ public interface InterfaceMutation {
      * @param individual The individual that will be mutated.
      * @param opt        The optimization problem.
      */
-    public void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt);
+    void initialize(AbstractEAIndividual individual, InterfaceOptimizationProblem opt);
 
     /**
      * This method will mutate a given AbstractEAIndividual. If the individual
@@ -31,7 +31,7 @@ public interface InterfaceMutation {
      *
      * @param individual The individual that is to be mutated
      */
-    public void mutate(AbstractEAIndividual individual);
+    void mutate(AbstractEAIndividual individual);
 
     /**
      * This method allows you to perform either crossover on the strategy parameters
@@ -40,7 +40,7 @@ public interface InterfaceMutation {
      * @param indy1    The original mother
      * @param partners The original partners
      */
-    public void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners);
+    void crossoverOnStrategyParameters(AbstractEAIndividual indy1, Population partners);
 
     /**
      * This method allows you to get a string representation of the mutation
@@ -48,7 +48,7 @@ public interface InterfaceMutation {
      *
      * @return A descriptive string.
      */
-    public String getStringRepresentation();
+    String getStringRepresentation();
 
     /**
      * This method allows you to evaluate wether two mutation operators
@@ -57,5 +57,5 @@ public interface InterfaceMutation {
      * @param mutator The other mutation operator
      */
     @Override
-    public boolean equals(Object mutator);
+    boolean equals(Object mutator);
 }

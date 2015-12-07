@@ -152,7 +152,7 @@ public class SolutionHistogram {
      * This resets the arity.
      *
      * @param pop
-     * @param hist
+     * @param crit
      */
     public void updateFrom(Population pop, int crit) {
         SolutionHistogram.createFitNormHistogram(pop, this, crit);
@@ -175,10 +175,6 @@ public class SolutionHistogram {
         createFitNormHistogram(pop, res, crit);
         return res;
     }
-
-//    public void updateFrom(Population pop, double accuracy) {
-//    	
-//    }
 
     public double getScore() {
         double sc = 0;

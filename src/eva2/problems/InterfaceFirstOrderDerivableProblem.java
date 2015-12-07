@@ -15,7 +15,7 @@ public interface InterfaceFirstOrderDerivableProblem {
      * @param x
      * @return the first order gradients of this problem
      */
-    public double[] getFirstOrderGradients(double[] x);
+    double[] getFirstOrderGradients(double[] x);
 //  public double getFirstOrderGradient(int paramindex,double[] x);
 
 }
