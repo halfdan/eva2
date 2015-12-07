@@ -68,7 +68,7 @@ public class BasicResourceLoader implements ResourceLoader {
      *
      * @return Description of the Return Value
      */
-    public static synchronized BasicResourceLoader instance() {
+    public static synchronized BasicResourceLoader getInstance() {
         if (resourceLoader == null) {
             resourceLoader = new BasicResourceLoader();
         }
@@ -113,7 +113,7 @@ public class BasicResourceLoader implements ResourceLoader {
             return null;
         }
 
-        byte[] bytes = BasicResourceLoader.instance()
+        byte[] bytes = BasicResourceLoader.getInstance()
                 .getBytesFromResourceLocation(
                         resourceFile, false);
 
@@ -345,7 +345,7 @@ public class BasicResourceLoader implements ResourceLoader {
         }
 
         if (in == null) {
-            // try to search other classpathes...? not really necessary.
+            // try to search other classpaths...? not really necessary.
 //        	in = getStreamFromClassPath(resourceLocation);
         }
 
@@ -417,8 +417,7 @@ public class BasicResourceLoader implements ResourceLoader {
 
                     // only files with <65536 bytes are allowed
                     if (ze.getSize() > 65536) {
-                        System.out.println(
-                                "Resource files should be smaller than 65536 bytes...");
+                        System.out.println("Resource files should be smaller than 65536 bytes...");
                     }
 
                     size = (int) ze.getSize();
@@ -567,7 +566,7 @@ public class BasicResourceLoader implements ResourceLoader {
      */
     public static Properties readProperties(String resourceName) throws Exception {
         Properties prop = new Properties();
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
 
         byte bytes[] = loader.getBytesFromResourceLocation(resourceName, false);
         if (bytes != null) {

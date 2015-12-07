@@ -7,21 +7,21 @@ import eva2.problems.InterfaceOptimizationProblem;
  *
  */
 public interface InterfaceDPointWithContent {
-    public void setEAIndividual(AbstractEAIndividual indy);
+    void setEAIndividual(AbstractEAIndividual indy);
 
-    public AbstractEAIndividual getEAIndividual();
+    AbstractEAIndividual getEAIndividual();
 
     /**
      * This method allows you to set the according optimization problem
      *
      * @param problem InterfaceOptimizationProblem
      */
-    public void setProblem(InterfaceOptimizationProblem problem);
+    void setProblem(InterfaceOptimizationProblem problem);
 
-    public InterfaceOptimizationProblem getProblem();
+    InterfaceOptimizationProblem getProblem();
 
     /**
      * This method allows you to draw additional data of the individual
      */
-    public void showIndividual();
+    void showIndividual();
 }

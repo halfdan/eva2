@@ -151,7 +151,7 @@ public class Plot implements PlotInterface, Serializable {
     @Override
     public void init() {
         internalFrame = new JEFrame("Plot: " + plotName);
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
 
         buttonPanel = new JPanel();

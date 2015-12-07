@@ -12,7 +12,7 @@ public interface Interface2DBorderProblem {
      *
      * @return double[][]
      */
-    public double[][] get2DBorder();
+    double[][] get2DBorder();
 
     /**
      * This method returns the double value at a given position. The value should be
@@ -21,7 +21,7 @@ public interface Interface2DBorderProblem {
      * @param point The double[2] that is queried.
      * @return double
      */
-    public double functionValue(double[] point);
+    double functionValue(double[] point);
 
     /**
      * Project a 2D point to the default higher-dimensional cut to be displayed (if required for plotting).
@@ -29,5 +29,5 @@ public interface Interface2DBorderProblem {
      * @param point the double[2] that is queried
      * @return a (higher dimensional) projection of the point
      */
-    public double[] project2DPoint(double[] point);
+    double[] project2DPoint(double[] point);
 }

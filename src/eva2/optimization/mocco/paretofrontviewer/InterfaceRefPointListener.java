@@ -10,5 +10,5 @@ public interface InterfaceRefPointListener {
      *
      * @param point The selected point, most likely 2d
      */
-    public void refPointGiven(double[] point);
+    void refPointGiven(double[] point);
 }

@@ -24,7 +24,7 @@ public class FileTools {
      */
     static public String[] loadStringsFromFile(String file) {
         String[] result = null;
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte bytes[] = loader.getBytesFromResourceLocation(file, false);
         if (bytes != null) {
             String data = new String(bytes);

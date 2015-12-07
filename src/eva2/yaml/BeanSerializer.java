@@ -7,6 +7,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.introspector.Property;
 import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
@@ -39,6 +40,7 @@ public class BeanSerializer {
 class OptimizationRepresenter extends Representer {
     public OptimizationRepresenter() {
         this.representers.put(Population.class, new RepresentPopulation());
+        this.addClassTag(Population.class, new Tag("!population"));
     }
 
     @Override
@@ -71,7 +73,6 @@ class OptimizationRepresenter extends Representer {
     private class RepresentPopulation implements Represent {
         public Node representData(Object data) {
             try {
-
                 return representJavaBean(getProperties(data.getClass()), data);
             } catch (IntrospectionException var3) {
                 throw new YAMLException(var3);

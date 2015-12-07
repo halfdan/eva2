@@ -1,8 +1,8 @@
 package eva2.examples;
 
 import eva2.OptimizerFactory;
-import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.OptimizationParameters;
+import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.crossover.CrossoverESDefault;
 import eva2.optimization.operator.mutation.MutateESCovarianceMatrixAdaption;
 import eva2.optimization.operator.terminators.EvaluationTerminator;

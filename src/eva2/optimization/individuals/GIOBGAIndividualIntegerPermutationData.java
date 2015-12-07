@@ -57,10 +57,7 @@ public class GIOBGAIndividualIntegerPermutationData extends AbstractEAIndividual
             if (!((AbstractEAIndividual) this.integerData).equalGenotypes((AbstractEAIndividual) indy.integerData)) {
                 return false;
             }
-            if (!((AbstractEAIndividual) this.permutationData).equalGenotypes((AbstractEAIndividual) indy.permutationData)) {
-                return false;
-            }
-            return true;
+            return ((AbstractEAIndividual) this.permutationData).equalGenotypes((AbstractEAIndividual) indy.permutationData);
         } else {
             return false;
         }

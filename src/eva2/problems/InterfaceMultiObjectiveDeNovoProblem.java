@@ -15,7 +15,7 @@ public interface InterfaceMultiObjectiveDeNovoProblem {
      *
      * @return A list of optimization objectives
      */
-    public InterfaceOptimizationObjective[] getProblemObjectives();
+    InterfaceOptimizationObjective[] getProblemObjectives();
 
     /**
      * This method will generate a problem specific view on the Pareto
@@ -24,12 +24,12 @@ public interface InterfaceMultiObjectiveDeNovoProblem {
      *
      * @return the Panel
      */
-    public InterfaceParetoFrontView getParetoFrontViewer4MOCCO(MOCCOViewer t);
+    InterfaceParetoFrontView getParetoFrontViewer4MOCCO(MOCCOViewer t);
 
     /**
      * This method allows MOCCO to deactivate the representation editior
      * if and only if the specific editor reacts to this signal. This signal
      * cannot be deactivated!
      */
-    public void deactivateRepresentationEdit();
+    void deactivateRepresentationEdit();
 }

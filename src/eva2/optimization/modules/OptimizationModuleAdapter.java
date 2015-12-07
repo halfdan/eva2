@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 
 /**
- * Starts a statistics GUI and the GOProcessor thread.
+ * Starts a statistics GUI and the Processor thread.
  */
 @SuppressWarnings("unused")
-public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapter, Serializable {
+public class OptimizationModuleAdapter extends GenericModuleAdapter implements ModuleAdapter, Serializable {
 
     private static final String moduleName = "Genetic_Optimization";
 
@@ -22,22 +22,22 @@ public class GOModuleAdapter extends GenericModuleAdapter implements ModuleAdapt
     }
 
     /**
-     * Starts a statistics GUI and the GOProcessor thread.
+     * Starts a statistics GUI and the Processor thread.
      *
      * @param adapterName the title of the ModuleAdapter
      */
-    public GOModuleAdapter(String adapterName) {
+    public OptimizationModuleAdapter(String adapterName) {
         super(adapterName, "", OptimizationParameters.getInstance(), false);
     }
 
     /**
-     * Starts a statistics GUI and the GOProcessor thread with a given OptimizationParameters file.
+     * Starts a statistics GUI and the Processor thread with a given OptimizationParameters file.
      *
      * @param adapterName the title of the ModuleAdapter
      * @param optimizationParameters the client instance
      * @param noGuiLogFile
      */
-    public GOModuleAdapter(String adapterName, InterfaceOptimizationParameters optimizationParameters, String noGuiLogFile) {
+    public OptimizationModuleAdapter(String adapterName, InterfaceOptimizationParameters optimizationParameters, String noGuiLogFile) {
         super(adapterName, "", optimizationParameters, false, noGuiLogFile);
     }
 }

@@ -16,7 +16,7 @@ public interface InterfaceSelectionProbability {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method computes the selection probability for each individual
@@ -26,7 +26,7 @@ public interface InterfaceSelectionProbability {
      * @param population The population to compute.
      * @param input      The name of the input.
      */
-    public void computeSelectionProbability(Population population, String[] input, boolean obeyConst);
+    void computeSelectionProbability(Population population, String[] input, boolean obeyConst);
 
     /**
      * This method computes the selection probability for each individual
@@ -36,7 +36,7 @@ public interface InterfaceSelectionProbability {
      * @param population The population to compute.
      * @param input      The name of the input.
      */
-    public void computeSelectionProbability(Population population, String input, boolean obeyConst);
+    void computeSelectionProbability(Population population, String input, boolean obeyConst);
 
     /**
      * This method computes the selection probability for each individual
@@ -46,5 +46,5 @@ public interface InterfaceSelectionProbability {
      * @param population The population to compute.
      * @param data       The input data as double[][].
      */
-    public void computeSelectionProbability(Population population, double[][] data, boolean obeyConst);
+    void computeSelectionProbability(Population population, double[][] data, boolean obeyConst);
 }

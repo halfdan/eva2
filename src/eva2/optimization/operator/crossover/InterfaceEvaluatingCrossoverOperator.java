@@ -7,7 +7,7 @@ public interface InterfaceEvaluatingCrossoverOperator extends InterfaceCrossover
      *
      * @return
      */
-    public int getEvaluations();
+    int getEvaluations();
 
-    public void resetEvaluations();
+    void resetEvaluations();
 }

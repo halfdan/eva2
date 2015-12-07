@@ -6,11 +6,11 @@ package eva2.optimization.operator.paramcontrol;
  * @author mkron
  */
 public interface InterfaceParamControllable {
-    public void notifyParamChanged(String member, Object oldVal, Object newVal);
+    void notifyParamChanged(String member, Object oldVal, Object newVal);
 
-    public Object[] getParamControl();
+    Object[] getParamControl();
 
-    public void addChangeListener(ParamChangeListener l);
+    void addChangeListener(ParamChangeListener l);
 
-    public void removeChangeListener(ParamChangeListener l);
+    void removeChangeListener(ParamChangeListener l);
 }

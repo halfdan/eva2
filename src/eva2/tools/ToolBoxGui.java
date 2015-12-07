@@ -58,7 +58,7 @@ public class ToolBoxGui {
     public static JButton createIconifiedButton(final String iconSrc, final String title, final boolean withTitle) {
         JButton newButton;
         byte[] bytes;
-        bytes = BasicResourceLoader.instance().getBytesFromResourceLocation(iconSrc, false);
+        bytes = BasicResourceLoader.getInstance().getBytesFromResourceLocation(iconSrc, false);
         if (bytes == null) {
             newButton = new JButton(title);
         } else if (withTitle) {

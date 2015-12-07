@@ -35,7 +35,7 @@ class AboutDialog extends JDialog {
         setResizable(false);
         
         /* Load EvA2 Image */
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes = loader.getBytesFromResourceLocation(eva2.EvAInfo.splashLocation, true);
         ImageIcon imageIcon = new ImageIcon(Toolkit.getDefaultToolkit().createImage(bytes));
         

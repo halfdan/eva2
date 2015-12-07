@@ -21,7 +21,7 @@ public interface InterfaceSelection {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method allows an selection method to do some preliminary
@@ -31,7 +31,7 @@ public interface InterfaceSelection {
      *
      * @param population The population that is to be processed.
      */
-    public void prepareSelection(Population population);
+    void prepareSelection(Population population);
 
     /**
      * This method will select >size< individuals from the given
@@ -41,7 +41,7 @@ public interface InterfaceSelection {
      * @param size       The number of Individuals to select
      * @return The selected population.
      */
-    public Population selectFrom(Population population, int size);
+    Population selectFrom(Population population, int size);
 
     /**
      * This method allows you to select >size< partners for a given Individual
@@ -51,7 +51,7 @@ public interface InterfaceSelection {
      * @param size              The number of partners needed.
      * @return The selected partners.
      */
-    public Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size);
+    Population findPartnerFor(AbstractEAIndividual dad, Population availablePartners, int size);
 
     /**
      * Toggle the use of obeying the constraint violation principle
@@ -59,5 +59,5 @@ public interface InterfaceSelection {
      *
      * @param b The new state
      */
-    public void setObeyDebsConstViolationPrinciple(boolean b);
+    void setObeyDebsConstViolationPrinciple(boolean b);
 }

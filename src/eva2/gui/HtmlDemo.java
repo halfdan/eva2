@@ -77,7 +77,7 @@ public class HtmlDemo {
             return;
         }
         JFrame frame = new JFrame(name);
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
         frame.setIconImage(Toolkit.getDefaultToolkit().createImage(bytes));
         JScrollPane scroller = new JScrollPane();

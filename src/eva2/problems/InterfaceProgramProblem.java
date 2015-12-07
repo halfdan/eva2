@@ -14,7 +14,7 @@ public interface InterfaceProgramProblem extends InterfaceOptimizationProblem {
      * @param sensor The identifier for the sensor.
      * @return Sensor value
      */
-    public Object getSensorValue(String sensor);
+    Object getSensorValue(String sensor);
 
     /**
      * This method allows a GP program to act in the environment
@@ -22,12 +22,12 @@ public interface InterfaceProgramProblem extends InterfaceOptimizationProblem {
      * @param actuator  The identifier for the actuator.
      * @param parameter The actuator parameter.
      */
-    public void setActuatorValue(String actuator, Object parameter);
+    void setActuatorValue(String actuator, Object parameter);
 
     /**
      * Return the GPArea associated with the program problem.
      *
      * @return
      */
-    public GPArea getArea();
+    GPArea getArea();
 }

@@ -8,7 +8,7 @@ import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
  * @author mkron
  */
 public interface InterfaceClusteringMetricBased {
-    public InterfaceDistanceMetric getMetric();
+    InterfaceDistanceMetric getMetric();
 
-    public void setMetric(InterfaceDistanceMetric m);
+    void setMetric(InterfaceDistanceMetric m);
 }

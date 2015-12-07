@@ -14,7 +14,7 @@ public interface InterfaceInformationRetrieval {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method will allow Information Retrieval from a archive onto
@@ -22,6 +22,6 @@ public interface InterfaceInformationRetrieval {
      *
      * @param pop The population.
      */
-    public void retrieveInformationFrom(Population pop);
+    void retrieveInformationFrom(Population pop);
 }
 

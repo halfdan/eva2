@@ -14,7 +14,7 @@ public interface InterfaceGAIndividual {
      *
      * @return BitSet
      */
-    public BitSet getBGenotype();
+    BitSet getBGenotype();
 
     /**
      * This method will allow the user to set the current GA genotype.
@@ -24,7 +24,7 @@ public interface InterfaceGAIndividual {
      *
      * @param b The new genotype of the Individual
      */
-    public void setBGenotype(BitSet b);
+    void setBGenotype(BitSet b);
 
     /**
      * This method allows the user to read the length of the genotype.
@@ -33,6 +33,6 @@ public interface InterfaceGAIndividual {
      *
      * @return The length of the genotype.
      */
-    public int getGenotypeLength();
+    int getGenotypeLength();
 
 }

@@ -20,12 +20,12 @@ public interface InterfaceInitialization {
      * @param indy    the target individual to initialize
      * @param problem the problem instance under consideration
      */
-    public void initialize(AbstractEAIndividual indy, InterfaceOptimizationProblem problem);
+    void initialize(AbstractEAIndividual indy, InterfaceOptimizationProblem problem);
 
     /**
      * A specific cloning method.
      *
      * @return
      */
-    public InterfaceInitialization clone();
+    InterfaceInitialization clone();
 }

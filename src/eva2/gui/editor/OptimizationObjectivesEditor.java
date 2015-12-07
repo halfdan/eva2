@@ -130,7 +130,7 @@ public class OptimizationObjectivesEditor extends JPanel implements PropertyEdit
      * This method updates the server list
      */
     private void updateTargetList() {
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes;
         InterfaceOptimizationObjective[] list = this.optimizationObjectives.getSelectedTargets();
 

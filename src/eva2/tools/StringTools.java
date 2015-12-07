@@ -224,10 +224,11 @@ public final class StringTools {
     }
 
     /**
-     * Rewrap a given string to lines of approx. length len.
+     * Re-wrap a given string to lines of approx. length len.
      *
-     * @param str
-     * @param len
+     * @param str The string
+     * @param len Line length
+     * @param tolerancePerCent Tolerance in percent
      * @return
      */
     public static String wrapLine(String str, int len, double tolerancePerCent) {
@@ -235,10 +236,10 @@ public final class StringTools {
     }
 
     /**
-     * Rewrap a given string to lines of approx. length len.
+     * Re-wrap a given string to lines of approx. length len.
      *
-     * @param str
-     * @param len
+     * @param str The string
+     * @param len Line length
      * @return
      */
     public static String wrapLine(String str, char[] breakChars, int len, double tolerancePerCent) {
@@ -246,7 +247,7 @@ public final class StringTools {
         String rest = str;
         int minLen = (int) ((1. - tolerancePerCent) * (double) len);
         int maxLen = (int) ((1. + tolerancePerCent) * (double) len);
-        int nextBreak = -1;
+        int nextBreak;
         while (rest.length() > 0) {
             if (rest.length() <= maxLen) {
                 nextBreak = rest.length() - 1;

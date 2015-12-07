@@ -28,7 +28,6 @@ public class NelderMeadSimplex extends AbstractOptimizer implements Serializable
     // simulating the generational cycle. Set rather small (eg 5) for use as local search, higher for global search (eg 50)
     private int generationCycle = 50;
     private int fitIndex = 0; // choose criterion for multi objective functions
-    private AbstractOptimizationProblem optimizationProblem;
     private boolean checkConstraints = true;
 
     public NelderMeadSimplex() {
@@ -219,7 +218,7 @@ public class NelderMeadSimplex extends AbstractOptimizer implements Serializable
         // this simulates the generational loop expected by some other modules
         int evalCntStart = population.getFunctionCalls();
         int evalsDone = 0;
-        optimizationProblem.evaluatePopulationStart(population);
+        ((AbstractOptimizationProblem)this.optimizationProblem).evaluatePopulationStart(population);
         do {
             AbstractEAIndividual ind = simplexStep(population);
             if (ind != null) { //Verbesserung gefunden
@@ -245,7 +244,7 @@ public class NelderMeadSimplex extends AbstractOptimizer implements Serializable
             }
             evalsDone = population.getFunctionCalls() - evalCntStart;
         } while (evalsDone < generationCycle);
-        optimizationProblem.evaluatePopulationEnd(population);
+        ((AbstractOptimizationProblem)optimizationProblem).evaluatePopulationEnd(population);
         this.population.incrGeneration();
     }
 

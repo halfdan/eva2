@@ -61,10 +61,7 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
             if (!((AbstractEAIndividual) this.doubleIndividual).equalGenotypes((AbstractEAIndividual) indy.doubleIndividual)) {
                 return false;
             }
-            if (!((AbstractEAIndividual) this.binaryIndividual).equalGenotypes((AbstractEAIndividual) indy.binaryIndividual)) {
-                return false;
-            }
-            return true;
+            return ((AbstractEAIndividual) this.binaryIndividual).equalGenotypes((AbstractEAIndividual) indy.binaryIndividual);
         } else {
             return false;
         }

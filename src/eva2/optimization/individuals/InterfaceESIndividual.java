@@ -12,20 +12,20 @@ public interface InterfaceESIndividual {
      *
      * @return BitSet
      */
-    public double[] getDGenotype();
+    double[] getDGenotype();
 
     /**
      * This method will allow the user to set the current ES 'genotype'.
      *
      * @param b The new genotype of the Individual
      */
-    public void setDGenotype(double[] b);
+    void setDGenotype(double[] b);
 
     /**
      * This method will return the range for all double attributes.
      *
      * @return The range array.
      */
-    public double[][] getDoubleRange();
+    double[][] getDoubleRange();
 
 }

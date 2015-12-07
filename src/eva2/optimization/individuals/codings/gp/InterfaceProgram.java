@@ -11,12 +11,12 @@ public interface InterfaceProgram {
      *
      * @param environment
      */
-    public Object evaluate(eva2.problems.InterfaceProgramProblem environment);
+    Object evaluate(eva2.problems.InterfaceProgramProblem environment);
 
     /**
      * This method returns a string representation of the current program.
      *
      * @return string
      */
-    public String getStringRepresentation();
+    String getStringRepresentation();
 }

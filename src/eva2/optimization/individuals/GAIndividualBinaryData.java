@@ -78,10 +78,7 @@ public class GAIndividualBinaryData extends AbstractEAIndividual implements Inte
             if ((this.genotype == null) || (indy.genotype == null)) {
                 return false;
             }
-            if (!this.genotype.equals(indy.genotype)) {
-                return false;
-            }
-            return true;
+            return this.genotype.equals(indy.genotype);
         } else {
             return false;
         }

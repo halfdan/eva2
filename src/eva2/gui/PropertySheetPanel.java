@@ -74,18 +74,10 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      */
     private int numEditableProperties = 0;
     /**
-     * How long should a tip text line be (translated to HTML).
-     */
-    private int tipTextLineLen = 50;
-    /**
      * A support object for handling property change listeners.
      */
     private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-    /**
-     * set true to use the GOE by default if no other editor is registered.
-     */
-    // If true, tool tips are used up to the first point only. 
-    boolean stripToolTipToFirstPoint = false;
+
     private ToolTipTable propertyTable;
     private DefaultTableModel propertyTableModel;
 

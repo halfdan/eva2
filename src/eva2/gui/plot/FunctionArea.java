@@ -1092,7 +1092,7 @@ public class FunctionArea extends DArea implements Serializable {
     public void toggleLog() {
         boolean setMinPos = false;
         if (!log && !checkLoggable()) {
-            System.err.println("Warning: toggling logarithmics scale with values <= 0! Some points will not be displayed.");
+            LOGGER.warning("Warning: toggling logarithmic scale with values <= 0! Some points will not be displayed.");
             setMinPos = true;
         }
         if (log == false) {

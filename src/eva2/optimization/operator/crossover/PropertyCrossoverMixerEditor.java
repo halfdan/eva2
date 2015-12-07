@@ -137,7 +137,7 @@ public class PropertyCrossoverMixerEditor extends JPanel implements PropertyEdit
      * This method updates the server list
      */
     private void updateTargetList() {
-        BasicResourceLoader loader = BasicResourceLoader.instance();
+        BasicResourceLoader loader = BasicResourceLoader.getInstance();
         byte[] bytes;
         InterfaceCrossover[] list = this.crossoverMixer.getSelectedCrossers();
         double[] weights = this.crossoverMixer.getWeights();

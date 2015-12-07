@@ -10,7 +10,7 @@ public interface InterfaceClassification {
      *
      * @return the deep clone
      */
-    public Object clone();
+    Object clone();
 
     /**
      * This method will initialize the classificator
@@ -18,7 +18,7 @@ public interface InterfaceClassification {
      * @param space The double[n][d] space*
      * @param type  The classes [0,1,..]
      */
-    public void init(double[][] space, int[] type);
+    void init(double[][] space, int[] type);
 
     /**
      * This method allows you to train the classificator based on
@@ -28,7 +28,7 @@ public interface InterfaceClassification {
      * @param space The double[n][d] space
      * @param type  The int[n] classes [0,1,..]
      */
-    public void train(double[][] space, int[] type);
+    void train(double[][] space, int[] type);
 
     /**
      * This method will classify a given data point
@@ -36,5 +36,5 @@ public interface InterfaceClassification {
      * @param point The double[d] data point.
      * @return type     The resulting class.
      */
-    public int getClassFor(double[] point);
+    int getClassFor(double[] point);
 }
