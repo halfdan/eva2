@@ -210,7 +210,6 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
 
                     long wait = System.currentTimeMillis() - startTime;
                     LOGGER.info("Loaded EvA2 in " + wait + "ms.");
-                    System.out.print(wait);
                     if (!autorun) {
                         if (!noSplash) {
                             try {
