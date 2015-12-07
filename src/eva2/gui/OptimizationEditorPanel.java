@@ -376,8 +376,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     public void updateChildPropertySheet() {
         // Set the object as the target of the PropertySheet
         propertySheetPanel.setTarget(genericObjectEditor.getValue());
-        // Update the chooser
-        this.updateChooser();
     }
 
     /**
