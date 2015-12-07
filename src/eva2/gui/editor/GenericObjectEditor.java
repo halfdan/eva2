@@ -267,8 +267,7 @@ public class GenericObjectEditor implements PropertyEditor {
             return;
         }
 
-        Vector<String> v = null;
-        v = new Vector<>(getClassesFromProperties(classType.getName(), null));
+        Vector<String> v = new Vector<>(getClassesFromProperties(classType.getName(), null));
 
         try {
             if (v.size() > 0) {
