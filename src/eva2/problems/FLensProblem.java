@@ -175,7 +175,6 @@ public class FLensProblem extends AbstractOptimizationProblem
      */
     private static final long serialVersionUID = 4694920294291719310L;
     protected AbstractEAIndividual overallBest = null;
-    protected int problemDimension = 10;
     protected double noise = 0.0;
     protected double xOffset = 0.0;
     protected double yOffset = 0.0;
@@ -518,16 +517,6 @@ public class FLensProblem extends AbstractOptimizationProblem
 
     public String yOffSetTipText() {
         return "Choose an offset for the objective value.";
-    }
-
-    /**
-     * This method allows you to set the number of mulitruns that are to be performed,
-     * necessary for stochastic optimizers to ensure reliable results.
-     *
-     * @param multiruns The number of multiruns that are to be performed
-     */
-    public void setProblemDimension(int multiruns) {
-        this.problemDimension = multiruns;
     }
 
     /**

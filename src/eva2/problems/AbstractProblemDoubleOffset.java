@@ -73,14 +73,5 @@ public abstract class AbstractProblemDoubleOffset extends AbstractProblemDouble 
     public double getYOffset() {
         return this.yOffset;
     }
-
-    /**
-     * Length of the x vector at is to be optimized
-     *
-     * @param t Length of the x vector at is to be optimized
-     */
-    public void setProblemDimension(int t) {
-        this.problemDimension = t;
-    }
 }
 

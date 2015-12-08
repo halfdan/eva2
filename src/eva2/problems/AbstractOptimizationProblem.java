@@ -570,4 +570,13 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
     public int getProblemDimension() {
         return this.problemDimension;
     }
+
+    /**
+     * Length of the x vector at is to be optimized
+     *
+     * @param t Length of the x vector at is to be optimized
+     */
+    public void setProblemDimension(int t) {
+        this.problemDimension = t;
+    }
 }
