@@ -153,33 +153,36 @@ public class GraphPointSetLegend {
     private void paintIn(Graphics g, int x, int y, int maxX) {
         FontMetrics fm = g.getFontMetrics();
         double fontHeightSum = 0.0;
-        int yOffs = 5 + y + fm.getHeight();
-        int xOffs;
-        int minX = Integer.MAX_VALUE;
+        // Padding is used for in-box padding and out-box positioning
         int padding = 5;
+        // yOffs used as bottom-left position for text line
+        double yOffs = padding + y + fm.getHeight();
+        int minX = Integer.MAX_VALUE;
         Color origCol = g.getColor();
 
         // Draw bounding box
         for (Pair<String, Color> legendEntry : legendEntries) {
             Rectangle2D stringBounds = fm.getStringBounds(legendEntry.head, g);
-            minX = Math.min(minX, (int) (maxX - stringBounds.getWidth() - 15));
-            fontHeightSum += stringBounds.getHeight();
+            minX = Math.min(minX, (int) (maxX - stringBounds.getWidth() - 20));
+            // Compute the combined height + padding of each line
+            fontHeightSum += stringBounds.getHeight() + padding;
         }
 
-        int boxHeight = (int)(fontHeightSum + padding * legendEntries.size());
+        //
+        int boxHeight = (int)(fontHeightSum + padding);
+        int boxWidth = maxX - minX + 20 - padding;
         g.setColor(Color.WHITE);
-        g.fillRect(minX - 20, padding + y, maxX, boxHeight);
+        g.fillRect(minX - 20, padding + y, boxWidth, boxHeight);
         g.setColor(Color.BLACK);
-        g.drawRect(minX - 20, padding + y, maxX, boxHeight);
+        g.drawRect(minX - 20, padding + y, boxWidth, boxHeight);
 
         // avoid that an entry with identical label and color occurs multiple
         // times.
         for (Pair<String, Color> legendEntry : legendEntries) {
             g.setColor(legendEntry.tail);
             Rectangle2D stringBounds = fm.getStringBounds(legendEntry.head, g);
-            xOffs = (int) (maxX - stringBounds.getWidth() - 10);
-            g.drawString(legendEntry.head, xOffs, yOffs);
-            g.drawLine(xOffs - 20, yOffs - (int)(stringBounds.getHeight()/2) + 1, xOffs - padding, yOffs - (int)(stringBounds.getHeight()/2) + 1);
+            g.drawString(legendEntry.head, minX + 5, (int)yOffs);
+            g.drawLine(minX - 15, (int)(yOffs - stringBounds.getHeight()/2) + 1, minX, (int)(yOffs - stringBounds.getHeight()/2) + 1);
             yOffs += (padding + stringBounds.getHeight());
         }
         g.setColor(origCol);
