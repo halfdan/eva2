@@ -157,4 +157,12 @@ public abstract class DComponent implements DElement {
         return visible;
     }
 
+    /**
+     * toggles visibility of the component
+     */
+    @Override
+    public void toggleVisible() {
+        setVisible(!isVisible());
+    }
+
 }

@@ -136,24 +136,12 @@ public class GraphPointSetLegend {
         g.setColor(origCol);
     }
 
-    // public void paintIn(Graphics g, Dimension dim) {
-    // paintIn(g, dim.width);
-    // }
-    //
-    // public void paintIn(Graphics g, Rectangle rect) {
-    // paintIn(g, rect.width);
-    // }
-    //
-    // public void paintIn(Graphics g, DRectangle rect) {
-    // paintIn(g, (int)rect.width);
-    // }
-
     /**
-     *
+     * Called from FunctionArea
+     * @see FunctionArea#paint
      */
     public void paintIn(Graphics g, SlimRect rect) {
-        paintIn(g, (int) rect.getX(), (int) rect.getY(), (int) rect.getX()
-                + (int) rect.getWidth());
+        paintIn(g, (int) rect.getX(), (int) rect.getY(), (int) rect.getX() + (int) rect.getWidth());
     }
 
     /**
@@ -164,21 +152,38 @@ public class GraphPointSetLegend {
      */
     private void paintIn(Graphics g, int x, int y, int maxX) {
         FontMetrics fm = g.getFontMetrics();
-        // System.out.println("In LegendBox.paintIn!");
-        int yOffs = 5 + y + fm.getHeight();
-        int xOffs = x;
+        double fontHeightSum = 0.0;
+        // Padding is used for in-box padding and out-box positioning
+        int padding = 5;
+        // yOffs used as bottom-left position for text line
+        double yOffs = padding + y + fm.getHeight();
+        int minX = Integer.MAX_VALUE;
         Color origCol = g.getColor();
+
+        // Draw bounding box
+        for (Pair<String, Color> legendEntry : legendEntries) {
+            Rectangle2D stringBounds = fm.getStringBounds(legendEntry.head, g);
+            minX = Math.min(minX, (int) (maxX - stringBounds.getWidth() - 20));
+            // Compute the combined height + padding of each line
+            fontHeightSum += stringBounds.getHeight() + padding;
+        }
+
+        //
+        int boxHeight = (int)(fontHeightSum + padding);
+        int boxWidth = maxX - minX + 20 - padding;
+        g.setColor(Color.WHITE);
+        g.fillRect(minX - 20, padding + y, boxWidth, boxHeight);
+        g.setColor(Color.BLACK);
+        g.drawRect(minX - 20, padding + y, boxWidth, boxHeight);
+
         // avoid that an entry with identical label and color occurs multiple
         // times.
         for (Pair<String, Color> legendEntry : legendEntries) {
-            // System.out.println(legendEntries[i].toString() + "\tcontaines: "
-            // + set.contains(legendEntries[i]));
             g.setColor(legendEntry.tail);
             Rectangle2D stringBounds = fm.getStringBounds(legendEntry.head, g);
-            xOffs = (int) (maxX - stringBounds.getWidth() - 5);
-            g.drawString(legendEntry.head, xOffs, yOffs);
-            // g.drawString(legendEntries[i].head, 80, 80);
-            yOffs += (5 + stringBounds.getHeight());
+            g.drawString(legendEntry.head, minX + 5, (int)yOffs);
+            g.drawLine(minX - 15, (int)(yOffs - stringBounds.getHeight()/2) + 1, minX, (int)(yOffs - stringBounds.getHeight()/2) + 1);
+            yOffs += (padding + stringBounds.getHeight());
         }
         g.setColor(origCol);
     }
