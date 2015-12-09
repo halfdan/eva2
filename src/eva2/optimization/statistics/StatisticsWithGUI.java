@@ -84,6 +84,7 @@ public class StatisticsWithGUI extends AbstractStatistics implements Serializabl
             // unite the point sets for a multirun
             for (int i = 0; i < fitnessGraph.length; i++) {
                 for (int j = 0; j < fitnessGraph[i].length; j++) {
+                    // Shown in the legend of the plot window
                     statGraph[i][j].setInfoString(
                             (fitnessGraph[i][j].getInfo().length() > 0 ? (fitnessGraph[i][j].getInfo() + "_") : "")
                                     + "Mean_of_" + fullRuns + " ",

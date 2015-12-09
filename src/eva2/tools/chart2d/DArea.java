@@ -311,6 +311,13 @@ public class DArea extends JComponent implements DParent, Printable {
     }
 
     /**
+     * Toggle visibility of the grid
+     */
+    public void toggleShowGrid() {
+        grid.toggleVisible();
+    }
+
+    /**
      * paints the DArea by a Graphics object
      *
      * @param g the java.awt.Graphics object

@@ -22,6 +22,8 @@ public interface DElement {
 
     boolean isVisible();
 
+    void toggleVisible();
+
     void setColor(Color color);
 
     Color getColor();
