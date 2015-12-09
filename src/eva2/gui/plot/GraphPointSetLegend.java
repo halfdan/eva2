@@ -136,24 +136,12 @@ public class GraphPointSetLegend {
         g.setColor(origCol);
     }
 
-    // public void paintIn(Graphics g, Dimension dim) {
-    // paintIn(g, dim.width);
-    // }
-    //
-    // public void paintIn(Graphics g, Rectangle rect) {
-    // paintIn(g, rect.width);
-    // }
-    //
-    // public void paintIn(Graphics g, DRectangle rect) {
-    // paintIn(g, (int)rect.width);
-    // }
-
     /**
-     *
+     * Called from FunctionArea
+     * @see FunctionArea#paint
      */
     public void paintIn(Graphics g, SlimRect rect) {
-        paintIn(g, (int) rect.getX(), (int) rect.getY(), (int) rect.getX()
-                + (int) rect.getWidth());
+        paintIn(g, (int) rect.getX(), (int) rect.getY(), (int) rect.getX() + (int) rect.getWidth());
     }
 
     /**
@@ -164,21 +152,35 @@ public class GraphPointSetLegend {
      */
     private void paintIn(Graphics g, int x, int y, int maxX) {
         FontMetrics fm = g.getFontMetrics();
-        // System.out.println("In LegendBox.paintIn!");
+        double fontHeightSum = 0.0;
         int yOffs = 5 + y + fm.getHeight();
-        int xOffs = x;
+        int xOffs;
+        int minX = Integer.MAX_VALUE;
+        int padding = 5;
         Color origCol = g.getColor();
+
+        // Draw bounding box
+        for (Pair<String, Color> legendEntry : legendEntries) {
+            Rectangle2D stringBounds = fm.getStringBounds(legendEntry.head, g);
+            minX = Math.min(minX, (int) (maxX - stringBounds.getWidth() - 15));
+            fontHeightSum += stringBounds.getHeight();
+        }
+
+        int boxHeight = (int)(fontHeightSum + padding * legendEntries.size());
+        g.setColor(Color.WHITE);
+        g.fillRect(minX - 20, padding + y, maxX, boxHeight);
+        g.setColor(Color.BLACK);
+        g.drawRect(minX - 20, padding + y, maxX, boxHeight);
+
         // avoid that an entry with identical label and color occurs multiple
         // times.
         for (Pair<String, Color> legendEntry : legendEntries) {
-            // System.out.println(legendEntries[i].toString() + "\tcontaines: "
-            // + set.contains(legendEntries[i]));
             g.setColor(legendEntry.tail);
             Rectangle2D stringBounds = fm.getStringBounds(legendEntry.head, g);
-            xOffs = (int) (maxX - stringBounds.getWidth() - 5);
+            xOffs = (int) (maxX - stringBounds.getWidth() - 10);
             g.drawString(legendEntry.head, xOffs, yOffs);
-            // g.drawString(legendEntries[i].head, 80, 80);
-            yOffs += (5 + stringBounds.getHeight());
+            g.drawLine(xOffs - 20, yOffs - (int)(stringBounds.getHeight()/2) + 1, xOffs - padding, yOffs - (int)(stringBounds.getHeight()/2) + 1);
+            yOffs += (padding + stringBounds.getHeight());
         }
         g.setColor(origCol);
     }
