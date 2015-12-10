@@ -20,7 +20,7 @@ import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceProblemDouble;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointSet;
-import eva2.tools.math.Jama.Matrix;
+import Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;

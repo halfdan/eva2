@@ -21,7 +21,7 @@ public class DoubleArrayComparator implements Comparator<Object> {
     /**
      * Generic constructor.
      *
-     * @param fitnessCriterion
+     * @param criterion
      */
     public DoubleArrayComparator(int criterion) {
         fitCriterion = criterion;
@@ -44,7 +44,7 @@ public class DoubleArrayComparator implements Comparator<Object> {
      * @param o1 the first double[] to compare
      * @param o2 the second double[] to compare
      * @return -1 if the first is dominant, 1 if the second is dominant, otherwise 0
-     * @see #AbstractEAIndividual.isDominatingFitness(double[], double[])
+     * @see AbstractEAIndividual#isDominatingFitness(double[], double[])
      */
     @Override
     public int compare(Object o1, Object o2) {
