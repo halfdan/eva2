@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.plaf.IconUIResource;
+import javax.swing.plaf.metal.MetalIconFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -79,62 +81,62 @@ public class Plot implements PlotInterface, Serializable {
 
     protected void installButtons(JPanel buttonPan) {
         JButton clearButton = new JButton("Clear");
-        clearButton.addActionListener(new ActionListener() {
+        clearButton.addActionListener(e -> clearAll());
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clearAll();
-            }
-        });
         JButton loglinButton = new JButton("Log/Lin");
         loglinButton.setToolTipText("Toggle between a linear and a log scale on the y-axis.");
-        loglinButton.addActionListener(new ActionListener() {
+        loglinButton.addActionListener(e -> plotArea.toggleLog());
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                plotArea.toggleLog();
-            }
-        });
         JButton exportButton = new JButton("Export to TSV");
         exportButton.setToolTipText("Exports the graph data to a simple TSV file.");
-        exportButton.addActionListener(new ActionListener() {
+        exportButton.addActionListener(e -> exportPlot());
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                exportPlot();
-            }
-        });
         JButton dumpButton = new JButton("Dump");
         dumpButton.setToolTipText("Dump the graph data to standard output");
-        dumpButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                plotArea.exportToAscii();
-            }
-        });
+        dumpButton.addActionListener(e -> plotArea.exportToAscii());
 
         JButton saveImageButton = new JButton("Save as PNG...");
-        saveImageButton.addActionListener(new ActionListener() {
+        saveImageButton.addActionListener(e -> {
+            FunctionArea fArea = getFunctionArea();
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                FunctionArea fArea = getFunctionArea();
-                BufferedImage bImg = new BufferedImage(fArea.getWidth(), fArea.getWidth(), BufferedImage.TYPE_INT_RGB);
+            Object[] resolutions = {new Dimension(1920, 1080), new Dimension(1024, 768)};
+            Dimension outputDimension = (Dimension)JOptionPane.showInputDialog(
+                    fArea,
+                    "Select image resolution: ",
+                    "Image Resolution",
+                    JOptionPane.PLAIN_MESSAGE,
+                    MetalIconFactory.getTreeComputerIcon(),
+                    resolutions,
+                    resolutions[0]
+            );
 
-                Graphics2D g = bImg.createGraphics();
-                fArea.paintAll(g);
+            // User pressed cancel
+            if (outputDimension == null) {
+                return;
+            }
 
-                JFileChooser fc = new JFileChooser();
-                if (fc.showSaveDialog(internalFrame) != JFileChooser.APPROVE_OPTION) {
-                    return;
-                }
-                try {
-                    File file = new File(fc.getSelectedFile().getAbsolutePath() + ".png");
-                    ImageIO.write(bImg, "png", file);
-                } catch (Exception eee) {
-                    System.err.println("Error on exporting PNG: " + eee.getMessage());
-                }
+            BufferedImage bImg = new BufferedImage((int)outputDimension.getWidth(), (int)outputDimension.getHeight(), BufferedImage.TYPE_INT_RGB);
+
+            Graphics2D g = bImg.createGraphics();
+            // Store old dimensions
+            Dimension d = fArea.getSize();
+            // Resize FunctionArea temporarily
+            fArea.setSize(outputDimension);
+            // Draw graph
+            fArea.paintAll(g);
+            // Restore old size
+            fArea.setSize(d);
+
+            // Let user choose output path and filename
+            JFileChooser fc = new JFileChooser();
+            if (fc.showSaveDialog(internalFrame) != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            try {
+                File file = new File(fc.getSelectedFile().getAbsolutePath() + ".png");
+                ImageIO.write(bImg, "png", file);
+            } catch (Exception eee) {
+                System.err.println("Error on exporting PNG: " + eee.getMessage());
             }
         });
 
@@ -161,8 +163,7 @@ public class Plot implements PlotInterface, Serializable {
         installButtons(buttonPanel);
 
         internalFrame.add(buttonPanel, BorderLayout.PAGE_END);
-        internalFrame.add(plotArea, BorderLayout.CENTER); // north was not so
-        // nice
+        internalFrame.add(plotArea, BorderLayout.CENTER); // north was not so nice
         internalFrame.addInternalFrameListener(new InternalFrameAdapter() {
 
             @Override
@@ -299,16 +300,16 @@ public class Plot implements PlotInterface, Serializable {
      *
      */
     @Override
-    public void clearGraph(int GraphNumber) {
-        plotArea.clearGraph(GraphNumber);
+    public void clearGraph(int graphNumber) {
+        plotArea.clearGraph(graphNumber);
     }
 
     /**
      *
      */
     @Override
-    public void setInfoString(int GraphLabel, String Info, float stroke) {
-        plotArea.setInfoString(GraphLabel, Info, stroke);
+    public void setInfoString(int graphLabel, String info, float stroke) {
+        plotArea.setInfoString(graphLabel, info, stroke);
     }
 
     /**

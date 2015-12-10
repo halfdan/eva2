@@ -1027,10 +1027,10 @@ public class FunctionArea extends DArea implements Serializable {
     public void toggleLog() {
         boolean setMinPos = false;
         if (!log && !checkLoggable()) {
-            LOGGER.warning("Warning: toggling logarithmic scale with values <= 0! Some points will not be displayed.");
+            LOGGER.warning("Toggling logarithmic scale with values <= 0! Some points will not be displayed.");
             setMinPos = true;
         }
-        if (log == false) {
+        if (!log) {
             setMinRectangle(0.001, 0.001, 1, 1);
             // setVisibleRectangle( 0.001, 0.001, 100000, 1000 );
             Exp exp = new Exp();
