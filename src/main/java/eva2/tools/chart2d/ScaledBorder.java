@@ -7,7 +7,6 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.font.TextAttribute;
-import java.awt.geom.AffineTransform;
 import java.text.AttributedString;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -93,7 +92,7 @@ public class ScaledBorder implements Border {
     /**
      * flag if the outer border should be displayed
      */
-    boolean showOuterBorder = true;
+    boolean showOuterBorder = false;
 
     /**
      * scale functions if, for example, an logarithmic function is needed instead
