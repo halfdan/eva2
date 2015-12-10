@@ -1,5 +1,6 @@
 package eva2.optimization.population;
 
+import Jama.Matrix;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.individuals.*;
 import eva2.optimization.operator.distancemetric.EuclideanMetric;
@@ -10,7 +11,6 @@ import eva2.optimization.operator.selection.probability.AbstractSelProb;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
 import eva2.tools.Serializer;
-import Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.tools.math.StatisticUtils;
@@ -501,9 +501,10 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
         if (template instanceof InterfaceDataTypeDouble) {
             double[][] range = ((InterfaceDataTypeDouble) template).getDoubleRange();
             Matrix rlhM = StatisticUtils.rlh(pop.size(), range, true);
+
             for (int i = 0; i < pop.size(); i++) {
                 AbstractEAIndividual tmpIndy = pop.getEAIndividual(i);
-                ((InterfaceDataTypeDouble) tmpIndy).setDoubleGenotype(rlhM.getRowShallow(i));
+                ((InterfaceDataTypeDouble) tmpIndy).setDoubleGenotype(rlhM.getArray()[i]);
             }
         } else {
             System.err.println("Error: data type double required for Population.createUniformSampling");

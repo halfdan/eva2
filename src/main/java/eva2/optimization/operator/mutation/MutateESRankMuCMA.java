@@ -727,13 +727,10 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
      * @return
      */
     public boolean testNoChangeAddingDevAxis(Population pop, double d, int gen) {
-//		  if all(xmean == xmean + 0.1*sigma*BD(:,1+floor(mod(countiter,N))))
-//	    i = 1+floor(mod(countiter,N));
-//		stopflag(end+1) = {'warnnoeffectaxis'};
         CMAParamSet params = (CMAParamSet) pop.getData(cmaParamsKey);
         int dim = params.meanX.length;
         int k = gen % dim;
-        double[] ev_k = params.mB.getColumn(k);
+        double[] ev_k = Mathematics.getColumn(params.mB, k);
         Mathematics.svMult(Math.sqrt(params.eigenvalues[k]), ev_k, ev_k); // this is now e_k*v_k = BD(:,...)
 
         int i = 0;
@@ -771,7 +768,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
      */
     public boolean testCCondition(Population pop, double d) {
         CMAParamSet params = (CMAParamSet) pop.getData(cmaParamsKey);
-        Pair<Double, Double> minMax = params.mC.getMinMaxDiag();
+        Pair<Double, Double> minMax = Mathematics.getMinMaxDiag(params.mC);
         return (minMax.head <= 0) || (minMax.tail >= d);
     }
 
