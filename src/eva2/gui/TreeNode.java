@@ -13,10 +13,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @see PropertySheetPanel
  * @see eva2.optimization.OptimizationParameters
  */
-public class EvATreeNode extends DefaultMutableTreeNode {
+public class TreeNode extends DefaultMutableTreeNode {
     private String[] childrenNames = null;
     private Object[] childrenValues = null;
-    private String myName = "EvATreeNode";
+    private String myName = "TreeNode";
     private boolean doListPrimitives = false;
 
     /**
@@ -28,7 +28,7 @@ public class EvATreeNode extends DefaultMutableTreeNode {
      * @param name   title of the node
      * @param target
      */
-    public EvATreeNode(String name, Object target) {
+    public TreeNode(String name, Object target) {
         super(target);
         myName = name;
         setObject(target, true);
@@ -67,7 +67,7 @@ public class EvATreeNode extends DefaultMutableTreeNode {
         for (int i = 0; i < childrenValues.length; i++) {
             if (childrenValues[i] != null) {
                 if (doListPrimitives || !(BeanInspector.isJavaPrimitive(childrenValues[i].getClass()))) {
-                    super.add(new EvATreeNode(childrenNames[i], childrenValues[i]));
+                    super.add(new TreeNode(childrenNames[i], childrenValues[i]));
                 }
             }
         }

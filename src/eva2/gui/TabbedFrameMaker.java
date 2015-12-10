@@ -15,16 +15,16 @@ import java.util.logging.Logger;
 /**
  * Produces the main EvA2 frame and a tool bar instance.
  */
-public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceNotifyOnInformers {
+public class TabbedFrameMaker implements Serializable, PanelMaker, InterfaceNotifyOnInformers {
 
-    private static final Logger LOGGER = Logger.getLogger(EvATabbedFrameMaker.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TabbedFrameMaker.class.getName());
     private static final long serialVersionUID = 2637376545826821423L;
     private ArrayList<PanelMaker> pmContainer = null;
     private JExtToolBar extToolBar;
-    EvAModuleButtonPanelMaker butPanelMkr = null;
+    ModuleButtonPanelMaker butPanelMkr = null;
     private JTabbedPane tabbedPane;
 
-    public EvATabbedFrameMaker() {
+    public TabbedFrameMaker() {
         pmContainer = null;
     }
 
@@ -59,9 +59,9 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
 
         for (PanelMaker element : pmContainer) {
             JComponent panel = element.makePanel();
-            if (element instanceof EvAModuleButtonPanelMaker) {
+            if (element instanceof ModuleButtonPanelMaker) {
                 extToolBar.add(panel);
-                butPanelMkr = (EvAModuleButtonPanelMaker) element;
+                butPanelMkr = (ModuleButtonPanelMaker) element;
             } else if (element instanceof JParaPanel) {
                 tabbedPane.addTab(((JParaPanel) element).getName(), panel);
             }
@@ -95,7 +95,7 @@ public class EvATabbedFrameMaker implements Serializable, PanelMaker, InterfaceN
         if (butPanelMkr != null) {
             butPanelMkr.onUserStart();
         } else {
-            System.err.println("Error: button panel was null (EvATabbedFrameMaker)");
+            System.err.println("Error: button panel was null (TabbedFrameMaker)");
         }
     }
 

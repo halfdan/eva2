@@ -16,9 +16,9 @@ import java.util.logging.Logger;
  * Contains the GUI elements of start and stop buttons and optionally a help
  * button.
  */
-public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Serializable, PanelMaker {
+public class ModuleButtonPanelMaker implements OptimizationStateListener, Serializable, PanelMaker {
 
-    private static final Logger LOGGER = Logger.getLogger(EvAModuleButtonPanelMaker.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ModuleButtonPanelMaker.class.getName());
     private String name = "undefined";
     private ModuleAdapter moduleAdapter;
     private boolean runningState;
@@ -33,7 +33,7 @@ public class EvAModuleButtonPanelMaker implements OptimizationStateListener, Ser
     /**
      *
      */
-    public EvAModuleButtonPanelMaker(ModuleAdapter adapter, boolean state) {
+    public ModuleButtonPanelMaker(ModuleAdapter adapter, boolean state) {
         name = "GENERAL";
         runningState = state;
         moduleAdapter = adapter;

@@ -220,7 +220,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     }
 
     /**
-     * This method is duplicated from EvAModuleButtonPanelMaker. ToDo: Refactor
+     * This method is duplicated from ModuleButtonPanelMaker. ToDo: Refactor
      * this.
      *
      * @param iconSrc Source path of icon

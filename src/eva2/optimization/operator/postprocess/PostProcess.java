@@ -120,7 +120,7 @@ public class PostProcess {
      * @param epsilon     the threshold up to which an optimum is considered found.
      * @param bTakeFitter if true, the fitter of two close individuals is selected, otherwise the closer one
      * @return a Population of individuals corresponding to the given optima
-     * @see getFoundOptimaArray(Population pop, Population optima, double epsilon, boolean bTakeFitter)
+     * @see #getFoundOptimaArray(Population pop, Population optima, double epsilon, boolean bTakeFitter)
      */
     public static Population getFoundOptima(Population pop, Population optima, double epsilon, boolean bTakeFitter) {
         Population result = new Population(5);
@@ -136,10 +136,10 @@ public class PostProcess {
     }
 
     /**
-     * Calls clusterBest with a ClusteringDensitiyBased clustering object with the given sigma and a
+     * Calls clusterBest with a ClusteringDensityBased clustering object with the given sigma and a
      * minimum group size of 2.
      *
-     * @param pop
+     * @param pop           A population of possible solutions.
      * @param sigmaCluster
      * @param returnQuota
      * @param lonerMode
@@ -265,9 +265,9 @@ public class PostProcess {
      * Returns shallow copies!
      *
      * @param pop
-     * @param fitNorm
-     * @param bSmaller if true, return individuals with lower or equal, else with higher fitness only
-     * @param crit     index of the fitness criterion or -1 to use the norm
+     * @param fitThresh
+     * @param bSmallerEq    if true, return individuals with lower or equal, else with higher fitness only
+     * @param crit          index of the fitness criterion or -1 to use the norm
      * @return
      */
     public static Population filterFitness(Population pop, double fitThresh, boolean bSmallerEq, int crit) {
@@ -363,8 +363,6 @@ public class PostProcess {
      * @return the number of evaluations actually performed
      */
     public static int processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps, double stepSize, double minStepSize) {
-//		pop.setFunctionCalls(0); // or else optimization wont restart on an "old" population
-//		pop.setGeneration(0);
         int stepsBef = pop.getFunctionCalls();
         processWithHC(pop, problem, new EvaluationTerminator(pop.getFunctionCalls() + maxSteps), new MutateESMutativeStepSizeControl(stepSize, minStepSize, stepSize));
         return pop.getFunctionCalls() - stepsBef;
@@ -377,7 +375,7 @@ public class PostProcess {
      * @param problem
      * @param maxSteps
      * @return the number of evaluations actually performed
-     * @see processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps, double stepSize, double minStepSize)
+     * @see #processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps, double stepSize, double minStepSize)
      */
     public static int processWithHC(Population pop, AbstractOptimizationProblem problem, int maxSteps) {
         return processWithHC(pop, problem, maxSteps, defaultMutationStepSize, minMutationStepSize);
@@ -402,7 +400,6 @@ public class PostProcess {
             System.err.println("warning: population size and vector size dont match! (PostProcess::processWithHC)");
         }
         hc.setPopulation(pop);
-//		hc.initializeByPopulation(pop, false);
         OptimizerRunnable ppRunnable = new OptimizerRunnable(OptimizerFactory.makeParams(hc, pop, problem, 0, term), true);
 
         runPP(ppRunnable);
@@ -528,7 +525,7 @@ public class PostProcess {
      * @param initPerturbation
      * @param prob
      * @return
-     * @see NelderMeadSimplex.createNMSPopulation(candidate, perturbRatio, range, includeCand)
+     * @see NelderMeadSimplex#createNMSPopulation(candidate, perturbRatio, range, includeCand)
      */
     public static Pair<AbstractEAIndividual, Integer> localSolverNMS(AbstractEAIndividual cand, int hcSteps,
                                                                      double initPerturbation, AbstractOptimizationProblem prob) {
@@ -549,10 +546,10 @@ public class PostProcess {
      * @param problem
      * @param candidates
      * @param index           index of the individual for which to produce the sub population
-     * @param maxPerturbation
+     * @param maxRelativePerturbation
      * @param includeCand
      * @see #createPopInSubRange(double, AbstractOptimizationProblem, AbstractEAIndividual)
-     * @see #NelderMeadSimplex.createNMSPopulation(AbstractEAIndividual, double, double[][], boolean)
+     * @see NelderMeadSimplex#createNMSPopulation(AbstractEAIndividual, double, double[][], boolean)
      */
     public static Population createLSSupPopulation(PostProcessMethod method, AbstractOptimizationProblem problem, Population candidates, int index, double maxRelativePerturbation, boolean includeCand) {
         Population subPop = null;
@@ -980,7 +977,6 @@ public class PostProcess {
      * @param prob
      * @param hist
      * @param accuracy
-     * @param maxPPEvalsPerIndy
      * @return
      */
     public static Population clusterBestUpdateHistogram(Population pop, AbstractOptimizationProblem prob, SolutionHistogram hist, int crit, double accuracy) {
@@ -1137,8 +1133,8 @@ public class PostProcess {
      * @param treatAsUnknown
      * @param listener
      * @return
-     * @see {@link AbstractOptimizationProblem.extractPotentialOptima}
-     * @see AbstractOptimizationProblem.isPotentialOptimumNMS(AbstractEAIndividual, double, double, int)
+     * @see {@link AbstractOptimizationProblem#extractPotentialOptima}
+     * @see AbstractOptimizationProblem#isPotentialOptimumNMS(AbstractEAIndividual, double, double, int)
      */
     public static int[] checkAccuracy(AbstractOptimizationProblem prob, Population sols, double[] epsilonPhenoSpace,
                                       double extrOptEpsFitConf, double extrOptClustSig, int maxEvals, SolutionHistogram[] solHists, boolean treatAsUnknown,
@@ -1260,9 +1256,9 @@ public class PostProcess {
      * In this case, return the third of the minimum distance to the next neighbor in the population.
      * The maxPerturb can be given as upper bound of the perturbation if it is > 0.
      *
-     * @param candidates population of solutions to look at
-     * @param i          index of the individual in the population to look at
-     * @param maxPerturb optional upper bound of the returned perturbation
+     * @param candidates    population of solutions to look at
+     * @param i             index of the individual in the population to look at
+     * @param maxAbsPerturb optional upper bound of the returned perturbation
      * @return
      */
     public static double findNMSPerturb(Population candidates, int i, double maxAbsPerturb) {
@@ -1400,9 +1396,7 @@ public class PostProcess {
      */
     public static void stopAllPP() {
         synchronized (ppRunnables) {
-            for (OptimizerRunnable rnbl : ppRunnables) {
-                rnbl.stopOpt();
-            }
+            ppRunnables.forEach(OptimizerRunnable::stopOpt);
         }
     }
 }
