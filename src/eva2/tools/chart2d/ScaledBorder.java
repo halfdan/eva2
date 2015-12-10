@@ -100,7 +100,7 @@ public class ScaledBorder implements Border {
     public DFunction xScale, yScale;
 
     /**
-     * formatters of the x- and y-axis numbers
+     * Formatters of the x- and y-axis numbers
      *
      * @see java.text.NumberFormat
      */
@@ -110,7 +110,7 @@ public class ScaledBorder implements Border {
     /**
      * Possible patterns for the number formats used by a border.
      */
-    private String[] decPatterns = {"#,##0.###", "0.###E0"}; // standard decimal or scientific exponential
+    private String[] decPatterns = {"#,##0.###", "00.###E0"}; // standard decimal or scientific exponential
 
     /**
      * Internal states of which decPatterns to switch to next.
