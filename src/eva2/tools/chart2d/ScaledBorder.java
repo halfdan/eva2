@@ -6,7 +6,9 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
+import java.text.AttributedString;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -274,11 +276,10 @@ public class ScaledBorder implements Border {
 
         if (yLabel != null) {
             Dimension yld = new Dimension(fm.getAscent() + fm.getDescent(), fm.stringWidth(yLabel));
-            AffineTransform T = new AffineTransform(0, 1, 1, 0, 0, 0);
-            Font old = g.getFont(), f = old.deriveFont(T);
-            g.setFont(f);
-            g.drawString(yLabel, yLabel2border + fm.getAscent(), innerInsets.top + (cd.height + yld.height) / 2);
-            g.setFont(old);
+
+
+
+            drawRotate((Graphics2D) g, yLabel2border + fm.getAscent(), innerInsets.top + (cd.height + yld.height) / 2, 270, yLabel);
         }
 
         if (xLabel != null) {
@@ -305,6 +306,24 @@ public class ScaledBorder implements Border {
     }
 
     /**
+     * Draw a string at x,y with angle rotation onto a graphics context.
+     *
+     * @param g2d   Graphics context
+     * @param x     x Position
+     * @param y     y Position
+     * @param angle Rotation angle
+     * @param text  Text to draw and rotate
+     */
+    private static void drawRotate(Graphics2D g2d, double x, double y, int angle, String text)
+    {
+        g2d.translate((float)x,(float)y);
+        g2d.rotate(Math.toRadians(angle));
+        g2d.drawString(text,0,0);
+        g2d.rotate(-Math.toRadians(angle));
+        g2d.translate(-(float)x,-(float)y);
+    }
+
+    /**
      * The scaling of the y-axis is defined here.
      *
      * @param g
@@ -327,14 +346,16 @@ public class ScaledBorder implements Border {
             } else {
                 scaledV = v;
             }
+
             String text = formatY.format(scaledV);
+
             try {
                 scaledV = formatY.parse(text).doubleValue();
-            } catch (java.text.ParseException ex) {
-            }
+            } catch (java.text.ParseException ignored) {}
+
             Point p = m.getPoint(minx, scaledV);
             if (p != null) {
-                g.drawString(text,
+                g.drawString(formatScientificNumber(text).getIterator(),
                         insets.left - fm.stringWidth(text) - v2m - markerLength,
                         p.y + fontAsc / 2);
                 g.drawLine(insets.left - markerLength, p.y, insets.left, p.y);
@@ -344,6 +365,26 @@ public class ScaledBorder implements Border {
             }
             v += srcDY;
         }
+    }
+
+    /**
+     * Formats a string with format ##E0 to show with a superscript exponent.
+     *
+     * @param text Number to transform
+     * @return Returns an AttributedString with the exponent marked as superscript.
+     */
+    private AttributedString formatScientificNumber(String text) {
+        int indexOfE = text.indexOf("E");
+        if (indexOfE == -1) {
+            return new AttributedString(text);
+        }
+
+        text = text.substring(0, indexOfE) + text.substring(indexOfE + 1);
+        AttributedString scientificNumber = new AttributedString(text);
+
+        scientificNumber.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUPER, indexOfE, text.length());
+
+        return scientificNumber;
     }
 
     public double getSrcdY(FontMetrics fm, Dimension cd) {
