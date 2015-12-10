@@ -5,7 +5,7 @@ import eva2.optimization.population.InterfacePopulationChangedEventListener;
 import eva2.optimization.population.Population;
 import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.tools.EVAERROR;
-import eva2.tools.math.Jama.Matrix;
+import Jama.Matrix;
 import eva2.tools.math.Mathematics;
 
 import java.io.Serializable;
