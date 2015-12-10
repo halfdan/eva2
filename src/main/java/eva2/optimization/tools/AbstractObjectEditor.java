@@ -30,7 +30,6 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
      */
     public Object object;
     public Object backupObject;
-    public GeneralGenericObjectEditorPanel objectEditorPanel;
     public Hashtable editorTable = new Hashtable();
 
     @Override
