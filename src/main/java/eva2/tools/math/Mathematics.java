@@ -2,7 +2,7 @@ package eva2.tools.math;
 
 import eva2.optimization.tools.DoubleArrayComparator;
 import eva2.tools.EVAERROR;
-import eva2.tools.math.Jama.Matrix;
+import Jama.Matrix;
 import eva2.tools.math.interpolation.BasicDataSet;
 import eva2.tools.math.interpolation.InterpolationException;
 import eva2.tools.math.interpolation.SplineInterpolation;

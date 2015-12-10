@@ -1,6 +1,6 @@
 package eva2.tools.math;
 
-import eva2.tools.math.Jama.Matrix;
+import Jama.Matrix;
 
 import java.util.ArrayList;
 import java.util.Collections;

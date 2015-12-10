@@ -11,7 +11,7 @@ import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
-import eva2.tools.math.Jama.EigenvalueDecomposition;
+import Jama.EigenvalueDecomposition;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;

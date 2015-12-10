@@ -10,7 +10,7 @@ import eva2.optimization.operator.selection.probability.AbstractSelProb;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
 import eva2.tools.Serializer;
-import eva2.tools.math.Jama.Matrix;
+import Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.tools.math.StatisticUtils;
