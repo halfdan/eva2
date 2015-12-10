@@ -390,7 +390,7 @@ public class ScaledBorder implements Border {
             } catch (java.text.ParseException ex) {
             }
             int strW = fm.stringWidth(text);
-            g.drawString(text, labelX - strW / 2, xLineY + fontAsc);
+            g.drawString(text, labelX - strW / 2, xLineY + fontAsc + markerLength);
             g.drawLine(labelX, xLineY, labelX, xLineY + markerLength);
             n++;
             labelX = xnull + (int) (n * srcDX * mx);
