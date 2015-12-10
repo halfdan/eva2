@@ -68,7 +68,7 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
     private long startTime = 0;
     private boolean withGUI = true;
     private boolean withTreeView = false;
-    private EvATabbedFrameMaker frameMaker = null;
+    private TabbedFrameMaker frameMaker = null;
     private Window parentWindow;
 
     private java.util.List<OptimizationStateListener> superListenerList = null;
@@ -719,7 +719,7 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
             newModuleAdapter.addOptimizationStateListener(this);
             try {
                 if (withGUI) {
-                    // this (or rather: EvAModuleButtonPanelMaker) is where the start button etc come from!
+                    // this (or rather: ModuleButtonPanelMaker) is where the start button etc come from!
                     frameMaker = newModuleAdapter.getModuleFrame();
 
                     /* This is the left TabPane on the main frame */
@@ -772,21 +772,21 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
     }
 
     /**
-     * Create a tree view of an object based on EvATreeNode. It is encapsulated
+     * Create a tree view of an object based on TreeNode. It is encapsulated
      * in a JScrollPane.
      *
      * @param goPanel
      * @param title
      * @param object
      * @return
-     * @see eva2.gui.EvATreeNode
+     * @see TreeNode
      */
     public JComponent getEvATreeView(JParaPanel goPanel, String title, Object object) {
-        EvATreeNode root = new EvATreeNode(title, object); // the root of the tree
+        TreeNode root = new TreeNode(title, object); // the root of the tree
         JTree jtree = new JTree(root);
         JScrollPane treeView = new JScrollPane(jtree);
 
-        EvATreeSelectionListener treeListener = new EvATreeSelectionListener(root, goPanel.getEditor(), jtree);
+        TreeSelectionListener treeListener = new TreeSelectionListener(root, goPanel.getEditor(), jtree);
         // hooks itself up as the tree listener. It reacts both to changes in the selection
         // state of the tree (to update the parameter panel) and to changes in the
         // parameters to update the tree

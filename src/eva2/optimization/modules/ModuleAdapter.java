@@ -1,5 +1,5 @@
 package eva2.optimization.modules;
-import eva2.gui.EvATabbedFrameMaker;
+import eva2.gui.TabbedFrameMaker;
 import eva2.optimization.OptimizationStateListener;
 import eva2.optimization.statistics.OptimizationJob;
 
@@ -8,7 +8,7 @@ import eva2.optimization.statistics.OptimizationJob;
  */
 public interface ModuleAdapter extends OptimizationStateListener {
 
-    EvATabbedFrameMaker getModuleFrame();
+    TabbedFrameMaker getModuleFrame();
 
     void startOptimization(); // called from client
 

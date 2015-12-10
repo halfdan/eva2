@@ -1,8 +1,8 @@
 package eva2.optimization.modules;
 
 
-import eva2.gui.EvAModuleButtonPanelMaker;
-import eva2.gui.EvATabbedFrameMaker;
+import eva2.gui.ModuleButtonPanelMaker;
+import eva2.gui.TabbedFrameMaker;
 import eva2.gui.JParaPanel;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.InterfaceOptimizationParameters;
@@ -67,21 +67,21 @@ public class GenericModuleAdapter extends AbstractModuleAdapter implements Seria
      * If the statistics are not of type StatisticsWithGUI, it is assumed that no GUI is
      * desired (and this method should not be called).
      *
-     * @return the EvATabbedFrameMaker
+     * @return the TabbedFrameMaker
      * @see JParaPanel
-     * @see EvAModuleButtonPanelMaker
+     * @see ModuleButtonPanelMaker
      * @see StatisticsWithGUI
      */
     @Override
-    public EvATabbedFrameMaker getModuleFrame() {
+    public TabbedFrameMaker getModuleFrame() {
         if (!(statisticsModule instanceof StatisticsWithGUI)) {
             System.err.println("Error: Unable to create Frame when started with noGUI option (GenericModuleAdapter)!");
             return null;
         }
-        EvATabbedFrameMaker frmMkr = new EvATabbedFrameMaker();
+        TabbedFrameMaker frmMkr = new TabbedFrameMaker();
 
         InterfaceStatisticsParameters Stat = statisticsModule.getStatisticsParameters();
-        EvAModuleButtonPanelMaker buttonPanel = new EvAModuleButtonPanelMaker(remoteModuleAdapter, ((Processor) processor).isOptimizationRunning());
+        ModuleButtonPanelMaker buttonPanel = new ModuleButtonPanelMaker(remoteModuleAdapter, ((Processor) processor).isOptimizationRunning());
         buttonPanel.setHelperFilename(helperFilename);
         frmMkr.addPanelMaker(buttonPanel);
         InterfaceOptimizationParameters optimizationParameters = ((Processor) processor).getOptimizationParameters();
