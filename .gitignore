@@ -6,6 +6,8 @@ out/
 .project
 .classpath
 .idea
+.gradle
+gradle/
 EvA2.iml
 *.aux
 *.log
