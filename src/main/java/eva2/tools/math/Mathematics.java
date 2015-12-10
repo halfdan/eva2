@@ -1,8 +1,9 @@
 package eva2.tools.math;
 
+import Jama.Matrix;
 import eva2.optimization.tools.DoubleArrayComparator;
 import eva2.tools.EVAERROR;
-import Jama.Matrix;
+import eva2.tools.Pair;
 import eva2.tools.math.interpolation.BasicDataSet;
 import eva2.tools.math.interpolation.InterpolationException;
 import eva2.tools.math.interpolation.SplineInterpolation;
@@ -263,6 +264,59 @@ public final class Mathematics {
     }
 
     /**
+     * Given two vectors, ``[a0, a1, ..., aM]`` and ``[b0, b1, ..., bN]``,
+     * the outer product becomes::
+     * <p>
+     * [[a0*b0  a0*b1 ... a0*bN ]
+     * [a1*b0    .
+     * [ ...          .
+     * [aM*b0            aM*bN ]]
+     */
+    public static Matrix outer(double[] a, double[] b) {
+        double[][] M = new double[a.length][b.length];
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < b.length; j++) {
+                M[i][j] = a[i] * b[j];
+            }
+        }
+        return new Matrix(M);
+    }
+
+    /**
+     * Return the minimum and maximum value on the diagonal
+     * as a pair.
+     *
+     * @return
+     */
+    public static Pair<Double, Double> getMinMaxDiag(Matrix m) {
+        if (m.getRowDimension() < 1 || m.getColumnDimension() < 1) {
+            return null;
+        }
+
+        double v = m.get(0, 0);
+        Pair<Double, Double> ret = new Pair<>(v, v);
+        for (int i = 1; i < Math.min(m.getRowDimension(), m.getColumnDimension()); i++) {
+            v = m.get(i, i);
+            ret.head = Math.min(ret.head, v);
+            ret.tail = Math.max(ret.tail, v);
+        }
+        return ret;
+    }
+
+    /**
+     * Copy a column from the matrix.
+     *
+     * @return Matrix elements packed in a one-dimensional array by columns.
+     */
+    public static double[] getColumn(Matrix m, int k) {
+        double[] vals = new double[m.getRowDimension()];
+        for (int i = 0; i < m.getRowDimension(); i++) {
+            vals[i] = m.get(i, k);
+        }
+        return vals;
+    }
+
+    /**
      * Return a matrix A which performs the rotation of vec to (1,0,0,...0) if
      * forward is true, else return a matrix B which performs the reverted
      * rotation, where B=A' (transposition).
@@ -277,7 +331,7 @@ public final class Mathematics {
                 .getRowDimension());
         Matrix z = (Matrix) vec.clone();
 
-        z.multi(1. / z.norm2()); // normalize
+        z.times(1. / z.norm2()); // normalize
 
         for (int i = 1; i < vec.getRowDimension(); i++) {
             double w = Math.atan2(z.get(i, 0), z.get(0, 0));// calc angle
