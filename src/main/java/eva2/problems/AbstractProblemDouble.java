@@ -19,7 +19,7 @@ import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.Pair;
 import eva2.tools.ToolBox;
 import eva2.tools.diagram.ColorBarCalculator;
-import eva2.tools.math.Jama.Matrix;
+import Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Parameter;
