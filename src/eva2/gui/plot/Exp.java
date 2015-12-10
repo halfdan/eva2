@@ -53,9 +53,6 @@ public class Exp extends DFunction {
     public double getSourceOf(double target) {
         if (target <= 0) {
             return Math.log(minValue); // think of a minimal value we want to show in case invalid values are requested
-//			throw new IllegalArgumentException(
-//					"Can not calculate log on values smaller than or equal 0 --> target = "
-//							+ target);
         }
         return Math.log(target);
     }
