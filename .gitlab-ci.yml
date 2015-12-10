@@ -1,0 +1,11 @@
+test:
+  script:
+    - uname -a
+    - "gradle test --info"
+  tags:
+    - java
+    - gradle
+
+cache:
+  paths:
+    - ".gradle/"
