@@ -4,9 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class MathematicsTest {
 
@@ -21,13 +19,13 @@ public class MathematicsTest {
 
     @Test
     public void testMax() throws Exception {
-        double[] vals = {1,2,3,4,5,6,4,3,2,2,12};
+        double[] vals = {1, 2, 3, 4, 5, 6, 4, 3, 2, 2, 12};
         assertEquals(12.0, Mathematics.max(vals), 0.0);
     }
 
     @Test
     public void testMean() throws Exception {
-        double[] vals = {2.0,3.05,4.9,7.8,12.7};
+        double[] vals = {2.0, 3.05, 4.9, 7.8, 12.7};
         assertEquals(6.09, Mathematics.mean(vals), 0.0);
 
         // Empty vector
@@ -44,7 +42,9 @@ public class MathematicsTest {
 
     @Test
     public void testContains() throws Exception {
-        assertTrue(Mathematics.contains(new int[]{1,2,3,4,5}, 4));
+        assertTrue(Mathematics.contains(new int[]{1, 2, 3, 4, 5}, 4));
+
+        assertFalse(Mathematics.contains(new int[]{1, 2, 3, 4, 5}, 9));
     }
 
     @Test
@@ -90,14 +90,14 @@ public class MathematicsTest {
 
     @Test
     public void testVariance() throws Exception {
-        double[] values = {9.8,9.2,12.3,15.7,3.14};
+        double[] values = {9.8, 9.2, 12.3, 15.7, 3.14};
 
         assertEquals(21.37892, Mathematics.variance(values), 0.000001);
     }
 
     @Test
     public void testStdDev() throws Exception {
-        double[] values = {12.9,13.5,19.8,12.3,10.7};
+        double[] values = {12.9, 13.5, 19.8, 12.3, 10.7};
 
         // Mean
         assertEquals(13.84, Mathematics.mean(values), 0.000001);
@@ -109,7 +109,7 @@ public class MathematicsTest {
 
     @Test
     public void testMin() throws Exception {
-        double[] values = {1.9,2.8,3.7,4.6,5.5};
+        double[] values = {1.9, 2.8, 3.7, 4.6, 5.5};
 
         assertEquals(1.9, Mathematics.min(values), 0.0);
     }
@@ -127,11 +127,11 @@ public class MathematicsTest {
     @Test
     public void testSum() throws Exception {
         // Array of doubles
-        double[] values = {1.9,2.8,3.7,4.6,5.5};
+        double[] values = {1.9, 2.8, 3.7, 4.6, 5.5};
         assertEquals(18.5, Mathematics.sum(values), 0.0);
 
         // Array of ints
-        int[] intValues = {1,9,2,8,3,7,4,6,5};
+        int[] intValues = {1, 9, 2, 8, 3, 7, 4, 6, 5};
         assertEquals(45, Mathematics.sum(intValues));
     }
 
@@ -145,13 +145,15 @@ public class MathematicsTest {
 
     @Test
     public void testScale() throws Exception {
-
+        double[] values = {1.0, 2.0, 3.0};
+        Mathematics.scale(2, values);
+        assertArrayEquals(new double[]{2.0, 4.0, 6.0}, values, 0.0);
     }
 
     @Test
     public void testTTestEqSizeEqVar() {
-        double[] values1 = {6,6,2,7,8,8,2,3,5,7,10,5,4,7,5,7,4,5,2,5,3,4,4,4,4};
-        double[] values2 = {6,11,8,5,11,8,10,7,4,3,7,6,10,10,6,5,10,11,13,8,5,11,7,8,5};
+        double[] values1 = {6, 6, 2, 7, 8, 8, 2, 3, 5, 7, 10, 5, 4, 7, 5, 7, 4, 5, 2, 5, 3, 4, 4, 4, 4};
+        double[] values2 = {6, 11, 8, 5, 11, 8, 10, 7, 4, 3, 7, 6, 10, 10, 6, 5, 10, 11, 13, 8, 5, 11, 7, 8, 5};
 
         assertEquals(-4.05593, Mathematics.tTestEqSizeEqVar(values1, values2), 0.00001);
     }
@@ -175,5 +177,53 @@ public class MathematicsTest {
         assertFalse(Mathematics.isInRange(new double[]{9.9, 2.2}, ranges));
     }
 
+    @Test
+    public void testInverse() throws Exception {
+        double[][] matrix = {{4.0, 3.0}, {3.0, 2.0}};
+        double[][] inverseMatrix = {{-2.0, 3.0}, {3.0, -4.0}};
 
+        double[][] result = Mathematics.inverse(matrix);
+        for (int i = 0; i < result.length; i++) {
+            assertArrayEquals(inverseMatrix[i], result[i], 0.0);
+        }
+
+        // Non square matrix
+        assertNull(Mathematics.inverse(new double[][]{{1.0, 2.0}}));
+
+        // Null matrix
+        assertNull(Mathematics.inverse(null));
+
+        // Matrix with determinant = 0
+        assertNull(Mathematics.inverse(new double[][]{
+                {1.0, 4.0, 5.0},
+                {2.0, 5.0, 7.0},
+                {3.0, 6.0, 9.0}
+        }));
+    }
+
+    @Test
+    public void testDeterminant() throws Exception {
+        // 3x3 Matrix with determinant 0
+        assertEquals(0.0, Mathematics.determinant(new double[][]{
+                {1.0, 4.0, 5.0},
+                {2.0, 5.0, 7.0},
+                {3.0, 6.0, 9.0}
+        }), 0.0);
+    }
+
+    @Test
+    public void testLinearInterpolation() throws Exception {
+        // Find x = 2.0 for x0(1,1) and x1(3,3)
+        assertEquals(2.0, Mathematics.linearInterpolation(2.0, 1.0, 3.0, 1.0, 3.0), 0.0);
+
+        // If x0 and x1 are the same we can't interpolate (returns f0)
+        assertEquals(3.0, Mathematics.linearInterpolation(3.0, 2.0, 2.0, 3.0, 3.0), 0.0);
+    }
+
+    @Test
+    public void testVvSub() throws Exception {
+        double[] v1 = {5.0, 6.0, 7.0}, v2 = {3.0, 4.0, 5.0};
+
+        assertArrayEquals(new double[]{2.0, 2.0, 2.0}, Mathematics.vvSub(v1, v2), 0.0);
+    }
 }

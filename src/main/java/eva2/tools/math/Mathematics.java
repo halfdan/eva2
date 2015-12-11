@@ -389,8 +389,8 @@ public final class Mathematics {
     /**
      * Intersect two ranges resulting in the maximum range contained in both.
      *
-     * @param modRange
-     * @param makeRange
+     * @param r1
+     * @param r2
      * @param destRange
      */
     public static void intersectRange(double[][] r1, double[][] r2,
@@ -538,6 +538,8 @@ public final class Mathematics {
     }
 
     /**
+     * Linear interpolation between two points
+     *
      * @param f0
      * @param f1
      * @param t
@@ -553,7 +555,7 @@ public final class Mathematics {
      *
      * @param x  The argument at the point with unknown function value
      * @param x0 The argument at the last position with a function value
-     * @param x1 The argument at the next known fuction value
+     * @param x1 The argument at the next known function value
      * @param f0 The function value at the position x0
      * @param f1 The function value at the position x1
      * @return The function value at position x given by linear interpolation.
@@ -1214,9 +1216,7 @@ public final class Mathematics {
      */
     public static double[] svDiv(double s, double[] v) {
         double[] res = new double[v.length];
-        for (int i = 0; i < v.length; i++) {
-            res[i] = v[i] / s;
-        }
+        svDiv(s, v, res);
         return res;
     }
 
@@ -1243,9 +1243,7 @@ public final class Mathematics {
      */
     public static double[] svMult(double s, double[] v) {
         double[] res = new double[v.length];
-        for (int i = 0; i < v.length; i++) {
-            res[i] = v[i] * s;
-        }
+        svMult(s, v, res);
         return res;
     }
 
@@ -1254,7 +1252,6 @@ public final class Mathematics {
      *
      * @param s a scalar
      * @param v an array to be multiplied with s.
-     * @return a scaled array.
      */
     public static void svMult(double s, double[] v, double[] res) {
         for (int i = 0; i < v.length; i++) {
@@ -1265,7 +1262,7 @@ public final class Mathematics {
     /**
      * Add vectors scaled: res[i] = s*v[i] + w[i]
      *
-     * @param s
+     * @param s Scaling factor
      * @param v
      * @param w
      * @return
