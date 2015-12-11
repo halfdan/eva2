@@ -475,8 +475,9 @@ public final class Mathematics {
      * Check whether the given value lies within the interval in every
      * dimension.
      *
-     * @param x
-     * @param range
+     * @param v     Value
+     * @param lower Lower bound
+     * @param upper Upper bound
      * @return true if the vector lies within the range, else false
      */
     public static boolean isInRange(double v, double lower, double upper) {
@@ -507,8 +508,8 @@ public final class Mathematics {
      * @return
      */
     public static boolean isValidVec(double[][] d) {
-        for (int i = 0; i < d.length; i++) {
-            if (!isValidVector(d[i])) {
+        for (double[] vec : d) {
+            if (!isValidVector(vec)) {
                 return false;
             }
         }
@@ -621,16 +622,18 @@ public final class Mathematics {
             in = x;
         }
 
-        if (in.length == 1) {
+        Arrays.sort(in);
+        if (in.length == 0) {
+            return Double.NaN;
+        } else if (in.length == 1) {
             return in[0];
         } else if (in.length == 2) {
             return (in[0] + in[1]) / 2.;
         } else {
-            Arrays.sort(in);
-            if (in.length % 2 != 0) {
-                return in[(in.length - 1) / 2];
+            if (in.length % 2 == 1) {
+                return in[in.length / 2];
             } else {
-                return (in[in.length / 2] + in[(in.length / 2) + 1]) / 2.;
+                return (in[in.length / 2 - 1] + in[in.length / 2]) / 2.;
             }
         }
     }
@@ -661,21 +664,6 @@ public final class Mathematics {
             }
             return med;
         }
-    }
-
-
-    public static double median2(double[] vector, boolean clone) {
-        double[] in;
-        if (clone) {
-            in = vector.clone();
-        } else {
-            in = vector;
-        }
-        if (in.length == 0) {
-            return 0;
-        }
-        Arrays.sort(in);
-        return in[(int) Math.floor(((double) in.length) / 2.0)];
     }
 
     public static double variance(double[] vector) {
@@ -787,7 +775,7 @@ public final class Mathematics {
     }
 
     /**
-     * Normalize the given vector to an euclidian length of 1.
+     * Normalize the given vector to a euclidean length of 1.
      *
      * @param v
      * @return
@@ -797,7 +785,7 @@ public final class Mathematics {
     }
 
     /**
-     * Normalize the given vector to an euclidian length of 1.
+     * Normalize the given vector to a euclidean length of 1.
      *
      * @param v
      * @return
@@ -943,7 +931,7 @@ public final class Mathematics {
         if ((val + step) < min) {
             return (2 * min - val - step);
         }
-        return (val += step);
+        return val + step;
     }
 
     /**
@@ -954,7 +942,7 @@ public final class Mathematics {
      *
      * @param x   A vector
      * @param y   The reference vector
-     * @param def The default value to be use to avoid division by zero.
+     * @param def The default value to be used to avoid division by zero.
      * @return The relative distance of x to y.
      * @throws Exception
      */
@@ -1183,7 +1171,6 @@ public final class Mathematics {
      * @return the sum of the elements
      */
     public static int sum(int[] ints) {
-
         int sum = 0;
 
         for (int value : ints) {
@@ -1208,8 +1195,8 @@ public final class Mathematics {
     /**
      * Add each entry of a vector with a scalar in a result vector.
      *
-     * @param s
-     * @param v
+     * @param s Scalar
+     * @param v Vector
      * @return
      */
     public static void svAdd(double s, double[] v, double[] res) {

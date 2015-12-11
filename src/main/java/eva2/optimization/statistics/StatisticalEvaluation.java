@@ -198,7 +198,7 @@ public class StatisticalEvaluation {
         double[] dat = job1.getDoubleDataColumn(field);
         double median = Double.NaN;
         if (dat != null) {
-            median = Mathematics.median2(dat, true);
+            median = Mathematics.median(dat, true);
             median = StatisticalEvaluation.formatOutput(median);
         }
 
