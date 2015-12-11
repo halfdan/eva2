@@ -163,7 +163,6 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
         }
         Population sols = allSolutions.getSolutions();
         for (int i = 0; i < sols.size(); i++) {
-//			addPopulation(allSolutions.getSolutions());
             if (!checkCols.containsKey(sols.getEAIndividual(i).getIndyID())) {
                 add(sols.getEAIndividual(i));
             }
@@ -1850,7 +1849,8 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     /**
      * Returns the average, minimal and maximal individual distance as diversity
      * measure for the population. If the given metric argument is null, the
-     * euclidian distance of individual positions is used, which presumes that {@link eva2.optimization.individuals.AbstractEAIndividual#getDoublePosition(eva2.optimization.individuals.AbstractEAIndividual)}
+     * euclidean distance of individual positions is used, which presumes that
+     * {@link AbstractEAIndividual#getDoublePosition(AbstractEAIndividual)}
      * returns a valid double position for the individuals of the population.
      * This is of course rather expensive computationally.
      *
@@ -1858,7 +1858,6 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      *         an array of three
      */
     public double[] getPopulationMeasures(InterfaceDistanceMetric metric) {
-
         double[] res = getPopulationMeasures(this, metric);
         return res;
     }
@@ -1866,7 +1865,8 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     /**
      * Returns the average, minimal and maximal individual distance as diversity
      * measure for the population. If the given metric argument is null, the
-     * euclidian distance of individual positions is used, which presumes that {@link AbstractEAIndividual#getDoublePosition(eva2.optimization.individuals.AbstractEAIndividual)}
+     * euclidean distance of individual positions is used, which presumes that
+     * {@link AbstractEAIndividual#getDoublePosition(AbstractEAIndividual)}
      * returns a valid double position for the individuals of the population.
      * This is of course rather expensive computationally.
      *
