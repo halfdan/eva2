@@ -2,7 +2,10 @@ package eva2.tools.math;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class MathematicsTest {
@@ -26,6 +29,9 @@ public class MathematicsTest {
     public void testMean() throws Exception {
         double[] vals = {2.0,3.05,4.9,7.8,12.7};
         assertEquals(6.09, Mathematics.mean(vals), 0.0);
+
+        // Empty vector
+        assertEquals(0.0, Mathematics.mean(new double[]{}), 0.0);
     }
 
     @Test
@@ -57,12 +63,29 @@ public class MathematicsTest {
 
     @Test
     public void testMedian() throws Exception {
+        // Handle empty case
+        assertEquals(Double.NaN, Mathematics.median(new double[]{}, true), 0.0);
 
-    }
+        // Median of single element array
+        assertEquals(2.4, Mathematics.median(new double[]{2.4}, true), 10E-6);
 
-    @Test
-    public void testMedian2() throws Exception {
+        // Median of two element array
+        assertEquals(5.0, Mathematics.median(new double[]{2.5, 7.5}, true), 10E-6);
 
+        // Median of even length array
+        double[] values = {9.8, 7.8, 8.6, 5.6, 3.2, 10.9};
+        assertEquals(8.2, Mathematics.median(values, true), 10E-6);
+
+
+        // Median of odd length array
+        double[] values2 = {9.8, 7.8, 5.6, 3.2, 10.9};
+        assertEquals(7.8, Mathematics.median(values2, false), 10E-6);
+
+        // Median while preserving original array
+        double[] unsortedValues = {5.2, 3.4};
+        double[] unsortedValues2 = {5.2, 3.4};
+        Mathematics.median(unsortedValues, true);
+        assertTrue(Arrays.equals(unsortedValues, unsortedValues2));
     }
 
     @Test
@@ -103,10 +126,22 @@ public class MathematicsTest {
 
     @Test
     public void testSum() throws Exception {
+        // Array of doubles
         double[] values = {1.9,2.8,3.7,4.6,5.5};
-
         assertEquals(18.5, Mathematics.sum(values), 0.0);
+
+        // Array of ints
+        int[] intValues = {1,9,2,8,3,7,4,6,5};
+        assertEquals(45, Mathematics.sum(intValues));
     }
+
+    @Test
+    public void testNorm() throws Exception {
+        double[] values = {3.0, 4.0};
+
+        assertEquals(5.0, Mathematics.norm(values), 0.0);
+    }
+
 
     @Test
     public void testScale() throws Exception {
@@ -120,4 +155,25 @@ public class MathematicsTest {
 
         assertEquals(-4.05593, Mathematics.tTestEqSizeEqVar(values1, values2), 0.00001);
     }
+
+    @Test
+    public void testProduct() throws Exception {
+        double[] values = {3.0, 4.0, 5.0};
+
+        assertEquals(60.0, Mathematics.product(values), 0.0);
+    }
+
+    @Test
+    public void testIsInRange() throws Exception {
+        // Single dimension
+        assertTrue(Mathematics.isInRange(4.9, 1.2, 7.6));
+        assertFalse(Mathematics.isInRange(0.0, 1.2, 3.4));
+
+        // Multidimensional
+        double[][] ranges = {{1.2, 7.6}, {1.2, 3.4}};
+        assertTrue(Mathematics.isInRange(new double[]{4.9, 2.2}, ranges));
+        assertFalse(Mathematics.isInRange(new double[]{9.9, 2.2}, ranges));
+    }
+
+
 }
