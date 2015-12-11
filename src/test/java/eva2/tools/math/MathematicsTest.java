@@ -116,7 +116,29 @@ public class MathematicsTest {
 
     @Test
     public void testProjectToRange() throws Exception {
+        double[] v = {1.0, 11.0, 7.5, 9.0};
+        double[][] range = {
+                {5.0, 10.0},
+                {5.0, 10.0},
+                {5.0, 10.0},
+                {5.0, 10.0}
+        };
 
+        int violations = Mathematics.projectToRange(v, range);
+
+        // Has two violations
+        assertEquals(2, violations);
+        assertArrayEquals(new double[]{5.0, 10.0, 7.5, 9.0}, v, 0.0);
+    }
+
+    @Test
+    public void testProjectToValue() throws Exception {
+        // Lower range
+        assertEquals(5.0, Mathematics.projectValue(2.0, 5.0, 10.0), 0.0);
+        // Upper range
+        assertEquals(10.0, Mathematics.projectValue(12.0, 5.0, 10.0), 0.0);
+        // In range
+        assertEquals(7.5, Mathematics.projectValue(7.5, 5.0, 10.0), 0.0);
     }
 
     @Test
@@ -225,5 +247,33 @@ public class MathematicsTest {
         double[] v1 = {5.0, 6.0, 7.0}, v2 = {3.0, 4.0, 5.0};
 
         assertArrayEquals(new double[]{2.0, 2.0, 2.0}, Mathematics.vvSub(v1, v2), 0.0);
+    }
+
+    @Test
+    public void testVvAdd() throws Exception {
+        double[] v1 = {5.0, 6.0, 7.0}, v2 = {3.0, 4.0, 5.0};
+
+        assertArrayEquals(new double[]{8.0, 10.0, 12.0}, Mathematics.vvAdd(v1, v2), 0.0);
+    }
+
+    @Test
+    public void testSvMult() throws Exception {
+        double[] v1 = {3.0, 4.0, 5.0};
+
+        assertArrayEquals(new double[]{6.0, 8.0, 10.0}, Mathematics.svMult(2.0, v1), 0.0);
+    }
+
+    @Test
+    public void testSvDiv() throws Exception {
+        double[] v1 = {6.0, 8.0, 10.0};
+
+        assertArrayEquals(new double[]{3.0, 4.0, 5.0}, Mathematics.svDiv(2.0, v1), 0.0);
+    }
+
+    @Test
+    public void testSvAdd() throws Exception {
+        double[] v1 = {3.0, 4.0, 5.0};
+
+        assertArrayEquals(new double[]{5.0, 6.0, 7.0}, Mathematics.svAdd(2.0, v1), 0.0);
     }
 }

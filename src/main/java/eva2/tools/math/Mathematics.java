@@ -811,7 +811,7 @@ public final class Mathematics {
     }
 
     /**
-     * Project the values in x to the range given. The range must be an vector
+     * Project the values in x to the range given. The range must be a vector
      * of 2d-arrays each of which containing lower and upper bound in the i-th
      * dimension. x must not be longer than the available ranges. Values
      * exceeding the bounds are set on the bound. The number of bound violations
@@ -841,9 +841,9 @@ public final class Mathematics {
     /**
      * Project the value to the range given.
      *
-     * @param v
-     * @param min
-     * @param max
+     * @param v     Value
+     * @param min   Lower bound
+     * @param max   Upper bound
      * @return the closest value to v within [min,max]
      */
     public static double projectValue(double v, double min, double max) {
@@ -987,8 +987,8 @@ public final class Mathematics {
     /**
      * Rotate the vector by angle alpha around axis i/j
      *
-     * @param vect
-     * @param alpha
+     * @param vect  Vector
+     * @param alpha Rotation angle
      * @param i
      * @param j
      */
@@ -1003,8 +1003,8 @@ public final class Mathematics {
      * Rotate a given double vector using a rotation matrix. If the matrix is
      * null, x will be returned unchanged. Matrix dimensions must fit.
      *
-     * @param x
-     * @param rotMatrix
+     * @param x         Vector
+     * @param rotMatrix Rotation matrix
      * @return the rotated vector
      */
     public static double[] rotate(double[] x, Matrix rotMatrix) {
@@ -1077,6 +1077,7 @@ public final class Mathematics {
      * Shift bounds by a constant value in every dimension.
      *
      * @param range
+     * @param dist
      * @return
      */
     public static void shiftRange(double[][] range, double dist) {
@@ -1292,8 +1293,8 @@ public final class Mathematics {
     /**
      * Add vectors returning a new vector c = a + b;
      *
-     * @param a
-     * @param b
+     * @param a Vector 1
+     * @param b Vector 2
      * @return a new vector c = a + b
      */
     public static double[] vvAdd(double[] a, double[] b) {
