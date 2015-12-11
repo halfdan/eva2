@@ -13,12 +13,15 @@ import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
 
+import java.util.logging.Logger;
+
 /**
  * This individual uses a real-valued genotype to code for double values.
  */
 @Description(value = "This is an ES individual suited to optimize double values.")
 public class ESIndividualDoubleData extends AbstractEAIndividual implements InterfaceESIndividual, InterfaceDataTypeDouble, java.io.Serializable {
 
+    private static final Logger LOGGER = Logger.getLogger(ESIndividualDoubleData.class.getName());
     private double[] genotype;
     private double[] phenotype;
     private double[][] range;
@@ -46,7 +49,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
             this.genotype[i] = individual.genotype[i];
             this.range[i][0] = individual.range[i][0];
             this.range[i][1] = individual.range[i][1];
-        }
+        };
 
         // cloning the members of AbstractEAIndividual
         this.age = individual.age;
@@ -108,7 +111,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     /**
      * This method allows you to request a certain amount of double data
      *
-     * @param length The lenght of the double[] that is to be optimized
+     * @param length The length of the double[] that is to be optimized
      */
     @Override
     public void setDoubleDataLength(int length) {
@@ -154,7 +157,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     @Hidden
     public void setDoubleRange(double[][] range) {
         if (range.length != this.range.length) {
-            System.out.println("Warning: Trying to set a range of length " + range.length + " to a vector of length "
+            LOGGER.warning("Trying to set a range of length " + range.length + " to a vector of length "
                     + this.range.length + "!\n Use method setDoubleDataLength first! (ESIndividualDoubleData:setDoubleRange)");
         }
         for (int i = 0; ((i < this.range.length) && (i < range.length)); i++) {
@@ -209,7 +212,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
 
     /**
      * This method allows you to set the phenotype double data. To change the genotype,
-     * use SetDoubleDataLamarckian().
+     * use #setDoubleDataLamarckian().
      *
      * @param doubleData The new double data.
      */
@@ -226,7 +229,6 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
      */
     @Override
     public void setDoubleGenotype(double[] doubleData) {
-//        this.setDoublePhenotype(doubleData);
         this.setDoublePhenotype(null); // tag it as invalid
         this.genotype = new double[doubleData.length];
         System.arraycopy(doubleData, 0, this.genotype, 0, doubleData.length);
@@ -271,7 +273,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
 
     /**
      * This method will return a string description of the GAIndividal
-     * noteably the Genotype.
+     * notably the Genotype.
      *
      * @return A descriptive string
      */
@@ -390,7 +392,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
     }
 
     /**
-     * This method allows the CommonJavaObjectEditorPanel to read the
+     * This method allows the ObjectEditorPanel to read the
      * name to the current object.
      *
      * @return The name.
