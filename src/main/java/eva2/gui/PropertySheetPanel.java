@@ -190,15 +190,14 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      */
     public synchronized void setTarget(Object targ) {
         propertyTableModel = new DefaultTableModel();
-        propertyTableModel.addColumn("Key");
-        propertyTableModel.addColumn("Value");
+        propertyTableModel.addColumn("Attribute");
+        propertyTableModel.addColumn("Setting");
         propertyTable = new ToolTipTable(propertyTableModel);
         propertyTable.setDefaultRenderer(Object.class, new PropertyCellRenderer());
         propertyTable.setDefaultEditor(Object.class, new PropertyCellEditor());
-        propertyTable.setRowHeight(20);
+        propertyTable.setRowHeight(22);
         propertyTable.setDragEnabled(false);
         propertyTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-        //propertyTable.setIntercellSpacing(new Dimension(8, 0));
 
         // Close any child windows at this point
         removeAll();
@@ -983,10 +982,12 @@ final class PropertyCellRenderer implements TableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
         if (value == null) {
             return empty;
         } else if (value instanceof String) {
-            return new JLabel(value.toString());
+            // Really hacky but it adds a prefix so the alignment looks ok
+            return new JLabel(" " + value.toString());
         } else if (value instanceof eva2.gui.PropertyPanel) {
             JComponent component = new JPanel();
             component.setLayout(new BorderLayout());
@@ -1033,7 +1034,8 @@ final class PropertyCellEditor extends AbstractCellEditor implements TableCellEd
         if (value == null) {
             component = empty;
         } else if (value instanceof String) {
-            component = new JLabel(value.toString());
+            // Really hacky but it adds a prefix so the alignment looks ok
+            component = new JLabel(" " + value.toString());
         } else if (value instanceof PropertyPanel) {
             component = new JPanel();
             component.setLayout(new BorderLayout());
@@ -1051,12 +1053,9 @@ final class PropertyCellEditor extends AbstractCellEditor implements TableCellEd
             dialogButton.setMargin(new Insets(0, 0, 0, 0));
             dialogButton.putClientProperty("JButton.buttonType", "bevel");
             dialogButton.setBackground(Color.WHITE);
-            dialogButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(final ActionEvent event) {
-                    ((PropertyPanel) value).showDialog();
-                    fireEditingStopped();
-                }
+            dialogButton.addActionListener(event -> {
+                ((PropertyPanel) value).showDialog();
+                fireEditingStopped();
             });
             component.add(dialogButton, BorderLayout.LINE_END);
         } else if (value instanceof PropertyText) {
