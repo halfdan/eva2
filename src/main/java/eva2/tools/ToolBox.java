@@ -31,7 +31,7 @@ public final class ToolBox {
             ret[i] = fields[i].toString();
         }
 
-        System.arraycopy(additionalValues, enumLen - enumLen, ret, enumLen, ret.length - enumLen);
+        System.arraycopy(additionalValues, 0, ret, enumLen, ret.length - enumLen);
         return ret;
     }
 

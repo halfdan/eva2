@@ -375,7 +375,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
         this.historyList = new LinkedList<>();
         this.generationCount = 0;
         this.functionCallCount = 0;
-        double[] popSeed = null;
+        double[] popSeed;
         if (this.populationArchive != null) {
             this.populationArchive.clear();
             this.populationArchive.initialize();
