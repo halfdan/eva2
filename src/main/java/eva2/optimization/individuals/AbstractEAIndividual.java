@@ -1088,7 +1088,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
             }
             return pos;
         } // TODO check some more types here?
-        EVAERROR.errorMsgOnce("Unhandled case in AbstractEAIndividual.getPosition()!");
+        EVAERROR.errorMsgOnce("Unhandled case in AbstractEAIndividual.getDoublePositionShallow()!");
         return null;
     }
 
