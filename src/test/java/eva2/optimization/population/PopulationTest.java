@@ -386,6 +386,19 @@ public class PopulationTest {
 
     @Test
     public void testFilterByFitness() throws Exception {
+        ESIndividualDoubleData indy1, indy2, indy3;
+        indy1 = new ESIndividualDoubleData();
+        indy1.setFitness(new double[]{100.0});
+        indy2 = new ESIndividualDoubleData();
+        indy2.setFitness(new double[]{10.0});
+        indy3 = new ESIndividualDoubleData();
+        indy3.setFitness(new double[]{1.0});
 
+        emptyPopulation.add(indy1);
+        emptyPopulation.add(indy2);
+        emptyPopulation.add(indy2);
+
+        // Get all individuals with fitness <= 10.0 (first fitness dimension)
+        assertEquals(2, emptyPopulation.filterByFitness(10.0, 0).size());
     }
 }
