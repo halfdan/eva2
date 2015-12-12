@@ -25,12 +25,36 @@ public class PopulationTest {
 
     @Test
     public void testGetData() throws Exception {
+        // Simple data
+        emptyPopulation.putData("someInt", 12);
+        assertEquals(12, emptyPopulation.getData("someInt"));
 
+        // Arrays
+        double[] doubleArray = new double[]{1.0};
+        emptyPopulation.putData("someDoubleArray", doubleArray);
+        assertArrayEquals(doubleArray, (double[])emptyPopulation.getData("someDoubleArray"), 0.0);
+
+        // Objects
+        Object obj = new Object();
+        emptyPopulation.putData("someObject", obj);
+        assertEquals(obj, emptyPopulation.getData("someObject"));
     }
 
     @Test
     public void testHasData() throws Exception {
+        assertFalse(emptyPopulation.hasData("someKey"));
 
+        // Simple data
+        emptyPopulation.putData("someInt", 12);
+        assertTrue(emptyPopulation.hasData("someInt"));
+
+        // Arrays
+        emptyPopulation.putData("someDoubleArray", new double[]{1.0});
+        assertTrue(emptyPopulation.hasData("someDoubleArray"));
+
+        // Objects
+        emptyPopulation.putData("someObject", new Object());
+        assertTrue(emptyPopulation.hasData("someObject"));
     }
 
     @Test
@@ -70,22 +94,33 @@ public class PopulationTest {
 
     @Test
     public void testSetUseHistory() throws Exception {
+        emptyPopulation.setUseHistory(true);
+        assertTrue(emptyPopulation.isUsingHistory());
 
+        emptyPopulation.setUseHistory(false);
+        assertFalse(emptyPopulation.isUsingHistory());
     }
 
     @Test
     public void testIsUsingHistory() throws Exception {
-
+        // Not using history by default
+        assertFalse(emptyPopulation.isUsingHistory());
     }
 
     @Test
     public void testSetAutoAging() throws Exception {
+        emptyPopulation.setAutoAging(true);
+        assertTrue(emptyPopulation.isAutoAging());
 
+
+        emptyPopulation.setAutoAging(false);
+        assertFalse(emptyPopulation.isAutoAging());
     }
 
     @Test
     public void testIsAutoAging() throws Exception {
-
+        // Is auto-aging by default
+        assertTrue(emptyPopulation.isAutoAging());
     }
 
     @Test
