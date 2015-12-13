@@ -734,6 +734,7 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
                     if (false && (newModuleAdapter instanceof AbstractModuleAdapter)) {
                         JComponent tree = null;
                         tree = getEvATreeView(frameMaker.getOptimizationParametersPanel(), "OptimizationParameters", ((AbstractModuleAdapter) newModuleAdapter).getOptimizationParameters());
+
                         gbConstraints.gridx = 0;
                         gbConstraints.gridy = 0;
                         gbConstraints.fill = GridBagConstraints.BOTH;

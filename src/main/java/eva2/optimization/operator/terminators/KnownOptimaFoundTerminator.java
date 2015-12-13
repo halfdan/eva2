@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 @Description("Terminate if a given number of optima has been found. Works for problems implementing InterfaceMultimodalProblemKnown, e.g. FM0.")
 public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializable {
-    private Logger LOGGER = Logger.getLogger(KnownOptimaFoundTerminator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(KnownOptimaFoundTerminator.class.getName());
     private InterfaceMultimodalProblemKnown mProblem = null;
     private int reqOptima = 1;
     private String msg = "";

@@ -228,6 +228,8 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 gbConstraints.fill = GridBagConstraints.HORIZONTAL;
                 gbConstraints.anchor = GridBagConstraints.PAGE_START;
                 add(infoPanel, gbConstraints);
+                gbConstraints.gridy = 1;
+                add(new JSeparator(JSeparator.HORIZONTAL), gbConstraints);
             }
         }
 
@@ -307,7 +309,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
 
         JScrollPane scrollableTable = new JScrollPane(propertyTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         gbConstraints.gridx = 0;
-        gbConstraints.gridy = 1;
+        gbConstraints.gridy = 2;
         gbConstraints.weightx = 1.0;
         gbConstraints.weighty = 1.0;
         gbConstraints.fill = GridBagConstraints.BOTH;
