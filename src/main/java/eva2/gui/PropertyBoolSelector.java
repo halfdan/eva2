@@ -3,7 +3,6 @@ package eva2.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.beans.PropertyEditor;
 
 /**
@@ -23,15 +22,12 @@ public class PropertyBoolSelector extends JCheckBox {
             setSelected(false);
         }
 
-        addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent evt) {
-                if (evt.getStateChange() == ItemEvent.SELECTED) {
-                    propertyEditor.setValue(Boolean.TRUE);
-                }
-                if (evt.getStateChange() == ItemEvent.DESELECTED) {
-                    propertyEditor.setValue(Boolean.FALSE);
-                }
+        addItemListener(evt -> {
+            if (evt.getStateChange() == ItemEvent.SELECTED) {
+                propertyEditor.setValue(Boolean.TRUE);
+            }
+            if (evt.getStateChange() == ItemEvent.DESELECTED) {
+                propertyEditor.setValue(Boolean.FALSE);
             }
         });
     }
