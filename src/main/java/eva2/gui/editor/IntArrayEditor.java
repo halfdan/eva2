@@ -4,7 +4,6 @@ import eva2.gui.PropertyIntArray;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -55,14 +54,10 @@ public class IntArrayEditor extends JPanel implements PropertyEditor {
         this.buttonPanel = new JPanel();
         this.okButton = new JButton("OK");
         this.okButton.setEnabled(true);
-        this.okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //backupObject = copyObject(object);
-                if ((customEditor.getTopLevelAncestor() != null) && (customEditor.getTopLevelAncestor() instanceof Window)) {
-                    Window w = (Window) customEditor.getTopLevelAncestor();
-                    w.dispose();
-                }
+        this.okButton.addActionListener(e -> {
+            if ((customEditor.getTopLevelAncestor() != null) && (customEditor.getTopLevelAncestor() instanceof Window)) {
+                Window w = (Window) customEditor.getTopLevelAncestor();
+                w.dispose();
             }
         });
         this.buttonPanel.add(this.okButton);

@@ -100,14 +100,10 @@ public class DoubleArrayEditor extends JPanel implements PropertyEditor {
         this.normalizeButton.addActionListener(this.normalizeAction);
         this.okButton = new JButton("OK");
         this.okButton.setEnabled(true);
-        this.okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //backupObject = copyObject(object);
-                if ((customEditor.getTopLevelAncestor() != null) && (customEditor.getTopLevelAncestor() instanceof Window)) {
-                    Window w = (Window) customEditor.getTopLevelAncestor();
-                    w.dispose();
-                }
+        this.okButton.addActionListener(e -> {
+            if ((customEditor.getTopLevelAncestor() != null) && (customEditor.getTopLevelAncestor() instanceof Window)) {
+                Window w = (Window) customEditor.getTopLevelAncestor();
+                w.dispose();
             }
         });
         this.buttonPanel.add(this.addButton);
@@ -124,7 +120,7 @@ public class DoubleArrayEditor extends JPanel implements PropertyEditor {
     ActionListener addAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent event) {
-            doubleArray.addRowCopy(lastFocussedRow); // copy the last focussed row
+            doubleArray.addRowCopy(lastFocussedRow); // copy the last focused row
             updateEditor();
         }
     };
@@ -145,7 +141,7 @@ public class DoubleArrayEditor extends JPanel implements PropertyEditor {
     };
 
     /**
-     * This action listener nomalizes each columng of the values of the DoubleArray.
+     * This action listener normalizes each column of the values of the DoubleArray.
      */
     ActionListener normalizeAction = new ActionListener() {
         @Override
@@ -183,7 +179,6 @@ public class DoubleArrayEditor extends JPanel implements PropertyEditor {
             }
 
             doubleArray.setDoubleArray(tmpDD);
-            //updateEditor();
         }
     };
 
@@ -223,9 +218,7 @@ public class DoubleArrayEditor extends JPanel implements PropertyEditor {
     }
 
     public void notifyFocusID(int id) {
-        // notification of which column has the focus
         lastFocussedRow = id;
-//    	System.out.println("Focus now on " + id);
     }
 
     /**
