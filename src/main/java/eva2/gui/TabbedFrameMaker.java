@@ -82,7 +82,6 @@ public class TabbedFrameMaker implements Serializable, PanelMaker, InterfaceNoti
 
     /**
      * @return The toolbar with control buttons
-     * @deprecated
      */
     public JExtToolBar getToolBar() {
         return extToolBar;

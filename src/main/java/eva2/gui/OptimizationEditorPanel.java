@@ -13,12 +13,9 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
@@ -37,7 +34,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     /**
      * The chooser component
      */
-    private JComboBox objectChooser;
+    private JComboBox<Item> objectChooser;
     /**
      * The component that performs classifier customization
      */
@@ -45,7 +42,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     /**
      * The model containing the list of names to select from
      */
-    private DefaultComboBoxModel comboBoxModel;
+    private DefaultComboBoxModel<Item> comboBoxModel;
     /**
      * Open object from disk
      */
@@ -90,102 +87,89 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         } catch (OutOfMemoryError err) {
             backupObject = null;
             System.gc();
-            System.err.println("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + target + ")");
+            LOGGER.severe("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + target + ")");
         }
-        comboBoxModel = new DefaultComboBoxModel(new Vector<Item>());
-        objectChooser = new JComboBox(comboBoxModel);
+
+        comboBoxModel = new DefaultComboBoxModel<>(new Vector<>());
+        objectChooser = new JComboBox<>(comboBoxModel);
         objectChooser.setEditable(false);
         propertySheetPanel = new PropertySheetPanel();
-        propertySheetPanel.addPropertyChangeListener(
-                new PropertyChangeListener() {
-                    @Override
-                    public void propertyChange(final PropertyChangeEvent event) {
-                        propChangeSupport.firePropertyChange("", backupObject, genericObjectEditor.getValue());
-                    }
-                });
+        propertySheetPanel.addPropertyChangeListener(event -> propChangeSupport.firePropertyChange("", backupObject, genericObjectEditor.getValue()));
         openButton = makeIconButton("images/Open16.gif", "Open");
         openButton.setToolTipText("Load a configured object");
         openButton.setEnabled(true);
-        openButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-                FileFilter filter = new FileNameExtensionFilter("YAML file", "yml", "yaml");
-                Object object = FileTools.openObject(openButton, genericObjectEditor.getClassType(), filter);
-                if (object != null) {
-                    // setValue takes care of: Making sure obj is of right type,
-                    // and firing property change.
-                    genericObjectEditor.setValue(object);
-                    // Need a second setValue to get property values filled in OK.
-                    // Not sure why.
-                    genericObjectEditor.setValue(object); // <- Hannes ?!?!?
-                }
+        openButton.addActionListener(event -> {
+            FileFilter filter = new FileNameExtensionFilter("YAML file", "yml", "yaml");
+            Object object = FileTools.openObject(openButton, genericObjectEditor.getClassType(), filter);
+            if (object != null) {
+                // setValue takes care of: Making sure obj is of right type,
+                // and firing property change.
+                genericObjectEditor.setValue(object);
+                // Need a second setValue to get property values filled in OK.
+                // Not sure why.
+                genericObjectEditor.setValue(object); // <- Hannes ?!?!?
             }
         });
 
         saveButton = makeIconButton("images/Save16.gif", "Save");
         saveButton.setToolTipText("Save the current configured object");
         saveButton.setEnabled(true);
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-                FileFilter filter = new FileNameExtensionFilter("YAML file", "yml", "yaml");
-                FileTools.saveObjectWithFileChooser(saveButton, BeanSerializer.serializeObject(genericObjectEditor.getValue()), filter);
-            }
+        saveButton.addActionListener(event -> {
+            FileFilter filter = new FileNameExtensionFilter("YAML file", "yml", "yaml");
+            FileTools.saveObjectWithFileChooser(saveButton, BeanSerializer.serializeObject(genericObjectEditor.getValue()), filter);
         });
 
         okayButton = new JButton("OK");
         okayButton.setEnabled(true);
-        okayButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-                //backupObject = copyObject(genericObjectEditor.getValue());
+        okayButton.addActionListener(event -> {
+            updateClassType();
+            updateChildPropertySheet();
 
-                updateClassType();
-                updateChildPropertySheet();
-
-                /*
-                 * ToDo: This is really ugly. Find a way to make this better.
-                 */
-                Container container = OptimizationEditorPanel.this.getParent();
-                while (!(container instanceof JDialog)) {
-                    container = container.getParent();
-                }
-                ((JDialog) container).dispose();
+            /*
+             * ToDo: This is really ugly. Find a way to make this better.
+             */
+            Container container = OptimizationEditorPanel.this.getParent();
+            while (!(container instanceof JDialog)) {
+                container = container.getParent();
             }
+            ((JDialog) container).dispose();
         });
 
         cancelButton = new JButton("Cancel");
         cancelButton.setEnabled(true);
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-                if (backupObject != null) {
-                    genericObjectEditor.setValue(copyObject(backupObject));
-                    updateClassType();
-                    updateChooser();
-                    updateChildPropertySheet();
-                }
-                /*
-                 * ToDo: This is really ugly. Find a way to make this better.
-                 */
-                Container container = OptimizationEditorPanel.this.getParent();
-                while (!(container instanceof JDialog)) {
-                    container = container.getParent();
-                }
-                ((JDialog) container).dispose();
+        cancelButton.addActionListener(event -> {
+            if (backupObject != null) {
+                genericObjectEditor.setValue(copyObject(backupObject));
+                updateClassType();
+                updateChooser();
+                updateChildPropertySheet();
             }
+            /*
+             * ToDo: This is really ugly. Find a way to make this better.
+             */
+            Container container = OptimizationEditorPanel.this.getParent();
+            while (!(container instanceof JDialog)) {
+                container = container.getParent();
+            }
+            ((JDialog) container).dispose();
         });
+
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbConstraints = new GridBagConstraints();
+
         gbConstraints.fill = GridBagConstraints.HORIZONTAL;
         gbConstraints.gridx = 0;
         gbConstraints.gridy = 0;
         add(objectChooser, gbConstraints);
 
+        gbConstraints.gridy = 1;
+        add(new JSeparator(JSeparator.HORIZONTAL), gbConstraints);
+
         gbConstraints.weightx = 1.0;
         gbConstraints.weighty = 1.0;
-        gbConstraints.gridy = 1;
+        gbConstraints.gridy = 2;
         gbConstraints.gridheight = GridBagConstraints.RELATIVE;
         gbConstraints.fill = GridBagConstraints.BOTH;
         add(propertySheetPanel, gbConstraints);
@@ -206,7 +190,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 
         gbConstraints.weightx = 0.0;
         gbConstraints.weighty = 0.0;
-        gbConstraints.gridy = 2;
+        gbConstraints.gridy = 3;
         gbConstraints.anchor = GridBagConstraints.LINE_START;
         gbConstraints.fill = GridBagConstraints.HORIZONTAL;
         add(buttonBar, gbConstraints);
@@ -321,16 +305,20 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 
                 classesList.add(new Item(className, displayName, toolTips[i++]));
             }
-            comboBoxModel = new DefaultComboBoxModel(classesList);
+            comboBoxModel = new DefaultComboBoxModel<>(classesList);
             objectChooser.setModel(comboBoxModel);
             objectChooser.setRenderer(new ToolTipComboBoxRenderer());
+            /*
             GridBagConstraints gbConstraints = new GridBagConstraints();
             gbConstraints.fill = GridBagConstraints.HORIZONTAL;
             gbConstraints.gridx = 0;
-            gbConstraints.gridy = 0;
+            gbConstraints.gridy = 1;
             add(objectChooser, gbConstraints);
+            */
+            objectChooser.setVisible(true);
         } else {
-            remove(objectChooser);
+            objectChooser.setVisible(false);
+            //remove(objectChooser);
         }
     }
 
