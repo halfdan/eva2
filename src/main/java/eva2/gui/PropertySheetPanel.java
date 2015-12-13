@@ -7,10 +7,7 @@ import eva2.util.annotation.Hidden;
 import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -128,7 +125,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      * @return
      */
     public static JComponent getView(PropertyEditor editor) {
-        JComponent view = null;
+        JComponent view;
         // Now figure out how to display it...
         if (editor.isPaintable() && editor.supportsCustomEditor()) {
             view = new PropertyPanel(editor);
@@ -197,6 +194,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         propertyTable.setDefaultEditor(Object.class, new PropertyCellEditor());
         propertyTable.setRowHeight(22);
         propertyTable.setDragEnabled(false);
+        propertyTable.setGridColor(Color.LIGHT_GRAY);
         propertyTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
         // Close any child windows at this point
@@ -823,7 +821,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             Object o;
             Method getter = null;
             if (propertyEditors[i] == null) {
-                continue; /// TODO: MK: Im not quite sure this is all good, but it avoids a latency problem 
+                continue; /// TODO: MK: Im not quite sure this is all good, but it avoids a latency problem
             }
             try {
                 getter = propertyDescriptors[i].getReadMethod();
@@ -978,18 +976,18 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
     }
 }
 
-final class PropertyCellRenderer implements TableCellRenderer {
+final class PropertyCellRenderer extends DefaultTableCellRenderer {
     private Logger LOGGER = Logger.getLogger(PropertyCellRenderer.class.getName());
-    JLabel empty = new JLabel();
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
         if (value == null) {
-            return empty;
+            return this;
         } else if (value instanceof String) {
             // Really hacky but it adds a prefix so the alignment looks ok
-            return new JLabel(" " + value.toString());
+            setText((String) value);
+            return this;
         } else if (value instanceof eva2.gui.PropertyPanel) {
             JComponent component = new JPanel();
             component.setLayout(new BorderLayout());
@@ -1010,11 +1008,14 @@ final class PropertyCellRenderer implements TableCellRenderer {
             component.add(dialogButton, BorderLayout.LINE_END);
             return component;
         } else if (value instanceof PropertyText) {
-            return (PropertyText) value;
+            setText(((PropertyText)value).getText());
+            return this;
         } else if (value instanceof PropertyBoolSelector) {
             return (PropertyBoolSelector) value;
         } else if (value instanceof PropertyValueSelector) {
-            return (PropertyValueSelector) value;
+            PropertyValueSelector elector = (PropertyValueSelector) value;
+            setText(elector.getSelectedItem().toString());
+            return this;
         }
 
         LOGGER.log(Level.FINEST, "Cell Component: " + value.getClass());
@@ -1029,15 +1030,14 @@ final class PropertyCellEditor extends AbstractCellEditor implements TableCellEd
     private Object value;
 
     @Override
-    public JComponent getTableCellEditorComponent(JTable table, final Object value, boolean isSelected, int row, int column) {
+    public Component getTableCellEditorComponent(JTable table, final Object value, boolean isSelected, int row, int column) {
         LOGGER.log(Level.FINEST, "Editor Component: " + value.getClass());
         this.value = value;
         JComponent component;
         if (value == null) {
             component = empty;
         } else if (value instanceof String) {
-            // Really hacky but it adds a prefix so the alignment looks ok
-            component = new JLabel(" " + value.toString());
+            component = new JLabel(value.toString());
         } else if (value instanceof PropertyPanel) {
             component = new JPanel();
             component.setLayout(new BorderLayout());

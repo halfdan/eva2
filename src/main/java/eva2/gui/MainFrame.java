@@ -249,7 +249,7 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
         if (System.getProperty("os.name").equals("Linux")) {
             return;
         }
-        
+
         // Properties for Mac OS X support.
         if ((System.getProperty("mrj.version") != null)
                 || (System.getProperty("os.name").toLowerCase().contains("mac"))) {
