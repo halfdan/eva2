@@ -12,10 +12,6 @@ public class MultiLineString {
     public MultiLineString() {
     }
 
-    public static void main(String[] args) {
-        MultiLineString multiLineString1 = new MultiLineString();
-    }
-
     public String getString() {
         return string;
     }
