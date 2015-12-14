@@ -1,14 +1,4 @@
 package eva2.gui;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 10 $
- *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
- *            $Author: streiche $
- */
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,9 +53,9 @@ public class JExtToolBar extends JToolBar {
 
                 String propertyName = e.getPropertyName();
                 if (propertyName.equals(Action.NAME)) {
-          /* Nichts tun! */
+                    /* Nichts tun! */
                 } else if (propertyName.equals("enabled")) {
-                    button.setEnabled(((Boolean) e.getNewValue()).booleanValue());
+                    button.setEnabled((Boolean) e.getNewValue());
                     button.repaint();
                 } else if (e.getPropertyName().equals(Action.SMALL_ICON)) {
                     button.setIcon((Icon) e.getNewValue());

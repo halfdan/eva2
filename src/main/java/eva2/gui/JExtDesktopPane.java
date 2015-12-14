@@ -39,16 +39,12 @@ public class JExtDesktopPane extends JDesktopPane {
         desktopManager = new ExtDesktopManager(this);
         setDesktopManager(desktopManager);
 
-        actMenuFrame = new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent event) {
-                if (!(event.getSource() instanceof JMenuItem)) {
-                    return;
-                }
-                JInternalFrame frame = (JInternalFrame) ((JMenuItem) event.getSource()).getClientProperty(ExtDesktopManager.FRAME);
-                selectFrame(frame);
+        actMenuFrame = event -> {
+            if (!(event.getSource() instanceof JMenuItem)) {
+                return;
             }
+            JInternalFrame frame = (JInternalFrame) ((JMenuItem) event.getSource()).getClientProperty(ExtDesktopManager.FRAME);
+            selectFrame(frame);
         };
 
         actWindowTileVert = new ExtAction("Tile &Vertically", "Tiles all windows vertically",
@@ -202,15 +198,9 @@ public class JExtDesktopPane extends JDesktopPane {
     }
 
     public int getFrameCount() {
-        return getComponentCount(new ComponentFilter() {
-
-            @Override
-            public boolean accept(Component c) {
-                return c instanceof JInternalFrame
-                        || (c instanceof JInternalFrame.JDesktopIcon
-                        && ((JInternalFrame.JDesktopIcon) c).getInternalFrame() != null);
-            }
-        });
+        return getComponentCount(c -> c instanceof JInternalFrame
+                || (c instanceof JInternalFrame.JDesktopIcon
+                && ((JInternalFrame.JDesktopIcon) c).getInternalFrame() != null));
     }
 
     public int getComponentCount(ComponentFilter c) {
