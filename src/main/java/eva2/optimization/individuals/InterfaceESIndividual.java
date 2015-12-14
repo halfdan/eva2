@@ -2,7 +2,7 @@ package eva2.optimization.individuals;
 
 /**
  * This interface gives access to a real-valued genotype and should
- * only be used by mutation and crossover operators. Onyl exception are
+ * only be used by mutation and crossover operators. Only exception are
  * data type specific optimization strategies like PSO or DE.
  */
 public interface InterfaceESIndividual {

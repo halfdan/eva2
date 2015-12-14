@@ -24,7 +24,7 @@ public class MOSONoConvert implements InterfaceMOSOConverter, java.io.Serializab
     /**
      * This method takes a population of individuals with an array of
      * fitness values and calculates a single fitness value to replace
-     * the former fitness array. Please note: The orignal fitness values
+     * the former fitness array. Please note: The original fitness values
      * are lost this way, so please use the individual.setData() method
      * if you still want to access the original fitness values.
      *
