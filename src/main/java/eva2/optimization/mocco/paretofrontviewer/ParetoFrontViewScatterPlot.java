@@ -8,7 +8,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.problems.InterfaceOptimizationObjective;
-import eva2.tools.chart2d.Chart2DDPointContentSelectable;
+import eva2.tools.chart2d.DPointContentSelectable;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.ScaledBorder;
@@ -125,9 +125,9 @@ class SimpleView extends JComponent implements InterfaceRefPointListener {
                 for (int i = 0; i < pf.size(); i++) {
                     plotValue = this.fetchPlotValueFor(pf.get(i));
                     point = new DPoint(plotValue[0], plotValue[1]);
-                    icon = new Chart2DDPointContentSelectable();
+                    icon = new DPointContentSelectable();
                     if (this.paretoFrontViewScatterPlot.moccoViewer.refSolutionSelectable) {
-                        ((Chart2DDPointContentSelectable) icon).addSelectionListener(this.paretoFrontViewScatterPlot.moccoViewer);
+                        ((DPointContentSelectable) icon).addSelectionListener(this.paretoFrontViewScatterPlot.moccoViewer);
                     }
                     ((InterfaceDPointWithContent) icon).setProblem(this.paretoFrontViewScatterPlot.moccoViewer.moccoStandalone.state.currentProblem);
                     ((InterfaceDPointWithContent) icon).setEAIndividual(pf.get(i));

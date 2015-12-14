@@ -14,8 +14,8 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.ToolBox;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconText;
+import eva2.tools.chart2d.DPointIconCircle;
+import eva2.tools.chart2d.DPointIconText;
 import eva2.tools.chart2d.DPoint;
 
 import javax.swing.*;
@@ -326,11 +326,11 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
             if (archive != null) {
                 GraphPointSet mySet = new GraphPointSet(10, plot.getFunctionArea());
                 DPoint myPoint;
-                Chart2DDPointIconCircle icon;
+                DPointIconCircle icon;
                 double[] tmpD;
                 mySet.setConnectedMode(false);
                 for (int i = 0; i < archive.size(); i++) {
-                    icon = new Chart2DDPointIconCircle();
+                    icon = new DPointIconCircle();
                     tmpD = archive.get(i).getFitness();
                     if (tmpD.length < 2) {
                         throw new RuntimeException("Error, problem seems not to be multi-objective, pareto front plot not possible!");
@@ -478,9 +478,9 @@ public abstract class AbstractMultiObjectiveOptimizationProblem extends Abstract
 
     private static void addPoint(double[] constraint, GraphPointSet mySet,
                                  DPoint myPoint, int i, String text) {
-        Chart2DDPointIconCircle icon;
-        Chart2DDPointIconText tmp = new Chart2DDPointIconText(text);
-        icon = new Chart2DDPointIconCircle();
+        DPointIconCircle icon;
+        DPointIconText tmp = new DPointIconText(text);
+        icon = new DPointIconCircle();
         if (constraint[i] > 0) {
             icon.setBorderColor(Color.RED);
             icon.setFillColor(Color.RED);

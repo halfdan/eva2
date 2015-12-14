@@ -5,13 +5,13 @@ import java.awt.*;
 /**
  *
  */
-public class Chart2DDPointIconText implements DPointIcon {
+public class DPointIconText implements DPointIcon {
 
-    private DPointIcon icon = new Chart2DDPointIconCross();
+    private DPointIcon icon = new DPointIconCross();
     private String text = " ";
     private Color color;
 
-    public Chart2DDPointIconText(String s) {
+    public DPointIconText(String s) {
         text = s;
     }
 

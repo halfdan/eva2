@@ -9,8 +9,8 @@ import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.population.Population;
 import eva2.problems.F1Problem;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconText;
+import eva2.tools.chart2d.DPointIconCircle;
+import eva2.tools.chart2d.DPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.util.annotation.Description;
 
@@ -160,18 +160,18 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                 // now add the c
                 GraphPointSet mySet;
                 DPoint myPoint;
-                Chart2DDPointIconText tmp;
+                DPointIconText tmp;
                 for (int i = 0; i < this.c.length; i++) {
                     mySet = new GraphPointSet(10 + i, plot.getFunctionArea());
                     mySet.setConnectedMode(true);
                     myPoint = new DPoint(this.c[i][0], this.c[i][1]);
-                    tmp = new Chart2DDPointIconText("Old: " + i);
-                    tmp.setIcon(new Chart2DDPointIconCircle());
+                    tmp = new DPointIconText("Old: " + i);
+                    tmp.setIcon(new DPointIconCircle());
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);
                     myPoint = new DPoint(newC[i][0], newC[i][1]);
-                    tmp = new Chart2DDPointIconText("New: " + i);
-                    tmp.setIcon(new Chart2DDPointIconCircle());
+                    tmp = new DPointIconText("New: " + i);
+                    tmp.setIcon(new DPointIconCircle());
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);
                 }
@@ -185,15 +185,15 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
                 plot = new Plot("Debugging Cluster", "Y1", "Y2", tmpD, tmpD);
                 GraphPointSet mySet;
                 DPoint myPoint;
-                Chart2DDPointIconText tmp;
+                DPointIconText tmp;
                 for (int i = 0; i < pop.size(); i++) {
                     mySet = new GraphPointSet(10 + 1, plot.getFunctionArea());
                     mySet.setConnectedMode(false);
                     double[] x = pop.getEAIndividual(i).getDoublePosition();
                     myPoint = new DPoint(x[0], x[1]);
-                    tmp = new Chart2DDPointIconText("" + assignment[i]);
+                    tmp = new DPointIconText("" + assignment[i]);
                     if (assignment[i] % 2 == 0) {
-                        tmp.setIcon(new Chart2DDPointIconCircle());
+                        tmp.setIcon(new DPointIconCircle());
                     }
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);
@@ -223,16 +223,16 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
             plot = new Plot("Debugging Clustering Separation", "Y1", "Y2", tmpD, tmpD);
             GraphPointSet mySet;
             DPoint myPoint;
-            Chart2DDPointIconText tmp;
+            DPointIconText tmp;
             for (int i = 0; i < result.length; i++) {
                 mySet = new GraphPointSet(10 + 1, plot.getFunctionArea());
                 mySet.setConnectedMode(false);
                 for (int j = 0; j < result[i].size(); j++) {
                     double[] x = ((InterfaceDataTypeDouble) result[i].get(j)).getDoubleData();
                     myPoint = new DPoint(x[0], x[1]);
-                    tmp = new Chart2DDPointIconText("" + i);
+                    tmp = new DPointIconText("" + i);
                     if (i % 2 == 0) {
-                        tmp.setIcon(new Chart2DDPointIconCircle());
+                        tmp.setIcon(new DPointIconCircle());
                     }
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);

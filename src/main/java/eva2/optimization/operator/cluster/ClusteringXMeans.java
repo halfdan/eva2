@@ -6,8 +6,8 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.Population;
 import eva2.problems.F1Problem;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconText;
+import eva2.tools.chart2d.DPointIconCircle;
+import eva2.tools.chart2d.DPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
@@ -90,7 +90,7 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                 plot = new Plot("K=" + (i + 1) + " reaches BIC = " + tmpBIC, "Y1", "Y2", tmpD, tmpD);
                 GraphPointSet mySet;
                 DPoint myPoint;
-                Chart2DDPointIconText tmp;
+                DPointIconText tmp;
                 for (int k = 0; k < tmpResults[i].length; k++) {
                     mySet = new GraphPointSet(10 + k, plot.getFunctionArea());
                     mySet.setConnectedMode(false);
@@ -98,9 +98,9 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                     for (int l = 0; l < tmpResults[i][k].size(); l++) {
                         x = ((InterfaceDataTypeDouble) tmpResults[i][k].get(l)).getDoubleData();
                         myPoint = new DPoint(x[0], x[1]);
-                        tmp = new Chart2DDPointIconText("" + k);
+                        tmp = new DPointIconText("" + k);
                         if (k % 2 == 0) {
-                            tmp.setIcon(new Chart2DDPointIconCircle());
+                            tmp.setIcon(new DPointIconCircle());
                         }
                         myPoint.setIcon(tmp);
                         mySet.addDPoint(myPoint);
@@ -110,9 +110,9 @@ public class ClusteringXMeans implements InterfaceClustering, java.io.Serializab
                 mySet.setConnectedMode(false);
                 for (int k = 0; k < tmpC[i].length; k++) {
                     myPoint = new DPoint(tmpC[i][k][0], tmpC[i][k][1]);
-                    tmp = new Chart2DDPointIconText("C/" + k);
+                    tmp = new DPointIconText("C/" + k);
                     if (k % 2 == 0) {
-                        tmp.setIcon(new Chart2DDPointIconCircle());
+                        tmp.setIcon(new DPointIconCircle());
                     }
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);

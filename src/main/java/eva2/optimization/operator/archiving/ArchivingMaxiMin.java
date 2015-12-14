@@ -4,7 +4,7 @@ import eva2.optimization.operator.moso.MOSOMaxiMin;
 import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectBestIndividuals;
 import eva2.optimization.population.Population;
-import eva2.tools.chart2d.Chart2DDPointIconCross;
+import eva2.tools.chart2d.DPointIconCross;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.util.annotation.Description;
 
@@ -78,7 +78,7 @@ public class ArchivingMaxiMin implements InterfaceArchiving, java.io.Serializabl
      * @param index The identifier for the individual
      */
     public DPointIcon getIconFor(int index, Population pop) {
-        return new Chart2DDPointIconCross();
+        return new DPointIconCross();
     }
 
     /**

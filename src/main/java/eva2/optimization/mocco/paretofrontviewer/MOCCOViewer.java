@@ -9,7 +9,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.problems.InterfaceOptimizationObjective;
-import eva2.tools.chart2d.Chart2DDPointContentSelectable;
+import eva2.tools.chart2d.DPointContentSelectable;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.ScaledBorder;
@@ -369,7 +369,7 @@ public class MOCCOViewer extends JPanel implements InterfaceRefSolutionListener,
         for (int i = 0; i < pops.length; i++) {
             fitness = pops[i].getBestEAIndividual().getFitness()[0];
             myPoint = new DPoint(i + 1, fitness);
-            icon = new Chart2DDPointContentSelectable();
+            icon = new DPointContentSelectable();
             ((InterfaceDPointWithContent) icon).setProblem(this.moccoStandalone.state.currentProblem);
             ((InterfaceDPointWithContent) icon).setEAIndividual(pops[i].getBestEAIndividual());
             myPoint.setIcon(icon);

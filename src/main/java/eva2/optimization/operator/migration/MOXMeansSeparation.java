@@ -13,8 +13,8 @@ import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.problems.InterfaceOptimizationProblem;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconText;
+import eva2.tools.chart2d.DPointIconCircle;
+import eva2.tools.chart2d.DPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.util.annotation.Description;
 
@@ -109,15 +109,15 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
 //            plot = new eva2.gui.plot.Plot("Debugging Clustering Separation", "Y1", "Y2", tmpD, tmpD);
 //            GraphPointSet           mySet;
 //            DPoint                  myPoint;
-//            Chart2DDPointIconText   tmp;
+//            DPointIconText   tmp;
 //            for (int i = 0; i < oldIPOP.length; i++) {
 //                mySet = new GraphPointSet(10+1, plot.getFunctionArea());
 //                mySet.setConnectedMode(false);
 //                for (int j = 0; j < oldIPOP[i].size(); j++) {
 //                    indy = (AbstractEAIndividual)oldIPOP[i].get(j);
 //                    myPoint = new DPoint(indy.getFitness()[0], indy.getFitness()[1]);
-//                    tmp = new Chart2DDPointIconText(""+i);
-//                    if (i % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());
+//                    tmp = new DPointIconText(""+i);
+//                    if (i % 2 == 0) tmp.setIcon(new DPointIconCircle());
 //                    myPoint.setIcon(tmp);
 //                    mySet.addDPoint(myPoint);
 //                }
@@ -152,15 +152,15 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
             plot = new Plot("Debugging Clustering Separation", "Y1", "Y2", tmpD, tmpD);
             GraphPointSet mySet;
             DPoint myPoint;
-            Chart2DDPointIconText tmp;
+            DPointIconText tmp;
             for (int i = 0; i < newIPOP.length; i++) {
                 mySet = new GraphPointSet(10 + 1, plot.getFunctionArea());
                 mySet.setConnectedMode(false);
                 for (int j = 0; j < newIPOP[i].size(); j++) {
                     indy = newIPOP[i].get(j);
                     myPoint = new DPoint(indy.getFitness()[0], indy.getFitness()[1]);
-                    tmp = new Chart2DDPointIconText("" + i);
-                    //if (i % 2 == 0) tmp.setIcon(new Chart2DDPointIconCircle());
+                    tmp = new DPointIconText("" + i);
+                    //if (i % 2 == 0) tmp.setIcon(new DPointIconCircle());
                     myPoint.setIcon(tmp);
                     mySet.addDPoint(myPoint);
                 }
@@ -169,8 +169,8 @@ public class MOXMeansSeparation implements InterfaceMigration, java.io.Serializa
             mySet.setConnectedMode(false);
             for (int i = 0; i < c.length; i++) {
                 myPoint = new DPoint(c[i][0], c[i][1]);
-                tmp = new Chart2DDPointIconText("" + i);
-                tmp.setIcon(new Chart2DDPointIconCircle());
+                tmp = new DPointIconText("" + i);
+                tmp.setIcon(new DPointIconCircle());
                 myPoint.setIcon(tmp);
                 mySet.addDPoint(myPoint);
             }

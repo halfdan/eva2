@@ -1561,8 +1561,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
             Double da = (Double) (((AbstractEAIndividual) tmpIndy1).getData(NichePSO.stdDevKey));
             double d = da;
             String ds = String.format("%6.2f", d);
-            DPointIcon icon = new Chart2DDPointIconText(id + ds);
-            ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
+            DPointIcon icon = new DPointIconText(id + ds);
+            ((DPointIconText) icon).setIcon(new DPointIconCircle());
             point.setIcon(icon);
             this.topoPlot.getFunctionArea().addDElement(point);
         }
@@ -1580,8 +1580,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         double min = da;
         DPoint point = new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]);
         String ds = String.format("%6.2f", min);
-        DPointIcon icon = new Chart2DDPointIconText(ds);
-        ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
+        DPointIcon icon = new DPointIconText(ds);
+        ((DPointIconText) icon).setIcon(new DPointIconCircle());
         point.setIcon(icon);
         this.topoPlot.getFunctionArea().addDElement(point);
     }
@@ -1604,8 +1604,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
             Double da = (Double) (((AbstractEAIndividual) tmpIndy1).getData(NichePSO.stdDevKey));
             double d = da;
             String ds = String.format("%6.2f", d);
-            DPointIcon icon = new Chart2DDPointIconText(id + ds);
-            ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
+            DPointIcon icon = new DPointIconText(id + ds);
+            ((DPointIconText) icon).setIcon(new DPointIconCircle());
             point.setIcon(icon);
             if (d < boundary) {
                 this.topoPlot.getFunctionArea().addDElement(point);
@@ -1622,8 +1622,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         AbstractEAIndividual indy = getIndyByParticleIndex(index);
         InterfaceDataTypeDouble tmpIndy1 = (InterfaceDataTypeDouble) indy;
         DPoint point = new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]);
-        DPointIcon icon = new Chart2DDPointIconText(text);
-        ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
+        DPointIcon icon = new DPointIconText(text);
+        ((DPointIconText) icon).setIcon(new DPointIconCircle());
         point.setIcon(icon);
         this.topoPlot.getFunctionArea().addDElement(point);
     }
@@ -1636,8 +1636,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     protected void plotCircleForIndy(AbstractEAIndividual indy, String text) {
         InterfaceDataTypeDouble tmpIndy1 = (InterfaceDataTypeDouble) indy;
         DPoint point = new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]);
-        DPointIcon icon = new Chart2DDPointIconText(text);
-        ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
+        DPointIcon icon = new DPointIconText(text);
+        ((DPointIconText) icon).setIcon(new DPointIconCircle());
         point.setIcon(icon);
         this.topoPlot.getFunctionArea().addDElement(point);
     }
@@ -1897,8 +1897,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         //plot newPos
         InterfaceDataTypeDouble tmpIndy1 = (InterfaceDataTypeDouble) indy;
         DPoint point = new DPoint(tmpIndy1.getDoubleData()[0], tmpIndy1.getDoubleData()[1]);
-        DPointIcon icon = new Chart2DDPointIconText("");
-        ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconPoint());
+        DPointIcon icon = new DPointIconText("");
+        ((DPointIconText) icon).setIcon(new DPointIconPoint());
         point.setIcon(icon);
         this.topoPlot.getFunctionArea().addDElement(point);
 
@@ -1906,8 +1906,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         if (!(indy.getData("oldPosition") == null)) {
             double[] oldpos = (double[]) indy.getData("oldPosition");
             point = new DPoint(oldpos[0], oldpos[1]);
-            icon = new Chart2DDPointIconText("");
-            ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCross());
+            icon = new DPointIconText("");
+            ((DPointIconText) icon).setIcon(new DPointIconCross());
             point.setIcon(icon);
             this.topoPlot.getFunctionArea().addDElement(point);
         }
@@ -1915,16 +1915,16 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         //plot personalBestPos
         double[] pbestpos = (double[]) indy.getData("BestPosition");
         point = new DPoint(pbestpos[0], pbestpos[1]);
-        icon = new Chart2DDPointIconText("");
-        ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
+        icon = new DPointIconText("");
+        ((DPointIconText) icon).setIcon(new DPointIconCircle());
         point.setIcon(icon);
         this.topoPlot.getFunctionArea().addDElement(point);
 
         //plot neighbourBestPos
         double[] neighbourBestPos = (double[]) indy.getData("neighbourBestPos");
         point = new DPoint(neighbourBestPos[0], neighbourBestPos[1]);
-        icon = new Chart2DDPointIconText("");
-        ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconContent());
+        icon = new DPointIconText("");
+        ((DPointIconText) icon).setIcon(new DPointIconContent());
         point.setIcon(icon);
         this.topoPlot.getFunctionArea().addDElement(point);
     }
