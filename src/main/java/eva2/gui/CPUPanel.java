@@ -4,8 +4,6 @@ import com.sun.management.OperatingSystemMXBean;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.lang.management.ManagementFactory;
 import java.util.LinkedList;
 
@@ -22,12 +20,9 @@ public class CPUPanel extends JPanel {
     private OperatingSystemMXBean osBean;
 
     public CPUPanel(int timeSteps) {
-        Timer timer = new Timer(500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CPUPanel.this.updateLoad();
-                CPUPanel.this.repaint();
-            }
+        Timer timer = new Timer(500, e -> {
+            this.updateLoad();
+            this.repaint();
         });
         timer.start();
         maxTimeSteps = timeSteps;

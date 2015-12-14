@@ -15,7 +15,6 @@ import eva2.tools.Serializer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyEditor;
 import java.io.File;
@@ -158,37 +157,14 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
         final ArrayEditor arrayEditor = new ArrayEditor();
         arrayEditor.setWithAddButton(false);
         arrayEditor.setWithSetButton(false);
-        ActionListener al = new ActionListener() {
+        ActionListener al = e -> StatisticalEvaluation.evaluate(jobList, jobList.getObjects(), arrayEditor.getSelectedIndices(),
+                (StatisticsOnSingleDataSet[]) StatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatisticsOnSingleDataSet.values()),
+                (StatisticsOnTwoSampledData[]) StatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatisticsOnTwoSampledData.values()));
+        ActionListener sl = e -> arrayEditor.selectDeselectAll();
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StatisticalEvaluation.evaluate(jobList, jobList.getObjects(), arrayEditor.getSelectedIndices(),
-                        (StatisticsOnSingleDataSet[]) StatisticalEvaluation.statsParams.getOneSampledStats().getSelectedEnum(StatisticsOnSingleDataSet.values()),
-                        (StatisticsOnTwoSampledData[]) StatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatisticsOnTwoSampledData.values()));
-            }
-        };
-        ActionListener sl = new ActionListener() {
+        ActionListener cliButtonListener = actionEvent -> System.out.println("Generating CLI call");
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                arrayEditor.selectDeselectAll();
-            }
-        };
-
-        ActionListener cliButtonListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println("Generating CLI call");
-            }
-        };
-
-        ActionListener sal = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                jobList.saveSelectedJobs(arrayEditor);
-            }
-        };
+        ActionListener sal = e -> jobList.saveSelectedJobs(arrayEditor);
 
         arrayEditor.addUpperActionButton("Get CLI", cliButtonListener);
         arrayEditor.addUpperActionButton("(De-)Sel. all", sl);
@@ -209,34 +185,26 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
     }
 
     private static ActionListener getReuseActionListener(final Component parent, final OptimizationJobList jobList) {
-        return new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                List<OptimizationJob> jobs = jobList.getSelectedJobs();
-                if (jobs.size() == 1) {
-                    OptimizationJob job = jobs.get(0);
-                    AbstractOptimizationParameters curParams = (AbstractOptimizationParameters) ((AbstractModuleAdapter) jobList.module).getOptimizationParameters();
-                    curParams.setSameParams((AbstractOptimizationParameters) job.getOptimizationParameters());
-                    ((GenericModuleAdapter) jobList.module).setOptimizationParameters(curParams);
-                    ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameters().setMultiRuns(job.getNumRuns());
-                    ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameters().setFieldSelection(job.getFieldSelection(((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameters().getFieldSelection()));
-                } else {
-                    JOptionPane.showMessageDialog(parent, "Select exactly one job to reuse!", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+        return e -> {
+            List<OptimizationJob> jobs = jobList.getSelectedJobs();
+            if (jobs.size() == 1) {
+                OptimizationJob job = jobs.get(0);
+                AbstractOptimizationParameters curParams = (AbstractOptimizationParameters) ((AbstractModuleAdapter) jobList.module).getOptimizationParameters();
+                curParams.setSameParams((AbstractOptimizationParameters) job.getOptimizationParameters());
+                ((GenericModuleAdapter) jobList.module).setOptimizationParameters(curParams);
+                ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameters().setMultiRuns(job.getNumRuns());
+                ((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameters().setFieldSelection(job.getFieldSelection(((GenericModuleAdapter) jobList.module).getStatistics().getStatisticsParameters().getFieldSelection()));
+            } else {
+                JOptionPane.showMessageDialog(parent, "Select exactly one job to reuse!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         };
     }
 
     private static ActionListener getClearSelectedActionListener(final Component parent, final OptimizationJobList jobList) {
-        return new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                List<OptimizationJob> jobs = jobList.getSelectedJobs();
-                for (OptimizationJob j : jobs) {
-                    j.resetJob();
-                }
+        return e -> {
+            List<OptimizationJob> jobs = jobList.getSelectedJobs();
+            for (OptimizationJob j : jobs) {
+                j.resetJob();
             }
         };
     }

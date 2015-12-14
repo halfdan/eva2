@@ -8,10 +8,7 @@ import eva2.tools.BasicResourceLoader;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * The About dialog used in the EvA2 GUI.
@@ -57,17 +54,13 @@ class AboutDialog extends JDialog {
         infoEditorPane = new JEditorPane("text/html", infoMessage);
         infoEditorPane.setEditable(false);
         infoEditorPane.setOpaque(false);
-        infoEditorPane.addHyperlinkListener(new HyperlinkListener() {
+        infoEditorPane.addHyperlinkListener(hle -> {
+            if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
+                Desktop desktop = Desktop.getDesktop();
 
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent hle) {
-                if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
-                    java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
-
-                    if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
-                        //java.net.URI uri = new java.net.URI(hle.getURL().toString());
-                        //desktop.browse(uri);
-                    }
+                if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                    //java.net.URI uri = new java.net.URI(hle.getURL().toString());
+                    //desktop.browse(uri);
                 }
             }
         });
@@ -87,14 +80,7 @@ class AboutDialog extends JDialog {
         add(new JScrollPane(aboutTextArea), gbConstraints);
 
         JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AboutDialog.this.dispose();
-            }
-
-        });
+        closeButton.addActionListener(e -> this.dispose());
         gbConstraints.gridy++;
         gbConstraints.fill = GridBagConstraints.NONE;
         gbConstraints.weighty = 0.0;

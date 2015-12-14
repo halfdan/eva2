@@ -1,14 +1,4 @@
 package eva2.gui;
-/*
- * Title:        EvA2
- * Description:
- * Copyright:    Copyright (c) 2003
- * Company:      University of Tuebingen, Computer Architecture
- * @author Holger Ulmer, Felix Streichert, Hannes Planatscher
- * @version:  $Revision: 10 $
- *            $Date: 2006-01-18 11:02:22 +0100 (Wed, 18 Jan 2006) $
- *            $Author: streiche $
- */
 
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
@@ -24,12 +14,7 @@ public class JExtMenu extends JMenu {
     /**
      *
      */
-    public JExtMenu() {
-        //super();
-        //Mnemonic m = new Mnemonic(s);
-        //setText(m.getText());
-        //setMnemonic(m.getMnemonic());
-    }
+    public JExtMenu() { }
 
     /**
      *
@@ -50,7 +35,7 @@ public class JExtMenu extends JMenu {
         Object o;
         o = a.getValue(ExtAction.MNEMONIC);
         if (o != null) {
-            item.setMnemonic(((Character) o).charValue());
+            item.setMnemonic((Character) o);
         }
         o = a.getValue(ExtAction.TOOLTIP);
         if (o != null) {
@@ -81,7 +66,7 @@ public class JExtMenu extends JMenu {
                         menuItem.setText((String) e.getNewValue());
                         break;
                     case "enabled":
-                        menuItem.setEnabled(((Boolean) e.getNewValue()).booleanValue());
+                        menuItem.setEnabled((Boolean) e.getNewValue());
                         break;
                     case Action.SMALL_ICON:
                         Icon icon = (Icon) e.getNewValue();
@@ -90,7 +75,7 @@ public class JExtMenu extends JMenu {
                         menuItem.repaint();
                         break;
                     case ExtAction.MNEMONIC:
-                        menuItem.setMnemonic(((Character) e.getNewValue()).charValue());
+                        menuItem.setMnemonic((Character) e.getNewValue());
                         break;
                     case ExtAction.TOOLTIP:
                         menuItem.setToolTipText((String) e.getNewValue());
