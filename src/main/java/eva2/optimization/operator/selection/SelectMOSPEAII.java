@@ -5,8 +5,8 @@ import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.archiving.ArchivingSPEAII;
 import eva2.optimization.population.Population;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconText;
+import eva2.tools.chart2d.DPointIconCircle;
+import eva2.tools.chart2d.DPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.util.annotation.Description;
 
@@ -89,14 +89,14 @@ public class SelectMOSPEAII implements InterfaceSelection, java.io.Serializable 
             GraphPointSet mySet = new GraphPointSet(10, plot.getFunctionArea());
             DPoint myPoint;
             double tmp1, tmp2;
-            Chart2DDPointIconText tmp;
+            DPointIconText tmp;
 
             mySet.setConnectedMode(false);
             for (int i = 0; i < orgFit.length; i++) {
                 myPoint = new DPoint(orgFit[i][0], orgFit[i][1]);
                 tmp1 = Math.round(SPEAFitness[i] * 100) / (double) 100;
-                tmp = new Chart2DDPointIconText("" + tmp1);
-                tmp.setIcon(new Chart2DDPointIconCircle());
+                tmp = new DPointIconText("" + tmp1);
+                tmp.setIcon(new DPointIconCircle());
                 myPoint.setIcon(tmp);
                 mySet.addDPoint(myPoint);
             }

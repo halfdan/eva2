@@ -1,7 +1,7 @@
 package eva2.optimization.operator.archiving;
 
 import eva2.optimization.population.Population;
-import eva2.tools.chart2d.Chart2DDPointIconCross;
+import eva2.tools.chart2d.DPointIconCross;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.util.annotation.Description;
 
@@ -169,7 +169,7 @@ public class ArchivingNSGAII extends ArchivingNSGA implements java.io.Serializab
      * @param index The identifier for the individual
      */
     public DPointIcon getIconFor(int index, Population pop) {
-        return new Chart2DDPointIconCross();
+        return new DPointIconCross();
     }
 
     /**

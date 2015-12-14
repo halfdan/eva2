@@ -200,9 +200,9 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                             fitness = (double[]) ((ArrayList) this.moccoViewer.moccoStandalone.state.fitnessCache.get(i)).get(j);
                             myPoint = new DPoint(fitness[indexX], fitness[indexY]);
                             if ((Double) ((ArrayList) this.moccoViewer.moccoStandalone.state.constraintCache.get(i)).get(j) == 0) {
-                                myPoint.setIcon(new Chart2DDPointIconCross());
+                                myPoint.setIcon(new DPointIconCross());
                             } else {
-                                myPoint.setIcon(new Chart2DDPointIconPoint());
+                                myPoint.setIcon(new DPointIconPoint());
                             }
                             mySet.addDPoint(myPoint);
                             if (fitness[indexX] < xmin) {
@@ -223,9 +223,9 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                             fitness = (double[]) ((ArrayList) this.moccoViewer.moccoStandalone.state.objectiveCache.get(i)).get(j);
                             myPoint = new DPoint(fitness[indexX], fitness[indexY]);
                             if ((Double) ((ArrayList) this.moccoViewer.moccoStandalone.state.constraintCache.get(i)).get(j) == 0) {
-                                myPoint.setIcon(new Chart2DDPointIconCross());
+                                myPoint.setIcon(new DPointIconCross());
                             } else {
-                                myPoint.setIcon(new Chart2DDPointIconPoint());
+                                myPoint.setIcon(new DPointIconPoint());
                             }
                             mySet.addDPoint(myPoint);
                             if (fitness[indexX] < xmin) {
@@ -264,9 +264,9 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
                     }
                 }
                 point = new DPoint(fitness[indexX], fitness[indexY]);
-                icon = new Chart2DDPointContentSelectable();
+                icon = new DPointContentSelectable();
                 if (this.moccoViewer.refSolutionSelectable) {
-                    ((Chart2DDPointContentSelectable) icon).addSelectionListener(this.moccoViewer);
+                    ((DPointContentSelectable) icon).addSelectionListener(this.moccoViewer);
                 }
                 ((InterfaceDPointWithContent) icon).setProblem(this.moccoViewer.moccoStandalone.state.currentProblem);
                 ((InterfaceDPointWithContent) icon).setEAIndividual(pf.get(i));

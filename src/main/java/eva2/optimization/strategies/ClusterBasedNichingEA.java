@@ -250,7 +250,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
                 AbstractEAIndividual indy = this.undifferentiatedPopulation.get(i);
                 double[] d = indy.getFitness();
                 point = new DPoint(d[0], d[1]);
-                point.setIcon(new Chart2DDPointIconCircle());
+                point.setIcon(new DPointIconCircle());
                 mySet.addDPoint(point);
             }
             for (int i = 0; i < this.species.size(); i++) {
@@ -263,7 +263,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
                     AbstractEAIndividual indy = pop.get(j);
                     double[] d = indy.getFitness();
                     point = new DPoint(d[0], d[1]);
-                    point.setIcon(new Chart2DDPointIconText("P" + j));
+                    point.setIcon(new DPointIconText("P" + j));
                     mySet.addDPoint(point);
                 }
 
@@ -345,8 +345,8 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
         popRep = new DPointSet();
         popRep.addDPoint(new DPoint(position[0], position[1]));
         double d = Math.round(100 * fitness) / (double) 100;
-        DPointIcon icon = new Chart2DDPointIconText(c + "" + d);
-        ((Chart2DDPointIconText) icon).setIcon(new Chart2DDPointIconCircle());
+        DPointIcon icon = new DPointIconText(c + "" + d);
+        ((DPointIconText) icon).setIcon(new DPointIconCircle());
         popRep.setIcon(icon);
         p.getFunctionArea().addDElement(popRep);
     }

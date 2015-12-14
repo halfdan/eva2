@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  *
  */
-public class Chart2DDPointIconCross implements DPointIcon {
+public class DPointIconCross implements DPointIcon {
 
     private Color color;
 

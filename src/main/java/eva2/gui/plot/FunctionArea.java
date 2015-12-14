@@ -491,7 +491,7 @@ public class FunctionArea extends DArea implements Serializable {
      * @param graphID
      */
     public void drawCircle(String label, double[] position, int graphID) {
-        drawIcon(new Chart2DDPointIconCircle(), label, position, graphID);
+        drawIcon(new DPointIconCircle(), label, position, graphID);
     }
 
     /**
@@ -508,9 +508,9 @@ public class FunctionArea extends DArea implements Serializable {
         DPointSet popRep;
         popRep = new DPointSet();
         popRep.addDPoint(new DPoint(position[0], position[1]));
-        DPointIcon icon = new Chart2DDPointIconText(label);
-        ((Chart2DDPointIconText) icon).setIcon(theIcon);
-        ((Chart2DDPointIconText) icon).setColor(getGraphPointSet(graphID).getColor());
+        DPointIcon icon = new DPointIconText(label);
+        ((DPointIconText) icon).setIcon(theIcon);
+        ((DPointIconText) icon).setColor(getGraphPointSet(graphID).getColor());
         popRep.setIcon(icon);
         addDElement(popRep);
     }
@@ -529,14 +529,14 @@ public class FunctionArea extends DArea implements Serializable {
         DPointIcon theIcon;
         switch (iconType) {
             case 0:
-                theIcon = new Chart2DDPointIconCircle();
+                theIcon = new DPointIconCircle();
                 break;
             case 1:
-                theIcon = new Chart2DDPointIconCross();
+                theIcon = new DPointIconCross();
                 break;
             default:
             case 2:
-                theIcon = new Chart2DDPointIconPoint();
+                theIcon = new DPointIconPoint();
                 break;
         }
         drawIcon(theIcon, label, position, graphID);
@@ -745,7 +745,7 @@ public class FunctionArea extends DArea implements Serializable {
                     ret = point2;
                 }
                 if ((dist == distmin)
-                        && !(ret.getIcon() instanceof Chart2DDPointIconContent)
+                        && !(ret.getIcon() instanceof DPointIconContent)
                         && !(ret.getIcon() instanceof InterfaceSelectablePointIcon)) {
                     distmin = dist;
                     ret = point2;

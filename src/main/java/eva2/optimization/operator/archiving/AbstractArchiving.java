@@ -4,7 +4,7 @@ import eva2.gui.plot.GraphPointSet;
 import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
-import eva2.tools.chart2d.Chart2DDPointIconCross;
+import eva2.tools.chart2d.DPointIconCross;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
 
@@ -91,7 +91,7 @@ public abstract class AbstractArchiving implements InterfaceArchiving, java.io.S
     public void plotParetoFront(Population pop, Plot plot) {
         DPointIcon[] icons = new DPointIcon[pop.size()];
         for (int i = 0; i < icons.length; i++) {
-            icons[i] = new Chart2DDPointIconCross();
+            icons[i] = new DPointIconCross();
         }
         this.plotParetoFront(pop, icons, plot);
     }

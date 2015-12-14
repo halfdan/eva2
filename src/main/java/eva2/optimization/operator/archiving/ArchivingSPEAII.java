@@ -7,8 +7,8 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.ObjectiveSpaceMetric;
 import eva2.optimization.population.Population;
-import eva2.tools.chart2d.Chart2DDPointIconCircle;
-import eva2.tools.chart2d.Chart2DDPointIconText;
+import eva2.tools.chart2d.DPointIconCircle;
+import eva2.tools.chart2d.DPointIconText;
 import eva2.tools.chart2d.DPoint;
 import eva2.util.annotation.Description;
 
@@ -209,13 +209,13 @@ public class ArchivingSPEAII extends AbstractArchiving implements java.io.Serial
                 System.out.println("Fitness: (" + trueFitness[i][0] + "/" + trueFitness[i][1] + ")");
             }
             DPoint myPoint;
-            Chart2DDPointIconText tmp;
+            DPointIconText tmp;
             mySet.setConnectedMode(false);
             for (int i = 0; i < trueFitness.length; i++) {
 
                 myPoint = new DPoint(trueFitness[i][0], trueFitness[i][1]);
-                tmp = new Chart2DDPointIconText("" + SPEAStrength[i] + "/" + result[i]);
-                tmp.setIcon(new Chart2DDPointIconCircle());
+                tmp = new DPointIconText("" + SPEAStrength[i] + "/" + result[i]);
+                tmp.setIcon(new DPointIconCircle());
                 myPoint.setIcon(tmp);
                 mySet.addDPoint(myPoint);
             }

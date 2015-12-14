@@ -1,15 +1,17 @@
 package eva2.tools.chart2d;
 
+
 import java.awt.*;
+
 
 /**
  *
  */
-public class Chart2DDPointIconCircle implements DPointIcon {
+public class DPointIconPoint implements DPointIcon {
 
     private Color borderColor = Color.BLACK;
-    private Color fillColor = null;
-    private int size = 4;
+    private Color fillColor = Color.BLACK;
+    private int size = 2;
 
     /**
      * this method has to be overridden to paint the icon. The point itself lies
@@ -20,12 +22,12 @@ public class Chart2DDPointIconCircle implements DPointIcon {
         Color prev = g.getColor();
         if (fillColor != null) {
             g.setColor(fillColor);
-            g.fillOval(-this.size, -this.size, 2 * this.size + 1, 2 * this.size + 1);
+            g.fillOval(-this.size, -this.size, 2 * this.size, 2 * this.size);
         }
         if (this.borderColor != null) {
             g.setColor(borderColor);
         }
-        g.drawOval(-this.size, -this.size, 2 * this.size, 2 * this.size);
+        g.drawOval(-this.size, -this.size, (2 * this.size) - 1, (2 * this.size) - 1);
         g.setColor(prev);
     }
 
