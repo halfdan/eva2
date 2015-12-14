@@ -482,11 +482,16 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
 
                 @Override
                 public void windowClosing(final WindowEvent event) {
+                    BasicResourceLoader loader = BasicResourceLoader.getInstance();
+                    byte[] bytes = loader.getBytesFromResourceLocation(EvAInfo.iconLocation, true);
+                    ImageIcon icon = new ImageIcon(bytes);
                     int result = JOptionPane.showConfirmDialog(
                             MainFrame.this,
                             "Do you really want to exit EvA2?",
                             "Exit Application",
-                            JOptionPane.YES_NO_OPTION);
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            icon);
                     if (result == JOptionPane.YES_OPTION) {
                         MainFrame.this.close();
                     }

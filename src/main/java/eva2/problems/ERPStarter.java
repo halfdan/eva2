@@ -139,9 +139,7 @@ public class ERPStarter {
         filterCols[4] = initialPosBoxLenColIndex;
         filterCols[5] = isObjectiveColIndex;
         filterCols[6] = fitWeightsColIndex;
-//		double[][] dat = BasicResourceLoader.loadDoubleData(fname, null, ";", 1, -1, new int[]{2,3,4,5,6,7,8,9});
         double[][] dat = BasicResourceLoader.loadDoubleData(fname, null, ";", 1, -1, filterCols);
-//		System.out.println(BeanInspector.toString(dat));
         double[][] filteredVars = ToolBox.filterBy(dat, 0, 1., 1.); // filter only those with a value of one in column isVariable
         double[][] range = ToolBox.getCols(filteredVars, 1, 2); // get columns with lower and upper bound
         double[][] initPos = ToolBox.getCols(filteredVars, 3); // get column with initial position center
