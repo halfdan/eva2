@@ -14,7 +14,8 @@ public class PropertyBoolSelector extends JCheckBox {
 
     public PropertyBoolSelector(PropertyEditor pe) {
         super();
-        setBackground(Color.WHITE);
+        setHorizontalAlignment(JLabel.CENTER);
+        setBorderPainted(true);
         propertyEditor = pe;
         if (propertyEditor.getAsText().equals("True")) {
             setSelected(true);

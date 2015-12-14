@@ -209,7 +209,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             propertyDescriptors = bi.getPropertyDescriptors();
             methodDescriptors = bi.getMethodDescriptors();
         } catch (IntrospectionException ex) {
-            System.err.println("PropertySheetPanel.setTarget(): Couldn't introspect");
+            LOGGER.log(Level.SEVERE, "Could not create editor for object.", ex);
             return;
         }
 
@@ -270,7 +270,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             if (objectValues[i] == null) {
                 continue; // expert, hidden, or no getter/setter available
             }
-            JComponent newView = null;
+            JComponent newView;
             try {
 
                 propertyEditors[i] = makeEditor(propertyDescriptors[i], name, objectValues[i]);
@@ -288,11 +288,11 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 itemIndex++;
                 newView = getView(propertyEditors[i]);
                 if (newView == null) {
-                    System.err.println("Warning: Property \"" + name + "\" has non-displayable editor.  Skipping.");
+                    LOGGER.warning("Warning: Property \"" + name + "\" has non-displayable editor.  Skipping.");
                     continue;
                 }
             } catch (Exception ex) {
-                System.out.println("Skipping property " + name + " ; exception: " + ex);
+                LOGGER.warning("Skipping property " + name + " ; exception: " + ex);
                 ex.printStackTrace();
                 continue;
             } // end try
@@ -706,7 +706,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             JComponent newView = null;
             newView = getView(tmpEdit);
             if (newView == null) {
-                System.err.println("Warning: Property \"" + propertyDescriptors[i].getDisplayName() + "\" has non-displayable editor.  Skipping.");
+                LOGGER.warning("Property \"" + propertyDescriptors[i].getDisplayName() + "\" has non-displayable editor.  Skipping.");
                 return false;
             }
             propertyEditors[i].addPropertyChangeListener(this);
@@ -743,17 +743,16 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             }
         } catch (InvocationTargetException ex) {
             if (ex.getTargetException() instanceof PropertyVetoException) {
-                System.out.println("PropertySheetPanel.wasModified(): WARNING: Vetoed; reason is: " + ex.getTargetException().getMessage());
+                LOGGER.warning("PropertySheetPanel.wasModified(): WARNING: Vetoed; reason is: " + ex.getTargetException().getMessage());
             } else {
-                System.out.println("PropertySheetPanel.wasModified(): InvocationTargetException while updating " + property.getName());
-                System.out.println("PropertySheetPanel.wasModified(): " + ex.getMessage());
+                LOGGER.warning("PropertySheetPanel.wasModified(): InvocationTargetException while updating " + property.getName());
+                LOGGER.warning("PropertySheetPanel.wasModified(): " + ex.getMessage());
                 ex.printStackTrace();
             }
         } catch (Exception ex) {
-            System.out.println("PropertySheetPanel.wasModified(): Unexpected exception while updating " + property.getName());
+            LOGGER.warning("PropertySheetPanel.wasModified(): Unexpected exception while updating " + property.getName());
         }
         if (views[i] != null && views[i] instanceof PropertyPanel) {
-            //System.err.println("Trying to repaint the property canvas");
             views[i].repaint();
             revalidate();
         }
@@ -780,10 +779,10 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 }
             }
             if (propIndex == -1) {
-                System.err.println("error: could not identify event editor! (PropertySheetPanel)");
+                LOGGER.severe("Could not identify event editor! (PropertySheetPanel)");
             }
         } else {
-            System.err.println("unknown event source! (PropertySheetPanel)");
+            LOGGER.warning("Unknown event source! (PropertySheetPanel)");
         }
     }
 
@@ -981,30 +980,18 @@ final class PropertyCellRenderer extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
         if (value == null) {
             return this;
         } else if (value instanceof String) {
-            // Really hacky but it adds a prefix so the alignment looks ok
             setText((String) value);
             return this;
         } else if (value instanceof eva2.gui.PropertyPanel) {
             JComponent component = new JPanel();
             component.setLayout(new BorderLayout());
             component.add((PropertyPanel) value, BorderLayout.CENTER);
-            final JButton dialogButton = new JButton("...") {
-                @Override
-                public void paint(Graphics g) {
-                    Color old = g.getColor();
-                    g.setColor(Color.WHITE);
-                    g.fillRect(0,0,100,100);
-                    g.setColor(old);
-                    super.paint(g);
-                }
-            };
-            dialogButton.setMargin(new Insets(0, 0, 0, 0));
-            dialogButton.putClientProperty("JButton.buttonType", "bevel");
-            dialogButton.setBackground(Color.WHITE);
+            final JButton dialogButton = new DetailButton();
             component.add(dialogButton, BorderLayout.LINE_END);
             return component;
         } else if (value instanceof PropertyText) {
@@ -1026,7 +1013,6 @@ final class PropertyCellRenderer extends DefaultTableCellRenderer {
 
 final class PropertyCellEditor extends AbstractCellEditor implements TableCellEditor {
     private Logger LOGGER = Logger.getLogger(PropertyCellEditor.class.getName());
-    private JLabel empty = new JLabel();
     private Object value;
 
     @Override
@@ -1034,27 +1020,13 @@ final class PropertyCellEditor extends AbstractCellEditor implements TableCellEd
         LOGGER.log(Level.FINEST, "Editor Component: " + value.getClass());
         this.value = value;
         JComponent component;
-        if (value == null) {
-            component = empty;
-        } else if (value instanceof String) {
+        if (value instanceof String) {
             component = new JLabel(value.toString());
         } else if (value instanceof PropertyPanel) {
             component = new JPanel();
             component.setLayout(new BorderLayout());
             component.add((PropertyPanel) value, BorderLayout.CENTER);
-            final JButton dialogButton = new JButton("...") {
-                @Override
-                public void paint(Graphics g) {
-                    Color old = g.getColor();
-                    g.setColor(Color.WHITE);
-                    g.fillRect(0,0,100,100);
-                    g.setColor(old);
-                    super.paint(g);
-                }
-            };
-            dialogButton.setMargin(new Insets(0, 0, 0, 0));
-            dialogButton.putClientProperty("JButton.buttonType", "bevel");
-            dialogButton.setBackground(Color.WHITE);
+            final JButton dialogButton = new DetailButton();
             dialogButton.addActionListener(event -> {
                 ((PropertyPanel) value).showDialog();
                 fireEditingStopped();
@@ -1084,8 +1056,24 @@ final class PropertyCellEditor extends AbstractCellEditor implements TableCellEd
         int selectedColumn = sourceTable.getSelectedColumn();
         String columnName = sourceTable.getColumnName(selectedColumn);
         /* If the columnName equals Key it holds the keys */
-        return !"Key".equals(columnName);
+        return !"Attribute".equals(columnName);
+    }
+}
+
+final class DetailButton extends JButton {
+    public DetailButton() {
+        super("<html>&hellip;</html>");
+        this.setMargin(new Insets(0, 0, 0, 0));
+        this.putClientProperty("JButton.buttonType", "bevel");
+        this.setBackground(Color.WHITE);
     }
 
-
+    @Override
+    public void paint(Graphics g) {
+        Color old = g.getColor();
+        g.setColor(Color.WHITE);
+        g.fillRect(0,0,100,100);
+        g.setColor(old);
+        super.paint(g);
+    }
 }
