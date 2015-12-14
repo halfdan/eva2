@@ -389,8 +389,8 @@ public final class Mathematics {
     /**
      * Intersect two ranges resulting in the maximum range contained in both.
      *
-     * @param modRange
-     * @param makeRange
+     * @param r1
+     * @param r2
      * @param destRange
      */
     public static void intersectRange(double[][] r1, double[][] r2,
@@ -475,8 +475,9 @@ public final class Mathematics {
      * Check whether the given value lies within the interval in every
      * dimension.
      *
-     * @param x
-     * @param range
+     * @param v     Value
+     * @param lower Lower bound
+     * @param upper Upper bound
      * @return true if the vector lies within the range, else false
      */
     public static boolean isInRange(double v, double lower, double upper) {
@@ -507,8 +508,8 @@ public final class Mathematics {
      * @return
      */
     public static boolean isValidVec(double[][] d) {
-        for (int i = 0; i < d.length; i++) {
-            if (!isValidVector(d[i])) {
+        for (double[] vec : d) {
+            if (!isValidVector(vec)) {
                 return false;
             }
         }
@@ -537,6 +538,8 @@ public final class Mathematics {
     }
 
     /**
+     * Linear interpolation between two points
+     *
      * @param f0
      * @param f1
      * @param t
@@ -552,7 +555,7 @@ public final class Mathematics {
      *
      * @param x  The argument at the point with unknown function value
      * @param x0 The argument at the last position with a function value
-     * @param x1 The argument at the next known fuction value
+     * @param x1 The argument at the next known function value
      * @param f0 The function value at the position x0
      * @param f1 The function value at the position x1
      * @return The function value at position x given by linear interpolation.
@@ -621,16 +624,18 @@ public final class Mathematics {
             in = x;
         }
 
-        if (in.length == 1) {
+        Arrays.sort(in);
+        if (in.length == 0) {
+            return Double.NaN;
+        } else if (in.length == 1) {
             return in[0];
         } else if (in.length == 2) {
             return (in[0] + in[1]) / 2.;
         } else {
-            Arrays.sort(in);
-            if (in.length % 2 != 0) {
-                return in[(in.length - 1) / 2];
+            if (in.length % 2 == 1) {
+                return in[in.length / 2];
             } else {
-                return (in[in.length / 2] + in[(in.length / 2) + 1]) / 2.;
+                return (in[in.length / 2 - 1] + in[in.length / 2]) / 2.;
             }
         }
     }
@@ -661,21 +666,6 @@ public final class Mathematics {
             }
             return med;
         }
-    }
-
-
-    public static double median2(double[] vector, boolean clone) {
-        double[] in;
-        if (clone) {
-            in = vector.clone();
-        } else {
-            in = vector;
-        }
-        if (in.length == 0) {
-            return 0;
-        }
-        Arrays.sort(in);
-        return in[(int) Math.floor(((double) in.length) / 2.0)];
     }
 
     public static double variance(double[] vector) {
@@ -787,7 +777,7 @@ public final class Mathematics {
     }
 
     /**
-     * Normalize the given vector to an euclidian length of 1.
+     * Normalize the given vector to a euclidean length of 1.
      *
      * @param v
      * @return
@@ -797,7 +787,7 @@ public final class Mathematics {
     }
 
     /**
-     * Normalize the given vector to an euclidian length of 1.
+     * Normalize the given vector to a euclidean length of 1.
      *
      * @param v
      * @return
@@ -821,7 +811,7 @@ public final class Mathematics {
     }
 
     /**
-     * Project the values in x to the range given. The range must be an vector
+     * Project the values in x to the range given. The range must be a vector
      * of 2d-arrays each of which containing lower and upper bound in the i-th
      * dimension. x must not be longer than the available ranges. Values
      * exceeding the bounds are set on the bound. The number of bound violations
@@ -851,9 +841,9 @@ public final class Mathematics {
     /**
      * Project the value to the range given.
      *
-     * @param v
-     * @param min
-     * @param max
+     * @param v     Value
+     * @param min   Lower bound
+     * @param max   Upper bound
      * @return the closest value to v within [min,max]
      */
     public static double projectValue(double v, double min, double max) {
@@ -943,7 +933,7 @@ public final class Mathematics {
         if ((val + step) < min) {
             return (2 * min - val - step);
         }
-        return (val += step);
+        return val + step;
     }
 
     /**
@@ -954,7 +944,7 @@ public final class Mathematics {
      *
      * @param x   A vector
      * @param y   The reference vector
-     * @param def The default value to be use to avoid division by zero.
+     * @param def The default value to be used to avoid division by zero.
      * @return The relative distance of x to y.
      * @throws Exception
      */
@@ -997,8 +987,8 @@ public final class Mathematics {
     /**
      * Rotate the vector by angle alpha around axis i/j
      *
-     * @param vect
-     * @param alpha
+     * @param vect  Vector
+     * @param alpha Rotation angle
      * @param i
      * @param j
      */
@@ -1013,8 +1003,8 @@ public final class Mathematics {
      * Rotate a given double vector using a rotation matrix. If the matrix is
      * null, x will be returned unchanged. Matrix dimensions must fit.
      *
-     * @param x
-     * @param rotMatrix
+     * @param x         Vector
+     * @param rotMatrix Rotation matrix
      * @return the rotated vector
      */
     public static double[] rotate(double[] x, Matrix rotMatrix) {
@@ -1087,6 +1077,7 @@ public final class Mathematics {
      * Shift bounds by a constant value in every dimension.
      *
      * @param range
+     * @param dist
      * @return
      */
     public static void shiftRange(double[][] range, double dist) {
@@ -1183,7 +1174,6 @@ public final class Mathematics {
      * @return the sum of the elements
      */
     public static int sum(int[] ints) {
-
         int sum = 0;
 
         for (int value : ints) {
@@ -1208,8 +1198,8 @@ public final class Mathematics {
     /**
      * Add each entry of a vector with a scalar in a result vector.
      *
-     * @param s
-     * @param v
+     * @param s Scalar
+     * @param v Vector
      * @return
      */
     public static void svAdd(double s, double[] v, double[] res) {
@@ -1227,9 +1217,7 @@ public final class Mathematics {
      */
     public static double[] svDiv(double s, double[] v) {
         double[] res = new double[v.length];
-        for (int i = 0; i < v.length; i++) {
-            res[i] = v[i] / s;
-        }
+        svDiv(s, v, res);
         return res;
     }
 
@@ -1256,9 +1244,7 @@ public final class Mathematics {
      */
     public static double[] svMult(double s, double[] v) {
         double[] res = new double[v.length];
-        for (int i = 0; i < v.length; i++) {
-            res[i] = v[i] * s;
-        }
+        svMult(s, v, res);
         return res;
     }
 
@@ -1267,7 +1253,6 @@ public final class Mathematics {
      *
      * @param s a scalar
      * @param v an array to be multiplied with s.
-     * @return a scaled array.
      */
     public static void svMult(double s, double[] v, double[] res) {
         for (int i = 0; i < v.length; i++) {
@@ -1278,7 +1263,7 @@ public final class Mathematics {
     /**
      * Add vectors scaled: res[i] = s*v[i] + w[i]
      *
-     * @param s
+     * @param s Scaling factor
      * @param v
      * @param w
      * @return
@@ -1308,8 +1293,8 @@ public final class Mathematics {
     /**
      * Add vectors returning a new vector c = a + b;
      *
-     * @param a
-     * @param b
+     * @param a Vector 1
+     * @param b Vector 2
      * @return a new vector c = a + b
      */
     public static double[] vvAdd(double[] a, double[] b) {

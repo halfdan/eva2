@@ -305,8 +305,8 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
     /**
      * This method calculates the distance between two double values
      *
-     * @param d1
-     * @param d2
+     * @param indy
+     * @param p
      * @return The scalar distances between d1 and d2
      */
     private double distance(AbstractEAIndividual indy, double[] p) {
@@ -357,19 +357,8 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
         return metric.distance(species1.getBestEAIndividual(), species2.getBestEAIndividual()) < mergeDist;
     }
 
-//    /** This method decides if a unclustered individual belongs to an already established species.
-//     * @param indy          A unclustered individual.
-//     * @param species       A species.
-//     * @return True or False.
-//     */
-//    public boolean belongsToSpecies(AbstractEAIndividual indy, Population species, Population pop) {
-//        // @todo perhaps the same as in convergingSpecies
-//        return false;
-//    }
-
     @Override
     public int[] associateLoners(Population loners, Population[] species, Population referencePop) {
-//		tmpIndy = (AbstractEAIndividual)loners.getEAIndividual(0).clone();
         int[] res = new int[loners.size()];
         System.err.println("Warning, associateLoners not implemented for " + this.getClass());
         Arrays.fill(res, -1);
@@ -413,7 +402,7 @@ public class ClusteringKMeans implements InterfaceClustering, java.io.Serializab
 
     /**
      * This method allows you to set/get the number of
-     * clusters tofind
+     * clusters to find
      *
      * @return The current number of clusters to find.
      */
