@@ -98,4 +98,16 @@ public class StringToolsTest {
         assertEquals("taur", StringTools.translateGreek("taur"));
         assertEquals("taur12", StringTools.translateGreek("taur12"));
     }
+
+    @Test
+    public void testSubscriptIndices() throws Exception {
+        // Doesn't alter numbers at the start or mid string
+        assertEquals("12derp", StringTools.subscriptIndices("12derp"));
+        assertEquals("der12p", StringTools.subscriptIndices("der12p"));
+
+        // Replaces trailing numbers with a sub html tag
+        assertEquals("derp<sub>12</sub>", StringTools.subscriptIndices("derp12"));
+        assertEquals("This is a string <sub>12</sub>", StringTools.subscriptIndices("This is a string 12"));
+        assertEquals("ϕ<sub>10</sub>", StringTools.subscriptIndices("ϕ10"));
+    }
 }

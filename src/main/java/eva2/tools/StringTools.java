@@ -479,6 +479,9 @@ public final class StringTools {
     }
 
     /**
+     * Takes a full package name and returns the string
+     * after the last period (usually the class name).
+     *
      * @param value The string to cut
      * @return Returns the class Name without package.
      */
@@ -491,6 +494,13 @@ public final class StringTools {
         return className; // now is shortName
     }
 
+    /**
+     * Takes a string and looks for greek letter names. If found,
+     * replaces them by their greek unicode counterparts.
+     *
+     * @param name A string
+     * @return String with greek letter names replaced
+     */
     public static String translateGreek(String name) {
         // Add some specific display for some greeks here
         final String[][] mapping = {
@@ -548,6 +558,22 @@ public final class StringTools {
         }
 
         return name;
+    }
+
+    /**
+     * Takes a string and looks for trailing numbers. If present those numbers will
+     * be replaced by a HTML subscript. Make sure to wrap inside a html block when
+     * displaying as part of a JLabel.
+     *
+     * @param label
+     * @return
+     */
+    public static String subscriptIndices(String label) {
+        // Trailing numbers
+        Pattern p = Pattern.compile("(\\d+)$");
+        Matcher m = p.matcher(label);
+
+        return m.replaceFirst("<sub>$1</sub>");
     }
 }
 
