@@ -301,8 +301,8 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             } // end try
 
             // Add some specific display for some greeks here
-            name = translateGreek(name);
-            name = eva2.tools.StringTools.humaniseCamelCase(name);
+            name = StringTools.translateGreek(name);
+            name = StringTools.humaniseCamelCase(name);
             propertyTableModel.addRow(new Object[]{name, newView});
         }
 
@@ -558,115 +558,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         return infoPanel;
     }
 
-    private String translateGreek(String name) {
-        // Add some specific display for some greeks here
-        if (name.equalsIgnoreCase("alpha")) {
-            return "\u03B1";
-        }
-        if (name.equalsIgnoreCase("beta")) {
-            return "\u03B2";
-        }
-        if (name.equalsIgnoreCase("gamma")) {
-            return "\u03B3";
-        }
-        if (name.equalsIgnoreCase("gammab")) {
-            return "\u0393";
-        }
-        if (name.equalsIgnoreCase("delta")) {
-            return "\u03B4";
-        }
-        if (name.equalsIgnoreCase("deltab")) {
-            return "\u0394";
-        }
-        if ((name.equalsIgnoreCase("epsi")) || (name.equalsIgnoreCase("epsilon"))) {
-            return "\u03B5";
-        }
-        if (name.equalsIgnoreCase("zeta")) {
-            return "\u03B6";
-        }
-        if (name.equalsIgnoreCase("theta")) {
-            return "\u03D1";
-        }
-        if (name.equalsIgnoreCase("thetab")) {
-            return "\u0398";
-        }
-        if (name.equalsIgnoreCase("iota")) {
-            return "\u03B9";
-        }
-        if (name.equalsIgnoreCase("kappa")) {
-            return "\u03BA";
-        }
-        if (name.equalsIgnoreCase("lambda")) {
-            return "\u03BB";
-        }
-        if (name.equalsIgnoreCase("lambdab")) {
-            return "\u039B";
-        }
-        if (name.equalsIgnoreCase("rho")) {
-            return "\u03C1";
-        }
-        if (name.equalsIgnoreCase("sigma")) {
-            return "\u03C3";
-        }
-        if (name.equalsIgnoreCase("sigmab")) {
-            return "\u03A3";
-        }
-        if (name.equalsIgnoreCase("tau")) {
-            return "\u03C4";
-        }
-        if (name.equalsIgnoreCase("upsilon")) {
-            return "\u03C5";
-        }
-        if (name.equalsIgnoreCase("upsilonb")) {
-            return "\u03D2";
-        }
-        if (name.equalsIgnoreCase("omega")) {
-            return "\u03C9";
-        }
-        if (name.equalsIgnoreCase("omegab")) {
-            return "\u03A9";
-        }
 
-        // these are too small
-        if (name.equalsIgnoreCase("eta")) {
-            return "\u03B7";
-        }
-        if (name.equalsIgnoreCase("psi")) {
-            return "\u03C8";
-        }
-        if (name.equalsIgnoreCase("psib")) {
-            return "\u03A8";
-        }
-        if (name.equalsIgnoreCase("phi")) {
-            return "\u03D5";
-        }
-        if (name.equalsIgnoreCase("phib")) {
-            return "\u03A6";
-        }
-        if (name.equalsIgnoreCase("chi")) {
-            return "\u03C7";
-        }
-        if ((name.equalsIgnoreCase("mu")) || (name.equalsIgnoreCase("my")) || (name.equalsIgnoreCase("myu"))) {
-            return "\u03BC";
-        }
-        if (name.equalsIgnoreCase("nu")) {
-            return "\u03BD";
-        }
-        if (name.equalsIgnoreCase("xi")) {
-            return "\u03BE";
-        }
-        if (name.equalsIgnoreCase("xib")) {
-            return "\u039E";
-        }
-        if (name.equalsIgnoreCase("pi")) {
-            return "\u03C0";
-        }
-        if (name.equalsIgnoreCase("pib")) {
-            return "\u03A0";
-        }
-
-        return name;
-    }
 
     /**
      * Get the html help file name.
