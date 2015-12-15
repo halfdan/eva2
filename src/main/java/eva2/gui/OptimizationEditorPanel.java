@@ -60,6 +60,10 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      */
     private JButton cancelButton;
     /**
+     *
+     */
+    private JPanel typeSelectionPanel;
+    /**
      * Creates the GUI editor component
      */
     private GenericObjectEditor genericObjectEditor = null;
@@ -70,6 +74,30 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
      */
     public OptimizationEditorPanel(Object target, Object backup, PropertyChangeSupport support, GenericObjectEditor goe) {
         this(target, backup, support, goe, false);
+    }
+
+    private void buildTypeSelectionPanel() {
+        comboBoxModel = new DefaultComboBoxModel<>(new Vector<>());
+        objectChooser = new JComboBox<>(comboBoxModel);
+        objectChooser.setEditable(false);
+
+        GridBagConstraints gbConstraints = new GridBagConstraints();
+
+        typeSelectionPanel = new JPanel(new GridBagLayout());
+
+        gbConstraints.gridx = 0;
+        gbConstraints.gridy = 0;
+
+        JLabel typeLabel = new JLabel("Type:");
+        typeLabel.setLabelFor(objectChooser);
+        typeLabel.setDisplayedMnemonic('t');
+        typeSelectionPanel.add(typeLabel, gbConstraints);
+
+        gbConstraints.gridx = 1;
+        gbConstraints.gridy = 0;
+        gbConstraints.weightx = 1.0;
+        gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+        typeSelectionPanel.add(objectChooser, gbConstraints);
     }
 
     /**
@@ -90,9 +118,8 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
             LOGGER.severe("Could not create backup object: not enough memory (OptimizationEditorPanel backup of " + target + ")");
         }
 
-        comboBoxModel = new DefaultComboBoxModel<>(new Vector<>());
-        objectChooser = new JComboBox<>(comboBoxModel);
-        objectChooser.setEditable(false);
+        buildTypeSelectionPanel();
+
         propertySheetPanel = new PropertySheetPanel();
         propertySheetPanel.addPropertyChangeListener(event -> propChangeSupport.firePropertyChange("", backupObject, genericObjectEditor.getValue()));
         openButton = makeIconButton("images/Open16.gif", "Open");
@@ -154,6 +181,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
             ((JDialog) container).dispose();
         });
 
+        // 10px padding
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         setLayout(new GridBagLayout());
@@ -162,14 +190,11 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         gbConstraints.fill = GridBagConstraints.HORIZONTAL;
         gbConstraints.gridx = 0;
         gbConstraints.gridy = 0;
-        add(objectChooser, gbConstraints);
-
-        gbConstraints.gridy = 1;
-        add(new JSeparator(JSeparator.HORIZONTAL), gbConstraints);
+        add(typeSelectionPanel, gbConstraints);
 
         gbConstraints.weightx = 1.0;
         gbConstraints.weighty = 1.0;
-        gbConstraints.gridy = 2;
+        gbConstraints.gridy = 1;
         gbConstraints.gridheight = GridBagConstraints.RELATIVE;
         gbConstraints.fill = GridBagConstraints.BOTH;
         add(propertySheetPanel, gbConstraints);
@@ -190,7 +215,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
 
         gbConstraints.weightx = 0.0;
         gbConstraints.weighty = 0.0;
-        gbConstraints.gridy = 3;
+        gbConstraints.gridy = 2;
         gbConstraints.anchor = GridBagConstraints.LINE_START;
         gbConstraints.fill = GridBagConstraints.HORIZONTAL;
         add(buttonBar, gbConstraints);
@@ -308,17 +333,9 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
             comboBoxModel = new DefaultComboBoxModel<>(classesList);
             objectChooser.setModel(comboBoxModel);
             objectChooser.setRenderer(new ToolTipComboBoxRenderer());
-            /*
-            GridBagConstraints gbConstraints = new GridBagConstraints();
-            gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-            gbConstraints.gridx = 0;
-            gbConstraints.gridy = 1;
-            add(objectChooser, gbConstraints);
-            */
-            objectChooser.setVisible(true);
+            typeSelectionPanel.setVisible(true);
         } else {
-            objectChooser.setVisible(false);
-            //remove(objectChooser);
+            typeSelectionPanel.setVisible(false);
         }
     }
 
@@ -349,7 +366,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     public void updateChooser() {
         String objectName = genericObjectEditor.getValue().getClass().getName();
         for (int i = 0; i < comboBoxModel.getSize(); i++) {
-            Item element = (Item)comboBoxModel.getElementAt(i);
+            Item element = comboBoxModel.getElementAt(i);
 
             if (objectName.equals(element.getId())) {
                 objectChooser.getModel().setSelectedItem(element);
