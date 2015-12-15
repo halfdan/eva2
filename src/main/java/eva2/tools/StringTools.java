@@ -15,8 +15,7 @@ public final class StringTools {
     /**
      * Private constructor to prevent instantiation.
      */
-    private StringTools() {
-    }
+    private StringTools() {}
 
     /**
      * Returns a HTML formatted String, in which each line is at most lineBreak
@@ -494,109 +493,58 @@ public final class StringTools {
 
     public static String translateGreek(String name) {
         // Add some specific display for some greeks here
-        if (name.equalsIgnoreCase("alpha")) {
-            return "\u03B1";
-        }
-        if (name.equalsIgnoreCase("beta")) {
-            return "\u03B2";
-        }
-        if (name.equalsIgnoreCase("gamma")) {
-            return "\u03B3";
-        }
-        if (name.equalsIgnoreCase("gammab")) {
-            return "\u0393";
-        }
-        if (name.equalsIgnoreCase("delta")) {
-            return "\u03B4";
-        }
-        if (name.equalsIgnoreCase("deltab")) {
-            return "\u0394";
-        }
-        if ((name.equalsIgnoreCase("epsi")) || (name.equalsIgnoreCase("epsilon"))) {
-            return "\u03B5";
-        }
-        if (name.equalsIgnoreCase("zeta")) {
-            return "\u03B6";
-        }
-        if (name.equalsIgnoreCase("theta")) {
-            return "\u03D1";
-        }
-        if (name.equalsIgnoreCase("thetab")) {
-            return "\u0398";
-        }
-        if (name.equalsIgnoreCase("iota")) {
-            return "\u03B9";
-        }
-        if (name.equalsIgnoreCase("kappa")) {
-            return "\u03BA";
-        }
-        if (name.equalsIgnoreCase("lambda")) {
-            return "\u03BB";
-        }
-        if (name.equalsIgnoreCase("lambdab")) {
-            return "\u039B";
-        }
-        if (name.equalsIgnoreCase("rho")) {
-            return "\u03C1";
-        }
-        if (name.equalsIgnoreCase("sigma")) {
-            return "\u03C3";
-        }
-        if (name.equalsIgnoreCase("sigmab")) {
-            return "\u03A3";
-        }
-        if (name.equalsIgnoreCase("tau")) {
-            return "\u03C4";
-        }
-        if (name.equalsIgnoreCase("upsilon")) {
-            return "\u03C5";
-        }
-        if (name.equalsIgnoreCase("upsilonb")) {
-            return "\u03D2";
-        }
-        if (name.equalsIgnoreCase("omega")) {
-            return "\u03C9";
-        }
-        if (name.equalsIgnoreCase("omegab")) {
-            return "\u03A9";
-        }
+        final String[][] mapping = {
+                { "alpha", "α" },
+                { "beta", "β" },
+                { "gamma", "γ"},
+                { "gammab", "Γ"},
+                { "delta", "δ"},
+                { "deltab", "Δ"},
+                { "epsi", "epsilon", "ε"},
+                { "zeta", "ζ"},
+                { "theta", "ϑ"},
+                { "thetab", "Θ"},
+                { "iota", "ι"},
+                { "kappa", "κ"},
+                { "lambda", "λ"},
+                { "lambdab", "Λ"},
+                { "rho", "ρ"},
+                { "sigma", "σ"},
+                { "sigmab", "Σ"},
+                { "tau", "τ"},
+                { "upsilon", "υ"},
+                { "upsilonb", "ϒ"},
+                { "omega", "ω"},
+                { "omegab", "Ω"},
 
-        // these are too small
-        if (name.equalsIgnoreCase("eta")) {
-            return "\u03B7";
-        }
-        if (name.equalsIgnoreCase("psi")) {
-            return "\u03C8";
-        }
-        if (name.equalsIgnoreCase("psib")) {
-            return "\u03A8";
-        }
-        if (name.equalsIgnoreCase("phi")) {
-            return "\u03D5";
-        }
-        if (name.equalsIgnoreCase("phib")) {
-            return "\u03A6";
-        }
-        if (name.equalsIgnoreCase("chi")) {
-            return "\u03C7";
-        }
-        if ((name.equalsIgnoreCase("mu")) || (name.equalsIgnoreCase("my")) || (name.equalsIgnoreCase("myu"))) {
-            return "\u03BC";
-        }
-        if (name.equalsIgnoreCase("nu")) {
-            return "\u03BD";
-        }
-        if (name.equalsIgnoreCase("xi")) {
-            return "\u03BE";
-        }
-        if (name.equalsIgnoreCase("xib")) {
-            return "\u039E";
-        }
-        if (name.equalsIgnoreCase("pi")) {
-            return "\u03C0";
-        }
-        if (name.equalsIgnoreCase("pib")) {
-            return "\u03A0";
+                // these are too small
+                { "eta", "η"},
+                { "psi", "ψ"},
+                { "psib", "Ψ"},
+                { "phi", "ϕ"},
+                { "phib", "Φ"},
+                { "chi", "χ"},
+                { "mu", "my", "myu", "μ"},
+                { "nu", "ν"},
+                { "xi", "ξ"},
+                { "xib", "Ξ"},
+                { "pi", "π"},
+                { "pib", "Π"},
+        };
+
+        for(String[] map : mapping) {
+            for (int i = 0; i < map.length - 1; i++) {
+                Pattern p = Pattern.compile("^" + map[i] + "\\d*", Pattern.CASE_INSENSITIVE);
+                Matcher m = p.matcher(name);
+
+                // Regex: ^symbol[0-9]*
+                if(m.matches()) {
+                    Pattern replace = Pattern.compile("^" + map[i], Pattern.CASE_INSENSITIVE);
+                    Matcher rm = replace.matcher(name);
+                    // Last element contains mapping
+                    return rm.replaceFirst(map[map.length -1 ]);
+                }
+            }
         }
 
         return name;
