@@ -15,8 +15,7 @@ public final class StringTools {
     /**
      * Private constructor to prevent instantiation.
      */
-    private StringTools() {
-    }
+    private StringTools() {}
 
     /**
      * Returns a HTML formatted String, in which each line is at most lineBreak
@@ -480,6 +479,9 @@ public final class StringTools {
     }
 
     /**
+     * Takes a full package name and returns the string
+     * after the last period (usually the class name).
+     *
      * @param value The string to cut
      * @return Returns the class Name without package.
      */
@@ -490,6 +492,88 @@ public final class StringTools {
             className = className.substring(dotPos + 1);
         }
         return className; // now is shortName
+    }
+
+    /**
+     * Takes a string and looks for greek letter names. If found,
+     * replaces them by their greek unicode counterparts.
+     *
+     * @param name A string
+     * @return String with greek letter names replaced
+     */
+    public static String translateGreek(String name) {
+        // Add some specific display for some greeks here
+        final String[][] mapping = {
+                { "alpha", "α" },
+                { "beta", "β" },
+                { "gamma", "γ"},
+                { "gammab", "Γ"},
+                { "delta", "δ"},
+                { "deltab", "Δ"},
+                { "epsi", "epsilon", "ε"},
+                { "zeta", "ζ"},
+                { "theta", "ϑ"},
+                { "thetab", "Θ"},
+                { "iota", "ι"},
+                { "kappa", "κ"},
+                { "lambda", "λ"},
+                { "lambdab", "Λ"},
+                { "rho", "ρ"},
+                { "sigma", "σ"},
+                { "sigmab", "Σ"},
+                { "tau", "τ"},
+                { "upsilon", "υ"},
+                { "upsilonb", "ϒ"},
+                { "omega", "ω"},
+                { "omegab", "Ω"},
+
+                // these are too small
+                { "eta", "η"},
+                { "psi", "ψ"},
+                { "psib", "Ψ"},
+                { "phi", "ϕ"},
+                { "phib", "Φ"},
+                { "chi", "χ"},
+                { "mu", "my", "myu", "μ"},
+                { "nu", "ν"},
+                { "xi", "ξ"},
+                { "xib", "Ξ"},
+                { "pi", "π"},
+                { "pib", "Π"},
+        };
+
+        for(String[] map : mapping) {
+            for (int i = 0; i < map.length - 1; i++) {
+                Pattern p = Pattern.compile("^" + map[i] + "\\d*", Pattern.CASE_INSENSITIVE);
+                Matcher m = p.matcher(name);
+
+                // Regex: ^symbol[0-9]*
+                if(m.matches()) {
+                    Pattern replace = Pattern.compile("^" + map[i], Pattern.CASE_INSENSITIVE);
+                    Matcher rm = replace.matcher(name);
+                    // Last element contains mapping
+                    return rm.replaceFirst(map[map.length -1 ]);
+                }
+            }
+        }
+
+        return name;
+    }
+
+    /**
+     * Takes a string and looks for trailing numbers. If present those numbers will
+     * be replaced by a HTML subscript. Make sure to wrap inside a html block when
+     * displaying as part of a JLabel.
+     *
+     * @param label
+     * @return
+     */
+    public static String subscriptIndices(String label) {
+        // Trailing numbers
+        Pattern p = Pattern.compile("(\\d+)$");
+        Matcher m = p.matcher(label);
+
+        return m.replaceFirst("<sub>$1</sub>");
     }
 }
 
