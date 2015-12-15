@@ -187,8 +187,8 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      */
     public synchronized void setTarget(Object targ) {
         propertyTableModel = new DefaultTableModel();
-        propertyTableModel.addColumn("Attribute");
-        propertyTableModel.addColumn("Setting");
+        propertyTableModel.addColumn("Property");
+        propertyTableModel.addColumn("Value");
         propertyTable = new ToolTipTable(propertyTableModel);
         propertyTable.setDefaultRenderer(Object.class, new PropertyCellRenderer());
         propertyTable.setDefaultEditor(Object.class, new PropertyCellEditor());
@@ -215,6 +215,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
 
         GridBagConstraints gbConstraints = new GridBagConstraints();
         gbConstraints.fill = GridBagConstraints.BOTH;
+        gbConstraints.ipady = 10;
 
         Description description = targ.getClass().getAnnotation(Description.class);
         if (description != null) {
@@ -225,9 +226,11 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 gbConstraints.gridy = 0;
                 gbConstraints.fill = GridBagConstraints.HORIZONTAL;
                 gbConstraints.anchor = GridBagConstraints.PAGE_START;
-                add(infoPanel, gbConstraints);
+
+                add(buildTitledSeperator("Info"), gbConstraints);
+
                 gbConstraints.gridy = 1;
-                add(new JSeparator(JSeparator.HORIZONTAL), gbConstraints);
+                add(infoPanel, gbConstraints);
             }
         }
 
@@ -305,9 +308,15 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
 
         propertyTable.setToolTips(toolTips);
 
+
+        gbConstraints.gridy = 2;
+
+
+        add(buildTitledSeperator("Properties"), gbConstraints);
+
         JScrollPane scrollableTable = new JScrollPane(propertyTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         gbConstraints.gridx = 0;
-        gbConstraints.gridy = 2;
+        gbConstraints.gridy = 3;
         gbConstraints.weightx = 1.0;
         gbConstraints.weighty = 1.0;
         gbConstraints.fill = GridBagConstraints.BOTH;
@@ -316,6 +325,24 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
 
         validate();
         setVisible(true);
+    }
+
+    private static JPanel buildTitledSeperator(String title) {
+        JPanel titledSeperator = new JPanel(new GridBagLayout());
+
+        GridBagConstraints gbConstraints = new GridBagConstraints();
+        gbConstraints.gridx = 0;
+        gbConstraints.gridy = 0;
+
+        titledSeperator.add(new JLabel("<html><b>" + title), gbConstraints);
+
+        gbConstraints.gridx = 1;
+        gbConstraints.gridy = 0;
+        gbConstraints.weightx = 1.0;
+        gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+        titledSeperator.add(new JSeparator(JSeparator.HORIZONTAL), gbConstraints);
+
+        return titledSeperator;
     }
 
     public static PropertyDescriptor[] getProperties(Object target) {
@@ -499,21 +526,15 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 return i;
             }
         }
-        System.err.println("Error, property not found: " + string);
+        LOGGER.warning("Error, property not found: " + string);
         return -1;
     }
 
     private JPanel makeInfoPanel(String infoText, Object targ, int rowHeight) {
         className = targ.getClass().getName();
-        helpButton = new JButton("?");
+        helpButton = new JButton();
         helpButton.setToolTipText("More information about " + className);
-        helpButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                openHelpFrame();
-            }
-        });
+        helpButton.addActionListener(event -> openHelpFrame());
         helpButton.putClientProperty("JButton.buttonType", "help");
 
         JTextArea infoTextArea = new JTextArea();
@@ -523,10 +544,8 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         infoTextArea.setLineWrap(true);
         infoTextArea.setWrapStyleWord(true);
         infoTextArea.setBackground(getBackground());
-        //infoTextArea.setSize(infoTextArea.getPreferredSize());
 
         JPanel infoPanel = new JPanel();
-        infoPanel.setBorder(BorderFactory.createTitledBorder("Info"));
         infoPanel.setLayout(new BorderLayout());
         infoPanel.add(infoTextArea, BorderLayout.CENTER);
 
@@ -1056,7 +1075,7 @@ final class PropertyCellEditor extends AbstractCellEditor implements TableCellEd
         int selectedColumn = sourceTable.getSelectedColumn();
         String columnName = sourceTable.getColumnName(selectedColumn);
         /* If the columnName equals Key it holds the keys */
-        return !"Attribute".equals(columnName);
+        return !"Property".equals(columnName);
     }
 }
 
