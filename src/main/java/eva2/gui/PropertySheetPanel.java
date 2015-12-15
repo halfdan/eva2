@@ -300,10 +300,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 continue;
             } // end try
 
-            // Add some specific display for some greeks here
-            name = StringTools.translateGreek(name);
-            name = StringTools.humaniseCamelCase(name);
-            propertyTableModel.addRow(new Object[]{name, newView});
+            propertyTableModel.addRow(new Object[]{prepareLabel(name), newView});
         }
 
         propertyTable.setToolTips(toolTips);
@@ -325,6 +322,15 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
 
         validate();
         setVisible(true);
+    }
+
+    private String prepareLabel(String label) {
+        // Add some specific display for some greeks here
+        label = StringTools.translateGreek(label);
+        label = StringTools.humaniseCamelCase(label);
+        label = StringTools.subscriptIndices(label);
+        label = "<html>" + label + "</html>";
+        return label;
     }
 
     private static JPanel buildTitledSeperator(String title) {
@@ -557,8 +563,6 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         }
         return infoPanel;
     }
-
-
 
     /**
      * Get the html help file name.
