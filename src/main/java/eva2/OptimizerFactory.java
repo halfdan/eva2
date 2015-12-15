@@ -782,7 +782,7 @@ public class OptimizerFactory {
         if (runnable == null) {
             return null;
         }
-        new Thread(runnable).start();
+        new Thread(runnable).run();
         lastRunnable = runnable;
         return runnable;
     }
