@@ -12,7 +12,7 @@ import java.beans.PropertyEditor;
 
 /**
  */
-public abstract class AbstractListSelectionEditor extends JPanel implements PropertyEditor, PropertyChangeListener {
+public abstract class AbstractListSelectionEditor implements PropertyEditor, PropertyChangeListener {
 
     /**
      * Handles property change notification
@@ -192,7 +192,10 @@ public abstract class AbstractListSelectionEditor extends JPanel implements Prop
     public void paintValue(Graphics gfx, Rectangle box) {
         FontMetrics fm = gfx.getFontMetrics();
         int vpad = (box.height - fm.getAscent()) / 2;
-        String rep = "Select from list";
+        String rep;
+        if ((rep = getAsText()) == null) {
+            rep = "Select from list";
+        }
         gfx.drawString(rep, 2, fm.getHeight() + vpad - 3);
     }
 
