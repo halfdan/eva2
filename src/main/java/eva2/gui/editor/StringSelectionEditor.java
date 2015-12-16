@@ -54,12 +54,11 @@ public class StringSelectionEditor extends AbstractListSelectionEditor {
     }
 
     @Override
-    public String getName() {
-        return "StringSelection";
-    }
-
-    @Override
     public String getAsText() {
+        if (getElementCount() == 0) {
+            return null;
+        }
+        
         StringBuilder sbuf = new StringBuilder("{");
         boolean first = true;
         for (int i = 0; i < getElementCount(); i++) {
