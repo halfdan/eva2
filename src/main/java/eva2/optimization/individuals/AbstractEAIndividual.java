@@ -1068,7 +1068,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
     }
 
     /**
-     * For any AbstractEAIndividual try retrieve its position as double[].
+     * For any AbstractEAIndividual try to retrieve its position as double[].
      * Returns null if there is no conversion available. Makes shallow copies if
      * possible.
      *
@@ -1100,20 +1100,8 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @return double valued position of an individual or null
      */
     public static double[] getDoublePosition(AbstractEAIndividual indy) {
-        if (indy instanceof InterfaceESIndividual) {
-            return ((InterfaceESIndividual) indy).getDGenotype().clone();
-        } else if (indy instanceof InterfaceDataTypeDouble) {
-            return ((InterfaceDataTypeDouble) indy).getDoubleData().clone();
-        } else if (indy instanceof InterfaceDataTypeInteger) {
-            int[] intData = ((InterfaceDataTypeInteger) indy).getIntegerData();
-            double[] pos = new double[intData.length];
-            for (int i = 0; i < intData.length; i++) {
-                pos[i] = (double) intData[i];
-            }
-            return pos;
-        } // TODO check some more types here?
-        EVAERROR.errorMsgOnce("Unhandled case in AbstractEAIndividual.getDoublePosition()!");
-        return null;
+        double[] position = getDoublePositionShallow(indy);
+        return position;
     }
 
     /**
