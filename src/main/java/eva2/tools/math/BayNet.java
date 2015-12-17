@@ -1052,9 +1052,7 @@ public final class BayNet {
             line = line + ": " + pTable[j];
             result += line;
         }
-        Pair<Integer, String> p = new Pair<>();
-        p.setHead(length);
-        p.setTail(result);
+        Pair<Integer, String> p = new Pair<>(length, result);
         return p;
     }
 
