@@ -78,7 +78,7 @@ public class ObjectArrayEditor<T> extends JPanel implements PropertyEditor {
         add(scrollPane, c);
 
         addButton.addActionListener(event -> {
-            String className = ((Item) typeSelector.getSelectedItem()).getId();
+            String className = ((TypeSelectorItem) typeSelector.getSelectedItem()).getId();
             try {
                 T n = (T) Class.forName(className).newInstance();
                 listModel.addElement(n);

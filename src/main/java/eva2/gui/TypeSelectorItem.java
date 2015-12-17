@@ -1,12 +1,12 @@
 package eva2.gui;
 
-public class Item
+public class TypeSelectorItem
 {
     private String id;
     private String displayName;
     private String description;
 
-    public Item(String id, String displayName, String description)
+    public TypeSelectorItem(String id, String displayName, String description)
     {
         this.id = id;
         this.displayName = displayName;
