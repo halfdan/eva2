@@ -60,7 +60,7 @@ public class PairTest {
 
     @Test
     public void testGetName() throws Exception {
-        assertEquals("(Head,12.0)", p.toString());
+        assertEquals("(Head,12.0)", p.getName());
     }
 
     @Test
