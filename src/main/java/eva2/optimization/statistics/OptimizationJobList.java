@@ -162,11 +162,8 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
                 (StatisticsOnTwoSampledData[]) StatisticalEvaluation.statsParams.getTwoSampledStats().getSelectedEnum(StatisticsOnTwoSampledData.values()));
         ActionListener sl = e -> arrayEditor.selectDeselectAll();
 
-        ActionListener cliButtonListener = actionEvent -> System.out.println("Generating CLI call");
-
         ActionListener sal = e -> jobList.saveSelectedJobs(arrayEditor);
 
-        arrayEditor.addUpperActionButton("Get CLI", cliButtonListener);
         arrayEditor.addUpperActionButton("(De-)Sel. all", sl);
         arrayEditor.addUpperActionButton("Test Stats", al);
 
