@@ -170,9 +170,6 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
             ((JDialog) container).dispose();
         });
 
-        // 10px padding
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
         setLayout(new GridBagLayout());
         GridBagConstraints gbConstraints = new GridBagConstraints();
 
