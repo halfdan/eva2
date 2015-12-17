@@ -4,9 +4,6 @@ import Jama.Matrix;
 import eva2.optimization.tools.DoubleArrayComparator;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
-import eva2.tools.math.interpolation.BasicDataSet;
-import eva2.tools.math.interpolation.InterpolationException;
-import eva2.tools.math.interpolation.SplineInterpolation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -1099,29 +1096,6 @@ public final class Mathematics {
         }
     }
 
-    /**
-     * Computes a spline interpolation of the two point (x0,f0) and (x1,f1).
-     *
-     * @param x
-     * @param x0
-     * @param x1
-     * @param f0
-     * @param f1
-     * @return If an error with the spline occurs, a linear interpolation will
-     *         be returned.
-     */
-    public static double splineInterpolation(double x, double x0, double x1,
-                                             double f0, double f1) {
-        try {
-            double[] t = {x0, x1}, f = {f0, f1};
-            SplineInterpolation spline = new SplineInterpolation(
-                    new BasicDataSet(t, f, 1));
-            return spline.getY(x);
-        } catch (InterpolationException e) {
-            e.printStackTrace();
-        }
-        return linearInterpolation(x, x0, x1, f0, f1);
-    }
 
     /**
      * This computes the submatrix of the given matrix as a result by scraching
