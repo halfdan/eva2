@@ -16,8 +16,7 @@ public class TXTFileFilter extends FileFilter {
     /**
      * Creates a new instance of TXTFileFilter
      */
-    public TXTFileFilter() {
-    }
+    public TXTFileFilter() {}
 
     @Override
     public boolean accept(java.io.File file) {
