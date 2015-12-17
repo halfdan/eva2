@@ -1,5 +1,7 @@
 package eva2.tools;
 
+import eva2.util.annotation.Parameter;
+
 import java.io.Serializable;
 
 /**
@@ -11,7 +13,6 @@ public class Pair<S, T> implements Serializable {
     /**
      *
      */
-    private static final long serialVersionUID = -3620465393975181451L;
     public S head;
     public T tail;
 
@@ -22,9 +23,6 @@ public class Pair<S, T> implements Serializable {
     public Pair(S head, T tail) {
         this.head = head;
         this.tail = tail;
-    }
-
-    public Pair() {
     }
 
     /**
@@ -75,10 +73,6 @@ public class Pair<S, T> implements Serializable {
         return head;
     }
 
-    public String headTipText() {
-        return "First pair entry";
-    }
-
     /**
      * @return
      */
@@ -90,15 +84,6 @@ public class Pair<S, T> implements Serializable {
         return tail;
     }
 
-    public String tailTipText() {
-        return "Last pair entry";
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return "(" + head.toString() + "," + tail.toString() + ")";
@@ -111,6 +96,7 @@ public class Pair<S, T> implements Serializable {
     /**
      * @param head
      */
+    @Parameter(description="First pair entry")
     public void setHead(S head) {
         this.head = head;
     }
@@ -118,6 +104,7 @@ public class Pair<S, T> implements Serializable {
     /**
      * @param tail
      */
+    @Parameter(description = "Last pair entry")
     public void setTail(T tail) {
         this.tail = tail;
     }
