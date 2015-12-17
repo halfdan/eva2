@@ -15,12 +15,12 @@ import java.util.logging.Logger;
 /**
  * Created by fabian on 16/12/15.
  */
-public class TypeSelector extends JComboBox<Item> {
+public class TypeSelector extends JComboBox<TypeSelectorItem> {
     private static final Logger LOGGER = Logger.getLogger(TypeSelector.class.getName());
     /**
      * The model containing the list of names to select from
      */
-    private DefaultComboBoxModel<Item> comboBoxModel;
+    private DefaultComboBoxModel<TypeSelectorItem> comboBoxModel;
 
     public TypeSelector() {
 
@@ -33,13 +33,13 @@ public class TypeSelector extends JComboBox<Item> {
         classesLongNames = GenericObjectEditor.getClassesFromProperties(classTypeName, instances);
         LOGGER.finest("Selected type for OptimizationEditorPanel: " + classTypeName);
         if (classesLongNames.size() > 1) {
-            Vector<Item> classesList = new Vector<>();
+            Vector<TypeSelectorItem> classesList = new Vector<>();
             String[] toolTips = collectComboToolTips(instances, 100);
             int i = 0;
             for (String className : classesLongNames) {
                 String displayName = StringTools.cutClassName(className);
 
-                classesList.add(new Item(className, displayName, toolTips[i++]));
+                classesList.add(new TypeSelectorItem(className, displayName, toolTips[i++]));
             }
             comboBoxModel = new DefaultComboBoxModel<>(classesList);
             this.setModel(comboBoxModel);
@@ -89,7 +89,7 @@ class ToolTipComboBoxRenderer extends BasicComboBoxRenderer {
                 isSelected, cellHasFocus);
 
         if (value != null) {
-            Item item = (Item)value;
+            TypeSelectorItem item = (TypeSelectorItem)value;
             setText(item.getDisplayName());
 
             if (isSelected) {
@@ -103,7 +103,7 @@ class ToolTipComboBoxRenderer extends BasicComboBoxRenderer {
         }
 
         if (index == -1) {
-            Item item = (Item)value;
+            TypeSelectorItem item = (TypeSelectorItem)value;
             setText(item.getDisplayName());
         }
 

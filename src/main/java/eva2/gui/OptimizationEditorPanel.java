@@ -317,7 +317,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
     public void updateChooser() {
         String objectName = genericObjectEditor.getValue().getClass().getName();
         for (int i = 0; i < typeSelector.getItemCount(); i++) {
-            Item element = typeSelector.getItemAt(i);
+            TypeSelectorItem element = typeSelector.getItemAt(i);
 
             if (objectName.equals(element.getId())) {
                 typeSelector.getModel().setSelectedItem(element);
@@ -345,7 +345,7 @@ public class OptimizationEditorPanel extends JPanel implements ItemListener {
         String className;
 
         if ((e.getSource() == typeSelector) && (e.getStateChange() == ItemEvent.SELECTED)) {
-            className = ((Item) typeSelector.getSelectedItem()).getId();
+            className = ((TypeSelectorItem) typeSelector.getSelectedItem()).getId();
             try {
                 Object n = Class.forName(className).newInstance();
                 genericObjectEditor.setValue(n);
