@@ -227,7 +227,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 gbConstraints.fill = GridBagConstraints.HORIZONTAL;
                 gbConstraints.anchor = GridBagConstraints.PAGE_START;
 
-                add(buildTitledSeperator("Info"), gbConstraints);
+                add(new TitledSeparator("Info"), gbConstraints);
 
                 gbConstraints.gridy = 1;
                 add(infoPanel, gbConstraints);
@@ -307,9 +307,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
 
 
         gbConstraints.gridy = 2;
-
-
-        add(buildTitledSeperator("Properties"), gbConstraints);
+        add(new TitledSeparator("Properties"), gbConstraints);
 
         JScrollPane scrollableTable = new JScrollPane(propertyTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         gbConstraints.gridx = 0;
@@ -319,6 +317,8 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         gbConstraints.fill = GridBagConstraints.BOTH;
         scrollableTable.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         add(scrollableTable, gbConstraints);
+
+        setMinimumSize(new Dimension(350, 0));
 
         validate();
         setVisible(true);
@@ -331,24 +331,6 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         label = StringTools.subscriptIndices(label);
         label = "<html>" + label + "</html>";
         return label;
-    }
-
-    private static JPanel buildTitledSeperator(String title) {
-        JPanel titledSeperator = new JPanel(new GridBagLayout());
-
-        GridBagConstraints gbConstraints = new GridBagConstraints();
-        gbConstraints.gridx = 0;
-        gbConstraints.gridy = 0;
-
-        titledSeperator.add(new JLabel("<html><b>" + title), gbConstraints);
-
-        gbConstraints.gridx = 1;
-        gbConstraints.gridy = 0;
-        gbConstraints.weightx = 1.0;
-        gbConstraints.fill = GridBagConstraints.HORIZONTAL;
-        titledSeperator.add(new JSeparator(JSeparator.HORIZONTAL), gbConstraints);
-
-        return titledSeperator;
     }
 
     public static PropertyDescriptor[] getProperties(Object target) {

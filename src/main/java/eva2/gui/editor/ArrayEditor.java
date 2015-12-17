@@ -79,7 +79,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            boolean consistentView = true; // be optimistic...
+            boolean consistentView;
             if (view instanceof PropertyText) { // check consistency!
                 consistentView = ((PropertyText) view).checkConsistency();
                 if (!consistentView) {
@@ -238,7 +238,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                     list.ensureIndexIsVisible(index);
                     propPanel.getEditor().setValue(item);
                     propPanel.showDialog();
-                    propPanel = null;
+
                 }
             }
         }
@@ -401,7 +401,6 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                         }
                     }
 
-                    //setPreferredSize(new Dimension(400,500));
 
                     if (withAddButton && !(upperButtonList.contains(addButton))) {
                         upperButtonList.add(addButton);
@@ -415,9 +414,6 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
 
                     // Upper Button Panel
                     JPanel combiUpperPanel = new JPanel(getButtonLayout(0, upperButtonList));
-                    // ToDo Figure out how to now show this on Job Pane
-                    combiUpperPanel.add(view);
-                    view.setVisible(withAddButton);
 
                     for (JButton but : upperButtonList) {
                         combiUpperPanel.add(but);
@@ -430,6 +426,12 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                     gbConstraints.gridx = 0;
                     gbConstraints.gridy = 0;
                     add(combiUpperPanel, gbConstraints);
+
+                    gbConstraints.gridy++;
+                    gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+                    gbConstraints.weightx = 1.0;
+                    add(view, gbConstraints);
+                    view.setVisible(withAddButton);
 
                     // Job List
                     gbConstraints.gridy++;
@@ -461,13 +463,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                         add(additionalCenterComp, gbConstraints);
                     }
 
-                    elementEditor.addPropertyChangeListener(new PropertyChangeListener() {
-
-                        @Override
-                        public void propertyChange(final PropertyChangeEvent event) {
-                            repaint();
-                        }
-                    });
+                    elementEditor.addPropertyChangeListener(event -> repaint());
 
                     addPopupMenu();
                 } catch (Exception ex) {
@@ -493,8 +489,8 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
      * @return
      */
     private LayoutManager getButtonLayout(int additionalOffset, List<JButton> bList) {
-        int lines = 1 + ((bList.size() + additionalOffset - 1) / 3);
         int cols = 3;
+        int lines = 1 + ((bList.size() + additionalOffset - 1) / cols);
         return new GridLayout(lines, cols);
     }
 
@@ -531,15 +527,11 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
      * @return
      */
     private ActionListener makeSelectionKnownAL(final ActionListener al) {
-        return new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (selectableList != null) {
-                    selectableList.setSelectionByIndices(elementList.getSelectedIndices());
-                }
-                al.actionPerformed(e);
+        return e -> {
+            if (selectableList != null) {
+                selectableList.setSelectionByIndices(elementList.getSelectedIndices());
             }
+            al.actionPerformed(e);
         };
     }
 
@@ -576,12 +568,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
     }
 
     public boolean areAllSelected() {
-        for (int i = 0; i < elementList.getModel().getSize(); i++) {
-            if (!elementList.isSelectedIndex(i)) {
-                return false;
-            }
-        }
-        return true;
+        return elementList.getSelectedIndices().length == elementList.getModel().getSize();
     }
 
     /**
@@ -647,7 +634,6 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
     private JMenuItem createMenuItem(String title, boolean enabled,
                                      ActionListener aListener) {
         JMenuItem item = new JMenuItem(title);
-        // if (bgColor!=null) item.setForeground(bgColor);
         item.addActionListener(aListener);
         item.setEnabled(enabled);
         return item;
