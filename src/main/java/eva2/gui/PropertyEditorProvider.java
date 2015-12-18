@@ -3,12 +3,17 @@ package eva2.gui;
 import eva2.gui.editor.*;
 import eva2.optimization.individuals.codings.gp.GPArea;
 import eva2.optimization.operator.terminators.InterfaceTerminator;
+import eva2.tools.Primitives;
 import eva2.tools.SelectedTag;
 import eva2.tools.StringSelection;
 
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class PropertyEditorProvider {
     // if true, we use the GenericObjectEditor whenever no specific one is registered, so keep it true
@@ -23,13 +28,24 @@ public class PropertyEditorProvider {
     public static PropertyEditor findEditor(Class<?> cls) {
         PropertyEditor editor = PropertyEditorManager.findEditor(cls);
 
+        // Try to unwrap primitives
+        if (editor == null && Primitives.isWrapperType(cls)) {
+            editor = PropertyEditorManager.findEditor(Primitives.unwrap(cls));
+        }
+
         if ((editor == null) && useDefaultGOE) {
             if (cls.isArray()) {
-                editor = new ArrayEditor();
+                Class<?> unwrapped = Primitives.isWrapperType(cls.getComponentType()) ? Primitives.unwrap(cls.getComponentType()) : cls;
+                if (unwrapped.isPrimitive()) {
+                    editor = new ArrayEditor();
+                } else {
+                    editor = new ObjectArrayEditor<>(unwrapped.getComponentType());
+                }
             } else if (cls.isEnum()) {
                 editor = new EnumEditor();
             } else {
                 editor = new GenericObjectEditor();
+                ((GenericObjectEditor)editor).setClassType(cls);
             }
         }
         return editor;
@@ -42,6 +58,7 @@ public class PropertyEditorProvider {
      * @return
      */
     public static PropertyEditor findEditor(PropertyDescriptor prop, Object value) {
+
         PropertyEditor editor = null;
         Class pec = prop.getPropertyEditorClass();
         Class type = prop.getPropertyType();
@@ -56,10 +73,9 @@ public class PropertyEditorProvider {
 
         if (editor == null) {
             if (value != null) {
-
-                // ToDo: This should be handled by the registerEditor below. findEditor however always returns the sun.beans.editor stuff.
-                if (value instanceof Enum) {
-                    editor = new EnumEditor();
+                // Try to unwrap primitives
+                if (Primitives.isWrapperType(value.getClass())) {
+                    editor = PropertyEditorManager.findEditor(Primitives.unwrap(value.getClass()));
                 } else {
                     editor = PropertyEditorManager.findEditor(value.getClass());
                 }
@@ -84,11 +100,17 @@ public class PropertyEditorProvider {
 
             if ((editor == null) && useDefaultGOE) {
                 if (type.isArray()) {
-                    editor = new ArrayEditor();
+                    Class<?> unwrapped = Primitives.isWrapperType(type.getComponentType()) ? Primitives.unwrap(type.getComponentType()) : type;
+                    if (unwrapped.isPrimitive()) {
+                        editor = new ArrayEditor();
+                    } else {
+                        editor = new ObjectArrayEditor<>(unwrapped.getComponentType());
+                    }
                 } else if (type.isEnum()) {
                     editor = new EnumEditor();
                 } else {
                     editor = new GenericObjectEditor();
+                    ((GenericObjectEditor)editor).setClassType(type);
                 }
             }
         }
@@ -116,6 +138,8 @@ public class PropertyEditorProvider {
         PropertyEditorManager.registerEditor(Enum.class, EnumEditor.class);
         PropertyEditorManager.registerEditor(int[].class, ArrayEditor.class);
         PropertyEditorManager.registerEditor(double[].class, ArrayEditor.class);
+        PropertyEditorManager.registerEditor(String[].class, ArrayEditor.class);
+
         PropertyEditorManager.registerEditor(InterfaceTerminator[].class, ArrayEditor.class);
 
 
