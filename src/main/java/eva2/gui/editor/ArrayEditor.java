@@ -291,7 +291,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                     ((GenericObjectEditor) e).setClassType(valueClass);
                 }
                 e.setValue(value);
-                JPanel cellPanel = new JPanel() {
+                return new JPanel() {
 
                     @Override
                     public void paintComponent(Graphics g) {
@@ -315,7 +315,6 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                         return newPref;
                     }
                 };
-                return cellPanel;
             } catch (Exception ex) {
                 return null;
             }
