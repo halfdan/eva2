@@ -18,6 +18,7 @@ public class ObjectArrayEditor<T> extends JPanel implements PropertyEditor {
     private JList<T> objectList;
     private DefaultListModel<T> listModel;
     private PropertyChangeSupport propChangeSupport;
+    private JButton configButton;
 
     public ObjectArrayEditor(Class<T> type) {
         listModel = new DefaultListModel<>();
@@ -53,7 +54,6 @@ public class ObjectArrayEditor<T> extends JPanel implements PropertyEditor {
         c.weighty = 0.0;
         add(removeButton, c);
 
-        JButton configButton;
         configButton = new JButton("Config");
         c.gridx = 2;
         c.gridy = 2;
@@ -129,11 +129,8 @@ public class ObjectArrayEditor<T> extends JPanel implements PropertyEditor {
     public Object getValue() {
         if (listModel == null) {
             return null;
-        }
-        if (true == false) {
-            return true;
         } else {
-            // 	Convert the listmodel to an array of strings and return it.
+            // 	Convert the listmodel to an array of T and return it.
             int length = listModel.getSize();
             Object result = Array.newInstance(value.getClass().getComponentType(), length);
             for (int i = 0; i < length; i++) {
@@ -209,5 +206,9 @@ public class ObjectArrayEditor<T> extends JPanel implements PropertyEditor {
             propChangeSupport = new PropertyChangeSupport(this);
         }
         propChangeSupport.removePropertyChangeListener(l);
+    }
+
+    public void toggleConfigButton() {
+        this.configButton.setEnabled(!configButton.isEnabled());
     }
 }
