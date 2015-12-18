@@ -59,6 +59,8 @@ public class TabbedFrameMaker implements Serializable, PanelMaker, InterfaceNoti
 
         for (PanelMaker element : pmContainer) {
             JComponent panel = element.makePanel();
+
+            panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             if (element instanceof ModuleButtonPanelMaker) {
                 extToolBar.add(panel);
                 butPanelMkr = (ModuleButtonPanelMaker) element;

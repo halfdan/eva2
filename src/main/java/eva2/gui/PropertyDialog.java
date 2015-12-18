@@ -26,6 +26,8 @@ public class PropertyDialog extends JDialog {
         setLayout(new BorderLayout());
         propertyEditor = editor;
         editorComponent = editor.getCustomEditor();
+
+        ((JPanel)getContentPane()).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(editorComponent, BorderLayout.CENTER);
 
         pack();
