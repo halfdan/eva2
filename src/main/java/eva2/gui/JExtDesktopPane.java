@@ -34,6 +34,7 @@ public class JExtDesktopPane extends JDesktopPane {
      */
     public JExtDesktopPane() {
         super();
+        this.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
 
         windowMenu = new JExtMenu("&Windows");
         desktopManager = new ExtDesktopManager(this);
