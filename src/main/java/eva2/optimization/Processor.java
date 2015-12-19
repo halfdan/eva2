@@ -261,9 +261,9 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
 
             runCounter++;
             maybeFinishParamCtrl(optimizationParameters);
-            userAborted = !isOptimizationRunning(); // stop is "normal" if opt wasnt set false by the user (and thus still true)
+            userAborted = !isOptimizationRunning(); // stop is "normal" if opt wasn't set false by the user (and thus still true)
             //////////////// Default stats
-            statistics.stopOptimizationPerformed(!userAborted, terminator.lastTerminationMessage()); // stop is "normal" if opt wasnt set false by the user (and thus still true)
+            statistics.stopOptimizationPerformed(!userAborted, terminator.lastTerminationMessage()); // stop is "normal" if opt wasn't set false by the user (and thus still true)
 
             //////////////// PP or set results without further PP
             if (!userAborted) {
