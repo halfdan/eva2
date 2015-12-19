@@ -218,7 +218,7 @@ public class FLensProblem extends AbstractOptimizationProblem
     }
 
     /**
-     * This method inits a problem view frame
+     * This method initializes a problem view frame
      */
     public void initProblemFrame() {
         if (this.problemFrame == null) {
@@ -256,7 +256,7 @@ public class FLensProblem extends AbstractOptimizationProblem
     }
 
     /**
-     * This method inits the Problem to log multiruns
+     * This method initializes the Problem to log multiruns
      */
     @Override
     public void initializeProblem() {
@@ -269,7 +269,7 @@ public class FLensProblem extends AbstractOptimizationProblem
     /**
      * This method inits a given population
      *
-     * @param population The populations that is to be inited
+     * @param population The populations that is to be initialized
      */
     @Override
     public void initializePopulation(Population population) {
@@ -299,7 +299,7 @@ public class FLensProblem extends AbstractOptimizationProblem
     /**
      * This method evaluate a single individual and sets the fitness values
      *
-     * @param individual The individual that is to be evalutated
+     * @param individual The individual that is to be evaluated
      */
     @Override
     public void evaluate(AbstractEAIndividual individual) {
@@ -376,7 +376,7 @@ public class FLensProblem extends AbstractOptimizationProblem
 
     /**
      * This method allows you to output a string that describes a found solution
-     * in a way that is most suiteable for a given problem.
+     * in a way that is most suitable for a given problem.
      *
      * @param individual The individual that is to be shown.
      * @return The description.
