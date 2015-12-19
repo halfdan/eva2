@@ -9,6 +9,7 @@ import eva2.tools.chart2d.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
@@ -68,6 +69,7 @@ public class FunctionArea extends DArea implements Serializable {
      */
     public FunctionArea(String xname, String yname) {
         this();
+        setIgnoreRepaint(true);
         setPreferredSize(new Dimension(600, 500));
         setVisibleRectangle(1, 1, 100000, 1000);
         setAutoFocus(true);
@@ -466,9 +468,9 @@ public class FunctionArea extends DArea implements Serializable {
      * Plot a circle icon to the function area which is annotated with a char
      * and a double value.
      *
-     * @param c
      * @param val
      * @param position
+     * @param graphID
      */
     public void drawCircle(double val, double[] position, int graphID) {
         drawCircle("" + val, position, graphID);
@@ -590,7 +592,7 @@ public class FunctionArea extends DArea implements Serializable {
             return true;
         }
         for (int i = 0; i < pointSetContainer.size(); i++) {
-            if (pointSetContainer.get(i) instanceof GraphPointSet) {
+            if (pointSetContainer.get(i) != null) {
                 GraphPointSet set = pointSetContainer.get(i);
                 DPointSet pset = set.getConnectedPointSet();
                 // add column names
@@ -731,7 +733,7 @@ public class FunctionArea extends DArea implements Serializable {
         DPoint point2 = null;
         double dist = 0;
         for (int i = 0; i < pointSetContainer.size(); i++) {
-            if (pointSetContainer.get(i) instanceof GraphPointSet) {
+            if (pointSetContainer.get(i) != null) {
                 GraphPointSet pointset = pointSetContainer.get(i);
                 point2 = pointset.getNearestDPoint(point1);
                 if (point2 == null) {
@@ -791,7 +793,7 @@ public class FunctionArea extends DArea implements Serializable {
     /**
      * Returns the number of points within the graph of the given label.
      *
-     * @param index
+     * @param label
      * @return
      */
     public int getPointCount(int label) {
@@ -821,7 +823,7 @@ public class FunctionArea extends DArea implements Serializable {
     }
 
     /**
-     * Causes all PointSets to interupt the connected painting at the current
+     * Causes all PointSets to interrupt the connected painting at the current
      * position.
      */
     public void jump() {
@@ -832,10 +834,21 @@ public class FunctionArea extends DArea implements Serializable {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        // This might cure the eternal display problems: just ignore clipping and leave it up to swing
+        Dimension winDim = getSize();
+        int theHeight = winDim.height;
+        int theWidth = winDim.width;
+
+        BufferedImage bufferedImage = new BufferedImage(theWidth, theHeight, BufferedImage.TYPE_INT_RGB);
+        // Create a graphics contents on the buffered image
+        Graphics2D g2D = bufferedImage.createGraphics();
+
         if (legendBox != null && legend) {
-            legendBox.paintIn(g, scaledBorder.getInnerRect(this));
+            legendBox.paintIn(g2D, scaledBorder.getInnerRect(this));
         }
+        super.paint(g2D);
+        // Now put everything on the screen
+        g.drawImage(bufferedImage, 0, 0, this);
     }
 
     /**

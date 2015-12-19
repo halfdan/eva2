@@ -38,6 +38,9 @@ public class JEFrame extends JInternalFrame {
     private void init() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+        setDoubleBuffered(true);
+        setIgnoreRepaint(true);
+
         this.addInternalFrameListener(new InternalFrameAdapter() {
 
             @Override

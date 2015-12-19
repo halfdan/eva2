@@ -13,6 +13,7 @@ import eva2.tools.math.RNG;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
@@ -29,6 +30,7 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         initView(f);
         Dimension d = new Dimension(280, 220);
         this.setPreferredSize(d);
+        setIgnoreRepaint(true);
         this.setMinimumSize(d);
         resetView();
     }
@@ -56,11 +58,6 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
 
         dashStroke = new BasicStroke(ds.getLineWidth(), ds.getEndCap(), ds.getLineJoin(), ds.getMiterLimit(), new float[]{8, 8}, 0);
 
-        super.paint(g);
-        if (g == null) {
-            System.out.println(" G == null!?");
-            return;
-        }
         // This might cure the eternal display problems: just ignore clipping and leave it up to swing
         Dimension winDim = getSize();
         theHeight = winDim.height;
@@ -69,6 +66,8 @@ class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
         bufferedImage = new BufferedImage(this.theWidth, this.theHeight, BufferedImage.TYPE_INT_RGB);
         // Create a graphics contents on the buffered image
         Graphics2D g2D = bufferedImage.createGraphics();
+
+        super.paint(g2D);
         g2D.setPaint(Color.white);
         tmpShape = new Rectangle(0, 0, this.theWidth, this.theHeight);
         g2D.fill(tmpShape);
