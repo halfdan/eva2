@@ -8,7 +8,7 @@ out/
 .idea
 .gradle
 gradle/
-EvA2.iml
+*.iml
 *.aux
 *.log
 *.out
