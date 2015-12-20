@@ -238,12 +238,12 @@ public class DPointSet extends DComponent {
 
     /**
      * method returns the index to the nearest
-     * <code>DPoint</code> in this
-     * <code>DPointSet</code>.
+     * {@code DPoint} in this
+     * {@code DPointSet}.
      *
      * @return the index to the nearest
-     *         <code>DPoint</code>. -1 if no nearest
-     *         <code>DPoint</code> was found.
+     *         {@code DPoint}. -1 if no nearest
+     *         {@code DPoint} was found.
      */
     public int getNearestDPointIndex(DPoint point) {
         double minValue = Double.MAX_VALUE;
@@ -262,11 +262,11 @@ public class DPointSet extends DComponent {
 
     /**
      * method returns the nearest
-     * <code>DPoint</code> in this
-     * <code>DPointSet</code>.
+     * {@code DPoint} in this
+     * {@code DPointSet}.
      *
      * @return the nearest
-     *         <code>DPoint</code>
+     *         {@code DPoint}
      */
     public DPoint getNearestDPoint(DPoint point) {
         int minIndex = getNearestDPointIndex(point);

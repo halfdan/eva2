@@ -66,7 +66,7 @@ import java.util.Vector;
  * subswarm can formally have, but it does not affect the actual radius. This
  * adjustment is proposed in [2] in order to improve the performance of the
  * NichePSO. Experiments showed a good performance for relatively small values
- * of maxAllowedSwarmRadius <= 0.0001 on lower dimensional problems. For higher
+ * of maxAllowedSwarmRadius &lt;= 0.0001 on lower dimensional problems. For higher
  * dimensional problems, larger values may be preferable.
  * <p>
  * [1] R. Brits, A. P. Engelbrecht and B. Bergh. A Niching Particle Swarm
@@ -147,13 +147,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     // by default, calculate the individuals fitness std dev using this number of past fitness values 
     public static final int defaultFitStdDevHorizon = 3;
 
-    /**
-     * ********************************************************************************************************************
-     * ctors, clone
-     */
-    /**
-     * @tested
-     */
     public NichePSO() {
         if (log) {
             initLogFile();
@@ -177,9 +170,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         GenericObjectEditor.setHideProperty(getClass(), "maxAllowedSwarmRadius", false);
     }
 
-    /**
-     * @tested @param a
-     */
     public NichePSO(NichePSO a) {
         this.mainSwarmSize = a.mainSwarmSize;
         this.maxAllowedSwarmRadius = a.maxAllowedSwarmRadius;
@@ -213,17 +203,13 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         this.optimizationProblem = (InterfaceOptimizationProblem) a.optimizationProblem.clone();
     }
 
-    /**
-     * @tested (non-Javadoc)
-     * @see java.lang.Object#clone()
-     */
     @Override
     public Object clone() {
         return new NichePSO(this);
     }
 
     /**
-     * @tested ps sets the mainswarm according to the NichePSO Parameters,
+     * ps sets the mainswarm according to the NichePSO Parameters,
      * called via initialize()
      */
     protected void initMainSwarm() {
@@ -252,7 +238,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested inits the template used for creating subswarms this is only
+     * inits the template used for creating subswarms this is only
      * called in the ctor not via initialize() (would overwrite changes set from
      * outside for the next run)
      */
@@ -279,7 +265,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return an optimizer with parameters set according to the nichePSO
-     * @tested returns the optimizer that should be used to create a new
+     * returns the optimizer that should be used to create a new
      * subswarm
      */
     public ParticleSubSwarmOptimization getNewSubSwarmOptimizer() {
@@ -290,7 +276,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested junit, junit&, emp, ... (non-Javadoc)
      * @see eva2.optimization.strategies.InterfaceOptimizer#initialize()
      */
     @Override
@@ -319,7 +304,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested (non-Javadoc) uses the given population and basically sets rnd
+     * uses the given population and basically sets rnd
      * velocity vectors (if reset == false)
      */
     @Override
@@ -335,11 +320,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * ********************************************************************************************************************
-     * Optimization
-     */
-    /**
-     * @tested (non-Javadoc)
      * @see eva2.optimization.strategies.InterfaceOptimizer#optimize()
      */
     @Override
@@ -498,7 +478,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested junit deactivates the subswarms according to the decativation
+     * deactivates the subswarms according to the decativation
      * strategy
      */
     protected void deactivateSubSwarmsIfPossible() {
@@ -546,10 +526,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         return actCnt;
     }
 
-    /**
-     * ********************************************************************************************************************
-     * Merging
-     */
     protected void mergingEventFor(int i, int j) {
         if (isVerbose()) {
             System.out.print("merge condition \n");
@@ -564,7 +540,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested junit merges the subswarms according to the merging strategy
+     * merges the subswarms according to the merging strategy
      */
     protected void mergeSubswarmsIfPossible() {
         boolean runagain = false;
@@ -608,7 +584,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * junit absorbs the mainswarm particles into the subswarm according
+     * absorbs the mainswarm particles into the subswarm according
      * to the absorbtion strategy
      */
     protected void absorbParticlesIfPossible() {
@@ -636,10 +612,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         }
     }
 
-    /**
-     * ********************************************************************************************************************
-     * Subswarm Creation
-     */
     protected void subswarmCreationEventFor(AbstractEAIndividual currentindy, ParticleSubSwarmOptimization subswarm) {
         if (isVerbose()) {
             System.out.print("creating subswarm\n");
@@ -655,7 +627,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested junit creates a subswarm from every particle in the mainswarm
+     * creates a subswarm from every particle in the mainswarm
      * that meets the convergence-criteria of the creation strategy
      */
     protected void createSubswarmIfPossible() {
@@ -679,13 +651,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         }
     }
 
-    /**
-     * ********************************************************************************************************************
-     * setter, getter: population and solutions
-     */
-    /**
-     * @tested nn (non-Javadoc)
-     */
     @Override
     public void setPopulation(Population pop) {
         //pass on to mainswarm optimizer
@@ -695,7 +660,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     /**
      * @return a population consisting of copies from the mainswarm and all
      *         active subswarms
-     * @tested junit, junit&
      */
     public Population getActivePopulation() {
         // construct a metapop with clones from the mainswarm and all active subswarms
@@ -727,7 +691,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     /**
      * @return a population consisting of copies from the mainswarm and all
      *         subswarms.
-     * @tested junit returns a population consisting of copies from the
+     * returns a population consisting of copies from the
      * mainswarm and all subswarms (active and inactive, so the size of this
      * Population is not necessarily constant). (Especially important for the
      * call back regarding the output file... ) Beware:
@@ -788,7 +752,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     /**
      * @return a population consisting of the personal best solutions of every
      *         particle in the mainswarm and all subswarms
-     * @tested junit (non-Javadoc)
      * @see eva2.optimization.strategies.InterfaceOptimizer#getAllSolutions()
      */
     @Override
@@ -819,7 +782,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return the best solution found by any particle in any swarm
-     * @tested junit
      */
     public AbstractEAIndividual getGlobalBestSolution() {
         Population metapop = getPopulation();
@@ -839,7 +801,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return array with copies of the gbest individuals
-     * @tested junit returns the cloned global best individuals (ie best of all
+     * returns the cloned global best individuals (ie best of all
      * time) from every subswarm and the main swarm
      */
     public Population getSubswarmRepresentatives(boolean onlyInactive) {
@@ -859,7 +821,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @param size
-     * @tested ps sets the !initial! size of the mainswarm population use this
+     * ps sets the !initial! size of the mainswarm population use this
      * instead of getPopulation.setPopulationSize()
      */
     public void setMainSwarmSize(int size) {
@@ -871,7 +833,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return the !initial! size of the mainswarm population
-     * @tested nn returns the !initial! size of the mainswarm population
+     * returns the !initial! size of the mainswarm population
      */
     public int getMainSwarmSize() {
         return this.mainSwarmSize;
@@ -883,7 +845,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @param val
-     * @tested ps defines the maximal allowed subswarm radius for absorption and
+     * defines the maximal allowed subswarm radius for absorption and
      * merging
      */
     public void setMaxAllowedSwarmRadius(double val) {
@@ -899,7 +861,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return
-     * @tested nn
      */
     public double getMaxAllowedSwarmRadius() {
         return this.maxAllowedSwarmRadius;
@@ -1002,7 +963,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @param val
-     * @tested nn
      */
     public void SetPartlyInactive(boolean val) {
         this.partlyInactive = val;
@@ -1010,7 +970,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return
-     * @tested nn
      */
     public boolean isPartlyInactive() {
         return partlyInactive;
@@ -1186,7 +1145,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
     /**
      * @param problem
-     * @tested ps This method will set the problem that is to be optimized
+     * This method will set the problem that is to be optimized
      */
     @Override
     @Hidden
@@ -1221,7 +1180,6 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     /**
      * @param vals
      * @return
-     * @tested junit
      */
     public double getMedian(double[] vals) {
         java.util.Arrays.sort(vals);
@@ -1300,12 +1258,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * ********************************************************************************************************************
-     * setter, getter: infostrings
-     */
-    /**
      * @return The name of the algorithm
-     * @tested nn This method will return a naming String
+     * This method will return a naming String
      */
     @Override
     public String getName() {
@@ -1314,7 +1268,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return A descriptive string
-     * @tested nn This method will return a string describing all properties of
+     * This method will return a string describing all properties of
      * the optimizer and the applied methods.
      */
     @Override
@@ -1327,7 +1281,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return descriptive string of the elite
-     * @tested emp returns a string that lists the global best individuals (ie
+     * emp returns a string that lists the global best individuals (ie
      * best of all time) from every subswarm
      */
     public String getSubswarmRepresentativesAsString(boolean onlyInactive) {
@@ -1342,7 +1296,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return
-     * @tested emp
+     * emp
      */
     public String getPerformanceAsString() {
         if (!(optimizationProblem instanceof InterfaceMultimodalProblem)) {
@@ -1390,7 +1344,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
      * for the logfile
      */
     /**
-     * @tested emp generates the NichePSO_date file
+     * emp generates the NichePSO_date file
      */
     protected void initLogFile() {
         // opening output file...
@@ -1426,7 +1380,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @param line string to be written
-     * @tested emp writes something to the LogFile
+     * emp writes something to the LogFile
      */
     protected void writeToLogFile(String line) {
         String write = line + "\n";
@@ -1442,15 +1396,9 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * ************************************************- plotting analysing
-     * debugging -************************************
-     * /**********************************************************************************************************************
-     * getter for debugging and analysing
-     */
-    /**
      * @param index
      * @return particle with given index
-     * @tested @param pop
+     * @param pop
      */
     public AbstractEAIndividual getIndyByParticleIndexAndPopulation(Population pop, Integer index) {
         for (int i = 0; i < pop.size(); ++i) {
@@ -1466,7 +1414,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @return main swarm particle with given index
-     * @tested @param index
+     * @param index
      */
     public AbstractEAIndividual getIndyByParticleIndex(Integer index) {
         AbstractEAIndividual indy = null;
@@ -1486,7 +1434,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested @return particle with minimal stddev in fitness over the last 3
+     * @return particle with minimal stddev in fitness over the last 3
      * iterations
      */
     protected AbstractEAIndividual getIndyWithMinStdDev() {
@@ -1510,11 +1458,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * ********************************************************************************************************************
-     * plotting
-     */
-    /**
-     * @tested inits a new Topoplot
+     * Inits a new Topoplot
      */
     protected void initPlotSwarm() {
         double[] a = new double[2];
@@ -1528,7 +1472,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested clean everything except topology colors
+     * Clean everything except topology colors
      */
     protected void cleanPlotSwarm() {
         // delete all previous points
@@ -1544,7 +1488,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested plots the std dev of all particles in the main swarm
+     * Plots the std dev of all particles in the main swarm
      */
     protected void plotAllStdDevsInMainSwarm() {
         //add further information to MainSwarm-Plot	point by point   
@@ -1569,7 +1513,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested plots only the minimal std dev for the respective particle
+     * Plots only the minimal std dev for the respective particle
      */
     protected void plotMinStdDevInMainSwarm() {
         //add further information to MainSwarm-Plot	(minimal stddev) 
@@ -1588,7 +1532,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @param boundary
-     * @tested plots all std devs < boundary for the respective particles
+     * Plots all std devs &lt; boundary for the respective particles
      */
     protected void plotBoundStdDevInMainSwarm(double boundary) {
         InterfaceDataTypeDouble tmpIndy1;
@@ -1616,7 +1560,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     /**
      * @param index index of the particle
      * @param text  information to be added
-     * @tested plots a circle around the individual and adds some information
+     * Plots a circle around the individual and adds some information
      */
     protected void plotCircleForIndy(int index, String text) {
         AbstractEAIndividual indy = getIndyByParticleIndex(index);
@@ -1631,7 +1575,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     /**
      * @param indy invidual
      * @param text information to be added
-     * @tested plots a circle around the individual and adds some information
+     * Plots a circle around the individual and adds some information
      */
     protected void plotCircleForIndy(AbstractEAIndividual indy, String text) {
         InterfaceDataTypeDouble tmpIndy1 = (InterfaceDataTypeDouble) indy;
@@ -1643,7 +1587,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested cleans the previous plot and plots the mainswarm as points
+     * Cleans the previous plot and plots the mainswarm as points
      */
     protected void plotMainSwarm(boolean withIDs) {
         if (this.optimizationProblem instanceof Interface2DBorderProblem) {
@@ -1750,7 +1694,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested plots all subswarms as connected lines to their respective best
+     * Plots all subswarms as connected lines to their respective best
      * individual
      */
     protected void plotSubSwarms() {
@@ -1823,7 +1767,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested plots information about merging, absorbtion and subswarm-creation
+     * Plots information about merging, absorption and subswarm-creation
      */
     protected void plotAdditionalInfo() {
         // from merging
@@ -1872,7 +1816,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * @tested @param particleIndex
+     * @param particleIndex
      */
     protected void plotTraceIndy(int particleIndex) {
         AbstractEAIndividual indy = getIndyByParticleIndex(particleIndex);
@@ -1890,7 +1834,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
 
     /**
      * @param indy
-     * @tested plots the old position, new position, personal best position and
+     * Plots the old position, new position, personal best position and
      * neighborhood best position for a given individual
      */
     protected void plotStatusForIndy(AbstractEAIndividual indy) {
@@ -1991,7 +1935,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * Create a Niche PSO with parameters as to Brits, Engelbrecht & Bergh: A
+     * Create a Niche PSO with parameters as to Brits, Engelbrecht &amp; Bergh: A
      * Niching Particle Swarm Optimizer. SEAL 2002. Exeption: the swarm size is
      * 200 by default, because 30 (of the orig. paper) seems way too low.
      * <p>
@@ -2015,7 +1959,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * Set parameters as to Brits, Engelbrecht & Bergh: A Niching Particle Swarm
+     * Set parameters as to Brits, Engelbrecht &amp; Bergh: A Niching Particle Swarm
      * Optimizer. SEAL 2002. Exception: the swarm size is 100 by default, because
      * 30 (of the orig. paper) seems way too low.
      *
@@ -2065,8 +2009,8 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
     }
 
     /**
-     * Set parameters as to Brits, Engelbrecht & Bergh: A Niching Particle Swarm
-     * Optimizer. SEAL 2002. Exeption: the swarm size is 200 by default, because
+     * Set parameters as to Brits, Engelbrecht &amp; Bergh: A Niching Particle Swarm
+     * Optimizer. SEAL 2002. Exception: the swarm size is 200 by default, because
      * 30 (of the orig. paper) seems way too low.
      *
      * @param npso an already existing NichePSO instance or null to create a new one

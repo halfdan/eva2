@@ -47,11 +47,11 @@ import java.util.List;
  * optimization procedures in EvA2. The arguments passed to the methods
  * initialize the respective optimization procedure. To perform an optimization
  * one has to do the following:
- * <code>
+ * {@code
  * InterfaceOptimizer optimizer = OptimizerFactory.createCertainOptimizer(arguments);
  * EvaluationTerminator terminator = new EvaluationTerminator(numOfFitnessCalls);
  * while (!terminator.isTerminated(optimizer.getPopulation())) optimizer.optimize();
- * </code>
+ * }
  */
 public class OptimizerFactory {
 
@@ -323,7 +323,7 @@ public class OptimizerFactory {
      * This method creates a Hill Climber algorithm with a default fixed-size
      * mutation.
      *
-     * @param pop      The size of the population
+     * @param popSize      The size of the population
      * @param problem  The problem to be optimized
      * @param listener
      * @return An optimization procedure that performs hill climbing.
@@ -715,8 +715,8 @@ public class OptimizerFactory {
      * Use default random seed and the population size of the optimizer.
      *
      * @param opt
-     * @param popSize
      * @param problem
+     * @param term
      * @return
      * @see #makeParams(InterfaceOptimizer, int, AbstractOptimizationProblem,
      *      long, InterfaceTerminator)
@@ -1117,7 +1117,7 @@ public class OptimizerFactory {
     /**
      * Add a new InterfaceTerminator to the current user-defined optimizer in a
      * boolean combination. The old and the given terminator will be combined as
-     * in (TOld && TNew) if bAnd is true, and as in (TOld || TNew) if bAnd is
+     * in (TOld &amp;&amp; TNew) if bAnd is true, and as in (TOld || TNew) if bAnd is
      * false. If there was no user-defined terminator (or it was set to null)
      * the new one is used without conjunction.
      *
@@ -1327,7 +1327,6 @@ public class OptimizerFactory {
      * @param evalCycle
      * @param popSize
      * @param minImprovement
-     * @param method
      * @param sigmaClust
      * @return
      */
@@ -1500,7 +1499,7 @@ public class OptimizerFactory {
      * A standard niching ES which employs predefined values and standard ES
      * variation operators.
      *
-     * @param problem
+     * @param prob
      * @return
      */
     public static OptimizationParameters standardNichingEs(AbstractOptimizationProblem prob) {
@@ -1513,7 +1512,7 @@ public class OptimizerFactory {
     /**
      * A niching ES.
      *
-     * @param problem
+     * @param prob
      * @return
      */
     public static OptimizationParameters createNichingEs(AbstractOptimizationProblem prob, double nicheRadius, int muPerPeak, int lambdaPerPeak, int expectedPeaks, int rndImmigrants, int explorerPeaks, int resetExplInterval, int etaPresel) {

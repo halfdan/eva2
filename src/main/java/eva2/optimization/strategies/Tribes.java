@@ -39,10 +39,7 @@ import java.util.List;
  * though.
  *
  * @author Maurice Clerc, Marcel Kronfeld
- * @author Maurice.Clerc@WriteMe.com  {@link http://mauriceclerc.net}
- *         {@link http://clerc.maurice.free.fr/pso/}
- * @version 2006-02 21
- * @date 2007-09-13
+ * @author Maurice.Clerc@WriteMe.com
  * <p>
  * Original notes:
  */
@@ -461,21 +458,21 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
      * save("\n" + iter + " " + evalF + " " + swarm.Best.position.totalError + "
      * " + swarm.size, runSave);
      *
-     * // Evaluate the stop criterion stop = evalF >= pb.maxEval || pb.accuracy
+     * // Evaluate the stop criterion stop = evalF &gt;= pb.maxEval || pb.accuracy
      * > swarm.Best.position.totalError;
      *
      * if (Tribes.adaptOption == 0) { continue iterations; }
      *
      * if (Tribes.adaptOption == 1) { // Just reinitialize the swarm
      * adaptThreshold = iter - adapt; // adaptMax=swarmSize; adaptMax =
-     * swarm.linkNb(swarm); if (adaptThreshold >= adaptMax) { if
-     * (swarm.Best.positionPrev.totalError <= swarm.Best.position.totalError) {
+     * swarm.linkNb(swarm); if (adaptThreshold &gt;= adaptMax) { if
+     * (swarm.Best.positionPrev.totalError &lt;= swarm.Best.position.totalError) {
      * adapt = iter; // Memorize at which iteration adaptation occurs
      *
      * for (n = 0; n < swarm.tribeNb; n++) {
      * evalF=swarm.tribes[n].reinitTribe(pb,evalF); } } } continue iterations; }
      *
-     * // if(swarm.Best.positionPrev.totalError<=swarm.Best.position.totalError)
+     * // if(swarm.Best.positionPrev.totalError&lt;=swarm.Best.position.totalError)
      * { // Structural adaptations
      *
      * //swarmSize = swarm.swarmSize(swarm);
@@ -490,7 +487,7 @@ public class Tribes implements InterfaceOptimizer, java.io.Serializable {
      * adaptThreshold = iter - adapt; // adaptMax=swarmSize; adaptMax =
      * swarm.linkNb(swarm);
      *
-     * if (adaptThreshold >= adaptMax) { adapt = iter; // Memorize at which
+     * if (adaptThreshold &gt;= adaptMax) { adapt = iter; // Memorize at which
      * iteration adaptation occurs evalF=swarm.adaptSwarm(pb,
      * Tribes.adaptOption, swarm, displayPb,evalF); // RÃ©alise l'adaptation
      *

@@ -33,7 +33,7 @@ import java.util.Formatter;
  * predefined, and lambda new samples are drawn for every peak in every
  * iteration. Thus, in relation to the standard ES, some new parameters are due.
  * On the other hand, the selection schemes are predefined. This is done
- * according to Shir&Bäck, Niching in Evolution Strategies, Tec.Report 2005.
+ * according to Shir&amp;Bäck, Niching in Evolution Strategies, Tec.Report 2005.
  * <p>
  * Unfortunately the algorithm was not described in every detail. It remained
  * unclear how exactly the peak population where filled and esp. what happens if
@@ -54,7 +54,7 @@ import java.util.Formatter;
  * framework which is still used to optimize the single peak populations.
  * <p>
  * This class should also cover "Dynamic niching in evolution strategies with
- * covariance matrix adaptation" by Shir & Bäck, CEC 2005, when employing
+ * covariance matrix adaptation" by Shir &amp; Bäck, CEC 2005, when employing
  * SelectBest as parent selection and muPerPeak=1.
  * <p>
  * Some notes:
@@ -267,7 +267,7 @@ public class EsDpiNiching extends AbstractOptimizer implements Serializable, Int
 
     /**
      * Use the deactivation of converged species, storing them to an archive,
-     * with the given parameters. If windowLen <= 0, the deactivation mechanism
+     * with the given parameters. If windowLen &lt;= 0, the deactivation mechanism
      * is disabled. This provides for semi-sequential niching with DPI-ES
      *
      * @param threshold

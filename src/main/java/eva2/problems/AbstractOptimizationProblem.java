@@ -337,7 +337,7 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
 
     /**
      * This method allows you to request a graphical representation for a given individual.
-     * The additional informations generation and funCalls are shown if they are >= 0.
+     * The additional informations generation and funCalls are shown if they are &gt;= 0.
      * individual.
      *
      * @param generation generation of the individual or -1
@@ -446,9 +446,9 @@ public abstract class AbstractOptimizationProblem implements InterfaceOptimizati
      * @param orig             individual that is to be tested
      * @param epsilon          maximal allowed improvement before considered premature (given as distance in the search space)
      * @param mutationStepSize step size used to mutate the individual in one step
-     *                         (if < 0 a default value of 0.0001 is used)
+     *                         (if &lt; 0 a default value of 0.0001 is used)
      * @param numOfFailures    number of unsuccessful improvement steps in a row before an individual is considered to be locally unimproveable
-     *                         (if < 0 a default value of 100*problem dimensions is used )
+     *                         (if &lt; 0 a default value of 100*problem dimensions is used )
      * @return estimation if the given individual is within epsilon of an optimum (local or global)
      */
     public boolean isPotentialOptimum(AbstractEAIndividual orig, double epsilon, double mutationStepSize, int numOfFailures) {

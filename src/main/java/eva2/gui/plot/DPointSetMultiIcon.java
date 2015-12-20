@@ -150,9 +150,9 @@ public class DPointSetMultiIcon extends DComponent {
     }
 
     /**
-     * method returns the nearest <code>DPoint</code> in this <code>DPointSet</code>.
+     * method returns the nearest {@code DPoint} in this {@code DPointSet}.
      *
-     * @return the nearest <code>DPoint</code>
+     * @return the nearest {@code DPoint}
      */
     public DPoint getNearestDPoint(DPoint point) {
         int minIndex = getNearestDPointIndex(point);
@@ -169,9 +169,9 @@ public class DPointSetMultiIcon extends DComponent {
     }
 
     /**
-     * method returns the index to the nearest <code>DPoint</code> in this <code>DPointSet</code>.
+     * method returns the index to the nearest {@code DPoint} in this {@code DPointSet}.
      *
-     * @return the index to the nearest <code>DPoint</code>. -1 if no nearest <code>DPoint</code> was found.
+     * @return the index to the nearest {@code DPoint}. -1 if no nearest {@code DPoint} was found.
      */
     public int getNearestDPointIndex(DPoint point) {
         double minValue = Double.MAX_VALUE;

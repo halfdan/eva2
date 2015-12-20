@@ -28,7 +28,7 @@ public class ERPStarter {
     /**
      * Start an external runtime problem with some basic configs. The
      * default variant uses equally weighs all objectives through an equally weighted sum.
-     * Arguments: --csv <path-to-csv-config-file> --cmd <command-with-full-path> --maxEvals <maxEvals> [--multiObjective] [--gui]
+     * Arguments: {@code --csv path-to-csv-config-file> --cmd <command-with-full-path> --maxEvals <maxEvals> [--multiObjective] [--gui]}
      *
      * @param args
      */
@@ -40,7 +40,7 @@ public class ERPStarter {
         // prefix for data output file - set null to deactivate
         String outputFilePrefix = "erpTest";
 
-        /** Argument handling ****************/
+        // Argument handling
         String[] keys = new String[]{"--gui", "--multiObjective", "--csv", "--cmd", "--maxEvals"};
         int[] arities = new int[]{0, 0, 1, 1, 1};
         Object[] values = new Object[6];

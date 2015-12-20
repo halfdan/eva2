@@ -12,7 +12,7 @@ import eva2.util.annotation.Description;
  * ES mutation with path length control. The step size (single sigma) is
  * adapted using the evolution path length by adapting the real path length
  * to the expected path length in for uncorrelated single steps.
- * See Hansen&Ostermeier 2001, Eqs. 16,17.
+ * See Hansen&amp;Ostermeier 2001, Eqs. 16,17.
  */
 @Description("The single step size is controlled using the evolution path.")
 public class MutateESPathLengthAdaption implements InterfaceMutation, java.io.Serializable {

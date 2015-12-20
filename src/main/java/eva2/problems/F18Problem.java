@@ -3,7 +3,7 @@ package eva2.problems;
 import eva2.util.annotation.Description;
 
 /**
- * N-Function from Shir&Baeck, PPSN 2006.
+ * N-Function from Shir&amp;Baeck, PPSN 2006.
  */
 @Description("N-Function from Shir&Baeck, PPSN 2006")
 public class F18Problem extends AbstractProblemDouble implements

@@ -36,9 +36,7 @@ public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreati
 
     /**
      * @param indy main swarm particle
-     * @return
-     * @tested junit
-     * true if the stddev of the particles fitness < delta and no constraints are violated
+     * @return true if the stddev of the particles fitness &lt; delta and no constraints are violated
      */
     @Override
     public boolean shouldCreateSubswarm(AbstractEAIndividual indy, ParticleSubSwarmOptimization mainswarm) {
@@ -54,9 +52,8 @@ public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreati
 
     /**
      * @param indy main swarm particle
-     * @return
-     * @tested junit
-     * true, if reasons exist why no subswarm should be created from indy.
+     * @return true, if reasons exist why no subswarm should be created from indy.
+     *
      * Reasons like:
      * poor fitness (not implemented),
      * convergence on plateau (not implemented),
@@ -74,14 +71,10 @@ public class StandardSubswarmCreationStrategy implements InterfaceSubswarmCreati
         return result;
     }
 
-/**********************************************************************************************************************
- * createSubswarm
- */
 
     /**
-     * @tested creates a subswarm from the given particle and its neighbor in the mainswarm,
+     * Creates a subswarm from the given particle and its neighbor in the mainswarm,
      * then deletes the two particles from the mainswarm.
-     * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceSubswarmCreationStrategy#createSubswarm(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization, javaeva.server.oa.go.EAIndividuals.AbstractEAIndividual, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
      */
     @Override
     public void createSubswarm(ParticleSubSwarmOptimization preparedSubswarm, AbstractEAIndividual indy, ParticleSubSwarmOptimization mainSwarm) {

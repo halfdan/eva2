@@ -308,7 +308,7 @@ public abstract class AbstractMultiModalProblemKnown extends AbstractProblemDoub
     /**
      * Calculates the maximum peak ratio based on the given fitness values.
      * This is the standard formulation of MPR which assumes that all fitness
-     * values are positive (and for a corresponding pair, foundFits[i]<realFits[i]).
+     * values are positive (and for a corresponding pair, foundFits[i] &lt; realFits[i]).
      * If these assumptions hold, the MPR lies in [0,1].
      *
      * @param realFits

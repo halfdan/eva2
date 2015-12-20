@@ -31,10 +31,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     private int particleIndexCounter; // used to give each particle a unique index (for debbugging and plotting)
     private int fitnessArchiveSize = 15; // maximal number of fitnessvalues remembered from former iterations
 
-    /**
-     * @tested ps
-     * ctor
-     */
     public ParticleSubSwarmOptimization() {
         updateMaxPosDist();
         this.maxAllowedSwarmRadiusNormal = 0.1; // set similar to "particle swarms for multimodal optimization" by Oezcan and Yilmaz
@@ -43,9 +39,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 //		setInitialVelocity(1.);
     }
 
-    /**
-     * @tested cpyctor
-     */
     public ParticleSubSwarmOptimization(ParticleSubSwarmOptimization a) {
         super(a);
         if (a.bestIndividual != null) {
@@ -60,22 +53,12 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         fitnessArchiveSize = a.fitnessArchiveSize;
     }
 
-    /**
-     * @tested (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#clone()
-     */
     @Override
     public Object clone() {
         return new ParticleSubSwarmOptimization(this);
     }
 
 
-/**********************************************************************************************************************
- * inits
- */
-    /**
-     * @tested ps
-     * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#initialize()
-     */
     @Override
     public void initialize() {
         super.initialize();
@@ -88,10 +71,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 //		setInertnessOrChi(inertnessAging.getStartValue());
     }
 
-    /**
-     * @tested ps
-     * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#initializeByPopulation(javaeva.server.oa.go.Populations.Population, boolean)
-     */
     @Override
     public void initializeByPopulation(Population pop, boolean reset) {
         super.initializeByPopulation(pop, reset);
@@ -103,7 +82,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     /**
-     * @tested junit&
      * adds a vector for fitnessvalues to all individuals in the swarm
      * and sets the current fitness as the first value
      */
@@ -129,7 +107,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     /**
-     * @tested emp
      * adds a std deviation value to an individual
      * and initially sets this value to infinity.
      */
@@ -143,7 +120,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     /**
-     * @tested junit
      * adds a representation of the personal best to an individual
      * and initially sets the current individual as its personal best.
      */
@@ -153,13 +129,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         indy.putData("PersonalBestKey", newpbest);
     }
 
-/**********************************************************************************************************************
- * Optimization
- */
-    /**
-     * @tested ps
-     * (non-Javadoc) @see javaeva.server.oa.go.Strategies.ParticleSwarmOptimization#optimize()
-     */
     @Override
     public void optimize() {
         super.optimize();
@@ -230,11 +199,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         }
     }
 
-/**********************************************************************************************************************
- * updates
- */
     /**
-     * @tested ps
      * when particles enter or leave the population,
      * call this method to update the status of the population
      */
@@ -243,7 +208,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     /**
-     * @tested junit&
      * updates the bestIndividual member which represents the gbest individual
      * (i.e. the best position and fitness encountered by any particle of the swarm)
      * Beware: if a particle enters the swarm its knowledge about its pbest enters the swarm,
@@ -271,7 +235,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     /**
-     * @tested junit, dbg
      * adds the current fitnessvalue to the fitnessarchive for every individual in the swarm.
      * Keeps the fitnessarchive at a limited size (lim+1).
      */
@@ -299,7 +262,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     /**
-     * @tested junit
      * sets the std dev value of all individuals in the swarm
      * to the std deviation over the last 3 fitness values
      */
@@ -315,7 +277,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     /**
-     * @tested junit&, junit
      * update the personal best representation if the current individual is better than the pbest
      */
     public void updatePersonalBest() {
@@ -336,7 +297,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     /**
-     * @tested junit ..
      * updates the member representing the maximal possible distance in the current searchspace
      */
     public void updateMaxPosDist() {
@@ -385,7 +345,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      * @param indy1
      * @param indy2
      * @return
-     * @tested junit
      * returns the euclidean distance in the search space between indy1 and indy2.
      */
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
@@ -397,9 +356,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      * @param vec
      * @param range number of values (beginning at the end of vec!) considered to compute the mean
      * @return
-     * @tested junit
      * returns the mean value for the provided data vec but only for a given number of values.
-     * If range > vec.size() the mean is computed only for the available data.
+     * If range &gt; vec.size() the mean is computed only for the available data.
      */
     protected static double mean(Vector<Double> vec, int range) {
         if (vec.size() < range) {
@@ -416,7 +374,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
      * @param vec   data
      * @param range number of values (beginning at the end of vec!) considered to compute the std deviation
      * @return
-     * @tested junit
      * returns the std deviation for the provided data vec but only for a given number of values
      */
     public static double stdDev(Vector<Double> vec, int range) {
@@ -443,11 +400,10 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     /**
      * @param normalisedRadius
      * @return
-     * @tested ps
      * Interpretes the given maximal radius as normalised according to the current search space.
      * Values from [0,1], 1 means the radius can be as large as the maximal possible distance
      * (between any two points) in the search space.
-     * Because the swarmradius and distances (e.g. in merging and absortion) are given in a standard euclidean metric,
+     * Because the swarmradius and distances (e.g. in merging and absorption) are given in a standard euclidean metric,
      * this function converts the normalised distance into the standard euclidean distance.
      */
     public double interpreteAsNormalisedSwarmRadius(double normalisedRadius) {
@@ -458,13 +414,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         return normalisedRadius * maxPosDist;
     }
 
-/**********************************************************************************************************************
- * addNewParticlesToPopulation ...
- */
-
     /**
      * @param particleIndices set of indices that should be used for the added particles, if null new indices are created
-     * @tested junit ...
      * adds new particles to this swarm, rndly inited over the search space by the problem
      */
     private void addNewParticlesToPopulation(int[] particleIndices) {
@@ -510,7 +461,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
  */
     /**
      * @param pop
-     * @tested nn
      * adds a population and its function calls to this.population
      */
     public void addPopulation(ParticleSubSwarmOptimization pop) {
@@ -519,7 +469,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @param pop
-     * @tested junit& ..
      * adds a population and its function calls to this.population
      */
     public void addPopulation(Population pop) {
@@ -532,7 +481,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     /**
      * @param ind
      * @return
-     * @tested nn
      * adss an inidividual
      */
     public boolean addIndividual(IndividualInterface ind) {
@@ -544,7 +492,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     /**
      * @param o
      * @return
-     * @tested nn
      */
     public boolean add(Object o) {
         return addIndividual((IndividualInterface) o);
@@ -552,7 +499,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @param indy
-     * @tested nn
      * adds indy to the swarm
      */
     public void add(AbstractEAIndividual indy) {
@@ -561,7 +507,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @param ind
-     * @tested nn
      * removes an individual
      */
     public boolean removeSubIndividual(IndividualInterface ind) {
@@ -579,22 +524,8 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
         }
     }
 
-	/*
-    public void removeNIndividuals(int n) {
-	}
-	public void removeDoubleInstances() {
-	}
-	public void removeDoubleInstancesUsingFitness() {
-	}
-	public void removeIndexSwitched(int index) {
-	}*/
-
-/**********************************************************************************************************************
- * getter, setter
- */
     /**
      * @param problem
-     * @tested ps
      * This method will set the problem that is to be optimized
      */
     @Override
@@ -605,7 +536,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @return the maximal euclidean distance between the swarms gbest and any other particle in the swarm.
-     * @tested junit
      */
     public double getSwarmRadius() {
         if (getPopulation().size() == 0 || getPopulation().size() == 1) {
@@ -631,7 +561,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @return
-     * @tested ps
      * returns the maximal distance between the gbest position and any individual in the swarm
      * this distance is not allowed to exceed a given threshold
      */
@@ -680,7 +609,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @param maxAllowedSwarmRadius value from the intervall [0,1]
-     * @tested nn
      * binds the swarmradius to the given normalised value
      * (f.e. 1 means, that the swarmradius is allowed to take the maximal possible range in the search space)
      */
@@ -690,7 +618,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @return
-     * @tested nn
      */
     public double getMaxAllowedSwarmRadius() {
         return this.maxAllowedSwarmRadiusNormal;
@@ -698,7 +625,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @param active
-     * @tested nn
      * marks the swarm as active or inactive
      */
     public void SetActive(boolean active) {
@@ -707,7 +633,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
     /**
      * @return
-     * @tested nn
      */
     public boolean isActive() {
         return active;
@@ -728,7 +653,6 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     /**
      * @param indy particle should be from this swarm
      * @return null if there is no neighbor else neighbor
-     * @tested junit
      * returns the particle with the minimal distance to indy
      */
     public AbstractEAIndividual getMemberNeighbor(AbstractEAIndividual indy) {

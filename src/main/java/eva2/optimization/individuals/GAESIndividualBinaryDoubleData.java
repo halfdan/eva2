@@ -274,7 +274,6 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * This method allows you to set the double data.
      *
      * @param doubleData The new double data.
-     * @see InterfaceDataTypeDouble.SetDoubleData()
      */
     @Override
     public void setDoublePhenotype(double[] doubleData) {
@@ -286,7 +285,6 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * memetic algorithms.
      *
      * @param doubleData The new double data.
-     * @see InterfaceDataTypeDouble.SetDoubleDataLamarckian()
      */
     @Override
     public void setDoubleGenotype(double[] doubleData) {
@@ -341,7 +339,6 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * This method allows you to set the binary data.
      *
      * @param binaryData The new binary data.
-     * @see InterfaceDataTypeBinary.SetBinaryData()
      */
     @Override
     public void setBinaryPhenotype(BitSet binaryData) {
@@ -353,16 +350,12 @@ public class GAESIndividualBinaryDoubleData extends AbstractEAIndividual impleme
      * memetic algorithms.
      *
      * @param binaryData The new binary data.
-     * @see InterfaceBinaryData.setBinaryDataLamarckian()
      */
     @Override
     public void setBinaryGenotype(BitSet binaryData) {
         this.binaryIndividual.setBinaryGenotype(binaryData);
     }
 
-/**********************************************************************************************************************
- * These are for GUI
- */
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.

@@ -445,9 +445,8 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * This method allows you to toggle between a truly parallel and a serial
      * implementation.
      *
-     * @return The current optimization mode
      */
-    // TODO Deactivated from GUI because the current implementation does not really parallelize on a multicore. 
+    // TODO Deactivated from GUI because the current implementation does not really paralelize on a multicore.
     // Instead, the new direct problem parallelization can be used.
 //    public boolean isLocalOnly() {
 //        return this.numLocalOnly;

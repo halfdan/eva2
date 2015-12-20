@@ -30,9 +30,9 @@ import java.util.LinkedList;
  * Lambda is increased multiplicatively for every restart, and typical initial values are
  * mu=5, lambda=10, incFact=2.
  * The IPOP-CMA-ES won the CEC 2005 benchmark challenge.
- * Refer to Auger&Hansen 05 for more details.
+ * Refer to Auger&amp;Hansen 05 for more details.
  * <p>
- * A.Auger & N.Hansen. A Restart CMA Evolution Strategy With Increasing Population Size. CEC 2005.
+ * A.Auger &amp; N.Hansen. A Restart CMA Evolution Strategy With Increasing Population Size. CEC 2005.
  */
 @Description("An ES with increasing population size.")
 public class EvolutionStrategyIPOP extends EvolutionStrategies implements InterfacePopulationChangedEventListener, InterfaceAdditionalPopulationInformer {
@@ -186,7 +186,8 @@ public class EvolutionStrategyIPOP extends EvolutionStrategies implements Interf
     /**
      * Test for the IPOP stopping criteria.
      *
-     * @param population
+     * @param term
+     * @param pop
      * @return
      */
     public static boolean testIPOPStopCrit(InterfaceTerminator term, Population pop) {

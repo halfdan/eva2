@@ -8,18 +8,20 @@ import eva2.optimization.strategies.ParticleSubSwarmOptimization;
 public interface InterfaceDeactivationStrategy {
 
     /**
+     * Decides whether a subswarm should be deactivated according to the deactivation strategy
+     *
      * @param subswarm
      * @return
-     * @tested decides whether a subswarm should be deacitvated according to the deactivation strategy
      */
     boolean shouldDeactivateSubswarm(ParticleSubSwarmOptimization subswarm);
 
     /**
+     * Deactivates a given subswarm.
+     * What happens to the particles in this subswarm depends on the concrete strategy.
+     *
      * @param subswarm
      * @param mainswarm
-     * @tested deactivates a given subswarm.
-     * What happens to the particles in this subswarm depends on the concrete strategy.
-     * Return the list of indices to be reinitialized or null.
+     * @return the list of indices to be reinitialized or null.
      */
     int[] deactivateSubswarm(ParticleSubSwarmOptimization subswarm, ParticleSubSwarmOptimization mainswarm);
 

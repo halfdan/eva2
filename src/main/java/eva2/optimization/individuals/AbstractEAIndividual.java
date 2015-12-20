@@ -497,8 +497,6 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
 
     /**
      * Allows marking an individual as infeasible if fitness penalty is used.
-     *
-     * @return
      */
     public void setMarkPenalized(boolean p) {
         isPenalized = p;

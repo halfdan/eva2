@@ -236,7 +236,7 @@ public final class SpecialFunction {
     }
 
     /**
-     * @param x a double value
+     * @param xx a double value
      * @return the hyperbolic arc sine of the argument
      */
     static public double asinh(double xx) throws ArithmeticException {
@@ -504,7 +504,7 @@ public final class SpecialFunction {
     }
 
     /**
-     * @param x an integer value
+     * @param j an integer value
      * @return the factorial of the argument
      */
     static public int fac(int j) throws ArithmeticException {
@@ -528,7 +528,6 @@ public final class SpecialFunction {
      * @param x a double value
      * @return the Gamma function of the value.
      *         <p>
-     *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
      *         Copyright 1984, 1987, 1989, 1992 by Stephen L. Moshier<BR>
@@ -626,7 +625,7 @@ public final class SpecialFunction {
     }
 
     /* Gamma function computed by Stirling's formula.
-     * The polynomial STIR is valid for 33 <= x <= 172.
+     * The polynomial STIR is valid for 33 &lt;= x &lt;= 172.
 
     Cephes Math Library Release 2.2:  July, 1992
     Copyright 1984, 1987, 1989, 1992 by Stephen L. Moshier
@@ -663,7 +662,6 @@ public final class SpecialFunction {
      * @param x double value
      * @return the Complemented Incomplete Gamma function.
      *         <p>
-     *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
      *         Copyright 1984, 1987, 1989, 1992 by Stephen L. Moshier<BR>
@@ -738,7 +736,6 @@ public final class SpecialFunction {
      * @param x double value
      * @return the Incomplete Gamma function.
      *         <p>
-     *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
      *         Copyright 1984, 1987, 1989, 1992 by Stephen L. Moshier<BR>
@@ -894,7 +891,6 @@ public final class SpecialFunction {
      * @param a double value
      * @return The complementary Error function
      *         <p>
-     *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
      *         Copyright 1984, 1987, 1989, 1992 by Stephen L. Moshier<BR>
@@ -995,10 +991,9 @@ public final class SpecialFunction {
     }
 
     /**
-     * @param a double value
+     * @param x double value
      * @return The Error function
      *         <p>
-     *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.2:  July, 1992<BR>
      *         Copyright 1984, 1987, 1989, 1992 by Stephen L. Moshier<BR>
@@ -1175,7 +1170,6 @@ Direct inquiries to 30 Frost Street, Cambridge, MA 02140
      * @param xx double value
      * @return The Incomplete Beta Function evaluated from zero to xx.
      *         <p>
-     *         <FONT size=2>
      *         Converted to Java from<BR>
      *         Cephes Math Library Release 2.3:  July, 1995<BR>
      *         Copyright 1984, 1995 by Stephen L. Moshier<BR>

@@ -393,8 +393,8 @@ public final class RNG {
     /**
      * Returns a vector denoting a random point around the center - inside a
      * hypersphere of uniform distribution if nonUnif=0, - inside a hypersphere
-     * of non-uniform distribution if nonUnif > 0, - inside a D-Gaussian if
-     * nonUnif < 0. For case 2, the nonUnif parameter is used as standard
+     * of non-uniform distribution if nonUnif &gt; 0, - inside a D-Gaussian if
+     * nonUnif &lt; 0. For case 2, the nonUnif parameter is used as standard
      * deviation (instead of 1/D), the parameter is not further used in the
      * other two cases. Original code by Maurice Clerc, from the TRIBES package
      *

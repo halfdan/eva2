@@ -48,7 +48,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
     }
 
     /**
-     * This method will select >size< individuals from the given
+     * This method will select *size* individuals from the given
      * Population.
      *
      * @param population The source population where to select from
@@ -107,7 +107,7 @@ public class SelectBestSingle implements InterfaceSelection, java.io.Serializabl
     }
 
     /**
-     * This method allows you to select >size< partners for a given Individual
+     * This method allows you to select *size* partners for a given Individual
      *
      * @param dad               The already selected parent
      * @param availablePartners The mating pool.

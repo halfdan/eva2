@@ -48,7 +48,6 @@ import java.util.zip.ZipInputStream;
  * @author wegnerj
  * @author Robin Friedman, rfriedman@TriadTherapeutics.com
  * @author Gerd Mueller
- * @license GPL
  */
 public class BasicResourceLoader implements ResourceLoader {
     /**

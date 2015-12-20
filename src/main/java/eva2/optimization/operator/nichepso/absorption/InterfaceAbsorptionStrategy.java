@@ -9,12 +9,11 @@ import eva2.optimization.strategies.ParticleSubSwarmOptimization;
 public interface InterfaceAbsorptionStrategy {
 
     /**
-     * @param indy
+     * @param indy      Individual
      * @param subswarm  the swarm indy will be absorbed from
      * @param mainswarm the swarm indy currently belongs to
      *                  (population statistics from that swarm may be used to decide whether indy should be absorbed)
-     * @return
-     * @tested decides whether indy should be absorbed into the subswarm according to the absorption strategie
+     * @return Decides whether indy should be absorbed into the sub-swarm according to the absorption strategy
      */
     boolean shouldAbsorbParticleIntoSubswarm(
             AbstractEAIndividual indy,
@@ -22,10 +21,11 @@ public interface InterfaceAbsorptionStrategy {
             ParticleSubSwarmOptimization mainswarm);
 
     /**
-     * @param indy
+     * Absorbs indy according to the absorption strategy
+     *
+     * @param indy      Individual
      * @param subswarm  the swarm indy will be absorbed from
      * @param mainswarm the swarm indy currently belongs to
-     * @tested absorbs indy according to the absorbtion strategy
      */
     void absorbParticle(
             AbstractEAIndividual indy,

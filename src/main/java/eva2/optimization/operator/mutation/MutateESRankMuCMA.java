@@ -21,9 +21,9 @@ import java.io.Serializable;
 /**
  * Implementing CMA ES with rank-mu-update and weighted recombination. More information can be found here:
  * - http://www.bionik.tu-berlin.de/user/niko/cmaesintro.html
- * - N.Hansen & S.Kern 2004: Evaluating the CMA Evolution Strategy on Multimodal Test Functions.
+ * - N.Hansen &amp; S.Kern 2004: Evaluating the CMA Evolution Strategy on Multimodal Test Functions.
  * Parallel Problem Solving from Nature 2004.
- * - For the stopping criteria: Auger&Hansen, CEC '05, A Restart CMA ES with increasing population size.
+ * - For the stopping criteria: Auger&amp;Hansen, CEC '05, A Restart CMA ES with increasing population size.
  * <p>
  * The implementation uses a structure for keeping all adaptive parameters, CMAParamSet, which is stored
  * in the populations, so that in principle, multi-modal optimization with several populations becomes possible.
@@ -105,7 +105,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
      * Perform the main adaption of sigma and C using evolution paths.
      * The evolution path is deduced from the center of the selected population compared to the old
      * mean value.
-     * See Hansen&Kern 04 for further information.
+     * See Hansen&amp;Kern 04 for further information.
      *
      * @param oldGen
      * @param selectedP
@@ -702,7 +702,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
     }
 
     /**
-     * From Auger&Hansen, CEC '05, stopping criterion TolX.
+     * From Auger&amp;Hansen, CEC '05, stopping criterion TolX.
      *
      * @param tolX
      * @return
@@ -720,7 +720,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
     }
 
     /**
-     * From Auger&Hansen, CEC '05, stopping criterion noeffectaxis.
+     * From Auger&amp;Hansen, CEC '05, stopping criterion noeffectaxis.
      *
      * @param d
      * @param gen
@@ -743,7 +743,7 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
     }
 
     /**
-     * From Auger&Hansen, CEC '05, stopping criterion noeffectcoord.
+     * From Auger&amp;Hansen, CEC '05, stopping criterion noeffectcoord.
      *
      * @param d
      * @return
@@ -760,11 +760,11 @@ public class MutateESRankMuCMA implements InterfaceAdaptOperatorGenerational, In
     }
 
     /**
-     * Test condition of C (Auger&Hansen, CEC '05, stopping criterion conditioncov).
-     * Return true, if a diagonal entry is <= 0 or >= d.
+     * Test condition of C (Auger&amp;Hansen, CEC '05, stopping criterion conditioncov).
+     * Return true, if a diagonal entry is &lt;= 0 or &gt;= d.
      *
      * @param d
-     * @return true, if a diagonal entry is <= 0 or >= d, else false
+     * @return true, if a diagonal entry is &lt;= 0 or &gt;= d, else false
      */
     public boolean testCCondition(Population pop, double d) {
         CMAParamSet params = (CMAParamSet) pop.getData(cmaParamsKey);

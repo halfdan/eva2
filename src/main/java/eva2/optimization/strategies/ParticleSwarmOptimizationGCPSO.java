@@ -28,13 +28,9 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
 
     protected int getAccelerationForGlobalBestParticleCounter = 0; // only for testing
 
-/**********************************************************************************************************************
- * ctors, inits
- */
     /**
-     * @tested ps
-     * ctor - sets default values according to
-     * "An Analyis of Paricle Swarm Optimizers" by Franz van den Bergh
+     * Sets default values according to
+     * "An Analysis of Particle Swarm Optimizers" by Franz van den Bergh
      */
     public ParticleSwarmOptimizationGCPSO() {
         setGcpso(true);
@@ -52,7 +48,6 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
 
     /**
      * @param a
-     * @tested ps
      */
     public ParticleSwarmOptimizationGCPSO(ParticleSwarmOptimizationGCPSO a) {
         super(a);
@@ -73,12 +68,6 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
         this.SetRhoDecreaseFactor(a.getRhoDecreaseFactor());
     }
 
-/**********************************************************************************************************************
- * overwritten
- */
-    /**
-     * @tested (non-Javadoc) @see javaeva.server.go.strategies.ParticleSwarmOptimization#optimize()
-     */
     @Override
     public void optimize() {
         super.optimize(); //updatePopulation->updateIndividual->updateVelocity (s.u.)
@@ -86,7 +75,6 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
     }
 
     /**
-     * @tested junit&
      * (non-Javadoc) @see javaeva.server.go.strategies.ParticleSwarmOptimization#updateVelocity(int, double[], double[], double[], double[], double[][])
      * uses a special velocity update strategy for the gobal best particle.
      */
@@ -138,7 +126,6 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
     /**
      * @return the index of the particle with the best personal best position
      *         (i.e. the index of the global best particle)
-     * @tested junit
      */
     protected int getIndexOfGlobalBestParticle() {
         if (getPopulation().size() == 0) {
@@ -158,11 +145,7 @@ public class ParticleSwarmOptimizationGCPSO extends ParticleSwarmOptimization {
         return index;
     }
 
-/**********************************************************************************************************************
- * updateGCPSOMember
- */
     /**
-     * @tested junit
      * updates: gbestParticleIndex,gbestParticleHasChanged,numOfSuccesses,numOfFailures,gbestParticle,rho
      */
     protected void updateGCPSOMember() {

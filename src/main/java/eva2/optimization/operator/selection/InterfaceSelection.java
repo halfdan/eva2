@@ -34,7 +34,7 @@ public interface InterfaceSelection {
     void prepareSelection(Population population);
 
     /**
-     * This method will select >size< individuals from the given
+     * This method will select *size* individuals from the given
      * Population.
      *
      * @param population The source population where to select from
@@ -44,7 +44,7 @@ public interface InterfaceSelection {
     Population selectFrom(Population population, int size);
 
     /**
-     * This method allows you to select >size< partners for a given Individual
+     * This method allows you to select *size* partners for a given Individual
      *
      * @param dad               The already seleceted parent
      * @param availablePartners The mating pool.

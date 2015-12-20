@@ -251,7 +251,7 @@ public abstract class AbstractDynamicOptimizationProblem extends AbstractOptimiz
 
     /**
      * Implement an indicator for when changes in the problem environment are necessary. If it returns
-     * <code>true</code>, the <code>changeProblemAt(double problemTime)</code> will be called.
+     * {@code true}, the {@code changeProblemAt(double problemTime)} will be called.
      *
      * @param problemTime the current simulation time of the problem
      * @return true, if the problem is to change at the given time, else false

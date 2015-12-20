@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Fletcher-Powell function with up to 2^n optima from Shir&Baeck, PPSN 2006,
+ * Fletcher-Powell function with up to 2^n optima from Shir&amp;Baeck, PPSN 2006,
  * after Bäck 1996. Alphas and Matrices A and B are randomly created with a fixed seed.
  *
  */

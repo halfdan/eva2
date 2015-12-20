@@ -168,7 +168,6 @@ public class SolutionHistogram {
      * @param upperBound upper bound of the fitness interval
      * @param nBins      number of bins
      * @return an integer array with the number of individuals in each bin
-     * @see filterFitnessIn()
      */
     public static SolutionHistogram createFitNormHistogram(Population pop, double lowerBound, double upperBound, int nBins, int crit) {
         SolutionHistogram res = new SolutionHistogram(lowerBound, upperBound, nBins);

@@ -161,12 +161,12 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
 
     /**
      * Select a random index within the given genotype lying in [iMin,iMax]. If applicable, the given
-     * value is avoided with certain probility, namely by trying to find a different value for maxTries
+     * value is avoided with certain probality, namely by trying to find a different value for maxTries
      * times.
      *
      * @param maxTries
      * @param genotype
-     * @param maybePreferedValue
+     * @param avoidValue
      * @param iMin
      * @param iMax
      * @return
@@ -181,11 +181,6 @@ public class MutateGAGISwapBits implements InterfaceMutation, java.io.Serializab
         }
         return k;
     }
-
-//	private int getRandomSecondIndex(int firstIndex, AbstractEAIndividual individual) {
-//	int genoLen = ((InterfaceGAIndividual)individual).getGenotypeLength();
-//	return RNG.randomInt(0, genoLen);
-//	}
 
     protected Object valueAt(Object genotype, int k) {
         if (genotype instanceof BitSet) {

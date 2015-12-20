@@ -1184,7 +1184,6 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
      * the upper limit if the clustering parameter is controlled.
      *
      * @param prob
-     * @param q
      */
     public void setUpperBoundClustDiff(InterfaceProblemDouble prob) {
         if (caForSpeciesDifferentation instanceof ClusteringDensityBased) {

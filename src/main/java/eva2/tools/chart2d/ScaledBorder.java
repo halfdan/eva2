@@ -145,8 +145,8 @@ public class ScaledBorder implements Border {
     }
 
     /**
-     * constructor creates a new <code>ScaledBorder</code>
-     * surrounded by the specified <code>Border</code>
+     * constructor creates a new {@code ScaledBorder}
+     * surrounded by the specified {@code Border}
      */
     public ScaledBorder(Border outer) {
         outerBorder = outer;

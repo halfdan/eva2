@@ -49,7 +49,7 @@ public class EAIndividualComparator implements Comparator<Object>, Serializable 
 
     /**
      * Constructor for a specific fitness criterion in the multi-objective case.
-     * For comparison, only the given fitness criterion is used if it is >= 0.
+     * For comparison, only the given fitness criterion is used if it is &gt;= 0.
      *
      * @param fitnessCriterion
      */
@@ -59,7 +59,7 @@ public class EAIndividualComparator implements Comparator<Object>, Serializable 
 
     /**
      * Constructor for a specific fitness criterion in the multi-objective case.
-     * For comparison, only the given fitness criterion is used if it is >= 0.
+     * For comparison, only the given fitness criterion is used if it is &gt;= 0.
      * If preferFeasible is true, feasible individuals will always be prefered.
      *
      * @param fitIndex

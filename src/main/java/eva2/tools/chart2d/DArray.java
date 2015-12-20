@@ -97,9 +97,9 @@ public class DArray implements DIntDoubleMap {
      * the given image value becomes the image of (highest source value + 1)
      *
      * @param image the new image value
-     * @return <code>true</code> when the minimal or the maximal image value
+     * @return {@code true} when the minimal or the maximal image value
      *         has been changed by this method call, else it returns
-     *         <code>false</code> @see #getMinImageValue(), #getMaxImageValue()
+     *         {@code false} @see #getMinImageValue(), #getMaxImageValue()
      */
     @Override
     public boolean addImage(double image) {
@@ -150,7 +150,7 @@ public class DArray implements DIntDoubleMap {
     /**
      * this method checks if the minimal and the maximal image value has changed
      *
-     * @return <code>true</code> if one of them changed
+     * @return {@code true} if one of them changed
      */
     @Override
     public boolean restore() {
@@ -230,7 +230,7 @@ public class DArray implements DIntDoubleMap {
      * It looks for differences in the stored image values
      *
      * @param o the object to compare with
-     * @return <code>true</code> when the object is an DArray object, containing
+     * @return {@code true} when the object is an DArray object, containing
      *         the same values
      */
     @Override

@@ -31,7 +31,7 @@ public class ScatterMergingStrategy extends StandardMergingStrategy {
     /**
      * @param i
      * @param j
-     * @tested if both active: reinitializes subswarm j back into the main swarm and deletes it from the subswarms.
+     * if both active: reinitializes subswarm j back into the main swarm and deletes it from the subswarms.
      * if both inactive: adds population of subswarm j to population of subswarm i, then deletes subswarm j.
      */
     @Override

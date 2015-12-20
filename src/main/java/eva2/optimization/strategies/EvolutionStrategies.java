@@ -259,7 +259,7 @@ public class EvolutionStrategies extends AbstractOptimizer implements java.io.Se
     }
 
     /**
-     * This method will check the population constraints myu <= lambda and will
+     * This method will check the population constraints myu &lt;= lambda and will
      * calculate the population size accordingly.
      */
     protected void checkPopulationConstraints() {

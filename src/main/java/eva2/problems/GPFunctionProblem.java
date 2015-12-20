@@ -10,7 +10,7 @@ import eva2.tools.EVAERROR;
  * A helper problem class which takes a GP program as argument and serves as target function
  * for evaluating the GP function in optimization. A scaling option is implemented to flatten the
  * function by scaling it logarithmically. This avoids ugly functions in GP. To activate scaling,
- * set the scStart and scLimit parameters to positive values. Function values y with |y|>scStart
+ * set the scStart and scLimit parameters to positive values. Function values y with |y| &gt; scStart
  * will be rescaled to values below scLimit.
  */
 public class GPFunctionProblem extends AbstractProblemDouble implements InterfaceProgramProblem {

@@ -41,7 +41,7 @@ public class DMeasures implements Serializable {
     /**
      * method returns the pixel-point which belongs to the given D-coordinates
      * it says where to paint a certain DPoint
-     * returns <code>null</code> if the double coordinates do not belong to the
+     * returns {@code null} if the double coordinates do not belong to the
      * image of the scale functions
      *
      * @param x the double x D-coordinate
@@ -74,7 +74,7 @@ public class DMeasures implements Serializable {
     /**
      * method returns the point in D-coordinates which corresponds to the
      * given pixel-coordinates
-     * returns <code>null</code> if the given coordinates can not be calculated to
+     * returns {@code null} if the given coordinates can not be calculated to
      * the double coordinates, when they represent a point outside of the definition
      * area of the scale functions
      *
@@ -168,7 +168,7 @@ public class DMeasures implements Serializable {
      * method returns the image rectangle of the given rectangle
      * they differ if there are scale functions selected which are not the identity
      * if the given rectangle does not belong to the definition area of the scale
-     * functions, the method returns <code>null</code>
+     * functions, the method returns {@code null}
      *
      * @return the source of it
      */
@@ -201,7 +201,7 @@ public class DMeasures implements Serializable {
      * method returns the source rectangle of the given rectangle
      * they differ if there are scale functions selected which are not the identity
      * if the given rectangle does not belong to the image area of the scale
-     * functions, the method returns <code>null</code>
+     * functions, the method returns {@code null}
      * <p>
      * Tuning: rect must not be empty
      *

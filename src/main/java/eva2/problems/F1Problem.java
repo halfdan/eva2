@@ -7,7 +7,7 @@ import eva2.util.annotation.Description;
 /**
  * Sphere Problem
  */
-@Description(value ="Sphere Problem")
+@Description(value = "Sphere Problem")
 public class F1Problem extends AbstractProblemDoubleOffset implements Interface2DBorderProblem, InterfaceHasInitRange, java.io.Serializable, InterfaceFirstOrderDerivableProblem {
     private double initialRangeRatio = 1.; // reduce to initialize in a smaller subrange of the original range (in the corner box)
 
@@ -103,7 +103,7 @@ public class F1Problem extends AbstractProblemDoubleOffset implements Interface2
     }
 
     /**
-     * If initialRangeRatio<1, produce a reduced initial range in the negative corner of the range.
+     * If initialRangeRatio &lt; 1, produce a reduced initial range in the negative corner of the range.
      */
     @Override
     public Object getInitializationRange() {

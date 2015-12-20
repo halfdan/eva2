@@ -90,7 +90,7 @@ public class F23Problem extends AbstractProblemDoubleOffset implements Interface
     }
 
     /**
-     * If initialRangeRatio<1, produce a reduced initial range in the negative corner of the range.
+     * If initialRangeRatio &lt; 1, produce a reduced initial range in the negative corner of the range.
      */
     @Override
     public Object getInitializationRange() {

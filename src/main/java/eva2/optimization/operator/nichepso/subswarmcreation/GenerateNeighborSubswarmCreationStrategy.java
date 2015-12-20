@@ -20,7 +20,7 @@ public class GenerateNeighborSubswarmCreationStrategy extends
     private double mu = 0.1;
 
     /**
-     * @tested creates a subswarm from the given particle and its neighbor in the mainswarm.
+     * Creates a subswarm from the given particle and its neighbor in the mainswarm.
      * If the neighbors pbest is better than the particles pbest, a new neighbor is generated.
      */
     @Override

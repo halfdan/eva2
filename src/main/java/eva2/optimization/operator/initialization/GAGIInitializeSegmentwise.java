@@ -21,7 +21,7 @@ import java.util.BitSet;
  * elements to a certain type and all to a subset of the range).
  * <p>
  * The initialization may be parameterized in two ways, where each takes a fixed
- * segment length s. Firstly, a fixed number of bits (k<=s) is set per segment,
+ * segment length s. Firstly, a fixed number of bits (k&lt;=s) is set per segment,
  * so each segment has equal cardinality.
  * Secondly, an int-array can be specified which defines possibly varying k_i for
  * each segment i, so different segments may have different cardinality. The array

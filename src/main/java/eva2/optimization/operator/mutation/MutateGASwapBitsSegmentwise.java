@@ -14,7 +14,7 @@ import java.util.BitSet;
 /**
  * Swap two random bits of a GA individual within subsequences (segments) of fixed length.
  * If preferPairs is true, unequal pairs
- * are picked with some preference (by trying for >= s/2 times, where s is the binary
+ * are picked with some preference (by trying for &gt;= s/2 times, where s is the binary
  * segment length).
  * Multiple mutations per segment can occur if the boolean switch is activated, meaning
  * that further mutations are performed recursively with p_mut. Thus, the probability

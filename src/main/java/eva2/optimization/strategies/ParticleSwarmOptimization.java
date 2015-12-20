@@ -585,8 +585,8 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      * This method will update a given individual according to the PSO method
      *
      * @param index The individual to update.
+     * @param indy  An individual
      * @param pop   The current population.
-     * @param best  The best individual found so far.
      */
     protected void updateIndividual(int index, AbstractEAIndividual indy, Population pop) {
         if (indy instanceof InterfaceDataTypeDouble) {
@@ -845,7 +845,6 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      *
      * @param index index of the individual for which to check
      * @param pop   the current swarm
-     * @param best  the currently best individual
      * @return a copy of the position of the best remembered individual in the
      *         neigbourhood
      */
@@ -1558,7 +1557,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
      * usually set to 2.05. The sum tau1 and tau2 must be greater than 4. The
      * Chi parameter (constriction) is set as in 2 Chi =
      * ------------------------ |2-tau-sqrt(tau^2-4 tau)| where tau = tau1 +
-     * tau2 See Clerc&Kennedy: The Particle Swarm: Explosion, stability and
+     * tau2 See Clerc&amp;Kennedy: The Particle Swarm: Explosion, stability and
      * convergence, 2002.
      *
      * @param tau1
@@ -1744,7 +1743,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
     }
 
     /**
-     * @param set swarm visualization (2D)
+     * @param show
      */
     public void setShow(boolean show) {
         this.show = show;

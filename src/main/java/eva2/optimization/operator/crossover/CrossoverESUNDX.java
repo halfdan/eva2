@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * This is the Unimodal Normal Distribution Crossover by Ono and Kobayashi, 1997. Cf.:
  *
- * @INPROCEEDINGS{Ono1997, author = {Ono, Isao and Kobayashi, Shigenobu},
+ * INPROCEEDINGS{Ono1997, author = {Ono, Isao and Kobayashi, Shigenobu},
  * title = {{A Real Coded Genetic Algorithm for Function Optimization Using Unimodal Normal Distributed Crossover}},
  * booktitle = {ICGA},
  * year = {1997},

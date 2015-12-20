@@ -20,7 +20,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
 
     private boolean obeyDebsConstViolationPrinciple = true;
     /**
-     * Comment for <code>serialVersionUID</code>
+     * Comment for {@code serialVersionUID}
      */
     private static final long serialVersionUID = 1L;
     private InterfaceSelectionProbability selProbCalculator = new SelProbStandard();
@@ -55,7 +55,7 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
     /**
      * This method will select individuals from the given Population with respect to their
      * selection propability. This implements a fixed segment roulette wheel selection which ensures
-     * that every individual which has a selection probability p >= (k/size) is selected k or k+1 times.
+     * that every individual which has a selection probability p &gt;= (k/size) is selected k or k+1 times.
      *
      * @param population The source population where to select from
      * @param size       The number of Individuals to select

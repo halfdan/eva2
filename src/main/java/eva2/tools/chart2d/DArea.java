@@ -21,9 +21,9 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 
 /**
- * DArea is the crossing of the <code>JComponent</code>s and the
- * <code>DComponent</code>s. It's the <code>DParent</code> which can be added to
- * <code>JComponent</code>s
+ * DArea is the crossing of the {@code JComponent}s and the
+ * {@code DComponent}s. It's the {@code DParent} which can be added to
+ * {@code JComponent}s
  */
 public class DArea extends JComponent implements DParent, Printable {
     /**
@@ -282,8 +282,8 @@ public class DArea extends JComponent implements DParent, Printable {
     }
 
     /**
-     * returns if the grid is visible <code>true</code> if the grid is visible
-     * or <code>false</code> if not
+     * returns if the grid is visible {@code true} if the grid is visible
+     * or {@code false} if not
      *
      * @return true or false
      */
@@ -294,7 +294,7 @@ public class DArea extends JComponent implements DParent, Printable {
     /**
      * returns whether the DArea's auto focus is on or not
      *
-     * @return <code>true</code> or <code>false</code>
+     * @return {@code true} or {@code false}
      */
     public boolean isOnAutoFocus() {
         return autoFocus;
@@ -347,7 +347,7 @@ public class DArea extends JComponent implements DParent, Printable {
 
     /**
      * method paints the grid how the method paints the grid depends on whether
-     * the area is wrapped in a <code>ScaledBorder</code> or not and on the
+     * the area is wrapped in a {@code ScaledBorder} or not and on the
      * autoGrid option
      */
     private void paintGrid(DMeasures m) {
@@ -586,7 +586,7 @@ public class DArea extends JComponent implements DParent, Printable {
 
     /**
      * sets the grid to the front that means that the grid is painted as last
-     * element default value is <code>false</code>
+     * element default value is {@code false}
      *
      * @param aFlag grid t front or not
      */
@@ -669,7 +669,7 @@ public class DArea extends JComponent implements DParent, Printable {
     /**
      * sets the minimal rectangle
      *
-     * @param rect the visible <code>DRectangle</code> in DArea coordinates
+     * @param rect the visible {@code DRectangle} in DArea coordinates
      */
     public void setMinRectangle(DRectangle rect) {
         if (rect.isEmpty()) {
@@ -724,7 +724,7 @@ public class DArea extends JComponent implements DParent, Printable {
     /**
      * sets the visible rectangle
      *
-     * @param rect the visible <code>DRectangle</code> in DArea coordinates
+     * @param rect the visible {@code DRectangle} in DArea coordinates
      */
     public void setVisibleRectangle(DRectangle rect) {
         if (rect.isEmpty()) {

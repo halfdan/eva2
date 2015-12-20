@@ -156,8 +156,8 @@ public class PostProcess {
      * or a random subset of the cluster or the best and a random subset. Returns shallow copies!
      * returnQuota should be in  [0,1] and defines, which percentage of individuals of each cluster is kept, however
      * at least one is kept per cluster.
-     * lonerMode defines whether loners are discarded, kept, or treated as clusters, meaning they are kept if returnQuota > 0.
-     * takeOverMode defines whether, of a cluster with size > 1, which n individuals are kept. Either the n best only,
+     * lonerMode defines whether loners are discarded, kept, or treated as clusters, meaning they are kept if returnQuota &gt; 0.
+     * takeOverMode defines whether, of a cluster with size &gt; 1, which n individuals are kept. Either the n best only,
      * or the single best and random n-1, or all n random.
      *
      * @param pop
@@ -238,9 +238,9 @@ public class PostProcess {
      * Filter the individuals of a population which have a fitness norm below a given value.
      * Returns shallow copies!
      *
-     * @param pop
-     * @param fitNorm
-     * @param bSmaller if true, return individuals with lower or equal, else with higher fitness norm only
+     * @param pop           Population
+     * @param fitNorm       The fitness threshold
+     * @param bSmallerEq    if true, return individuals with lower or equal, else with higher fitness norm only
      * @return
      */
     public static Population filterFitnessNormed(Population pop, double fitNorm, boolean bSmallerEq) {
@@ -436,7 +436,7 @@ public class PostProcess {
      * Returns the number of function calls really performed by the method and a flag indicating whether the
      * processing was aborted by the user. Sets the number of function calls
      * in the population back to the original count.
-     * If the baseEvals parameter (which should be >= 0) is > 0, then the number of evaluations is set as
+     * If the baseEvals parameter (which should be &gt;= 0) is &gt; 0, then the number of evaluations is set as
      * number of evaluations before the optimization using the given terminator.
      *
      * @param pop
@@ -471,7 +471,7 @@ public class PostProcess {
      * meaning that typically only one best is returned.
      * Returns the number of function calls really performed by the method and a flag indicating whether the
      * processing was aborted by the user. Sets the number of function calls
-     * in the population back to the original count. If the baseEvals parameter (which should be >= 0) is > 0,
+     * in the population back to the original count. If the baseEvals parameter (which should be &gt;= 0) is &gt; 0,
      * then the number of evaluations is set as
      * number of evaluations before the optimization using the given terminator.
      *
@@ -525,7 +525,7 @@ public class PostProcess {
      * @param initPerturbation
      * @param prob
      * @return
-     * @see NelderMeadSimplex#createNMSPopulation(candidate, perturbRatio, range, includeCand)
+     * @see NelderMeadSimplex#createNMSPopulation
      */
     public static Pair<AbstractEAIndividual, Integer> localSolverNMS(AbstractEAIndividual cand, int hcSteps,
                                                                      double initPerturbation, AbstractOptimizationProblem prob) {
@@ -548,7 +548,7 @@ public class PostProcess {
      * @param index           index of the individual for which to produce the sub population
      * @param maxRelativePerturbation
      * @param includeCand
-     * @see #createPopInSubRange(double, AbstractOptimizationProblem, AbstractEAIndividual)
+     * @see #createPopInSubRange
      * @see NelderMeadSimplex#createNMSPopulation(AbstractEAIndividual, double, double[][], boolean)
      */
     public static Population createLSSupPopulation(PostProcessMethod method, AbstractOptimizationProblem problem, Population candidates, int index, double maxRelativePerturbation, boolean includeCand) {
@@ -763,7 +763,6 @@ public class PostProcess {
      *
      * @param searchBoxLen
      * @param indy
-     * @return
      */
     public static void createPopInSubRange(Population destPop, double searchBoxLen,
                                            int targetSize, AbstractEAIndividual indy) {
@@ -1133,8 +1132,8 @@ public class PostProcess {
      * @param treatAsUnknown
      * @param listener
      * @return
-     * @see {@link AbstractOptimizationProblem#extractPotentialOptima}
-     * @see AbstractOptimizationProblem#isPotentialOptimumNMS(AbstractEAIndividual, double, double, int)
+     * @see AbstractOptimizationProblem#extractPotentialOptima
+     * @see AbstractOptimizationProblem#isPotentialOptimumNMS
      */
     public static int[] checkAccuracy(AbstractOptimizationProblem prob, Population sols, double[] epsilonPhenoSpace,
                                       double extrOptEpsFitConf, double extrOptClustSig, int maxEvals, SolutionHistogram[] solHists, boolean treatAsUnknown,
@@ -1225,7 +1224,7 @@ public class PostProcess {
 
     /**
      * Select a local search range for a given method based on the clustering parameter.
-     * If clustering was deactivated (sigma <= 0), then the default mutation step size is used.
+     * If clustering was deactivated (sigma &lt;= 0), then the default mutation step size is used.
      * The specific search method may interpret the search range differently.
      *
      * @param method
@@ -1254,7 +1253,7 @@ public class PostProcess {
     /**
      * Select a perturbation for individual i fitting to the population - avoiding overlap.
      * In this case, return the third of the minimum distance to the next neighbor in the population.
-     * The maxPerturb can be given as upper bound of the perturbation if it is > 0.
+     * The maxPerturb can be given as upper bound of the perturbation if it is &gt; 0.
      *
      * @param candidates    population of solutions to look at
      * @param i             index of the individual in the population to look at

@@ -15,7 +15,7 @@ import eva2.util.annotation.Description;
  *          <br><br>
  *          <b>Example: </b>
  *          <pre>
- *                                                                1 2 | 3 4 5 | 6 7 8 9 ->
+ *                                                                1 2 | 3 4 5 | 6 7 8 9 -&gt;
  *                                                                1 2 | 5 4 3 | 6 7 8 9
  *                                                       </pre>
  */
@@ -30,8 +30,10 @@ public class MutateOBGAInversion implements java.io.Serializable, InterfaceMutat
         return this;
     }
 
-    /** This method allows you to evaluate wether two mutation operators
+    /**
+     * This method allows you to evaluate whether two mutation operators
      * are actually the same.
+     *
      * @param mutator   The other mutation operator
      */
     @Override

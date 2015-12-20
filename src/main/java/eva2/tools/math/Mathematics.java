@@ -90,15 +90,15 @@ public final class Mathematics {
      * @param y    another vector
      * @param root what kind of distance function
      * @return the distance of x and y
-     * @throws Exception if x and y have different dimensions an exception is thrown.
+     * @throws IllegalArgumentException if x and y have different dimensions an exception is thrown.
      */
     public static double dist(double[] x, double[] y, int root) {
         if (x.length != y.length) {
-            throw new RuntimeException(
+            throw new IllegalArgumentException(
                     "The vectors x and y must have the same dimension");
         }
         if (root == 0) {
-            throw new RuntimeException("There is no 0-root!");
+            throw new IllegalArgumentException("There is no 0-root!");
         }
         double d = 0;
         for (int i = 0; i < x.length; i++) {
@@ -108,12 +108,12 @@ public final class Mathematics {
     }
 
     /**
-     * Computes the euclidian distance function.
+     * Computes the euclidean distance function.
      *
      * @param x    a vector
      * @param y    another vector
      * @return the distance of x and y
-     * @throws Exception if x and y have different dimensions an exception is thrown.
+     * @throws IllegalArgumentException if x and y have different dimensions an exception is thrown.
      */
     public static double euclideanDist(double[] x, double[] y) {
         if (x.length != y.length) {
@@ -787,7 +787,6 @@ public final class Mathematics {
      * Normalize the given vector to a euclidean length of 1.
      *
      * @param v
-     * @return
      */
     public static void normVect(double[] v, double[] res) {
         svDiv(norm(v), v, res);
@@ -910,8 +909,8 @@ public final class Mathematics {
 
     /**
      * Simple version of reflection of a value moving by a step and bouncing of
-     * min and max values like a pool ball. Precondition is min <= val <= max,
-     * post condition is min <= retVal <= max.
+     * min and max values like a pool ball. Precondition is min &lt;= val &lt;= max,
+     * post condition is min &lt;= retVal &lt;= max.
      *
      * @param val
      * @param step
@@ -1051,7 +1050,7 @@ public final class Mathematics {
 
     /**
      * Scale a range by the given factor, meaning that the interval in each
-     * dimension is extended (fact>1) or reduced (fact < 1) by the defined ratio
+     * dimension is extended (fact &gt; 1) or reduced (fact &lt; 1) by the defined ratio
      * around the center.
      *
      * @param rangeScaleFact
@@ -1075,7 +1074,6 @@ public final class Mathematics {
      *
      * @param range
      * @param dist
-     * @return
      */
     public static void shiftRange(double[][] range, double dist) {
         for (int i = 0; i < range.length; i++) {
@@ -1088,7 +1086,6 @@ public final class Mathematics {
      * dimensions as the range.
      *
      * @param range
-     * @return
      */
     public static void shiftRange(double[][] range, double[] dists) {
         for (int i = 0; i < range.length; i++) {
@@ -1174,7 +1171,6 @@ public final class Mathematics {
      *
      * @param s Scalar
      * @param v Vector
-     * @return
      */
     public static void svAdd(double s, double[] v, double[] res) {
         for (int i = 0; i < v.length; i++) {
@@ -1200,7 +1196,6 @@ public final class Mathematics {
      *
      * @param s
      * @param v
-     * @return
      */
     public static void svDiv(double s, double[] v, double[] res) {
         for (int i = 0; i < v.length; i++) {
@@ -1240,7 +1235,6 @@ public final class Mathematics {
      * @param s Scaling factor
      * @param v
      * @param w
-     * @return
      */
     public static void svvAddScaled(double s, double[] v, double[] w,
                                     double[] res) {
@@ -1255,7 +1249,6 @@ public final class Mathematics {
      * @param s
      * @param v
      * @param w
-     * @return
      */
     public static void svvAddAndScale(double s, double[] v, double[] w,
                                       double[] res) {
@@ -1284,7 +1277,6 @@ public final class Mathematics {
      *
      * @param v1
      * @param v2
-     * @return vector addition
      */
     public static void vvAdd(double[] v1, double[] v2, double[] res) {
         vvAddOffs(v1, 0, v2, 0, res, 0, v1.length);
@@ -1311,7 +1303,6 @@ public final class Mathematics {
      *
      * @param v1
      * @param v2
-     * @return vector addition
      */
     public static void vvAddOffs(double[] v1, int v1Offs, double[] v2,
                                  int v2Offs, double[] res, int resOffs, int len) {
@@ -1338,9 +1329,9 @@ public final class Mathematics {
     /**
      * Component wise multiplication of vectors: res[i]=u[i]*v[i]
      *
-     * @param s
+     * @param u
      * @param v
-     * @return
+     * @param res The result vector
      */
     public static void vvMultCw(double[] u, double[] v, double[] res) {
         for (int i = 0; i < res.length; i++) {
@@ -1366,7 +1357,7 @@ public final class Mathematics {
      *
      * @param a
      * @param b
-     * @return a new vector c = a - b
+     * @param res Result vector c = a - b
      */
     public static void vvSub(double[] a, double[] b, double[] res) {
         for (int i = 0; i < a.length; i++) {

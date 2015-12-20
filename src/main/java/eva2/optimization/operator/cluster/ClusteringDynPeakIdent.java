@@ -169,7 +169,7 @@ public class ClusteringDynPeakIdent implements InterfaceClustering, java.io.Seri
      * which are not dominated by other individuals within distance rho.
      * Note that the returned set may be smaller than q.
      *
-     * @param pop
+     * @param metric Distance Metric
      * @param q   the number of peaks to be identified
      * @param rho the niche radius
      * @return the dynamic peak set

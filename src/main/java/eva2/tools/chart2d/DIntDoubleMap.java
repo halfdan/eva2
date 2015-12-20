@@ -16,9 +16,9 @@ public interface DIntDoubleMap {
      *
      * @param source the preimage of the image
      * @param image  the new image of the source value
-     * @return <code>true</code> when the minimal or the maximal image value
+     * @return {@code true} when the minimal or the maximal image value
      *         has been changed by this method call, else it returns
-     *         <code>false</code> @see #getMinImageValue(), #getMaxImageValue()
+     *         {@code false} @see #getMinImageValue(), #getMaxImageValue()
      */
     boolean setImage(int source, double image);
 
@@ -34,9 +34,9 @@ public interface DIntDoubleMap {
      * the image of the highest source value + 1 should be the given image value
      *
      * @param image the new image value
-     * @return <code>true</code> when the minimal or the maximal image value
+     * @return {@code true} when the minimal or the maximal image value
      *         has been changed by this method call, else it returns
-     *         <code>false</code> @see #getMinImageValue(), #getMaxImageValue()
+     *         {@code false} @see #getMinImageValue(), #getMaxImageValue()
      */
     boolean addImage(double image);
 
@@ -72,10 +72,10 @@ public interface DIntDoubleMap {
     double getMinPositiveImageValue();
 
     /**
-     * checks the minimal and the maximal image values and returns <code>true</code>
+     * checks the minimal and the maximal image values and returns {@code true}
      * when at least one of them has changed
      *
-     * @return <code>true</code> when either the maximal image value or the
+     * @return {@code true} when either the maximal image value or the
      *         minimal image value has changed
      */
     boolean restore();

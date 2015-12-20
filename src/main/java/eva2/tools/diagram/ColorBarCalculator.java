@@ -39,6 +39,8 @@ public class ColorBarCalculator {
     /**
      * Returns color for the given float-value, which must be in the range from 0 to 1.
      * Warning: Creates new color object, better use the method 'getRGB' if possible.
+     *
+     * @param value Value to be converted into RGB color.
      */
     public Color getColor(float value) {
         return new Color(getRGB(value));
@@ -46,6 +48,8 @@ public class ColorBarCalculator {
 
     /**
      * Returns color RGB-value for the given float-value, which must be in the range from 0 to 1.
+     *
+     * @param value Value to be converted into RGB color.
      */
     public int getRGB(float value) {
         int rgbValue = 0;
@@ -82,7 +86,7 @@ public class ColorBarCalculator {
     /**
      * Reverts color scale (e.g. black will be white and vice versa).
      *
-     * @param isInverse Color scale is inverted, if <code>isInverse</code> is set to true.
+     * @param isInverse Color scale is inverted, if {@code isInverse} is set to true.
      */
     public void setInverseScale(boolean isInverse) {
         inverseScale = isInverse;
@@ -91,7 +95,7 @@ public class ColorBarCalculator {
     /**
      * Returns current scale mode.
      *
-     * @return <code>true</code> if scale is inverted, else <code>false</code>.
+     * @return {@code true} if scale is inverted, else {@code false}.
      */
     public boolean isInverseScale() {
         return inverseScale;

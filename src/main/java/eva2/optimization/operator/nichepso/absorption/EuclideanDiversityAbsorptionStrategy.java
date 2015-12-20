@@ -35,15 +35,11 @@ public class EuclideanDiversityAbsorptionStrategy extends StandardAbsorptionStra
         epsilon = eps;
     }
 
-/**********************************************************************************************************************
- * shouldAbsorbParticleIntoSubswarm
- */
     /**
-     * @tested true if
-     * the subswarm is active and
-     * the particle lies in the radius of the subswarm and
-     * the diversity (mean distance from the gbest) of the subswarm < epsilon
-     * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.StandardAbsorptionStrategy#shouldAbsorbParticleIntoSubswarm(javaeva.server.oa.go.EAIndividuals.AbstractEAIndividual, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
+     * true if
+     * the sub-swarm is active and
+     * the particle lies in the radius of the sub-swarm and
+     * the diversity (mean distance from the gbest) of the sub-swarm &lt; epsilon
      */
     @Override
     public boolean shouldAbsorbParticleIntoSubswarm(AbstractEAIndividual indy, ParticleSubSwarmOptimization subswarm, ParticleSubSwarmOptimization mainswarm) {
@@ -58,10 +54,6 @@ public class EuclideanDiversityAbsorptionStrategy extends StandardAbsorptionStra
         return meanDistanceFromGBestPos < getEpsilon();
     }
 
-    /**
-     * *******************************************************************************************************************
-     * setter, getter
-     */
     public void setEpsilon(double epsilon) {
         this.epsilon = epsilon;
     }

@@ -41,8 +41,7 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
     }
 
     /**
-     * @tested the subswarms are merged, if they overlap (or are very close) and if they are of equal state
-     * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceMergingStrategie#shouldMergeSubswarms(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
+     * the subswarms are merged, if they overlap (or are very close) and if they are of equal state
      */
     @Override
     public boolean shouldMergeSubswarms(ParticleSubSwarmOptimization subswarm1, ParticleSubSwarmOptimization subswarm2) {
@@ -108,7 +107,6 @@ public class StandardMergingStrategy implements InterfaceMergingStrategy, java.i
     /**
      * @param i
      * @param j
-     * @tested junit
      * adds population of subswarm j to population of subswarm i, then deletes subswarm j.
      */
     @Override

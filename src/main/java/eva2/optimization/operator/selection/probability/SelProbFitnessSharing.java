@@ -38,7 +38,7 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
      * This method computes the selection probability for each individual
      * in the population. Note: Summed over the complete population the selection
      * probability sums up to one. Keep in mind that fitness is always to be
-     * minimizied! Small values for data => big values for selectionprob.
+     * minimizied! Small values for data =&gt; big values for selectionprob.
      *
      * @param population The population to compute.
      * @param data       The input data as double[][].

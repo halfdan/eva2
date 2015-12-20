@@ -3,9 +3,9 @@ package eva2.tools.chart2d;
 import java.awt.*;
 
 /**
- * <code>DComponent</code> is the mother of all objects which can be displayed
- * by a <code>DArea</code> object, even when it would be also enough to
- * implement the <code>DElement</code> interface to an class
+ * {@code DComponent} is the mother of all objects which can be displayed
+ * by a {@code DArea} object, even when it would be also enough to
+ * implement the {@code DElement} interface to an class
  * <p>
  * DComponent is abstract because the paint method has to be overridden
  */

@@ -83,9 +83,8 @@ public class ImprovementDeactivationStrategy implements InterfaceDeactivationStr
     }
 
     /**
-     * @tested true if the subswarm is active and all particles are completely converged
-     * (i.e. the stddev over the past 3 iterations is < epsilson)
-     * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceDeactivationStrategy#shouldDeactivateSubswarm(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
+     * True if the subswarm is active and all particles are completely converged
+     * (i.e. the stddev over the past 3 iterations is &lt; epsilson)
      */
     @Override
     public boolean shouldDeactivateSubswarm(ParticleSubSwarmOptimization subswarm) {
@@ -98,14 +97,9 @@ public class ImprovementDeactivationStrategy implements InterfaceDeactivationStr
         return (isConverged(subswarm.getPopulation()));
     }
 
-/**********************************************************************************************************************
- * deactivateSubswarm
- */
-
     /**
-     * @tested the subswarm is deactivated and the particles indices are returned. They are
+     * The subswarm is deactivated and the particles indices are returned. They are
      * to be reinitialized into the mainswarm.
-     * (non-Javadoc) @see javaeva.server.oa.go.Operators.NichePSO.InterfaceDeactivationStrategy#deactivateSubswarm(javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization, javaeva.server.oa.go.Strategies.ParticleSubSwarmOptimization)
      */
     @Override
     public int[] deactivateSubswarm(ParticleSubSwarmOptimization subswarm, ParticleSubSwarmOptimization mainswarm) {
@@ -125,11 +119,6 @@ public class ImprovementDeactivationStrategy implements InterfaceDeactivationStr
         subswarm.SetActive(false);
         return particleIndices;
     }
-
-    /**
-     * *******************************************************************************************************************
-     * getter, setter
-     */
 
     public void setEpsilon(double epsilon) {
         this.epsilon = epsilon;

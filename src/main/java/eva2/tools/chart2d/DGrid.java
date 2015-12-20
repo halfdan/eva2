@@ -65,7 +65,7 @@ public class DGrid extends DComponent {
     /**
      * paints the grid...
      *
-     * @param m the <code>DMeasures</code> object to paint the grid
+     * @param m the {@code DMeasures} object to paint the grid
      */
     @Override
     public void paint(DMeasures m) {

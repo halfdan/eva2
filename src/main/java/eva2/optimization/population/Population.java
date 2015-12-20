@@ -100,7 +100,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     public static final String NEXT_GENERATION_PERFORMED = "NextGenerationPerformed";
 
     /**
-     * With <code>autoAging = true</code> #incrGeneration automatically
+     * With {@code autoAging = true} #incrGeneration automatically
      * ages individuals.
      */
     private boolean autoAging = true;
@@ -485,8 +485,6 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     /**
      * Create a population instance which distributes the individuals according
      * to a random latin hypercube sampling.
-     *
-     * @return
      */
     public static void createRLHSampling(Population pop, boolean fillPop) {
         if (pop.size() <= 0) {
@@ -523,7 +521,6 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      * @param cardinality an integer giving the number of (random) bits to set
      * @param stdDev      standard deviation of the cardinality variation (can be
      *                    zero to fix the cardinality)
-     * @return
      */
     public static void createBinCardinality(Population pop, boolean fillPop, int cardinality, int stdDev) {
         if (pop.size() <= 0) {
@@ -630,7 +627,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
 
     /**
      * This method will allow you to increment the current number of function
-     * calls by a number > 1. Notice that it might slightly disturb notification
+     * calls by a number &gt; 1. Notice that it might slightly disturb notification
      * if a notifyEvalInterval is set.
      *
      * @param d The number of function calls to increment by.
@@ -991,7 +988,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     /**
      * This method will return the index of the current best individual from the
      * population in the given fitness component (or using dominance when
-     * fitIndex < 0). If the population is empty, -1 is returned.
+     * fitIndex &lt; 0). If the population is empty, -1 is returned.
      *
      * @return The index of the best individual.
      * @see #getIndexOfBestOrWorstIndividual(boolean, java.util.Comparator)
@@ -1006,7 +1003,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     /**
      * This method will return the index of the current best individual from the
      * population in the given fitness component (or using dominance when
-     * fitIndex < 0).
+     * fitIndex &lt; 0).
      *
      * @return The index of the best individual.
      * @see #getIndexOfBestOrWorstIndividual(boolean, java.util.Comparator)
@@ -1163,12 +1160,12 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      * This method returns the n current best individuals from the population,
      * where the sorting criterion is delivered by an
      * AbstractEAIndividualComparator. There are less than n individuals
-     * returned if the population is smaller than n. If n is <= 0, then all
+     * returned if the population is smaller than n. If n is &lt;= 0, then all
      * individuals are returned and effectively just sorted by fitness. This
      * does not check constraints!
      *
      * @param n number of individuals to look out for
-     * @return The m best individuals, where m <= n
+     * @return The m best individuals, where m &lt;= n
      */
     public Population getBestNIndividuals(int n, int fitIndex) {
         if (n <= 0 || (n > super.size())) {
@@ -1183,12 +1180,12 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      * This method returns the n current worst individuals from the population,
      * where the sorting criterion is delivered by an
      * AbstractEAIndividualComparator. There are less than n individuals
-     * returned if the population is smaller than n. If n is <= 0, then all
+     * returned if the population is smaller than n. If n is &lt;= 0, then all
      * individuals are returned and effectively just sorted by fitness. This
      * does not check constraints!
      *
      * @param n number of individuals to look out for
-     * @return The m worst individuals, where m <= n
+     * @return The m worst individuals, where m &lt;= n
      */
     public Population getWorstNIndividuals(int n, int fitIndex) {
         Population pop = new Population(n);
@@ -1222,7 +1219,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      *                     individuals
      * @param res          sorted result population, will be cleared
      * @param comp         the Comparator to use with individuals
-     * @return The m sorted best or worst individuals, where m <= n
+     * @param res The m sorted best or worst individuals, where m &lt;= n (will be added to res)
      */
     public void getSortedNIndividuals(int n, boolean bBestOrWorst, Population res, Comparator<Object> comp) {
         if ((n < 0) || (n > super.size())) {
@@ -2082,7 +2079,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      * @param indy
      * @param d
      * @param metric
-     * @return true if d(indy,pop)<=d, else false
+     * @return true if d(indy,pop)&lt;=d, else false
      */
     public boolean isWithinPopDist(AbstractEAIndividual indy, double d, InterfaceDistanceMetric metric) {
         Pair<Integer, Double> closest = Population.getClosestFarthestIndy(indy, this, metric, true);

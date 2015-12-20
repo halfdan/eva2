@@ -8,7 +8,7 @@ import java.util.Comparator;
  * Comparator implementation which compares two double arrays.
  * It assigns -1 if first is pareto dominant (smaller), 1 if second is pareto dominant (larger), 0 if the two ind.s
  * are not comparable.
- * If a criterion>=0 is specified, only the thereby indexed entry of any array
+ * If a criterion&gt;=0 is specified, only the thereby indexed entry of any array
  * will be used for comparison (single criterion case).
  */
 public class DoubleArrayComparator implements Comparator<Object> {
