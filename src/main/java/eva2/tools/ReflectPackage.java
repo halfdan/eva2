@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.logging.Logger;
 
 
 /**
@@ -25,6 +26,7 @@ import java.util.jar.JarInputStream;
  * @author mkron
  */
 public class ReflectPackage {
+    private static final Logger LOGGER = Logger.getLogger(ReflectPackage.class.getName());
     static int missedJarsOnClassPath = 0;
     static boolean useFilteredClassPath = true;
     static String[] dynCP = null;
@@ -91,7 +93,7 @@ public class ReflectPackage {
                             cntAdded += addClass(set, cls);
                         }
                     } catch (Exception | Error e) {
-                        System.err.println("ReflectPackage: Couldnt get Class from jar for " + pckgname + '.' + file + ": " + e.getMessage());
+                        System.err.println("ReflectPackage: Couldn't get Class from jar for " + pckgname + '.' + file + ": " + e.getMessage());
                     }
                 } else if (includeSubs) {
                     // do a recursive search over subdirs
@@ -115,7 +117,7 @@ public class ReflectPackage {
 
     private static int addClass(HashSet<Class> set, Class cls) {
         if (set.contains(cls)) {
-            System.err.println("warning, Class " + cls.getName() + " not added twice!");
+            LOGGER.warning("Class " + cls.getName() + " not added twice!");
             return 0;
         } else {
             set.add(cls);
@@ -172,7 +174,7 @@ public class ReflectPackage {
                                 cntAdded += addClass(set, cls);
                             }
                         } catch (Exception | Error e) {
-                            System.err.println("ReflectPackage: Couldn't get Class from jar for " + clsName + ": " + e.getMessage());
+                            LOGGER.warning("ReflectPackage: Couldn't get Class from jar for " + clsName + ": " + e.getMessage());
                         }
                     }
                 }
@@ -180,8 +182,7 @@ public class ReflectPackage {
         } catch (IOException e) {
             missedJarsOnClassPath++;
             if (missedJarsOnClassPath == 0) {
-                System.err.println("Couldn't open jar from class path: " + e.getMessage());
-                System.err.println("Dirty class path?");
+                LOGGER.warning("Couldn't open jar from class path. Dirty class path? " + e.getMessage());
             } else if (missedJarsOnClassPath == 2) {
                 System.err.println("Couldn't open jar from class path more than once...");
             }
@@ -204,7 +205,7 @@ public class ReflectPackage {
 
     /**
      * Collect classes from a given package on the classpath which have the given Class
-     * as superclass or superinterface. If includeSubs is true,
+     * as superclass or interface. If includeSubs is true,
      * the sub-packages are listed as well.
      *
      * @param pkg
@@ -224,11 +225,13 @@ public class ReflectPackage {
         }
 
         for (String aDynCP : dynCP) {
+
             if (aDynCP.endsWith(".jar")) {
                 // Skip JARs that don't start with the EvA substring.
                 // This improves performance a lot when having a lot of JARs on the classpath
                 int index = aDynCP.lastIndexOf(System.getProperty("file.separator"));
-                if (index != -1 && !aDynCP.substring(index).contains("EvA")) {
+                if (index != -1 && !aDynCP.substring(index).toLowerCase().contains("eva")) {
+                    LOGGER.warning("Skipping Jar (does not start with \"eva\": " + aDynCP);
                     continue;
                 }
                 getClassesFromJarFltr(set, aDynCP, pkg, includeSubs, reqSuperCls);
