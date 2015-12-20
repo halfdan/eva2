@@ -231,7 +231,7 @@ public class ReflectPackage {
                 // This improves performance a lot when having a lot of JARs on the classpath
                 int index = aDynCP.lastIndexOf(System.getProperty("file.separator"));
                 if (index != -1 && !aDynCP.substring(index).toLowerCase().contains("eva")) {
-                    LOGGER.warning("Skipping Jar (does not start with \"eva\": " + aDynCP);
+                    LOGGER.fine("Skipping Jar (does not start with \"eva\": " + aDynCP);
                     continue;
                 }
                 getClassesFromJarFltr(set, aDynCP, pkg, includeSubs, reqSuperCls);
