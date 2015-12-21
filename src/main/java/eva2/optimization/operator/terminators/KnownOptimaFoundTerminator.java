@@ -29,12 +29,12 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
     }
 
     @Override
-    public void initialize(InterfaceOptimizationProblem prob) {
+    public void initialize(InterfaceOptimizationProblem prob) throws IllegalArgumentException {
         if (prob != null) {
             if (prob instanceof InterfaceMultimodalProblemKnown) {
                 mProblem = (InterfaceMultimodalProblemKnown) prob;
             } else {
-                LOGGER.log(Level.WARNING, "KnownOptimaFoundTerminator only works with InterfaceMultimodalProblemKnown instances!");
+                throw new IllegalArgumentException("KnownOptimaFoundTerminator only works with InterfaceMultimodalProblemKnown instances!");
             }
         } else {
             LOGGER.log(Level.WARNING, "KnownOptimaFoundTerminator wont work with null problem!");

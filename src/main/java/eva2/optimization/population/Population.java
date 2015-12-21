@@ -722,9 +722,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
             this.historyList.add((AbstractEAIndividual) this.getBestEAIndividual().clone());
         }
         if (isAutoAging()) {
-            for (AbstractEAIndividual individual : this) {
-                individual.incrAge();
-            }
+            this.forEach(AbstractEAIndividual::incrAge);
         }
         this.generationCount++;
         firePropertyChangedEvent(NEXT_GENERATION_PERFORMED);
