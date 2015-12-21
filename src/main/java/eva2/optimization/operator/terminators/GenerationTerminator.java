@@ -52,7 +52,7 @@ public class GenerationTerminator implements InterfaceTerminator, Serializable {
 
     @Override
     public String toString() {
-        return "Generations calls = " + maxGenerations;
+        return "Generations calls=" + maxGenerations;
     }
 
     @Parameter(description = "Number of generations to evaluate.")

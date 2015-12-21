@@ -37,7 +37,7 @@ public class GenerationTerminatorTest {
 
     @Test
     public void testToString() throws Exception {
-        assertEquals("Generation calls = 100", terminator.toString());
+        assertEquals("Generations calls=100", terminator.toString());
     }
 
     @Test
