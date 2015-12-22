@@ -751,17 +751,6 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             }
         }
 
-        if (followDependencies) {
-            // Handle the special method getGOEPropertyUpdateLinks which returns a list of pairs
-            // of strings indicating that on an update of the i-th property, the i+1-th property
-            // should be updated. This is useful for changes within sub-classes of the target
-            // which are not directly displayed in this panel but in sub-panels (and there have an own view etc.)
-            Object o = BeanInspector.callIfAvailable(targetObject, "getGOEPropertyUpdateLinks", null);
-            if ((o != null) && (o instanceof String[])) {
-                maybeTriggerUpdates(propIndex, (String[]) o);
-            }
-        }
-
         // Make sure the target bean gets repainted.
         if (Beans.isInstanceOf(targetObject, Component.class)) {
             //System.out.println("Beans.getInstanceOf repaint ");
@@ -829,46 +818,6 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             System.err.println("Exception in PropertySheetPanel");
         }
         return doRepaint;
-    }
-
-    /**
-     * Check the given link list and trigger updates of indicated properties.
-     *
-     * @param propIndex
-     * @param links
-     */
-    private void maybeTriggerUpdates(int propIndex, String[] links) {
-        int max = links.length;
-        if (max % 2 == 1) {
-            System.err.println("Error in PropertySheetPanel:maybeTriggerUpdates: odd number of strings provided!");
-            max -= 1;
-        }
-        for (int i = 0; i < max; i += 2) {
-            if (links[i].equals(propertyDescriptors[propIndex].getName())) {
-                updateLinkedProperty(links[i + 1]);
-            }
-        }
-    }
-
-    private void updateLinkedProperty(String propName) {
-        for (int i = 0; i < propertyDescriptors.length; i++) {
-            if (propertyDescriptors[i].getName().equals(propName)) {
-                Method getter = propertyDescriptors[i].getReadMethod();
-                Object val = null;
-                try {
-                    val = getter.invoke(targetObject, (Object[]) null);
-                } catch (Exception e) {
-                    val = null;
-                    e.printStackTrace();
-                }
-                if (val != null) {
-                    propertyEditors[i].setValue(val);
-                } else {
-                    System.err.println("Error in PropertySheetPanel:updateLinkedProperty");
-                }
-                return;
-            }
-        }
     }
 }
 
