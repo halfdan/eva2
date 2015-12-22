@@ -1,9 +1,12 @@
 package eva2.optimization.population;
 
+import com.sun.org.apache.bcel.internal.generic.POP;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class PopulationTest {
     Population emptyPopulation;
@@ -182,7 +185,12 @@ public class PopulationTest {
     @Test
     public void testIncrGeneration() throws Exception {
         int currentGeneration = emptyPopulation.getGeneration();
+        InterfacePopulationChangedEventListener listener = mock(InterfacePopulationChangedEventListener.class);
+
+        emptyPopulation.addPopulationChangedEventListener(listener);
         emptyPopulation.incrGeneration();
+
+        verify(listener).registerPopulationStateChanged(emptyPopulation, Population.NEXT_GENERATION_PERFORMED);
 
         assertEquals(currentGeneration + 1, emptyPopulation.getGeneration());
     }
@@ -205,11 +213,6 @@ public class PopulationTest {
     }
 
     @Test
-    public void testAddPopulation1() throws Exception {
-
-    }
-
-    @Test
     public void testResetFitness() throws Exception {
 
     }
@@ -220,27 +223,12 @@ public class PopulationTest {
     }
 
     @Test
-    public void testGetDominatingSet1() throws Exception {
-
-    }
-
-    @Test
     public void testGetIndexOfBestIndividualPrefFeasible() throws Exception {
 
     }
 
     @Test
     public void testGetIndexOfWorstIndividualNoConstr() throws Exception {
-
-    }
-
-    @Test
-    public void testGetIndexOfBestIndividualPrefFeasible1() throws Exception {
-
-    }
-
-    @Test
-    public void testGetIndexOfWorstIndividualNoConstr1() throws Exception {
 
     }
 
@@ -320,11 +308,6 @@ public class PopulationTest {
     }
 
     @Test
-    public void testGetCorrelations1() throws Exception {
-
-    }
-
-    @Test
     public void testGetFitnessMeasures() throws Exception {
 
     }
@@ -400,5 +383,30 @@ public class PopulationTest {
 
         // Get all individuals with fitness <= 10.0 (first fitness dimension)
         assertEquals(2, emptyPopulation.filterByFitness(10.0, 0).size());
+    }
+
+    @Test
+    public void testGetBestEAIndividual() throws Exception {
+
+    }
+
+    @Test
+    public void testGetBestNIndividuals() throws Exception {
+
+    }
+
+    @Test
+    public void testGetWorstNIndividuals() throws Exception {
+
+    }
+
+    @Test
+    public void testGetWorstEAIndividual() throws Exception {
+
+    }
+
+    @Test
+    public void testRemoveNIndividuals() throws Exception {
+
     }
 }
