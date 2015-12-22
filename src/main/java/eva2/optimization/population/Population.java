@@ -883,7 +883,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     }
 
     /**
-     * Resets the fitnes to the maximum possible value for the given individual.
+     * Resets the fitness to the maximum possible value for the given individual.
      *
      * @param indy an individual whose fitness will be reset
      */
@@ -2091,7 +2091,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      */
     public double[] getCenter() {
         if (size() == 0) {
-            EVAERROR.errorMsgOnce("Invalid pop size in DistractingPopulation:getCenter!");
+            return null;
         }
         double[] centerPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
         for (int i = 1; i < size(); i++) {
@@ -2123,7 +2123,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      */
     public double[] getCenterWeighted(double[] weights) {
         if (size() == 0 || (weights.length > size()) || (weights.length == 0)) {
-            EVAERROR.errorMsgOnce("Invalid pop size in DistractingPopulation:getCenterWeighted!");
+            return null;
         }
         double[] centerPos = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
         Mathematics.svMult(weights[0], centerPos, centerPos);

@@ -1,12 +1,14 @@
 package eva2.optimization.population;
 
 import com.sun.org.apache.bcel.internal.generic.POP;
+import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class PopulationTest {
     Population emptyPopulation;
@@ -18,11 +20,6 @@ public class PopulationTest {
 
     @Test
     public void testEquals() throws Exception {
-
-    }
-
-    @Test
-    public void testPutData() throws Exception {
 
     }
 
@@ -314,12 +311,22 @@ public class PopulationTest {
 
     @Test
     public void testGetCenter() throws Exception {
+        assertNull(emptyPopulation.getCenter());
 
+        for(int i = 0; i < 10; i++) {
+            ESIndividualDoubleData indy = mock(ESIndividualDoubleData.class);
+            when(indy.getDGenotype()).thenReturn(new double[]{i, i, i, i, i});
+            emptyPopulation.add(indy);
+        }
+
+        assertArrayEquals(new double[]{
+                4.5, 4.5, 4.5, 4.5, 4.5
+        }, emptyPopulation.getCenter(), 0.0);
     }
 
     @Test
     public void testGetCenterIndy() throws Exception {
-
+        
     }
 
     @Test
@@ -334,7 +341,15 @@ public class PopulationTest {
 
     @Test
     public void testGetFitSum() throws Exception {
+        for(int i = 0; i < 10; i++) {
+            ESIndividualDoubleData indy = mock(ESIndividualDoubleData.class);
+            when(indy.getFitness(0)).thenReturn((double)i);
+            when(indy.getFitness(1)).thenReturn((double)i*2);
+            emptyPopulation.add(indy);
+        }
 
+        assertEquals(45.0, emptyPopulation.getFitSum(0), 0.0);
+        assertEquals(90.0, emptyPopulation.getFitSum(1), 0.0);
     }
 
     @Test
@@ -354,7 +369,12 @@ public class PopulationTest {
 
     @Test
     public void testGetFreeSlots() throws Exception {
+        assertEquals(10, emptyPopulation.getFreeSlots());
 
+        ESIndividualDoubleData indy = mock(ESIndividualDoubleData.class);
+        emptyPopulation.add(indy);
+
+        assertEquals(9, emptyPopulation.getFreeSlots());
     }
 
     @Test
@@ -365,6 +385,19 @@ public class PopulationTest {
     @Test
     public void testCheckNoNullIndy() throws Exception {
 
+    }
+
+    @Test
+    public void testPutDataAllIndies() throws Exception {
+        ESIndividualDoubleData indy1 = mock(ESIndividualDoubleData.class);
+        ESIndividualDoubleData indy2 = mock(ESIndividualDoubleData.class);
+
+        emptyPopulation.add(indy1);
+        emptyPopulation.add(indy2);
+        emptyPopulation.putDataAllIndies("test", 12);
+
+        verify(indy1).putData("test", 12);
+        verify(indy2).putData("test", 12);
     }
 
     @Test
