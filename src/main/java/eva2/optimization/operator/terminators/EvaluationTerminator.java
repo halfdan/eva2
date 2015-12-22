@@ -23,8 +23,7 @@ public class EvaluationTerminator implements InterfaceTerminator,
      */
     protected int maxFitnessCalls = 1000;
 
-    public EvaluationTerminator() {
-    }
+    public EvaluationTerminator() {}
 
     @Override
     public void initialize(InterfaceOptimizationProblem prob) {
