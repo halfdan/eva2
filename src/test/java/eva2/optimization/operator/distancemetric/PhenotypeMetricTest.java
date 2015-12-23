@@ -1,9 +1,6 @@
 package eva2.optimization.operator.distancemetric;
 
-import eva2.optimization.individuals.AbstractEAIndividual;
-import eva2.optimization.individuals.ESIndividualDoubleData;
-import eva2.optimization.individuals.ESIndividualIntegerData;
-import eva2.optimization.individuals.InterfaceDataTypeDouble;
+import eva2.optimization.individuals.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,6 +53,22 @@ public class PhenotypeMetricTest {
         assertEquals(0.0, metric.distance(iindy1, iindy1), 0.0);
 
         assertEquals(0.4472, metric.distance(iindy1, iindy2), 1E-4);
+
+        // PERMUTATION
+        ESIndividualPermutationData pindy1, pindy2;
+        pindy1 = mock(ESIndividualPermutationData.class);
+        when(pindy1.getPermutationData()).thenReturn(new int[][]{
+                {0, 1, 2}, {0, 1, 2}, {0, 1, 2}, {0, 1, 2}, {0, 1, 2}, {}
+        });
+        pindy2 = mock(ESIndividualPermutationData.class);
+        when(pindy2.getPermutationData()).thenReturn(new int[][]{
+                {0, 1, 3}, {0, 1, 1}, {0, 0, 2}, {1, 1, 3}, {}, {1, 2, 3}
+        });
+
+        // Should be zero for distance to itself
+        assertEquals(0.0, metric.distance(pindy1, pindy1), 0.0);
+
+        assertEquals(2.35, metric.distance(pindy1, pindy2), 1E-4);
 
     }
 
