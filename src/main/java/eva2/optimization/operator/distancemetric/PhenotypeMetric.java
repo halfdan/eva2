@@ -16,15 +16,11 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
     private static PhenotypeMetric pMetric = null;
     private static GenotypeMetricBitSet bitMetric = null;
 
-    public PhenotypeMetric() {
-    }
-
-    public PhenotypeMetric(PhenotypeMetric a) {
-    }
+    public PhenotypeMetric() {}
 
     @Override
     public Object clone() {
-        return new PhenotypeMetric(this);
+        return new PhenotypeMetric();
     }
 
     private static int min(int a, int b, int c) {
@@ -110,7 +106,6 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
             r2 = ((InterfaceDataTypeInteger) indy2).getIntRange();
             for (int i = 0; (i < d1.length) && (i < d2.length); i++) {
                 tmpResult += Math.pow(((d1[i] - r1[i][0]) / ((double) (r1[i][1] - r1[i][0]))) - ((d2[i] - r2[i][0]) / ((double) (r2[i][1] - r2[i][0]))), 2);
-                //tmpResult += Math.abs(d1[i] - d2[i])/((double)(r1[i][1]-r1[i][0]));
             }
             result += Math.sqrt(tmpResult);
         }
