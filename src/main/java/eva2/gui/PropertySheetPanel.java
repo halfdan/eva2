@@ -234,25 +234,19 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             }
         }
 
-        int methsFound = 0; // don't loop too long, so count until all found
-        for (MethodDescriptor methodDescriptor : methodDescriptors) {
-            String name = methodDescriptor.getDisplayName();
-            Method meth = methodDescriptor.getMethod();
-            if (name.equals("hideHideable")) {
-                Object args[] = {};
-                try {
-                    meth.invoke(targetObject, args);
-                } catch (Exception ex) {
-                }
-                methsFound++;
-            } else if (name.equals("customPropertyOrder")) {
-                methsFound++;
-                reorderProperties(meth);
-            }
-            if (methsFound == 2) {
-                break; // small speed-up
+        // Allow object to mark properties hidden
+        BeanInspector.callIfAvailable(targ, "hideHideable", null);
+
+        // Allow object to reorder properties
+        Object retV = BeanInspector.callIfAvailable(targ, "customPropertyOrder", null);
+        if (retV != null) {
+            if (retV.getClass().isArray()) {
+                reorderProperties((String[]) retV);
+            } else {
+                LOGGER.severe("Class defines custom property order but returns invalid type.");
             }
         }
+
 
         // Now lets search for the individual properties, their
         // values, views and editors...
@@ -324,7 +318,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         setVisible(true);
     }
 
-    private String prepareLabel(String label) {
+    private static String prepareLabel(String label) {
         // Add some specific display for some greeks here
         label = StringTools.translateGreek(label);
         label = StringTools.humaniseCamelCase(label);
@@ -438,38 +432,30 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
     /**
      * Be sure to give a clone
      *
-     * @param meth
+     * @param swProps
      * @return
      */
-    private PropertyDescriptor[] reorderProperties(Method meth) {
+    private PropertyDescriptor[] reorderProperties(String[] swProps) {
         Object[] args = {};
-        Object retV = null;
         PropertyDescriptor[] newProps = null;
-        try {
-            retV = meth.invoke(targetObject, args); // should return String[] to be interpreted as a list of ordered properties
-        } catch (Exception ex) {
-        }
-        if (retV != null) {
+        if (swProps != null) {
             try {
-                if (retV.getClass().isArray()) { // reorder the properties
-                    String[] swProps = (String[]) retV;
-                    PropertyDescriptor[] oldProps = propertyDescriptors.clone();
-                    newProps = new PropertyDescriptor[oldProps.length];
-                    //int findFirst=findFirstProp(props[0], oldProps);
-                    int firstNonNull = 0;
-                    for (int i = 0; i < oldProps.length; i++) {
-                        if (i < swProps.length) {
-                            int pInOld = findProp(oldProps, swProps[i]);
-                            newProps[i] = oldProps[pInOld];
-                            oldProps[pInOld] = null;
-                        } else {
-                            firstNonNull = findFirstNonNullAfter(oldProps, firstNonNull);
-                            newProps[i] = oldProps[firstNonNull];
-                            firstNonNull++;
-                        }
+                PropertyDescriptor[] oldProps = propertyDescriptors.clone();
+                newProps = new PropertyDescriptor[oldProps.length];
+                //int findFirst=findFirstProp(props[0], oldProps);
+                int firstNonNull = 0;
+                for (int i = 0; i < oldProps.length; i++) {
+                    if (i < swProps.length) {
+                        int pInOld = findProp(oldProps, swProps[i]);
+                        newProps[i] = oldProps[pInOld];
+                        oldProps[pInOld] = null;
+                    } else {
+                        firstNonNull = findFirstNonNullAfter(oldProps, firstNonNull);
+                        newProps[i] = oldProps[firstNonNull];
+                        firstNonNull++;
                     }
-                    propertyDescriptors = newProps;
                 }
+                propertyDescriptors = newProps;
             } catch (Exception e) {
                 System.err.println("Error during reordering properties: " + e.getMessage());
                 return propertyDescriptors;
@@ -584,12 +570,10 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         Method getter = propertyDescriptors[i].getReadMethod();
         objectValues[i] = newValue;
         Method setter = property.getWriteMethod();
-        // @todo: Streiche so something was changed, i could check if i have to change the editor
 
-        PropertyEditor tmpEdit = null;
         // the findEditor method using properties may retrieve a primitive editor, the other one, for obscure reasons, cant.
         // so Ill use the mightier first.
-        tmpEdit = PropertyEditorProvider.findEditor(propertyDescriptors[i], newValue);
+        PropertyEditor tmpEdit = PropertyEditorProvider.findEditor(propertyDescriptors[i], newValue);
         if (tmpEdit == null) {
             tmpEdit = PropertyEditorProvider.findEditor(propertyDescriptors[i].getPropertyType());
         }
@@ -600,8 +584,8 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 ((GenericObjectEditor) tmpEdit).setClassType(propertyDescriptors[i].getPropertyType());
             }
             propertyEditors[i].setValue(newValue);
-            JComponent newView = null;
-            newView = getView(tmpEdit);
+
+            JComponent newView = getView(tmpEdit);
             if (newView == null) {
                 LOGGER.warning("Property \"" + propertyDescriptors[i].getDisplayName() + "\" has non-displayable editor.  Skipping.");
                 return false;
@@ -670,7 +654,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             for (int i = 0; i < propertyEditors.length; i++) {
                 if (propertyEditors[i] == editor) {
                     propIndex = i;
-                    if (wasModified(i, editor.getValue(), true)) {
+                    if (wasModified(i, editor.getValue())) {
                         break;
                     }
                 }
@@ -688,13 +672,14 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      * propertysheet?).
      *
      */
-    synchronized boolean wasModified(int propIndex, Object value, boolean followDependencies) {
+    synchronized boolean wasModified(int propIndex, Object value) {
         if (!updateValue(propIndex, value)) {
             return false;
         }
 
         boolean doRepaint = false;
 
+        // ToDo Should be foreach (to skip non existing editors)
         for (int i = 0; i < propertyEditors.length; i++) { // check the views for out-of-date information. this is different than checking the editors
             if (i != propIndex) {
                 if (updateFieldView(i)) {
@@ -715,10 +700,12 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         // for any other properties that have changed.
         for (int i = 0; i < propertyDescriptors.length; i++) {
             Object o;
-            Method getter = null;
+            Method getter;
+            // Make sure we have an editor for this property...
             if (propertyEditors[i] == null) {
-                continue; /// TODO: MK: Im not quite sure this is all good, but it avoids a latency problem
+                continue;
             }
+
             try {
                 getter = propertyDescriptors[i].getReadMethod();
                 Object args[] = {};
@@ -728,6 +715,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 System.err.println(ex.getMessage());
                 ex.printStackTrace();
             }
+
             if ((o != null) && o == objectValues[i] && (BeanInspector.isJavaPrimitive(o.getClass()))) {
                 // The property is equal to its old value.
                 continue;
@@ -737,10 +725,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 continue;
             }
             objectValues[i] = o;
-            // Make sure we have an editor for this property...
-            if (propertyEditors[i] == null) {
-                continue;
-            }
+
             // The property has changed!  Update the editor.
             propertyEditors[i].removePropertyChangeListener(this);
             propertyEditors[i].setValue(o);
