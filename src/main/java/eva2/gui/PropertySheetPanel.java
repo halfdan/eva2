@@ -15,7 +15,8 @@ import java.awt.event.MouseEvent;
 import java.beans.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.EventObject;
+import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,11 +50,6 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      * Stores GUI components containing each editing component.
      */
     private JComponent views[];
-    private JComponent viewWrappers[];
-    /**
-     * The labels for each property.
-     */
-    private JLabel propertyLabels[];
     /**
      * The tool tip text for each property.
      */
@@ -189,6 +185,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         propertyTableModel = new DefaultTableModel();
         propertyTableModel.addColumn("Property");
         propertyTableModel.addColumn("Value");
+
         propertyTable = new ToolTipTable(propertyTableModel);
         propertyTable.setDefaultRenderer(Object.class, new PropertyCellRenderer());
         propertyTable.setDefaultEditor(Object.class, new PropertyCellEditor());
@@ -196,6 +193,18 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         propertyTable.setDragEnabled(false);
         propertyTable.setGridColor(Color.LIGHT_GRAY);
         propertyTable.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+
+        // This defines a new TableRowFilter - we hide rows where the component is not visible (hidden)
+        RowFilter<DefaultTableModel, Object> filter = new RowFilter<DefaultTableModel, Object>() {
+            @Override
+            public boolean include(Entry<? extends DefaultTableModel, ?> entry) {
+                JComponent comp = (JComponent)entry.getValue(1);
+                return comp.isVisible();
+            }
+        };
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(propertyTableModel);
+        sorter.setRowFilter(filter);
+        propertyTable.setRowSorter(sorter);
 
         // Close any child windows at this point
         removeAll();
@@ -252,10 +261,8 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         // values, views and editors...
         propertyEditors = new PropertyEditor[propertyDescriptors.length];
         // collect property values if possible
-        objectValues = getValues(targetObject, propertyDescriptors, true, true, true);
+        objectValues = getValues(targetObject, propertyDescriptors, true, false, true);
         views = new JComponent[propertyDescriptors.length];
-        viewWrappers = new JComponent[propertyDescriptors.length];
-        propertyLabels = new JLabel[propertyDescriptors.length];
         toolTips = new String[propertyDescriptors.length];
 
         int itemIndex = 0;
@@ -267,7 +274,6 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             if (objectValues[i] == null) {
                 continue; // expert, hidden, or no getter/setter available
             }
-            JComponent newView;
             try {
 
                 propertyEditors[i] = makeEditor(propertyDescriptors[i], name, objectValues[i]);
@@ -283,8 +289,10 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                     toolTips[itemIndex] = BeanInspector.getToolTipText(name, methodDescriptors, targetObject);
                 }
                 itemIndex++;
-                newView = getView(propertyEditors[i]);
-                if (newView == null) {
+                views[i] = getView(propertyEditors[i]);
+                // We filter by this.. not necessarily the prettiest solution but it tends to work
+                views[i].setVisible(!propertyDescriptors[i].isHidden());
+                if (views[i] == null) {
                     LOGGER.warning("Warning: Property \"" + name + "\" has non-displayable editor.  Skipping.");
                     continue;
                 }
@@ -294,7 +302,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                 continue;
             } // end try
 
-            propertyTableModel.addRow(new Object[]{prepareLabel(name), newView});
+            propertyTableModel.addRow(new Object[]{prepareLabel(name), views[i]});
         }
 
         propertyTable.setToolTips(toolTips);
@@ -419,7 +427,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             // If it's a user-defined property we give a warning.
             String getterClass = property.getReadMethod().getDeclaringClass().getName();
             if (getterClass.indexOf("java.") != 0) {
-                System.out.println("Warning: Property \"" + name + "\" of class " + targetObject.getClass() + " has null initial value.  Skipping.");
+                LOGGER.warning("Warning: Property \"" + name + "\" of class " + targetObject.getClass() + " has null initial value. Skipping.");
             }
             return null;
         }
@@ -595,10 +603,6 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             if (toolTips[i] != null) {
                 views[i].setToolTipText(toolTips[i]);
             }
-            viewWrappers[i].removeAll();
-            viewWrappers[i].setLayout(new BorderLayout());
-            viewWrappers[i].add(views[i], BorderLayout.CENTER);
-            viewWrappers[i].repaint();
         }
 
         // Now try to update the target with the new value of the property
@@ -679,6 +683,8 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
 
         boolean doRepaint = false;
 
+        BeanInspector.callIfAvailable(this.targetObject, "hideHideable", null);
+
         // ToDo Should be foreach (to skip non existing editors)
         for (int i = 0; i < propertyEditors.length; i++) { // check the views for out-of-date information. this is different than checking the editors
             if (i != propIndex) {
@@ -688,12 +694,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             }// end if (editorTable[i] == editor) {
         } // end for (int i = 0 ; i < editorTable.length; i++) {
         if (doRepaint) {    // some components have been hidden or reappeared
-            // MK this finally seems to work right, with a scroll pane, too.
-            Container p = this;
-            while (p != null && (!p.getSize().equals(p.getPreferredSize()))) {
-                p.setSize(p.getPreferredSize());
-                p = p.getParent();
-            }
+            propertyTable.getRowSorter().allRowsChanged();
         }
 
         // Now re-read all the properties and update the editors
@@ -752,26 +753,22 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      * @return
      */
     private boolean updateFieldView(int i) {
-        // looking at another field (not changed explicitly, maybe implicitly
-        boolean valChanged = false;
+        // looking at another field (not changed explicitly, maybe implicitly)
+        boolean valChanged;
         boolean doRepaint = false;
         Object args[] = {};
         Method getter = propertyDescriptors[i].getReadMethod();
         if (propertyDescriptors[i].isHidden() || propertyDescriptors[i].isExpert()) {
-            if ((propertyLabels[i] != null) && (propertyLabels[i].isVisible())) {
+            if ((views[i] != null) && (views[i].isVisible())) {
                 // something is set to hidden but was visible up to now
-                viewWrappers[i].setVisible(false);
                 views[i].setVisible(false);
-                propertyLabels[i].setVisible(false);
                 doRepaint = true;
             }
             return doRepaint;
         } else {
-            if ((propertyLabels[i] != null) && !(propertyLabels[i].isVisible())) {
+            if ((views[i] != null) && !(views[i].isVisible())) {
                 // something is invisible but set to not hidden in the mean time
-                viewWrappers[i].setVisible(true);
                 views[i].setVisible(true);
-                propertyLabels[i].setVisible(true);
                 doRepaint = true;
             }
         }
