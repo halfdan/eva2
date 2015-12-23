@@ -15,15 +15,11 @@ import eva2.util.annotation.Description;
 @Description("This is an experimental method for individuals using global ES mutation.")
 public class SigmaSingleMetricGlobalMutation implements InterfaceDistanceMetric, java.io.Serializable {
 
-    public SigmaSingleMetricGlobalMutation() {
-    }
-
-    public SigmaSingleMetricGlobalMutation(SigmaSingleMetricGlobalMutation a) {
-    }
+    public SigmaSingleMetricGlobalMutation() {}
 
     @Override
     public Object clone() {
-        return new SigmaSingleMetricGlobalMutation(this);
+        return new SigmaSingleMetricGlobalMutation();
     }
 
     /**
