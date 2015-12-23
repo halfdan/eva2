@@ -1038,7 +1038,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      * @param comparator indicate whether constraints should be regarded
      * @return The index of the best (worst) individual.
      */
-    public int getIndexOfBestOrWorstIndividual(boolean bBest, Comparator<Object> comparator) {
+    public int getIndexOfBestOrWorstIndividual(boolean bBest, Comparator<AbstractEAIndividual> comparator) {
         ArrayList<?> sorted = getSorted(comparator);
         if (bBest) {
             return indexOf(sorted.get(0));
@@ -1051,7 +1051,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
         return getIndexOfBestOrWorstIndividual(true, comparator);
     }
 
-    public AbstractEAIndividual getBestEAIndividual(Comparator<Object> comparator) {
+    public AbstractEAIndividual getBestEAIndividual(Comparator<AbstractEAIndividual> comparator) {
         int index = getIndexOfBestOrWorstIndividual(true, comparator);
         return getEAIndividual(index);
     }
@@ -1199,7 +1199,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      *         fitness first
      * @see #getSortedNIndividuals(int, boolean, Population, Comparator)
      */
-    public Population getSortedBestFirst(Comparator<Object> comp) {
+    public Population getSortedBestFirst(Comparator<AbstractEAIndividual> comp) {
         Population result = this.cloneWithoutInds();
         getSortedNIndividuals(size(), true, result, comp);
         result.synchSize();
@@ -1219,7 +1219,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      * @param comp         the Comparator to use with individuals
      * @param res The m sorted best or worst individuals, where m &lt;= n (will be added to res)
      */
-    public void getSortedNIndividuals(int n, boolean bBestOrWorst, Population res, Comparator<Object> comp) {
+    public void getSortedNIndividuals(int n, boolean bBestOrWorst, Population res, Comparator<AbstractEAIndividual> comp) {
         if ((n < 0) || (n > super.size())) {
             // this may happen, treat it gracefully
             //System.err.println("invalid request to getSortedNIndividuals: n="+n + ", size is " + super.size());
@@ -1291,7 +1291,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      *             on AbstractEAIndividual instances.
      * @return
      */
-    protected ArrayList<AbstractEAIndividual> sortBy(Comparator<Object> comp) {
+    protected ArrayList<AbstractEAIndividual> sortBy(Comparator<AbstractEAIndividual> comp) {
         if (super.isEmpty()) {
             return new ArrayList<>();
         }
@@ -1320,7 +1320,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      * @param comp The comparator
      * @return
      */
-    public ArrayList<AbstractEAIndividual> getSorted(Comparator<Object> comp) {
+    public ArrayList<AbstractEAIndividual> getSorted(Comparator<AbstractEAIndividual> comp) {
         if (!comp.equals(lastSortingComparator) || (sortedArr == null) || (super.modCount != lastQModCount)) {
             ArrayList<AbstractEAIndividual> sArr = sortBy(comp);
             if (sortedArr == null) {
@@ -1340,7 +1340,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      *
      * @see #getSorted(java.util.Comparator)
      */
-    public Population getSortedPop(Comparator<Object> comp) {
+    public Population getSortedPop(Comparator<AbstractEAIndividual> comp) {
         Population pop = this.cloneWithoutInds();
         ArrayList<AbstractEAIndividual> sortedIndies = getSorted(comp);
         pop.addAll(sortedIndies);

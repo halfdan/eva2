@@ -44,7 +44,7 @@ import java.util.Vector;
 public class ParticleSwarmOptimization extends AbstractOptimizer implements java.io.Serializable, InterfaceAdditionalPopulationInformer {
 
     public enum PSOType { Inertness, Constriction }
-    Object[] sortedPop = null;
+    AbstractEAIndividual[] sortedPop = null;
     protected AbstractEAIndividual bestIndividual = null;
     protected boolean checkRange = true;
     protected boolean checkSpeedLimit = false;
@@ -1299,7 +1299,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
             }
         }
         if ((topology == PSOTopology.multiSwarm) || (topology == PSOTopology.tree)) {
-            sortedPop = pop.toArray();
+            sortedPop = pop.toArray(new AbstractEAIndividual[pop.size()]);
             if ((topology == PSOTopology.multiSwarm) || (treeStruct >= 2)) {
                 Arrays.sort(sortedPop, new EAIndividualComparator());
             } else {

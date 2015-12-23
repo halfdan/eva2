@@ -19,7 +19,7 @@ import java.util.Comparator;
  * @see AbstractEAIndividual#isDominatingFitness(double[], double[])
  */
 @eva2.util.annotation.Description(value = "A comparator class for general EA individuals. Compares individuals based on their fitness in context of minimization.")
-public class EAIndividualComparator implements Comparator<Object>, Serializable {
+public class EAIndividualComparator implements Comparator<AbstractEAIndividual>, Serializable {
     // flag whether a data field should be used.
     private String indyDataKey = "";
     private int fitCriterion = -1;
@@ -122,7 +122,7 @@ public class EAIndividualComparator implements Comparator<Object>, Serializable 
      * @return -1 if the first is dominant, 1 if the second is dominant, otherwise 0
      */
     @Override
-    public int compare(Object o1, Object o2) {
+    public int compare(AbstractEAIndividual o1, AbstractEAIndividual o2) {
         boolean o1domO2, o2domO1;
 
         if (preferFeasible) { // check constraint violation first?

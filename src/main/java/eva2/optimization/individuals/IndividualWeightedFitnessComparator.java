@@ -10,7 +10,7 @@ import java.util.Comparator;
  *
  * @author mkron
  */
-public class IndividualWeightedFitnessComparator implements Comparator<Object>, Serializable {
+public class IndividualWeightedFitnessComparator implements Comparator<AbstractEAIndividual>, Serializable {
     /**
      * Generated serial version identifier
      */
@@ -75,9 +75,9 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     @Override
-    public int compare(Object o1, Object o2) {
-        double[] f1 = ((AbstractEAIndividual) o1).getFitness();
-        double[] f2 = ((AbstractEAIndividual) o2).getFitness();
+    public int compare(AbstractEAIndividual o1, AbstractEAIndividual o2) {
+        double[] f1 = o1.getFitness();
+        double[] f2 = o2.getFitness();
 
         double score1 = calcScore(f1);
         double score2 = calcScore(f2);
