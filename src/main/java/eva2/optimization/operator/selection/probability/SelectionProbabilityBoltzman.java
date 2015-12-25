@@ -9,24 +9,24 @@ import eva2.util.annotation.Description;
  * invariant to any linear transition function.
  */
 @Description("This is the Boltzman Normation.")
-public class SelProbBoltzman extends AbstractSelProb implements java.io.Serializable {
+public class SelectionProbabilityBoltzman extends AbstractSelectionProbability implements java.io.Serializable {
 
     private double q = 1.0;
 
-    public SelProbBoltzman() {
+    public SelectionProbabilityBoltzman() {
     }
 
-    public SelProbBoltzman(double q) {
+    public SelectionProbabilityBoltzman(double q) {
         this.q = q;
     }
 
-    public SelProbBoltzman(SelProbBoltzman a) {
+    public SelectionProbabilityBoltzman(SelectionProbabilityBoltzman a) {
         this.q = a.q;
     }
 
     @Override
     public Object clone() {
-        return new SelProbBoltzman(this);
+        return new SelectionProbabilityBoltzman(this);
     }
 
     /**

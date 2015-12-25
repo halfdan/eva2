@@ -10,16 +10,16 @@ import eva2.util.annotation.Description;
  * Here we have the infamous fitness sharing method.
  */
 @Description("This is a fitness sharing based normation method.")
-public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Serializable {
+public class SelectionProbabilityFitnessSharing extends AbstractSelectionProbability implements java.io.Serializable {
 
-    private InterfaceSelectionProbability basicNormationMethod = new SelProbStandard();
+    private InterfaceSelectionProbability basicNormationMethod = new SelectionProbabilityStandard();
     private InterfaceDistanceMetric distanceMetric = new PhenotypeMetric();
     private double sharingDistance = 0.1;
 
-    public SelProbFitnessSharing() {
+    public SelectionProbabilityFitnessSharing() {
     }
 
-    public SelProbFitnessSharing(SelProbFitnessSharing a) {
+    public SelectionProbabilityFitnessSharing(SelectionProbabilityFitnessSharing a) {
         if (a.basicNormationMethod != null) {
             this.basicNormationMethod = (InterfaceSelectionProbability) a.basicNormationMethod.clone();
         }
@@ -31,7 +31,7 @@ public class SelProbFitnessSharing extends AbstractSelProb implements java.io.Se
 
     @Override
     public Object clone() {
-        return new SelProbFitnessSharing(this);
+        return new SelectionProbabilityFitnessSharing(this);
     }
 
     /**

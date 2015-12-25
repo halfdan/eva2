@@ -10,24 +10,24 @@ import eva2.util.annotation.Description;
  *
  */
 @Description("This is a standard normation method inverted by maximum fitness.")
-public class SelProbInvertByMax extends AbstractSelProb {
+public class SelectionProbabilityInvertByMax extends AbstractSelectionProbability {
 
     private double maxFit = 1.;
 
-    public SelProbInvertByMax() {
+    public SelectionProbabilityInvertByMax() {
     }
 
-    public SelProbInvertByMax(double mF) {
+    public SelectionProbabilityInvertByMax(double mF) {
         maxFit = mF;
     }
 
-    public SelProbInvertByMax(SelProbInvertByMax a) {
+    public SelectionProbabilityInvertByMax(SelectionProbabilityInvertByMax a) {
         this.maxFit = a.maxFit;
     }
 
     @Override
     public Object clone() {
-        return new SelProbInvertByMax(this);
+        return new SelectionProbabilityInvertByMax(this);
     }
 
     /**

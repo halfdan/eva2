@@ -7,7 +7,7 @@ import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.operator.postprocess.PostProcess;
-import eva2.optimization.operator.selection.probability.AbstractSelProb;
+import eva2.optimization.operator.selection.probability.AbstractSelectionProbability;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
 import eva2.tools.Serializer;
@@ -2143,7 +2143,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
      * @param criterion
      * @return
      */
-    public double[] getCenterWeighted(AbstractSelProb selProb, int criterion, boolean obeyConst) {
+    public double[] getCenterWeighted(AbstractSelectionProbability selProb, int criterion, boolean obeyConst) {
         selProb.computeSelectionProbability(this, "Fitness", obeyConst);
         double[] mean = AbstractEAIndividual.getDoublePosition(getEAIndividual(0));
 

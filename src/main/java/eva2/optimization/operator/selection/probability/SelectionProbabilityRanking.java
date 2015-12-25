@@ -8,17 +8,17 @@ import eva2.util.annotation.Description;
  * This truly scaling invariant.
  */
 @Description("This is ranking normation.")
-public class SelProbRanking extends AbstractSelProb implements java.io.Serializable {
+public class SelectionProbabilityRanking extends AbstractSelectionProbability implements java.io.Serializable {
 
-    public SelProbRanking() {
+    public SelectionProbabilityRanking() {
     }
 
-    public SelProbRanking(SelProbRanking a) {
+    public SelectionProbabilityRanking(SelectionProbabilityRanking a) {
     }
 
     @Override
     public Object clone() {
-        return new SelProbRanking(this);
+        return new SelectionProbabilityRanking(this);
     }
 
     /**

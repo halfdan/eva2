@@ -7,22 +7,22 @@ import eva2.util.annotation.Description;
  * A linear ranking method with offsets.
  */
 @Description("This is linear ranking normation.")
-public class SelProbLinearRanking extends AbstractSelProb implements java.io.Serializable {
+public class SelectionProbabilityLinearRanking extends AbstractSelectionProbability implements java.io.Serializable {
 
     private double nappaPlus = 1.1;
     private double nappaMinus = 0.9;
 
-    public SelProbLinearRanking() {
+    public SelectionProbabilityLinearRanking() {
     }
 
-    public SelProbLinearRanking(SelProbLinearRanking a) {
+    public SelectionProbabilityLinearRanking(SelectionProbabilityLinearRanking a) {
         this.nappaPlus = a.nappaPlus;
         this.nappaMinus = a.nappaMinus;
     }
 
     @Override
     public Object clone() {
-        return new SelProbLinearRanking(this);
+        return new SelectionProbabilityLinearRanking(this);
     }
 
     /**

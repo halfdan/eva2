@@ -7,24 +7,24 @@ import eva2.util.annotation.Description;
  * A simple sum with a scaling factor.
  */
 @Description("This is a standard normation method with scaling.")
-public class SelProbStandardScaling extends AbstractSelProb implements java.io.Serializable {
+public class SelectionProbabilityStandardScaling extends AbstractSelectionProbability implements java.io.Serializable {
 
     private double Q = 0;
 
-    public SelProbStandardScaling() {
+    public SelectionProbabilityStandardScaling() {
     }
 
-    public SelProbStandardScaling(double q) {
+    public SelectionProbabilityStandardScaling(double q) {
         Q = q;
     }
 
-    public SelProbStandardScaling(SelProbStandardScaling a) {
+    public SelectionProbabilityStandardScaling(SelectionProbabilityStandardScaling a) {
         this.Q = a.Q;
     }
 
     @Override
     public Object clone() {
-        return new SelProbStandardScaling(this);
+        return new SelectionProbabilityStandardScaling(this);
     }
 
     /**
