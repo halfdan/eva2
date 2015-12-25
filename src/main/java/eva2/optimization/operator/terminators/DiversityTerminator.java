@@ -5,6 +5,7 @@ import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 
@@ -40,6 +41,7 @@ public class DiversityTerminator extends PopulationMeasureTerminator implements 
     /**
      * @return the metric
      */
+    @Parameter(description = "Set the metric to be used to calculate individual distances.")
     public InterfaceDistanceMetric getMetric() {
         return metric;
     }
@@ -48,13 +50,10 @@ public class DiversityTerminator extends PopulationMeasureTerminator implements 
         this.metric = metric;
     }
 
-    public String metricTipText() {
-        return "Set the metric to be used to calculate individual distances.";
-    }
-
     /**
      * @return the criterion
      */
+    @Parameter(description = "Define the distance criterion to check for in a population.")
     public DiversityCriterion getCriterion() {
         return criterion;
     }
@@ -63,12 +62,8 @@ public class DiversityTerminator extends PopulationMeasureTerminator implements 
         this.criterion = criterion;
     }
 
-    public String criterionTipText() {
-        return "Define the distance criterion to check for in a population.";
-    }
-
     @Override
-    protected double calcInitialMeasure(PopulationInterface pop) {
+    protected double calculateInitialMeasure(PopulationInterface pop) {
         return calcPopulationMeasure(pop);
     }
 

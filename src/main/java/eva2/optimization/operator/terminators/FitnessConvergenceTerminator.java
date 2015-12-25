@@ -30,7 +30,7 @@ public class FitnessConvergenceTerminator extends PopulationMeasureTerminator
     }
 
     @Override
-    protected double calcInitialMeasure(PopulationInterface pop) {
+    protected double calculateInitialMeasure(PopulationInterface pop) {
         return Mathematics.norm(pop.getBestFitness());
     }
 

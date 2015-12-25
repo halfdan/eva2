@@ -34,7 +34,7 @@ public class PhenotypeConvergenceTerminator extends PopulationMeasureTerminator 
     }
 
     @Override
-    protected double calcInitialMeasure(PopulationInterface pop) {
+    protected double calculateInitialMeasure(PopulationInterface pop) {
         oldIndy = (AbstractEAIndividual) ((AbstractEAIndividual) pop.getBestIndividual()).clone();
         return Double.MAX_VALUE;
     }

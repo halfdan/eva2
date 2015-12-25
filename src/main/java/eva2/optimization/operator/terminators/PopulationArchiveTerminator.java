@@ -14,7 +14,7 @@ public class PopulationArchiveTerminator extends PopulationMeasureTerminator {
     IndividualWeightedFitnessComparator wfComp = new IndividualWeightedFitnessComparator(new double[]{1.});
 
     @Override
-    protected double calcInitialMeasure(PopulationInterface pop) {
+    protected double calculateInitialMeasure(PopulationInterface pop) {
         Population archive = ((Population) pop).getArchive();
         if (archive == null || (archive.size() < 1)) {
             return Double.MAX_VALUE;
