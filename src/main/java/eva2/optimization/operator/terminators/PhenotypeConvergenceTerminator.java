@@ -40,7 +40,7 @@ public class PhenotypeConvergenceTerminator extends PopulationMeasureTerminator 
     }
 
     @Override
-    protected double calcPopulationMeasure(PopulationInterface pop) {
+    protected double calculatePopulationMeasure(PopulationInterface pop) {
         return pMetric.distance(oldIndy, (AbstractEAIndividual) pop.getBestIndividual());
     }
 

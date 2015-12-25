@@ -69,7 +69,7 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
     }
 
     @Override
-    protected double calcPopulationMeasure(PopulationInterface pop) {
+    protected double calculatePopulationMeasure(PopulationInterface pop) {
         return calculateInitialMeasure(pop);
     }
 

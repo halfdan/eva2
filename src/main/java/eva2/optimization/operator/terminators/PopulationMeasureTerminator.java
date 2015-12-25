@@ -157,7 +157,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      * @param pop
      */
     protected void saveState(PopulationInterface pop) {
-        oldMeasure = calcPopulationMeasure(pop);
+        oldMeasure = calculatePopulationMeasure(pop);
         oldPopFitCalls = pop.getFunctionCalls();
         oldPopGens = pop.getGeneration();
         firstTime = false;
@@ -170,7 +170,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      * @param pop
      * @return
      */
-    protected abstract double calcPopulationMeasure(PopulationInterface pop);
+    protected abstract double calculatePopulationMeasure(PopulationInterface pop);
 
     /**
      * Return true if the population measure did not exceed the
@@ -180,7 +180,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      * @return
      */
     protected boolean isStillConverged(PopulationInterface pop) {
-        double measure = calcPopulationMeasure(pop);
+        double measure = calculatePopulationMeasure(pop);
         double allowedLower = Double.NEGATIVE_INFINITY, allowedUpper = Double.POSITIVE_INFINITY;
         boolean ret;
         switch (changeType) {

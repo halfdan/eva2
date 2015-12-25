@@ -64,11 +64,11 @@ public class DiversityTerminator extends PopulationMeasureTerminator implements 
 
     @Override
     protected double calculateInitialMeasure(PopulationInterface pop) {
-        return calcPopulationMeasure(pop);
+        return calculatePopulationMeasure(pop);
     }
 
     @Override
-    protected double calcPopulationMeasure(PopulationInterface pop) {
+    protected double calculatePopulationMeasure(PopulationInterface pop) {
         double[] measures = ((Population) pop).getPopulationMeasures(metric);
         int measureIndex = criterion.ordinal();
         return measures[measureIndex];

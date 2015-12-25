@@ -35,7 +35,7 @@ public class FitnessConvergenceTerminator extends PopulationMeasureTerminator
     }
 
     @Override
-    protected double calcPopulationMeasure(PopulationInterface pop) {
+    protected double calculatePopulationMeasure(PopulationInterface pop) {
 //		if (oldFit==null) return Double.MAX_VALUE;
 //		return EuclideanMetric.euclideanDistance(oldFit, pop.getBestFitness());
         return Mathematics.norm(pop.getBestFitness());
