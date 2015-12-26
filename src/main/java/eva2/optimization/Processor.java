@@ -318,12 +318,12 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
     private void maybeInitParamCtrl(InterfaceOptimizationParameters optimizationParameters) {
         iterateParamCtrl(
                 optimizationParameters.getOptimizer(),
-                "initialize",
+                "init",
                 new Object[]{optimizationParameters.getOptimizer(), optimizationParameters.getOptimizer().getPopulation()}
         );
         iterateParamCtrl(
                 optimizationParameters.getProblem(),
-                "initialize",
+                "init",
                 new Object[]{optimizationParameters.getProblem(), optimizationParameters.getOptimizer().getPopulation()}
         );
     }
