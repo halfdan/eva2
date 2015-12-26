@@ -248,9 +248,9 @@ public class PostProcess {
         Population result = new Population();
         for (int i = 0; i < pop.size(); i++) {
             indy = pop.getEAIndividual(i);
-            if (bSmallerEq && (PhenotypeMetric.norm(indy.getFitness()) <= fitNorm)) {
+            if (bSmallerEq && (Mathematics.norm(indy.getFitness()) <= fitNorm)) {
                 result.add(indy);
-            } else if (!bSmallerEq && (PhenotypeMetric.norm(indy.getFitness()) > fitNorm)) {
+            } else if (!bSmallerEq && (Mathematics.norm(indy.getFitness()) > fitNorm)) {
                 result.add(indy);
             }
         }
@@ -279,7 +279,7 @@ public class PostProcess {
             if ((crit >= 0) && (crit < indy.getFitness().length)) {
                 curFit = indy.getFitness(crit);
             } else {
-                curFit = PhenotypeMetric.norm(indy.getFitness());
+                curFit = Mathematics.norm(indy.getFitness());
             }
 
             if (bSmallerEq && (curFit <= fitThresh)) {
@@ -1058,7 +1058,7 @@ public class PostProcess {
                 plot = draw("After " + stepsDone + " steps (" + params.getPPMethod() + ")" + ((params.getPostProcessClusterSigma() > 0) ? " and second clustering" : ""), null, outputPop, null, problem);
             }
             // ##### some statistics
-            double upBnd = PhenotypeMetric.norm(outputPop.getWorstEAIndividual().getFitness()) * 1.1;
+            double upBnd = Mathematics.norm(outputPop.getWorstEAIndividual().getFitness()) * 1.1;
             upBnd = Math.pow(10, Math.floor(Math.log10(upBnd) + 1));
             double lowBnd = 0;
             int fitCrit = 0; // use first fitness criterion

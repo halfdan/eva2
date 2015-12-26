@@ -8,24 +8,24 @@ import eva2.util.annotation.Description;
  * the given optimization problem i guess.
  */
 @Description("This is non-linear ranking normation.")
-public class SelProbNonLinearRanking extends AbstractSelProb implements java.io.Serializable {
+public class SelectionProbabilityNonLinearRanking extends AbstractSelectionProbability implements java.io.Serializable {
 
     private double c = 0.04;
 
-    public SelProbNonLinearRanking() {
+    public SelectionProbabilityNonLinearRanking() {
     }
 
-    public SelProbNonLinearRanking(double theC) {
+    public SelectionProbabilityNonLinearRanking(double theC) {
         this.c = theC;
     }
 
-    public SelProbNonLinearRanking(SelProbNonLinearRanking a) {
+    public SelectionProbabilityNonLinearRanking(SelectionProbabilityNonLinearRanking a) {
         this.c = a.c;
     }
 
     @Override
     public Object clone() {
-        return new SelProbNonLinearRanking(this);
+        return new SelectionProbabilityNonLinearRanking(this);
     }
 
     /**

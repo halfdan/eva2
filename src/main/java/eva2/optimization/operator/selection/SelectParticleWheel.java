@@ -2,8 +2,8 @@ package eva2.optimization.operator.selection;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.selection.probability.InterfaceSelectionProbability;
-import eva2.optimization.operator.selection.probability.SelProbStandard;
-import eva2.optimization.operator.selection.probability.SelProbStandardScaling;
+import eva2.optimization.operator.selection.probability.SelectionProbabilityStandard;
+import eva2.optimization.operator.selection.probability.SelectionProbabilityStandardScaling;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
@@ -23,14 +23,14 @@ public class SelectParticleWheel implements InterfaceSelection, java.io.Serializ
      * Comment for {@code serialVersionUID}
      */
     private static final long serialVersionUID = 1L;
-    private InterfaceSelectionProbability selProbCalculator = new SelProbStandard();
+    private InterfaceSelectionProbability selProbCalculator = new SelectionProbabilityStandard();
     private boolean selectFixedSteps = false;
 
     public SelectParticleWheel() {
     }
 
     public SelectParticleWheel(double scalingProb) {
-        selProbCalculator = new SelProbStandardScaling(scalingProb);
+        selProbCalculator = new SelectionProbabilityStandardScaling(scalingProb);
     }
 
     public SelectParticleWheel(InterfaceSelectionProbability selProb) {

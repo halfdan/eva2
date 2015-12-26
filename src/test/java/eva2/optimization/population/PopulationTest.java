@@ -1,9 +1,14 @@
 package eva2.optimization.population;
 
+import com.sun.org.apache.bcel.internal.generic.POP;
+import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class PopulationTest {
     Population emptyPopulation;
@@ -15,11 +20,6 @@ public class PopulationTest {
 
     @Test
     public void testEquals() throws Exception {
-
-    }
-
-    @Test
-    public void testPutData() throws Exception {
 
     }
 
@@ -182,7 +182,12 @@ public class PopulationTest {
     @Test
     public void testIncrGeneration() throws Exception {
         int currentGeneration = emptyPopulation.getGeneration();
+        InterfacePopulationChangedEventListener listener = mock(InterfacePopulationChangedEventListener.class);
+
+        emptyPopulation.addPopulationChangedEventListener(listener);
         emptyPopulation.incrGeneration();
+
+        verify(listener).registerPopulationStateChanged(emptyPopulation, Population.NEXT_GENERATION_PERFORMED);
 
         assertEquals(currentGeneration + 1, emptyPopulation.getGeneration());
     }
@@ -205,11 +210,6 @@ public class PopulationTest {
     }
 
     @Test
-    public void testAddPopulation1() throws Exception {
-
-    }
-
-    @Test
     public void testResetFitness() throws Exception {
 
     }
@@ -220,27 +220,12 @@ public class PopulationTest {
     }
 
     @Test
-    public void testGetDominatingSet1() throws Exception {
-
-    }
-
-    @Test
     public void testGetIndexOfBestIndividualPrefFeasible() throws Exception {
 
     }
 
     @Test
     public void testGetIndexOfWorstIndividualNoConstr() throws Exception {
-
-    }
-
-    @Test
-    public void testGetIndexOfBestIndividualPrefFeasible1() throws Exception {
-
-    }
-
-    @Test
-    public void testGetIndexOfWorstIndividualNoConstr1() throws Exception {
 
     }
 
@@ -320,23 +305,28 @@ public class PopulationTest {
     }
 
     @Test
-    public void testGetCorrelations1() throws Exception {
-
-    }
-
-    @Test
     public void testGetFitnessMeasures() throws Exception {
 
     }
 
     @Test
     public void testGetCenter() throws Exception {
+        assertNull(emptyPopulation.getCenter());
 
+        for(int i = 0; i < 10; i++) {
+            ESIndividualDoubleData indy = mock(ESIndividualDoubleData.class);
+            when(indy.getDGenotype()).thenReturn(new double[]{i, i, i, i, i});
+            emptyPopulation.add(indy);
+        }
+
+        assertArrayEquals(new double[]{
+                4.5, 4.5, 4.5, 4.5, 4.5
+        }, emptyPopulation.getCenter(), 0.0);
     }
 
     @Test
     public void testGetCenterIndy() throws Exception {
-
+        
     }
 
     @Test
@@ -351,7 +341,15 @@ public class PopulationTest {
 
     @Test
     public void testGetFitSum() throws Exception {
+        for(int i = 0; i < 10; i++) {
+            ESIndividualDoubleData indy = mock(ESIndividualDoubleData.class);
+            when(indy.getFitness(0)).thenReturn((double)i);
+            when(indy.getFitness(1)).thenReturn((double)i*2);
+            emptyPopulation.add(indy);
+        }
 
+        assertEquals(45.0, emptyPopulation.getFitSum(0), 0.0);
+        assertEquals(90.0, emptyPopulation.getFitSum(1), 0.0);
     }
 
     @Test
@@ -371,7 +369,12 @@ public class PopulationTest {
 
     @Test
     public void testGetFreeSlots() throws Exception {
+        assertEquals(10, emptyPopulation.getFreeSlots());
 
+        ESIndividualDoubleData indy = mock(ESIndividualDoubleData.class);
+        emptyPopulation.add(indy);
+
+        assertEquals(9, emptyPopulation.getFreeSlots());
     }
 
     @Test
@@ -382,6 +385,19 @@ public class PopulationTest {
     @Test
     public void testCheckNoNullIndy() throws Exception {
 
+    }
+
+    @Test
+    public void testPutDataAllIndies() throws Exception {
+        ESIndividualDoubleData indy1 = mock(ESIndividualDoubleData.class);
+        ESIndividualDoubleData indy2 = mock(ESIndividualDoubleData.class);
+
+        emptyPopulation.add(indy1);
+        emptyPopulation.add(indy2);
+        emptyPopulation.putDataAllIndies("test", 12);
+
+        verify(indy1).putData("test", 12);
+        verify(indy2).putData("test", 12);
     }
 
     @Test
@@ -400,5 +416,30 @@ public class PopulationTest {
 
         // Get all individuals with fitness <= 10.0 (first fitness dimension)
         assertEquals(2, emptyPopulation.filterByFitness(10.0, 0).size());
+    }
+
+    @Test
+    public void testGetBestEAIndividual() throws Exception {
+
+    }
+
+    @Test
+    public void testGetBestNIndividuals() throws Exception {
+
+    }
+
+    @Test
+    public void testGetWorstNIndividuals() throws Exception {
+
+    }
+
+    @Test
+    public void testGetWorstEAIndividual() throws Exception {
+
+    }
+
+    @Test
+    public void testRemoveNIndividuals() throws Exception {
+
     }
 }

@@ -52,7 +52,7 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
 
     public void calculateCrowdingDistance(Population front) {
 
-        Object[] frontArray = front.toArray();
+        AbstractEAIndividual[] frontArray = front.toArray(new AbstractEAIndividual[front.size()]);
         boolean[] assigned = new boolean[frontArray.length];
 
         double[] v = new double[frontArray.length];
@@ -68,8 +68,8 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
         Arrays.sort(frontArray, new EAIndividualComparator(0));
 
 
-        ((AbstractEAIndividual) frontArray[0]).putData("HyperCube", Double.MAX_VALUE); //die beiden aussen bekommen maximal wert als measure
-        ((AbstractEAIndividual) frontArray[frontArray.length - 1]).putData("HyperCube", Double.MAX_VALUE);
+        frontArray[0].putData("HyperCube", Double.MAX_VALUE); //die beiden aussen bekommen maximal wert als measure
+        frontArray[frontArray.length - 1].putData("HyperCube", Double.MAX_VALUE);
         v[0] = Double.MAX_VALUE;
         v[frontArray.length - 1] = Double.MAX_VALUE;
 

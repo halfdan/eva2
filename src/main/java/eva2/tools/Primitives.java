@@ -3,9 +3,6 @@ package eva2.tools;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by halfdan on 17/12/15.
- */
 public class Primitives {
     public static Class<?> unwrap(Class<?> clazz) {
         return getWrapperTypes().get(clazz);

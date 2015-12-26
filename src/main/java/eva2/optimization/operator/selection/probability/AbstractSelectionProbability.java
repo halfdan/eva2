@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * This abstract implementation gives some general
  * methods for retrieving and cleaning fitness values.
  */
-public abstract class AbstractSelProb implements InterfaceSelectionProbability, java.io.Serializable {
+public abstract class AbstractSelectionProbability implements InterfaceSelectionProbability, java.io.Serializable {
 
     /**
      * This method allows you to make a deep clone of

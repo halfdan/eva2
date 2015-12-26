@@ -2,7 +2,7 @@ package eva2.optimization.operator.selection;
 
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.operator.selection.probability.InterfaceSelectionProbability;
-import eva2.optimization.operator.selection.probability.SelProbStandard;
+import eva2.optimization.operator.selection.probability.SelectionProbabilityStandard;
 import eva2.optimization.population.Population;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
@@ -17,7 +17,7 @@ import eva2.util.annotation.Description;
 public class SelectXProbRouletteWheel implements InterfaceSelection, java.io.Serializable {
 
     private transient TreeElement[] treeRoot = null;
-    private InterfaceSelectionProbability selectionProbability = new SelProbStandard();
+    private InterfaceSelectionProbability selectionProbability = new SelectionProbabilityStandard();
     private boolean obeyDebsConstViolationPrinciple = true;
 
     public SelectXProbRouletteWheel() {

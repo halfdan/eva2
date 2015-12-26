@@ -237,10 +237,6 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
         this.firstindex = firstindex;
     }
 
-    /************************************************************************************
-     * AbstractEAIndividual methods
-     */
-
     /**
      * This method will initialize the individual with a given value for the
      * phenotype.
@@ -305,7 +301,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
     }
 
 
-    public double[] mapMatrixToVector(double[][] matrix) {
+    public static double[] mapMatrixToVector(double[][] matrix) {
         int sumentries = 0;
         for (int i = 0; i < matrix.length; i++) {
             sumentries += matrix[i].length;
@@ -321,7 +317,7 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
         return res;
     }
 
-    public double[][] mapVectorToMatrix(double[] vector, int[] sizes) {
+    public static double[][] mapVectorToMatrix(double[] vector, int[] sizes) {
         double[][] matrix = new double[sizes.length][];
         int counter = 0;
         for (int i = 0; i < sizes.length; i++) {
@@ -353,8 +349,6 @@ public class ESIndividualPermutationData extends AbstractEAIndividual implements
                 }
             }
         }
-
-
     }
 
     /**

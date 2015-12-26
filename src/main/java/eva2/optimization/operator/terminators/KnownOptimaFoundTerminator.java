@@ -7,6 +7,7 @@ import eva2.problems.InterfaceMultimodalProblemKnown;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -25,16 +26,15 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
     private int reqOptima = 1;
     private String msg = "";
 
-    public KnownOptimaFoundTerminator() {
-    }
+    public KnownOptimaFoundTerminator() {}
 
     @Override
-    public void initialize(InterfaceOptimizationProblem prob) {
+    public void initialize(InterfaceOptimizationProblem prob) throws IllegalArgumentException {
         if (prob != null) {
             if (prob instanceof InterfaceMultimodalProblemKnown) {
                 mProblem = (InterfaceMultimodalProblemKnown) prob;
             } else {
-                LOGGER.log(Level.WARNING, "KnownOptimaFoundTerminator only works with InterfaceMultimodalProblemKnown instances!");
+                throw new IllegalArgumentException("KnownOptimaFoundTerminator only works with InterfaceMultimodalProblemKnown instances!");
             }
         } else {
             LOGGER.log(Level.WARNING, "KnownOptimaFoundTerminator wont work with null problem!");
@@ -71,19 +71,16 @@ public class KnownOptimaFoundTerminator implements InterfaceTerminator, Serializ
     /**
      * @return the reqOptima
      */
-    public int getReqOptima() {
+    public int getRequiredOptima() {
         return reqOptima;
     }
 
     /**
      * @param reqOptima the reqOptima to set
      */
-    public void setReqOptima(int reqOptima) {
+    @Parameter(description = "The number of optima that need to be found to terminate the optimization.")
+    public void setRequiredOptima(int reqOptima) {
         this.reqOptima = reqOptima;
-    }
-
-    public String reqOptimaTipText() {
-        return "The number of optima that need to be found to terminate the optimization.";
     }
 
     @Override

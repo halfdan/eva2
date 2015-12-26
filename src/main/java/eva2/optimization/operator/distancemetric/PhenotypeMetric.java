@@ -3,6 +3,7 @@ package eva2.optimization.operator.distancemetric;
 
 import eva2.gui.BeanInspector;
 import eva2.optimization.individuals.*;
+import eva2.tools.math.Mathematics;
 import eva2.util.annotation.Description;
 
 import java.util.BitSet;
@@ -15,15 +16,11 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
     private static PhenotypeMetric pMetric = null;
     private static GenotypeMetricBitSet bitMetric = null;
 
-    public PhenotypeMetric() {
-    }
-
-    public PhenotypeMetric(PhenotypeMetric a) {
-    }
+    public PhenotypeMetric() {}
 
     @Override
     public Object clone() {
-        return new PhenotypeMetric(this);
+        return new PhenotypeMetric();
     }
 
     private static int min(int a, int b, int c) {
@@ -109,7 +106,6 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
             r2 = ((InterfaceDataTypeInteger) indy2).getIntRange();
             for (int i = 0; (i < d1.length) && (i < d2.length); i++) {
                 tmpResult += Math.pow(((d1[i] - r1[i][0]) / ((double) (r1[i][1] - r1[i][0]))) - ((d2[i] - r2[i][0]) / ((double) (r2[i][1] - r2[i][0]))), 2);
-                //tmpResult += Math.abs(d1[i] - d2[i])/((double)(r1[i][1]-r1[i][0]));
             }
             result += Math.sqrt(tmpResult);
         }
@@ -130,7 +126,6 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         if ((indy1 instanceof InterfaceDataTypePermutation) && (indy2 instanceof InterfaceDataTypePermutation)) {
             int[] dIndy1, dIndy2;
             String s1 = "", s2 = "";
-//            double  tmpResult = 0;
             for (int p = 0; p < ((InterfaceDataTypePermutation) indy1).getPermutationData().length; p++) {
                 dIndy1 = ((InterfaceDataTypePermutation) indy1).getPermutationData()[p];
                 dIndy2 = ((InterfaceDataTypePermutation) indy2).getPermutationData()[p];
@@ -192,7 +187,7 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
             return result / d1.length;
         }
         if (indy instanceof InterfaceDataTypeDouble) {
-            result = norm(((InterfaceDataTypeDouble) indy).getDoubleData());
+            result = Mathematics.norm(((InterfaceDataTypeDouble) indy).getDoubleData());
             return result;
         }
         if (indy instanceof InterfaceDataTypePermutation) {
@@ -206,20 +201,6 @@ public class PhenotypeMetric implements InterfaceDistanceMetric, java.io.Seriali
         }
         System.err.println("error: unknown individual interface in PhenotypeMetric::norm " + BeanInspector.toString(indy));
         return 0;
-    }
-
-    /**
-     * Calculates the 2 norm of a given vector.
-     *
-     * @param v1
-     * @return
-     */
-    public static double norm(double[] v1) {
-        double result = 0;
-        for (int i = 0; i < v1.length; i++) {
-            result += Math.pow(v1[i], 2);
-        }
-        return Math.sqrt(result);
     }
 
     /**

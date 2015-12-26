@@ -1,6 +1,7 @@
 package eva2.optimization.individuals;
 
 import eva2.tools.EVAERROR;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -10,7 +11,7 @@ import java.util.Comparator;
  *
  * @author mkron
  */
-public class IndividualWeightedFitnessComparator implements Comparator<Object>, Serializable {
+public class IndividualWeightedFitnessComparator implements Comparator<AbstractEAIndividual>, Serializable {
     /**
      * Generated serial version identifier
      */
@@ -75,12 +76,12 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     @Override
-    public int compare(Object o1, Object o2) {
-        double[] f1 = ((AbstractEAIndividual) o1).getFitness();
-        double[] f2 = ((AbstractEAIndividual) o2).getFitness();
+    public int compare(AbstractEAIndividual o1, AbstractEAIndividual o2) {
+        double[] f1 = o1.getFitness();
+        double[] f2 = o2.getFitness();
 
-        double score1 = calcScore(f1);
-        double score2 = calcScore(f2);
+        double score1 = calculateScore(f1);
+        double score2 = calculateScore(f2);
 
         if (score1 < score2) {
             return -1;
@@ -95,7 +96,7 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
      * @param f
      * @return
      */
-    private double calcScore(double[] f) {
+    private double calculateScore(double[] f) {
         if (f == null || fitWeights == null) {
             throw new RuntimeException("Error, missing information in " + this.getClass());
         }
@@ -117,9 +118,9 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
      * @param indy
      * @return
      */
-    public double calcScore(AbstractEAIndividual indy) {
+    public double calculateScore(AbstractEAIndividual indy) {
         double[] f = indy.getFitness();
-        return calcScore(f);
+        return calculateScore(f);
     }
 
     /**
@@ -133,6 +134,7 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
         }
     }
 
+    @Parameter(description = "Weights of the fitness values in the linear combination")
     public void setFitWeights(double[] fitWeights) {
         this.fitWeights = fitWeights;
     }
@@ -140,23 +142,4 @@ public class IndividualWeightedFitnessComparator implements Comparator<Object>, 
     public double[] getFitWeights() {
         return fitWeights;
     }
-
-    public String fitWeightsTipText() {
-        return "Weights of the fitness values in the linear combination";
-    }
-
-//	public static void main(String[] args) {
-//		TF1Problem prob = new TF1Problem();
-//		Population pop = new Population(10);
-//		prob.initializePopulation(pop);
-//		prob.evaluate(pop);
-//		System.out.println(pop.getStringRepresentation());
-//		System.out.println("***");
-//		IndividualWeightedFitnessComparator wfComp = new IndividualWeightedFitnessComparator(new double[]{0.5,0.5});
-//		System.out.println("***"); System.out.println(pop.getSortedPop(wfComp).getStringRepresentation());
-//		wfComp.setFitWeights(new double[] {0.1, 0.9});
-//		System.out.println("***"); System.out.println(pop.getSortedPop(wfComp).getStringRepresentation());
-//		wfComp.setFitWeights(new double[] {0.9, 0.1});
-//		System.out.println("***"); System.out.println(pop.getSortedPop(wfComp).getStringRepresentation());
-//	}
 }

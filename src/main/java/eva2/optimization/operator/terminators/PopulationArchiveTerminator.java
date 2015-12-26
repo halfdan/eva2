@@ -4,6 +4,7 @@ import eva2.optimization.individuals.IndividualWeightedFitnessComparator;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 /**
  * Terminate if a score based on the archive of the population converges.
@@ -14,22 +15,22 @@ public class PopulationArchiveTerminator extends PopulationMeasureTerminator {
     IndividualWeightedFitnessComparator wfComp = new IndividualWeightedFitnessComparator(new double[]{1.});
 
     @Override
-    protected double calcInitialMeasure(PopulationInterface pop) {
+    protected double calculateInitialMeasure(PopulationInterface pop) {
         Population archive = ((Population) pop).getArchive();
         if (archive == null || (archive.size() < 1)) {
             return Double.MAX_VALUE;
         } else {
-            return wfComp.calcScore(archive.getBestEAIndividual(wfComp));
+            return wfComp.calculateScore(archive.getBestEAIndividual(wfComp));
         }
     }
 
     @Override
-    protected double calcPopulationMeasure(PopulationInterface pop) {
+    protected double calculatePopulationMeasure(PopulationInterface pop) {
         Population archive = ((Population) pop).getArchive();
         if (archive == null || (archive.size() < 1)) {
             return Double.MAX_VALUE;
         } else {
-            return wfComp.calcScore(archive.getBestEAIndividual(wfComp));
+            return wfComp.calculateScore(archive.getBestEAIndividual(wfComp));
         }
     }
 
@@ -42,11 +43,8 @@ public class PopulationArchiveTerminator extends PopulationMeasureTerminator {
         return wfComp.getFitWeights();
     }
 
+    @Parameter(description = "Weights of the fitness values in the linear combination")
     public void setFitWeights(double[] fWeights) {
         wfComp.setFitWeights(fWeights);
-    }
-
-    public String fitWeightsTipText() {
-        return wfComp.fitWeightsTipText();
     }
 }

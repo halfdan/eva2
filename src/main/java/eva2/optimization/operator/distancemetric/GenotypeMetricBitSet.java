@@ -13,15 +13,11 @@ import java.util.BitSet;
 @Description("This is a genotype based distance metric suited for binary data. The hamming distance is computed and normalized by chromosome length.")
 public class GenotypeMetricBitSet implements InterfaceDistanceMetric, java.io.Serializable {
 
-    public GenotypeMetricBitSet() {
-    }
-
-    public GenotypeMetricBitSet(GenotypeMetricBitSet a) {
-    }
+    public GenotypeMetricBitSet() {}
 
     @Override
     public Object clone() {
-        return new GenotypeMetricBitSet(this);
+        return new GenotypeMetricBitSet();
     }
 
     /**

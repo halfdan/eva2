@@ -9,17 +9,17 @@ import eva2.util.annotation.Description;
  * p(i is selected) = exp(-fitness(i))/sum_j(exp(-fitness(j)))
  */
 @Description("This is a standard normation method using the exp function.")
-public class SelProbStandard extends AbstractSelProb implements java.io.Serializable {
+public class SelectionProbabilityStandard extends AbstractSelectionProbability implements java.io.Serializable {
 
-    public SelProbStandard() {
+    public SelectionProbabilityStandard() {
     }
 
-    public SelProbStandard(SelProbStandard a) {
+    public SelectionProbabilityStandard(SelectionProbabilityStandard a) {
     }
 
     @Override
     public Object clone() {
-        return new SelProbStandard(this);
+        return new SelectionProbabilityStandard(this);
     }
 
     /**

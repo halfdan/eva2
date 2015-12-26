@@ -4,6 +4,7 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.tools.EVAERROR;
 import eva2.tools.math.Mathematics;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 
@@ -19,8 +20,7 @@ import java.io.Serializable;
 public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializable {
     boolean oneNormed = true; // if true, the vectors are normed to unity sum before comparison.
 
-    public DoubleIntegralMetric() {
-    }
+    public DoubleIntegralMetric() {}
 
     public DoubleIntegralMetric(boolean normed) {
         oneNormed = normed;
@@ -35,10 +35,8 @@ public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializab
     public double distance(AbstractEAIndividual indy1, AbstractEAIndividual indy2) {
         double[] dIndy1 = null, dIndy2 = null;
 
-        if (dIndy1 == null || dIndy2 == null) {
-            dIndy1 = AbstractEAIndividual.getDoublePositionShallow(indy1);
-            dIndy2 = AbstractEAIndividual.getDoublePositionShallow(indy2);
-        }
+        dIndy1 = AbstractEAIndividual.getDoublePositionShallow(indy1);
+        dIndy2 = AbstractEAIndividual.getDoublePositionShallow(indy2);
 
         if (oneNormed) {
             double l1 = Mathematics.sum(dIndy1);
@@ -53,9 +51,8 @@ public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializab
         }
 
         double sum1 = 0, sum2 = 0;
-        double tmpDiff = 0, sqrDiffSum = 0;
-//		System.out.println(Mathematics.sum(dIndy1));
-//		System.out.println(Mathematics.sum(dIndy2));
+        double tmpDiff, sqrDiffSum = 0;
+
         for (int i = 0; (i < dIndy1.length) && (i < dIndy2.length); i++) {
             sum1 += dIndy1[i];
             sum2 += dIndy2[i];
@@ -73,12 +70,8 @@ public class DoubleIntegralMetric implements InterfaceDistanceMetric, Serializab
         return oneNormed;
     }
 
+    @Parameter(description = "If true, both vectors are normed to unity sum before comparison.")
     public void setOneNormed(boolean normedByLength) {
         this.oneNormed = normedByLength;
     }
-
-    public String oneNormedTipText() {
-        return "If true, both vectors are normed to unity sum before comparison.";
-    }
-
 }

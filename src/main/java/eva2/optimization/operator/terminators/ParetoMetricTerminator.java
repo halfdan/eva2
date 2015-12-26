@@ -9,6 +9,7 @@ import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 
@@ -50,13 +51,12 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
         if (prob instanceof AbstractMultiObjectiveOptimizationProblem) {
             moProb = (AbstractMultiObjectiveOptimizationProblem) prob;
         } else {
-            moProb = null;
-            EVAERROR.errorMsgOnce("Error, " + this.getClass() + " works only with problems inheriting from " + AbstractMultiObjectiveOptimizationProblem.class + "!");
+            throw new IllegalArgumentException("Error, " + this.getClass() + " works only with problems inheriting from " + AbstractMultiObjectiveOptimizationProblem.class + "!");
         }
     }
 
     @Override
-    protected double calcInitialMeasure(PopulationInterface pop) {
+    protected double calculateInitialMeasure(PopulationInterface pop) {
         if (moProb == null) {
             return Double.MAX_VALUE;
         } else {
@@ -69,8 +69,8 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
     }
 
     @Override
-    protected double calcPopulationMeasure(PopulationInterface pop) {
-        return calcInitialMeasure(pop);
+    protected double calculatePopulationMeasure(PopulationInterface pop) {
+        return calculateInitialMeasure(pop);
     }
 
     @Override
@@ -89,6 +89,7 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
         }
     }
 
+    @Parameter(description = "The pareto metric to use")
     public void setParetoMetric(InterfaceParetoFrontMetric pMetric) {
         this.pMetric = pMetric;
     }
@@ -97,19 +98,12 @@ public class ParetoMetricTerminator extends PopulationMeasureTerminator implemen
         return pMetric;
     }
 
-    public String paretoMetricTipText() {
-        return "The pareto metric to use";
-    }
-
+    @Parameter(description = "If true, the current population is used, otherwise the pareto front of the multi-objective problem instance is used")
     public void setUseCurrentPop(boolean useCurrentPop) {
         this.useCurrentPop = useCurrentPop;
     }
 
     public boolean isUseCurrentPop() {
         return useCurrentPop;
-    }
-
-    public String useCurrentPopTipText() {
-        return "If true, the current population is used, otherwise the pareto front of the multi-objective problem instance is used";
     }
 }

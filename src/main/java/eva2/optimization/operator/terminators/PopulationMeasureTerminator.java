@@ -4,6 +4,7 @@ import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.io.Serializable;
 
@@ -14,11 +15,11 @@ import java.io.Serializable;
  * The class detects changes of a population measure over time and may signal convergence
  * if the measure m(P) behaved in a certain way for a given time. Convergence may
  * be signaled
- * - if the measure reached absolute values below convThresh (absolute value),
- * - if the measure remained within m(P)+/-convThresh (absolute change),
- * - if the measure remained above m(P)-convThresh (absolute change and regard improvement only),
- * - if the measure remained within m(P)*[1-convThresh, 1+convThresh] (relative change),
- * - if the measure remained above m(P)*(1-convThresh) (relative change and regard improvement only).
+ * - if the measure reached absolute values below convergenceThresh (absolute value),
+ * - if the measure remained within m(P)+/-convergenceThresh (absolute change),
+ * - if the measure remained above m(P)-convergenceThresh (absolute change and regard improvement only),
+ * - if the measure remained within m(P)*[1-convergenceThresh, 1+convergenceThresh] (relative change),
+ * - if the measure remained above m(P)*(1-convergenceThresh) (relative change and regard improvement only).
  */
 @Description("Stop if a convergence criterion has been met.")
 public abstract class PopulationMeasureTerminator implements InterfaceTerminator, Serializable {
@@ -28,9 +29,9 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
 
     public enum StagnationTypeEnum {fitnessCallBased, generationBased}
 
-    private double convThresh = 0.01; //, convThreshLower=0.02;
+    private double convergenceThresh = 0.01;
     private double oldMeasure = -1;
-    private int stagTime = 1000;
+    private int stagnationTime = 1000;
     private int oldPopFitCalls = 1000;
     private int oldPopGens = 1000;
     private boolean firstTime = true;
@@ -43,16 +44,16 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
     }
 
     public PopulationMeasureTerminator(double convergenceThreshold, int stagnationTime, StagnationTypeEnum stagType, ChangeTypeEnum changeType, DirectionTypeEnum dirType) {
-        this.convThresh = convergenceThreshold;
-        this.stagTime = stagnationTime;
+        this.convergenceThresh = convergenceThreshold;
+        this.stagnationTime = stagnationTime;
         this.stagnationMeasure = stagType;
         this.changeType = changeType;
         this.condDirection = dirType;
     }
 
     public PopulationMeasureTerminator(PopulationMeasureTerminator o) {
-        convThresh = o.convThresh;
-        stagTime = o.stagTime;
+        convergenceThresh = o.convergenceThresh;
+        stagnationTime = o.stagnationTime;
         oldPopFitCalls = o.oldPopFitCalls;
         oldPopGens = o.oldPopGens;
         firstTime = o.firstTime;
@@ -80,16 +81,16 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
         if (!firstTime && isStillConverged(pop)) {
 
             if (stagnationTimeHasPassed(pop)) {
-                // population hasnt changed much for max time, criterion is met
+                // population hasn't changed much for max time, criterion is met
                 msg = getTerminationMessage();
                 return true;
             } else {
-                // population hasnt changed much for i<max time, keep running
+                // population hasn't changed much for i<max time, keep running
                 return false;
             }
         } else {
             // first call at all - or population improved more than "allowed" to terminate
-            oldMeasure = calcInitialMeasure(pop);
+            oldMeasure = calculateInitialMeasure(pop);
             saveState(pop);
             return false;
         }
@@ -100,7 +101,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      *
      * @return
      */
-    protected abstract double calcInitialMeasure(PopulationInterface pop);
+    protected abstract double calculateInitialMeasure(PopulationInterface pop);
 
     @Override
     public String lastTerminationMessage() {
@@ -114,7 +115,6 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      */
     protected String getTerminationMessage() {
         StringBuilder sb = new StringBuilder(getMeasureName());
-//		if (convergenceCondition.isSelectedString("Relative")) sb.append(" converged relatively ");
         switch (changeType) {
             case absoluteChange:
                 sb.append(" changed absolutely ");
@@ -128,15 +128,13 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
         }
         if (doCheckImprovement()) {
             sb.append("less than ");
-            sb.append(convThresh);
+            sb.append(convergenceThresh);
         } else {
             sb.append("within +/-");
-//			sb.append(convThreshLower);
-//			sb.append("/");
-            sb.append(convThresh);
+            sb.append(convergenceThresh);
         }
         sb.append(" for ");
-        sb.append(stagTime);
+        sb.append(stagnationTime);
         if (stagnationMeasure == StagnationTypeEnum.generationBased) {
             sb.append(" generations.");
         } else {
@@ -159,8 +157,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      * @param pop
      */
     protected void saveState(PopulationInterface pop) {
-//		oldFit = pop.getBestFitness().clone();
-        oldMeasure = calcPopulationMeasure(pop);
+        oldMeasure = calculatePopulationMeasure(pop);
         oldPopFitCalls = pop.getFunctionCalls();
         oldPopGens = pop.getGeneration();
         firstTime = false;
@@ -173,7 +170,7 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      * @param pop
      * @return
      */
-    protected abstract double calcPopulationMeasure(PopulationInterface pop);
+    protected abstract double calculatePopulationMeasure(PopulationInterface pop);
 
     /**
      * Return true if the population measure did not exceed the
@@ -183,22 +180,21 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
      * @return
      */
     protected boolean isStillConverged(PopulationInterface pop) {
-        double measure = calcPopulationMeasure(pop);
+        double measure = calculatePopulationMeasure(pop);
         double allowedLower = Double.NEGATIVE_INFINITY, allowedUpper = Double.POSITIVE_INFINITY;
         boolean ret;
         switch (changeType) {
             case absoluteChange:
-                allowedLower = oldMeasure - convThresh;
+                allowedLower = oldMeasure - convergenceThresh;
                 if (!doCheckImprovement()) {
-                    allowedUpper = oldMeasure + convThresh;
+                    allowedUpper = oldMeasure + convergenceThresh;
                 }
                 break;
             case absoluteValue:
-                allowedUpper = convThresh;
-//			if (!doCheckImprovement()) allowedUpper = convThreshUpper;
+                allowedUpper = convergenceThresh;
                 break;
             case relativeChange:
-                double delta = oldMeasure * convThresh;
+                double delta = oldMeasure * convergenceThresh;
                 allowedLower = oldMeasure - delta;
                 if (!doCheckImprovement()) {
                     allowedUpper = oldMeasure + delta;
@@ -211,7 +207,6 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
 
     public boolean doCheckImprovement() {
         return (condDirection == DirectionTypeEnum.decrease);
-//		return condImprovementOrChange.isSelectedString("Improvement");
     }
 
     public boolean isRelativeConvergence() {
@@ -220,43 +215,38 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
 
     /**
      * Return true if the defined stagnation time (function calls or generations) has passed
-     * since the last noteable change.
+     * since the last notable change.
      *
      * @param pop
      * @return
      */
     private boolean stagnationTimeHasPassed(PopulationInterface pop) {
         if (stagnationMeasure == StagnationTypeEnum.fitnessCallBased) { // by fitness calls
-            return (pop.getFunctionCalls() - oldPopFitCalls) >= stagTime;
+            return (pop.getFunctionCalls() - oldPopFitCalls) >= stagnationTime;
         } else {// by generation
-            return (pop.getGeneration() - oldPopGens) >= stagTime;
+            return (pop.getGeneration() - oldPopGens) >= stagnationTime;
         }
     }
 
+    @Parameter(description = "Ratio of improvement/change or absolute value of improvement/change to determine convergence.")
     public void setConvergenceThreshold(double x) {
-        convThresh = x;
+        convergenceThresh = x;
     }
 
     public double getConvergenceThreshold() {
-        return convThresh;
+        return convergenceThresh;
     }
 
-    public String convergenceThresholdTipText() {
-        return "Ratio of improvement/change or absolute value of improvement/change to determine convergence.";
-    }
-
+    @Parameter(description = "Terminate if the population has not improved/changed for this time")
     public void setStagnationTime(int k) {
-        stagTime = k;
+        stagnationTime = k;
     }
 
     public int getStagnationTime() {
-        return stagTime;
+        return stagnationTime;
     }
 
-    public String stagnationTimeTipText() {
-        return "Terminate if the population has not improved/changed for this time";
-    }
-
+    @Parameter(description = "Stagnation time is measured in fitness calls or generations")
     public StagnationTypeEnum getStagnationMeasure() {
         return stagnationMeasure;
     }
@@ -265,31 +255,21 @@ public abstract class PopulationMeasureTerminator implements InterfaceTerminator
         this.stagnationMeasure = stagnationTimeIn;
     }
 
-    public String stagnationMeasureTipText() {
-        return "Stagnation time is measured in fitness calls or generations";
-    }
-
     public ChangeTypeEnum getConvergenceCondition() {
         return changeType;
     }
 
+    @Parameter(description = "Select absolute or relative convergence condition")
     public void setConvergenceCondition(ChangeTypeEnum convergenceCondition) {
         this.changeType = convergenceCondition;
-    }
-
-    public String convergenceConditionTipText() {
-        return "Select absolute or relative convergence condition";
     }
 
     public DirectionTypeEnum getCheckType() {
         return condDirection;
     }
 
+    @Parameter(description = "Detect improvement only (decreasing measure) or change in both directions (decrease and increase)")
     public void setCheckType(DirectionTypeEnum dt) {
         this.condDirection = dt;
-    }
-
-    public String checkTypeTipText() {
-        return "Detect improvement only (decreasing measure) or change in both directions (decrease and increase)";
     }
 }

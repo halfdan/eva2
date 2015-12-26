@@ -9,7 +9,7 @@ import java.util.Comparator;
  * Compare two AbstractEAIndividuals by their distance to a reference individual.
  * Usable to sort by a distance.
  */
-public class IndividualDistanceComparator implements Comparator<Object>, Serializable {
+public class IndividualDistanceComparator implements Comparator<AbstractEAIndividual>, Serializable {
 
     private AbstractEAIndividual refIndy = null;
     private InterfaceDistanceMetric distMetric = null;
@@ -30,9 +30,9 @@ public class IndividualDistanceComparator implements Comparator<Object>, Seriali
     }
 
     @Override
-    public int compare(Object o1, Object o2) {
-        double d1 = distMetric.distance((AbstractEAIndividual) o1, refIndy);
-        double d2 = distMetric.distance((AbstractEAIndividual) o2, refIndy);
+    public int compare(AbstractEAIndividual o1, AbstractEAIndividual o2) {
+        double d1 = distMetric.distance(o1, refIndy);
+        double d2 = distMetric.distance(o2, refIndy);
 
         if (d1 == d2) {
             return 0;

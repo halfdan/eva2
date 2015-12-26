@@ -44,8 +44,8 @@ public class FitnessValueTerminator implements InterfaceTerminator,
     }
 
     @Override
-    public boolean isTerminated(PopulationInterface Pop) {
-        double[] fit = Pop.getBestFitness();
+    public boolean isTerminated(PopulationInterface pop) {
+        double[] fit = pop.getBestFitness();
         for (int i = 0; i < fit.length; i++) {
             if (fitnessValue[i] < fit[i]) {
                 return false;

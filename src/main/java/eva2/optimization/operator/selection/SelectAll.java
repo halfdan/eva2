@@ -3,6 +3,7 @@ package eva2.optimization.operator.selection;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 /**
  * Simple method to select all.
@@ -14,8 +15,7 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
 
     private boolean obeyDebsConstViolationPrinciple = true;
 
-    public SelectAll() {
-    }
+    public SelectAll() {}
 
     public SelectAll(SelectAll a) {
         this.obeyDebsConstViolationPrinciple = a.obeyDebsConstViolationPrinciple;
@@ -41,7 +41,7 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
 
     /**
      * This method will select one Individual from the given
-     * Population in respect to the selection propability of the
+     * Population in respect to the selection probability of the
      * individual.
      *
      * @param population The source population where to select from
@@ -105,15 +105,12 @@ public class SelectAll implements InterfaceSelection, java.io.Serializable {
      * @param b The new state
      */
     @Override
+    @Parameter(description = "Toggle the use of Deb's constraint violation principle.")
     public void setObeyDebsConstViolationPrinciple(boolean b) {
         this.obeyDebsConstViolationPrinciple = b;
     }
 
     public boolean getObeyDebsConstViolationPrinciple() {
         return this.obeyDebsConstViolationPrinciple;
-    }
-
-    public String obeyDebsConstViolationPrincipleToolTip() {
-        return "Toggle the use of Deb's coonstraint violation principle.";
     }
 }

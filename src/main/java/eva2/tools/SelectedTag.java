@@ -71,9 +71,6 @@ public class SelectedTag implements java.io.Serializable {
         }
     }
 
-    //~ Methods ////////////////////////////////////////////////////////////////
-
-
     /**
      * Set the selected tag by index.
      *
@@ -197,23 +194,5 @@ public class SelectedTag implements java.io.Serializable {
     @Override
     public String toString() {
         return tags[selectedId].getString();
-//		Character selSign = '*';
-//		Character separator = '|';
-//		StringBuffer sbuf;
-//		if (selectedId != 0) sbuf = new StringBuffer(tags[0].getString());
-//		else {
-//			sbuf = new StringBuffer(selSign.toString());
-//			sbuf.append(tags[0].getString());
-//			sbuf.append(selSign);
-//		}
-//		for (int i=1; i<tags.length; i++) {
-//			sbuf.append(separator);
-//			if (selectedId == i) {
-//				sbuf.append(selSign);
-//				sbuf.append(tags[i].getString());
-//				sbuf.append(selSign);
-//			} else sbuf.append(tags[i].getString());
-//		}
-//		return sbuf.toString();
     }
 }
