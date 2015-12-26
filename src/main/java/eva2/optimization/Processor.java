@@ -233,7 +233,7 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
          * the number of multiple runs has been reached.
          */
         while (isOptimizationRunning() && (runCounter < statistics.getStatisticsParameters().getMultiRuns())) {
-            LOGGER.info(String.format("Starting Optimization %d/%d", runCounter + 1, statistics.getStatisticsParameters().getMultiRuns()));
+            LOGGER.info(String.format("Starting Optimization %d/%d (%s)", runCounter + 1, statistics.getStatisticsParameters().getMultiRuns(), getInfoString()));
             statistics.startOptimizationPerformed(getInfoString(), runCounter, optimizationParameters, getInformerList());
 
             problem.initializeProblem();
@@ -315,32 +315,58 @@ public class Processor extends Thread implements InterfaceProcessor, InterfacePo
         }
     }
 
-    private void maybeInitParamCtrl(InterfaceOptimizationParameters goParams) {
-        iterateParamCtrl(goParams.getOptimizer(), "initialize", new Object[]{goParams.getOptimizer(), goParams.getOptimizer().getPopulation()});
-        iterateParamCtrl(goParams.getProblem(), "initialize", new Object[]{goParams.getProblem(), goParams.getOptimizer().getPopulation()});
+    private void maybeInitParamCtrl(InterfaceOptimizationParameters optimizationParameters) {
+        iterateParamCtrl(
+                optimizationParameters.getOptimizer(),
+                "initialize",
+                new Object[]{optimizationParameters.getOptimizer(), optimizationParameters.getOptimizer().getPopulation()}
+        );
+        iterateParamCtrl(
+                optimizationParameters.getProblem(),
+                "initialize",
+                new Object[]{optimizationParameters.getProblem(), optimizationParameters.getOptimizer().getPopulation()}
+        );
     }
 
-    private void maybeFinishParamCtrl(InterfaceOptimizationParameters goParams) {
-        iterateParamCtrl(goParams.getOptimizer(), "finish", new Object[]{goParams.getOptimizer(), goParams.getOptimizer().getPopulation()});
-        iterateParamCtrl(goParams.getProblem(), "finish", new Object[]{goParams.getProblem(), goParams.getOptimizer().getPopulation()});
+    private void maybeFinishParamCtrl(InterfaceOptimizationParameters optimizationParameters) {
+        iterateParamCtrl(
+                optimizationParameters.getOptimizer(),
+                "finish",
+                new Object[]{optimizationParameters.getOptimizer(), optimizationParameters.getOptimizer().getPopulation()}
+        );
+        iterateParamCtrl(
+                optimizationParameters.getProblem(),
+                "finish",
+                new Object[]{optimizationParameters.getProblem(), optimizationParameters.getOptimizer().getPopulation()}
+        );
     }
 
-    private void maybeUpdateParamCtrl(InterfaceOptimizationParameters goParams) {
+    private void maybeUpdateParamCtrl(InterfaceOptimizationParameters optimizationParameters) {
         Object[] args;
-        InterfaceTerminator terminator = goParams.getTerminator();
-        InterfaceOptimizer optimizer = goParams.getOptimizer();
+        InterfaceTerminator terminator = optimizationParameters.getTerminator();
+        InterfaceOptimizer optimizer = optimizationParameters.getOptimizer();
         if (terminator instanceof GenerationTerminator) {
-            args = new Object[]{optimizer, optimizer.getPopulation(), optimizer.getPopulation().getGeneration(), ((GenerationTerminator) terminator).getGenerations()};
+            args = new Object[]{
+                    optimizer,
+                    optimizer.getPopulation(),
+                    optimizer.getPopulation().getGeneration(),
+                    ((GenerationTerminator) terminator).getGenerations()
+            };
         } else if (terminator instanceof EvaluationTerminator) {
-            args = new Object[]{optimizer, optimizer.getPopulation(), optimizer.getPopulation().getFunctionCalls(), ((EvaluationTerminator) terminator).getFitnessCalls()};
+            args = new Object[]{
+                    optimizer,
+                    optimizer.getPopulation(),
+                    optimizer.getPopulation().getFunctionCalls(),
+                    ((EvaluationTerminator) terminator).getFitnessCalls()
+            };
         } else {
             args = new Object[]{optimizer};
         }
 
         // only if iteration counting is available
         iterateParamCtrl(optimizer, "updateParameters", args);
-        args[0] = goParams.getProblem();
-        iterateParamCtrl(goParams.getProblem(), "updateParameters", args);
+        args[0] = optimizationParameters.getProblem();
+        iterateParamCtrl(optimizationParameters.getProblem(), "updateParameters", args);
     }
 
     /**

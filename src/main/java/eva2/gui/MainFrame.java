@@ -865,14 +865,7 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
             LOGGER.info(msg);
         }
         if (this.progressBar != null) {
-            Runnable doSetProgressBarValue = new Runnable() {
-
-                @Override
-                public void run() {
-                    progressBar.setValue(percent);
-                }
-            };
-            SwingUtilities.invokeLater(doSetProgressBarValue);
+            SwingUtilities.invokeLater(() -> progressBar.setValue(percent));
         }
     }
 }
