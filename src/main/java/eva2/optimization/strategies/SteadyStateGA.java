@@ -86,7 +86,7 @@ public class SteadyStateGA extends AbstractOptimizer implements java.io.Serializ
         GAIndividualBinaryData tmpIndy;
         for (int i = 0; i < population.size(); i++) {
             tmpIndy = (GAIndividualBinaryData) population.get(i);
-            tmpIndy.SetFitness(0, tmpIndy.defaultEvaulateAsMiniBits());
+            tmpIndy.setFitnessAt(0, tmpIndy.defaultEvaulateAsMiniBits());
             population.incrFunctionCalls();
         }
         population.incrGeneration();

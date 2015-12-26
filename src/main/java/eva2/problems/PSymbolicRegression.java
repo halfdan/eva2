@@ -196,21 +196,21 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
                 AbstractEAIndividual tmpBestConst = (AbstractEAIndividual) ((GAPIndividualProgramData) tmpIndy).getNumbers();
                 AbstractEAIndividual tmpConst;
                 this.evaluate(tmpIndy);
-                tmpBestConst.SetFitness(0, tmpIndy.getFitness(0));
+                tmpBestConst.setFitnessAt(0, tmpIndy.getFitness(0));
                 population.incrFunctionCalls();
                 for (int j = 0; j < 10; j++) {
                     tmpConst = (AbstractEAIndividual) tmpBestConst.clone();
                     tmpConst.mutate();
                     ((GAPIndividualProgramData) tmpIndy).setNumbers((InterfaceDataTypeDouble) tmpConst);
                     this.evaluate(tmpIndy);
-                    tmpConst.SetFitness(0, tmpIndy.getFitness(0));
+                    tmpConst.setFitnessAt(0, tmpIndy.getFitness(0));
                     population.incrFunctionCalls();
                     if (tmpBestConst.getFitness(0) > tmpConst.getFitness(0)) {
                         tmpBestConst = (AbstractEAIndividual) tmpConst.clone();
                     }
                 }
                 ((GAPIndividualProgramData) tmpIndy).setNumbers((InterfaceDataTypeDouble) tmpBestConst);
-                tmpIndy.SetFitness(0, tmpBestConst.getFitness(0));
+                tmpIndy.setFitnessAt(0, tmpBestConst.getFitness(0));
             } else {
                 if (useLocalHillClimbing) {
                     EVAERROR.errorMsgOnce("Error: local hill climbing only works on GAPIndividualProgramData individuals!");
@@ -251,7 +251,7 @@ public class PSymbolicRegression extends AbstractOptimizationProblem implements 
         // add noise to the fitness
         fitness += RNG.gaussianDouble(this.noise);
         // set the fitness of the individual
-        individual.SetFitness(0, fitness);
+        individual.setFitnessAt(0, fitness);
         if ((this.plot != null) && (this.plot.getFunctionArea().getContainerSize() == 0)) {
             this.overallBestIndividuum = null;
         }

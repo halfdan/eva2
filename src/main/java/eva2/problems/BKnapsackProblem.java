@@ -254,7 +254,7 @@ public class BKnapsackProblem extends AbstractProblemBinary implements java.io.S
             }
         }
         result[0] += 5100;
-        individual.SetFitness(0, result[0]);
+        individual.setFitnessAt(0, result[0]);
     }
 
     /**

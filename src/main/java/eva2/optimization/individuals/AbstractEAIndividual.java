@@ -546,7 +546,7 @@ public abstract class AbstractEAIndividual implements IndividualInterface, java.
      * @param index   The index of the fitness value to set.
      * @param fitness The new fitness value.
      */
-    public void SetFitness(int index, double fitness) {
+    public void setFitnessAt(int index, double fitness) {
         if (this.fitness.length > index) {
             this.fitness[index] = fitness;
         } else {

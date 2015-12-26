@@ -81,7 +81,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
                 if (v > 0) {
                     indy.setMarkPenalized(true);
                     for (int i = 0; i < indy.getFitness().length; i++) {
-                        indy.SetFitness(i, indy.getFitness(i) + v + penaltyFactor);
+                        indy.setFitnessAt(i, indy.getFitness(i) + v + penaltyFactor);
                     }
                 }
                 break;
@@ -89,7 +89,7 @@ public abstract class AbstractConstraint implements InterfaceDoubleConstraint, S
                 if (v > 0) {
                     indy.setMarkPenalized(true);
                     for (int i = 0; i < indy.getFitness().length; i++) {
-                        indy.SetFitness(i, indy.getFitness(i) * (v + penaltyFactor));
+                        indy.setFitnessAt(i, indy.getFitness(i) * (v + penaltyFactor));
                     }
                 }
             case specificTag:

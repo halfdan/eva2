@@ -132,7 +132,7 @@ public class TF1Problem extends AbstractMultiObjectiveOptimizationProblem implem
             fitness[i] += RNG.gaussianDouble(this.noise);
             fitness[i] += this.yOffset;
             // set the fitness of the individual
-            individual.SetFitness(i, fitness[i]);
+            individual.setFitnessAt(i, fitness[i]);
         }
         if (this.applyConstraints) {
             if (fitness[0] > 0.5) {

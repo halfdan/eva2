@@ -57,7 +57,7 @@ public class FitnessAdaptiveClustering implements java.io.Serializable, Interfac
             }
 
             for (int i = 0; i < population.size(); i++) {
-                population.get(i).SetFitness(x, result[i]);
+                population.get(i).setFitnessAt(x, result[i]);
             }
         }
     }

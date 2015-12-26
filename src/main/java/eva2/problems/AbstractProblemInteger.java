@@ -62,7 +62,7 @@ public abstract class AbstractProblemInteger extends AbstractOptimizationProblem
         fitness = this.evaluate(x);
         for (int i = 0; i < fitness.length; i++) {
             // set the fitness of the individual
-            individual.SetFitness(i, fitness[i]);
+            individual.setFitnessAt(i, fitness[i]);
         }
         if ((this.bestIndividuum == null) || (this.bestIndividuum.getFitness(0) > individual.getFitness(0))) {
             this.bestIndividuum = (AbstractEAIndividual) individual.clone();

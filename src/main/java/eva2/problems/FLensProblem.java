@@ -13,7 +13,6 @@ import eva2.tools.math.RNG;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 class MyLensViewer extends JPanel implements InterfaceSolutionViewer {
@@ -317,7 +316,7 @@ public class FLensProblem extends AbstractOptimizationProblem
             fitness[i] += RNG.gaussianDouble(this.noise);
             fitness[i] += this.yOffset;
             // set the fitness of the individual
-            individual.SetFitness(i, fitness[i]);
+            individual.setFitnessAt(i, fitness[i]);
         }
         if ((this.overallBest == null) || (this.overallBest.getFitness(0) > individual.getFitness(0))) {
             this.overallBest = (AbstractEAIndividual) individual.clone();

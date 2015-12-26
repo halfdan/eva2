@@ -108,8 +108,8 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
      * by reducing the fitness (in the first dimension).
      */
     @Override
-    public void SetFitness(int index, double fitness) {
-        super.SetFitness(index, fitness);
+    public void setFitnessAt(int index, double fitness) {
+        super.setFitnessAt(index, fitness);
         if (index > position.fitness.length) {
             double[] newFit = new double[index + 1];
             System.arraycopy(position.fitness, 0, newFit, 0, position.fitness.length);
@@ -447,7 +447,7 @@ public class TribesExplorer extends AbstractEAIndividual implements InterfaceDat
 //                                             pb.fitnessSize, evaluate);
             } else { // Artificial fitness by using penalties
                 for (n = 0; n < position.fitness.length; n++) {
-                    SetFitness(n, swarm.tribes[fromTribe].memory[
+                    setFitnessAt(n, swarm.tribes[fromTribe].memory[
                             contact].
                             getPos().
                             fitness[n] +
