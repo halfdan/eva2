@@ -11,7 +11,7 @@ import java.io.Serializable;
  * frequency, turning sin(t) into sin(((t+1)^d)-1) which is linear for d=1. For slightly smaller values,
  * the frequency slowly decreases, while for slightly larger values, it slowly increases.
  */
-@Description("Sinusoidally oscillating value, the frequency may be varyied with time. E.g. use dampening 0.9 " +
+@Description("Sinusoidally oscillating value, the frequency may be varied with time. E.g. use dampening 0.9 " +
         "for a slightly decreasing frequency, dampening 1.1 for a slight increase. The frequency is modified " +
         "in the form sin(t) -> sin(-1+(t+1)^d)")
 public class SinusoidalParamAdaption implements InterfaceHasUpperDoubleBound, ParamAdaption, GenericParamAdaption, Serializable {

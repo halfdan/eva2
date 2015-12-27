@@ -10,7 +10,7 @@ package eva2.optimization.operator.paramcontrol;
 ///**
 // * Adapt an instance parameter by time, from given start to end value.
 // * This only works if iterations are known. The new variant allows exponential adaption,
-// * where the second parameter (endV) is interpreted as halfing time in percent of the
+// * where the second parameter (endV) is interpreted as halving time in percent of the
 // * full run.
 // * 
 // * @author mkron

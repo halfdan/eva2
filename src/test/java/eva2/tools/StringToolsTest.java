@@ -2,7 +2,9 @@ package eva2.tools;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -109,5 +111,68 @@ public class StringToolsTest {
         assertEquals("derp<sub>12</sub>", StringTools.subscriptIndices("derp12"));
         assertEquals("This is a string <sub>12</sub>", StringTools.subscriptIndices("This is a string 12"));
         assertEquals("ϕ<sub>10</sub>", StringTools.subscriptIndices("ϕ10"));
+    }
+
+    @Test
+    public void testDeleteChar() throws Exception {
+        assertEquals("Taylor", StringTools.deleteChar('s', "Taylors"));
+        assertEquals("Swift", StringTools.deleteChar('q', "Swift"));
+    }
+
+    @Test
+    public void testGetSubstringAfterLast() throws Exception {
+        assertEquals("Swift", StringTools.getSubstringAfterLast("TaylorSwift", 'r'));
+        assertEquals("Bad Blood", StringTools.getSubstringAfterLast("Bad Blood", 'q'));
+    }
+
+    @Test
+    public void testConcatFields() throws Exception {
+        List<String> list = new ArrayList<>();
+        list.add("Taylor");
+        list.add("Swift");
+        list.add("Bad");
+
+        assertEquals("Taylor,Swift,Bad", StringTools.concatFields(list, ","));
+
+        assertEquals("Taylor,Swift,Bad,Blood", StringTools.concatFields(
+                new String[]{"Taylor", "Swift", "Bad", "Blood"},
+                ","
+        ));
+    }
+
+    @Test
+    public void testExpandPrefixZeros() throws Exception {
+        assertEquals("01", StringTools.expandPrefixZeros(1, 19));
+        assertEquals("0001", StringTools.expandPrefixZeros(1, 1900));
+        assertEquals("000001", StringTools.expandPrefixZeros(1, 219837));
+        assertEquals("00001", StringTools.expandPrefixZeros(1, 12398));
+    }
+
+    @Test
+    public void testConcatValues() throws Exception {
+        List<Object> list = new ArrayList<>();
+        list.add("Foo");
+        list.add(12);
+        list.add("Sieben");
+        assertEquals("Foo;12;Sieben", StringTools.concatValues(list, ";"));
+    }
+
+    @Test
+    public void testSimplifySymbols() throws Exception {
+        assertEquals("foo-bar", StringTools.simplifySymbols("foo--bar"));
+        assertEquals("foo_bar", StringTools.simplifySymbols("foo__bar"));
+        assertEquals("foo_bar", StringTools.simplifySymbols("foo_-bar"));
+        assertEquals("foo_bar", StringTools.simplifySymbols("foo-_bar"));
+
+        assertEquals("foobar", StringTools.simplifySymbols("f(o){o}b*[a]r"));
+
+        assertEquals("foo-bar", StringTools.simplifySymbols("foo;bar"));
+        assertEquals("foo-bar", StringTools.simplifySymbols("foo,bar"));
+        assertEquals("foo-bar", StringTools.simplifySymbols("foo\\bar"));
+        assertEquals("foo-bar", StringTools.simplifySymbols("foo/bar"));
+
+        assertEquals("foo_bar", StringTools.simplifySymbols("foo bar"));
+        assertEquals("foo_bar", StringTools.simplifySymbols("foo\n\tbar"));
+        assertEquals("foo_bar_", StringTools.simplifySymbols("foo\tbar\n"));
     }
 }
