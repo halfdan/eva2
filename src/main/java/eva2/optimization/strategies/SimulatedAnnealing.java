@@ -8,6 +8,7 @@ import eva2.optimization.population.SolutionSet;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 /**
  * Simulated Annealing by Nelder and Mead, a simple yet efficient local search
@@ -75,12 +76,10 @@ public class SimulatedAnnealing extends AbstractOptimizer implements java.io.Ser
      */
     @Override
     public void optimize() {
-        AbstractEAIndividual indy;
         Population original = (Population) this.population.clone();
         double delta;
 
-        for (int i = 0; i < this.population.size(); i++) {
-            indy = this.population.get(i);
+        for (AbstractEAIndividual indy : this.population) {
             double tmpD = indy.getMutationProbability();
             indy.setMutationProbability(1.0);
             indy.mutate();
@@ -93,7 +92,6 @@ public class SimulatedAnnealing extends AbstractOptimizer implements java.io.Ser
                 this.population.add(i, original.get(i));
             } else {
                 delta = this.calculateDelta(original.get(i), this.population.get(i));
-                //System.out.println("delta: " + delta);
                 if (Math.exp(-delta / this.currentTemperature) > RNG.randomInt(0, 1)) {
                     this.population.remove(i);
                     this.population.add(i, original.get(i));
@@ -212,16 +210,13 @@ public class SimulatedAnnealing extends AbstractOptimizer implements java.io.Ser
         return this.initialTemperature;
     }
 
+    @Parameter(description = "Set the initial temperature.")
     public void setInitialTemperature(double pop) {
         this.initialTemperature = pop;
     }
 
-    public String initialTemperatureTipText() {
-        return "Set the initial temperature.";
-    }
-
     /**
-     * Set alpha, which is used to degrade the temperaure
+     * Set alpha, which is used to degrade the temperature
      *
      * @return The cooling rate.
      */
@@ -229,14 +224,11 @@ public class SimulatedAnnealing extends AbstractOptimizer implements java.io.Ser
         return this.alpha;
     }
 
+    @Parameter(description = "Set alpha, which is used to degrade the temperature.")
     public void setAlpha(double a) {
         this.alpha = a;
         if (this.alpha > 1) {
             this.alpha = 1.0;
         }
-    }
-
-    public String alphaTipText() {
-        return "Set alpha, which is used to degrade the temperaure.";
     }
 }
