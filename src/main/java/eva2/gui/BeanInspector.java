@@ -1,7 +1,6 @@
 package eva2.gui;
 
 import eva2.optimization.population.Population;
-import eva2.optimization.strategies.GeneticAlgorithm;
 import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
 import eva2.tools.StringTools;
@@ -274,19 +273,6 @@ public class BeanInspector {
         } else {
             return "";
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(BeanInspector.toString(new String[]{"asdf", "jdksfl", "werljk"}));
-
-        System.out.println(BeanInspector.toString(new Population()));
-        System.out.println(BeanInspector.toString(new GeneticAlgorithm()));
-        System.out.println("----");
-        System.out.println(BeanInspector.niceToString(new Population()));
-        System.out.println(BeanInspector.niceToString(new GeneticAlgorithm()));
-        System.out.println("----");
-        System.out.println(BeanInspector.toString(new Population(), ';', false, ">", 1, false));
-        System.out.println(BeanInspector.toString(new GeneticAlgorithm(), ';', false, ">", 1, false));
     }
 
     /**
