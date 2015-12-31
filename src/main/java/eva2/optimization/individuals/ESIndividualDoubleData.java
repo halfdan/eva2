@@ -49,7 +49,7 @@ public class ESIndividualDoubleData extends AbstractEAIndividual implements Inte
             this.genotype[i] = individual.genotype[i];
             this.range[i][0] = individual.range[i][0];
             this.range[i][1] = individual.range[i][1];
-        };
+        }
 
         // cloning the members of AbstractEAIndividual
         this.age = individual.age;

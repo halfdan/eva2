@@ -126,7 +126,7 @@ public class EAIndividualComparator implements Comparator<AbstractEAIndividual>,
         boolean o1domO2, o2domO1;
 
         if (preferFeasible) { // check constraint violation first?
-            int constrViolComp = ((AbstractEAIndividual) o1).compareConstraintViolation((AbstractEAIndividual) o2);
+            int constrViolComp = o1.compareConstraintViolation(o2);
             if (constrViolComp > 0) {
                 return -1;
             } else if (constrViolComp < 0) {
@@ -135,8 +135,8 @@ public class EAIndividualComparator implements Comparator<AbstractEAIndividual>,
             // otherwise both do not violate, so regard fitness
         }
         if (indyDataKey != null && (indyDataKey.length() > 0)) { // check specific key
-            double[] fit1 = (double[]) ((AbstractEAIndividual) o1).getData(indyDataKey);
-            double[] fit2 = (double[]) ((AbstractEAIndividual) o2).getData(indyDataKey);
+            double[] fit1 = (double[]) o1.getData(indyDataKey);
+            double[] fit2 = (double[]) o2.getData(indyDataKey);
             if ((fit1 == null) || (fit2 == null)) {
                 throw new RuntimeException("Unknown individual data key " + indyDataKey + ", unable to compare individuals (" + this.getClass().getSimpleName() + ")");
             }
@@ -152,13 +152,13 @@ public class EAIndividualComparator implements Comparator<AbstractEAIndividual>,
             }
         } else {
             if (fitCriterion < 0) {
-                o1domO2 = ((AbstractEAIndividual) o1).isDominating((AbstractEAIndividual) o2);
-                o2domO1 = ((AbstractEAIndividual) o2).isDominating((AbstractEAIndividual) o1);
+                o1domO2 = o1.isDominating(o2);
+                o2domO1 = o2.isDominating(o1);
             } else {
-                if (((AbstractEAIndividual) o1).getFitness()[fitCriterion] == ((AbstractEAIndividual) o2).getFitness()[fitCriterion]) {
+                if (o1.getFitness()[fitCriterion] == o2.getFitness()[fitCriterion]) {
                     return 0;
                 }
-                return (((AbstractEAIndividual) o1).getFitness()[fitCriterion] < ((AbstractEAIndividual) o2).getFitness()[fitCriterion]) ? -1 : 1;
+                return (o1.getFitness()[fitCriterion] < o2.getFitness()[fitCriterion]) ? -1 : 1;
             }
         }
         if (o1domO2 ^ o2domO1) {

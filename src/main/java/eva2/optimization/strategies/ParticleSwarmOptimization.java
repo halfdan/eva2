@@ -919,24 +919,24 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                 }
                 break;
             case tree: // Sorted Tree
-                sortedIndex = (Integer) ((AbstractEAIndividual) sortedPop[index]).getData(sortedIndexKey);
+                sortedIndex = (Integer) sortedPop[index].getData(sortedIndexKey);
 
                 if (sortedIndex > 0) {    // its found and its not the root. root has no parent to check for
                     k = getParentIndex(topologyRange, sortedIndex, pop.size());
-                    compareAndSetAttractor(localBestFitness, localBestPosition, (AbstractEAIndividual) sortedPop[k], useHistoric);
+                    compareAndSetAttractor(localBestFitness, localBestPosition, sortedPop[k], useHistoric);
                 }
                 if (treeStruct == 1) { // loop all children
                     if (isComplete(sortedIndex, pop.size())) { // the node has full degree
                         k = topologyRange * sortedIndex + 1; // this is the offset of the nodes children
                         for (int i = 0; i < topologyRange; i++) {
-                            compareAndSetAttractor(localBestFitness, localBestPosition, (AbstractEAIndividual) sortedPop[k + i], useHistoric);
+                            compareAndSetAttractor(localBestFitness, localBestPosition, sortedPop[k + i], useHistoric);
                         }
                     } else if (isIncomplete(sortedIndex, pop.size())) { // the node does not have full degree but might have orphans
                         int numOrphs = numOrphans(sortedIndex, pop.size());
                         if (numOrphs > 0) {
                             k = indexOfFirstOrphan(sortedIndex, pop.size());
                             for (int i = 0; i < numOrphs; i++) {
-                                compareAndSetAttractor(localBestFitness, localBestPosition, (AbstractEAIndividual) sortedPop[k], useHistoric);
+                                compareAndSetAttractor(localBestFitness, localBestPosition, sortedPop[k], useHistoric);
                                 k += treeLastFullLevelNodeCnt; // hop to next (possible) orphan index
                             }
                         }
@@ -1318,7 +1318,7 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                 found = false;
                 superfluous = false;
                 for (int i = 0; i < leaders.size(); i++) {
-                    dist = metric.distance((AbstractEAIndividual) sortedPop[cur], leaders.get(i));
+                    dist = metric.distance(sortedPop[cur], leaders.get(i));
                     //System.out.println("dist is "+dist);
                     if ((swarmRadius * 2.) > dist) {    // a formal leader is found
                         int sSize = (Integer) (leaders.get(i)).getData(multiSwSizeKey);
@@ -1330,22 +1330,22 @@ public class ParticleSwarmOptimization extends AbstractOptimizer implements java
                         } else {
                             found = true;
                             // assign to leader, update swarm size
-                            ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwTypeKey, leaders.get(i));
-                            ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwSizeKey, -1);
+                            sortedPop[cur].putData(multiSwTypeKey, leaders.get(i));
+                            sortedPop[cur].putData(multiSwSizeKey, -1);
                             leaders.get(i).putData(multiSwSizeKey, 1 + sSize);
                             break;
                         }
                     }
                 }
                 if (!found) { // new leader is found
-                    leaders.add(((AbstractEAIndividual) sortedPop[cur]));
-                    ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwTypeKey, sortedPop[cur]);
-                    ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwSizeKey, 1);
+                    leaders.add(sortedPop[cur]);
+                    sortedPop[cur].putData(multiSwTypeKey, sortedPop[cur]);
+                    sortedPop[cur].putData(multiSwSizeKey, 1);
                 } else if (superfluous) {
                     //System.out.println("reinitializing " + cur);
-                    ((AbstractEAIndividual) sortedPop[cur]).putData(partTypeKey, resetType);
-                    ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwTypeKey, sortedPop[cur]);
-                    ((AbstractEAIndividual) sortedPop[cur]).putData(multiSwSizeKey, 1);
+                    sortedPop[cur].putData(partTypeKey, resetType);
+                    sortedPop[cur].putData(multiSwTypeKey, sortedPop[cur]);
+                    sortedPop[cur].putData(multiSwSizeKey, 1);
                 }
                 cur++;
             }

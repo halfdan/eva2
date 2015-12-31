@@ -81,8 +81,8 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
                 // determine right not assigned neighbor
                 for (right = i + 1; (assigned[right]); right++) ;
 
-                v[i] = (((AbstractEAIndividual) frontArray[right]).getFitness(0) - ((AbstractEAIndividual) frontArray[i]).getFitness(0)) *
-                        (((AbstractEAIndividual) frontArray[left]).getFitness(1) - ((AbstractEAIndividual) frontArray[i]).getFitness(1));
+                v[i] = (frontArray[right].getFitness(0) - frontArray[i].getFitness(0)) *
+                        (frontArray[left].getFitness(1) - frontArray[i].getFitness(1));
 
                 left = i;
                 i = right;
@@ -99,7 +99,7 @@ public class ArchivingNSGAIISMeasure extends ArchivingNSGAII {
                 }
             }
             assigned[minIndex] = true;
-            ((AbstractEAIndividual) frontArray[minIndex]).putData("HyperCube", (double) e);
+            frontArray[minIndex].putData("HyperCube", (double) e);
         }
 
 
