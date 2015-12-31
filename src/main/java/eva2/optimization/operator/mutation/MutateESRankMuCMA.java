@@ -1,5 +1,6 @@
 package eva2.optimization.operator.mutation;
 
+import Jama.EigenvalueDecomposition;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.enums.ESMutationInitialSigma;
 import eva2.optimization.individuals.AbstractEAIndividual;
@@ -11,7 +12,6 @@ import eva2.optimization.strategies.EvolutionStrategies;
 import eva2.problems.InterfaceOptimizationProblem;
 import eva2.tools.EVAERROR;
 import eva2.tools.Pair;
-import Jama.EigenvalueDecomposition;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;

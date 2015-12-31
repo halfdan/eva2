@@ -10,10 +10,6 @@ import eva2.tools.StringSelection;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class PropertyEditorProvider {
     // if true, we use the GenericObjectEditor whenever no specific one is registered, so keep it true

@@ -7,7 +7,6 @@ import eva2.gui.PropertyEditorProvider;
 import eva2.gui.PropertySheetPanel;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.StringTools;
-import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
 import java.awt.*;

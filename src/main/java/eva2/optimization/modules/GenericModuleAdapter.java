@@ -1,9 +1,9 @@
 package eva2.optimization.modules;
 
 
+import eva2.gui.JParaPanel;
 import eva2.gui.ModuleButtonPanelMaker;
 import eva2.gui.TabbedFrameMaker;
-import eva2.gui.JParaPanel;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.optimization.InterfaceOptimizationParameters;
 import eva2.optimization.Processor;

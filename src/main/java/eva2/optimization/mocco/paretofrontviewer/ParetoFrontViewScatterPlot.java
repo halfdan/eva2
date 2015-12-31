@@ -8,8 +8,8 @@ import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceMultiObjectiveDeNovoProblem;
 import eva2.problems.InterfaceOptimizationObjective;
-import eva2.tools.chart2d.DPointContentSelectable;
 import eva2.tools.chart2d.DPoint;
+import eva2.tools.chart2d.DPointContentSelectable;
 import eva2.tools.chart2d.DPointIcon;
 import eva2.tools.chart2d.ScaledBorder;
 

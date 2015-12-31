@@ -4,7 +4,6 @@ import eva2.gui.editor.GenericObjectEditor;
 import eva2.tools.StringTools;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
-import eva2.util.annotation.Parameter;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -13,7 +12,7 @@ import java.awt.event.MouseEvent;
 import java.beans.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

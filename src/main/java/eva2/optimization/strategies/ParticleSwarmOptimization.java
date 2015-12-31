@@ -1,5 +1,6 @@
 package eva2.optimization.strategies;
 
+import Jama.Matrix;
 import eva2.gui.BeanInspector;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.Plot;
@@ -11,16 +12,15 @@ import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.operator.distancemetric.PhenotypeMetric;
 import eva2.optimization.operator.paramcontrol.ParamAdaption;
 import eva2.optimization.operator.paramcontrol.ParameterControlManager;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.InterfaceSolutionSet;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
 import eva2.problems.Interface2DBorderProblem;
 import eva2.problems.InterfaceAdditionalPopulationInformer;
 import eva2.problems.InterfaceProblemDouble;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointSet;
-import Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;

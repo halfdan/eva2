@@ -7,8 +7,8 @@ import eva2.optimization.operator.paramcontrol.CbpsoFitnessThresholdBasedAdaptio
 import eva2.optimization.operator.paramcontrol.LinearParamAdaption;
 import eva2.optimization.operator.paramcontrol.ParamAdaption;
 import eva2.optimization.operator.paramcontrol.SinusoidalParamAdaption;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.SolutionSet;
 import eva2.problems.AbstractProblemDouble;
 import eva2.problems.InterfaceInterestingHistogram;

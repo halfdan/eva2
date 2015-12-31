@@ -1,8 +1,8 @@
 package eva2.optimization.operator.archiving;
 
 import eva2.optimization.population.Population;
-import eva2.tools.chart2d.DPointIconCross;
 import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.chart2d.DPointIconCross;
 import eva2.util.annotation.Description;
 
 import java.util.ArrayList;

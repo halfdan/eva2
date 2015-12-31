@@ -7,7 +7,10 @@ import eva2.tools.Tag;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Parameter;
 
-import java.beans.*;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

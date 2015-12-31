@@ -1,5 +1,6 @@
 package eva2.problems;
 
+import Jama.Matrix;
 import eva2.gui.editor.GenericObjectEditor;
 import eva2.gui.plot.TopoPlot;
 import eva2.optimization.enums.PostProcessMethod;
@@ -13,13 +14,12 @@ import eva2.optimization.operator.terminators.FitnessConvergenceTerminator;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.ChangeTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.DirectionTypeEnum;
 import eva2.optimization.operator.terminators.PopulationMeasureTerminator.StagnationTypeEnum;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.Pair;
 import eva2.tools.ToolBox;
 import eva2.tools.diagram.ColorBarCalculator;
-import Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Parameter;

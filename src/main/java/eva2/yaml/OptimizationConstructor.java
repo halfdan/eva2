@@ -3,7 +3,6 @@ package eva2.yaml;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInitMethod;
-import eva2.tools.Pair;
 import org.yaml.snakeyaml.constructor.AbstractConstruct;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.MappingNode;

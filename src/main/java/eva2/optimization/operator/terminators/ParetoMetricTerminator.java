@@ -3,11 +3,10 @@ package eva2.optimization.operator.terminators;
 import eva2.gui.BeanInspector;
 import eva2.optimization.operator.paretofrontmetrics.InterfaceParetoFrontMetric;
 import eva2.optimization.operator.paretofrontmetrics.MetricS;
-import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.population.Population;
+import eva2.optimization.population.PopulationInterface;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.problems.InterfaceOptimizationProblem;
-import eva2.tools.EVAERROR;
 import eva2.util.annotation.Description;
 import eva2.util.annotation.Parameter;
 

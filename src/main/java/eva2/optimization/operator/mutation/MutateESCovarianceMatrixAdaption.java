@@ -1,11 +1,11 @@
 package eva2.optimization.operator.mutation;
 
+import Jama.EigenvalueDecomposition;
+import Jama.Matrix;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.InterfaceESIndividual;
 import eva2.optimization.population.Population;
 import eva2.problems.InterfaceOptimizationProblem;
-import Jama.EigenvalueDecomposition;
-import Jama.Matrix;
 import eva2.tools.math.Mathematics;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;

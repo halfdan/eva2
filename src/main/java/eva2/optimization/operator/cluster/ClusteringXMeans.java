@@ -6,9 +6,9 @@ import eva2.optimization.individuals.ESIndividualDoubleData;
 import eva2.optimization.individuals.InterfaceDataTypeDouble;
 import eva2.optimization.population.Population;
 import eva2.problems.F1Problem;
+import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIconCircle;
 import eva2.tools.chart2d.DPointIconText;
-import eva2.tools.chart2d.DPoint;
 import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 

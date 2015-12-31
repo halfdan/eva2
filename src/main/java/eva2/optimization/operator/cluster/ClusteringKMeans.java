@@ -9,9 +9,9 @@ import eva2.optimization.operator.distancemetric.EuclideanMetric;
 import eva2.optimization.operator.distancemetric.InterfaceDistanceMetric;
 import eva2.optimization.population.Population;
 import eva2.problems.F1Problem;
+import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIconCircle;
 import eva2.tools.chart2d.DPointIconText;
-import eva2.tools.chart2d.DPoint;
 import eva2.util.annotation.Description;
 
 import java.util.Arrays;

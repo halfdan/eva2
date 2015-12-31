@@ -14,9 +14,9 @@ import eva2.optimization.population.Population;
 import eva2.optimization.population.PopulationInterface;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.tools.ToolBox;
+import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIconCircle;
 import eva2.tools.chart2d.DPointIconText;
-import eva2.tools.chart2d.DPoint;
 
 import javax.swing.*;
 import java.awt.*;

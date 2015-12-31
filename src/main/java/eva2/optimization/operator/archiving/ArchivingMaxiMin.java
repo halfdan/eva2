@@ -4,8 +4,8 @@ import eva2.optimization.operator.moso.MOSOMaxiMin;
 import eva2.optimization.operator.selection.InterfaceSelection;
 import eva2.optimization.operator.selection.SelectBestIndividuals;
 import eva2.optimization.population.Population;
-import eva2.tools.chart2d.DPointIconCross;
 import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.chart2d.DPointIconCross;
 import eva2.util.annotation.Description;
 
 

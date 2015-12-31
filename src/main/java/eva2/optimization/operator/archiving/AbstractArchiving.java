@@ -4,9 +4,9 @@ import eva2.gui.plot.GraphPointSet;
 import eva2.gui.plot.Plot;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.population.Population;
-import eva2.tools.chart2d.DPointIconCross;
 import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIcon;
+import eva2.tools.chart2d.DPointIconCross;
 
 /**
  * This is an abstract archiving strategy giving default implementation of determining

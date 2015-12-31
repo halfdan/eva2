@@ -13,9 +13,9 @@ import eva2.optimization.population.Population;
 import eva2.optimization.strategies.InterfaceOptimizer;
 import eva2.problems.AbstractMultiObjectiveOptimizationProblem;
 import eva2.problems.InterfaceOptimizationProblem;
+import eva2.tools.chart2d.DPoint;
 import eva2.tools.chart2d.DPointIconCircle;
 import eva2.tools.chart2d.DPointIconText;
-import eva2.tools.chart2d.DPoint;
 import eva2.util.annotation.Description;
 
 import java.io.BufferedWriter;

@@ -1,7 +1,6 @@
 package eva2.gui;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.beans.PropertyEditor;
 
