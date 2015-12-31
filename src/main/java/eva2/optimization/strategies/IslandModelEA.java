@@ -21,7 +21,7 @@ import eva2.util.annotation.Hidden;
  * distribution scheme is rather prone to config errors (the correct ssh version
  * is required, the jar needs to be in the working dir and possible problem data
  * must be on the servers to) an implicit island-model has been implemented too
- * to allow fast and reliable computation. This is still usefull, since it is
+ * to allow fast and reliable computation. This is still useful, since it is
  * less prone to premature convergence and also an heterogenuous island model
  * can be used.
  * <p>
@@ -48,11 +48,9 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     private boolean logLocalChanges = true;
     private boolean show = false;
     transient private Plot plot = null;
-    transient private String identifier = "";
     transient private InterfacePopulationChangedEventListener populationChangedEventListener;
 
-    public IslandModelEA() {
-    }
+    public IslandModelEA() {}
 
     public IslandModelEA(IslandModelEA a) {
         this.population = (Population) a.population.clone();
@@ -81,13 +79,11 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
             }
         }
 
-//        this.population = new Population();
         this.population.clear();
         this.population.initialize();
         this.optimizer.initialize();
         this.optimizer.setProblem(this.optimizationProblem);
         this.optimizer.setPopulation((Population) population.clone());
-        InterfacePopulationChangedEventListener myLocal = null;
         if (this.numLocalOnly) {
             // this is running on the local machine
             this.islands = new InterfaceOptimizer[this.numLocalCPUs];
@@ -409,10 +405,6 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
     }
 
     /**
-     * ********************************************************************************************************************
-     * These are for InterfacePopulationChangedEventListener
-     */
-    /**
      * This method allows an optimizer to register a change in the EA-lecture
      *
      * @param source The source of the event.
@@ -446,11 +438,10 @@ public class IslandModelEA implements InterfacePopulationChangedEventListener, I
      * implementation.
      *
      */
-    // TODO Deactivated from GUI because the current implementation does not really paralelize on a multicore.
-    // Instead, the new direct problem parallelization can be used.
-//    public boolean isLocalOnly() {
-//        return this.numLocalOnly;
-//    }
+    public boolean isLocalOnly() {
+        return this.numLocalOnly;
+    }
+
     public void setLocalOnly(boolean b) {
         this.numLocalOnly = b;
     }

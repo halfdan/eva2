@@ -108,13 +108,10 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         }
     }
 
-/************************************************************************************
- * InterfaceDataTypeProgram methods
- */
     /**
      * This method allows you to request a certain amount of double data
      *
-     * @param length The lenght of the double[] that is to be optimized
+     * @param length The length of the double[] that is to be optimized
      */
     @Override
     public void setProgramDataLength(int length) {
@@ -142,14 +139,10 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         this.phenotype = new AbstractGPNode[this.genotype.length];
         for (int i = 0; i < this.genotype.length; i++) {
             this.phenotype[i] = (AbstractGPNode) this.genotype[i].clone();
-            // if (!phenotype[0].checkDepth(0)) {
-            // 	System.err.println("error... " + genotype[0].checkDepth(0));
-            // }
 
             if ((this.checkMaxDepth) && (this.phenotype[i].isMaxDepthViolated(this.maxAllowedDepth))) {
                 System.err.println("Trying to meet the Target Depth! " + this.phenotype[i].isMaxDepthViolated(this.maxAllowedDepth) + " " + phenotype[i].getMaxDepth());
                 this.phenotype[i].repairMaxDepth(this.gpArea[i], this.maxAllowedDepth);
-                //System.out.println("TragetDepth: " + this.targetDepth + " : " + this.m_Program.getMaxDepth());
             }
         }
         return this.phenotype;
@@ -223,9 +216,6 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         return this.gpArea;
     }
 
-/************************************************************************************
- * InterfaceEAIndividual methods
- */
     /**
      * This method will initialize the individual with a given value for the
      * phenotype.
@@ -246,7 +236,7 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     }
 
     /**
-     * This method will return a string description of the GAIndividal
+     * This method will return a string description of the GAIndividual
      * noteably the Genotype.
      *
      * @return A descriptive string
@@ -272,10 +262,6 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
         }
         return result;
     }
-
-/************************************************************************************
- * InterfaceGPIndividual methods
- */
 
     /**
      * This method will allow the user to read the program genotype
@@ -308,7 +294,6 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
     public void setPGenotype(AbstractGPNode b, int i) {
         this.genotype[i] = b;
         genotype[i].updateDepth(0);
-//        System.out.println("Setting pheno of depth " + b.getMaxDepth() + " " + b.getStringRepresentation());
         this.phenotype = null;
     }
 
@@ -333,9 +318,6 @@ public class GPIndividualProgramData extends AbstractEAIndividual implements Int
                     newNode.initGrow(this.gpArea[i], this.maxAllowedDepth);
                     parent.setNode(newNode, nodeToMutate);
                 }
-                //if (!genotype[i].checkDepth(0) || (genotype[i].isMaxDepthViolated(maxAllowedDepth))) {
-                //	System.err.println("Error in GPIndividualProgramData.defaultMutate!");
-                //}
             }
         }
         phenotype = null; // reset pheno

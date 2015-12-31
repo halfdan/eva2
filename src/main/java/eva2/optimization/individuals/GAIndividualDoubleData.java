@@ -107,13 +107,10 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         }
     }
 
-/************************************************************************************
- * InterfaceDataTypeDouble methods
- */
     /**
      * This method allows you to request a certain amount of double data
      *
-     * @param length The lenght of the double[] that is to be optimized
+     * @param length The length of the double[] that is to be optimized
      */
     @Override
     public void setDoubleDataLength(int length) {
@@ -254,7 +251,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     }
 
     /**
-     * This method will return a string description of the GAIndividal
+     * This method will return a string description of the GAIndividual
      * noteably the Genotype.
      *
      * @return A descriptive string
@@ -290,10 +287,6 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
         return result;
     }
 
-/************************************************************************************
- * InterfaceGAIndividual methods
- */
-
     /**
      * This method allows you to read the binary data
      *
@@ -317,8 +310,8 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
 
     /**
      * This method allows the user to read the length of the genotype.
-     * This may be necessary since BitSet.lenght only returns the index
-     * of the last significat bit.
+     * This may be necessary since BitSet.length only returns the index
+     * of the last significant bit.
      *
      * @return The length of the genotype.
      */
@@ -350,9 +343,7 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
             this.genotype.set(mutationIndex);
         }
     }
-/**********************************************************************************************************************
- * These are for GUI
- */
+
     /**
      * This method allows the CommonJavaObjectEditorPanel to read the
      * name to the current object.
@@ -380,10 +371,10 @@ public class GAIndividualDoubleData extends AbstractEAIndividual implements Inte
     }
 
     /**
-     * This method allows you to set the number of mulitruns that are to be performed,
+     * This method allows you to set the number of multi runs that are to be performed,
      * necessary for stochastic optimizers to ensure reliable results.
      *
-     * @param precision The number of multiruns that are to be performed
+     * @param precision The number of multi runs that are to be performed
      */
     @Parameter(description = "Gives the number of bits to be used to code a double.")
     public void setPrecision(int precision) {
