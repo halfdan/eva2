@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -200,7 +201,7 @@ public class ReflectPackage {
      * @return An ArrayList of Class objects contained in the package which may be empty if an error occurs.
      */
     public static Class[] getAllClassesInPackage(String pkg, boolean includeSubs, boolean bSort) {
-        return getClassesInPackageFltr(new HashSet<Class>(), pkg, includeSubs, bSort, null);
+        return getClassesInPackageFltr(new HashSet<>(), pkg, includeSubs, bSort, null);
     }
 
     /**
@@ -355,7 +356,7 @@ public class ReflectPackage {
      * @return
      */
     public static Class<?>[] getAssignableClassesInPackage(String pckg, Class reqSuperCls, boolean includeSubs, boolean bSort) {
-        return getClassesInPackageFltr(new HashSet<Class>(), pckg, includeSubs, bSort, reqSuperCls);
+        return getClassesInPackageFltr(new HashSet<>(), pckg, includeSubs, bSort, reqSuperCls);
     }
 
     /**
@@ -370,7 +371,7 @@ public class ReflectPackage {
     public static Class<?>[] getAssignableClasses(String pckgClassName, boolean includeSubs, boolean bSort) {
         int dotIndex = pckgClassName.lastIndexOf('.');
         if (dotIndex <= 0) {
-            System.err.println("warning: " + pckgClassName + " is not a package!");
+            LOGGER.warning(pckgClassName + " is not a package!");
             return null;
         } else {
             String pckg = pckgClassName.substring(0, pckgClassName.lastIndexOf('.'));
@@ -460,14 +461,14 @@ public class ReflectPackage {
                 for (Pair<String, Object> nameVal : paramValuePairs) {
                     boolean succ = BeanInspector.setMem(o, nameVal.head, nameVal.tail);
                     if (!succ) {
-                        System.err.println("Error, unable to set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
+                        LOGGER.severe("Unable to set " + nameVal.head + " to " + nameVal.tail + " in object " + o);
                         return null;
                     }
                 }
             }
             return o;
         } else {
-            System.err.println("Error in instantiateWithParams!");
+            LOGGER.severe("Error in instantiateWithParams!");
             return null;
         }
     }
@@ -475,7 +476,7 @@ public class ReflectPackage {
     /**
      * Retrieve an instance of a generic object with arbitrary arguments. Note that the
      * full package path must be given and the argument array must match a signature of
-     * an existing constructor.
+     * an existing constructor. Constructors with primitive types are not supported.
      * Returns null on a failure and the constructed object otherwise.
      *
      * @param clsName
@@ -495,14 +496,11 @@ public class ReflectPackage {
                 ct = clz.getConstructor(argClz);
                 o = ct.newInstance(args);
             } catch (Exception e) {
-                System.err.println("Unable to retrieve constructor of " + clsName + ", arguments " + BeanInspector.toString(args) + "\n" + e.getClass());
-                System.err.println(e.getMessage());
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "Unable to retrieve constructor of " + clsName + ", arguments " + BeanInspector.toString(args) + "\n" + e.getClass(), e);
                 o = null;
             }
         } catch (Exception e) {
-            System.err.println("Unable to create instance of " + clsName + ", arguments " + BeanInspector.toString(args) + "\n" + e.getMessage());
-            e.printStackTrace(System.err);
+            LOGGER.log(Level.SEVERE, "Unable to create instance of " + clsName + ", arguments " + BeanInspector.toString(args) + "\n" + e.getMessage(), e);
             o = null;
         }
         return o;
