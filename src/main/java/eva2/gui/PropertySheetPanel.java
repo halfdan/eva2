@@ -9,14 +9,11 @@ import eva2.util.annotation.Parameter;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.beans.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,10 +31,6 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      * Holds properties of the target.
      */
     private PropertyDescriptor propertyDescriptors[];
-    /**
-     * Holds the methods of the target.
-     */
-    private MethodDescriptor methodDescriptors[];
     /**
      * Holds property editors of the object.
      */
@@ -214,9 +207,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
         targetObject = targ;
         try {
             BeanInfo bi = Introspector.getBeanInfo(targetObject.getClass());
-
             propertyDescriptors = bi.getPropertyDescriptors();
-            methodDescriptors = bi.getMethodDescriptors();
         } catch (IntrospectionException ex) {
             LOGGER.log(Level.SEVERE, "Could not create editor for object.", ex);
             return;
@@ -281,13 +272,8 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
                     continue;
                 }
 
-                // If the property's setter has the Parameter annotation use the description as tipText
-                if (propertyDescriptors[i].getWriteMethod() != null && propertyDescriptors[i].getWriteMethod().isAnnotationPresent(Parameter.class)) {
-                    Parameter parameter = propertyDescriptors[i].getWriteMethod().getAnnotation(Parameter.class);
-                    toolTips[itemIndex] = parameter.description();
-                } else {
-                    toolTips[itemIndex] = BeanInspector.getToolTipText(name, methodDescriptors, targetObject);
-                }
+                toolTips[itemIndex] = BeanInspector.getToolTipText(targetObject, propertyDescriptors[i]);
+
                 itemIndex++;
                 views[i] = getView(propertyEditors[i]);
                 // We filter by this.. not necessarily the prettiest solution but it tends to work

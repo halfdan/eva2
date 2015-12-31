@@ -3,16 +3,15 @@ package eva2.gui;
 import eva2.optimization.population.Population;
 import eva2.tools.Pair;
 import eva2.tools.SelectedTag;
-import eva2.tools.StringTools;
 import eva2.tools.Tag;
 import eva2.util.annotation.Description;
+import eva2.util.annotation.Parameter;
 
 import java.beans.*;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -253,9 +252,9 @@ public class BeanInspector {
      * found. This of course means that the caller is unable to distinguish
      * between "method not found" and "method found and it returned null".
      *
-     * @param obj
-     * @param mName
-     * @param args
+     * @param obj   Target object
+     * @param mName Method name
+     * @param args  Array of arguments
      * @return the return value of the called method or null
      */
     public static Object callIfAvailable(Object obj, String mName, Object[] args) {
@@ -831,62 +830,19 @@ public class BeanInspector {
     }
 
     /**
-     * This method simply looks for an appropriate tiptext
-     *
-     * @param name    The name of the property
-     * @param methods A list of methods to search.
-     * @param target  The target object
-     * @return String for the ToolTip.
-     */
-    public static String getToolTipText(String name, MethodDescriptor[] methods, Object target, boolean stripToolTipToFirstPoint, int toHTMLLen) {
-        String result = "";
-        String tipName = name + "TipText";
-
-        // Find by deprecated TipText method
-        for (MethodDescriptor method : methods) {
-            String mname = method.getDisplayName();
-            Method meth = method.getMethod();
-
-            if (mname.equals(tipName)) {
-                if (meth.getReturnType().equals(String.class)) {
-                    try {
-                        Object args[] = {};
-                        String tempTip = (String) (meth.invoke(target, args));
-                        result = tempTip;
-                        if (stripToolTipToFirstPoint) {
-                            int ci = tempTip.indexOf('.');
-                            if (ci > 0) {
-                                result = tempTip.substring(0, ci);
-                            }
-                        }
-                    } catch (Exception ex) {
-                        LOGGER.log(Level.FINE, "Error calling TipText method.", ex);
-                    }
-                    break;
-                }
-            }
-        } // end for looking for tiptext
-
-        if(result.isEmpty()) {
-            LOGGER.fine(String.format("No ToolTip for %s.%s available.", target.getClass().getName(), name));
-        }
-
-        if (toHTMLLen > 0) {
-            return StringTools.toHTML(result, toHTMLLen);
-        } else {
-            return result;
-        }
-    }
-
-    /**
      * This method simply looks for an appropriate tool tip text
      *
-     * @param name    The name of the property
-     * @param methods A list of methods to search.
-     * @param target  The target object
+     * @param target    The target object
+     * @param property  {@code PropertyDescriptor} for the property
      * @return String for the ToolTip.
      */
-    public static String getToolTipText(String name, MethodDescriptor[] methods, Object target) {
-        return getToolTipText(name, methods, target, false, 0);
+    public static String getToolTipText(Object target, PropertyDescriptor property) {
+        // If the property's setter has the Parameter annotation use the description as tipText
+        if (property.getWriteMethod() != null && property.getWriteMethod().isAnnotationPresent(Parameter.class)) {
+            Parameter parameter = property.getWriteMethod().getAnnotation(Parameter.class);
+            return parameter.description();
+        } else {
+            return (String)callIfAvailable(target, property.getDisplayName().concat("TipText"), null);
+        }
     }
 }

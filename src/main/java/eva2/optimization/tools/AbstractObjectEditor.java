@@ -261,13 +261,8 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
                 result.propertyType = propertyDescriptor.getPropertyType();
                 result.name = propertyDescriptor.getDisplayName();
                 result.label = new JLabel(result.name, SwingConstants.RIGHT);
-                // If the property's setter has the Parameter annotation use the description as tipText
-                if (propertyDescriptor.getWriteMethod() != null && propertyDescriptor.getWriteMethod().isAnnotationPresent(Parameter.class)) {
-                    Parameter parameter = propertyDescriptor.getWriteMethod().getAnnotation(Parameter.class);
-                    result.tipText = parameter.description();
-                } else {
-                    result.tipText = BeanInspector.getToolTipText(result.name, methods, target);
-                }
+                result.tipText = BeanInspector.getToolTipText(target, propertyDescriptor);
+
                 try {
                     result.value = result.getMethod.invoke(target, args);
                     result.editor = PropertyEditorProvider.findEditor(propertyDescriptor, result.value);
