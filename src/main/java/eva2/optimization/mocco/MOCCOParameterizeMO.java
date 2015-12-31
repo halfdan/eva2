@@ -136,26 +136,23 @@ public class MOCCOParameterizeMO extends MOCCOPhase implements InterfaceProcessE
                 "Please choose an appropriate multi-objecitve optimizer."), BorderLayout.NORTH);
     }
 
-    ActionListener continue2 = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            //mocco.state.optimizer = (InterfaceOptimizer)optimizer.clone();
-            mocco.controlPanel.removeAll();
-            mocco.parameterPanel.removeAll();
-            mocco.state.optimizer.setProblem(mocco.state.currentProblem);
-            Population pop = mocco.state.optimizer.getPopulation();
-            pop.clear();
-            if (pop.getArchive() != null) {
-                pop.getArchive().clear();
-            }
-            if (mocco.state.populationHistory.length > 0) {
-                pop = mocco.state.getSelectedPopulations();
-                mocco.state.optimizer.initializeByPopulation(pop, false);
-                if (pop.size() == 0) {
-                    mocco.state.optimizer.initialize();
-                }
-            }
-            hasFinished = true;
+    ActionListener continue2 = event -> {
+        //mocco.state.optimizer = (InterfaceOptimizer)optimizer.clone();
+        mocco.controlPanel.removeAll();
+        mocco.parameterPanel.removeAll();
+        mocco.state.optimizer.setProblem(mocco.state.currentProblem);
+        Population pop = mocco.state.optimizer.getPopulation();
+        pop.clear();
+        if (pop.getArchive() != null) {
+            pop.getArchive().clear();
         }
+        if (mocco.state.populationHistory.length > 0) {
+            pop = mocco.state.getSelectedPopulations();
+            mocco.state.optimizer.initializeByPopulation(pop, false);
+            if (pop.size() == 0) {
+                mocco.state.optimizer.initialize();
+            }
+        }
+        hasFinished = true;
     };
 }

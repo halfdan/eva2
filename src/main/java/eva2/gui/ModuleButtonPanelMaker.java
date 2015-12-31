@@ -50,13 +50,9 @@ public class ModuleButtonPanelMaker implements OptimizationStateListener, Serial
         runButton = ToolBoxGui.createIconifiedButton("images/Play24.gif", "Start", true);
         runButton.setToolTipText("Start the current optimization run.");
 
-        runButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                //Run Opt pressed !
-                onUserStart();
-            }
+        runButton.addActionListener(event -> {
+            //Run Opt pressed !
+            onUserStart();
         });
 
         runButton.setEnabled(!runningState); // enabled if not running
@@ -65,16 +61,12 @@ public class ModuleButtonPanelMaker implements OptimizationStateListener, Serial
 
         stopButton = ToolBoxGui.createIconifiedButton("images/Stop24.gif", "Stop", true);
         stopButton.setToolTipText("Stop the current optimization run.");
-        stopButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    // this means user break
-                    moduleAdapter.stopOptimization();
-                } catch (Exception ee) {
-                    LOGGER.log(Level.WARNING, "Error while stopping job.", ee);
-                }
+        stopButton.addActionListener(event -> {
+            try {
+                // this means user break
+                moduleAdapter.stopOptimization();
+            } catch (Exception ee) {
+                LOGGER.log(Level.WARNING, "Error while stopping job.", ee);
             }
         });
 
@@ -84,17 +76,13 @@ public class ModuleButtonPanelMaker implements OptimizationStateListener, Serial
         postProcessButton = ToolBoxGui.createIconifiedButton("images/History24.gif", "Post Process", true);
         postProcessButton.setToolTipText("Start post processing according to available parameters.");
         //postProcessButton.setBorderPainted(false);
-        postProcessButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    if (!moduleAdapter.startPostProcessing()) {
-                        JOptionPane.showMessageDialog(null, "Post processing seems deactivated! Check the settings.", "Warning", JOptionPane.WARNING_MESSAGE);
-                    }
-                } catch (Exception ee) {
-                    LOGGER.log(Level.WARNING, "Error in run", ee);
+        postProcessButton.addActionListener(event -> {
+            try {
+                if (!moduleAdapter.startPostProcessing()) {
+                    JOptionPane.showMessageDialog(null, "Post processing seems deactivated! Check the settings.", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
+            } catch (Exception ee) {
+                LOGGER.log(Level.WARNING, "Error in run", ee);
             }
         });
         postProcessButton.setEnabled(runningState && moduleAdapter.hasPostProcessing());
@@ -102,14 +90,10 @@ public class ModuleButtonPanelMaker implements OptimizationStateListener, Serial
 
         scheduleButton = ToolBoxGui.createIconifiedButton("images/Server24.gif", "Schedule", true);
         scheduleButton.setToolTipText("Schedule the currently configured optimization as a job.");
-        scheduleButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                OptimizationJob job = moduleAdapter.scheduleJob();
-                if (job == null) {
-                    LOGGER.log(Level.WARNING, "There was an error on scheduling your job");
-                }
+        scheduleButton.addActionListener(event -> {
+            OptimizationJob job = moduleAdapter.scheduleJob();
+            if (job == null) {
+                LOGGER.log(Level.WARNING, "There was an error on scheduling your job");
             }
         });
         scheduleButton.setEnabled(true);
@@ -136,20 +120,16 @@ public class ModuleButtonPanelMaker implements OptimizationStateListener, Serial
         if (helpFileName != null && (!helpFileName.equals(""))) {
             helpButton = new JButton("Description");
             helpButton.setToolTipText("Description of the current optimization algorithm.");
-            helpButton.addActionListener(new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        if (helpFileName != null) {
-                            HtmlDemo temp = new HtmlDemo(helpFileName);
-                            temp.show();
-                        }
-                        helpButton.setEnabled(true);
-                    } catch (Exception ee) {
-                        ee.printStackTrace();
-                        System.out.print("Error in run: " + ee + " : " + ee.getMessage());
+            helpButton.addActionListener(e -> {
+                try {
+                    if (helpFileName != null) {
+                        HtmlDemo temp = new HtmlDemo(helpFileName);
+                        temp.show();
                     }
+                    helpButton.setEnabled(true);
+                } catch (Exception ee) {
+                    ee.printStackTrace();
+                    System.out.print("Error in run: " + ee + " : " + ee.getMessage());
                 }
             });
             toolBar.add(helpButton);

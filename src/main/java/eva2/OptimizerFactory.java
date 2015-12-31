@@ -1053,12 +1053,10 @@ public class OptimizerFactory {
             OptimizerRunnable runnable, InterfacePostProcessParams ppp) {
         Population resPop = postProcess(runnable, ppp);
         List<double[]> ret = new ArrayList<>(resPop.size());
-        for (Object o : resPop) {
-            if (o instanceof InterfaceDataTypeDouble) {
-                InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) o;
-                ret.add(indy.getDoubleData());
-            }
-        }
+        resPop.stream().filter(o -> o instanceof InterfaceDataTypeDouble).forEach(o -> {
+            InterfaceDataTypeDouble indy = (InterfaceDataTypeDouble) o;
+            ret.add(indy.getDoubleData());
+        });
         return ret;
     }
 
@@ -1094,16 +1092,9 @@ public class OptimizerFactory {
         Population resPop = postProcess(runnable, ppp);
         List<AbstractEAIndividual> ret = new ArrayList<>(
                 resPop.size());
-        for (Object o : resPop) {
-            if (o instanceof AbstractEAIndividual) {
-                AbstractEAIndividual indy = (AbstractEAIndividual) o;
-                ret.add(indy);
-            }
-        }
+        resPop.stream().filter(o -> o != null).forEach(ret::add);
         return ret;
     }
-
-    ///////////////////////////// termination management
 
     /**
      * Replace the current user-defined terminator by the given one.

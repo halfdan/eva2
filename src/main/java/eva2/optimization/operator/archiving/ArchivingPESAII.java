@@ -142,7 +142,7 @@ public class ArchivingPESAII extends AbstractArchiving implements java.io.Serial
                 // lets assign them their squeeze factor
                 for (int j = 0; j < coll.size(); j++) {
                     result[coll.get(j)] = coll.size();
-                    tmpIndy = pop.get(coll.get(j).intValue());
+                    tmpIndy = pop.get(coll.get(j));
                     tmpIndy.putData("SqueezeFactor", coll.size());
                     tmpIndy.putData("GridBox", curGrid);
                 }

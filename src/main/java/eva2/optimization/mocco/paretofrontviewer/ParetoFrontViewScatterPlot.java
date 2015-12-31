@@ -324,12 +324,7 @@ public class ParetoFrontViewScatterPlot extends JPanel implements InterfaceParet
         this.updateView();
     }
 
-    ActionListener jcomboboxListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            updateView();
-        }
-    };
+    ActionListener jcomboboxListener = event -> updateView();
 
     private void makeScatter() {
         InterfaceOptimizationObjective[] tmp = ((InterfaceMultiObjectiveDeNovoProblem) this.moccoViewer.moccoStandalone.state.currentProblem).getProblemObjectives();

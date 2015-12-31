@@ -413,9 +413,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                     // Upper Button Panel
                     JPanel combiUpperPanel = new JPanel(getButtonLayout(0, upperButtonList));
 
-                    for (JButton but : upperButtonList) {
-                        combiUpperPanel.add(but);
-                    }
+                    upperButtonList.forEach(combiUpperPanel::add);
 
                     setLayout(new GridBagLayout());
 
@@ -443,9 +441,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                         lowerButtonList.add(deleteButton);
                     }
                     JPanel combiLowerPanel = new JPanel(getButtonLayout(0, lowerButtonList));
-                    for (JButton but : lowerButtonList) {
-                        combiLowerPanel.add(but);
-                    }
+                    lowerButtonList.forEach(combiLowerPanel::add);
                     gbConstraints.gridy++;
                     gbConstraints.fill = GridBagConstraints.HORIZONTAL;
                     gbConstraints.weightx = 1.0;
@@ -610,9 +606,7 @@ public class ArrayEditor extends JPanel implements PropertyEditor {
                         // do nothing
                     } else { // right click released, so show popup
                         JPopupMenu popupMenu = new JPopupMenu();
-                        for (JMenuItem item : popupItemList) {
-                            popupMenu.add(item);
-                        }
+                        popupItemList.forEach(popupMenu::add);
                         popupMenu.show(ArrayEditor.this, e.getX(), e.getY());
                     }
                 }

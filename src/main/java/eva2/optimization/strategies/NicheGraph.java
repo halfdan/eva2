@@ -48,7 +48,7 @@ public class NicheGraph implements java.io.Serializable {
      */
     public void addVertex(String v) {
         if (!containsVertex(v)) {
-            graphTable.put(v, new TreeSet<String>());
+            graphTable.put(v, new TreeSet<>());
         }
     }
 

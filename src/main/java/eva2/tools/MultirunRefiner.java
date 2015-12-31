@@ -67,28 +67,13 @@ public class MultirunRefiner {
         this.fileMenu = new JMenu("File");
         this.loadMenuItem = new JMenuItem("Load");
         this.loadMenuItem.setEnabled(true);
-        this.loadMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ev) {
-                loadFile();
-            }
-        });
+        this.loadMenuItem.addActionListener(ev -> loadFile());
         this.saveMenuItem = new JMenuItem("Save");
         this.saveMenuItem.setEnabled(true);
-        this.saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                writeFile();
-            }
-        });
+        this.saveMenuItem.addActionListener(evt -> writeFile());
         this.exitMenuItem = new JMenuItem("Exit");
         this.exitMenuItem.setEnabled(true);
-        this.exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.exit(0);
-            }
-        });
+        this.exitMenuItem.addActionListener(evt -> System.exit(0));
 
         this.fileMenu.add(this.loadMenuItem);
         this.fileMenu.add(this.saveMenuItem);

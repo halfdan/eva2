@@ -21,6 +21,7 @@ import eva2.util.annotation.Parameter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 /**
@@ -130,20 +131,16 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
     public Population(Population population) {
         LOGGER.log(Level.FINER, "New population has been created.");
         setSameParams(population);
-        for (AbstractEAIndividual individual : population) {
-            if (individual != null) {
-                this.add((AbstractEAIndividual) individual.clone());
-            }
-        }
+        population.stream().filter(individual -> individual != null).forEach(individual -> {
+            this.add((AbstractEAIndividual) individual.clone());
+        });
         copyHistAndArchive(population);
     }
 
     public static Population makePopFromList(List<AbstractEAIndividual> indies) {
         Population pop = new Population(indies.size());
         pop.setTargetSize(indies.size());
-        for (AbstractEAIndividual indy : indies) {
-            pop.add(indy);
-        }
+        pop.addAll(indies.stream().collect(Collectors.toList()));
         return pop;
     }
 
@@ -1427,12 +1424,7 @@ public class Population extends ArrayList<AbstractEAIndividual> implements Popul
         if (exclude.size() == 0) {
             return this;
         }
-        Population pop = new Population();
-        for (AbstractEAIndividual o : this) {
-            if (!exclude.contains(o)) {
-                pop.add(o);
-            }
-        }
+        Population pop = this.stream().filter(o -> !exclude.contains(o)).collect(Collectors.toCollection(Population::new));
         return pop;
     }
 

@@ -74,19 +74,9 @@ public class ParetoFrontView2D extends JPanel implements InterfaceParetoFrontVie
         this.updateView();
     }
 
-    ActionListener jcomboboxListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            updateView();
-        }
-    };
+    ActionListener jcomboboxListener = event -> updateView();
 
-    ActionListener jcombobox2Listener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            updateObjectiveComboBoxes();
-        }
-    };
+    ActionListener jcombobox2Listener = event -> updateObjectiveComboBoxes();
 
     public void updateObjectiveComboBoxes() {
         objective1.removeActionListener(jcomboboxListener);

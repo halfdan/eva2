@@ -201,11 +201,8 @@ public class MOCCOParameterizeRefPoint extends MOCCOPhase implements InterfacePr
         this.refPoint = point;
     }
 
-    ActionListener satisfiedChanged = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
+    ActionListener satisfiedChanged = event -> {
 
-        }
     };
 
     ActionListener continue2 = new ActionListener() {

@@ -60,12 +60,7 @@ public class BigStringEditor implements PropertyEditor {
         panel.setBorder(BorderFactory.createTitledBorder("Sourcecode"));
         panel.setLayout(new BorderLayout());
         setButton = new JButton("SET");
-        setButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setValue(textArea.getText());
-            }
-        });
+        setButton.addActionListener(e -> setValue(textArea.getText()));
         panel.add(scrollPane, BorderLayout.CENTER);
         panel.add(setButton, BorderLayout.SOUTH);
     }

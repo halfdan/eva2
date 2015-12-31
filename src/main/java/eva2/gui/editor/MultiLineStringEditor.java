@@ -55,12 +55,9 @@ public class MultiLineStringEditor implements PropertyEditor {
     public Component getCustomEditor() {
         final TextArea t = new TextArea(value.string);
         t.setSize(300, 150); // TextArea doesn't have a preferred size, so set one
-        t.addTextListener(new TextListener() {
-            @Override
-            public void textValueChanged(TextEvent e) {
-                value.setString(t.getText());
-                listeners.firePropertyChange(null, null, null);
-            }
+        t.addTextListener(e -> {
+            value.setString(t.getText());
+            listeners.firePropertyChange(null, null, null);
         });
         return t;
     }

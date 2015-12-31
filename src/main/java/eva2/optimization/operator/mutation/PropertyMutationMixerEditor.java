@@ -211,12 +211,7 @@ public class PropertyMutationMixerEditor extends JPanel implements PropertyEdito
     /**
      * This action listener,...
      */
-    ActionListener updateTargets = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            updateTargetList();
-        }
-    };
+    ActionListener updateTargets = event -> updateTargetList();
 
     /**
      * This action listener,...

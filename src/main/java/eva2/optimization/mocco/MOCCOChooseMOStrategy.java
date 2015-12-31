@@ -147,49 +147,34 @@ public class MOCCOChooseMOStrategy extends MOCCOPhase implements InterfaceProces
         return this.moStrategy;
     }
 
-    ActionListener choosenMOEA = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            mocco.controlPanel.removeAll();
-            mocco.parameterPanel.removeAll();
-            moStrategy = STRATEGY_MOEA;
-            hasFinished = true;
-        }
+    ActionListener choosenMOEA = event -> {
+        mocco.controlPanel.removeAll();
+        mocco.parameterPanel.removeAll();
+        moStrategy = STRATEGY_MOEA;
+        hasFinished = true;
     };
-    ActionListener choosenSTEP = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            mocco.controlPanel.removeAll();
-            mocco.parameterPanel.removeAll();
-            moStrategy = STRATEGY_STEP;
-            hasFinished = true;
-        }
+    ActionListener choosenSTEP = event -> {
+        mocco.controlPanel.removeAll();
+        mocco.parameterPanel.removeAll();
+        moStrategy = STRATEGY_STEP;
+        hasFinished = true;
     };
-    ActionListener choosenREFP = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            mocco.controlPanel.removeAll();
-            mocco.parameterPanel.removeAll();
-            moStrategy = STRATEGY_REFP;
-            hasFinished = true;
-        }
+    ActionListener choosenREFP = event -> {
+        mocco.controlPanel.removeAll();
+        mocco.parameterPanel.removeAll();
+        moStrategy = STRATEGY_REFP;
+        hasFinished = true;
     };
-    ActionListener choosenTBCH = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            mocco.controlPanel.removeAll();
-            mocco.parameterPanel.removeAll();
-            moStrategy = STRATEGY_TBCH;
-            hasFinished = true;
-        }
+    ActionListener choosenTBCH = event -> {
+        mocco.controlPanel.removeAll();
+        mocco.parameterPanel.removeAll();
+        moStrategy = STRATEGY_TBCH;
+        hasFinished = true;
     };
-    ActionListener choosenGDF = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            mocco.controlPanel.removeAll();
-            mocco.parameterPanel.removeAll();
-            moStrategy = STRATEGY_GDF;
-            hasFinished = true;
-        }
+    ActionListener choosenGDF = event -> {
+        mocco.controlPanel.removeAll();
+        mocco.parameterPanel.removeAll();
+        moStrategy = STRATEGY_GDF;
+        hasFinished = true;
     };
 }

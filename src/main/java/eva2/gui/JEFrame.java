@@ -87,9 +87,7 @@ public class JEFrame extends JInternalFrame {
                     @Override
                     public void actionPerformed(ActionEvent actionEvent) {
                         java.util.List<JEFrame> frameList = JEFrameRegister.getInstance().getFrameList();
-                        for (JEFrame frame : frameList) {
-                            frame.toFront();
-                        }
+                        frameList.forEach(JEFrame::toFront);
                     }
                 }
         );

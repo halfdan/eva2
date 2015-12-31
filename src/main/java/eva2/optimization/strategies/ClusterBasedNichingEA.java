@@ -30,6 +30,7 @@ import eva2.util.annotation.Description;
 import eva2.util.annotation.Hidden;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The infamous clustering based niching EA, still under construction. It should
@@ -761,7 +762,7 @@ public class ClusterBasedNichingEA extends AbstractOptimizer implements Interfac
             newSp.setHistory((LinkedList<AbstractEAIndividual>) parentSp.getHistory().clone());
         } else { // start anew (from undiff)
             newSp.setGeneration(0);
-            newSp.setHistory(new LinkedList<AbstractEAIndividual>());
+            newSp.setHistory(new LinkedList<>());
         }
 
         if (optimizer instanceof InterfaceSpeciesAware) {

@@ -5,6 +5,7 @@ import eva2.gui.BeanInspector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Collection of miscellaneous static helper methods.
@@ -65,10 +66,8 @@ public final class ToolBox {
      * @return A double array containing the converted object values
      */
     public static Double[] parseDoubles(List<Object> l) {
-        ArrayList<Double> values = new ArrayList<>();
-        for (Object o : l) {
-            values.add(toDouble(o)); // null if unsuccessful
-        }
+        ArrayList<Double> values = l.stream().map(ToolBox::toDouble).collect(Collectors.toCollection(ArrayList::new));
+        // null if unsuccessful
         return values.toArray(new Double[values.size()]);
     }
 

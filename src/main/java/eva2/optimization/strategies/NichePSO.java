@@ -294,7 +294,7 @@ public class NichePSO extends AbstractOptimizer implements InterfaceAdditionalPo
         // initialize subswarms
         //initSubswarmOptimizerTemplate(); //only in ctor, would change parameters for the next multirun 
         //subwarmOptimizerTemplate.initialize(); // dont initialize and evaluate individuals !
-        setSubSwarms(new Vector<ParticleSubSwarmOptimization>()); // dont want to use subswarms from old optimization run (especially not in multiruns)...
+        setSubSwarms(new Vector<>()); // dont want to use subswarms from old optimization run (especially not in multiruns)...
         indicesToReinit = null;
         // show in plot
         //MainSwarm.setShow(true);

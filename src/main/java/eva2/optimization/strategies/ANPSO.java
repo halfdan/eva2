@@ -561,9 +561,7 @@ public class ANPSO extends NichePSO implements InterfaceAdditionalPopulationInfo
         }
 
         newMainPop.synchSize();
-        for (Population setOfSubswarm : setOfSubswarms) {
-            setOfSubswarm.synchSize();
-        }
+        setOfSubswarms.forEach(Population::synchSize);
         useAsSubSwarms(setOfSubswarms);
         useAsMainSwarm(newMainPop);
     }

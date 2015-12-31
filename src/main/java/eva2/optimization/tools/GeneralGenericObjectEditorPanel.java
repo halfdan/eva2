@@ -72,66 +72,47 @@ public class GeneralGenericObjectEditorPanel extends JPanel implements ItemListe
         objectChooser.setEditable(false);
         propertyPanelWrapper = new JPanel();
         propertyPanel = this.objectEditor.getPropertyPanel();
-        propertyPanel.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                objectEditor.firePropertyChange("", null, objectEditor.getValue());
-            }
-        });
+        propertyPanel.addPropertyChangeListener(evt -> objectEditor.firePropertyChange("", null, objectEditor.getValue()));
         openButton = new JButton("Open...");
         openButton.setToolTipText("Load a configured object");
         openButton.setEnabled(true);
-        openButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Object object = openObject();
-                if (object != null) {
-                    // setValue takes care of: Making sure obj is of right type,
-                    // and firing property change.
-                    objectEditor.setValue(object);
-                    // Need a second setValue to get property values filled in OK.
-                    // Not sure why.
-                    objectEditor.setValue(object); // <- Hannes ?!?!?
-                }
+        openButton.addActionListener(e -> {
+            Object object = openObject();
+            if (object != null) {
+                // setValue takes care of: Making sure obj is of right type,
+                // and firing property change.
+                objectEditor.setValue(object);
+                // Need a second setValue to get property values filled in OK.
+                // Not sure why.
+                objectEditor.setValue(object); // <- Hannes ?!?!?
             }
         });
 
         saveButton = new JButton("Save...");
         saveButton.setToolTipText("Save the current configured object");
         saveButton.setEnabled(true);
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveObject(objectEditor.getValue());
-            }
-        });
+        saveButton.addActionListener(e -> saveObject(objectEditor.getValue()));
 
         okButton = new JButton("OK");
         okButton.setEnabled(true);
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                objectEditor.makeBackup();
-                if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
-                    Window w = (Window) getTopLevelAncestor();
-                    w.dispose();
-                }
+        okButton.addActionListener(e -> {
+            objectEditor.makeBackup();
+            if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
+                Window w = (Window) getTopLevelAncestor();
+                w.dispose();
             }
         });
 
         cancelButton = new JButton("Cancel");
         cancelButton.setEnabled(false);
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                objectEditor.undoBackup();
-                updateClassType();
-                updateChooser();
-                updateChildPropertySheet();
-                if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
-                    Window w = (Window) getTopLevelAncestor();
-                    w.dispose();
-                }
+        cancelButton.addActionListener(e -> {
+            objectEditor.undoBackup();
+            updateClassType();
+            updateChooser();
+            updateChildPropertySheet();
+            if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
+                Window w = (Window) getTopLevelAncestor();
+                w.dispose();
             }
         });
 

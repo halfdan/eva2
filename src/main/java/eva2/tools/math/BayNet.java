@@ -9,6 +9,7 @@ import eva2.optimization.population.Population;
 import eva2.tools.Pair;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class BayNet {
 
@@ -37,9 +38,7 @@ public final class BayNet {
             this.nodes[i] = (BayNode) b.nodes[i].clone();
         }
         this.rootNodes = new LinkedList<>();
-        for (Integer node : b.rootNodes) {
-            this.rootNodes.add(node);
-        }
+        this.rootNodes.addAll(b.rootNodes.stream().collect(Collectors.toList()));
         this.upperProbLimit = b.upperProbLimit;
         this.lowerProbLimit = b.lowerProbLimit;
     }
@@ -104,10 +103,7 @@ public final class BayNet {
 //			}
 //		}
 //		return result;
-        LinkedList<BayNode> result = new LinkedList<>();
-        for (Integer i : this.rootNodes) {
-            result.add(this.nodes[i]);
-        }
+        LinkedList<BayNode> result = this.rootNodes.stream().map(i -> this.nodes[i]).collect(Collectors.toCollection(LinkedList::new));
         return result;
     }
 
@@ -137,10 +133,7 @@ public final class BayNet {
 //		}
 //		return result;
         List<Integer> ids = n.getChildren();
-        List<BayNode> result = new ArrayList<>();
-        for (int i : ids) {
-            result.add(this.nodes[i]);
-        }
+        List<BayNode> result = ids.stream().map(i -> this.nodes[i]).collect(Collectors.toList());
         return result;
     }
 
@@ -163,10 +156,7 @@ public final class BayNet {
 //		}
 //		return result;
         List<Integer> ids = n.getParents();
-        List<BayNode> result = new LinkedList<>();
-        for (int i : ids) {
-            result.add(this.nodes[i]);
-        }
+        List<BayNode> result = ids.stream().map(i -> this.nodes[i]).collect(Collectors.toCollection(LinkedList::new));
         return result;
     }
 
@@ -180,11 +170,7 @@ public final class BayNet {
         ArrayList<BayNode> result = new ArrayList<>();
         for (BayNode node : n) {
             List<BayNode> children = getChildren(node);
-            for (BayNode nod : children) {
-                if (!result.contains(nod)) {
-                    result.add(nod);
-                }
-            }
+            children.stream().filter(nod -> !result.contains(nod)).forEach(result::add);
         }
         return result;
     }

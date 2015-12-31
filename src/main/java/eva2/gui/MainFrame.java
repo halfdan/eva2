@@ -838,9 +838,7 @@ public class MainFrame extends JFrame implements OptimizationStateListener {
     @Override
     public void performedStop() {
         if (superListenerList != null) {
-            for (OptimizationStateListener l : superListenerList) {
-                l.performedStop();
-            }
+            superListenerList.forEach(OptimizationStateListener::performedStop);
         }
         long t = (System.currentTimeMillis() - startTime);
         LOGGER.info(String.format("Stopped after %1$d.%2$tL s", (t / 1000), (t % 1000)));

@@ -76,14 +76,11 @@ public class MOCCOProblemInitialization extends MOCCOPhase implements InterfaceP
         this.mocco.parameterPanel.add(paraPanel.makePanel(), BorderLayout.CENTER);
     }
 
-    ActionListener continue2 = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            mocco.controlPanel.removeAll();
-            mocco.controlPanel.validate();
-            mocco.parameterPanel.removeAll();
-            hasFinished = true;
-        }
+    ActionListener continue2 = event -> {
+        mocco.controlPanel.removeAll();
+        mocco.controlPanel.validate();
+        mocco.parameterPanel.removeAll();
+        hasFinished = true;
     };
 
     ActionListener problemChanged = new ActionListener() {

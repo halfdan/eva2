@@ -106,9 +106,7 @@ abstract public class AbstractModuleAdapter implements ModuleAdapter, Serializab
      */
     @Override
     public void performedStop() {
-        for (OptimizationStateListener listener : optimizationStateListeners) {
-            listener.performedStop();
-        }
+        optimizationStateListeners.forEach(OptimizationStateListener::performedStop);
     }
 
     @Override

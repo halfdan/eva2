@@ -509,12 +509,7 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
      */
     void updateStatus(final int i) {
         if (this.progressBar != null) {
-            Runnable doSetProgressBarValue = new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setValue(i);
-                }
-            };
+            Runnable doSetProgressBarValue = () -> progressBar.setValue(i);
             SwingUtilities.invokeLater(doSetProgressBarValue);
         }
     }
@@ -580,9 +575,9 @@ public class StandaloneOptimization implements InterfaceStandaloneOptimization, 
             tmpData[1] = this.optimizationParameters.getProblem().getDoublePlotValue(population);
             if (this.plot != null) {
                 if (this.continueFlag) {
-                    this.plot.setConnectedPoint(tmpData[0] + this.recentFunctionCalls, tmpData[1].doubleValue(), 1000 + this.currentRun);
+                    this.plot.setConnectedPoint(tmpData[0] + this.recentFunctionCalls, tmpData[1], 1000 + this.currentRun);
                 } else {
-                    this.plot.setConnectedPoint(tmpData[0].doubleValue(), tmpData[1].doubleValue(), 1000 + this.currentRun);
+                    this.plot.setConnectedPoint(tmpData[0], tmpData[1], 1000 + this.currentRun);
                 }
             }
             this.tmpData.add(tmpData);

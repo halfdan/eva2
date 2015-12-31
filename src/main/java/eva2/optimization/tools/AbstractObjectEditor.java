@@ -175,12 +175,9 @@ public abstract class AbstractObjectEditor implements PropertyEditor, java.beans
         helpText.append("SYNOPSIS\n").append(globalInfo).append("\n\n");
         helpButton = new JButton("Help");
         helpButton.setToolTipText("More information about " + className);
-        helpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent a) {
-                HtmlDemo temp = new HtmlDemo(StringTools.cutClassName(object.getClass().getName()) + ".html");
-                temp.show();
-            }
+        helpButton.addActionListener(a -> {
+            HtmlDemo temp = new HtmlDemo(StringTools.cutClassName(object.getClass().getName()) + ".html");
+            temp.show();
         });
         jt.setFont(new Font("SansSerif", Font.PLAIN, 12));
         jt.setEditable(false);

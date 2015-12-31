@@ -31,30 +31,22 @@ public class GeneralGEOFaker extends JPanel {
         openButton = new JButton("Open...");
         openButton.setToolTipText("Load a configured object");
         openButton.setEnabled(true);
-        openButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Object object = openObject();
-                if (object != null) {
-                    // setValue takes care of: Making sure obj is of right type,
-                    // and firing property change.
-                    editor.setValue(object);
-                    // Need a second setValue to get property values filled in OK.
-                    // Not sure why.
-                    editor.setValue(object); // <- Hannes ?!?!?
-                }
+        openButton.addActionListener(e -> {
+            Object object = openObject();
+            if (object != null) {
+                // setValue takes care of: Making sure obj is of right type,
+                // and firing property change.
+                editor.setValue(object);
+                // Need a second setValue to get property values filled in OK.
+                // Not sure why.
+                editor.setValue(object); // <- Hannes ?!?!?
             }
         });
 
         saveButton = new JButton("Save...");
         saveButton.setToolTipText("Save the current configured object");
         saveButton.setEnabled(true);
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveObject(editor.getValue());
-            }
-        });
+        saveButton.addActionListener(e -> saveObject(editor.getValue()));
 
         editButton = new JButton("Edit Source");
         editButton.setToolTipText("Edit the Source");
@@ -62,13 +54,10 @@ public class GeneralGEOFaker extends JPanel {
 
         okButton = new JButton("OK");
         okButton.setEnabled(true);
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
-                    Window w = (Window) getTopLevelAncestor();
-                    w.dispose();
-                }
+        okButton.addActionListener(e -> {
+            if ((getTopLevelAncestor() != null) && (getTopLevelAncestor() instanceof Window)) {
+                Window w = (Window) getTopLevelAncestor();
+                w.dispose();
             }
         });
         setLayout(new BorderLayout());

@@ -241,9 +241,7 @@ public class MLTGA extends AbstractOptimizer implements java.io.Serializable, In
         for (Set<Integer> mask : linkageTree) {
             BitSet gen = getBinaryData(indy);
             BitSet newGene = (BitSet) gen.clone();
-            for (Integer flipID : mask) {
-                newGene.flip(flipID);
-            }
+            mask.forEach(newGene::flip);
             AbstractEAIndividual newIndy = (AbstractEAIndividual) this.template.clone();
             ((InterfaceDataTypeBinary) newIndy).setBinaryGenotype(newGene);
             evaluate(newIndy);

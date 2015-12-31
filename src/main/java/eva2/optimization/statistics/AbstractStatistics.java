@@ -627,11 +627,9 @@ public abstract class AbstractStatistics implements InterfaceTextListener, Inter
         if ((resultOut != null)) {
             resultOut.print(text);
         }
-        for (InterfaceTextListener l : textListeners) {
-            if (statisticsParameter.getOutputTo() != InterfaceStatisticsParameters.OutputTo.FILE) {
-                l.print(text);
-            }
-        }
+        textListeners.stream().filter(l -> statisticsParameter.getOutputTo() != InterfaceStatisticsParameters.OutputTo.FILE).forEach(l -> {
+            l.print(text);
+        });
     }
 
     @Override

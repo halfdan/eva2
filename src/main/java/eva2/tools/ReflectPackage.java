@@ -17,6 +17,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 /**
@@ -127,12 +128,7 @@ public class ReflectPackage {
     }
 
     public static ArrayList<Class> filterAssignableClasses(ArrayList<Class> classes, Class<?> reqSuperCls) {
-        ArrayList<Class> assClasses = new ArrayList<>();
-        for (Class aClass : classes) {
-            if (reqSuperCls.isAssignableFrom(aClass)) {
-                assClasses.add(aClass);
-            }
-        }
+        ArrayList<Class> assClasses = classes.stream().filter(aClass -> reqSuperCls.isAssignableFrom(aClass)).collect(Collectors.toCollection(ArrayList::new));
         return assClasses;
     }
 

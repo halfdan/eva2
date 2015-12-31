@@ -512,12 +512,7 @@ public class MOCCOStandalone implements InterfaceStandaloneOptimization, Interfa
      */
     void updateStatus(final String t, final int i) {
         if (this.progressBar != null) {
-            Runnable doSetProgressBarValue = new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setValue(i);
-                }
-            };
+            Runnable doSetProgressBarValue = () -> progressBar.setValue(i);
             SwingUtilities.invokeLater(doSetProgressBarValue);
         }
         this.currentState.setText(t);

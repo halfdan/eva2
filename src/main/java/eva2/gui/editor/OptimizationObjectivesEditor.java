@@ -189,12 +189,7 @@ public class OptimizationObjectivesEditor extends JPanel implements PropertyEdit
     /**
      * This action listener,...
      */
-    ActionListener updateTargets = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            updateTargetList();
-        }
-    };
+    ActionListener updateTargets = event -> updateTargetList();
 
     /**
      * This action listener,...

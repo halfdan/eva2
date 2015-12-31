@@ -16,6 +16,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Use an external command as target function.
@@ -294,9 +295,7 @@ public class ExternalRuntimeProblem extends AbstractOptimizationProblem
 
         List<String> res = runProcess(parameters, workingDir);
         try {
-            for (String str : res) {
-                fitList.add(new Double(str));
-            }
+            fitList.addAll(res.stream().map(Double::new).collect(Collectors.toList()));
         } catch (NumberFormatException e) {
             System.err.println("Error: " + command + " delivered malformatted output for " + BeanInspector.toString(x));
             e.printStackTrace();

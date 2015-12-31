@@ -1,6 +1,5 @@
 package eva2.optimization.population;
 
-import com.sun.org.apache.bcel.internal.generic.POP;
 import eva2.optimization.individuals.AbstractEAIndividual;
 import eva2.optimization.individuals.ESIndividualDoubleData;
 import org.junit.Before;

@@ -2,6 +2,7 @@ package eva2.tools.math;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class BayNode {
 
@@ -22,12 +23,8 @@ public final class BayNode {
         this.pTable = b.pTable.clone();
         this.parents = new LinkedList<>();
         this.children = new LinkedList<>();
-        for (int i : b.parents) {
-            this.parents.add(i);
-        }
-        for (int i : b.children) {
-            this.children.add(i);
-        }
+        this.parents.addAll(b.parents.stream().collect(Collectors.toList()));
+        this.children.addAll(b.children.stream().collect(Collectors.toList()));
         this.calculated = b.calculated;
     }
 

@@ -140,9 +140,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
     }
 
     public void reinitIndividuals(Vector<int[]> indicesToReinit) {
-        for (int[] indices : indicesToReinit) {
-            addNewParticlesToPopulation(indices);
-        }
+        indicesToReinit.forEach(this::addNewParticlesToPopulation);
     }
 
     /**
@@ -288,7 +286,7 @@ public class ParticleSubSwarmOptimization extends ParticleSwarmOptimizationGCPSO
 
                 //PBestImprovementsInARow
                 Integer counter = (Integer) currentindy.getData("PBestImprovementsInARow");
-                counter = counter.intValue() + 1;
+                counter = counter + 1;
                 currentindy.putData("PBestImprovementsInARow", counter);
             } else {
                 initPBestImprInARowOf(currentindy);

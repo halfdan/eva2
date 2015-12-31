@@ -101,11 +101,9 @@ public class TabbedFrameMaker implements Serializable, PanelMaker, InterfaceNoti
     }
 
     public void refreshPanels() {
-        for (PanelMaker jpp : pmContainer) {
-            if (jpp instanceof JParaPanel) {
-                ((JParaPanel) jpp).propertyEditor.setValue(((JParaPanel) jpp).propertyEditor.getValue());
-            }
-        }
+        pmContainer.stream().filter(jpp -> jpp instanceof JParaPanel).forEach(jpp -> {
+            ((JParaPanel) jpp).propertyEditor.setValue(((JParaPanel) jpp).propertyEditor.getValue());
+        });
     }
 
     @Override
@@ -225,22 +223,18 @@ class ClosableTabComponent extends JPanel {
                 JButton tabButton = new JButton(tabTitle);
                 /* Rotate it by -90° */
                 tabButton.setUI(new eva2.gui.utils.VerticalButtonUI(-90));
-                tabButton.addActionListener(new ActionListener() {
-
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        /* Add the Tab Panel again */
-                        // ToDo: Fix indexing problem                        
-                        pane.insertTab(tabTitle, null, tabPane, "", tabPosition);                        
-                        /* Set the tab component (closable) */
-                        pane.setTabComponentAt(tabPosition, ClosableTabComponent.this);
-                        pane.setVisible(true);
-                        /* Remove the Button */
-                        toolBar.remove((Component) e.getSource());
-                        /* If the Button was the last one, hide ToolBar again */
-                        if (toolBar.getComponentCount() == 0) {
-                            toolBar.setVisible(false);
-                        }
+                tabButton.addActionListener(e1 -> {
+                    /* Add the Tab Panel again */
+                    // ToDo: Fix indexing problem
+                    pane.insertTab(tabTitle, null, tabPane, "", tabPosition);
+                    /* Set the tab component (closable) */
+                    pane.setTabComponentAt(tabPosition, ClosableTabComponent.this);
+                    pane.setVisible(true);
+                    /* Remove the Button */
+                    toolBar.remove((Component) e1.getSource());
+                    /* If the Button was the last one, hide ToolBar again */
+                    if (toolBar.getComponentCount() == 0) {
+                        toolBar.setVisible(false);
                     }
                 });
                 /* Add it to the ToolBar */

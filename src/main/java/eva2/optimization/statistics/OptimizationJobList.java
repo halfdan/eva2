@@ -200,9 +200,7 @@ public class OptimizationJobList extends PropertySelectableList<OptimizationJob>
     private static ActionListener getClearSelectedActionListener(final Component parent, final OptimizationJobList jobList) {
         return e -> {
             List<OptimizationJob> jobs = jobList.getSelectedJobs();
-            for (OptimizationJob j : jobs) {
-                j.resetJob();
-            }
+            jobs.forEach(OptimizationJob::resetJob);
         };
     }
 

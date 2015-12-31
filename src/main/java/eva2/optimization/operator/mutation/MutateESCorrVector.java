@@ -9,6 +9,7 @@ import eva2.tools.math.RNG;
 import eva2.util.annotation.Description;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 /**
@@ -183,11 +184,7 @@ public class MutateESCorrVector implements InterfaceMutation, java.io.Serializab
         if (indy1.getMutationOperator() instanceof MutateESCorrVector) {
             tmpList.add(((MutateESCorrVector) indy1.getMutationOperator()).scalingDev);
         }
-        for (Object partner : partners) {
-            if (((AbstractEAIndividual) partner).getMutationOperator() instanceof MutateESCorrVector) {
-                tmpList.add(((MutateESCorrVector) ((AbstractEAIndividual) partner).getMutationOperator()).scalingDev);
-            }
-        }
+        tmpList.addAll(partners.stream().filter(partner -> ((AbstractEAIndividual) partner).getMutationOperator() instanceof MutateESCorrVector).map(partner -> ((MutateESCorrVector) ((AbstractEAIndividual) partner).getMutationOperator()).scalingDev).collect(Collectors.toList()));
         double[] list = new double[tmpList.size()];
         for (int i = 0; i < tmpList.size(); i++) {
             list[i] = tmpList.get(i);

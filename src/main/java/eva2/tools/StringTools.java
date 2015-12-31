@@ -242,7 +242,7 @@ public final class StringTools {
      * @return
      */
     public static String wrapLine(String str, char[] breakChars, int len, double tolerancePerCent) {
-        StringBuffer res = new StringBuffer();
+        StringBuilder res = new StringBuilder();
         String rest = str;
         int minLen = (int) ((1. - tolerancePerCent) * (double) len);
         int maxLen = (int) ((1. + tolerancePerCent) * (double) len);

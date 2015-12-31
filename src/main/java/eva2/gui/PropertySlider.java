@@ -38,13 +38,7 @@ class PropertySlider extends JPanel {
         slider.setMinorTickSpacing(5);
         slider.setPaintLabels(true);
         this.add(slider);
-        propertyEditor.addPropertyChangeListener(new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                updateUs();
-            }
-        });
+        propertyEditor.addPropertyChangeListener(evt -> updateUs());
         addKeyListener(new KeyAdapter() {
 
             @Override

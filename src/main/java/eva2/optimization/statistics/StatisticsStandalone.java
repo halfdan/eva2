@@ -6,6 +6,7 @@ import eva2.problems.InterfaceAdditionalPopulationInformer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This simple statistics implementation can collect all Object data available during runs.
@@ -54,11 +55,9 @@ public class StatisticsStandalone extends AbstractStatistics implements Interfac
             resultData = new ArrayList<>(statisticsParameter.getMultiRuns());
             List<String> description = getOutputHeaderFieldNames(informerList);
             resultHeaderStrings = new ArrayList<>();
-            for (String str : description) {
-                resultHeaderStrings.add(str);
-            }
+            resultHeaderStrings.addAll(description.stream().collect(Collectors.toList()));
             for (int i = 0; i < statisticsParameter.getMultiRuns(); i++) {
-                resultData.add(new ArrayList<Object[]>());
+                resultData.add(new ArrayList<>());
             }
         } else {
             resultData = null;

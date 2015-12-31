@@ -34,11 +34,8 @@ public abstract class MOCCOPhase implements InterfaceProcessElement {
     /**
      * Save the stuff to *.ser file for offline optimization
      */
-    ActionListener saveState2FileForOfflineOptimization = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            // @todo
-        }
+    ActionListener saveState2FileForOfflineOptimization = event -> {
+        // @todo
     };
 
     /**

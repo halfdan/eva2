@@ -110,21 +110,18 @@ public class MOCCOChooseReferenceSolution extends MOCCOPhase implements Interfac
         this.selected.validate();
     }
 
-    ActionListener continue2 = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            if (referenceSolution != null) {
-                mocco.view.setRefSolutionSelectable(false);
-                mocco.view.removeRefSolutionSelectionListeners();
-                mocco.controlPanel.removeAll();
-                mocco.controlPanel.validate();
-                mocco.parameterPanel.removeAll();
-                hasFinished = true;
-            } else {
-                JOptionPane.showMessageDialog(mocco.getMainFrame(),
-                        "No reference solution selected. Cannot proceed!",
-                        "Warning", JOptionPane.WARNING_MESSAGE);
-            }
+    ActionListener continue2 = event -> {
+        if (referenceSolution != null) {
+            mocco.view.setRefSolutionSelectable(false);
+            mocco.view.removeRefSolutionSelectionListeners();
+            mocco.controlPanel.removeAll();
+            mocco.controlPanel.validate();
+            mocco.parameterPanel.removeAll();
+            hasFinished = true;
+        } else {
+            JOptionPane.showMessageDialog(mocco.getMainFrame(),
+                    "No reference solution selected. Cannot proceed!",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
         }
     };
 

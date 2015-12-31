@@ -93,19 +93,16 @@ public class HtmlDemo {
      *
      */
     public HyperlinkListener createHyperLinkListener() {
-        return new HyperlinkListener() {
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent e) {
-                if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                    if (e instanceof HTMLFrameHyperlinkEvent) {
-                        ((HTMLDocument) htmlEditorPane.getDocument()).processHTMLFrameHyperlinkEvent(
-                                (HTMLFrameHyperlinkEvent) e);
-                    } else {
-                        try {
-                            htmlEditorPane.setPage(e.getURL());
-                        } catch (IOException ioe) {
-                            System.out.println("IOE: " + ioe);
-                        }
+        return e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                if (e instanceof HTMLFrameHyperlinkEvent) {
+                    ((HTMLDocument) htmlEditorPane.getDocument()).processHTMLFrameHyperlinkEvent(
+                            (HTMLFrameHyperlinkEvent) e);
+                } else {
+                    try {
+                        htmlEditorPane.setPage(e.getURL());
+                    } catch (IOException ioe) {
+                        System.out.println("IOE: " + ioe);
                     }
                 }
             }
