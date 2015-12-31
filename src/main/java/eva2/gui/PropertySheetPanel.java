@@ -450,7 +450,6 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
             try {
                 PropertyDescriptor[] oldProps = propertyDescriptors.clone();
                 newProps = new PropertyDescriptor[oldProps.length];
-                //int findFirst=findFirstProp(props[0], oldProps);
                 int firstNonNull = 0;
                 for (int i = 0; i < oldProps.length; i++) {
                     if (i < swProps.length) {
@@ -480,8 +479,7 @@ public final class PropertySheetPanel extends JPanel implements PropertyChangeLi
      * @param firstLook
      * @return
      */
-    private int findFirstNonNullAfter(PropertyDescriptor[] arr,
-                                      int firstLook) {
+    private int findFirstNonNullAfter(PropertyDescriptor[] arr, int firstLook) {
         for (int i = firstLook; i < arr.length; i++) {
             if (arr[i] != null) {
                 return i;

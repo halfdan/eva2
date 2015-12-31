@@ -23,81 +23,6 @@ public class BeanInspector {
     private static final Logger LOGGER = Logger.getLogger(BeanInspector.class.getName());
 
     /**
-     * Check for equality based on bean properties of two target objects.
-     */
-    public static boolean equalProperties(Object obj1, Object obj2) {
-        if (obj1 == null || obj2 == null) {
-            System.out.println("");
-            return false;
-        }
-        System.out.println("equalProperties: " + obj1.getClass().getName() + " " + obj2.getClass().getName());
-        if (!obj1.getClass().getName().equals(obj2.getClass().getName())) {
-            System.out.println("");
-            return false;
-        }
-        // compare each of the properties !!
-        BeanInfo beanInfo1;
-        BeanInfo beanInfo2;
-        PropertyDescriptor[] Properties_1 = null;
-        PropertyDescriptor[] Properties_2 = null;
-        try {
-
-            beanInfo1 = Introspector.getBeanInfo(obj1.getClass());
-            beanInfo2 = Introspector.getBeanInfo(obj2.getClass());
-            Properties_1 = beanInfo1.getPropertyDescriptors();
-            Properties_2 = beanInfo2.getPropertyDescriptors();
-            beanInfo1.getMethodDescriptors();
-        } catch (IntrospectionException ex) {
-            LOGGER.log(Level.FINEST, "Could not introspect object.", ex);
-            return false;
-        }
-        boolean BeansInside = false;
-        boolean BeansEqual = true;
-        for (int i = 0; i < Properties_1.length; i++) {
-            if (Properties_1[i].isHidden() || Properties_1[i].isExpert()) {
-                continue;
-            }
-            //String name = Properties_1[i].getDisplayName(); //System.out.println("name = "+name );
-            //Class type = Properties_1[i].getPropertyType(); //System.out.println("type = "+type.getName() );
-            Method getter_1 = Properties_1[i].getReadMethod();
-            Method getter_2 = Properties_2[i].getReadMethod();
-            Method setter_1 = Properties_1[i].getWriteMethod();
-            // Only display read/write properties.
-            if (getter_1 == null || setter_1 == null) {
-                continue;
-            }
-            System.out.println("getter_1 = " + getter_1.getName() + " getter_2 = " + getter_2.getName());
-            Object args_1[] = {};
-            Object args_2[] = {};
-            try {
-                Object value_1 = getter_1.invoke(obj1, args_1);
-                Object value_2 = getter_2.invoke(obj2, args_2);
-                BeansInside = true;
-                if (!BeanInspector.equalProperties(value_1, value_2)) {
-                    BeansEqual = false;
-                }
-            } catch (Exception e) {
-                System.out.println(" BeanTest.equalProperties " + e.getMessage());
-            }
-        }
-        if (BeansInside) {
-            return BeansEqual;
-        }
-        // here we have Integer or Double ...
-        if (obj1 instanceof Integer
-                || obj1 instanceof Boolean
-                || obj1 instanceof Float
-                || obj1 instanceof Double
-                || obj1 instanceof Long
-                || obj1 instanceof String) {
-            return obj1.equals(obj2);
-        }
-
-        System.err.println(" Attention no match !!!");
-        return true;
-    }
-
-    /**
      * Produce a String representation of an arbitrary object.
      *
      * @param obj
@@ -285,27 +210,27 @@ public class BeanInspector {
      * @return
      */
     public static Pair<String[], Object[]> getPublicPropertiesOf(Object target, boolean requireSetter, boolean showHidden) {
-        BeanInfo Info = null;
-        PropertyDescriptor[] Properties = null;
+        BeanInfo info;
+        PropertyDescriptor[] pDescriptors;
         try {
-            Info = Introspector.getBeanInfo(target.getClass());
-            Properties = Info.getPropertyDescriptors();
-            Info.getMethodDescriptors();
+            info = Introspector.getBeanInfo(target.getClass());
+            pDescriptors = info.getPropertyDescriptors();
+            info.getMethodDescriptors();
         } catch (IntrospectionException ex) {
             System.err.println("BeanTest: Couldn't introspect");
             return null;
         }
 
-        String[] nameArray = new String[Properties.length];
-        Object[] valArray = new Object[Properties.length];
-        for (int i = 0; i < Properties.length; i++) {
-            if ((Properties[i].isHidden() && !showHidden) || Properties[i].isExpert()) {
+        String[] nameArray = new String[pDescriptors.length];
+        Object[] valArray = new Object[pDescriptors.length];
+        for (int i = 0; i < pDescriptors.length; i++) {
+            if ((pDescriptors[i].isHidden() && !showHidden) || pDescriptors[i].isExpert()) {
                 continue;
             }
-            String name = Properties[i].getDisplayName();
-            Method getter = Properties[i].getReadMethod();
-            Method setter = Properties[i].getWriteMethod();
-            // Only display read/write properties.
+            String name = pDescriptors[i].getDisplayName();
+            Method getter = pDescriptors[i].getReadMethod();
+            Method setter = pDescriptors[i].getWriteMethod();
+            // Only display read/write pDescriptors.
             if (getter == null || (setter == null && requireSetter)) {
                 continue;
             }
@@ -323,68 +248,8 @@ public class BeanInspector {
     }
 
     /**
-     * @param obj Description of the Parameter
-     */
-    public static void showInfo(Object obj) {
-        System.out.println("Inspecting " + obj.getClass().getName());
-        // object itself
-        try {
-            if (obj instanceof java.lang.Integer) {
-                System.out.println(" Prop = Integer" + obj.toString());
-            }
-            if (obj instanceof java.lang.Boolean) {
-                System.out.println(" Prop = Boolean" + obj.toString());
-            }
-            if (obj instanceof java.lang.Long) {
-                System.out.println(" Prop = Long" + obj.toString());
-            }
-            if (obj instanceof java.lang.Double) {
-                System.out.println(" Prop = Long" + obj.toString());
-            }
-        } catch (Exception e) {
-            //System.out.println(" ERROR +"+ e.getMessage());
-        }
-        // then the properties
-        BeanInfo Info = null;
-        PropertyDescriptor[] Properties = null;
-        try {
-            Info = Introspector.getBeanInfo(obj.getClass());
-            Properties = Info.getPropertyDescriptors();
-            Info.getMethodDescriptors();
-        } catch (IntrospectionException ex) {
-            System.err.println("BeanTest: Couldn't introspect");
-            return;
-        }
-
-        for (int i = 0; i < Properties.length; i++) {
-            if (Properties[i].isHidden() || Properties[i].isExpert()) {
-                continue;
-            }
-            String name = Properties[i].getDisplayName();
-            Method getter = Properties[i].getReadMethod();
-            Method setter = Properties[i].getWriteMethod();
-            // Only display read/write properties.
-            if (getter == null || setter == null) {
-                continue;
-            }
-            Object args[] = {};
-            try {
-                Object value = getter.invoke(obj, args);
-                System.out.println("Inspecting name = " + name);
-                if (value instanceof Integer) {
-                    Object args2[] = {999};
-                    setter.invoke(obj, args2);
-                }
-                showInfo(value);
-            } catch (Exception e) {
-                System.out.println("BeanTest ERROR +" + e.getMessage());
-            }
-        }
-    }
-
-    /**
      * Call a method by a given name with given arguments, if the method is
-     * available. Returns the return values of the call or null if it isnt
+     * available. Returns the return values of the call or null if it isn't
      * found. This of course means that the caller is unable to distinguish
      * between "method not found" and "method found and it returned null".
      *
@@ -455,11 +320,11 @@ public class BeanInspector {
         Class<?> cls = obj.getClass();
         Method[] meths = cls.getMethods();
         for (Method method : meths) {
-            if (method.getName().equals(mName)) { // name match
+            if (method.getName().equals(mName)) {
                 Class[] methParamTypes = method.getParameterTypes();
                 if (paramTypes == null && methParamTypes.length == 0) {
                     return method;
-                } // full match
+                }
                 else {
                     if (paramTypes != null && (methParamTypes.length == paramTypes.length)) {
                         boolean mismatch = false;
@@ -472,8 +337,8 @@ public class BeanInspector {
                         }
                         if (!mismatch) {
                             return method;
-                        } // parameter match, otherwise search on
-                    } // parameter mismatch, search on
+                        }
+                    }
                 }
             }
         }
@@ -624,15 +489,15 @@ public class BeanInspector {
         PropertyDescriptor[] propertyDescriptors = bi.getPropertyDescriptors();
         ArrayList<String> memberInfoList = new ArrayList<>();
 
-        for (int i = 0; i < propertyDescriptors.length; i++) {
-            if (propertyDescriptors[i].isExpert()) {
+        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            if (propertyDescriptor.isExpert()) {
                 continue;
             }
 
-            String name = propertyDescriptors[i].getDisplayName();
+            String name = propertyDescriptor.getDisplayName();
 
-            Method getter = propertyDescriptors[i].getReadMethod();
-            Method setter = propertyDescriptors[i].getWriteMethod();
+            Method getter = propertyDescriptor.getReadMethod();
+            Method setter = propertyDescriptor.getWriteMethod();
             // Only display read/write properties.
             if (getter == null || setter == null) {
                 continue;
@@ -645,7 +510,7 @@ public class BeanInspector {
                 // Don't try to set null values:
                 if (value == null) {
                     // If it's a user-defined property we give a warning.
-                    String getterClass = propertyDescriptors[i].getReadMethod().getDeclaringClass().getName();
+                    String getterClass = propertyDescriptor.getReadMethod().getDeclaringClass().getName();
                     if (getterClass.indexOf("java.") != 0) {
                         System.err.println("Warning: Property \"" + name + "\" has null initial value.  Skipping.");
                     }
@@ -658,7 +523,7 @@ public class BeanInspector {
 
                 memberInfoBf.append("\tType: ");
 
-                if (propertyDescriptors[i].isHidden()) {
+                if (propertyDescriptor.isHidden()) {
                     memberInfoBf.append("restricted, ");
                 } else {
                     memberInfoBf.append("common, ");
@@ -708,8 +573,8 @@ public class BeanInspector {
      * Take an object of primitive type (like int, Integer etc) and convert it
      * to double.
      *
-     * @param val
-     * @return
+     * @param val Value to convert
+     * @return Value converted to a double
      * @throws IllegalArgumentException
      */
     public static double toDouble(Object val) throws IllegalArgumentException {
@@ -739,9 +604,9 @@ public class BeanInspector {
      * Take a String and convert it to a destined data type using the
      * appropriate function.
      *
-     * @param str
-     * @param destType
-     * @return
+     * @param str       String to convert
+     * @param destType  The type to cast to
+     * @return An object of the type {@code destType} with the value of {@code str} converted
      */
     public static Object stringToPrimitive(String str, Class<?> destType) throws NumberFormatException {
         if ((destType == Integer.class) || (destType == int.class)) {
@@ -770,9 +635,9 @@ public class BeanInspector {
     /**
      * Take a double value and convert it to a primitive object.
      *
-     * @param d
-     * @param destType
-     * @return
+     * @param d         Double to convert
+     * @param destType  Destination type
+     * @return The converted double
      */
     public static Object doubleToPrimitive(Double d, Class<?> destType) {
         if ((destType == Double.class) || (destType == double.class)) {
