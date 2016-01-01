@@ -845,11 +845,11 @@ public class FunctionArea extends DArea implements Serializable {
         BufferedImage bufferedImage = new BufferedImage(theWidth, theHeight, BufferedImage.TYPE_INT_RGB);
         // Create a graphics contents on the buffered image
         Graphics2D g2D = bufferedImage.createGraphics();
+        super.paint(g2D);
 
         if (legendBox != null && legend) {
             legendBox.paintIn(g2D, scaledBorder.getInnerRect(this));
         }
-        super.paint(g2D);
         // Now put everything on the screen
         g.drawImage(bufferedImage, 0, 0, this);
     }
