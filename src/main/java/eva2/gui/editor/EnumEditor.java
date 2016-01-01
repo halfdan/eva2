@@ -1,11 +1,5 @@
 package eva2.gui.editor;
 
-import eva2.gui.PropertyValueSelector;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -36,9 +30,9 @@ public class EnumEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        for (int i = 0; i < enumConstants.length; i++) {
-            if (text.equals(enumConstants[i].toString())) {
-                setValue(enumConstants[i]);
+        for (Enum enumConstant : enumConstants) {
+            if (text.equals(enumConstant.toString())) {
+                setValue(enumConstant);
                 return;
             }
         }
@@ -55,41 +49,5 @@ public class EnumEditor extends PropertyEditorSupport {
             tags[i] = enumConstants[i].toString();
         }
         return tags;
-    }
-
-    /**
-     * Test the editor.
-     *
-     * @param args ignored
-     */
-    public static void main(String[] args) {
-        try {
-            Enum<?> initial = TestEnum.asdf;
-            EnumEditor ed = new EnumEditor();
-            ed.setValue(initial);
-            PropertyValueSelector ps = new PropertyValueSelector(ed);
-            JFrame f = new JFrame();
-            f.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    System.exit(0);
-                }
-            });
-            f.getContentPane().setLayout(new BorderLayout());
-            f.getContentPane().add(ps, BorderLayout.CENTER);
-            f.pack();
-            f.setVisible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.err.println(ex.getMessage());
-        }
-    }
-}
-
-enum TestEnum {
-    asdf, sdf, asdfa;
-
-    public String toString() {
-        return "Foo" + name();
     }
 }
